@@ -1,0 +1,205 @@
+<apex:page sidebar="false" id="ProjectMembersList"
+	tabStyle="Project2__c" controller="ProjectMembersListController">
+	<apex:includeScript value="/soap/ajax/12.0/connection.js" />
+	<script>
+		var API_SESSION_ID = '{!$Api.Session_ID}'; 
+	</script>
+
+	<!-- Javascript -->
+	<!-- Prototype + Scriptaculous -->
+	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}" />
+
+	<!-- Portal Support -->
+	<apex:includeScript value="{!$Resource.portalSupport}" />
+
+	<!-- Common Js for All Sections -->
+	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/TeamMemberList.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/validator.js')}"/>
+
+	<!-- Common css for modal -->
+	<link rel="stylesheet" media="screen"
+		href="{!URLFOR($Resource.commonResources, 'inc/css/modal.css')}" />
+
+	<!-- CSS de TS -->
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/teamDetailEdit.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/teamOverlyManage.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/teamMemberList.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/teamOverlyInviteNewMember.css')}" />
+
+	<!-- CSS styles for Portal Integration -->
+	<apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgets/TeamMemberWidget.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />
+
+
+	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/teamsCreateNewTeam.js')}" />
+
+
+	<!-- Modal JS -->
+	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" />
+
+	<style>
+	.memberImg 
+	{
+		padding: 0px;
+	}
+	</style>
+	
+	<apex:form >
+		<apex:actionFunction name="reloadMemberList" action="{!refresh}" rerender="membersList" />
+	</apex:form>
+
+	<!-- TeamsMemebersList CSS 	-->
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsMembersList.css')}" />
+
+	<!-- TeamsMemebersList JS  -->
+	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/teamsMembersList.js')}" />
+	
+	<!-- Header -->
+	<apex:composition template="HeaderTemplate">
+		<apex:define name="moduleId">
+			<apex:variable var="moduleId" value="headerTeams" />
+		</apex:define>
+		<apex:define name="module">{!$ObjectType.Project2__c.label} Members List</apex:define>
+		<apex:define name="title">{!projectName}</apex:define>
+		<apex:define name="search">
+			<c:Search module="team" />
+		</apex:define>
+	</apex:composition>
+	
+	<!-- Sidebar -->
+	<div class="sidebar">
+		<!-- <**c:ProjectDetailsWidget projectId="{!projectId}" /> -->
+		<!-- <**c:ProjectMembersWidget projectId="{!projectId}" type="adminList" /> -->
+	</div>
+	
+	<!-- Main Content Div -->
+	<div class="main_cont">
+		<apex:form >
+			<apex:outputPanel layout="block" styleClass="okMessage" style="display:none;">
+				<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}" 
+					alt="ok" />Member has been added to this {!$ObjectType.Project2__c.label}
+			</apex:outputPanel>
+		</apex:form>
+		
+		<div class="holder">
+			<div id="paginationOverlay" style="display: none;">
+				<div class="loader">
+					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/big-loader.gif')}" 
+						alt="Loading..." title="Loading..." />
+				</div>
+			</div>
+			
+			<table width="100%" align='center'>
+				<tr>
+					<td class="teamTitleButton titleTd">Members</td>
+					<td align='center'>
+						<table width="270">
+							<tr>
+								<td>
+									<div>
+										<!-- BUTTONS --> 
+										<apex:outputpanel rendered="true" >  <!-- r**endered="{!userPermissions.canManage}" --> 
+											<a onclick="createOverlay('','inviteTeam','380','showSelects()');"
+												href="javascript:;" class="blackbutton">New</a>
+											<a href="javascript:;" class="blackbutton"
+												onclick="massiveRemoveOverlay();">Remove</a>
+										</apex:outputpanel> 
+										<!-- BUTTONS -->									
+										</div>
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td class="teamTitleButton titleTd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				</tr>
+			</table>
+
+			<div class="border_body_top">
+			</div>
+			
+		<!-- LETTER FILTER	-->
+			<br/>
+			
+			<div style="position: relative; overflow: hidden">
+				<img id="twistImage" style="vertical-align: middle;" 
+					class="twistImg"
+					onclick="showHideElement(document.getElementById('filterDiv'),this);"
+					src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}"
+					title="Hide Section" alt="Hide Section" /> &nbsp; 
+					<a href="javascript:;"
+					onclick="showHideElement(document.getElementById('filterDiv'),document.getElementById('twistImage'));"
+					class="filterLink">Filter</a>
+			</div>
+			
+			<div class="filter" id="filterDiv">
+				<div align="center"><apex:form id="filterForm">
+					<ul class="letterFilter">
+						<li>
+						 	<apex:commandLink action="{!genMembers}" value="ALL" styleclass="AllBtn" rerender="membersList">
+								<apex:param name="ltr" value="ALL" /> 
+							</apex:commandLink>
+						</li>
+						<apex:repeat id="letterFilterRepeat" value="{!letterFilter}" var="item">
+							<li>
+								<apex:outputpanel rendered="{!NOT(item.containMembers)}">
+									<apex:commandLink styleclass="contains" action="{!genMembers}" value="{!item.letter}" 
+										rerender="membersList">
+										<apex:param name="ltr" value="{!item.letter}" />
+									</apex:commandLink>
+								</apex:outputpanel> 
+								<apex:outputpanel rendered="{!(item.containMembers)}">{!item.letter}</apex:outputpanel>
+							</li>
+						</apex:repeat>
+					</ul>
+					
+					<br style="clear: both; font-size: 3px;" />
+					</apex:form> 
+				</div>
+			</div>
+			
+			<apex:outputpanel rendered="{!IF(AND(prevPageShow,nextPageShow),false,true)}">
+				<hr class="filterHR">
+			</apex:outputpanel>
+			
+			<apex:outputpanel id="membersList">
+			
+				<apex:outputpanel styleClass="pagination" layout="block" rendered="{!IF(AND(prevPageShow,nextPageShow),false,true)}">
+					<div class="pages">
+						<apex:form >
+							<ul>
+								<li class="prev {!IF(prevPageShow,'prev_disabled','')}">
+									<apex:commandLink action="{!prevPage}" value="Previous Page" 
+										rerender="membersList"
+										rendered="{!prevPageLinkShow}" /> 
+									<apex:outputText value="Previous Page" rendered="{!prevPageShow}" />
+								</li>
+								<li>
+									({!currentPagination} - {!cntPagination})
+								</li>
+								<li class="next {!IF(nextPageShow,'next_disabled','')}">
+									<apex:commandLink action="{!nextPage}" value="Next Page" 
+										rerender="membersList"
+										rendered="{!nextPageLinkShow}" /> 
+									<apex:outputText value="Next Page" rendered="{!nextPageShow}" />
+								</li>
+							</ul>
+						</apex:form>
+					</div>
+				</apex:outputpanel>
+			
+			
+			</apex:outputpanel> <!-- End outputPanel MembersList -->
+			
+		</div> <!-- holder Div --> 
+	
+	</div> <!-- Main Content Div -->
+
+</apex:page>

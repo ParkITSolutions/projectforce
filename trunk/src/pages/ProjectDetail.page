@@ -1,0 +1,121 @@
+<apex:page sidebar="false" cache="true" tabStyle="Project2__c" controller="ProjectDetailController">
+
+	<!-- Ajax Toolkit -->
+	<script type="text/javascript" src="/soap/ajax/11.1/connection.js" ></script>
+	<script>
+		var API_SESSION_ID = '{!$Api.Session_ID}';
+	</script>
+	<script type="text/javascript" src="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}" ></script>
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
+	<!-- Scriptaculous / Prototype -->
+	<script type="text/javascript" src="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}" ></script>
+	<script type="text/javascript" src="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}" ></script>
+	<!-- Portal Support -->
+	<script type="text/javascript" src="{!$Resource.portalSupport}" ></script>
+	<!-- Common JS for All Sections -->
+	<script type="text/javascript" src="{!URLFOR($Resource.ProjectResources, 'inc/js/TeamsWidgetCommon.js')}" ></script>
+	<script type="text/javascript" src="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}" ></script>
+	<script type="text/javascript" src="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" ></script>
+ 	
+	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamDetailMarkupTop.css')}" />
+	
+	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupTop.js')}" />
+
+	<style>
+		.bodyDiv a.blackbutton {
+				background: transparent url({!URLFOR($Resource.ProjectResources, 'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right top;
+							
+		}	
+	</style>
+
+	<!--  c:TeamsOverlayNewTask />
+	< c:TeamsOverlayNewMilestone / -->
+	<!-- ### End Initialize fixed Overlay  ### -->
+	<!-- ### Initialize the overlay box for modal.js ### -->
+	<a href="#modal_container" id="initializeModal" style="display:none;"></a>
+	<div id="modal_container" ></div>
+	<script>createOverlay('initializeModal')</script>
+	<div id="all" style="overflow:hidden;">
+		
+		<!-- Header -->
+		<apex:composition template="HeaderTemplate">
+			<apex:define name="moduleId"><apex:variable var="moduleId" value="headerProject"/></apex:define>
+		    <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
+		    <apex:define name="title">Project Detail</apex:define>
+		    <apex:define name="search">
+		    	<c:Search module="team" />
+		    </apex:define>
+	    </apex:composition>		
+		
+		<apex:form >
+			<apex:actionFunction name="refreshJoinButton" action="{!refreshJoinEvent}" rerender="thisForm" />
+			<apex:outputPanel id="thisForm">
+				<apex:outputPanel layout="block" styleClass="breadcrumbs" rendered="{!teamIsOpen}">			
+					<apex:outputPanel styleClass="buttons" layout="block" >	
+						<apex:commandLink styleClass="blackbutton" action="{!joinTeam}" value="" oncomplete="refreshJoinButton();refreshLeaveButton();rerenderMemberList();showJoinMessageToUser();" rerender="thisForm, okMessageContainer" onclick="disableAndShowProgress(this);">
+							<span>Join {!$ObjectType.Project2__c.label}</span>
+						</apex:commandLink>				
+					</apex:outputPanel>					
+				</apex:outputPanel>
+			</apex:outputPanel>
+		</apex:form>
+
+		<!-- Sidebar -->
+		<div class="sidebar">
+			<script>
+				var teamIsOpen = {!teamIsOpen};
+			</script>
+			<!-- Team Details Widget -->		 
+			<!--  c:TeamDetailsWidget teamId="{!teamIdParam}" / -->
+			<!-- Team Suscribe -->	
+			<!-- c:TeamSubscribe teamId="{!teamIdParam}" / --> 
+			<!-- Team members -->
+			<!-- c:TeamMembersWidget teamId="{!teamIdParam}" / -->	
+			<!-- Team members -->
+			<div class="clear"></div>
+		</div>
+
+		<!-- Join Team Message -->
+		<div style="width: ; position: relative; overflow: hidden;">
+			<apex:outputPanel id="okMessageContainer" layout="block" style="overflow:hidden;position:relative;">	
+				<!-- Task Created Information Panel -->
+				<div class="informationPanel clear" id="infoToUser" style="display:none;"></div>
+				<apex:form >
+					<apex:outputPanel layout="block" styleClass="joinMessage informationPanel clear" style="display:none;">
+						<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}" alt="ok" /><div>You are a member of this {!$ObjectType.Project2__c.label}&nbsp;<apex:commandLink action="{!leaveTeam}" value="Undo" rerender="thisForm, okMessageContainer" oncomplete="refreshLeaveButton();refreshJoinButton();rerenderMemberList();hideJoinMessageToUser();" onclick="disableAndShowProgress(this);" /></div>
+					</apex:outputPanel>	
+				</apex:form>
+				<apex:form >
+					<apex:outputPanel layout="block" styleClass="okMessage informationPanel clear" style="display:none;">
+						<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}" alt="ok" /><div>Member has been added to this {!$ObjectType.Project2__c.label}</div>
+					</apex:outputPanel>
+				</apex:form>
+			</apex:outputPanel>
+		</div>
+				
+	</div>
+
+	<div class="main_content">
+		<div class="centerCol">
+			<div class="holder">
+				<!-- c:TeamsWidgetMilestones team="{!$CurrentPage.parameters.id}" /> -->
+				<!-- c:TeamsWidgetTaskaMain team="{!$CurrentPage.parameters.id}" /> -->				
+			</div>
+		</div>
+	</div>
+	
+	<iframe name="iframeUpload" id = 'iframeUpload__Ann' style="display:none;position:absolute;"></iframe>
+	<!-- End Announcement Overlay  -->
+	<!-- ### Discussion Overlay ### -->
+	<!-- c:TeamsOverlayNewDiscussion / -->
+	
+	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupBottom.js')}" />
+	
+	<script>
+		$(document).observe('dom:loaded', footerBug); 
+		$(document).observe('dom:loaded', Done);
+		readPortalCSSRules();
+	</script>
+	
+</apex:page>
