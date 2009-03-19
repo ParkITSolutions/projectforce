@@ -1,0 +1,90 @@
+<apex:component controller="ProjectOverlayNewMilestoneController" allowDML="true" id="milestoneOverlay">
+	<!-- ### Initialize fixed Overlay ### -->
+	
+	<div id="fixedModalMilestoneOverlay" class="fixedModalOverlay" style="display:none;"></div>
+	
+	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsOverlayNewMilestone.css')}" />
+
+
+	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamsOverlayNewMilestone.js')}" />
+	<script>
+			var globalUserLocale = "{!UserLocale}";		
+			var globalCountry = "{!$Organization.Country}";
+			document.observe('dom:loaded',newMilestoneLoad)
+			
+	</script>
+	 
+	<!-- Overlay Styles --> 
+	<apex:stylesheet value="{!URLFOR($Resource.TeamsResources, 'inc/css/teamsOverlaysTemplate.css')}" />
+	<div id="newMilestone" style="display:none;" class="overlayForm">	
+		<!-- Overlay Title -->
+		<div class="overlayTitleContent">
+			<div class="overlayTitle">Create New Milestone</div>
+			<div class="overlayCloseEvent">
+				<a href="Javascript:;" onclick="fixedModalNewMilestone.close();">
+					<img src="{!URLFOR($Resource.TeamsResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
+				</a>
+			</div>
+		</div>
+		<div class="overlayMainContent">
+			<!-- Required Information -->
+			<span class="overlayRequiredInfo">= Required Information</span>
+			<div class="overlay_form">
+				<apex:form id="quickMilestoneForm" onSubmit="if(checkFormNewMilestoneOverlay('{!$Component.nameMilestone}','{!$Component.dueDateMilestone}','{!$Component.memberMilestone}')){return true;}else {return false;};" >
+					<apex:actionFunction name="refreshAssignToMilestone" action="{!dummyRefresh}" oncomplete="javascript: actionFunctionSubmit= false;" rerender="assignToMilestone" />
+					<div id="formID" style="display:none;">{!$Component.quickMilestoneForm}</div>
+					<apex:outputPanel id="milestoneRefresh" style="display:none;"></apex:outputPanel>
+					<apex:actionStatus id="MilestoneStatus">
+						<apex:facet name="start"><apex:outputText value="Saving Milestone..." /></apex:facet>
+		                <apex:facet name="stop">	
+			                <apex:outputPanel id="MilestonePanel" layout="block">
+				                <div class="overlayFormContent">
+									<label>Milestone Name</label><span class="required"></span>
+									<apex:inputField id="nameMilestone" value="{!Task.name}" required="true" style="*margin-left: -10px;" styleClass="medium"/>
+									<div id="milestoneNameError" class="red" style="display: none;"><strong>Error:</strong> You must enter a value</div>
+									<br/> 
+									<label>Due Date</label><span class="required"></span>
+									<apex:inputField id="dueDateMilestone" styleClass="medium" required="true" value="{!Task.EndDate__c}" />
+									<div id="milestoneDueDate-comp-milestone" style="display:none;">{!$Component.milestoneDueDate}</div><div id="milestoneDateError" class="red" style="display: none;"><strong>Error:</strong> You must enter a value</div>
+									<br/>
+									<label>Assign to</label><span class="required"></span>
+									<apex:outputpanel id="assignToMilestone">
+										<apex:selectList value="{!teamMember.User__c}" id="memberMilestone" multiselect="false" size="1">
+				        					<apex:selectOptions value="{!teamMembers}" />
+				               			</apex:selectList><div id="memberErrorMilestone" class="red" style="display: none;"><strong>Error:</strong> You must select a value</div> 
+				               		</apex:outputpanel>
+				               	</div>
+								<div class="overlaySeparateLine"></div>
+								<!-- Saven and Cancel Buttons -->
+								<div class="overlayFromButtons" align="center">
+									<apex:commandButton action="{!insertMilestone}" 										 										
+										rerender="quickMilestoneForm"
+										status="MilestoneStatus" style="float: none;"
+										value="Save" styleclass="overlaySaveBtn"
+										oncomplete="formValidateMilestone('{!$Component.nameMilestone}', '{!$Component.dueDateMilestone}', '{!$Component.memberMilestone}')">
+									</apex:commandButton>
+									<apex:commandButton styleClass="overlayCancelBtn" style="float: none;" value="Cancel" onclick="fixedModalNewMilestone.close(); return false;"  />
+									<a href="javascript:;" onclick="sendTempMilestoneDetails('{!$Component.nameMilestone}','{!$Component.memberMilestone}','{!$Component.dueDateMilestone}');return false;">Edit task details</a>
+									<div id="quickMilestoneFormId" style="display:none;">{!$Component.quickMilestoneForm}</div>			
+								</div>
+							</apex:outputPanel>
+						</apex:facet>
+					</apex:actionStatus>
+				</apex:form>
+			</div>
+			<!-- The hidden form to send partial data to edit -->
+			<div style="display:none;">
+				<form id="hiddenFormQuickMilestone" action="/apex/TeamsCreateNewTask" method="get">
+					<input type="text" value="{!CurrentTeamId}" name="id" />
+					<input type="text" value="true" name="t" />
+					<input id="tempQuickMilestoneName" type="text" name="qmname" />	
+					<input id="tempQuickMilestoneDueDate" type="text" name="qmdd"/>
+					<input id="tempQuickMilestoneAsigneeId" type="text" name="qmaid"/>
+					<input name="ed" value="true" />
+					<input type="submit" value="tempSend" />			
+				</form>
+			</div>
+		</div>
+	</div>
+	
+</apex:component>

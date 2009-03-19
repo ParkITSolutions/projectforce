@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>ProjectIssue</description>
+    <fields>
+        <fullName>DeadLine__c</fullName>
+        <description>DeadLine</description>
+        <label>Dead Line</label>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>PercentComplete__c</fullName>
+        <description>PercentComplete</description>
+        <label>Percent Complete</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Priority__c</fullName>
+        <description>Priority</description>
+        <label>Priority</label>
+        <picklist>
+            <picklistValues>
+                <fullName>High</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Medium</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Low</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>ProjectTask__c</fullName>
+        <description>ProjectTask</description>
+        <label>Project Task</label>
+        <referenceTo>ProjectTask__c</referenceTo>
+        <relationshipLabel>Project Issue</relationshipLabel>
+        <relationshipName>PrjectsIssues</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Project__c</fullName>
+        <description>Project</description>
+        <label>Project</label>
+        <referenceTo>Project2__c</referenceTo>
+        <relationshipName>PrjectsIssues</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>StartDate__c</fullName>
+        <description>StartDate</description>
+        <label>Start Date</label>
+        <type>DateTime</type>
+    </fields>
+    <label>Project Issue</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Issue Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Project Issue</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>Private</sharingModel>
+</CustomObject>

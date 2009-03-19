@@ -1,0 +1,35 @@
+public class ProjectUtil {
+    
+    @future public static void insertQueueSObjects (String projectQueueId, String projId ){
+        
+                // ### Allow SObjects to be managed by recently created queues ###
+                List<QueueSobject> sobjectsQueueAllowed = new List<QueueSobject>();
+                
+                // Project Tasks - assignees
+                QueueSobject allowAsignee = new QueueSobject(SobjectType = Schema.SObjectType.ProjectAssignee__c.getName() ,QueueId = projectQueueId);
+                sobjectsQueueAllowed.add(allowAsignee);
+                
+                QueueSobject allowTasks = new QueueSobject(SobjectType = Schema.SObjectType.ProjectTask__c.getName() ,QueueId = projectQueueId);
+                sobjectsQueueAllowed.add(allowTasks);
+                
+                QueueSobject allowProject = new QueueSobject(SobjectType = Schema.SObjectType.Project2__c.getName() ,QueueId = projectQueueId);
+                sobjectsQueueAllowed.add(allowProject);
+               
+                QueueSobject allowProjectTaskPred = new QueueSobject(SobjectType = Schema.SObjectType.ProjectTaskPred__c.getName() ,QueueId = projectQueueId);
+                sobjectsQueueAllowed.add(allowProjectTaskPred);
+                
+                QueueSobject allowProjectMembers = new QueueSobject(SobjectType = Schema.SObjectType.ProjectMember__c.getName() ,QueueId = projectQueueId);
+                sobjectsQueueAllowed.add(allowProjectMembers);  
+                
+                // Insert all the allowed sobjects  
+                insert sobjectsQueueAllowed;
+                
+               	//Upsert Team owner
+			   	Project2__c tempProject = [select ownerId, Id, Name from Project2__c where Id =: projId limit 1];
+			   	tempProject.ownerId = projectQueueId;
+			   	// We set this to true becuase we dont want all the minifeed triggers and update 
+			   	// triggers firing off when all we want to do is update the owner id.
+			    upsert tempProject;
+    }
+
+}

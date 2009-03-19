@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>ProjectMember</description>
+    <fields>
+        <fullName>Profile__c</fullName>
+        <description>Profile</description>
+        <label>Profile</label>
+        <referenceTo>ProjectProfile__c</referenceTo>
+        <relationshipName>ProjectsMembers</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Project__c</fullName>
+        <description>Project</description>
+        <label>Project</label>
+        <referenceTo>Project2__c</referenceTo>
+        <relationshipName>ProjectsMembers</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>User__c</fullName>
+        <description>User</description>
+        <label>User</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>ProjectsMembers</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <label>Project Member</label>
+    <nameField>
+        <label>Member Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Project Member</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>Private</sharingModel>
+</CustomObject>

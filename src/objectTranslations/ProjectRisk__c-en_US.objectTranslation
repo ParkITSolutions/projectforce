@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <value>Project Risk</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Project Risk</value>
+    </caseValues>
+    <fields>
+        <label><!-- Category --></label>
+        <name>Category__c</name>
+    </fields>
+    <fields>
+        <label><!-- Date Closed --></label>
+        <name>DateClosed__c</name>
+    </fields>
+    <fields>
+        <label><!-- DateDue --></label>
+        <name>DateDue__c</name>
+    </fields>
+    <fields>
+        <label><!-- Date Opened --></label>
+        <name>DateOpened__c</name>
+    </fields>
+    <fields>
+        <label><!-- Days Impact --></label>
+        <name>DaysImpact__c</name>
+    </fields>
+    <fields>
+        <label><!-- Description --></label>
+        <name>Description__c</name>
+    </fields>
+    <fields>
+        <label><!-- Impact Description --></label>
+        <name>ImpactDescription__c</name>
+    </fields>
+    <fields>
+        <label><!-- Mitigation Plan --></label>
+        <name>MitigationPlan__c</name>
+    </fields>
+    <fields>
+        <label><!-- Priority --></label>
+        <name>Priority__c</name>
+    </fields>
+    <fields>
+        <label><!-- Probability --></label>
+        <name>Probability__c</name>
+    </fields>
+    <fields>
+        <label><!-- Project Task --></label>
+        <name>ProjectTask__c</name>
+        <relationshipLabel><!-- Project Risk --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Project --></label>
+        <name>Project__c</name>
+        <relationshipLabel><!-- Project Risk --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>Status__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>
