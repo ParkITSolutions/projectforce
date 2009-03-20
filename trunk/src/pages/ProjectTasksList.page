@@ -53,7 +53,6 @@
         </apex:actionFunction>      
     </apex:form>
     
-    </style>
     <c:ProjectOverlayNewTask />
     <c:ProjectOverlayNewMilestone />
     <c:ProjectDeleteTaskOverlay />
@@ -67,10 +66,9 @@
         <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
         <apex:define name="title">Tasks & Milestones</apex:define>
         <apex:define name="search">
-            <c:Search module="project" />
+            <c:Search module="task" />
         </apex:define>
     </apex:composition>
-    <apex:messages />
     <!-- Main Content Div -->
     <div class="main_content_projectList"> 
         <!-- BreadCrumb and buttons -->     
@@ -110,6 +108,7 @@
                     </apex:form>
                 </apex:outputpanel>
              </apex:outputpanel>
+             <apex:messages id="taskMessages"/>
         </div>
         <!-- Holder -->  
         <div class="informationPanel clear" id="infoToUser" style="display:none;"></div>
@@ -168,7 +167,7 @@
                                     </th>
                                     <th width="8%" style="padding:3px 0px;"> Action </th>                            
                                     <th width="5%" style="text-align: center">
-                                           <apex:commandLink styleclass="member_title_description" action="{!sortList}" value="Type" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Milestone__c';" oncomplete="showHideOverlay();">
+                                           <apex:commandLink styleclass="member_title_description" action="{!getsortListOption}" value="Type" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Milestone__c';" oncomplete="showHideOverlay();">
                                             <apex:param name="sb" value="Milestone__c" /> 
                                         </apex:commandLink>&nbsp;
                                         <apex:outputpanel rendered="{!IF(sortBy == 'type',true,false)}">
@@ -181,7 +180,7 @@
                                         </apex:outputpanel>
                                     </th>
                                     <th width="7%" style="text-align: center">
-                                           <apex:commandLink styleclass="member_title_description" action="{!sortList}" value="Priority" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Priority__c';" oncomplete="showHideOverlay();">
+                                           <apex:commandLink styleclass="member_title_description" action="{!getsortListOption}" value="Priority" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Priority__c';" oncomplete="showHideOverlay();">
                                             <apex:param name="sb" value="Priority__c" />
                                         </apex:commandLink>&nbsp;
                                         <apex:outputpanel rendered="{!IF(sortBy == 'priority',true,false)}">
@@ -194,7 +193,7 @@
                                         </apex:outputpanel>
                                     </th>
                                     <th width="25%" >
-                                        <apex:commandLink styleclass="member_title_description" action="{!sortList}" value="Name" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Name';" oncomplete="showHideOverlay();">
+                                        <apex:commandLink styleclass="member_title_description" action="{!getsortListOption}" value="Name" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Name';" oncomplete="showHideOverlay();">
                                             <apex:param name="sb" value="Name" />
                                         </apex:commandLink>&nbsp;
                                         <apex:outputpanel rendered="{!IF(sortBy == 'name',true,false)}">
@@ -207,7 +206,7 @@
                                         </apex:outputpanel>
                                     </th>
                                     <th width="20%" >
-                                        <apex:commandLink styleclass="member_title_description" action="{!sortList}" value="Assigned to" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'User__c.Name';" oncomplete="showHideOverlay();">
+                                        <apex:commandLink styleclass="member_title_description" action="{!getsortListOption}" value="Assigned to" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'User__c.Name';" oncomplete="showHideOverlay();">
                                             <apex:param name="sb" value="User__c.Name" />
                                         </apex:commandLink>&nbsp;
                                         <apex:outputpanel rendered="{!IF(sortBy == 'assigned',true,false)}">
@@ -220,7 +219,7 @@
                                         </apex:outputpanel>
                                     </th>
                                     <th width="15%" >
-                                        <apex:commandLink styleclass="member_title_description" action="{!sortList}" value="% Completed" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Percent_Completed__c';" oncomplete="showHideOverlay();">
+                                        <apex:commandLink styleclass="member_title_description" action="{!getsortListOption}" value="% Completed" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Percent_Completed__c';" oncomplete="showHideOverlay();">
                                             <apex:param name="sb" value="Percent_Completed__c" />
                                         </apex:commandLink>&nbsp;
                                         <apex:outputpanel rendered="{!IF(sortBy == 'completed',true,false)}">
@@ -233,7 +232,7 @@
                                         </apex:outputpanel>
                                     </th> 
                                     <th width="5%" style="text-align: center">
-                                        <apex:commandLink styleclass="member_title_description" action="{!sortList}" value="Est Hrs" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Duration__c';" oncomplete="showHideOverlay();">
+                                        <apex:commandLink styleclass="member_title_description" action="{!getsortListOption}" value="Est Hrs" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Duration__c';" oncomplete="showHideOverlay();">
                                             <apex:param name="sb" value="Duration__c" />
                                         </apex:commandLink>&nbsp;
                                         <apex:outputpanel rendered="{!IF(sortBy == 'est',true,false)}">
@@ -246,7 +245,7 @@
                                         </apex:outputpanel>
                                     </th> 
                                     <th width="10%" style="text-align: right">
-                                        <apex:commandLink styleclass="member_title_description" action="{!sortList}" value="Due date" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'EndDate__c';" oncomplete="showHideOverlay();">
+                                        <apex:commandLink styleclass="member_title_description" action="{!getsortListOption}" value="Due date" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'EndDate__c';" oncomplete="showHideOverlay();">
                                             <apex:param name="sb" value="EndDate__c" />
                                         </apex:commandLink>&nbsp;
                                         <apex:outputpanel rendered="{!IF(sortBy == 'date',true,false)}">

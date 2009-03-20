@@ -220,10 +220,10 @@
 									<div class="detailTeams">
 										<h4><a href="/apex/ProjectDetail?id={!t.Id}">{!t.Name}</a></h4>
 										<div>
-											<span>{!t.tasks}</span> 
-											<a href="/apex/ProjectTasksList?id={!t.Id}">Tasks</a> |
+											<span>{!t.tasks}</span>
+											<a href="/apex/ProjectTasksList?id={!t.Id}&filter=all">Tasks</a> |
 											<span>{!t.milestones}</span> 
-											<a href="/apex/ProjectMilestonesList?id={!t.Id}">Milestones</a> |
+											<a href="/apex/ProjectTasksList?id={!t.Id}&filter=allMilestones">Milestones</a> |
 											<span>{!t.members}</span>
 											<a href="/apex/ProjectMembersList?id={!t.Id}">Members</a> 
 											<br/>

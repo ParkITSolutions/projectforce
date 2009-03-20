@@ -15,14 +15,14 @@
 	</script>
 	 
 	<!-- Overlay Styles --> 
-	<apex:stylesheet value="{!URLFOR($Resource.TeamsResources, 'inc/css/teamsOverlaysTemplate.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />
 	<div id="newMilestone" style="display:none;" class="overlayForm">	
 		<!-- Overlay Title -->
 		<div class="overlayTitleContent">
 			<div class="overlayTitle">Create New Milestone</div>
 			<div class="overlayCloseEvent">
 				<a href="Javascript:;" onclick="fixedModalNewMilestone.close();">
-					<img src="{!URLFOR($Resource.TeamsResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
+					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
 				</a>
 			</div>
 		</div>
@@ -49,8 +49,8 @@
 									<br/>
 									<label>Assign to</label><span class="required"></span>
 									<apex:outputpanel id="assignToMilestone">
-										<apex:selectList value="{!teamMember.User__c}" id="memberMilestone" multiselect="false" size="1">
-				        					<apex:selectOptions value="{!teamMembers}" />
+										<apex:selectList value="{!projectMember.User__c}" id="memberMilestone" multiselect="false" size="1">
+				        					<apex:selectOptions value="{!projectMembers}" />
 				               			</apex:selectList><div id="memberErrorMilestone" class="red" style="display: none;"><strong>Error:</strong> You must select a value</div> 
 				               		</apex:outputpanel>
 				               	</div>
@@ -74,8 +74,8 @@
 			</div>
 			<!-- The hidden form to send partial data to edit -->
 			<div style="display:none;">
-				<form id="hiddenFormQuickMilestone" action="/apex/TeamsCreateNewTask" method="get">
-					<input type="text" value="{!CurrentTeamId}" name="id" />
+				<form id="hiddenFormQuickMilestone" action="/apex/ProjectCreateNewTask" method="get">
+					<input type="text" value="{!CurrentProjectId}" name="id" />
 					<input type="text" value="true" name="t" />
 					<input id="tempQuickMilestoneName" type="text" name="qmname" />	
 					<input id="tempQuickMilestoneDueDate" type="text" name="qmdd"/>

@@ -12,6 +12,7 @@ public with sharing class ProjectTaskListController {
     public boolean isProjectMember = false;
     public String PROJECTID = System.currentPageReference().getParameters().get('id');
     public String filter = System.currentPageReference().getParameters().get('filter');
+    //public String type = System.currentPageReference().getParameters().get(''
     List<ProjectTask__c> ListTask = new List<ProjectTask__c>();
     public Map<String, User> mapAsignees = new Map<String, User>();
     List<TaskDetails> taskList = new List<TaskDetails>();
@@ -25,9 +26,13 @@ public with sharing class ProjectTaskListController {
         editDeletePer = userPermissions.getCanManage();
         genTaskList();
         if(filter != null) {
-            option = 'allMilestones';
-            getsortListOption();
+        	if(filter == 'all'){
+        		option = 'all';
+        	}else if (filter == 'allMilestones'){
+        		option = 'allMilestones';
+        	}
         }
+        getsortListOption();
         genCntPagination();
         getUserProfile();    
     }    
@@ -585,7 +590,6 @@ public with sharing class ProjectTaskListController {
      */
     public void sortList () {
     	
-    	try{
         List<TaskDetails> td = new List<TaskDetails>();
         
         setAllUsers();
@@ -610,7 +614,8 @@ public with sharing class ProjectTaskListController {
         
         sortBy = SortByCriteria;
         String sortByAux=sortBy;
-        
+        System.debug('sortBy:'+sortBy);
+        System.debug('sortByDesc:'+sortByDesc);
         List<ProjectTask__c> resultTaskList = new List<ProjectTask__c>();
         
         if (sortBy.equals('User__c.Name'))
@@ -835,8 +840,9 @@ public with sharing class ProjectTaskListController {
                                           From ProjectsAssignees__r), 
                                          p.Description__c 
                                          From ProjectTask__c p 
-                                         where Project__c =: PROJECTID  
-                                         order by Name];                
+                                         where Project__r.Id =: PROJECTID  
+                                         order by Name];
+                                                        
             }
             if (sortBy == 'Percent_Completed__c') {
                 resultTaskList = [Select 
@@ -916,16 +922,15 @@ public with sharing class ProjectTaskListController {
                     TaskDetail.isTaskOwner = false; 
                 }   
             }
-            throw new CustomException('Funciona esto');
+
             TaskDetail.Name = resultTaskList[i].Name;
             String picture = TaskDetail.getAsigneeName();
             TaskDetail.Priority = resultTaskList[i].Priority__c;
             // TODO cambiar a formato de mm/dd/yyyy
             if(resultTaskList[i].EndDate__c != null) TaskDetail.DueDate = ((resultTaskList[i].EndDate__c).format());
             
-            System.debug(Logginglevel.ERROR,'Tasklist:'+resultTaskList.size());
             System.debug('----------------- FUNCIONA ESTO --------');
-            
+            System.debug('duration:');
             TaskDetail.Estimate = (resultTaskList[i].Duration__c).intValue();
             TaskDetail.Description = resultTaskList[i].Description__c;
             TaskDetail.Milestone = resultTaskList[i].Milestone__c;
@@ -984,11 +989,6 @@ public with sharing class ProjectTaskListController {
             }
         }
         taskList = td;
-    	}
-    	catch(CustomException ex)
-    	{
-    		ApexPages.addMessages(ex);
-    	}  
     } 
      
     

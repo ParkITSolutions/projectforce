@@ -1,11 +1,12 @@
 /**
 *@author Bruno Fagundez @ 07/10/2008
+* refactoring for projectforce
 */
 public class ProjectOverlayNewMilestoneController {
     
     
-    ProjectTask__c theNewTask = new ProjectTask__c();
-    public String TEAMID = System.currentPageReference().getParameters().get('id');
+    ProjectTask__c newTask = new ProjectTask__c();
+    public String PROJECTID = System.currentPageReference().getParameters().get('id');
     
     /**
     * Constructor
@@ -21,50 +22,49 @@ public class ProjectOverlayNewMilestoneController {
     *@return String
     */
     
-    public String getCurrentTeamId(){
-        return TEAMID;
+    public String getCurrentProjectId(){
+        return PROJECTID;
     }
     
     /**
-    *@param String team Id
+    *@param String project Id
     */
-    public void setCurrentTeamId(String s) { 
-        TEAMID = s;
+    public void setCurrentProjectId(String s) { 
+        PROJECTID = s;
     }
     
     public Project2__c currentProject = null;
     
 
-    public ProjectTask__c newProyect = new ProjectTask__c();
     /**
     *@return ProjectTask__c
     */
     public ProjectTask__c getTask(){
-        return newProyect;
+        return newTask;
     }
     
     /**
     *@param ProjectTask__c 
     */
     public void setNewProyect(ProjectTask__c pT) {
-        newProyect = pT;
+        newTask = pT;
     }
     
     /**
-    *@return TeamMember__c
+    *@return ProjectMember__c
     */
 
-    public ProjectMember__c teamMember = new ProjectMember__c();
-    public ProjectMember__c getTeamMember(){ 
-        return teamMember;
+    public ProjectMember__c projectMember = new ProjectMember__c();
+    public ProjectMember__c getProjectMember(){ 
+        return projectMember;
     }
 
     
     /**
-    *@param TeamMember__c
+    *@param ProjectMember__c
     */
-    public void setTeamMember(ProjectMember__c tm){
-        teamMember = tm;
+    public void setProjectMember(ProjectMember__c tm){
+        projectMember = tm;
     }
 
     
@@ -76,29 +76,27 @@ public class ProjectOverlayNewMilestoneController {
     *@return List<SelectOption>
     */
     
-    public List<SelectOption> getTeamMembers() {
+    public List<SelectOption> getProjectMembers() {
 
         List<SelectOption> options = new List<SelectOption>();
-        /*
-        List<ProjectMember__c> teamMembers = new List<ProjectMember__c>();  
-        if(TEAMID != null){
-            teamMembers = [Select t.Team__c, t.User__r.Name, t.User__r.IsActive, t.Name, t.User__c, t.Id From TeamMember__c t where t.Team__c =: TEAMID and t.User__r.IsActive != false];  
-            options.add(new SelectOption('-1', 'Choose a team Member'));
-            for(TeamMember__c c: teamMembers) {
+        List<ProjectMember__c> projectMembers = new List<ProjectMember__c>();  
+        if(PROJECTID != null){
+            projectMembers = [Select t.Project__c, t.User__r.Name, t.User__r.IsActive, t.Name, t.User__c, t.Id From ProjectMember__c t where t.Project__c =: PROJECTID and t.User__r.IsActive != false];  
+            options.add(new SelectOption('-1', 'Choose a project Member'));
+            for(ProjectMember__c c: projectMembers) {
                 options.add(new SelectOption(c.User__c, c.User__r.Name)); 
             }
         }
-        */
         return options;
     }
     
 
     /**
-    * Returns Project for current team
+    * Returns Project for current project
     */
     public void getCurrentProject(){
-        if(TEAMID != null)
-            currentProject = [select Id from Project2__c where Id =: TEAMID limit 1];
+        if(PROJECTID != null)
+            currentProject = [select Id from Project2__c where Id =: PROJECTID limit 1];
     }
     
     public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
@@ -108,7 +106,7 @@ public class ProjectOverlayNewMilestoneController {
     
     public void genPermissions () {
         userPermissions.setId(UserInfo.getUserId());
-        userPermissions.setProject(TEAMID);
+        userPermissions.setProject(PROJECTID);
         userPermissions.setObjectType('Project');
         userPermissions.setPermissions();       
     }
@@ -129,25 +127,22 @@ public class ProjectOverlayNewMilestoneController {
     */
     
     public void insertMilestone (){ 
-        /*
         if(!userPermissions.getCanCreate()){
             throw new CustomException('Insufficient Privileges'); 
         }       
-        newProyect.Milestone__c = true;
-        newProyect.Team__c = TEAMID;
-        newProyect.StartDate__c = newProyect.EndDate__c;
-        newProyect.Percent_Completed__c = 0.0;
-        newProyect.Project__c = currentProject.Id;
-        insert newProyect; 
+        newTask.Milestone__c = true;
+        newTask.Project__c = PROJECTID;
+        newTask.StartDate__c = newTask.EndDate__c;
+        newTask.PercentCompleted__c = 0.0;
+        newTask.Project__c = currentProject.Id;
+        newTask.Duration__c = 0.0;
+        insert newTask; 
         
         ProjectAssignee__c Assign = new ProjectAssignee__c();
-        Assign.User__c = teamMember.User__c;
-        Assign.ProjectTask__c = newProyect.Id;
+        Assign.User__c = projectMember.User__c;
+        Assign.ProjectTask__c = newTask.Id;
         insert Assign;
         
-        Assign = new ProjectAssignee__c();
-        newProyect = new ProjectTask__c();
-        */
     }
     
     

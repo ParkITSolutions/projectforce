@@ -31,6 +31,13 @@
     }
     
     /**
+    * @return String teamIdParam The Id of the team
+    */
+    public String getTeamIdParam(){
+        return teamIdParam;
+    }    
+    
+    /**
     * Check if is TeamsSuscription page
     *@return Boolean 
     */
@@ -78,13 +85,6 @@
     }   
     */
     
-    /**
-    * @return String teamIdParam The Id of the team
-    */
-    public String getTeamIdParam(){
-        return teamIdParam;
-    }
-
     /**
     * Read Team
     *@throws Exception
