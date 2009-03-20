@@ -8,11 +8,14 @@
 	<script type="text/javascript" src="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}" ></script>
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
+	
 	<!-- Scriptaculous / Prototype -->
 	<script type="text/javascript" src="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}" ></script>
 	<script type="text/javascript" src="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}" ></script>
+	
 	<!-- Portal Support -->
 	<script type="text/javascript" src="{!$Resource.portalSupport}" ></script>
+	
 	<!-- Common JS for All Sections -->
 	<script type="text/javascript" src="{!URLFOR($Resource.ProjectResources, 'inc/js/TeamsWidgetCommon.js')}" ></script>
 	<script type="text/javascript" src="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}" ></script>
@@ -31,7 +34,7 @@
 
 	<!--  c:TeamsOverlayNewTask />
 	< c:TeamsOverlayNewMilestone / -->
-	<!-- ### End Initialize fixed Overlay  ### -->
+	
 	<!-- ### Initialize the overlay box for modal.js ### -->
 	<a href="#modal_container" id="initializeModal" style="display:none;"></a>
 	<div id="modal_container" ></div>
@@ -63,16 +66,13 @@
 
 		<!-- Sidebar -->
 		<div class="sidebar">
-			<script>
-				var teamIsOpen = {!teamIsOpen};
-			</script>
-			<!-- Team Details Widget -->		 
-			<!--  c:TeamDetailsWidget teamId="{!teamIdParam}" / -->
-			<!-- Team Suscribe -->	
-			<!-- c:TeamSubscribe teamId="{!teamIdParam}" / --> 
+		
+			<!-- Team Suscribe -->
+			<c:ProjectSubscribe /> 
+			
 			<!-- Team members -->
-			<!-- c:TeamMembersWidget teamId="{!teamIdParam}" / -->	
-			<!-- Team members -->
+			<c:ProjectMembersWidget />	
+
 			<div class="clear"></div>
 		</div>
 
@@ -99,8 +99,12 @@
 	<div class="main_content">
 		<div class="centerCol">
 			<div class="holder">
-				<!-- c:TeamsWidgetMilestones team="{!$CurrentPage.parameters.id}" /> -->
-				<!-- c:TeamsWidgetTaskaMain team="{!$CurrentPage.parameters.id}" /> -->				
+				<div style="display:none;" class="sfdcDetail">
+					<apex:detail subject="{!teamIdParam}" relatedList="false" title="false" />
+				</div>
+				
+				<c:ProjectDetailMilestones /> 
+				<c:TeamsWidgetTaskaMain />			 
 			</div>
 		</div>
 	</div>

@@ -57,8 +57,8 @@
                                     <br/>
                                     <label>Assign to</label><span class="required"></span>
                                     <apex:outputpanel id="assignToTask" layout="block"> 
-                                        <apex:selectList value="{!teamMember.User__c}" required="true"  id="member" multiselect="false" size="1">
-                                            <apex:selectOptions value="{!teamMembers}" />
+                                        <apex:selectList value="{!projectMember.User__c}" required="true"  id="member" multiselect="false" size="1">
+                                            <apex:selectOptions value="{!projectMembers}" />
                                         </apex:selectList><div class="red" style="display: none;" id="memberError"><strong>Error:</strong> You must select a value</div>
                                     </apex:outputpanel>
                                     <br/>
@@ -83,7 +83,7 @@
             <!-- The hidden form to send partial data to edit -->
             <div style="display:none;">
                 <form id="hiddenFormQuickTask" action="TeamsCreateNewTask" method="get">
-                    <input id="tempTeamid" type="text" value="{!CurrentTeamId}" name="id" />
+                    <input id="tempTeamid" type="text" value="{!CurrentProjectId}" name="id" />
                     <input id="tempQuickTaskName" type="text" name="qtname" />  
                     <input id="tempQuickTaskStartDate" type="text" name="qtsd"/>
                     <input id="tempQuickTaskDueDate" type="text" name="qtdd"/>

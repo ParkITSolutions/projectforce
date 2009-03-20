@@ -86,8 +86,10 @@ public class SearchController {
 	public String getLabel(){
 		String txt;
 		if(module == 'project'){
-			txt = '';
-		}else {
+			txt = 'Project';
+		}else if(module == 'task') {
+			txt = 'Task';
+		}else{
 			txt = '';
 		}
 		this.label = txt;
@@ -101,10 +103,11 @@ public class SearchController {
 	public String getDefaultText(){
 		String txt = 'Enter ';
 		if(module == 'project'){
-			txt = txt + 'Project name...';
-		}else {
-			txt = '';
+			txt = txt + 'Project';
+		}else if(module == 'task'){
+			txt = txt + 'Task';
 		}
+		txt += ' name...';
 		this.defText = txt;
 		return this.defText;
 	}

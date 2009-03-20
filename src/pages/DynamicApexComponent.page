@@ -1,5 +1,6 @@
-<apex:page controller="DynamicApexComponent">
-	<div class="formCopy"></div>
-	<iframe src="/a0730000003MtIk/e" width="100%" height="800px"></iframe>
-	<apex:outputPanel >{!output}</apex:outputPanel>
+<apex:page controller="DynamicApexComponent" sidebar="false">
+	<apex:outputText escape="true">
+		{!output}
+	</apex:outputText>
+	<apex:detail subject="{!projectId}" />
 </apex:page>

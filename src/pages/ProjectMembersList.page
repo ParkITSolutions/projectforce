@@ -81,11 +81,11 @@
 	</div>
 	
 	<!-- Main Content Div -->
-	<div class="main_cont">
+	<div class="main_content">
 		<apex:form >
 			<apex:outputPanel layout="block" styleClass="okMessage" style="display:none;">
 				<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}" 
-					alt="ok" />Member has been added to this {!$ObjectType.Project2__c.label}
+					alt="OK" />Member has been added to this {!$ObjectType.Project2__c.label}
 			</apex:outputPanel>
 		</apex:form>
 		
@@ -106,7 +106,7 @@
 								<td>
 									<div>
 										<!-- BUTTONS --> 
-										<apex:outputpanel rendered="true" >  <!-- r**endered="{!userPermissions.canManage}" --> 
+										<apex:outputpanel rendered="{!userPermissions.canManage}" >
 											<a onclick="createOverlay('','inviteTeam','380','showSelects()');"
 												href="javascript:;" class="blackbutton">New</a>
 											<a href="javascript:;" class="blackbutton"
@@ -194,7 +194,211 @@
 						</apex:form>
 					</div>
 				</apex:outputpanel>
+				
+				<apex:form >
+				<table border="0" cellspacing="0" cellpadding="2px" class="pageList">
+					<thead>
+						<tr>
+							<td width="3%"><apex:outputpanel rendered="{!userPermissions.canManage}">
+								<input class="actionCheckAll" onclick="checkUnCheck(this);"
+									type="checkbox" />
+							</apex:outputpanel></td>
+							<td width="9%"><apex:outputpanel rendered="{!userPermissions.canManage}" style="font-weight:bold;">Action</apex:outputpanel>
+							</td>
+							<td width="29%" colspan="2"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
+								value="Name" rerender="membersList">
+								<apex:param name="sb" value="User__r.Name" />
+							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'name',true,false)}">
+								<apex:outputpanel rendered="{!sortByDesc}">
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
+								</apex:outputpanel>
+								<apex:outputpanel rendered="{!NOT(sortByDesc)}">
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
+								</apex:outputpanel>
+							</apex:outputpanel></td>
+							<td width="16%"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
+								value="Company" rerender="membersList">
+								<apex:param name="sb" value="User__r.CompanyName" />
+							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'company',true,false)}">
+								<apex:outputpanel rendered="{!sortByDesc}">
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
+								</apex:outputpanel>
+								<apex:outputpanel rendered="{!NOT(sortByDesc)}">
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
+								</apex:outputpanel>
+							</apex:outputpanel></td>
+							<td width="15%"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
+								value="Title" rerender="membersList">
+								<apex:param name="sb" value="User__r.Title" />
+							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'title',true,false)}">
+								<apex:outputpanel rendered="{!sortByDesc}">
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
+								</apex:outputpanel>
+								<apex:outputpanel rendered="{!NOT(sortByDesc)}">
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
+								</apex:outputpanel>
+							</apex:outputpanel></td>
+							<td width="16%"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
+								value="{!$ObjectType.Project2__c.label} Profile"
+								rerender="membersList">
+								<apex:param name="sb" value="TeamProfile__r.Name" />
+							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'profile',true,false)}">
+								<apex:outputpanel rendered="{!sortByDesc}">
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
+								</apex:outputpanel>
+								<apex:outputpanel rendered="{!NOT(sortByDesc)}">
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
+								</apex:outputpanel>
+							</apex:outputpanel></td>
+							<td width="12%px"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
+								value="{!$ObjectType.Project2__c.label} Role" rerender="membersList">
+								<apex:param name="sb" value="TeamRole__c" />
+							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'role',true,false)}">
+								<apex:outputpanel rendered="{!sortByDesc}">
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
+								</apex:outputpanel>
+								<apex:outputpanel rendered="{!NOT(sortByDesc)}">
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
+								</apex:outputpanel>
+							</apex:outputpanel></td>
+						</tr>
+					</thead>
+					<!-- Description  -->
+					<tbody>
+						<apex:repeat var="item" value="{!members}"
+							rows="{!numberOfItemsToShow}" first="{!firstRow}">
+							<tr>
+								<td><apex:outputpanel rendered="{!userPermissions.canManage}">
+									<input value="{!item.projectMemberId}" class="actionCheck"
+										type="checkbox" />
+								</apex:outputpanel></td>
+								<td><apex:outputpanel rendered="{!userPermissions.canManage}">
+									<apex:commandLink styleclass="member_detail_description_underline" value="Edit"
+										action="{!assignEditId}" rerender="overlaysPanel"
+										onclick="createOverlay('','editMemberInfoLoading','270','');"
+										oncomplete="createOverlay('','editMemberInfo','270','showSelects()');">
+										<apex:param name="editId" value="{!item.userId}" />
+									</apex:commandLink>
+									<!-- <a href="javascript:;" class="member_detail_description_underline">Edit</a>&nbsp;| -->
+								</apex:outputpanel> <apex:outputpanel rendered="{!userPermissions.canManage}">|</apex:outputpanel>
+								<apex:outputpanel rendered="{!userPermissions.canManage}">
+									<apex:commandLink styleclass="member_detail_description_underline" value="Del"
+										action="{!assignRemoveId}" rerender="overlaysPanel"
+										oncomplete="createOverlay('','removeMemberOverlay','155','');">
+										<apex:param name="delId" value="{!item.userId}" />
+									</apex:commandLink>
+								</apex:outputpanel></td>
+								<td class="memberImg"><apex:outputpanel rendered="{!IF(item.memberImg == '',true,false)}">
+									<div class="photoWrapper_32px"><img
+										src="{!URLFOR($Resource.commonResources, 'images/placeholders/unknownperson32x32.jpg')}"
+										width="32" /></div>
+								</apex:outputpanel> <apex:outputpanel rendered="{!IF(item.memberImg == '',false,true)}">
+									<div class="photoWrapper_32px"><img
+										src="/servlet/servlet.FileDownload?file={!item.memberImg}"
+										width="32" /></div>
+								</apex:outputpanel></td>
+								<td class="member_detail_description"><a href="javascript:;"
+									onclick="location.href='https://na1.salesforce.com/apex/PeopleProfileDisplay?id={!item.userId}'"
+									class="member_detail_description_underline">{!item.Name}</a> <img
+									class="imgState"
+									src="{!URLFOR($Resource.TeamsResources, 'images/layout/icons/online.gif')}" />
+								<img class="imgState"
+									src="{!URLFOR($Resource.TeamsResources, 'images/layout/icons/skype.gif')}" />
+								</td>
+								<td class="member_detail_description">{!item.company}</td>
+								<td class="member_detail_description">{!item.title}</td>
+								<td class="member_detail_description">{!item.profile}</td>
+								<td class="member_detail_description">{!item.role}</td>
+							</tr>
+						</apex:repeat>
+					</tbody>
+				</table>
+			</apex:form>
 			
+			<hr class="filterHR" />
+			
+			<apex:outputpanel styleClass="pagination" layout="block"
+				rendered="{!IF(AND(prevPageShow,nextPageShow),false,true)}">
+				<div class="pages">
+					<apex:form >
+						<ul>
+							<li class="prev {!IF(prevPageShow,'prev_disabled','')}">
+								<apex:commandLink action="{!prevPage}" value="Previous Page" rerender="membersList"
+								rendered="{!prevPageLinkShow}" /> 
+								<apex:outputText value="Previous Page" rendered="{!prevPageShow}" />
+							</li>
+							<li>
+							({!currentPagination} - {!cntPagination})
+							</li>
+							<li class="next {!IF(nextPageShow,'next_disabled','')}">
+								<apex:commandLink action="{!nextPage}" value="Next Page" rerender="membersList"
+								rendered="{!nextPageLinkShow}" /> 
+								<apex:outputText value="Next Page" rendered="{!nextPageShow}" />
+							</li>
+						</ul>
+					</apex:form>
+				</div>
+			</apex:outputpanel> <!-- pagination -->
+			
+			<apex:outputpanel rendered="{!IF(AND(prevPageShow,nextPageShow),false,true)}">
+				<hr class="filterHR" />
+			</apex:outputpanel>
+			
+			<table width="100%">
+				<tr>
+					<td class="teamTitleButton titleTd">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					</td>
+					<td align='center'>
+						<table width="270">
+							<tr>
+								<td>
+								<div><!-- BUTTONS --> <apex:outputpanel rendered="{!userPermissions.canManage}">
+									<a onclick="createOverlay('','inviteTeam','400','showSelects()');"
+										href="javascript:;" class="blackbutton">New
+									</a>
+									<a href="javascript:;" class="blackbutton"
+										onclick="massiveRemoveOverlay();">Remove
+									</a>
+									<div class="editProfile">
+										<a href="javascript:;"
+											class="blackbutton" onclick="showHideOptionsBottom();">Edit
+											{!$ObjectType.Project2__c.label} Profile | v
+										</a>
+									<div id="profileOptionsBottom" class="profileOptions"
+										style="display: none;">
+										<ul>
+											<apex:repeat value="{!projectEditProfiles}" var="item">
+												<li onclick="massiveMemberUpdate(this);"
+													onmouseover="bckColor(this)" onmouseout="bckColor(this)"
+													id="{!item.Id}">{!item.Name}
+												</li>
+											</apex:repeat>
+										</ul>
+									</div>
+									</div>
+									</apex:outputpanel> <!-- BUTTONS -->
+								</div>
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td class="teamTitleButton titleTd">
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				</tr>
+			</table>
+			
+			<br/>
 			
 			</apex:outputpanel> <!-- End outputPanel MembersList -->
 			
@@ -202,4 +406,10 @@
 	
 	</div> <!-- Main Content Div -->
 
+	<apex:outputpanel id="overlaysPanel">
+		<apex:include pageName="ProjectMembersRemove" />
+		<apex:include pageName="ProjectMembersMassiveRemove" />
+		<apex:include pageName="ProjectOverlayMemberEditInfo" />
+	</apex:outputpanel>
+	
 </apex:page>

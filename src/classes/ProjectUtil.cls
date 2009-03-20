@@ -31,5 +31,20 @@ public class ProjectUtil {
 			   	// triggers firing off when all we want to do is update the owner id.
 			    upsert tempProject;
     }
+    
+    /**
+	* Return the Namespace Prefix
+	*@return String
+	*/
+	public static String getNamespace () {
+		String namespace = '';
+        String fullName = Schema.SObjectType.Project2__c.getName();
+        String localName = Schema.SObjectType.Project2__c.getLocalName();
+        if (fullName != localName) {
+           namespace = fullName.replaceAll(localName,'');
+           namespace = namespace .replaceAll('__','');
+        }
+        return namespace;	
+	}
 
 }

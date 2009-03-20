@@ -178,6 +178,11 @@ public without sharing class ProjectMembersListController {
 			removeMemberId = System.currentPageReference().getParameters().get('delId');	
 		}
 		
+		System.debug('REMOVE ID ->  ' + [select User__r.Name 
+				   from ProjectMember__c 
+				   where User__c =: removeMemberId 
+				       and project__c =: idProject].User__r.Name);
+				       
 		delName = [select User__r.Name 
 				   from ProjectMember__c 
 				   where User__c =: removeMemberId 
@@ -778,8 +783,7 @@ public without sharing class ProjectMembersListController {
 	*@return String
 	*/
 	public String getNamespace () {
-        //return ProjectUtil.getNamespace();
-        return null;
+        return ProjectUtil.getNamespace();
     } 
     
     /**

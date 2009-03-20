@@ -31,6 +31,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectNewMemberController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectOverlayNewMilestoneController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1439,7 +1443,23 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>ProjectInviteNewMember</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>ProjectMembersList</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>ProjectMembersMassiveRemove</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>ProjectMembersRemove</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>ProjectOverlayMemberEditInfo</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
