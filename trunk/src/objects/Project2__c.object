@@ -108,7 +108,7 @@
         <label>Project Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Project</pluralLabel>
+    <pluralLabel>Projects</pluralLabel>
     <searchLayouts>
         <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
         <excludedStandardButtons>Accept</excludedStandardButtons>

@@ -21,7 +21,7 @@
 		<div class="overlayTitleContent">
 			<div class="overlayTitle">Create New Milestone</div>
 			<div class="overlayCloseEvent">
-				<a href="Javascript:;" onclick="fixedModalNewMilestone.close();">
+				<a href="Javascript:;" onclick="resetFormNewMilestone();fixedModalNewMilestone.close();">
 					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
 				</a>
 			</div>
@@ -63,7 +63,7 @@
 										value="Save" styleclass="overlaySaveBtn"
 										oncomplete="formValidateMilestone('{!$Component.nameMilestone}', '{!$Component.dueDateMilestone}', '{!$Component.memberMilestone}')">
 									</apex:commandButton>
-									<apex:commandButton styleClass="overlayCancelBtn" style="float: none;" value="Cancel" onclick="fixedModalNewMilestone.close(); return false;"  />
+									<apex:commandButton styleClass="overlayCancelBtn" style="float: none;" value="Cancel" onclick="resetFormNewMilestone();fixedModalNewMilestone.close(); return false;"  />
 									<a href="javascript:;" onclick="sendTempMilestoneDetails('{!$Component.nameMilestone}','{!$Component.memberMilestone}','{!$Component.dueDateMilestone}');return false;">Edit task details</a>
 									<div id="quickMilestoneFormId" style="display:none;">{!$Component.quickMilestoneForm}</div>			
 								</div>

@@ -5,7 +5,7 @@
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Project</value>
+        <value>Projects</value>
     </caseValues>
     <fields>
         <label><!-- Description --></label>
@@ -31,7 +31,7 @@
     <fields>
         <label><!-- ProjectCreatedBy --></label>
         <name>ProjectCreatedBy__c</name>
-        <relationshipLabel><!-- Project --></relationshipLabel>
+        <relationshipLabel><!-- Projects --></relationshipLabel>
     </fields>
     <fields>
         <label><!-- ProjectCreatedDate --></label>

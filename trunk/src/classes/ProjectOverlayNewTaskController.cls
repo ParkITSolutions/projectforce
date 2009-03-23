@@ -4,7 +4,7 @@
 */
 public class ProjectOverlayNewTaskController {
 	
-    ProjectTask__c theNewTask = new ProjectTask__c();
+    public ProjectTask__c newTask = new ProjectTask__c();
    	
    	public String PROJECTID = System.currentPageReference().getParameters().get('id'); 
    	public Project2__c currentProject = null;   
@@ -24,19 +24,18 @@ public class ProjectOverlayNewTaskController {
    		this.PROJECTID = projectID;
    	}
    	
-    public ProjectTask__c newProyect = new ProjectTask__c();
    	/**
     *@return ProjectTask__c
     */
     public ProjectTask__c getTask(){
-    	return newProyect;
+    	return newTask;
     }
     
 	/**
 	*@param ProjectTask__c
 	*/    
     public void setTask(ProjectTask__c value){
-    	newProyect = value;
+    	newTask = value;
     }
     
 
@@ -123,18 +122,18 @@ public class ProjectOverlayNewTaskController {
    		if(!userPermissions.getCanCreate()){
         	throw new CustomException('Insufficient Privileges');
    		}else{	
-   			newProyect.Milestone__c = false;
-			newProyect.Project__c = PROJECTID;
-			newProyect.Project__c = currentProject.Id;
-			newProyect.PercentCompleted__c = 0.0;
-			newProyect.Priority__c = 'Normal';
-			insert newProyect; 
+   			newTask.Milestone__c = false;
+			newTask.Project__c = PROJECTID;
+			newTask.Project__c = currentProject.Id;
+			newTask.PercentCompleted__c = 0.0;
+			newTask.Priority__c = 'Normal';
+			insert newTask; 
 
 	  		ProjectAssignee__c Assign = new ProjectAssignee__c();
 			Assign.User__c = projectMember.User__c;
-			Assign.ProjectTask__c = newProyect.Id;
+			Assign.ProjectTask__c = newTask.Id;
 			insert Assign;
-			newProyect = new ProjectTask__c();
+			newTask = new ProjectTask__c();
 			Assign = new ProjectAssignee__c();
    		}
    	}

@@ -70,6 +70,10 @@
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
+    <layoutSections>
+        <layoutColumns/>
+        <style>CustomLinks</style>
+    </layoutSections>
     <relatedLists>
         <fields>NAME</fields>
         <relatedList>ProjectTask__c.ParentTask__c</relatedList>

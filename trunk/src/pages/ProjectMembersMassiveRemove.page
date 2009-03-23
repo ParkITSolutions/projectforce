@@ -1,5 +1,38 @@
-<apex:page >
-<!-- Begin Default Content REMOVE THIS -->
-<h1>Project Members Massive Remove Page</h1>
-<!-- End Default Content REMOVE THIS -->
+<apex:page sidebar="false" tabStyle="Project2__c" controller="ProjectMembersListController">
+	
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsMembersMassiveDelete.css')}" />
+	
+	<!-- Content  -->
+	<div id="massiveRemoveMemberOverlay" style="display:none;" class="overlayForm">	
+		<!-- Overlay Title -->
+		<div class="overlayTitleContent">
+			<div class="overlayTitle">Confirmation</div>
+			<div class="overlayCloseEvent">
+				<a href="Javascript:;" onclick="modal.close();">
+					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
+				</a>
+			</div>
+		</div>
+		<!-- Overlay Content -->
+		<div class="overlayMainContent">
+			<apex:form id="newMemberForm">
+				<div class="overlayFormContent" style="padding-bottom: 10px;">
+					<table style="width:95%;"> 
+						<tr>
+							<td><span class="inputInfoDark">Are you sure you want to remove these members from {!projectName}?</span></td>
+						</tr>
+						<tr>
+							<td><span class="inputInfo">Once a member is removed there is no way to undo this action.</span></td>
+						</tr>			
+					</table>
+				</div>
+				<div class="overlaySeparateLine" />
+				<!-- Saven and Cancel Buttons -->
+				<div class="overlayFromButtons" align="center">
+					<input type="button" class="overlaySaveBtn" onclick="massiveMemberRemove(); modal.close();" value="Continue"/> 
+					<input class="overlayCancelBtn" type="button" value="Cancel" onclick="modal.close();"/>
+				</div>
+			</apex:form>
+		</div>
+	</div>
 </apex:page>
