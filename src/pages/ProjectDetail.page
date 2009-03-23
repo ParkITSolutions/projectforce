@@ -5,9 +5,8 @@
 	<script>
 		var API_SESSION_ID = '{!$Api.Session_ID}';
 	</script>
+	
 	<script type="text/javascript" src="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}" ></script>
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
 	
 	<!-- Scriptaculous / Prototype -->
 	<script type="text/javascript" src="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}" ></script>
@@ -20,17 +19,41 @@
 	<script type="text/javascript" src="{!URLFOR($Resource.ProjectResources, 'inc/js/TeamsWidgetCommon.js')}" ></script>
 	<script type="text/javascript" src="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}" ></script>
 	<script type="text/javascript" src="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" ></script>
+
+	<script src="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupTop.js')}" />
  	
+ 	<!-- CSS Includes -->
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
 	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamDetailMarkupTop.css')}" />
 	
-	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupTop.js')}" />
-
-	<style>
+	<style> 
 		.bodyDiv a.blackbutton {
 				background: transparent url({!URLFOR($Resource.ProjectResources, 'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right top;
 							
+		}
+		
+		div.sfdcDetailFormated table.detailList td{
+			height: 20px; !important;
+		}
+		
+		div.sfdcDetailFormated table.detailList td.labelCol{
+			font-weight: bold:
 		}	
 	</style>
+	
+	<script>
+		/**
+		* On DOM ready functions
+		*/
+		document.observe('dom:loaded', function(){
+				$$('.centerCol')[0].style.marginRigth = '0px';
+				var detailTable = $$('.detailList')[0];
+				detailTable.style.width = '100%';
+				$$('.sfdcDetailFormated')[0].insert(detailTable)
+			}
+		)
+	</script>
 
 	<!--  c:TeamsOverlayNewTask />
 	< c:TeamsOverlayNewMilestone / -->
@@ -43,11 +66,11 @@
 		
 		<!-- Header -->
 		<apex:composition template="HeaderTemplate">
-			<apex:define name="moduleId"><apex:variable var="moduleId" value="headerProject"/></apex:define>
+			<apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
 		    <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
 		    <apex:define name="title">Project Detail</apex:define>
 		    <apex:define name="search">
-		    	<c:Search module="team" />
+		    	<c:Search module="project" />
 		    </apex:define>
 	    </apex:composition>		
 		
@@ -66,13 +89,13 @@
 
 		<!-- Sidebar -->
 		<div class="sidebar">
-		
+			<!-- Project Quick Links -->
+			<c:ProjectDetailQuickLinks />
 			<!-- Team Suscribe -->
 			<c:ProjectSubscribe /> 
-			
 			<!-- Team members -->
 			<c:ProjectMembersWidget />	
-
+			
 			<div class="clear"></div>
 		</div>
 
@@ -99,12 +122,22 @@
 	<div class="main_content">
 		<div class="centerCol">
 			<div class="holder">
+				
+				<!-- sfdc detail -->
 				<div style="display:none;" class="sfdcDetail">
 					<apex:detail subject="{!teamIdParam}" relatedList="false" title="false" />
 				</div>
+				<div class="sfdcDetailFormated"></div>
 				
+				<!-- Project Tasks -->
+				<c:ProjectWidgetTaskMain />			 
+
+				<!-- Project Milestones -->
 				<c:ProjectDetailMilestones /> 
-				<c:TeamsWidgetTaskaMain />			 
+
+				<!-- Project Attachment -->
+				<c:ProjectDetailAttachment /> 
+
 			</div>
 		</div>
 	</div>
@@ -117,7 +150,6 @@
 	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupBottom.js')}" />
 	
 	<script>
-		$(document).observe('dom:loaded', footerBug); 
 		$(document).observe('dom:loaded', Done);
 		readPortalCSSRules();
 	</script>

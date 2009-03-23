@@ -3,6 +3,18 @@
 	<apex:includeScript value="/soap/ajax/12.0/connection.js" />
 	<script>
 		var API_SESSION_ID = '{!$Api.Session_ID}'; 
+		
+		/**
+        *Set e2 height with e1 height + 15px
+        *For paginationOverlay to cover membersList
+        *@Param ids for element one and two 
+        */
+        function setHeight( idElement1, idElement2 ){
+            o1Dims = $( idElement1 ).getDimensions();
+            $( idElement2 ).style.height = (o1Dims.height * 0.98 ).round() + 'px';
+            $( idElement2 ).style.width = (o1Dims.width * 0.98 ).round() + 'px';
+        }
+		
 	</script>
 
 	<!-- Javascript -->
@@ -38,29 +50,82 @@
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgets/TeamMemberWidget.css')}" />
 	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />
 
-
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/teamsCreateNewTeam.js')}" />
-
 
 	<!-- Modal JS -->
 	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" />
 
 	<style>
-	.memberImg 
+		.memberImg 
 	{
 		padding: 0px;
 	}
+	
+	.paginationOverlay{
+		background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat center 200px;
+		position:absolute;
+		width:760px;
+		opacity:.80;
+		filter:alpha(opacity=80);
+		z-index:9998;
+
+	}
+	
+	/* //////////////////// OVERLAY STYLES  ////////////////// */
+
+	.UPF__overlay__{
+	
+		position: absolute;	
+		z-index: 10000;
+		width: 100%;
+		height: 100%;
+		background: #666666;
+	}
+
+	.loader__{
+		position: fixed;
+		z-index: 10001;
+		overflow: hidden;
+		top: 50%;
+		left: 50%;
+		color: #FFFFFF;
+	}
+
+	.loaderIE6__{
+	
+		position: absolute;
+		z-index: 10001;
+		overflow: hidden;
+		top: 50%;
+		left: 50%;
+		color: #FFFFFF;
+		top: expression( ( 250 + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
+	
+	}
+	
 	</style>
+	
+	<script>
+		document.observe('dom:loaded', function(){
+				readPortalCSSRules();
+			}
+		)
+	</script>
 	
 	<apex:form >
 		<apex:actionFunction name="reloadMemberList" action="{!refresh}" rerender="membersList" />
 	</apex:form>
 
-	<!-- TeamsMemebersList CSS 	-->
+	<!-- ProjectMemebersList CSS 	-->
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsMembersList.css')}" />
 
-	<!-- TeamsMemebersList JS  -->
+	<!-- ProjectMemebersList JS  -->
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/teamsMembersList.js')}" />
+	
+	<!-- Initialize the overlay box for modal.js -->
+	<a href="#modal_container" id="initializeModal" style="display:none;"></a>
+	<div id="modal_container"></div>
+	<script>createOverlay('initializeModal')</script>
 	
 	<!-- Header -->
 	<apex:composition template="HeaderTemplate">
@@ -70,18 +135,26 @@
 		<apex:define name="module">{!$ObjectType.Project2__c.label} Members List</apex:define>
 		<apex:define name="title">{!projectName}</apex:define>
 		<apex:define name="search">
-			<c:Search module="team" />
+			<c:Search module="project" />
 		</apex:define>
 	</apex:composition>
 	
 	<!-- Sidebar -->
 	<div class="sidebar">
-		<!-- <**c:ProjectDetailsWidget projectId="{!projectId}" /> -->
-		<!-- <**c:ProjectMembersWidget projectId="{!projectId}" type="adminList" /> -->
+		<!-- Project Quick Links -->
+		<c:ProjectDetailQuickLinks />
+		<!-- Team Suscribe -->
+		<c:ProjectSubscribe /> 
+		<!-- Team members -->
+		<c:ProjectMembersWidget />	
+		
+		<div class="clear"></div>
 	</div>
 	
 	<!-- Main Content Div -->
-	<div class="main_content">
+	<div class="main_cont">
+		<div>
+			<div class="main_cont">
 		<apex:form >
 			<apex:outputPanel layout="block" styleClass="okMessage" style="display:none;">
 				<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}" 
@@ -89,13 +162,12 @@
 			</apex:outputPanel>
 		</apex:form>
 		
-		<div class="holder">
-			<div id="paginationOverlay" style="display: none;">
-				<div class="loader">
-					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/big-loader.gif')}" 
-						alt="Loading..." title="Loading..." />
-				</div>
-			</div>
+		
+		<div id="paginationOverlay" style="display: none;" class="paginationOverlay">
+			<div class="loader"></div>
+		</div>
+		<div id="holder">
+			
 			
 			<table width="100%" align='center'>
 				<tr>
@@ -111,6 +183,23 @@
 												href="javascript:;" class="blackbutton">New</a>
 											<a href="javascript:;" class="blackbutton"
 												onclick="massiveRemoveOverlay();">Remove</a>
+												<div class="editProfile">
+										<a href="javascript:;"
+											class="blackbutton" onclick="showHideOptionsBottom();">Edit
+											{!$ObjectType.Project2__c.label} Profile | v
+										</a>
+										<div id="profileOptionsBottom" class="profileOptions"
+											style="display: none;">
+											<ul>
+												<apex:repeat value="{!projectEditProfiles}" var="item">
+													<li onclick="massiveMemberUpdate(this);"
+														onmouseover="bckColor(this)" onmouseout="bckColor(this)"
+														id="{!item.Id}">{!item.Name}
+													</li>
+												</apex:repeat>
+											</ul>
+										</div>
+									</div>
 										</apex:outputpanel> 
 										<!-- BUTTONS -->									
 										</div>
@@ -151,6 +240,7 @@
 							<li>
 								<apex:outputpanel rendered="{!NOT(item.containMembers)}">
 									<apex:commandLink styleclass="contains" action="{!genMembers}" value="{!item.letter}" 
+										onclick="$('paginationOverlay').show();setHeight('holder', 'paginationOverlay')" oncomplete="$('paginationOverlay').hide()"
 										rerender="membersList">
 										<apex:param name="ltr" value="{!item.letter}" />
 									</apex:commandLink>
@@ -258,19 +348,6 @@
 										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
 								</apex:outputpanel>
 							</apex:outputpanel></td>
-							<td width="12%px"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
-								value="{!$ObjectType.Project2__c.label} Role" rerender="membersList">
-								<apex:param name="sb" value="TeamRole__c" />
-							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'role',true,false)}">
-								<apex:outputpanel rendered="{!sortByDesc}">
-									<img
-										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
-								</apex:outputpanel>
-								<apex:outputpanel rendered="{!NOT(sortByDesc)}">
-									<img
-										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
-								</apex:outputpanel>
-							</apex:outputpanel></td>
 						</tr>
 					</thead>
 					<!-- Description  -->
@@ -282,16 +359,8 @@
 									<input value="{!item.projectMemberId}" class="actionCheck"
 										type="checkbox" />
 								</apex:outputpanel></td>
-								<td><apex:outputpanel rendered="{!userPermissions.canManage}">
-									<apex:commandLink styleclass="member_detail_description_underline" value="Edit"
-										action="{!assignEditId}" rerender="overlaysPanel"
-										onclick="createOverlay('','editMemberInfoLoading','270','');"
-										oncomplete="createOverlay('','editMemberInfo','270','showSelects()');">
-										<apex:param name="editId" value="{!item.userId}" />
-									</apex:commandLink>
-									<!-- <a href="javascript:;" class="member_detail_description_underline">Edit</a>&nbsp;| -->
-								</apex:outputpanel> <apex:outputpanel rendered="{!userPermissions.canManage}">|</apex:outputpanel>
-								<apex:outputpanel rendered="{!userPermissions.canManage}">
+								<td>
+									<apex:outputpanel rendered="{!userPermissions.canManage}">
 									<apex:commandLink styleclass="member_detail_description_underline" value="Del"
 										action="{!assignRemoveId}" rerender="overlaysPanel"
 										oncomplete="createOverlay('','removeMemberOverlay','155','');">
@@ -311,14 +380,13 @@
 									onclick="location.href='https://na1.salesforce.com/apex/PeopleProfileDisplay?id={!item.userId}'"
 									class="member_detail_description_underline">{!item.Name}</a> <img
 									class="imgState"
-									src="{!URLFOR($Resource.TeamsResources, 'images/layout/icons/online.gif')}" />
+									src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/online.gif')}" />
 								<img class="imgState"
-									src="{!URLFOR($Resource.TeamsResources, 'images/layout/icons/skype.gif')}" />
+									src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/skype.gif')}" />
 								</td>
 								<td class="member_detail_description">{!item.company}</td>
 								<td class="member_detail_description">{!item.title}</td>
 								<td class="member_detail_description">{!item.profile}</td>
-								<td class="member_detail_description">{!item.role}</td>
 							</tr>
 						</apex:repeat>
 					</tbody>
@@ -375,17 +443,17 @@
 											class="blackbutton" onclick="showHideOptionsBottom();">Edit
 											{!$ObjectType.Project2__c.label} Profile | v
 										</a>
-									<div id="profileOptionsBottom" class="profileOptions"
-										style="display: none;">
-										<ul>
-											<apex:repeat value="{!projectEditProfiles}" var="item">
-												<li onclick="massiveMemberUpdate(this);"
-													onmouseover="bckColor(this)" onmouseout="bckColor(this)"
-													id="{!item.Id}">{!item.Name}
-												</li>
-											</apex:repeat>
-										</ul>
-									</div>
+										<div id="profileOptionsBottom" class="profileOptions"
+											style="display: none;">
+											<ul>
+												<apex:repeat value="{!projectEditProfiles}" var="item">
+													<li onclick="massiveMemberUpdate(this);"
+														onmouseover="bckColor(this)" onmouseout="bckColor(this)"
+														id="{!item.Id}">{!item.Name}
+													</li>
+												</apex:repeat>
+											</ul>
+										</div>
 									</div>
 									</apex:outputpanel> <!-- BUTTONS -->
 								</div>
@@ -405,11 +473,14 @@
 		</div> <!-- holder Div --> 
 	
 	</div> <!-- Main Content Div -->
+		</div>
+	</div>
+	
 
 	<apex:outputpanel id="overlaysPanel">
 		<apex:include pageName="ProjectMembersRemove" />
 		<apex:include pageName="ProjectMembersMassiveRemove" />
-		<apex:include pageName="ProjectOverlayMemberEditInfo" />
+
 	</apex:outputpanel>
 	
 </apex:page>

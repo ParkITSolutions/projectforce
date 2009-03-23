@@ -3,12 +3,11 @@
 		<div class="myBigWidget">
 			<!-- Widget Title -->		
 			<div class="wideHeader">
-				<h4>Tasks</h4>
+				<h4>Attachments</h4>
 			</div>
 			<!-- Widget Links Holder -->
 			<div class="linkAction">
-				<a href="Javascript:;">New</a> |
-				<a href="Javascript:;">See All</a>				
+				<a href="Javascript:;">New</a>
 			</div>
 			<!-- Widget Container --> 		
 			<div class="wideBody">

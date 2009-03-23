@@ -1,0 +1,23 @@
+<apex:component >
+    <div class="teamWidget mySmallWidget" >
+        <!-- Widget Title -->       
+        <div class="thinHeader">
+            <div><div><h4>{!$ObjectType.Project2__c.label} Quick Links</h4></div></div>
+        </div>
+        <!-- Widget Container -->          
+        <div class="box_content">
+            <div class="thinBody">
+                <div>                       
+					<a href="Javascript:;">New Task</a><br />
+					<a href="Javascript:;">New Milestone</a><br />
+					<a href="Javascript:;">Timeline</a><br />					
+                </div>   
+            </div>               
+        </div>
+        <!-- Widget Holder Foot -->
+        <div class="bottom_borders">
+            <div><div></div></div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</apex:component>

@@ -5,7 +5,7 @@
     <div class="teamWidget mySmallWidget" >
         <!-- Widget Title -->       
         <div class="thinHeader">
-            <div><div><h4>My Incoming Milestones</h4></div></div>
+            <div><div><h4>My Upcoming Milestones</h4></div></div>
         </div>
         <!-- Widget Container -->       
         <div class="box_content">

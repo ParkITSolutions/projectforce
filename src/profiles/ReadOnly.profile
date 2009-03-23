@@ -31,6 +31,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectMembersWidgetController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectNewMemberController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1389,6 +1393,10 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>ProjectInviteNewMembers</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>ProjectMembersList</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
@@ -1398,10 +1406,6 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectMembersRemove</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>ProjectOverlayMemberEditInfo</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
