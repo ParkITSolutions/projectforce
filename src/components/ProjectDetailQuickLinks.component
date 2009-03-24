@@ -1,23 +1,78 @@
-<apex:component >
+<apex:component controller="ProjectDetailController">
+    
+   <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}"/> 
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
+    
+    <!-- Prototype / Scriptaculous Framework -->   
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>  
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectLayout.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskList.css')}" />    
+    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" /> 
+    
+    <!-- Portal Support -->
+    <apex:includeScript value="{!$Resource.portalSupport}"/>  
+    
+    <!-- CSS styles for Portal Integration -->
+    <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsTable.css')}" />
+    
+    <!-- ### Styles ### -->
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgets/TeamsOverlayNewTask.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />        
+    
+    <!-- ProjectTaskList CSS -->
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskList.css')}" />
+    
+    <style>
+    .breadCrumbs a{
+        font-weight: normal;
+    }
+    </style>
+    
+    
+    <!-- ProjectTaskList JS -->
+    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskList.js')}"/>
+    
     <div class="teamWidget mySmallWidget" >
+    
         <!-- Widget Title -->       
         <div class="thinHeader">
-            <div><div><h4>{!$ObjectType.Project2__c.label} Quick Links</h4></div></div>
+            <div>
+	            <div>
+	            	<h4>{!$ObjectType.Project2__c.label} Quick Links</h4>
+	            </div>
+            </div>
         </div>
+        
         <!-- Widget Container -->          
         <div class="box_content">
             <div class="thinBody">
                 <div>                       
-					<a href="Javascript:;">New Task</a><br />
-					<a href="Javascript:;">New Milestone</a><br />
-					<a href="Javascript:;">Timeline</a><br />					
+					<a href="Javascript:fixedModalNewTask.open();">New Task</a>
+					<br />
+					<a href="Javascript:fixedModalNewMilestone.open();">New Milestone</a>
+					<br />
+					<a href="ProjectTimeline?id={!teamIdParam}">Timeline</a>
+					<br />					
                 </div>   
             </div>               
         </div>
+        
         <!-- Widget Holder Foot -->
         <div class="bottom_borders">
-            <div><div></div></div>
+            <div>
+	            <div>
+	            </div>
+            </div>
         </div>
+        
+    </div><!-- End teamWidget -->
+    
+    <div class="clear">
     </div>
-    <div class="clear"></div>
+
+
 </apex:component>

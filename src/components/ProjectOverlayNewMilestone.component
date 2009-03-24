@@ -7,11 +7,11 @@
 
 
 	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamsOverlayNewMilestone.js')}" />
-	<script>
-			var globalUserLocale = "{!UserLocale}";		
-			var globalCountry = "{!$Organization.Country}";
-			document.observe('dom:loaded',newMilestoneLoad)
-			
+	
+    <script>
+		var globalUserLocale = "{!UserLocale}";		
+		var globalCountry = "{!$Organization.Country}";
+		document.observe('dom:loaded',newMilestoneLoad);
 	</script>
 	 
 	<!-- Overlay Styles --> 
@@ -45,7 +45,9 @@
 									<br/> 
 									<label>Due Date</label><span class="required"></span>
 									<apex:inputField id="dueDateMilestone" styleClass="medium" required="true" value="{!Task.EndDate__c}" />
-									<div id="milestoneDueDate-comp-milestone" style="display:none;">{!$Component.milestoneDueDate}</div><div id="milestoneDateError" class="red" style="display: none;"><strong>Error:</strong> You must enter a value</div>
+									<div id="milestoneDueDate-comp-milestone" style="display:none;">{!$Component.milestoneDueDate}</div>
+                                    <div id="milestoneDateError" class="red" style="display: none;"><strong>Error:</strong> You must enter a value</div>
+                                    <div id="milestoneDateInvalid" class="red" style="display: none;"><strong>Error:</strong> You must enter a valid value</div>
 									<br/>
 									<label>Assign to</label><span class="required"></span>
 									<apex:outputpanel id="assignToMilestone">
@@ -64,7 +66,7 @@
 										oncomplete="formValidateMilestone('{!$Component.nameMilestone}', '{!$Component.dueDateMilestone}', '{!$Component.memberMilestone}')">
 									</apex:commandButton>
 									<apex:commandButton styleClass="overlayCancelBtn" style="float: none;" value="Cancel" onclick="resetFormNewMilestone();fixedModalNewMilestone.close(); return false;"  />
-									<a href="javascript:;" onclick="sendTempMilestoneDetails('{!$Component.nameMilestone}','{!$Component.memberMilestone}','{!$Component.dueDateMilestone}');return false;">Edit task details</a>
+									<a href="javascript:;" onclick="sendTempMilestoneDetails('{!$Component.nameMilestone}','{!$Component.memberMilestone}','{!$Component.dueDateMilestone}');return false;">Edit milestone details</a>
 									<div id="quickMilestoneFormId" style="display:none;">{!$Component.quickMilestoneForm}</div>			
 								</div>
 							</apex:outputPanel>
@@ -74,9 +76,8 @@
 			</div>
 			<!-- The hidden form to send partial data to edit -->
 			<div style="display:none;">
-				<form id="hiddenFormQuickMilestone" action="/apex/ProjectCreateNewTask" method="get">
-					<input type="text" value="{!CurrentProjectId}" name="id" />
-					<input type="text" value="true" name="t" />
+				<form id="hiddenFormQuickMilestone" action="ProjectCreateNewTask" method="get">
+                    <input id="tempProjectid" type="text" value="{!CurrentProjectId}" name="id" />
 					<input id="tempQuickMilestoneName" type="text" name="qmname" />	
 					<input id="tempQuickMilestoneDueDate" type="text" name="qmdd"/>
 					<input id="tempQuickMilestoneAsigneeId" type="text" name="qmaid"/>

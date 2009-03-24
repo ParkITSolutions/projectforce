@@ -23,7 +23,19 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectCreateNewTaskController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProjectDetailAttachmentController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectDetailController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProjectDetailMilestoneController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -84,6 +96,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>TeamsWidgetMyTasksAndMilController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UploadAttachmentController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -531,6 +547,11 @@
         <field>Contact.Birthdate</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>Contact.CanAllowPortalSelfReg</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
         <editable>true</editable>
         <field>Contact.Department</field>
     </fieldLevelSecurities>
@@ -770,6 +791,11 @@
         <field>Lead.NumberofLocations__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>Lead.PartnerAccountId</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
         <editable>true</editable>
         <field>Lead.Phone</field>
     </fieldLevelSecurities>
@@ -845,6 +871,11 @@
     <fieldLevelSecurities>
         <editable>false</editable>
         <field>Opportunity.OrderNumber__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>Opportunity.PartnerAccountId</field>
         <hidden>true</hidden>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
@@ -1440,6 +1471,10 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>ProjectCreateNewTask</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>ProjectDetail</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
@@ -1477,6 +1512,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectsCreateNewProject</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>UploadAttachment</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
