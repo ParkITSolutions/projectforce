@@ -1,0 +1,16 @@
+<apex:component >
+	<div id="newAttachmentOverlay" style="display:none;" class="overlayForm">	
+		<!-- Overlay Title -->
+		<div class="overlayTitleContent">
+			<div class="overlayTitle">Create New Milestone</div>
+			<div class="overlayCloseEvent">
+				<a href="Javascript:;" onclick="modal.close();">
+					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
+				</a>
+			</div>
+		</div>
+		<div class="overlayMainContent">
+			<iframe src="/apex/UploadAttachment?pId=a003000000BvAH7AAN" />
+		</div>
+	</div>
+</apex:component>

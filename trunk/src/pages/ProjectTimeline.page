@@ -1,5 +1,5 @@
 <apex:page tabStyle="Project2__c" controller="ProjectTimelineController" sidebar="false">
-	<embed  src="{!$Resource.GanttTest}"
+	<embed  src="{!$Resource.Gantt}"
 	        play="true" 
 	        bgcolor="#f3f3ec" 
 	        width="100%" 

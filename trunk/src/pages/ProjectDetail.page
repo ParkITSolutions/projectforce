@@ -55,7 +55,7 @@
 		)
 	</script>
 
-	<!--  c:TeamsOverlayNewTask />
+	<!-- c:TeamsOverlayNewTask />
 	< c:TeamsOverlayNewMilestone / -->
 	
 	<!-- ### Initialize the overlay box for modal.js ### -->
@@ -129,29 +129,29 @@
 				</div>
 				<div class="sfdcDetailFormated"></div>
 				
-				<!-- Project Tasks -->
-				<c:ProjectWidgetTaskMain />			 
-
-				<!-- Project Milestones -->
-				<c:ProjectDetailMilestones /> 
-
-				<!-- Project Attachment -->
-				<c:ProjectDetailAttachment /> 
-
+				<apex:form >
+					<!-- Project Tasks -->
+					<c:ProjectWidgetTaskMain />			 
+	
+					<!-- Project Milestones -->
+					<c:ProjectDetailMilestones /> 
+	
+					<!-- Project Attachment -->
+					<c:ProjectOverlayNewAttachment />
+					<c:ProjectDetailAttachment project="{!teamIdParam}"/> 
+				</apex:form>
 			</div>
 		</div>
 	</div>
-	
-	<iframe name="iframeUpload" id = 'iframeUpload__Ann' style="display:none;position:absolute;"></iframe>
-	<!-- End Announcement Overlay  -->
-	<!-- ### Discussion Overlay ### -->
-	<!-- c:TeamsOverlayNewDiscussion / -->
-	
+
 	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupBottom.js')}" />
 	
+		
+	<c:ProjectOverlayNewTask />
+	<c:ProjectOverlayNewMilestone />
+
 	<script>
-		$(document).observe('dom:loaded', Done);
 		readPortalCSSRules();
-	</script>
+	</script> 
 	
 </apex:page>

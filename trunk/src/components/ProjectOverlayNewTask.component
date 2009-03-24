@@ -1,9 +1,15 @@
 <apex:component controller="ProjectOverlayNewTaskController" allowDML="true">
-    <script type="text/javascript" src="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}"></script>
+    
+    <!-- STYLE -->
     
     <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsOverlayNewTask.css')}" />
+
+    <!-- SCRIPT -->
     
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" />
     <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamsOverlayNewTask.js')}" />
+    
+    
     <script>
         var org_country = '{!$Organization.Country}';   
         document.observe('dom:loaded',newTaskLoad);
@@ -11,7 +17,6 @@
 		/**
 		* Temp source move to static
 		*/
-		
     </script>
     
     <!-- ### Initialize fixed Overlay ### -->
@@ -81,7 +86,7 @@
                                     <input class="overlayCancelBtn" type="button" style="float: none;" value="Cancel"  onclick="resetFormNewTask();fixedModalNewTask.close();" />
                                     <a href="javascript:;" onclick="sendTempTaskDetails('{!$Component.name}','{!$Component.taskStartDate}','{!$Component.taskDueDate}', '{!$Component.taskEstimate}','{!$Component.member}'); return false;">Edit task details</a>
                                 </div>  
-                                <div id="quickMilestoneFormId" style="display:none;">{!$Component.quickTaskForm}</div>          
+                                <div id="quickTaskFormId" style="display:none;">{!$Component.quickTaskForm}</div>          
                             </apex:outputPanel>
                         </apex:facet> 
                     </apex:actionStatus>
@@ -89,10 +94,11 @@
             </div>
             </div>
             <!-- The hidden form to send partial data to edit -->
+
             <div style="display:none;">
-                <form id="hiddenFormQuickTask" action="TeamsCreateNewTask" method="get">
-                    <input id="tempTeamid" type="text" value="{!CurrentProjectId}" name="id" />
-                    <input id="tempQuickTaskName" type="text" name="qtname" />  
+                <form id="hiddenFormQuickTask" action="ProjectCreateNewTask" method="get">
+                    <input id="tempProjectid" type="text" value="{!CurrentProjectId}" name="id" />
+                    <input id="tempQuickTaskName" type="text" name="qtname" />
                     <input id="tempQuickTaskStartDate" type="text" name="qtsd"/>
                     <input id="tempQuickTaskDueDate" type="text" name="qtdd"/>
                     <input id="tempQuickTaskEstimate" type="text" name="qte"/>
