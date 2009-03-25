@@ -1,11 +1,16 @@
 <apex:component controller="ProjectOverlayNewTaskController" allowDML="true">
-    
+
+    <!-- IMPORTANT:
+         One of this component's ancestors MUST define a function called "taskListChanged". This function
+         receives no parameters, and is called when a new Task is created. The idea is to manage the refresh
+         of views related to Tasks in the page that includes this component, and not in the component
+         itself.
+     -->
+     
     <!-- STYLE -->
-    
     <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsOverlayNewTask.css')}" />
 
     <!-- SCRIPT -->
-    
     <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" />
     <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamsOverlayNewTask.js')}" />
     
@@ -21,8 +26,10 @@
     
     <!-- ### Initialize fixed Overlay ### -->
     <div id="newTaskOverlay" class="fixedModalOverlay" style="display:none;"></div>
+    
     <!-- Overlay Container -->
     <div id="newTask" style="display:none;" class="overlayForm">
+        
         <!-- Overlay Title -->
         <div class="overlayTitleContent">
             <div class="overlayTitle">Create New Task</div>
@@ -32,6 +39,7 @@
                 </a>
             </div>
         </div>
+        
         <!-- Overlay Content -->
         <div class="overlayMainContent">
             <!-- Required Information -->
@@ -93,8 +101,8 @@
                 </apex:form>
             </div>
             </div>
+            
             <!-- The hidden form to send partial data to edit -->
-
             <div style="display:none;">
                 <form id="hiddenFormQuickTask" action="ProjectCreateNewTask" method="get">
                     <input id="tempProjectid" type="text" value="{!CurrentProjectId}" name="id" />

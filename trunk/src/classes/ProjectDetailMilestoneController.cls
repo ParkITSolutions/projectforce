@@ -11,7 +11,7 @@ public class ProjectDetailMilestoneController {
 	public void setTeamId(String id) {
 		if (teamId == null || teamId != id) {
 			teamId = id;
-			//genPermissions();
+			genPermissions();
 			genAllProjectTasks();	
 		}	
 	}
@@ -56,29 +56,28 @@ public class ProjectDetailMilestoneController {
 	public void refresh(){}
 	
 	
-	//public UserPermissions userPermissions = TeamsDetailController.userPermission.clone();
+	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
 	
 	/**
 	* Read user permissions
 	*/
-	/*
+	
 	public void genPermissions () {
 		userPermissions.setId(UserInfo.getUserId());
-		userPermissions.setTeam(teamId);
+		userPermissions.setProject(teamId);
 		userPermissions.setObjectType('Project');
 		userPermissions.setPermissions();		
 	}
-	*/
+	
 	
 	/**
 	*@return UserPermissions
 	*/
-	/*
 	public UserPermissions getUserPermissions () {
 		if(userPermissions == null) genPermissions();
 		return userPermissions;
 	}
-	*/
+	
 	List<ProjectTasks> result = new List<ProjectTasks>();
 	/**
 	*@return List<ProjectTasks>
@@ -137,13 +136,13 @@ public class ProjectDetailMilestoneController {
 				if(milestone.ProjectsAssignees__r.size() > 0){
 					miMilestones.setUser(userMap.get(milestone.ProjectsAssignees__r[0].User__c));					
 				}
-				//miMilestones.setDaysCount(milestone.EndDate__c, milestone.Duration__c);
-				//miMilestones.setDayPercent(milestone.EndDate__c, milestone.Duration__c);
-				//miMilestones.setDayPercentRight(milestone.EndDate__c, milestone.Duration__c);
+				miMilestones.setDaysCount(milestone.EndDate__c, milestone.Duration__c);
+				miMilestones.setDayPercent(milestone.EndDate__c, milestone.Duration__c);
+				miMilestones.setDayPercentRight(milestone.EndDate__c, milestone.Duration__c);
 				miMilestones.setPriority(milestone.Priority__c);
-				//miMilestones.setEndDate(milestone.EndDate__c, milestone.Duration__c);
-				//miMilestones.setEndDateRight(milestone.EndDate__c, milestone.Duration__c);				
-				//miMilestones.setIsToLate(milestone.EndDate__c);  
+				miMilestones.setEndDate(milestone.EndDate__c, milestone.Duration__c);
+				miMilestones.setEndDateRight(milestone.EndDate__c, milestone.Duration__c);				
+				miMilestones.setIsToLate(milestone.EndDate__c);  
 				result.add(miMilestones);
 			}
 			
@@ -195,7 +194,7 @@ public class ProjectDetailMilestoneController {
         *@param Datetime end date
         *@param Double duration
         */
-        public void setDayPercent(Datetime endD, Double dur){
+        public void setDayPercent(Date endD, Double dur){
 			Date miToday = Date.today();
 			Date endDate = Date.newInstance(endD.year(), endD.month(),endD.day());
 			Integer DayDiference = miToday.daysBetween(endDate);
@@ -225,7 +224,7 @@ public class ProjectDetailMilestoneController {
         *@param Datetime end date (thin widget use)
         *@param Double duration
         */
-        public void setDayPercentRight(Datetime endD, Double dur){
+        public void setDayPercentRight( Date endD, Double dur){
 			Date miToday = Date.today();
 			Date endDate = Date.newInstance(endD.year(), endD.month(),endD.day());
 			Integer DayDiference = miToday.daysBetween(endDate);
@@ -262,11 +261,11 @@ public class ProjectDetailMilestoneController {
         *@param Datetime end time
         *@param Double dif
         */
-        public void setEndDate(Datetime endD, Double dif){			
+        public void setEndDate(Date endD, Double dif){			
 			if(dif > 0){
 				endD = endD.addDays(-dif.intValue());
 			}  
-           	EndDate =  endD.format('MM/dd/yyyy');
+           	EndDate =  endD.format();
         }
         
   		/**
@@ -280,11 +279,11 @@ public class ProjectDetailMilestoneController {
         *@param Datetime end date
         *@param Double dif
         */
-        public void setEndDateRight(Datetime endD, Double dif){	
+        public void setEndDateRight(Date endD, Double dif){	
 			if(dif > 0){
 				endD = endD.addDays(-dif.intValue());
 			}
-           	EndDateRight =  endD.format('(MM/dd)');
+           	EndDateRight =  endD.format();
         }
         
   		/**
@@ -297,7 +296,7 @@ public class ProjectDetailMilestoneController {
         /**
         *@param Datetime end date
         */
-        public void setIsToLate(Datetime endD){	
+        public void setIsToLate(Date endD){	
         	Date miToday = Date.today();
 			Date myEndDate = Date.newInstance(endD.year(), endD.month(),endD.day());
 			Integer DayDiference = miToday.daysBetween(myEndDate); 	
@@ -320,7 +319,7 @@ public class ProjectDetailMilestoneController {
         *@param Datetime end date
         *@param Double duration
         */
-        public void setDaysCount(Datetime endD, Double dur){
+        public void setDaysCount(Date endD, Double dur){
         	Date miToday = Date.today();
 			Date endDate = Date.newInstance(endD.year(), endD.month(),endD.day());
 			Integer DayDiference = miToday.daysBetween(endDate);   

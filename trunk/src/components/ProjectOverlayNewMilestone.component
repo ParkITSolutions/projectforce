@@ -1,11 +1,16 @@
 <apex:component controller="ProjectOverlayNewMilestoneController" allowDML="true" id="milestoneOverlay">
+
+    <!-- IMPORTANT:
+         One of this component's ancestors MUST define a function called "milestoneListChanged". This function
+         receives no parameters, and is called when a new Milestone is created. The idea is to manage the refresh
+         of views related to Milestones in the page that includes this component, and not in the component
+         itself.
+     -->
+     
 	<!-- ### Initialize fixed Overlay ### -->
-	
 	<div id="fixedModalMilestoneOverlay" class="fixedModalOverlay" style="display:none;"></div>
 	
 	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsOverlayNewMilestone.css')}" />
-
-
 	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamsOverlayNewMilestone.js')}" />
 	
     <script>

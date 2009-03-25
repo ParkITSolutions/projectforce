@@ -23,6 +23,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectCreateNewProjectController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectCreateNewTaskController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -36,6 +40,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectDetailMilestoneController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProjectDetailTestController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -63,6 +71,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectSubscribeController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectSubscribersEmailServices</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -79,7 +91,7 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProjectsCreateNewProjectController</apexClass>
+        <apexClass>ProjectWidgetTasksMainController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -1479,11 +1491,19 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>ProjectCreateNew</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>ProjectCreateNewTask</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectDetail</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>ProjectDetailTest</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
@@ -1516,10 +1536,6 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectTimeline</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>ProjectsCreateNewProject</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
