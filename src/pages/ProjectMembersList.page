@@ -203,8 +203,13 @@
 				<div align="center"><apex:form id="filterForm">
 					<ul class="letterFilter">
 						<li>
-						 	<apex:commandLink action="{!genMembers}" value="ALL" styleclass="AllBtn" rerender="membersList">
-								<apex:param name="ltr" value="ALL" /> 
+						 	<apex:commandLink action="{!genMembers}" 
+							 	value="ALL" 
+							 	styleclass="AllBtn" 
+							 	rerender="membersList"
+							 	onclick="$('paginationOverlay').show();setHeight('holder', 'paginationOverlay')" 
+							 	oncomplete="$('paginationOverlay').hide()">
+								<apex:param name="ltr" value="ALL" />
 							</apex:commandLink>
 						</li>
 						<apex:repeat id="letterFilterRepeat" value="{!letterFilter}" var="item">

@@ -104,7 +104,7 @@
 						</table>
 					</div>
 					<div class="informationPanel clear" id="infoToUser" style="display:none;"></div>
-					<div id="paginationOverlay" style="display:none;">
+					<div id="loadingOverlay" style="display:none;">
 				 		<div class="loader">
 				 			<img src="{!URLFOR($Resource.commonResources, 'images/layout/small_loader.gif')}" 
 						alt="Loading..." title="Loading..." />

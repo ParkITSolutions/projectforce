@@ -20,7 +20,8 @@
 	<script type="text/javascript" src="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}" ></script>
 	<script type="text/javascript" src="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" ></script>
 
-	<script src="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupTop.js')}" />
+	<script type="text/javascript" src="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupTop.js')}" />
+    <script type="text/javascript" src="{!URLFOR($Resource.ProjectResources, 'inc/js/projectDetail.js')}" ></script>
  	
  	<!-- CSS Includes -->
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
@@ -131,10 +132,10 @@
 				
 				<apex:form >
 					<!-- Project Tasks -->
-					<c:ProjectWidgetTaskMain />			 
+					<c:ProjectWidgetTaskMain team="{!teamIdParam}"/>			 
 	
 					<!-- Project Milestones -->
-					<c:ProjectDetailMilestones /> 
+					<c:ProjectDetailMilestones team="{!teamIdParam}" /> 
 	
 					<!-- Project Attachment -->
 					<c:ProjectOverlayNewAttachment />

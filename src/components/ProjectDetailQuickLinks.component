@@ -8,8 +8,9 @@
     <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>  
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectLayout.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskList.css')}" />    
+	
     <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" /> 
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetailEdit.css')}" />    
     
     <!-- Portal Support -->
     <apex:includeScript value="{!$Resource.portalSupport}"/>  
@@ -24,7 +25,8 @@
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />        
     
     <!-- ProjectTaskList CSS -->
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskList.css')}" />
+
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/adminMainSetup.css')}" />
     
     <style>
     .breadCrumbs a{
@@ -50,14 +52,32 @@
         <!-- Widget Container -->          
         <div class="box_content">
             <div class="thinBody">
-                <div>                       
-					<a href="Javascript:fixedModalNewTask.open();">New Task</a>
-					<br />
-					<a href="Javascript:fixedModalNewMilestone.open();">New Milestone</a>
-					<br />
-					<a href="ProjectTimeline?id={!teamIdParam}">Timeline</a>
-					<br />					
-                </div>   
+	            <div class="team_detail_commentedItemLeftProfile">					    
+				    <img class="imgSmallLeft" src="{!URLFOR($Resource.TeamsResources, '/images/layout/icons/star.gif')}"  />
+				    <span>
+				    	<span class="text_link_underlineColorPaddRight">
+				    	  	<a href="Javascript:fixedModalNewTask.open();">New Task</a>
+				    	</span>
+				   	</span>
+				</div>
+				<div class="team_detail_commentedItemLeftProfile">					    
+				    <img class="imgSmallLeft" src="{!URLFOR($Resource.TeamsResources, '/images/layout/icons/star.gif')}"  />
+				    <span>
+				    	<span class="text_link_underlineColorPaddRight">
+				    	  	<a href="Javascript:fixedModalNewMilestone.open();">New Milestone</a>
+				    	</span>
+				   	</span>
+				</div>
+				
+				<div class="team_detail_commentedItemLeftProfile">					    
+				    <img class="imgSmallLeft" src="{!URLFOR($Resource.TeamsResources, '/images/layout/icons/star.gif')}"  />
+				    <span>
+				    	<span class="text_link_underlineColorPaddRight">
+				    	  	<a href="ProjectTimeline?id={!teamIdParam}">Timeline</a>
+				    	</span>
+				   	</span>
+				</div>
+				
             </div>               
         </div>
         

@@ -238,10 +238,8 @@
 				</apex:outputPanel> 
 			</div>
 			<!-- Widget Col -->
-			<div class="rightCol RightOverview" style="top:82px;">
-					<apex:form >
-					<apex:commandButton id="createNewProjectBtn" value="Create New {!$ObjectType.Project2__c.label}" action="/apex/ProjectsCreateNewProject"/>
-					</apex:form>
+			<div class="rightCol RightOverview">
+				<input type="button" value="Create New Project" onclick="location.href='/apex/DynamicApexComponent'" />
 			</div>		
 		</div>
 	</div>

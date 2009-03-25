@@ -1,0 +1,134 @@
+<apex:page sidebar="false" tabStyle="Project2__c" id="ProjectCreateNew" controller="ProjectCreateNewProjectController">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    
+    <!-- CSS de TS -->
+    <link rel="stylesheet"  href="{!URLFOR($Resource.commonResources, '/inc/css/validator.css')}" />    
+    <link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />  
+    <link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/teamDetailEdit.css')}" />   
+    <link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/teamDetail.css')}" />   
+    <link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/teamCreateNew.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" /> 
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverview.css')}" />
+    
+    <!-- Prototype + Scriptaculous -->
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>
+    
+    <!-- Portal Support -->
+    <apex:includeScript value="{!$Resource.portalSupport}"/>
+     
+    <!-- Common Js for All Sections -->
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/validator.js')}"/>
+    
+    <!-- CSS styles for Portal Integration -->
+    <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
+    
+    
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsCreateNewTeam.css')}" />
+    
+    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/teamsCreateNewTeam.js')}" />
+    
+    
+    <apex:includeScript value="/soap/ajax/12.0/connection.js"/>
+        <script>
+        
+        /**
+        * Namespace Prefix Getter
+        */
+        var namespace = "{!namespace}";     
+        
+        /**
+        * Initialize toolkit connection
+        *@void
+        */
+        function init(){
+            sforce.connection.sessionId = '{!$Api.Session_ID}';
+            sforce.connection.defaultNamespace = namespace;
+        }
+        
+        /*
+        var publicProfile = '{!Project.PublicProfile__c}';
+        var newMemberProfile = '{!Project.NewMemberProfile__c}';
+        
+        var globalProjectLabel = '{!$ObjectType.Project2__c.label}';
+        var globalUserId = '{!$User.Id}';
+        */
+        </script>
+    
+    <div id="bubble" class="bubble">
+        <div class="top_border">&nbsp;</div>        
+        <div class="content">
+            <img class="arrowBubble" src="{!URLFOR($Resource.ProjectResources, 'images/bubbleNewTeam/bubble_arrow.gif')}" />               
+            <!-- Content here -->
+            <div class="innerContBubble" id="innerContBubble"></div>    
+        </div>
+        <div class="bottom_border">&nbsp;</div>             
+    </div>
+    <!-- Header -->
+    <apex:composition template="HeaderTemplate">
+        <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
+        <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
+        <apex:define name="title">New {!$ObjectType.Project2__c.label}</apex:define>
+        <apex:define name="search">
+            <c:Search module="Project" />
+        </apex:define>
+    </apex:composition>
+    
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Quick links -->
+        <!-- c:ProjectAdminQuickLinks /-->
+        <!-- MyProjects Widget -->
+        <!--c:ProjectsMyProjectsWidget /-->
+    </div>
+    <!-- Main Content Div -->
+    <div class="main_content">
+        <div>
+            <div class="tabBorder">&nbsp;</div>
+            <div class="holder">
+                <div class="teamTitle" style="{!IF(Project.Id == null, '', 'display:none')}" >Create New {!$ObjectType.Project2__c.label}</div>
+                <div class="teamTitle" style="{!IF(Project.Id == null, 'display:none', '')}" >Edit {!$ObjectType.Project2__c.label}</div>
+                <!-- <div class="ProjectTitle">{!IF(param == Project.Id,'Create New Project', 'Edit Project')}</div>  -->
+                <div class="border_body_top">&nbsp;</div>
+                <div class="body_center">
+                    <a id="anchorForError"></a>
+                    <div id="warning_to_user" class="message_to_user" style="display:none;" >
+                        <div class="f_left">
+                            <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/error_icon.gif')}" />
+                        </div>
+                        <div class="f_left">
+                            <strong>We had trouble unserstanding one or more of your entries or we need more information</strong><br />
+                            <span id="messageErrorText">Please see the field(s) highlighted</span>
+                        </div>
+                        <div class="clear"></div>
+                    </div>      
+                    <div align="right">
+                        <table border="0" style="margin: 5px 0px 5px 0px;">
+                            <tr>
+                                <td style="width: 4px;">
+                                    <span class="requiredLegend"></span>
+                                </td>
+                                <td>
+                                    <span class="infoText" style="font-size: 9px; font-family: Arial, Helvetica, sans-serif;">
+                                        =&nbsp;Required Information 
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- Dynamic Layout Output don't remove -->
+                    <div class="DynamicLayoutResponse"><apex:form >Owner<br/> <apex:inputField value="{!project.OwnerId}" /><br/><br/>Project Name<br/> <apex:inputField value="{!project.Name}" /><br/><br/>Description<br/> <apex:inputField value="{!project.Description__c}" /><br/><br/>PublicProfile<br/> <apex:inputField value="{!project.PublicProfile__c}" /><br/><br/></apex:form></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        setTimeout('subProjectCheck()',500);
+        initializeProjectDetail();
+        readPortalCSSRules();
+    </script>
+</apex:page>
