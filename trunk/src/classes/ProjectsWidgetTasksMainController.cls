@@ -179,8 +179,10 @@ public with sharing class ProjectsWidgetTasksMainController {
                     miTasks.setUser(userMap.get(tasks[i].ProjectsAssignees__r[0].User__c));                 
                 }
                 if(tasks[i].EndDate__c != null){
-                    miTasks.setEndDate(Datetime.valueOf(tasks[i].EndDate__c));
-                    miTasks.setIsToLate(Datetime.valueOf(tasks[i].EndDate__c));  
+//                    miTasks.setEndDate(Datetime.valueOf(tasks[i].EndDate__c));
+//                    miTasks.setIsToLate(Datetime.valueOf(tasks[i].EndDate__c));  
+                    miTasks.setEndDate(tasks[i].EndDate__c);
+                    miTasks.setIsToLate(tasks[i].EndDate__c);  
                 }
                 taskResults.add(miTasks);
             }
@@ -249,7 +251,7 @@ public with sharing class ProjectsWidgetTasksMainController {
         /**
         *@param Datetime end date
         */
-        public void setEndDate(Datetime endD){
+        public void setEndDate(Date endD){
             Date miToday = Date.today();
             Date myEndDate = Date.newInstance(endD.year(), endD.month(),endD.day());
             Integer DayDiference = miToday.daysBetween(myEndDate);      
@@ -259,10 +261,10 @@ public with sharing class ProjectsWidgetTasksMainController {
                 }else if(DayDiference == 1 ){
                     EndDate = 'Tomorrow';
                 }else {
-                    EndDate = (DayDiference*-1) +' days late, due ' + endD.format('MM/dd/yy');
+                    EndDate = (DayDiference*-1) +' days late, due ' + endD.format();
                 }
             }else {
-                EndDate =  'Due ' + endD.format('MMMM dd');
+                EndDate =  'Due ' + endD.format();
             }
         }
         
@@ -276,7 +278,7 @@ public with sharing class ProjectsWidgetTasksMainController {
         /**
         *@param Datetime
         */
-        public void setIsToLate(Datetime endD){
+        public void setIsToLate(Date endD){
             Date miToday = Date.today();
             Date myEndDate = Date.newInstance(endD.year(), endD.month(),endD.day());
             Integer DayDiference = miToday.daysBetween(myEndDate);  

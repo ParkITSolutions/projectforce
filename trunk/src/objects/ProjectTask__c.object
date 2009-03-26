@@ -112,11 +112,6 @@
         <type>Text</type>
     </fields>
     <label>Project Task</label>
-    <listViews>
-        <fullName>All</fullName>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
     <nameField>
         <label>Task Name</label>
         <type>Text</type>

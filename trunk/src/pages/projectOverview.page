@@ -239,7 +239,7 @@
 			</div>
 			<!-- Widget Col -->
 			<div class="rightCol RightOverview">
-				<input type="button" value="Create New Project" onclick="location.href='/apex/DynamicApexComponent'" />
+				<input type="button" value="Create New Project" onclick="location.href='/apex/projectRedirect?sO=Project2__c&attr=project&page=ProjectCreateNew'" />
 			</div>		
 		</div>
 	</div>

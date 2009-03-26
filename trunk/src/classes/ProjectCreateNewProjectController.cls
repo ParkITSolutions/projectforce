@@ -256,6 +256,7 @@ public class ProjectCreateNewProjectController {
     */    
     public PageReference saveProject(){
     	try{
+    		
     		System.debug('LEN:' + document.BodyLength);
     		if(document.BodyLength <= MAX_SIZE || (document.name == null || document.name == '')){
     			validSizePicture = true;
@@ -288,7 +289,7 @@ public class ProjectCreateNewProjectController {
 		    		
 		    		update theProject;
 		    	}
-		    	PageReference pageRef = new PageReference('/apex/ProjectsRedirect?id=' + theProject.Id);
+		    	PageReference pageRef = new PageReference('/apex/ProjectDetail?id=' + theProject.Id);
 	            pageRef.setRedirect(true);
 	            return pageRef; 
     		}
@@ -300,6 +301,10 @@ public class ProjectCreateNewProjectController {
     	}catch(Exception e){
     		throw e;
     	}
+    }
+    public PageReference save(){
+    	return saveProject();
+    	
     }
 		
 }

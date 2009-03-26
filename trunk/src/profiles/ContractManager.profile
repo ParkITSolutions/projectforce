@@ -15,7 +15,7 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>DynamicApexComponent</apexClass>
+        <apexClass>FlexWebService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -43,10 +43,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProjectDetailTestController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ProjectMembersListController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -68,6 +64,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectOverviewController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProjectRedirectController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -1472,10 +1472,6 @@
         <object>TimelineState__c</object>
     </objectPermissions>
     <pageAccesses>
-        <apexPage>DynamicApexComponent</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>HeaderTemplate</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
@@ -1489,10 +1485,6 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectDetail</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>ProjectDetailTest</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
@@ -1535,6 +1527,10 @@
         <apexPage>projectOverview</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
+    <pageAccesses>
+        <apexPage>projectRedirect</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Idea.InternalIdeasIdeaRecordType</recordType>
@@ -1542,18 +1538,6 @@
     </recordTypeVisibilities>
     <tabVisibilities>
         <tab>Project2__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>ProjectIssue__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>ProjectRisk__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>ProjectTask__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
 </Profile>
