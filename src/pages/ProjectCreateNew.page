@@ -7,6 +7,7 @@
     <link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/teamDetailEdit.css')}" />   
     <link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/teamDetail.css')}" />   
     <link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/teamCreateNew.css')}" />
+    <link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/projectCreateNew.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" /> 
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverview.css')}" />
     
@@ -35,6 +36,11 @@
     
     <apex:includeScript value="/soap/ajax/12.0/connection.js"/>
         <script>
+        	 document.observe('dom:loaded', function (){ 
+			    createLayout();
+				                      
+	            }
+	        );
         
         /**
         * Namespace Prefix Getter
@@ -48,6 +54,7 @@
         function init(){
             sforce.connection.sessionId = '{!$Api.Session_ID}';
             sforce.connection.defaultNamespace = namespace;
+            
         }
         
         /*
@@ -80,20 +87,21 @@
     
     <!-- Sidebar -->
     <div class="sidebar">
-        <!-- Quick links -->
-        <!-- c:ProjectAdminQuickLinks /-->
-        <!-- MyProjects Widget -->
-        <!--c:ProjectsMyProjectsWidget /-->
-    </div>
+		<c:ProjectsWidgetMyTasks />
+		<c:ProjectsWidgetMyMilestones />  
+	</div>
     <!-- Main Content Div -->
     <div class="main_content">
         <div>
-            <div class="tabBorder">&nbsp;</div>
-            <div class="holder">
+        	<div class="holder">
                 <div class="teamTitle" style="{!IF(Project.Id == null, '', 'display:none')}" >Create New {!$ObjectType.Project2__c.label}</div>
                 <div class="teamTitle" style="{!IF(Project.Id == null, 'display:none', '')}" >Edit {!$ObjectType.Project2__c.label}</div>
+                <div style="margin-top:15px;">
+						&nbsp; &#171; &nbsp; <a href="{!IF (Project.Id != null, 'ProjectDetail?id='+Project.Id, 'DiscussionOverview')}" style="font-weight:normal;"> Back </a>
+				</div>
                 <!-- <div class="ProjectTitle">{!IF(param == Project.Id,'Create New Project', 'Edit Project')}</div>  -->
-                <div class="border_body_top">&nbsp;</div>
+                <div style="margin-top:15px;"></div>
+                <div class="border_body_top" style="background: #FFFFFF;">&nbsp;</div>
                 <div class="body_center">
                     <a id="anchorForError"></a>
                     <div id="warning_to_user" class="message_to_user" style="display:none;" >
@@ -120,15 +128,23 @@
                             </tr>
                         </table>
                     </div>
-                    <!-- Dynamic Layout Output don't remove -->
-                    <div class="DynamicLayoutResponse"><apex:form >Owner<br/> <apex:inputField value="{!project.OwnerId}" /><br/><br/>Project Name<br/> <apex:inputField value="{!project.Name}" /><br/><br/>Description<br/> <apex:inputField value="{!project.Description__c}" /><br/><br/>PublicProfile<br/> <apex:inputField value="{!project.PublicProfile__c}" /><br/><br/></apex:form></div>
-                </div>
+                    <div class="Formcontentfolder">	
+                    	<!-- Dynamic Layout Output don't remove -->
+	                    <div class="DynamicLayoutResponse"><apex:form ><label>Owner</label><apex:inputField value="{!project.OwnerId}" required="false" /><br/><br/><label>ProjectCreatedDate</label><apex:inputField value="{!project.ProjectCreatedDate__c}" required="false" /><br/><br/><label>Project Name</label><apex:inputField value="{!project.Name}" required="false" /><br/><br/><label>PublicProfile</label><apex:inputField value="{!project.PublicProfile__c}" required="false" /><br/><br/><label>ProjectCreatedBy</label><apex:inputField value="{!project.ProjectCreatedBy__c}" required="false" /><br/><br/><label>Description</label><apex:inputField value="{!project.Description__c}" required="false" /><br/><br/><label>NewMemberProfile</label><apex:inputField value="{!project.NewMemberProfile__c}" required="false" /><br/><br/><label>Type</label><apex:inputField value="{!project.Type__c}" required="false" /><br/><br/><apex:commandButton action="{!save}" value="Save" /><apex:commandButton value="Cancel" /></apex:form>
+	                    </div>
+	            	</div>
+	            	<!--Divs to format the page  -->
+	            	<div id="btnContainer" style="display:none;"></div>
+	            	<div class="title_line_btn" style="display:none;"></div>
+	           </div>
             </div>
         </div>
     </div>
     <script>
         setTimeout('subProjectCheck()',500);
-        initializeProjectDetail();
+        initializeProjelabelail();
         readPortalCSSRules();
     </script>
+   
+  
 </apex:page>

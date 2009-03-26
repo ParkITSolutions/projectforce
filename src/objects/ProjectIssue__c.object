@@ -61,11 +61,6 @@
         <type>DateTime</type>
     </fields>
     <label>Project Issue</label>
-    <listViews>
-        <fullName>All</fullName>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
     <nameField>
         <label>Issue Name</label>
         <type>Text</type>

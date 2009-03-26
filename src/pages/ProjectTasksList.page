@@ -387,7 +387,7 @@
                 </apex:outputpanel>
             </apex:outputpanel>
         </div>   
-    <!-- </div> -->   
+    </div>   
     <apex:form >
         <apex:commandbutton action="{!sortList}" id="getList" rerender="taskListPanel" style="display:none;">
             <apex:param name="sb" value="Name" />

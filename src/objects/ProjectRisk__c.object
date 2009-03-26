@@ -142,11 +142,6 @@
         <type>Picklist</type>
     </fields>
     <label>Project Risk</label>
-    <listViews>
-        <fullName>All</fullName>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
     <nameField>
         <label>Risk Name</label>
         <type>Text</type>

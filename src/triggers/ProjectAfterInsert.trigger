@@ -9,12 +9,12 @@ trigger ProjectAfterInsert on Project2__c bulk(after insert) {
 
             //Customer Portal Group            
             List<Group> portalGroup = new List<Group>();
-            if(ProjectsCreateNewProjectController.getAllowCustomerStatic()) 
+            if(ProjectCreateNewProjectController.getAllowCustomerStatic()) 
             portalGroup = [Select g.Type, g.Name from Group g where Type = 'AllCustomerPortal'];
 	           
             //Partner Portal Group
             List<Group> partnerGroup = new List<Group>();
-            if(ProjectsCreateNewProjectController.getAllowPartnerStatic())
+            if(ProjectCreateNewProjectController.getAllowPartnerStatic())
             partnerGroup = [Select g.Type, g.Name from Group g where Type = 'PRMOrganization'];
                         			
 			// build for bulk
