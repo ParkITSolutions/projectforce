@@ -82,10 +82,12 @@ trigger ProjectAfterInsert on Project2__c bulk(after insert) {
 				/**
 				* Create the first project member (the founder)
 				*/
-				ProjectMember__c firstProjectMember = new ProjectMember__c();
+				ProjectProfile__c defaultProfile = [select Id from ProjectProfile__c where Name = 'Project Administrator' limit 1];
+        		ProjectMember__c firstProjectMember = new ProjectMember__c();
 				firstProjectMember.User__c = Userinfo.getUserId();
 				firstProjectMember.Name = UserInfo.getName();
 				firstProjectMember.Project__c = proj.Id;
+				firstProjectMember.Profile__c = defaultProfile.Id;
 				insert firstProjectMember;
 	
 			} 
@@ -93,6 +95,5 @@ trigger ProjectAfterInsert on Project2__c bulk(after insert) {
 				
 	        	
 		}
-	
 	
 }

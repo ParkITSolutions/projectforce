@@ -1343,6 +1343,11 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>false</editable>
+        <field>ProjectTaskPred__c.Project__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
         <field>ProjectTask__c.Description__c</field>
         <hidden>true</hidden>
     </fieldLevelSecurities>

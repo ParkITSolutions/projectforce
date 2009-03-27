@@ -28,6 +28,10 @@
                 <behavior>Edit</behavior>
                 <field>Predecessor__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Project__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

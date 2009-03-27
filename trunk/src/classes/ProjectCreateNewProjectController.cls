@@ -10,8 +10,10 @@ public class ProjectCreateNewProjectController {
     Project2__c theProject = new Project2__c();
     String ProjectPicture = '';
     Boolean validSizePicture = true;
-   	public static Boolean allowCustomer = true;//false;
-	public static Boolean allowPartner = true;//false;  
+    public Boolean validTypePicture = true;
+   	public static Boolean allowCustomer = false;
+	public static Boolean allowPartner = false;  
+	
 
 	List<Group> allowCustomerActivated = new List<Group>();
 	List<Group> allowPartnetActivated = new List<Group>();
@@ -23,6 +25,8 @@ public class ProjectCreateNewProjectController {
     * Constructor
     */
     public ProjectCreateNewProjectController(){
+    	allowCustomerActivated = [ SELECT Id FROM Group WHERE Type = 'AllCustomerPortal' ];
+		allowPartnetActivated = [ SELECT Id FROM Group WHERE Type = 'PRMOrganization' ];
         if (param != null){
         	setProject(param);
         	genPermissions();
@@ -39,6 +43,17 @@ public class ProjectCreateNewProjectController {
 				gm = [ SELECT Id FROM GroupMember WHERE GroupId =: instance.Id AND UserOrGroupId =: allowPartnetActivated[0].Id ];
 				ProjectCreateNewProjectController.allowPartner = (gm.size() > 0) ? true : false;
 			}	
+			String members_profile = theProject.NewMemberProfile__r.Name;
+			String public_profile = theProject.PublicProfile__r.Name;
+			if (public_profile == 'Public Profile') {
+				newProfile.projectOpenOrClosed = 'open';
+			}
+			else if (members_profile == 'Member Profile') {
+				newProfile.projectOpenOrClosed = 'close';
+			}
+			else {
+				newProfile.projectOpenOrClosed = 'private';
+			}
         	if(!userPermissions.getCanManage())
         		throw new CustomException('Insufficient Privileges');
         }
@@ -71,6 +86,9 @@ public class ProjectCreateNewProjectController {
     public Boolean getValidSizePicture(){
     	return validSizePicture;
     }
+    public Boolean getValidTypePicture(){
+    	return validTypePicture;
+    }	
     
     /**
     * Set String param
@@ -256,10 +274,23 @@ public class ProjectCreateNewProjectController {
     */    
     public PageReference saveProject(){
     	try{
-    		
     		System.debug('LEN:' + document.BodyLength);
-    		if(document.BodyLength <= MAX_SIZE || (document.name == null || document.name == '')){
+    		if (document.name == null || document.name == '' || document.BodyLength > MAX_SIZE || 
+				!(document.ContentType == 'image/jpeg' || document.ContentType == 'image/pjpeg' || document.ContentType == 'image/gif' 
+				|| document.ContentType == 'image/png' || document.ContentType == 'image/x-png')){
     			validSizePicture = true;
+				validTypePicture = true; 
+				if (document.BodyLength > MAX_SIZE) {
+					validSizePicture = false;
+				}
+				if (!(document.name == null || document.name == '') && !(document.ContentType == 'image/jpeg' || document.ContentType == 'image/pjpeg' || 
+					document.ContentType == 'image/gif' || document.ContentType == 'image/png')) {
+					validTypePicture = false;
+				} 
+				document = new Attachment();
+				if (!validSizePicture || !validTypePicture) {
+					return null;
+				}	
 	    		if(newProfile.ProjectOpenOrClosed == 'open'){
 	    			theProject.PublicProfile__c = newProfile.publicProfileOpen;
 	    			theProject.NewMemberProfile__c = newProfile.newProfileOpen;	    			
@@ -292,8 +323,7 @@ public class ProjectCreateNewProjectController {
 		    	PageReference pageRef = new PageReference('/apex/ProjectDetail?id=' + theProject.Id);
 	            pageRef.setRedirect(true);
 	            return pageRef; 
-    		}
-    		else{
+    		}else{
     			validSizePicture=false;
     			document = new Attachment();
     			return null;
@@ -302,9 +332,31 @@ public class ProjectCreateNewProjectController {
     		throw e;
     	}
     }
+    
     public PageReference save(){
     	return saveProject();
     	
     }
+   
+	public PageReference removeAvatar(){
+		if( this.theProject != null ){
+				Attachment avatar = new Attachment();
+				Project2__C proj = new Project2__c();
+				
+				avatar = [ SELECT Id FROM Attachment WHERE Id =: this.theProject.Picture__c ];
+				proj   = [ SELECT id, Picture__c FROM Project2__c    WHERE Id =: this.theProject.Id ];
+				
+				delete avatar;
+				
+				proj.Picture__c = null;
+				upsert proj;
+				this.theProject.Picture__c = '';
+		}
+		PageReference pageRef = new PageReference('/apex/ProjectCreateNew?id=' + this.theProject.Id );
+		pageRef.setRedirect(true);
+		return pageRef;
+		
+	}
+	
 		
 }

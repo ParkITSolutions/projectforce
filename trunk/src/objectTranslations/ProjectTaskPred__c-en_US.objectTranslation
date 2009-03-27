@@ -29,5 +29,10 @@
         <name>Predecessor__c</name>
         <relationshipLabel><!-- Project Task Predecessors (Predecessor) --></relationshipLabel>
     </fields>
+    <fields>
+        <label><!-- Project --></label>
+        <name>Project__c</name>
+        <relationshipLabel><!-- Project Task Predecessors --></relationshipLabel>
+    </fields>
     <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>

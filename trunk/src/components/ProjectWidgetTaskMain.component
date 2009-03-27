@@ -14,7 +14,7 @@
 				<div class="linkAction">
 						<!--### Rerender Method ###-->
 						<apex:actionFunction name="reloadProjectTask" action="{!getAllProjectTasks}"
-		       			rerender="noTopicList,TaskWidgetFull" onComplete="hideSwirly('swirly_task')" />
+		       			rerender="noTopicList,TaskWidgetFull" onComplete="hideLoader('results_task_loader');" /><!--hideSwirly('swirly_task')" /> -->
 						<ul class="links_sup">
 							<apex:outputpanel rendered="{!userPermissions.canCreate}"> 
 								<li><a class="topRightLinks" href="javascript:;" onclick="fixedModalNewTask.open();">New</a> |</li>
