@@ -36,9 +36,9 @@
     
     <apex:includeScript value="/soap/ajax/12.0/connection.js"/>
         <script>
-        	 document.observe('dom:loaded', function (){ 
-			    createLayout();
-				                      
+        	document.observe('dom:loaded', function (){ 
+			        readPortalCSSRules();
+			    	createLayout();
 	            }
 	        );
         
@@ -75,6 +75,7 @@
         </div>
         <div class="bottom_border">&nbsp;</div>             
     </div>
+    
     <!-- Header -->
     <apex:composition template="HeaderTemplate">
         <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
@@ -90,6 +91,7 @@
 		<c:ProjectsWidgetMyTasks />
 		<c:ProjectsWidgetMyMilestones />  
 	</div>
+    
     <!-- Main Content Div -->
     <div class="main_content">
         <div>
@@ -97,7 +99,7 @@
                 <div class="teamTitle" style="{!IF(Project.Id == null, '', 'display:none')}" >Create New {!$ObjectType.Project2__c.label}</div>
                 <div class="teamTitle" style="{!IF(Project.Id == null, 'display:none', '')}" >Edit {!$ObjectType.Project2__c.label}</div>
                 <div style="margin-top:15px;">
-						&nbsp; &#171; &nbsp; <a href="{!IF (Project.Id != null, 'ProjectDetail?id='+Project.Id, 'DiscussionOverview')}" style="font-weight:normal;"> Back </a>
+						&nbsp; &#171; &nbsp; <a href="{!IF (Project.Id != null, 'ProjectDetail?id='+Project.Id, 'ProjectOverview')}" style="font-weight:normal;"> Back </a>
 				</div>
                 <!-- <div class="ProjectTitle">{!IF(param == Project.Id,'Create New Project', 'Edit Project')}</div>  -->
                 <div style="margin-top:15px;"></div>
@@ -128,23 +130,342 @@
                             </tr>
                         </table>
                     </div>
-                    <div class="Formcontentfolder">	
-                    	<!-- Dynamic Layout Output don't remove -->
-	                    <div class="DynamicLayoutResponse"><apex:form ><label>Owner</label><apex:inputField value="{!project.OwnerId}" required="false" /><br/><br/><label>ProjectCreatedDate</label><apex:inputField value="{!project.ProjectCreatedDate__c}" required="false" /><br/><br/><label>Project Name</label><apex:inputField value="{!project.Name}" required="false" /><br/><br/><label>PublicProfile</label><apex:inputField value="{!project.PublicProfile__c}" required="false" /><br/><br/><label>ProjectCreatedBy</label><apex:inputField value="{!project.ProjectCreatedBy__c}" required="false" /><br/><br/><label>Description</label><apex:inputField value="{!project.Description__c}" required="false" /><br/><br/><label>NewMemberProfile</label><apex:inputField value="{!project.NewMemberProfile__c}" required="false" /><br/><br/><label>Type</label><apex:inputField value="{!project.Type__c}" required="false" /><br/><br/><apex:commandButton action="{!save}" value="Save" /><apex:commandButton value="Cancel" /></apex:form>
-	                    </div>
-	            	</div>
-	            	<!--Divs to format the page  -->
-	            	<div id="btnContainer" style="display:none;"></div>
-	            	<div class="title_line_btn" style="display:none;"></div>
-	           </div>
+                    <apex:outputPanel id="NewProjectFormContainer">
+	                    <div class="Formcontentfolder">	
+	                    	<!-- Dynamic Layout Output don't remove -->
+		                    <div class="DynamicLayoutResponse">
+	<apex:form ><label>ProjectCreatedBy</label><apex:inputField value="{!project.ProjectCreatedBy__c}" required="false" /><br/><br/><label>NewMemberProfile</label><apex:inputField value="{!project.NewMemberProfile__c}" required="false" /><br/><br/><label>ProjectCreatedDate</label><apex:inputField value="{!project.ProjectCreatedDate__c}" required="false" /><br/><br/><label>PublicProfile</label><apex:inputField value="{!project.PublicProfile__c}" required="false" /><br/><br/><label>Priority</label><apex:inputField value="{!project.Priority__c}" required="false" /><br/><br/><label>Picture</label><apex:inputField value="{!project.Picture__c}" required="false" /><br/><br/><label>SyncToCalendar</label><apex:inputField value="{!project.SyncToCalendar__c}" required="false" /><br/><br/><label>Project Name</label><apex:inputField value="{!project.Name}" required="true" /><br/><br/><label>Owner</label><apex:inputField value="{!project.OwnerId}" required="false" /><br/><br/><label>Description</label><apex:inputField value="{!project.Description__c}" required="true" /><br/><br/><label>Type</label><apex:inputField value="{!project.Type__c}" required="false" /><br/><br/><apex:commandButton action="{!save}" value="Save" onclick="statusSaving(this);" rerender="NewProjectFormContainer" oncomplete="onCompleteCallBackFunction();"  /><apex:commandButton value="Cancel" onclick="history.go(-1);" /></apex:form>
+		                    </div>
+		            	</div>
+		            	<!--Divs to format the page  -->
+		           </apex:outputPanel>
+                    <div>
+	                    <apex:form >	
+							<table cellpadding="0" cellspacing="0" class="newTeamForm">
+								<tr>
+									<td class="alignTop"><span class="inputInfoTitle">{!$ObjectType.Project2__c.label}
+									Logo</span></td>
+									<td></td>
+									<td align="center">
+										&nbsp; 
+										<img width="99" src="{!IF(Project.Picture__c == '', URLFOR($Resource.ProjectResources, '/images/layout/pic_upload.gif'), '/servlet/servlet.FileDownload?file='+Project.Picture__c)}" class="imgBorder" /> 
+										<br />
+										<span class="explain">
+											current picture
+											<br>
+											<apex:commandLink styleClass="fontSize10" action="{!removeAvatar}" rendered="{!IF(Project.Picture__c == '', false, true )}" value="Remove" />
+										</span>
+									</td>
+									<td valign="top">
+									<table cellpadding="0" cellspacing="0" width="400px">
+										<tr>
+											<td><span class="inputInfoDescription">Select the
+											image file</span></td>
+										</tr>
+										<tr>
+											<td><span class="inputInfoSubDescription"
+												style="padding-left: 10px;">Type the path of the file or
+											click the Browse button to find the file.</span></td>
+										</tr>
+										<tr>
+											<td></td>
+										</tr>
+										<tr>
+											<td class="paddingLeft" id="imageTeamContainer">
+												<apex:inputFile value="{!document.body}" id="teamImage" filename="{!document.name}" contentType="{!document.contentType}" fileSize="{!document.BodyLength}" accept="image/gif,image/jpeg,image/png" /> 
+												<br />
+												<apex:outputpanel rendered="{!NOT validTypePicture}">
+													<span id="fileExtensionError" class="errorText"> 
+														<b>Error:</b> You must enter a jpg, gif or png files only 
+													</span>
+												</apex:outputpanel> 
+												<apex:outputpanel rendered="{!NOT validSizePicture}">
+													<span id="fileSizeError" class="errorText"> 
+														<b>Error:</b> The images size must be less than 512 kb 
+													</span>
+												</apex:outputpanel>
+											</td>
+										</tr>
+										<tr>
+											<td></td>
+										</tr>
+										<tr>
+											<td class="paddingLeft">
+												<span class="explain">File size limit 512KB. If your upload does not work, try a smaller picture. </span>
+											</td>
+										</tr>
+										<tr>
+											<td class="paddingLeft">
+												<span class="explain">Ideal	size is 100 pixels high by 100 pixels wide.</span>
+											</td>
+										</tr>
+										<tr>
+											<td></td>
+										</tr>
+										<tr>
+											<td class="paddingLeft">
+												<div class="imageRightsHolder" id="imageRightsHolder">
+													<input id="imageRights" type="checkbox" />
+												</div>
+												<div class="messageRigthHolder">
+													<span class="inputInfoSubDescription">
+														I certify that I have the right to distribute this picture and that it does not violate the
+														<a>Terms of Use</a> 
+													</span> 
+													<br />
+													<span id="RightsErrorMessage" class="errorText" style="display: none;">
+														<b>Error:</b> You must agree to the 
+														<a>Terms of Use</a> 
+														to use images for this discussion forum. 
+													</span>
+												</div>
+												<div class="clear"></div>
+											</td>
+										</tr>
+										<tr>
+											<td></td>
+										</tr>
+									</table>
+									</td>
+								</tr>
+								<tr>
+									<td height="10px"></td>
+								</tr>
+								<apex:outputPanel rendered="{!AllowCustomerActivated}" >
+									<tr>
+									    <td class="alignTop">
+											<span class="inputInfoTitle">Portal Users</span>
+									    </td>
+									    <td>	
+									    </td>
+									    <td colspan="2">&nbsp;<apex:inputCheckbox value="{!AllowCustomer}" /> 
+											<span class="inputInfoDescription">Allow Customer Portal Users</span>
+									    </td>    
+									</tr>
+								</apex:outputPanel>
+								
+								<apex:outputPanel rendered="{!AllowPartnerActivated}" >
+								<tr>
+								    <td class="alignTop">
+										<span class="inputInfoTitle">
+											<apex:outputPanel rendered="{!NOT( AllowCustomerActivated )}" >
+												Portal Users &nbsp;
+											</apex:outputPanel>
+										</span>
+								    </td>
+								    <td>
+								    </td>
+								    <td colspan="2">&nbsp;<apex:inputCheckbox value="{!AllowPartner}"/>
+								    <span class="inputInfoDescription">Allow Partner Portal Users</span>
+								    </td>    
+								</tr>
+								
+								<tr>
+									<td class="alignTop">
+										<span class="inputInfoTitle"></span>
+									</td>
+									<td></td>
+									<td colspan="2">
+										&nbsp; 
+										<span class="inputInfoList">&nbsp;</span>
+										<span class="inputInfoSubDescription">&nbsp;</span>
+									</td>
+								</tr>
+								</apex:outputPanel>
+								<tr>
+									<td class="alignTop"><span class="inputInfoTitle">Access</span>
+									</td>
+									<td>
+									</td>
+									<td colspan="2">&nbsp;<input type="radio" id="openTeam" checked="checked" name="access" onclick="setAccess(this);" /> 
+										<span class="inputInfoDescription">Open</span>
+									</td>
+								</tr>
+								<tr>
+									<td class="alignTop">
+										<span class="inputInfoTitle"></span>
+									</td>
+									<td></td>
+									<td colspan="2">
+										&nbsp; 
+										<span class="inputInfoList">&nbsp;</span>
+										<span class="inputInfoSubDescription">Anyone can join. Anyone can see the {!$ObjectType.Project2__c.label} information and content. </span>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="6">
+									<table class="newTeamForm">
+										<tr>
+											<td class="alignTopLeft"></td>
+											<td></td>
+											<td id="openTeamPublicProfileId">
+												<div class="tooltipWrap">
+													<!-- info tooltip -->
+													<div id="divToolTip2" class="tooltip2">
+														<div id="messageTooltip2"></div>
+													</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td height="10px"></td>
+										</tr>
+										<tr>
+											<td class="alignTopLeft"></td>
+											<td></td>
+											<td>
+												<div class="tooltipWrap">
+													<!-- info tooltip -->
+													<div id="divToolTip2" class="tooltip2">
+														<div id="messageTooltip2"></div>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</table>
+									</td>
+								</tr>
+								<tr>
+									<td class="alignTop">
+										<span class="inputInfoTitle"></span>
+									</td>
+									<td></td>
+									<td colspan="2">
+										&nbsp; <input type="radio" id="closedTeam" name="access" onclick="setAccess(this);" /> 
+										<span class="inputInfoDescription">Closed</span>
+									</td>
+								</tr>
+								<tr>
+									<td class="alignTop">
+										<span class="inputInfoTitle"></span>
+									</td>
+									<td></td>
+									<td colspan="2">
+										<span class="inputInfoList">&nbsp;</span> 
+										<span class="inputInfoSubDescription">{!$ObjectType.Project2__c.label} Administrator must invite users to join. Anyone can see the {!$ObjectType.Project2__c.label} information and content.</span>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="6">
+									<table>
+										<tr>
+											<td class="alignTopLeftClose"></td>
+											<td></td>
+											<td id="profileClosedTeam">
+												<div class="tooltipWrap">
+													<!-- info tooltip -->
+													<div id="divToolTip2" class="tooltip2">
+														<div id="messageTooltip2"></div>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</table>
+									</td>
+								</tr>
+								<tr>
+									<td class="alignTop"><span class="inputInfoTitle"></span></td>
+									<td></td>
+									<td colspan="2">
+										&nbsp; 
+										<input type="radio" id="privateTeam" name="access" onclick="setAccess(this);" /> 
+										<span class="inputInfoDescription">Private</span>
+									</td>
+								</tr>
+								<tr>
+									<td class="alignTop">
+										<span class="inputInfoTitle"></span>
+									</td>
+									<td></td>
+									<td colspan="2">
+										&nbsp; 
+										<span class="inputInfoList">&nbsp;</span>
+										<span class="inputInfoSubDescription">This {!$ObjectType.Project2__c.label} will not appear in search results or in the profiles of its members. </span>
+									</td>
+								</tr>
+								<tr>
+									<td class="alignTop">
+										<span class="inputInfoTitle"></span>
+									</td>
+									<td></td>
+									<td colspan="2">
+										&nbsp; 
+										<span class="inputInfoList">&nbsp;</span>
+										<span class="inputInfoSubDescription">Membership is by invitation only, and only members can see the {!$ObjectType.Project2__c.label}</span>
+									</td>
+								</tr>
+								<tr>
+									<td class="alignTop">
+										<span class="inputInfoTitle"></span>
+									</td>
+									<td></td>
+									<td colspan="2">
+										&nbsp; 
+										<span class="inputInfoList">&nbsp;</span>
+										<span class="inputInfoSubDescription">information and content.</span>
+									</td>
+								</tr>
+							</table>
+						</apex:form>
+					</div>
+					<div class="title_line_btn" style="display:none;"></div>
+					<div id="btnContainer"></div>	         
+				</div>
             </div>
         </div>
     </div>
-    <script>
-        setTimeout('subProjectCheck()',500);
-        initializeProjelabelail();
-        readPortalCSSRules();
-    </script>
-   
+	  	<script>
+   		function createLayout(){
+			
+			var div = $$('.DynamicLayoutResponse')[0];
+			var form = div.firstDescendant();
+			var btnSaveForm = form.getElementsByClassName('btn')[0];
+			
+			//Format save button
+			btnSaveForm.addClassName('SaveBtn');
+			btnSaveForm.value="Create";
+			
+			//Format Cancel button
+			var btnCancelForm=form.getElementsByClassName('btn')[1];
+			btnCancelForm.addClassName('cancelBtn');
+			
+				
+			//Insert the buttons into the div
+			var buttonsDiv=$('btnContainer');
+			buttonsDiv.innerHTML= '';
+			buttonsDiv.show();
+			buttonsDiv.insert(btnSaveForm);
+			buttonsDiv.insert(btnCancelForm);
+			
+			//Format TextAreas
+			var textAreas = document.getElementsByTagName('textarea');
+			for (i in textAreas){
+				textAreas[i].rows='4';
+				textAreas[i].cols='75';
+			}
+		
+			
+		}
+		
+		function onCompleteCallBackFunction(){
+			createLayout();
+			if($$('.errorMsg').length > 0){
+				Effect.Appear('warning_to_user');
+			}else{
+				Effect.Fade('warning_to_user');
+			}
+		}
+		
+		function statusSaving(obj){
+			obj.value = 'Saving... ';
+			obj.disable = 'disabled';
+			var cancelBtn = obj.nextSibling;
+			cancelBtn.value = 'Saving... ';
+			cancelBtn.disable = 'disabled'; 
+		}
+		
+		
+   	</script>
+ 
   
 </apex:page>

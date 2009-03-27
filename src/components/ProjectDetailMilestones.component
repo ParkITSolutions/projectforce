@@ -29,7 +29,7 @@
 			<div class="wideBody">
 				<apex:outputpanel id="milestonePanelCenter" > 
 						<div style="overflow: hidden; position: relative"> 
-							<div class="swirly_milestone" style="display: none;"></div>
+							<div id="milestoneLoadDiv" class="swirly_milestone" style="display: none;"></div>
 								<div style="{!IF(listSize > 0, 'display:none', '')};"  class="empty"  >
 									<ul class="nomilestone">
 										<li>

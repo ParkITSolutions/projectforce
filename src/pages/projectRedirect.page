@@ -35,7 +35,7 @@
         */
         function getURLParam(strParamName){
           var strReturn = "";
-          var strHref = window.location.href;
+          var strHref = decodeURIComponent(window.location.href);
           if ( strHref.indexOf("?") > -1 ){
             var strQueryString = strHref.substr(strHref.indexOf("?"));
             var aQueryString = strQueryString.split("&");
@@ -71,23 +71,12 @@
 	                var layouts = result.getArray("layouts");
 	                for (var it = 0; it < layouts.length; it++) {
 	                    var layout = layouts[0];
-	                    this.detailLayoutSections(layout.detailLayoutSections);
+	                    this.layoutRows(layout.editLayoutSections.getArray('layoutRows'));
 	                }
 				}catch(e){
 					this.error('Error: Unable to read layout for: <em>' + sObjectType + '</em>');
 				}	           
             },          
-            
-            /**
-            * Read Layout Sections
-            *@param mixed section 
-            */
-            detailLayoutSections: function (sections) {
-                for (var it = 0; it < sections.length; it++) {
-                    var section = sections[it];
-                    this.layoutRows(section.getArray("layoutRows"));
-                }
-            },
         
             /**
             * Read Section Rows
@@ -104,10 +93,10 @@
             * Read Layout Item
             *@param mixed items
             */
-            layoutItems: function layoutItems(items) {
+            layoutItems: function (items) {
                 for (var it = 0; it < items.length; it++) {
                     var item = items[it];
-                    if(item.label != '' && item.layoutComponents.value){       
+                    if(item.label != ''){       
                         this.layoutFields.push(item);
                     }
                 }
@@ -131,7 +120,7 @@
             *@param page to add form
             *@param attribute associated
             */
-            save: function (page, attribute){
+            save: function (page, attribute, rerender, oncomplete){
                 if(this.layoutFields.length > 0){
                     //Read Page
                     result = sforce.connection.query("Select Id, Name, Markup from ApexPage where Name = '" + page + "'");
@@ -147,28 +136,36 @@
                     var markupAct = apexPage.Markup.split('DynamicLayoutResponse">');
 
                     //Create New Markup for current sObject Layout
-                    var markup = 'DynamicLayoutResponse">';
+                    var markup = 'DynamicLayoutResponse">\n\t';
                     markup += this.tagPrefix + ':form>';
 
                     for(var it=0; it < this.layoutFields.length; it++){
                         markup += '<label>' + this.layoutFields[it].label + '</label>';
                         markup += this.tagPrefix + ':inputField value="{';
                         markup += '!' + attribute + '.' + this.layoutFields[it].layoutComponents.value + '}" ';
-                        markup += 'required="' + this.layoutFields[it].required + '" '; 
+                        markup += 'required="' + this.layoutFields[it].required + '" ';
                         markup += '/><br /><br />';   
                     }
 					
-					//Add save and cancel buttons
+					//Add Save Button
 					markup += this.tagPrefix + ':commandButton action="{'
-					markup += '!save}" value="Save" />';
-					markup += this.tagPrefix + ':commandButton value="Cancel" />';
+					markup += '!save}" value="Save" onclick="statusSaving(this);" ';
+                    
+                    //Set rerender attribute
+                    markup += (rerender) ? 'rerender="' + rerender + '" ' : '';
+                    
+                    //Set oncomplete attribute
+                    markup += (oncomplete) ? 'oncomplete="onCompleteCallBackFunction();" ' : ''; 					
+					markup += ' />';
+
+					//Add Cancel Button
+					markup += this.tagPrefix + ':commandButton value="Cancel" onclick="history.go(-1);" />';
                     
                     markup += '</';
                     markup += 'apex:form>';                                     
                     
-                    var pattern = '</';
-                    pattern += 'apex';
-                    pattern += ':form>';
+
+                    pattern = 'o(-1);" />' + '</' + 'apex:form>';
                     var markupBottom = (markupAct[1].split(pattern)[0].length > 1) ? markupAct[1].split(pattern)[1] : markupAct[1].split(pattern)[0];
                     apexPage.Markup = markupAct[0] + markup + markupBottom;
                     
@@ -191,17 +188,33 @@
                 }
             },
             
+            /**
+            * Add error message to status label
+            *@param message
+            */
             error: function(message){
             	$$('.redirect')[0].innerHTML = message;	
+            },
+            
+            markupBottom: function (markup){
+            	var markupBottom = '';
+            	for(var it=1; it < markup.length; it++){
+            		markupBottom += (markup[it] + '</div>');
+            	}
+            	return markupBottom;
             }
             
         }   
         
+        /**
+        * ### Execute onload event ###
+        */
         document.observe('dom:loaded', function (){ 
                 ObjectLayout.describeLayout(getURLParam('sO'));
-                ObjectLayout.save(getURLParam('page'), getURLParam('attr'));        
+                ObjectLayout.save(getURLParam('page'), getURLParam('attr'), getURLParam('rR'), getURLParam('oC'));        
             }
         );
+        
     </script>
     
     <div class="redirect">Building Form...</div>

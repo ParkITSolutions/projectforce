@@ -130,7 +130,10 @@
 				</div>
 				<div class="sfdcDetailFormated"></div>
 				
-				<apex:form >
+				<apex:form id="mainContentForm">
+                    
+                    <apex:actionFunction name="reloadMainContent" rerender="mainContentForm"/>
+                    
 					<!-- Project Tasks -->
 					<c:ProjectWidgetTaskMain team="{!teamIdParam}"/>			 
 	
