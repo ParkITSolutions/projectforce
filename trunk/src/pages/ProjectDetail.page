@@ -141,7 +141,7 @@
 					<c:ProjectDetailMilestones team="{!teamIdParam}" /> 
 	
 					<!-- Project Attachment -->
-					<c:ProjectOverlayNewAttachment />
+					<c:ProjectOverlayNewAttachment parentId="{!teamIdParam}" />
 					<c:ProjectDetailAttachment project="{!teamIdParam}"/> 
 				</apex:form>
 			</div>

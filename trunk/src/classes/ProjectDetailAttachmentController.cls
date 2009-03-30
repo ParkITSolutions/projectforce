@@ -6,9 +6,7 @@ public class ProjectDetailAttachmentController {
 	private String project = null;
 	private List<AttachmentInfo> attachments = new List<AttachmentInfo>();
 	
-	public ProjectDetailAttachmentController (){
-
-	}
+	public ProjectDetailAttachmentController (){}
 
 	/**
 	*@param project id
@@ -25,35 +23,34 @@ public class ProjectDetailAttachmentController {
 	}
 	
 	/**
-	*@return attachment list
+	*@return formated attachment list
 	*/
 	public List<AttachmentInfo> getAttachments(){
-		return loadAttachmentList(readAttachments(getProject()));
+		readAttachments();
+		return attachments;
 	}
 
 	/**
 	*@param project id
-	*@retrun attachment list
 	*/
-	public List<Attachment> readAttachments(String projectId){
+	public void readAttachments(){
 		List<Attachment> attachmentsList = new List<Attachment>();
 		if(project != null){
 			attachmentsList = [select name, id, parentid, ContentType, BodyLength, 
 							LastModifiedDate, LastModifiedBy.Name
 							from attachment 
-							where parentid =: projectId
+							where parentid =: project
 							order by name];
 		}
-		return attachmentsList;			
+		loadAttachmentList(attachmentsList);
 	}
 	
 	
 	/**
 	* Load attachment list
 	*@param attachment list
-	*@return formated attachment list
 	*/
-	public List<AttachmentInfo> loadAttachmentList(List<Attachment> attachs){
+	public void loadAttachmentList(List<Attachment> attachs){
 		List<AttachmentInfo> attachList = new List<AttachmentInfo>();
 		for (Attachment item: attachs){	
             AttachmentInfo info = new AttachmentInfo();
@@ -119,14 +116,21 @@ public class ProjectDetailAttachmentController {
             attachList.add(info);
 
         }
-		return attachList;
+		attachments = attachList;
 	}
 	
 
 	/**
-	*@ Delete Attachment
+	* Delete Attachment
 	*/
-	public void deleteAttach (){}
+	public void deleteAttach (){
+		String attachId = System.currentPageReference().getParameters().get('idAttach');
+		if(attachId != null && attachId != ''){
+			Attachment attach = [select Id from Attachment where Id =: attachId];
+			delete attach;
+			readAttachments();
+		}		
+	}
 	
 	
 	/**

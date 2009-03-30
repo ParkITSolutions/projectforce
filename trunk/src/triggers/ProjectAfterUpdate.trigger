@@ -112,7 +112,7 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 								groupMembers.add(groupMemberIter);
 							}	
 						}
-						delete groupMembers;
+						//delete groupMembers;
 						
 						//Create Everyone Member
 						GroupMember newGroupMember = new GroupMember();
