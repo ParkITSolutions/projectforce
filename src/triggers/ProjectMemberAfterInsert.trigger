@@ -3,9 +3,13 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert)
 	try {
 			// Send email to subscribers members
 			ProjectSubscribersEmailServices pEmail = new ProjectSubscribersEmailServices();
+			List<String> lstPMId = new List<String>();
 		    for ( ProjectMember__c pM : Trigger.new){
-		    	pEmail.sendMemberJoinLeave( pM.Id, 'join' );
+		    	lstPMId.add(pM.id);
 		    }
+		    
+		    pEmail.sendMemberJoinLeave( lstPMId, 'join' );
+		    
             List<String> idsTeam = new List<String>();
             List<String> idsProfile = new List<String>();
             List<String> groupsNames = new List<String>();

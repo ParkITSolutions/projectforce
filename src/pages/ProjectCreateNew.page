@@ -1,4 +1,4 @@
-<apex:page sidebar="false" tabStyle="Project2__c" id="ProjectCreateNew" controller="ProjectCreateNewProjectController">
+<apex:page sidebar="false" tabStyle="Project2__c" id="ProjectCreateNew" standardController="Project2__c" extensions="ProjectCreateNewProjectController">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     
     <!-- CSS de TS -->
@@ -37,8 +37,9 @@
     <apex:includeScript value="/soap/ajax/12.0/connection.js"/>
         <script>
         	document.observe('dom:loaded', function (){ 
-			        readPortalCSSRules();
+        			
 			    	createLayout();
+			    	readPortalCSSRules();
 	            }
 	        );
         
@@ -140,11 +141,12 @@
 		            	<!--Divs to format the page  -->
 		           </apex:outputPanel>
                     <div>
-	                    <apex:form >	
-							<table cellpadding="0" cellspacing="0" class="newTeamForm">
+	                    <apex:form id="secondForm" >
+	                   		<apex:inputHidden value="{!newProfile.projectOpenOrClosed}" id="openOrClosed" />
+	                      	<table cellpadding="0" cellspacing="0" class="newTeamForm">
 								<tr>
-									<td class="alignTop"><span class="inputInfoTitle">{!$ObjectType.Project2__c.label}
-									Logo</span></td>
+									<td class="alignTop"><label>{!$ObjectType.Project2__c.label}
+									Logo</label></td>
 									<td></td>
 									<td align="center">
 										&nbsp; 
@@ -234,7 +236,7 @@
 								<apex:outputPanel rendered="{!AllowCustomerActivated}" >
 									<tr>
 									    <td class="alignTop">
-											<span class="inputInfoTitle">Portal Users</span>
+											<label>Portal Users</label>
 									    </td>
 									    <td>	
 									    </td>
@@ -273,7 +275,7 @@
 								</tr>
 								</apex:outputPanel>
 								<tr>
-									<td class="alignTop"><span class="inputInfoTitle">Access</span>
+									<td class="alignTop"><label>Access</label>
 									</td>
 									<td>
 									</td>
@@ -406,30 +408,22 @@
 									</td>
 								</tr>
 							</table>
+							<apex:commandButton styleClass="secondFormAction" style="display:none;" action="{!saveAttachmentsAndAccess}" value="No seas boton"/>
 						</apex:form>
 					</div>
 					<div class="title_line_btn" style="display:none;"></div>
-					<div id="btnContainer"></div>	         
+					<div id="btnContainer"></div>
 				</div>
             </div>
         </div>
     </div>
-	  	<script>
-   		function createLayout(){
-			
+    <script>
+	  	function createLayout(){
 			var div = $$('.DynamicLayoutResponse')[0];
 			var form = div.firstDescendant();
 			var btnSaveForm = form.getElementsByClassName('btn')[0];
-			
-			//Format save button
-			btnSaveForm.addClassName('SaveBtn');
-			btnSaveForm.value="Create";
-			
-			//Format Cancel button
 			var btnCancelForm=form.getElementsByClassName('btn')[1];
-			btnCancelForm.addClassName('cancelBtn');
 			
-				
 			//Insert the buttons into the div
 			var buttonsDiv=$('btnContainer');
 			buttonsDiv.innerHTML= '';
@@ -437,24 +431,38 @@
 			buttonsDiv.insert(btnSaveForm);
 			buttonsDiv.insert(btnCancelForm);
 			
+			//Format save button
+			btnSaveForm.addClassName('SaveBtn');
+			btnSaveForm.value="Create";
+			
+			//Format Cancel button
+			btnCancelForm.addClassName('cancelBtn');
+			
+			//Show the horizontal line
+			var divLine=$$('.title_line_btn')[0];
+			divLine.show();
+				
 			//Format TextAreas
 			var textAreas = document.getElementsByTagName('textarea');
 			for (i in textAreas){
 				textAreas[i].rows='4';
 				textAreas[i].cols='75';
 			}
-		
-			
 		}
-		
+	  	
+	  	
 		function onCompleteCallBackFunction(){
+			
+			//saveAttachmentsAndAccess();
 			createLayout();
 			if($$('.errorMsg').length > 0){
 				Effect.Appear('warning_to_user');
 			}else{
 				Effect.Fade('warning_to_user');
 			}
+		 	$$('.secondFormAction')[0].click();
 		}
+		
 		
 		function statusSaving(obj){
 			obj.value = 'Saving... ';
@@ -463,6 +471,32 @@
 			cancelBtn.value = 'Saving... ';
 			cancelBtn.disable = 'disabled'; 
 		}
+		
+		function setAccess(radio){
+			var input=$('ProjectCreateNew:secondForm:openOrClosed');
+		
+			
+			
+					
+			if(radio.checked == true && radio.id == 'openTeam'){
+				alert('abierto');
+				input.value = 'open';
+		
+				
+			}else if (radio.checked == true && radio.id == 'closedTeam'){
+				alert('cerrado');
+				input.value = 'close';
+		
+				
+		
+			}else if (radio.checked == true && radio.id == 'privateTeam'){
+				alert('privado');
+				input.value = 'private';
+		
+			}
+		
+		}
+		
 		
 		
    	</script>

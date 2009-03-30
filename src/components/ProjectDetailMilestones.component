@@ -22,7 +22,7 @@
 						<a class="topRightLinks" href="javascript:;" onclick="fixedModalNewMilestone.open();hideErrors();" >New</a> |  
 					</apex:outputpanel>
 					<a href="ProjectTimeLine?id={!TeamId}">Timeline</a> |
-					<a href="ProjectTaskList?id={!TeamId}&filter=allMilestones" class="topRightLinks" >See More&#187;</a>
+					<a href="ProjectTasksList?id={!TeamId}&filter=allMilestones" class="topRightLinks" >See More&#187;</a>
 				</div>
 			</div>
 			<!-- Widget Container --> 		

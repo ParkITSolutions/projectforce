@@ -1,13 +1,21 @@
-<apex:component controller="ProjectDetailAttachmentController">
+<apex:component controller="ProjectDetailAttachmentController" allowDML="true">
 	
 	<!-- Set Attribure for project id. -->
 	<apex:attribute name="project" description="Project Id" type="String" required="true" assignTo="{!project}" />	
 	
+	<style>
+		div.wideBody div.swirlyAttachment{
+			height:100% !important;
+		}
+	</style>	
+	
 	<script>
 		document.observe('dom:loaded', 
+			//Attach event to open overlay
 			function (){
 				$$('.newAttachmentEvent')[0].observe('click', function(){
 						createOverlay('', 'newAttachmentOverlay', 200);
+						observeIframeUpload();
 					}
 				);
 			}
@@ -15,6 +23,8 @@
 	
 	</script>
 	
+	<!-- Generic Refresh Attachment Method -->
+	<apex:actionFunction name="refreshAttachmentList" action="{!readAttachments}" rerender="projectAttachmentWidget" oncomplete="hideSwirly('swirlyAttachment');" />
 	
 	<apex:outputPanel layout="block">
 		<div class="myBigWidget">
@@ -29,33 +39,43 @@
 			<!-- Widget Container --> 		
 			<div class="wideBody">
 				<div class="swirlyAttachment" style="display:none;"></div>	
-				<table class="pageList">
-				<apex:repeat value="{!attachments}" var="attachment">									
-					<tr>
-						<td>
-							<apex:commandLink action="{!DeleteAttach}"
-								rerender="attachmentsPanelWide"
-								oncomplete="hideSwirly('swirlyAttachment');"												
-								value="Delete" >
-								<apex:param name="idAttach" value="{!attachment.Id}"/>
-							</apex:commandLink>
-						</td>
-						<td style="padding-left:25px">
-							<img style="vertical-align:bottom;" src="https://na1.salesforce.com{!URLFOR($Resource.FileTypeIcons, attachment.attachImage)}"/> &nbsp;
-							<a href="#" onclick="window.open('https://na1.salesforce.com/servlet/servlet.FileDownload?file={!attachment.Id}')" > {!attachment.Name} </a>
-						</td>
-						<td style="padding-left:25px">
-							<apex:outputField value="{!attachment.Attachment.BodyLength}"/>
-						</td>
-						<td style="padding-left:25px">
-							<apex:outputField value="{!attachment.Attachment.LastModifiedDate}"/>
-						</td>
-						<td style="padding-left:25px"> 
-							<a href="PeopleProfileDisplay?id={!attachment.Attachment.LastModifiedBy}"  class="name_margin">{!attachment.Attachment.LastModifiedBy.Name}</a>	
-						</td>
-					</tr>
-				</apex:repeat>
-				</table>
+				<apex:outputPanel id="projectAttachmentWidget">
+					<table class="pageList">
+						<tr>
+							<td></td>
+							<td>Name</td>
+							<td>Weight(Kb)</td>
+							<td>Created Date</td>
+							<td>Created By</td>														
+						</tr>
+						<apex:repeat value="{!attachments}" var="attachment">									
+							<tr>
+								<td>
+									<apex:commandLink action="{!DeleteAttach}"
+										rerender="projectAttachmentWidget"
+										onclick="if(confirm('Are you sure you want to delete this file?')){showSwirly('swirlyAttachment');}else{return false;}"
+										oncomplete="hideSwirly('swirlyAttachment');"												
+										value="Delete" >
+										<apex:param name="idAttach" value="{!attachment.Id}"/>
+									</apex:commandLink>
+								</td>
+								<td>
+									<img style="vertical-align:bottom;" src="https://na1.salesforce.com{!URLFOR($Resource.FileTypeIcons, attachment.attachImage)}"/> &nbsp;
+									<a href="#" onclick="window.open('https://na1.salesforce.com/servlet/servlet.FileDownload?file={!attachment.Id}')" > {!attachment.Name} </a>
+								</td>
+								<td>
+									<apex:outputField value="{!attachment.Attachment.BodyLength}"/>
+								</td>
+								<td>
+									<apex:outputField value="{!attachment.Attachment.LastModifiedDate}"/>
+								</td>
+								<td> 
+									<a href="/{!attachment.Attachment.LastModifiedBy}"  class="name_margin">{!attachment.Attachment.LastModifiedBy.Name}</a>	
+								</td>
+							</tr>
+						</apex:repeat>
+					</table>
+				</apex:outputPanel>
 			</div>
 		</div>
 	</apex:outputPanel>

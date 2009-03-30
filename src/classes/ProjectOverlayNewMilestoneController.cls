@@ -143,6 +143,7 @@ public class ProjectOverlayNewMilestoneController {
         Assign.ProjectTask__c = newTask.Id;
         insert Assign;
         
+        newTask = new ProjectTask__c();
     }
     
     

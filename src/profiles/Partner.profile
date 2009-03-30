@@ -55,6 +55,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectOverlayNewAttachmentController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectOverlayNewMilestoneController</apexClass>
         <enabled>false</enabled>
     </classAccesses>

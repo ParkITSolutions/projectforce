@@ -6,12 +6,14 @@
 	<apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
 	<link rel="stylesheet" media="screen" href="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />
 	<apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/prototype.js')}"/>
+	
 	<!-- Portal Support -->
 	<apex:includeScript value="{!$Resource.portalSupport}"/>	
 
 	<apex:outputpanel rendered="{!IF(parentId == null, true, false)}">
 		<div id="uploadFinished"></div>
 	</apex:outputpanel>
+	
 	<apex:outputpanel rendered="{!IF(parentId == null, false, true)}">
 		<div class="overlayMainContent">
 			<apex:form >

@@ -24,7 +24,6 @@ public with sharing class ProjectTaskListController {
     public ProjectTaskListController(){
         genPermissions();   
         editDeletePer = userPermissions.getCanManage();
-        genTaskList();
         if(filter != null) {
         	if(filter == 'all'){
         		option = 'all';
@@ -32,11 +31,24 @@ public with sharing class ProjectTaskListController {
         		option = 'allMilestones';
         	}
         }
-        getsortListOption();
+        //genTaskList();
+        sortBy = 'EndDate__c';
+        
+		refreshTaskList();
+		
         genCntPagination();
         getUserProfile();    
     }    
+
+
+
+    /** This method recreates the task list, filtering and sorting it.
+     */
+    public void refreshTaskList() {
+    	filterTaskList(createSortedTaskList());
+    }
     
+
     /**
     *Clear the task list
     */
@@ -148,9 +160,11 @@ public with sharing class ProjectTaskListController {
     /**
     *Refresh task list
     */
+    /*
     public void  refresh(){
         genTaskList();
     }
+    */
     
     /**
     *Get task list
@@ -163,6 +177,7 @@ public with sharing class ProjectTaskListController {
     /**
     *Generates task list
     */
+    /*
     public void genTaskList(){ 
 
         if((PROJECTID != null) && (PROJECTID != ' ')){
@@ -255,7 +270,7 @@ public with sharing class ProjectTaskListController {
             }
         }    
     }
-    
+    /*
     
     /**
     *Get project's name
@@ -529,7 +544,24 @@ public with sharing class ProjectTaskListController {
     /* ---------------------------- */
     public Boolean sortByDesc = false;
     
-    public String sortBy = 'EndDate__c';
+    public String sortBy;
+    public String oldSortBy;
+    
+    /*
+    public String getSortBy() {
+    	return this.sortBy;
+    }
+    */
+    
+    public void setSortBy(String sortBy) {
+    	if (this.oldSortBy != null && oldSortBy.equals(sortBy))
+    		sortByDesc = !sortByDesc;
+    	else
+    		sortByDesc = false;
+    		
+    	this.oldSortBy = sortBy;
+    	this.sortBy = sortBy;
+    }
     
     /**
     *Returns true if is sort by description
@@ -583,16 +615,19 @@ public with sharing class ProjectTaskListController {
     public void setSortByPrev(String s){
         sortByExt = s;
     }
-     
+    
+    
     /**
      * This is a temporary method to cover us until dynamic apex is back.  This will use hard coded
      * SOQL statements in place of the dynamic statements
      */
-    public void sortList () {
+    public List<ProjectTask__c> createSortedTaskList () {
     	
-        List<TaskDetails> td = new List<TaskDetails>();
+        // List<TaskDetails> td = new List<TaskDetails>();
         
         setAllUsers();
+        
+        /*
         String SortByCriteria = '';
         
         if(sortByParamSet){
@@ -612,10 +647,12 @@ public with sharing class ProjectTaskListController {
             sortByDesc = false;
         }
         
-        sortBy = SortByCriteria;
+        sortBy = SortByCriteria == null ? 'EndDate__c' : SortByCriteria;
+        */
+        
+        
         String sortByAux=sortBy;
-        System.debug('sortBy:'+sortBy);
-        System.debug('sortByDesc:'+sortByDesc);
+        
         List<ProjectTask__c> resultTaskList = new List<ProjectTask__c>();
         
         if (sortBy.equals('User__c.Name'))
@@ -906,10 +943,11 @@ public with sharing class ProjectTaskListController {
             }           
         }                
         
-        if (sortBy == 'Priority__c'){
+        if (sortBy == 'Priority__c')
             insertionSort(resultTaskList,sortByDesc);
-        }
-		    
+		
+		return resultTaskList;
+		/*  
         for(Integer i=0; i < resultTaskList.size();i++){
             TaskDetails TaskDetail = new TaskDetails();
             TaskDetail.id = resultTaskList[i].Id;
@@ -961,8 +999,10 @@ public with sharing class ProjectTaskListController {
             genCntPagination(); 
         } 
 
-        if (sortByAux.equals('User__c.Name')){
+
+        if (sortByAux.equals('User__c.Name')) {
             sortBy='User__c.Name';
+            
             Integer n;
             Integer i;
             Integer j;
@@ -989,6 +1029,7 @@ public with sharing class ProjectTaskListController {
             }
         }
         taskList = td;
+		*/
     } 
      
     
@@ -1043,16 +1084,17 @@ public with sharing class ProjectTaskListController {
     /**
     * Get sort list option
     */
-    public void getsortListOption () {
+    public void filterTaskList (List<ProjectTask__c> resultTaskList) {
         List<TaskDetails> td = new List<TaskDetails>();
         List<TaskDetails> tdoTask = new List<TaskDetails>();
         List<TaskDetails> tdoMile = new List<TaskDetails>();
         List<TaskDetails> tdoComplete = new List<TaskDetails>();
         List<TaskDetails> tdoUser = new List<TaskDetails>();
         List<TaskDetails> listAllMilestones = new List<TaskDetails>();
-        List<ProjectTask__c> resultTaskList = new List<ProjectTask__c>();
-        String opciones=this.getOption();
+        //List<ProjectTask__c> resultTaskList = new List<ProjectTask__c>();
+        String opciones = this.getOption();
         
+        /*
         resultTaskList = [select 
                                  p.Project__c,
                                  p.Priority__c, 
@@ -1071,6 +1113,9 @@ public with sharing class ProjectTaskListController {
                           from ProjectTask__c p 
                           where Project__c =: PROJECTID
                           order by p.EndDate__c asc];
+        */
+        
+        //resultTaskList = taskList;
                           
         for(Integer i=0; i < resultTaskList.size();i++){
             TaskDetails TaskDetail = new TaskDetails();
