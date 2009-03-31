@@ -4,14 +4,16 @@
 {
     
     Project2__c teamspace = new Project2__c();
-     
+    public Boolean isLastMemberAdmin = false;
     boolean noImage; 
     boolean emailTeamspace;
     String  error = '';
     boolean showError = false;
-    
+   	private Boolean isMember;
+	private Boolean isPublic;
+    public ProjectMembersListController pmc = new ProjectMembersListController(); 
     public static UserPermissions userPermission = new UserPermissions();
-    
+    private String projectType = '';	
     String teamIdParam = System.currentPageReference().getParameters().get('id'); 
     
     /**
@@ -19,8 +21,10 @@
     */
     public ProjectDetailController(){
         if(teamIdParam != null)
-            getTeamDetail();        
+            getTeamDetail();
+            genTeamData();        
         //genPermissions();
+        this.projectType = getTeamspace().Type__c;
     }   
     
     /**
@@ -76,6 +80,7 @@
         userPermissionsTeam.setPermissions();                   
     }
     */
+    
     /**
     *@return UserPermission
     */
@@ -102,88 +107,90 @@
                             t.Id, 
                             t.Description__c, 
                             t.CreatedDate, 
-                            t.CreatedById
+                            t.CreatedById,
+                            t.Type__c
                             from Project2__c t 
                             where id =: teamIdParam];
-            teamIsOpen = showJoinEvent();
+            
         } catch(Exception e ){
             throw e;
         }   
     }
     
-    /**
-    * Boolean to determine if show buttons.
-    */
-    Boolean teamIsOpen = false;
-    
-    /**
-    * Returns true if team is open
-    *@return Boolean
-    */
-    public Boolean getTeamIsOpen(){
-        List<ProjectMember__c> member = [select Id from ProjectMember__c where User__c =: UserInfo.getUserId() and Project__c =: teamspace.Id limit 1];
-        teamIsOpen = (member.size() == 0);
-        return teamIsOpen;
-    }
-    
-    /**
+     /**
     * Show join event
     *@return Boolean
     */
-    public Boolean showJoinEvent(){
-        Boolean canShow = false;
-        List<ProjectMember__c> members = [select Id from ProjectMember__c where User__c =: UserInfo.getUserId() and Project__c =: teamspace.Id limit 1];
-        
-        
-        //canShow = (members.size() == 0) && ((teamspace.PublicProfile__c != null && teamspace.NewMemberProfile__c != null) ||
-        //                                  (userPermissionsTeam.getCanManage()));
-        
-        return canShow;
-    }
+  	public void genTeamData(){
+		if(teamIdParam != null){
+			this.teamspace = [select Id, Name, PublicProfile__c from Project2__c where id =: teamIdParam limit 1];
+			if(teamspace.PublicProfile__c != null){
+				this.setIsPublic(true);
+   			}else {
+				this.setIsPublic(false);
+   			}
+   			
+			List<ProjectMember__c> member = [select Id, User__c from ProjectMember__c where Project__c =: teamIdParam and User__c =: UserInfo.getUserId() limit 1];
+			if(member.size() > 0){
+				this.setIsMember(true);
+			}else {
+				this.setIsMember(false);
+			}
+		}
+	}
+	public void setIsPublic(Boolean isp){
+		this.isPublic = isp;
+	}
+	public void setIsMember(Boolean ism){
+		this.isMember = ism;
+	}
+	public boolean getIsPublic(){
+		return this.isPublic;
+	}
+	public boolean getIsMember(){
+		return this.isMember;	
+	}
     
     /**
     * For show join button
     *@void
     */
-    public void refreshJoinEvent(){
-        teamIsOpen = showJoinEvent();
-    }
+   
     
     /**
     * Join Team
     */
-    public void joinTeam(){
-         ProjectMember__c newUserJoin = new ProjectMember__c();
-         if(teamIsOpen){
-             newUserJoin.User__c = USERID;
-             newUserJoin.Name = UserInfo.getName();
-             newUserJoin.Project__c = teamspace.Id;
-             teamIsOpen = false;
-                         
-             insert newUserJoin;
-         }
-    }
+
+    
+    public void joinProject(){
+		pmc.setProjectId(System.currentPageReference().getParameters().get('id'));
+		pmc.joinProject();
+		isMember = true;
+	}
+	public PageReference unjoinProject(){
+		pmc.setProjectId(System.currentPageReference().getParameters().get('id'));
+		if(!pmc.isLastMemberAdmin()){
+			pmc.unjoinProject();
+			isMember = false;
+			isLastMemberAdmin = false;			
+			if( this.projectType == 'private'  )
+				return this.projectRedirect();
+		}else{
+			isLastMemberAdmin = true;
+		}	
+		return null;
+	}
+	public PageReference projectRedirect(){
+		PageReference discOver = Page.projectOverview;
+		return discOver;
+	}
     
     
     /**
     * Perform the remove from the team
     *@throws Exception
     */      
-    public void leaveTeam(){
-         List<ProjectMember__c> userRow = new List<ProjectMember__c>();
-        
-         try {
-            userRow = [Select Id, User__c, Project__c from ProjectMember__c where User__c =: USERID and Project__c =: teamspace.Id];
-         } catch(Exception e){ 
-         
-         }
-                 
-         if (userRow.size() == 1) {
-            delete userRow;
-            teamIsOpen = true;
-         }
-    }
-    
+   
     /**
     * Get Teamspace
     *@return Team__c

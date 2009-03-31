@@ -87,7 +87,21 @@ public without sharing class ProjectMembersListController {
 	public void setSortBy (String s){
 		sortBy = s;	
 	}
+	public void joinProject(){
+		ProjectMember__c projectMember = new ProjectMember__c();
+		projectMember.User__c = UserInfo.getUserId();
+		projectMember.Profile__c = [select Id from ProjectProfile__c where Name = 'Member Profile' limit 1].Id;
+		projectMember.Project__c = this.getProjectId();
+		
+		insert projectMember;
+	}
 	
+	public void unjoinProject(){
+		List<ProjectMember__c> member = [select Id, User__c from ProjectMember__c where User__c =: UserInfo.getUserId() and Project__c =: this.getProjectId()];
+		if(member.size() > 0){
+			delete member[0];
+		}
+	}
 	
 	/**
 	* Refresh member list
@@ -129,6 +143,9 @@ public without sharing class ProjectMembersListController {
 	*/	
 	public String getProjectId () {
 		return idProject;	
+	}
+	public void setProjectId(String idProject){
+		this.idProject = idProject;	
 	}
 	
 	/**
@@ -291,6 +308,14 @@ public without sharing class ProjectMembersListController {
 		return editMember;
 	}
 	
+	public Boolean isLastMemberAdmin (){
+		List<ProjectMember__c> members = new List<ProjectMember__c>();
+		members = [Select d.Name, User__c From ProjectMember__c d where Profile__r.Name = 'Project Administrator' and Project__c =: idProject];
+		if(members.size() == 1 && members[0].User__c == UserInfo.getUserId())
+			return true;
+		else
+			return false;		
+	}
 	/**
 	* Redirect after edit a member
 	*@return PageReference

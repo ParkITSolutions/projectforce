@@ -1,0 +1,124 @@
+<apex:page id="ProjectSubscription" sidebar="false" tabStyle="Project2__c" controller="ProjectSubscriptionController">
+	<apex:includeScript value="/soap/ajax/11.1/connection.js"/>
+	<script>
+		var API_SESSION_ID = '{!$Api.Session_ID}';
+		//Common Resource URL  
+		var globalCommonResourcesPath = '{!URLFOR($Resource.commonResources)}';
+	</script>
+	<!-- Prototype + Scriptaculous -->
+	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
+	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
+	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>
+	<!-- Portal Support -->
+	<apex:includeScript value="{!$Resource.portalSupport}"/>	
+	<!-- Common Js for All Sections -->
+	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/admin.js')}"/>
+	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}"/>
+	<!-- CSS de TS -->
+	<link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />	
+	<link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/profileEdition.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetail.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgets/TeamMemberWidget.css')}" />	
+    <!-- CSS styles for Portal Integration -->
+    <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />   
+	
+	
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsSubscription.css')}" />
+	
+	<style>
+		.inputButton{
+			background:transparent url({!URLFOR($Resource.ProjectResources, 'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right bottom;
+		}
+	
+	</style>
+	<!-- Header -->
+	<apex:composition template="HeaderTemplate">
+		<apex:define name="moduleId">
+			<apex:variable var="moduleId" value="headerTeams"/>
+		</apex:define>
+	    <apex:define name="module">{!$ObjectType.Project2__c.labelPlural}</apex:define>
+	    <apex:define name="title">Subscriptions</apex:define>
+	    <apex:define name="search">
+	    	<c:Search module="team" />
+	    </apex:define>
+    </apex:composition>
+    
+	<div class="sidebar">
+		<!-- Project Quick Links -->
+		<c:ProjectDetailQuickLinks />
+		<!-- Project members -->
+		<c:ProjectMembersWidget />		
+	</div>
+	<!-- BreadCrumbs -->
+	<apex:form id="form_content" onsubmit="getInputValue(); if(!isCloneAction){if(validator('{!$Component.form_content}', 'warning_to_user'))return false;};">
+		<div class="breadcrumbs"  align="center">
+			<apex:outputpanel rendered="{!IF(subscriptionCount == 0, true, false)}">
+				<apex:commandButton value="Save" action="{!saveSubscription}"/>
+			</apex:outputpanel>
+			<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}">
+				<apex:commandButton value="Update" action="{!saveSubscription}"/>
+			</apex:outputpanel>
+			<apex:commandButton value="Cancel" action="{!cancelSubscription}"/>
+			<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}">
+				<apex:commandButton value="Unsubscribe" action="{!deleteSubscription}"/>
+			</apex:outputpanel>
+		</div>
+		<!-- Main Content Div -->
+		<div class="main_content">		
+			<div class="holder">
+			<!-- Start Main Content -->
+				<!-- Section Title -->
+				<div class="teamsTitleBlue" id="titleSection">
+					Manage {!$ObjectType.Project2__c.label} Subscriptions
+				</div>
+				<!-- Form Begin -->
+					<div class="formContainer">
+						
+						<!-- Project Checkboxes Section -->
+						<div class="fieldSection clear">
+							{!$ObjectType.Project2__c.label}
+						</div>
+						<table cellpadding="0" cellspacing="0"  class="checkboxEdition">
+							<tr>
+								<td class="labelTD"><label for = "ProjectSubscription:form_content:assignedToMe">When a task has been (un)assigned to me </label></td>
+								<td><apex:inputCheckbox id="assignedToMe" value="{!subscription.ProjectTaskAssignedToMe__c}"/></td>
+							</tr>
+							<tr>
+								<td class="labelTD"><label for = "ProjectSubscription:form_content:assignedToMeChanged">When a task assigned to me has been changed by another </label></td>
+								<td><apex:inputCheckbox id="assignedToMeChanged" value="{!subscription.ProjectTaskAssignToMeChanged__c}"/></td>
+							</tr>
+							<tr>
+								<td class="labelTD"><label for = "ProjectSubscription:form_content:taskChanged">All task status or percent complete changes within a {!$ObjectType.Project2__c.label}</label></td>
+								<td><apex:inputCheckbox id="taskChanged" value="{!subscription.ProjectTaskChanged__c}"/></td>
+							</tr>
+							<tr>
+								<td class="labelTD"><label for = "ProjectSubscription:form_content:taskDeleted">When a task has been deleted </label></td>
+								<td><apex:inputCheckbox id="taskDeleted" value="{!subscription.ProjectTaskDeleted__c}"/></td>
+							</tr>
+						</table>
+						
+					</div><!-- End Form container --> 
+			</div><!-- End Main Content -->
+		</div>
+		<!-- BreadCrumbs -->
+		<div class="breadcrumbs" style="padding-bottom: 10px;" align="center">
+			<br>
+			<apex:outputpanel rendered="{!IF(subscriptionCount == 0, true, false)}">
+				<apex:commandButton value="Save" action="{!saveSubscription}"/>
+			</apex:outputpanel>
+			<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}">
+				<apex:commandButton value="Update" action="{!saveSubscription}"/>
+			</apex:outputpanel>
+			<apex:commandButton value="Cancel" action="{!cancelSubscription}"/>
+			<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}">
+				<apex:commandButton value="Unsubscribe" action="{!deleteSubscription}"/>
+			</apex:outputpanel>
+		</div>
+	</apex:form>
+	<script>	
+		readPortalCSSRules();
+	</script>	
+</apex:page>

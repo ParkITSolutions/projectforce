@@ -45,10 +45,10 @@
 					<span id="deleteEventContainer">
 						<apex:commandButton styleclass="overlaySaveBtn" action="{!deleteTask}" value="Continue and delete" onclick="modal.close();showSwirley();" oncomplete="redirect(); showMessageToUser('Deleted item(s)','success');" rerender="taskListPanel" />
 						<apex:inputHidden id="auxInputDeletes" value="{!idDeletes}" />
-					        <script>
-				        		var InputIdToDelete = '{!$Component.auxInputDeletes}';
-				        	</script>
-				        </span>
+				        <script>
+			        		var InputIdToDelete = '{!$Component.auxInputDeletes}';
+			        	</script>
+				    </span>
 			        <input type="button" class="overlayCancelBtn" onclick="modal.close();" value="Cancel" id="cancelButton"/>
 				</div>
 			</apex:form>

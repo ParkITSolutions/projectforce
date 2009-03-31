@@ -32,8 +32,7 @@
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsCreateNewTeam.css')}" />
     
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/teamsCreateNewTeam.js')}" />
-    
-    
+        
     <apex:includeScript value="/soap/ajax/12.0/connection.js"/>
         <script>
         	document.observe('dom:loaded', function (){ 
@@ -57,7 +56,7 @@
             sforce.connection.defaultNamespace = namespace;
             
         }
-        
+        var projectId='{!Project.Id}';
         /*
         var publicProfile = '{!Project.PublicProfile__c}';
         var newMemberProfile = '{!Project.NewMemberProfile__c}';
@@ -135,7 +134,7 @@
 	                    <div class="Formcontentfolder">	
 	                    	<!-- Dynamic Layout Output don't remove -->
 		                    <div class="DynamicLayoutResponse">
-	<apex:form ><label>ProjectCreatedBy</label><apex:inputField value="{!project.ProjectCreatedBy__c}" required="false" /><br/><br/><label>NewMemberProfile</label><apex:inputField value="{!project.NewMemberProfile__c}" required="false" /><br/><br/><label>ProjectCreatedDate</label><apex:inputField value="{!project.ProjectCreatedDate__c}" required="false" /><br/><br/><label>PublicProfile</label><apex:inputField value="{!project.PublicProfile__c}" required="false" /><br/><br/><label>Priority</label><apex:inputField value="{!project.Priority__c}" required="false" /><br/><br/><label>Picture</label><apex:inputField value="{!project.Picture__c}" required="false" /><br/><br/><label>SyncToCalendar</label><apex:inputField value="{!project.SyncToCalendar__c}" required="false" /><br/><br/><label>Project Name</label><apex:inputField value="{!project.Name}" required="true" /><br/><br/><label>Owner</label><apex:inputField value="{!project.OwnerId}" required="false" /><br/><br/><label>Description</label><apex:inputField value="{!project.Description__c}" required="true" /><br/><br/><label>Type</label><apex:inputField value="{!project.Type__c}" required="false" /><br/><br/><apex:commandButton action="{!save}" value="Save" onclick="statusSaving(this);" rerender="NewProjectFormContainer" oncomplete="onCompleteCallBackFunction();"  /><apex:commandButton value="Cancel" onclick="history.go(-1);" /></apex:form>
+	<apex:form ><label>Project Name</label><apex:inputField value="{!project.Name}" required="true" /><br/><br/><label>Description</label><apex:inputField value="{!project.Description__c}" required="true" /><br/><br/><label>Priority</label><apex:inputField value="{!project.Priority__c}" required="true" /><br/><br/><label>Sprint</label><apex:inputField value="{!project.Sprint__c}" required="true" /><br/><br/><apex:commandButton action="{!save}" value="Save" onclick="statusSaving(this);" rerender="NewProjectFormContainer" oncomplete="onCompleteCallBackFunction();"  /><apex:commandButton value="Cancel" onclick="history.go(-1);" /></apex:form>
 		                    </div>
 		            	</div>
 		            	<!--Divs to format the page  -->
@@ -408,7 +407,7 @@
 									</td>
 								</tr>
 							</table>
-							<apex:commandButton styleClass="secondFormAction" style="display:none;" action="{!saveAttachmentsAndAccess}" value="No seas boton"/>
+							<apex:commandButton styleClass="secondFormAction" style="display:none;" action="{!saveAttachmentsAndAccess}" onclick="statusSaving()"/>
 						</apex:form>
 					</div>
 					<div class="title_line_btn" style="display:none;"></div>
@@ -417,89 +416,4 @@
             </div>
         </div>
     </div>
-    <script>
-	  	function createLayout(){
-			var div = $$('.DynamicLayoutResponse')[0];
-			var form = div.firstDescendant();
-			var btnSaveForm = form.getElementsByClassName('btn')[0];
-			var btnCancelForm=form.getElementsByClassName('btn')[1];
-			
-			//Insert the buttons into the div
-			var buttonsDiv=$('btnContainer');
-			buttonsDiv.innerHTML= '';
-			buttonsDiv.show();
-			buttonsDiv.insert(btnSaveForm);
-			buttonsDiv.insert(btnCancelForm);
-			
-			//Format save button
-			btnSaveForm.addClassName('SaveBtn');
-			btnSaveForm.value="Create";
-			
-			//Format Cancel button
-			btnCancelForm.addClassName('cancelBtn');
-			
-			//Show the horizontal line
-			var divLine=$$('.title_line_btn')[0];
-			divLine.show();
-				
-			//Format TextAreas
-			var textAreas = document.getElementsByTagName('textarea');
-			for (i in textAreas){
-				textAreas[i].rows='4';
-				textAreas[i].cols='75';
-			}
-		}
-	  	
-	  	
-		function onCompleteCallBackFunction(){
-			
-			//saveAttachmentsAndAccess();
-			createLayout();
-			if($$('.errorMsg').length > 0){
-				Effect.Appear('warning_to_user');
-			}else{
-				Effect.Fade('warning_to_user');
-			}
-		 	$$('.secondFormAction')[0].click();
-		}
-		
-		
-		function statusSaving(obj){
-			obj.value = 'Saving... ';
-			obj.disable = 'disabled';
-			var cancelBtn = obj.nextSibling;
-			cancelBtn.value = 'Saving... ';
-			cancelBtn.disable = 'disabled'; 
-		}
-		
-		function setAccess(radio){
-			var input=$('ProjectCreateNew:secondForm:openOrClosed');
-		
-			
-			
-					
-			if(radio.checked == true && radio.id == 'openTeam'){
-				alert('abierto');
-				input.value = 'open';
-		
-				
-			}else if (radio.checked == true && radio.id == 'closedTeam'){
-				alert('cerrado');
-				input.value = 'close';
-		
-				
-		
-			}else if (radio.checked == true && radio.id == 'privateTeam'){
-				alert('privado');
-				input.value = 'private';
-		
-			}
-		
-		}
-		
-		
-		
-   	</script>
- 
-  
 </apex:page>

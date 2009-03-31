@@ -10,6 +10,12 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>ProjectTaskAssignToMeChanged__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>ProjectTaskAssignToMeChanged</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>ProjectTaskAssignedToMe__c</fullName>
         <defaultValue>false</defaultValue>
         <description>If i have proyect task assigned to me</description>
