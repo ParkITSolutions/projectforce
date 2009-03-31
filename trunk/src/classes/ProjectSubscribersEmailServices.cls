@@ -158,8 +158,9 @@ public class ProjectSubscribersEmailServices {
         else 
         if(subscriptions.size() > 0 && subscriptions != null)
         {   
-            for( ProjectSubscription__c ts : subscriptions )
-            address.add(ts.User__r.Email);
+            for( ProjectSubscription__c ts : subscriptions ){
+            	address.add(ts.User__r.Email);
+            }
     
             SendMail(address, subscriptions[0].Project__r, emailMsj, emailSub);
         }   
@@ -184,7 +185,7 @@ public class ProjectSubscribersEmailServices {
         //Specify the subject line for your email address.
         mail.setSubject(subject);
 
-        mail.setSenderDisplayName(team.Name);
+        //mail.setSenderDisplayName(team.Name);
         // Set to True if you want to BCC yourself on the email.
         mail.setBccSender(false);
         // Optionally append the salesforce.com email signature to the email.

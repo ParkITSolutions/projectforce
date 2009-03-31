@@ -10,7 +10,7 @@
     </fields>
     <fields>
         <fullName>Image__c</fullName>
-        <formula>IF(Picture__c != null, &quot;&lt;img src=&apos;/servlet/servlet.FileDownload?file=&quot; &amp; Picture__c &amp; &quot;&apos; width=&apos;100&apos; /&gt;&quot;, &quot;No Image&quot;)</formula>
+        <formula>IF(Picture__c != null, IMAGE(&quot;/servlet/servlet.FileDownload?file=&quot; &amp; Picture__c, &apos;Project Avatar&apos;, 70, 70) , &quot;No Image&quot;)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Image</label>
         <type>Text</type>
@@ -70,6 +70,12 @@
         <relationshipLabel>Project</relationshipLabel>
         <relationshipName>Project</relationshipName>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Sprint__c</fullName>
+        <label>Sprint</label>
+        <length>255</length>
+        <type>Text</type>
     </fields>
     <fields>
         <fullName>SyncToCalendar__c</fullName>

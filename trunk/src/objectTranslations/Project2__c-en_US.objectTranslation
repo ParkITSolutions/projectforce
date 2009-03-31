@@ -43,6 +43,10 @@
         <relationshipLabel><!-- Project --></relationshipLabel>
     </fields>
     <fields>
+        <label><!-- Sprint --></label>
+        <name>Sprint__c</name>
+    </fields>
+    <fields>
         <label><!-- SyncToCalendar --></label>
         <name>SyncToCalendar__c</name>
     </fields>

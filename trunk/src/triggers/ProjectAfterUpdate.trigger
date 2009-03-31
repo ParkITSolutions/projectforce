@@ -10,16 +10,14 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 			List<GroupMember> groupMemberList = [select UserOrGroupId, GroupId, id from GroupMember where GroupId in:groupList];
 			List<Group> go = [Select g.Type, g.Name from Group g where Type = 'Organization'];
 			List<ProjectMember__c> projectMemberList = [select project__c, id, User__c from ProjectMember__c where project__c in:idsProject];
-
+			
             //Customer Portal Group            
             List<Group> portalGroup = new List<Group>();
-            //if(ProjectsCreateNewProjectController.getAllowCustomerStatic()) 
-            portalGroup = [Select g.Type, g.Name from Group g where Type = 'AllCustomerPortal'];
+           	portalGroup = [Select g.Type, g.Name from Group g where Type = 'AllCustomerPortal'];
 
             //Partner Portal Group
             List<Group> partnerGroup = new List<Group>();
-            //if(ProjectsCreateNewProjectController.getAllowPartnerStatic())
-            partnerGroup = [Select g.Type, g.Name from Group g where Type = 'PRMOrganization'];	
+           	partnerGroup = [Select g.Type, g.Name from Group g where Type = 'PRMOrganization'];	
             			
 			for (Integer it = 0; it < Trigger.new.size(); it++) {
 				
@@ -28,7 +26,9 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 				
 				//If old team was open or close
 				if(oldProj.PublicProfile__c != null || oldProj.NewMemberProfile__c != null){
+
 					if(newProj.PublicProfile__c == null && newProj.NewMemberProfile__c == null){
+
 						String groupName = 'projectSharing' + newProj.Id;
 						Group projectGroup;
 						Boolean findGroup = false;
@@ -47,32 +47,39 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 						Boolean findGM = false;
 						Integer countGM = 0;
 						GroupMember gm;
+						
 						while (!findGM && countGM < groupMemberList.size()) {
+
 							if (groupMemberList[countGM].UserOrGroupId == go[0].id && groupMemberList[countGM].GroupId == projectGroup.Id) {
 								findGM = true;
-								gm = groupMemberList[countGM]; 
+								gm = groupMemberList[countGM];
+								List<String> groupMembersIds = new List<String>();
+								groupMembersIds.add(gm.id);
+								ProjectUtil.deleteGroupMembers(groupMembersIds);
 							}
 							else {
 								countGM++;	
 							}	
 						}
-						delete gm;
 						
-						if( portalGroup.size() > 0)
-						for( GroupMember j: groupMemberList ){
-							if( j.UserOrGroupId == portalGroup[ 0 ].Id && j.GroupId == projectGroup.Id ){
-								List<String> groupMembersIds = new List<String>();
-								groupMembersIds.add( j.Id );
-								ProjectUtil.deleteGroupMembers(groupMembersIds);
-							}	
+						if( portalGroup.size() > 0){
+							for( GroupMember j: groupMemberList ){
+								if( j.UserOrGroupId == portalGroup[ 0 ].Id && j.GroupId == projectGroup.Id ){
+									List<String> groupMembersIds = new List<String>();
+									groupMembersIds.add( j.Id );
+									ProjectUtil.deleteGroupMembers(groupMembersIds);
+								}	
+							}
 						}
-						if( partnerGroup.size() > 0)
-						for( GroupMember j : groupMemberList ){
-							if( j.UserOrGroupId == partnerGroup[ 0 ].Id && j.GroupId == projectGroup.Id ){
-								List<String> groupMembersIds = new List<String>();
-								groupMembersIds.add( j.Id );
-								ProjectUtil.deleteGroupMembers(groupMembersIds);
-							}	
+						
+						if( partnerGroup.size() > 0){
+							for( GroupMember j : groupMemberList ){
+								if( j.UserOrGroupId == partnerGroup[ 0 ].Id && j.GroupId == projectGroup.Id ){
+									List<String> groupMembersIds = new List<String>();
+									groupMembersIds.add( j.Id );
+									ProjectUtil.deleteGroupMembers(groupMembersIds);
+								}	
+							}
 						}
 
 						//Create GroupMember for all Project Members
@@ -86,9 +93,54 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 							}
 						}
 						insert groupMembers;
+					}else{
+						
+						//If Customer Portal group exist add GroupMember
+						List<GroupMember> gm2 = new List<GroupMember>();
+						Group instance = new Group();
+						if(portalGroup.size() > 0 ){
+							GroupMember gmPortal = new GroupMember();
+							// Get GroupMember if exists
+							instance = [ SELECT Id FROM Group WHERE Name =: groupsNames[ it ] LIMIT 1 ];
+							gm2 = [ SELECT Id FROM GroupMember WHERE GroupId =: instance.Id AND UserOrGroupId =: portalGroup[0].Id ];
+							
+							if(ProjectCreateNewProjectController.getAllowCustomerStatic()){
+								if( gm2.size() == 0 ){					
+				                    gmPortal.GroupId = instance.Id;
+				                    gmPortal.UserOrGroupId = portalGroup[0].Id;
+				                    insert gmPortal;
+								} 
+							}else if( gm2.size() > 0){
+								List<String> groupMembersIds = new List<String>();
+								groupMembersIds.add(gm2[0].id);
+								ProjectUtil.deleteGroupMembers(groupMembersIds);												
+							}
+						}                
+	
+						//If Partner Portal group exist add GroupMember
+						if(partnerGroup.size() > 0 ){
+							GroupMember gmPortal = new GroupMember();
+							// Get GroupMember if exists
+							instance = [ SELECT Id FROM Group WHERE Name =: groupsNames[ it ] LIMIT 1 ];
+							gm2 = [ SELECT Id FROM GroupMember WHERE GroupId =: instance.Id AND UserOrGroupId =: partnerGroup[0].Id ];
+							
+							if(ProjectCreateNewProjectController.getAllowPartnerStatic()){
+								if( gm2.size() == 0 ){					
+				                    gmPortal.GroupId = instance.Id;
+				                    gmPortal.UserOrGroupId = partnerGroup[0].Id;
+				                    insert gmPortal;
+								}
+							}else if( gm2.size() > 0){
+								List<String> groupMembersIds = new List<String>();
+								groupMembersIds.add(gm2[0].id);
+								ProjectUtil.deleteGroupMembers(groupMembersIds);
+							}											
+						}					
 					}
 				}else{
+
 					if(newProj.PublicProfile__c != null || newProj.NewMemberProfile__c != null){
+						
 						String groupName = 'projectSharing' + newProj.Id;
 						Group projectGroup;
 						Boolean findGroup = false;
@@ -102,17 +154,17 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 								countGroup++;
 							}	
 						}				
-		
+						
 						//Delete all GroupMembers
 						Boolean findGM = false;
 						Integer countGM = 0;
-						List<GroupMember> groupMembers = new List<GroupMember>();
+						List<String> groupMembersIds = new List<String>();
 						for (GroupMember groupMemberIter : groupMemberList) {
 							if (groupMemberIter.GroupId == projectGroup.Id) {
-								groupMembers.add(groupMemberIter);
+								groupMembersIds.add(groupMemberIter.id);
 							}	
 						}
-						//delete groupMembers;
+						ProjectUtil.deleteGroupMembers(groupMembersIds);
 						
 						//Create Everyone Member
 						GroupMember newGroupMember = new GroupMember();

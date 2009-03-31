@@ -1,6 +1,9 @@
 <apex:page controller="ProjectRedirectController" sidebar="false" showHeader="false">
     
+    <!-- Apex Toolkit Include -->
     <script src="/soap/ajax/13.0/connection.js" />
+    
+    <!-- Add scrip.aculo.us includes -->
     <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>    
@@ -120,11 +123,13 @@
             *@param page to add form
             *@param attribute associated
             */
-            save: function (page, attribute, rerender, oncomplete){
+            save: function (page, attribute, rerender, oncomplete, editId){
                 if(this.layoutFields.length > 0){
+                    
                     //Read Page
                     result = sforce.connection.query("Select Id, Name, Markup from ApexPage where Name = '" + page + "'");
                     pages = result.getArray("records");         
+                    
                     if(pages.length > 0){
 	                    var apexPage = pages[0];
 					}else{
@@ -139,6 +144,7 @@
                     var markup = 'DynamicLayoutResponse">\n\t';
                     markup += this.tagPrefix + ':form>';
 
+                    //Set Fields
                     for(var it=0; it < this.layoutFields.length; it++){
                         markup += '<label>' + this.layoutFields[it].label + '</label>';
                         markup += this.tagPrefix + ':inputField value="{';
@@ -164,7 +170,7 @@
                     markup += '</';
                     markup += 'apex:form>';                                     
                     
-
+					//Set bottom markup
                     pattern = 'o(-1);" />' + '</' + 'apex:form>';
                     var markupBottom = (markupAct[1].split(pattern)[0].length > 1) ? markupAct[1].split(pattern)[1] : markupAct[1].split(pattern)[0];
                     apexPage.Markup = markupAct[0] + markup + markupBottom;
@@ -175,9 +181,12 @@
 						
 						//Set action status and redirect
 	                    if(update[0].getBoolean("success")){
+	                       	//Success status
 	                        $$('.redirect')[0].innerHTML = 'Redirecting...';
 	                        $$('.redirect')[0].style.borderRight = 'solid green 5px';
-	                        location.href = "/apex/" + apexPage.Name;
+	                       
+	                        //Set Edit Id
+	                        location.href = (!editId) ? "/apex/" + apexPage.Name : "/apex/" + apexPage.Name + '?id=' + editId;
 	                    }else{
 							this.error('Error: Unable to Save');		                    	
 	                    }
@@ -210,9 +219,15 @@
         * ### Execute onload event ###
         */
         document.observe('dom:loaded', function (){ 
-                ObjectLayout.describeLayout(getURLParam('sO'));
-                ObjectLayout.save(getURLParam('page'), getURLParam('attr'), getURLParam('rR'), getURLParam('oC'));        
-            }
+				ObjectLayout.describeLayout(getURLParam('sO'));
+            	ObjectLayout.save(
+                	getURLParam('page'), 
+                	getURLParam('attr'), 
+                	getURLParam('rR'), 
+                	getURLParam('oC'), 
+                	getURLParam('eid')
+              	);        
+        	}
         );
         
     </script>

@@ -83,6 +83,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectSubscriptionController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProjectTaskDetailController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectTaskListController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -972,6 +980,10 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
+        <field>Project2__c.Sprint__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
         <field>Project2__c.SyncToCalendar__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
@@ -1110,6 +1122,10 @@
     <fieldLevelSecurities>
         <editable>true</editable>
         <field>ProjectSubscription__c.ProjectMemberJoinLeave__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>ProjectSubscription__c.ProjectTaskAssignToMeChanged__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
@@ -1489,7 +1505,7 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectCreateNewTask</apexPage>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectDetail</apexPage>
@@ -1520,6 +1536,14 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>ProjectSubscription</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>ProjectTaskDetail</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>ProjectTasksList</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
@@ -1529,7 +1553,7 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>UploadAttachment</apexPage>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>projectOverview</apexPage>

@@ -8,7 +8,7 @@
 	<div id="newAttachmentOverlay" style="display:none;" class="overlayForm">	
 		<!-- Overlay Title -->
 		<div class="overlayTitleContent">
-			<div class="overlayTitle">Create New Milestone</div>
+			<div class="overlayTitle">Add Attachment</div>
 			<div class="overlayCloseEvent">
 				<a href="Javascript:;" onclick="modal.close();">
 					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />

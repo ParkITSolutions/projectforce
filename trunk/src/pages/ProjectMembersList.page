@@ -354,11 +354,7 @@
 								</apex:outputpanel></td>
 								<td class="member_detail_description"><a href="javascript:;"
 									onclick="location.href='https://na1.salesforce.com/apex/PeopleProfileDisplay?id={!item.userId}'"
-									class="member_detail_description_underline">{!item.Name}</a> <img
-									class="imgState"
-									src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/online.gif')}" />
-								<img class="imgState"
-									src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/skype.gif')}" />
+									class="member_detail_description_underline">{!item.Name}</a> 
 								</td>
 								<td class="member_detail_description">{!item.company}</td>
 								<td class="member_detail_description">{!item.title}</td>

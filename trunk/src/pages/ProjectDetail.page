@@ -76,11 +76,11 @@
 	    </apex:composition>		
 		
 		<apex:form >
-			<apex:actionFunction name="refreshJoinButton" action="{!refreshJoinEvent}" rerender="thisForm" />
+			
 			<apex:outputPanel id="thisForm">
-				<apex:outputPanel layout="block" styleClass="breadcrumbs" rendered="{!teamIsOpen}">			
+				<apex:outputPanel layout="block" styleClass="breadcrumbs" rendered="{!IF(AND(NOT(isMember),isPublic),true,false)}">			
 					<apex:outputPanel styleClass="buttons" layout="block" >	
-						<apex:commandLink styleClass="blackbutton" action="{!joinTeam}" value="" oncomplete="refreshJoinButton();refreshLeaveButton();rerenderMemberList();showJoinMessageToUser();" rerender="thisForm, okMessageContainer" onclick="disableAndShowProgress(this);">
+						<apex:commandLink styleClass="blackbutton" action="{!joinProject}" value="" oncomplete="refreshJoinButton();refreshLeaveButton();rerenderMemberList();showJoinMessageToUser();" rerender="thisForm, okMessageContainer" onclick="disableAndShowProgress(this);">
 							<span>Join {!$ObjectType.Project2__c.label}</span>
 						</apex:commandLink>				
 					</apex:outputPanel>					
@@ -107,7 +107,7 @@
 				<div class="informationPanel clear" id="infoToUser" style="display:none;"></div>
 				<apex:form >
 					<apex:outputPanel layout="block" styleClass="joinMessage informationPanel clear" style="display:none;">
-						<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}" alt="ok" /><div>You are a member of this {!$ObjectType.Project2__c.label}&nbsp;<apex:commandLink action="{!leaveTeam}" value="Undo" rerender="thisForm, okMessageContainer" oncomplete="refreshLeaveButton();refreshJoinButton();rerenderMemberList();hideJoinMessageToUser();" onclick="disableAndShowProgress(this);" /></div>
+						<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}" alt="ok" /><div>You are a member of this {!$ObjectType.Project2__c.label}&nbsp;<apex:commandLink action="{!unjoinProject}" value="Undo" rerender="thisForm, okMessageContainer" oncomplete="refreshLeaveButton();refreshJoinButton();rerenderMemberList();hideJoinMessageToUser();" onclick="disableAndShowProgress(this);" /></div>
 					</apex:outputPanel>	
 				</apex:form>
 				<apex:form >

@@ -83,6 +83,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectSubscriptionController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProjectTaskDetailController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectTaskListController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1054,6 +1062,10 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
+        <field>Project2__c.Sprint__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
         <field>Project2__c.SyncToCalendar__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
@@ -1192,6 +1204,10 @@
     <fieldLevelSecurities>
         <editable>true</editable>
         <field>ProjectSubscription__c.ProjectMemberJoinLeave__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>ProjectSubscription__c.ProjectTaskAssignToMeChanged__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
@@ -1587,6 +1603,14 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectSearchResult</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>ProjectSubscription</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>ProjectTaskDetail</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>

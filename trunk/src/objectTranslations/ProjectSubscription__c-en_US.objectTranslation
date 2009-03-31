@@ -12,6 +12,10 @@
         <name>ProjectMemberJoinLeave__c</name>
     </fields>
     <fields>
+        <label><!-- ProjectTaskAssignToMeChanged --></label>
+        <name>ProjectTaskAssignToMeChanged__c</name>
+    </fields>
+    <fields>
         <label><!-- ProjectTaskAssignedToMe --></label>
         <name>ProjectTaskAssignedToMe__c</name>
     </fields>

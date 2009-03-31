@@ -9,7 +9,9 @@ trigger ProjectAfterInsert on Project2__c bulk(after insert) {
 
             //Customer Portal Group            
             List<Group> portalGroup = new List<Group>();
+           
             if(ProjectCreateNewProjectController.getAllowCustomerStatic()) 
+            
             portalGroup = [Select g.Type, g.Name from Group g where Type = 'AllCustomerPortal'];
 	           
             //Partner Portal Group

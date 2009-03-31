@@ -9,7 +9,8 @@ public class ProjectUtil {
 		return ProjectUtil.isTest;
 	}
 	
-	@future public static void insertQueueSObjects (String projectQueueId, String projId ){
+	@future 
+	public static void insertQueueSObjects (String projectQueueId, String projId ){
         
         // ### Allow SObjects to be managed by recently created queues ###
         List<QueueSobject> sobjectsQueueAllowed = new List<QueueSobject>();

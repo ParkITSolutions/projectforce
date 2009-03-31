@@ -6,8 +6,6 @@ public class ProjectCreateNewProjectController {
     
     // max picture size bytes
     public final Integer MAX_SIZE = 524288;
-    //DELETE THIS
-    String myString = 'First String';
     Project2__c theProject = new Project2__c();
     String ProjectPicture = '';
     Boolean validSizePicture = true;
@@ -27,34 +25,43 @@ public class ProjectCreateNewProjectController {
     */
     public ProjectCreateNewProjectController(ApexPages.StandardController controller){
     	
+    	newProfile.projectOpenOrClosed = 'open';
     	allowCustomerActivated = [ SELECT Id FROM Group WHERE Type = 'AllCustomerPortal' ];
 		allowPartnetActivated = [ SELECT Id FROM Group WHERE Type = 'PRMOrganization' ];
         if (param != null){
         	
         	//Read Project
         	setProject(param);
-
 			//Set User Permissions
         	genPermissions();
         	
         	List<GroupMember> gm = new List<GroupMember>();
 			Group instance = new Group();
 			String instanceName = 'projectSharing' + param;
+			instance = [ SELECT Id FROM Group WHERE Name =: instanceName LIMIT 1 ];
 			
 			if(allowCustomerActivated.size() > 0 ){
-				instance = [ SELECT Id FROM Group WHERE Name =: instanceName LIMIT 1 ];
-				gm = [ SELECT Id FROM GroupMember WHERE GroupId =: instance.Id AND UserOrGroupId =: allowCustomerActivated[0].Id ];
-				ProjectCreateNewProjectController.allowCustomer = (gm.size() > 0) ? true : false;
+				gm = [ SELECT Id FROM GroupMember WHERE GroupId =:instance.Id AND UserOrGroupId =: allowCustomerActivated[0].Id ];
+				allowCustomer = (gm.size() > 0) ? true : false;
 			}
 			
 			if(allowPartnetActivated.size() > 0 ){
-				instance = [ SELECT Id FROM Group WHERE Name =: instanceName LIMIT 1 ];
-				gm = [ SELECT Id FROM GroupMember WHERE GroupId =: instance.Id AND UserOrGroupId =: allowPartnetActivated[0].Id ];
-				ProjectCreateNewProjectController.allowPartner = (gm.size() > 0) ? true : false;
-			}	
+				gm = [ SELECT Id FROM GroupMember WHERE GroupId =:instance.Id AND UserOrGroupId =: allowPartnetActivated[0].Id ];
+				allowPartner = (gm.size() > 0) ? true : false;
+			}
+						
+			String members_profile = theProject.NewMemberProfile__r.Name;
+			String public_profile = theProject.PublicProfile__r.Name;
+			if (public_profile == 'Public Profile') {
+				newProfile.projectOpenOrClosed = 'open';
+			}
+			else if (members_profile == 'Member Profile') {
+				newProfile.projectOpenOrClosed = 'close';
+			}
+			else {
+				newProfile.projectOpenOrClosed = 'private';
+			}
 			
-			newProfile.projectOpenOrClosed = theProject.Type__c;
-
         	if(!userPermissions.getCanManage())
         		throw new CustomException('Insufficient Privileges');
         }
@@ -141,25 +148,25 @@ public class ProjectCreateNewProjectController {
 	*@param Boolean
 	*/
 	public void setAllowCustomer( Boolean value ){
-		ProjectCreateNewProjectController.allowCustomer = value;
+		allowCustomer = value;
 	}
 	/** 
 	*@param Boolean
 	*/
 	public void setAllowPartner( Boolean value ){
-		ProjectCreateNewProjectController.allowPartner = value;
+		allowPartner = value;
 	}
 	/**
 	*@return Boolean
 	*/
 	public Boolean getAllowCustomer(){
-		return ProjectCreateNewProjectController.allowCustomer;
+		return allowCustomer;
 	}
 	/**
 	*@return Boolean 
 	*/
 	public Boolean getAllowPartner(){
-		return ProjectCreateNewProjectController.allowPartner;
+		return allowPartner;
 	} 
 	/**
 	*@return Boolean
@@ -194,6 +201,7 @@ public class ProjectCreateNewProjectController {
     *@param String Project id
     *@void
     */
+   
     public void setProject (String pId){
 	    
 	    Map<String, Schema.SObjectField> projectFields = Schema.SObjectType.Project2__c.fields.getMap();
@@ -208,7 +216,7 @@ public class ProjectCreateNewProjectController {
 	    }
 	    
 	    //Execute Dynamic SOQL
-	    query += fields.substring(0, (fields.length() - 2)) + ' from Project2__c p where Id = \'' + pId + '\'';
+	    query += fields.substring(0, (fields.length() - 2)) + ', NewMemberProfile__r.Name,PublicProfile__r.Name from Project2__c p where Id = \'' + pId + '\'';
 	    theProject = Database.query(query);
 	    
 	    if(theProject.Id != null){
@@ -222,6 +230,7 @@ public class ProjectCreateNewProjectController {
 	    } 
     
     }
+    
     
     /**
     * Project Profile Select
@@ -272,25 +281,21 @@ public class ProjectCreateNewProjectController {
     */    
     public void saveProject(){
     	try{	
-    			
-    			if(theProject.Id == null){
-    				insert theProject;
-    			}else{
-		    		update theProject;	
-    			}
-    			
-		    	
-		    	
-    		
+			if(theProject.Id == null){
+				insert theProject;
+			}else{
+	    		update theProject;	
+			}
     	}catch(Exception e){
     		throw e;
     	}
     }
     
     public void saveAttachmentsAndAccess(){
-    	System.debug('estoy');
+    	
     	validSizePicture = true;
 		validTypePicture = true; 
+    	
     	if (document.name == null || document.name == '' || document.BodyLength > MAX_SIZE || 
 			!(document.ContentType == 'image/jpeg' || document.ContentType == 'image/pjpeg' || document.ContentType == 'image/gif' 
 			|| document.ContentType == 'image/png' || document.ContentType == 'image/x-png')){
@@ -305,28 +310,29 @@ public class ProjectCreateNewProjectController {
 			if (!validSizePicture || !validTypePicture) {
 				//return null;
 			}
-		}	
+		}
+			
 		if(document.name != null && document.name != ''){
     		document.ParentId = theProject.Id;
 	    	insert document;
     		theProject.Picture__c = document.Id;
     		
 		}	
-		System.debug('Abierto o cerrado ' + newProfile.projectOpenOrClosed);
-		if(newProfile.projectOpenOrClosed == 'open'){
-				theProject.PublicProfile__c = [ SELECT id FROM ProjectProfile__c WHERE Name =: 'Public Profile' ].id;
-				theProject.Type__c = 'open';			
-			}else if (newProfile.projectOpenOrClosed == 'close') {
-				theProject.NewMemberProfile__c = [ SELECT id FROM ProjectProfile__c WHERE Name =: 'Member Profile' limit 1 ].id;
-				theProject.PublicProfile__c = null;
-				theProject.Type__c = 'close';			
-			}else if (newProfile.projectOpenOrClosed == 'private'){
-				theProject.Type__c = 'private';
-				theProject.PublicProfile__c = null;
-				theProject.NewMemberProfile__c = null;
-		}	
-		saveProject();	
 		
+		if(newProfile.projectOpenOrClosed == 'open'){
+			theProject.PublicProfile__c = [ SELECT id FROM ProjectProfile__c WHERE Name =: 'Public Profile' ].id;
+			theProject.Type__c = 'open';			
+		}else if (newProfile.projectOpenOrClosed == 'close') {
+			theProject.NewMemberProfile__c = [ SELECT id FROM ProjectProfile__c WHERE Name =: 'Member Profile' limit 1 ].id;
+			theProject.PublicProfile__c = null;
+			theProject.Type__c = 'close';			
+		}else if (newProfile.projectOpenOrClosed == 'private'){
+			theProject.Type__c = 'private';
+			theProject.PublicProfile__c = null;
+			theProject.NewMemberProfile__c = null;
+		}	
+
+		saveProject();	
 		
 		//PageReference pageRef = new PageReference('/apex/projectDetail?id=' + theProject.Id);
 		//pageRef.setRedirect(true);
@@ -336,13 +342,7 @@ public class ProjectCreateNewProjectController {
     public void save(){
     	saveProject();
     }
-    public void showString(){
-    	myString='This is my string';
-    }
-    public String getMyString(){
-    	return myString;
-    }
-   
+ 
 	public PageReference removeAvatar(){
 		if( this.theProject != null ){
 				Attachment avatar = new Attachment();
