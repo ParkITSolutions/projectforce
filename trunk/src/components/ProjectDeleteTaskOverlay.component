@@ -43,7 +43,7 @@
 				<!-- Saven and Cancel Buttons -->
 				<div class="overlayFromButtons" align="center">
 					<span id="deleteEventContainer">
-						<apex:commandButton styleclass="overlaySaveBtn" action="{!deleteTask}" value="Continue and delete" onclick="modal.close();showSwirley();" oncomplete="redirect(); showMessageToUser('Deleted item(s)','success');" rerender="taskListPanel" />
+						<apex:commandButton styleclass="overlaySaveBtn" action="{!deleteTask}" value="Continue and delete" onclick="modal.close();showSwirley();setTimeout('Effect.Fade(\'infoToUser\')', 10000);" oncomplete="redirect(); showMessageToUser('Deleted item(s)','success');" rerender="taskListPanel" />
 						<apex:inputHidden id="auxInputDeletes" value="{!idDeletes}" />
 				        <script>
 			        		var InputIdToDelete = '{!$Component.auxInputDeletes}';

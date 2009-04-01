@@ -13,6 +13,7 @@ public class ProjectDetailAttachmentController {
 	*/
 	public void setProject(String id){
 		project = id;
+		readAttachments();
 	}
 	
 	/**
@@ -26,8 +27,11 @@ public class ProjectDetailAttachmentController {
 	*@return formated attachment list
 	*/
 	public List<AttachmentInfo> getAttachments(){
-		readAttachments();
 		return attachments;
+	}
+	
+	public Boolean getAttachmentCount(){
+		return attachments.size() > 0;
 	}
 
 	/**

@@ -33,6 +33,7 @@ public class UserPermissions {
 	public String getId () {
 		return id;
 	}
+
 	
 	/**
 	*@return String
@@ -129,41 +130,41 @@ public class UserPermissions {
 			if(!isAdmin){
 				if(members == null){
 					members = new List<ProjectMember__c>();
-					/*
+					
 					members = [select
-									ProjectProfile__r.ManageProjectTasks__c,
-									ProjectProfile__r.CreateProjectTasks__c,
-									ProjectProfile__r.Description__c,
+									Profile__r.ManageProjectTasks__c,
+									Profile__r.CreateProjectTasks__c,
+									Profile__r.Description__c,
 									User__c
 							  from ProjectMember__c 
 							  where User__c =:id 
 							  and Project__c=:Project 
 							  limit 1];
-					*/
+					
 				}
 				// If the user is a member of the project we should use the profile assigned to that user
 				if (members.size() > 0) {
-					/*
-					profile = members[0].ProjectProfile__r;
-					*/
+					
+					profile = members[0].Profile__r;
+					
 				// If the user is not a member of the project then we have to go to the public profile of the project
 				// to figure out the permissions.
 				}else{
 					if(currentProject == null){
 						currentProject = new List<Project2__c>();
-						/*
-						List<Project2__c> currentProject = [SELECT ProjectProfile__c, 
+						
+						List<Project2__c> currentProject = [SELECT PublicProfile__c, 
 													 Id,
-													 ProjectProfile__r.ManageProjectTasks__c,
-													 ProjectProfile__r.CreateProjectTasks__c,
-													 ProjectProfile__r.Description__c
+													 PublicProfile__r.ManageProjectTasks__c,
+													 PublicProfile__r.CreateProjectTasks__c,
+													 PublicProfile__r.Description__c
 											  FROM Project2__c
 											  WHERE Id =: Project];
 										
 						if(currentProject.size() > 0) 
 						
-							profile = currentProject[0].ProjectProfile__r;
-						*/
+							profile = currentProject[0].PublicProfile__r;
+						
 					}
 				}				
 				if (profile != null) {
@@ -191,6 +192,7 @@ public class UserPermissions {
 			
 			if(ownerId == id) 
 				canManage = true;  // Shouldnt this be called user UserId?
+			
 		}catch(Exception e){
 			throw e;
 		}

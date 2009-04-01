@@ -124,7 +124,7 @@ public with sharing class ProjectOverviewController {
         if(filter == 'newProjects'){
             projects = [Select 
                     (Select Id From ProjectsMembers__r), 
-                    (Select Id From ProjectsTasks__r), 
+                    (Select Id, Milestone__c From ProjectsTasks__r), 
                     t.CreatedDate ,
                     t.Name,
                     t.Picture__c, 
@@ -134,7 +134,7 @@ public with sharing class ProjectOverviewController {
         }else if(filter == 'allProjects'){
             projects = [Select 
                     (Select Id From ProjectsMembers__r), 
-                    (Select Id From ProjectsTasks__r), 
+                    (Select Id, Milestone__c From ProjectsTasks__r), 
                     t.Name,
                     t.Picture__c, 
                     t.Id  
@@ -144,6 +144,7 @@ public with sharing class ProjectOverviewController {
             isAllProjects = true;
         //@Default My Projects
         }else {
+           
             List<ProjectMember__c> tml = new List<ProjectMember__c>();
             tml = [Select s.Project__c,s.Project__r.Id
                     From ProjectMember__c s
@@ -159,7 +160,7 @@ public with sharing class ProjectOverviewController {
             
             projects = [Select
             		(Select Id,User__c From ProjectsMembers__r), 
-					(Select Id From ProjectsTasks__r),  
+					(Select Id, Milestone__c From ProjectsTasks__r),  
                     t.Name,
                     t.Picture__c, 
                     t.Id  
@@ -174,15 +175,23 @@ public with sharing class ProjectOverviewController {
         }
         //Populate Inner class with project List
         if(projects.size() > 0){
+            
             for(Integer i=0; i<projects.size(); i++){
+                
                 Project t = new Project();
                 t.name = projects[i].Name;
                 t.image = projects[i].Picture__c;
                 t.id = projects[i].Id;
                 t.members = projects[i].ProjectsMembers__r.size();
                 t.tasks = projects[i].ProjectsTasks__r.size();
-                // looking for milestone in tasks
-                t.milestones = [select count() from ProjectTask__c task where task.Milestone__c=true and task.Project__r.Id=:t.Id ];
+                
+                //Looking for milestone in tasks
+                t.milestones = 0;
+                for(ProjectTask__c task : projects[i].ProjectsTasks__r){
+                	if(task.Milestone__c)
+						t.milestones++;
+                } 
+                
                 //t.discussions = projects[i].DiscussionTopics__r.size();
                 if(filter == 'newProjects'){
                     if(projects[i].CreatedDate != null){

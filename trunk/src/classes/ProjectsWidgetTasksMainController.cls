@@ -73,7 +73,7 @@ public with sharing class ProjectsWidgetTasksMainController {
         return listSize;
     }
     */
-    public UserPermissions userPermissions = ProjectsDetailController.userPermission.clone();
+    public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
     
     /**
     * Read user permissions

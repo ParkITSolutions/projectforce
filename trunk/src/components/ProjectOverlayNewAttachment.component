@@ -16,7 +16,9 @@
 			</div>
 		</div>
 		<div class="overlayMainContent">
-			<iframe id="uploadIframe" src="/apex/UploadAttachment?pId={!parentId}" style="border:none;" />
+			<center>
+				<iframe id="uploadIframe" src="/apex/UploadAttachment?pId={!parentId}" style="border:none;" />
+			</center>
 		</div>
 	</div>
 </apex:component>

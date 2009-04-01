@@ -33,14 +33,30 @@ public class ProjectUtil {
         
         // Insert all the allowed sobjects  
         insert sobjectsQueueAllowed;
-        
-       	//Upsert Team owner
-	   	Project2__c tempProject = [select ownerId, Id, Name from Project2__c where Id =: projId limit 1];
-	   	tempProject.ownerId = projectQueueId;
-	   	// We set this to true becuase we dont want all the minifeed triggers and update 
-	   	// triggers firing off when all we want to do is update the owner id.
-	    upsert tempProject;
+
     }
+    
+	@future
+	public static void upsertProjectOwner (String projectQueueId, String projId){
+		try{
+			System.debug('tttt');
+			//Upsert Team owner
+		   	Project2__c tempProject = [select ownerId, Id, Name from Project2__c where Id =: projId limit 1];
+		   	tempProject.ownerId = projectQueueId;
+		   	// We set this to true becuase we dont want all the minifeed triggers and update 
+		   	// triggers firing off when all we want to do is update the owner id.
+		    update tempProject;
+		}catch (Exception e){
+			throw e;
+		}
+	}
+	/*
+	public static void aux(String projectQueueId, String projId){
+		upsertProjectOwner(projectQueueId,projId);
+		
+	}
+	*/
+		
     
     /**
 	* Return the Namespace Prefix
