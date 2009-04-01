@@ -14,7 +14,8 @@
     public ProjectMembersListController pmc = new ProjectMembersListController(); 
     public static UserPermissions userPermission = new UserPermissions();
     private String projectType = '';	
-    String teamIdParam = System.currentPageReference().getParameters().get('id'); 
+    String teamIdParam = System.currentPageReference().getParameters().get('id');
+    public String USERID =  UserInfo.getUserId(); 
     
     /**
     * Constructor
@@ -23,9 +24,13 @@
         if(teamIdParam != null)
             getTeamDetail();
             genTeamData();        
-        //genPermissions();
+        	genPermissions();
         this.projectType = getTeamspace().Type__c;
     }   
+    public Boolean getIsLastMemberAdmin(){
+    	return isLastMemberAdmin;
+   	}
+   
     
     /**
     *@param String team id
@@ -50,45 +55,29 @@
         return (currentPageUrl != null && currentPageUrl.indexOf('TeamsSubscription') != -1);
     } 
     
-    public String USERID =  UserInfo.getUserId();
+
     
-    //public UserPermissions userPermissionsTeam = new UserPermissions();
     
-    //public UserPermissions userPermissionsWiki = new UserPermissions();
-    
-    /**
-    *@return UserPermission
-    */
-    //public UserPermissions getUserPermissionsWiki () {
-    //  return userPermissionsWiki;
-    //}
     
     /**
     * Load permission for current user
     */
-    /*
-    public void genPermissions () {
+ 	  public void genPermissions () {
         userPermission.setId(UserInfo.getUserId());
-        userPermission.setTeam(teamIdParam);
-        userPermission.setObjectType('Wiki');
+        userPermission.setProject(teamIdParam);
+        userPermission.setObjectType('Project');
         userPermission.setPermissions();
-        userPermissionsWiki = userPermission;
-        
-        userPermissionsTeam.setId(UserInfo.getUserId());
-        userPermissionsTeam.setTeam(teamIdParam);
-        userPermissionsTeam.setObjectType('Team');
-        userPermissionsTeam.setPermissions();                   
     }
-    */
     
     /**
     *@return UserPermission
     */
-    /*
-    public UserPermissions getUserPermission () {
+    
+    public UserPermissions getUserPermissions () {
+    	System.debug('aaa' + userPermission.getCanManage());
         return userPermission;
     }   
-    */
+   
     
     /**
     * Read Team
@@ -177,7 +166,7 @@
 				return this.projectRedirect();
 		}else{
 			isLastMemberAdmin = true;
-		}	
+		}
 		return null;
 	}
 	public PageReference projectRedirect(){

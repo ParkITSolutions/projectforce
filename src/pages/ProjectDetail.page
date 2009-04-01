@@ -31,7 +31,6 @@
 	<style> 
 		.bodyDiv a.blackbutton {
 				background: transparent url({!URLFOR($Resource.ProjectResources, 'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right top;
-							
 		}
 		
 		div.sfdcDetailFormated table.detailList td{
@@ -40,7 +39,13 @@
 		
 		div.sfdcDetailFormated table.detailList td.labelCol{
 			font-weight: bold:
-		}	
+		}
+		#btnDiv {
+			margin: 5px 0px 0px 500px;
+		}
+	
+	
+		
 	</style>
 	
 	<script>
@@ -75,15 +80,21 @@
 		    </apex:define>
 	    </apex:composition>		
 		
-		<apex:form >
-			
+			<apex:form >
 			<apex:outputPanel id="thisForm">
-				<apex:outputPanel layout="block" styleClass="breadcrumbs" rendered="{!IF(AND(NOT(isMember),isPublic),true,false)}">			
-					<apex:outputPanel styleClass="buttons" layout="block" >	
-						<apex:commandLink styleClass="blackbutton" action="{!joinProject}" value="" oncomplete="refreshJoinButton();refreshLeaveButton();rerenderMemberList();showJoinMessageToUser();" rerender="thisForm, okMessageContainer" onclick="disableAndShowProgress(this);">
-							<span>Join {!$ObjectType.Project2__c.label}</span>
+				<apex:outputPanel styleClass="isLastMemberAdmin" style="display: none;" >{!isLastMemberAdmin}</apex:outputPanel>
+				<apex:outputPanel layout="block" styleClass="breadcrumbs">
+					<div id="btnDiv">
+						<apex:commandLink styleClass="blackbutton" action="" value="" oncomplete="" rerender="{IF(userPermission.canManage,true,false)}" onclick="disableAndShowProgress(this);">
+							<span> Delete </span>
+						</apex:commandLink>			
+						<apex:commandLink styleClass="blackbutton" action="{!joinProject}" rendered="{!IF(AND(NOT(isMember),isPublic),true,false)}" value="" oncomplete="refreshJoinButton();showJoinMessageToUser();" rerender="thisForm, okMessageContainer" onclick="disableAndShowProgress(this);">
+							<span> Join </span>
+						</apex:commandLink>			
+						<apex:commandLink styleClass="blackbutton" action="{!unjoinProject}" rendered="{!IF(isMember,true,false)}" value="" onComplete="showWarningIsLastAdmin();" rerender="thisForm,okMessageContainer" onclick="disableAndShowProgress(this);">
+							<span> Unjoin </span>
 						</apex:commandLink>				
-					</apex:outputPanel>					
+					</div>				
 				</apex:outputPanel>
 			</apex:outputPanel>
 		</apex:form>
@@ -153,9 +164,10 @@
 		
 	<c:ProjectOverlayNewTask />
 	<c:ProjectOverlayNewMilestone />
-
+ 
 	<script>
 		readPortalCSSRules();
-	</script> 
+	</script>
 	
+		
 </apex:page>

@@ -67,10 +67,8 @@ trigger ProjectAfterInsert on Project2__c bulk(after insert) {
 				
 				String projectQueueId = gdqproj.id;
 				
-                // ### Allow SObjects to be managed by recently created queues ###
-              
-              	ProjectUtil.insertQueueSObjects(projectQueueId,proj.id);
-                			 	
+				ProjectUtil.insertQueueSObjects(projectQueueId, proj.id);
+
 			   	/**
 				* Create __Shared object for team
 				*/
@@ -91,6 +89,8 @@ trigger ProjectAfterInsert on Project2__c bulk(after insert) {
 				firstProjectMember.Project__c = proj.Id;
 				firstProjectMember.Profile__c = defaultProfile.Id;
 				insert firstProjectMember;
+				
+				ProjectUtil.upsertProjectOwner(projectQueueId, proj.id);
 	
 			} 
 		}finally {

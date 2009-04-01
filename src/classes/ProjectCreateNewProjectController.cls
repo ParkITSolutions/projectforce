@@ -32,8 +32,10 @@ public class ProjectCreateNewProjectController {
         	
         	//Read Project
         	setProject(param);
-			//Set User Permissions
-        	genPermissions();
+		
+        	
+        	//generate Profiles
+        	genProfiles(); 
         	
         	List<GroupMember> gm = new List<GroupMember>();
 			Group instance = new Group();
@@ -280,6 +282,8 @@ public class ProjectCreateNewProjectController {
     *@throws Exception
     */    
     public void saveProject(){
+		//Set User Permissions
+    	this.genPermissions();
     	try{	
 			if(theProject.Id == null){
 				insert theProject;
@@ -291,7 +295,7 @@ public class ProjectCreateNewProjectController {
     	}
     }
     
-    public void saveAttachmentsAndAccess(){
+    public PageReference saveAttachmentsAndAccess(){
     	
     	validSizePicture = true;
 		validTypePicture = true; 
@@ -308,7 +312,7 @@ public class ProjectCreateNewProjectController {
 			} 
 			document = new Attachment();
 			if (!validSizePicture || !validTypePicture) {
-				//return null;
+				return null;
 			}
 		}
 			
@@ -334,9 +338,9 @@ public class ProjectCreateNewProjectController {
 
 		saveProject();	
 		
-		//PageReference pageRef = new PageReference('/apex/projectDetail?id=' + theProject.Id);
-		//pageRef.setRedirect(true);
-		//return pageRef;
+		PageReference pageRef = new PageReference('/apex/projectDetail?id=' + theProject.Id);
+		pageRef.setRedirect(true);
+		return pageRef;
     }
     
     public void save(){
@@ -361,6 +365,49 @@ public class ProjectCreateNewProjectController {
 		pageRef.setRedirect(true);
 		return pageRef;
 		
+	}
+	
+	/**
+	*Generate the profiles 
+	*/
+	public void genProfiles(){
+		
+		System.debug('Entering genprofiles');
+		
+		Integer cnt = 0;
+		ProjectProfile__c projectProfile = new ProjectProfile__c();
+		cnt = [select count() from ProjectProfile__c where Name = 'Member Profile'];
+		
+		System.debug(cnt);
+		//Can create tasks, cannot manage.	
+       	if(cnt == 0){
+       	    projectProfile = new ProjectProfile__c();
+       	    projectProfile.Name = 'Member Profile';
+       	    projectProfile.ManageProjectTasks__c = false;
+       	    projectProfile.CreateProjectTasks__c = true;
+       	    insert projectProfile;
+       	}
+       	
+      	cnt = [select count() from ProjectProfile__c where Name = 'Public Profile'];
+      	
+      	//Cant create nor manage.
+       	if(cnt == 0){
+       	    projectProfile = new ProjectProfile__c();
+       	    projectProfile.Name = 'Public Profile';
+       	    projectProfile.ManageProjectTasks__c = false;
+       	    projectProfile.CreateProjectTasks__c = false;
+       	    insert projectProfile;
+       	}
+       	cnt = [select count() from ProjectProfile__c where Name = 'Project Administrator'];
+       	if(cnt == 0){
+       	    projectProfile = new ProjectProfile__c();
+       	    projectProfile.Name = 'Project Administrator';
+       	    projectProfile.ManageProjectTasks__c = true;
+       	    projectProfile.CreateProjectTasks__c = true;
+       	    insert projectProfile;
+       	}
+       	
+       	System.debug('ProjectProfile' + projectProfile);
 	}
 	
 		
