@@ -119,7 +119,7 @@ public class UserPermissions {
 			
 			if(projectAdmin == null || projectAdmin.Id != UserInfo.getUserId())
 				projectAdmin = [Select id, Profile.PermissionsModifyAllData, ProfileId, Name From User where id =: id limit 1];
-
+			System.debug('permisos' + projectAdmin.Profile.PermissionsModifyAllData);
 			if(projectAdmin.Profile.PermissionsModifyAllData){
 				canManage = true;
 				canCreate = true;

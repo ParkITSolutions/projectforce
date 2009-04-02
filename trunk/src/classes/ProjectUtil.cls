@@ -9,6 +9,8 @@ public class ProjectUtil {
 		return ProjectUtil.isTest;
 	}
 	
+	public static Integer MAX_SIZE = 4194304;
+	
 	@future 
 	public static void insertQueueSObjects (String projectQueueId, String projId ){
         
@@ -98,6 +100,23 @@ public class ProjectUtil {
 		    List<Group> gr = [select id from Group where id in : grToDelete];
 			delete gr;
 		}
+	}
+	
+	/**
+	* Validate file size for attachment list
+	*@param List<Attachment> 
+	*@return List<Integer> Indexes list with errors
+	*/
+	public static List<Integer> validateFileSize(List<Attachment> attachList){
+		List<Integer> errorList = new List<Integer>();
+		Integer iter = 1;
+		for(Attachment att: attachList){
+			if(att.BodyLength > MAX_SIZE){
+				errorList.add(iter);
+			}
+			iter++;
+		}
+		return errorList;
 	}
 	
 }

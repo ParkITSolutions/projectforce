@@ -31,12 +31,15 @@
 				</a>
 			</div>
 		</div>
+		<apex:form >
+			<apex:actionFunction name="refreshAssignToMilestone" action="{!dummyRefresh}" rerender="assignToMilestone" />
+		</apex:form>
 		<div class="overlayMainContent">
 			<!-- Required Information -->
 			<span class="overlayRequiredInfo">= Required Information</span>
 			<div class="overlay_form">
 				<apex:form id="quickMilestoneForm" onSubmit="if(checkFormNewMilestoneOverlay('{!$Component.nameMilestone}','{!$Component.dueDateMilestone}','{!$Component.memberMilestone}')){return true;}else {return false;};" >
-					<apex:actionFunction name="refreshAssignToMilestone" action="{!dummyRefresh}" oncomplete="javascript: actionFunctionSubmit= false;" rerender="assignToMilestone" />
+					<!-- DELETE apex:actionFunction name="refreshAssignToMilestone" action="{!dummyRefresh}" oncomplete="javascript: actionFunctionSubmit= false;" rerender="assignToMilestone" /-->
 					<div id="formID" style="display:none;">{!$Component.quickMilestoneForm}</div>
 					<apex:outputPanel id="milestoneRefresh" style="display:none;"></apex:outputPanel>
 					<apex:actionStatus id="MilestoneStatus">
