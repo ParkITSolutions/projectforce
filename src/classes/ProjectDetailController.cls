@@ -67,16 +67,21 @@
         userPermission.setProject(teamIdParam);
         userPermission.setObjectType('Project');
         userPermission.setPermissions();
+        System.debug('Manage generado ' + userPermission.getCanManage());
     }
     
     /**
     *@return UserPermission
     */
     
-    public UserPermissions getUserPermissions () {
-    	System.debug('aaa' + userPermission.getCanManage());
+    public UserPermissions getUserPermission () {
+    	System.debug('Manejaposta' + userPermission.getCanManage());
         return userPermission;
-    }   
+    }
+    public static UserPermissions getUserPermissions () {
+    	System.debug('Manejastatic' + userPermission.getCanManage());
+        return userPermission;
+    }    
    
     
     /**

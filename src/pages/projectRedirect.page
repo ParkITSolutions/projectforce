@@ -160,7 +160,7 @@
                     //Set rerender attribute
                     markup += (rerender) ? 'rerender="' + rerender + '" ' : '';
                     
-                    //Set oncomplete attribute
+                    //Set oncomplete attribute as a boolean
                     markup += (oncomplete) ? 'oncomplete="onCompleteCallBackFunction();" ' : ''; 					
 					markup += ' />';
 
