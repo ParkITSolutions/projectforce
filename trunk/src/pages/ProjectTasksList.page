@@ -269,7 +269,7 @@
                                         </td>
                                         <td>
                                             <apex:outputpanel rendered="{!IF(OR(editDeletePer,task.canEditAndDelete) ,true,false)}" layout="block">
-                                                <div><a href="/apex/TeamsCreateNewTask?id={!ProjectId}&task={!task.id}">Edit</a> | <a href="javascript:;" onclick="showDeleteEvent('{!task.Id}', false, {!task.Milestone});">Del</a></div>     
+                                                <div><a href="/apex/ProjectCreateNewTask?id={!ProjectId}&task={!task.id}">Edit</a> | <a href="javascript:;" onclick="showDeleteEvent('{!task.Id}', false, {!task.Milestone});">Del</a></div>     
                                             </apex:outputpanel> 
                                         </td> 
                                         <td class="imgColumns"  align="center"> 
@@ -308,7 +308,7 @@
                                                 </apex:outputpanel>
                                             </a>
                                             <div class="username" >                         
-                                                <a href="PeopleProfileDisplay?id={!task.userTask}">{!task.userTask.name}</a>
+                                                <a href="/{!task.userTask.id}">{!task.userTask.name}</a>
                                             </div>
                                         </td>
                                         <td class="proj_percent_complete">

@@ -30,7 +30,7 @@ trigger ProjectMemberAfterDelete on ProjectMember__c (after delete) {
 	List<GroupMember> gmList = [select Id, UserOrGroupId, GroupId from GroupMember where UserOrGroupId in:userIds and GroupId in: ManageQueueList];
 	List<GroupMember> gmAllList = [select gm.Id, UserOrGroupId, GroupId from GroupMember gm where gm.UserOrGroupId in: userIds];
 	
-	List<GroupMember> gm = new List<GroupMember>();
+	List<String> gm = new List<String>();
 	
 	for (ProjectMember__c tm : Trigger.old) {
 
@@ -84,7 +84,7 @@ trigger ProjectMemberAfterDelete on ProjectMember__c (after delete) {
 			
 			for (GroupMember iterGroupMember : gmList) {
 				if (iterGroupMember.UserOrGroupId == tm.User__c && groupIdsMap.containsKey(iterGroupMember.GroupId)) {
-					gm.add(iterGroupMember);	
+					gm.add(iterGroupMember.id);	
 				}	
 			}
 			
@@ -94,12 +94,12 @@ trigger ProjectMemberAfterDelete on ProjectMember__c (after delete) {
 				while (!findGM && countGM < gmAllList.size()) {
 					if (gmAllList[countGM].GroupId == g.Id && gmAllList[countGM].UserOrGroupId == tm.User__c) {
 						findGM = true;	
-						gm.add(gmAllList[countGM]);
+						gm.add(gmAllList[countGM].id);
 					}
 					countGM++;
 				}
 			}
 		}
 	}
-	delete gm;
+	projectUtil.deleteGroupMembers(gm);
 }

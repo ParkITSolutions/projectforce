@@ -154,7 +154,7 @@
                     }
 					
 					//Add Save Button
-					markup += this.tagPrefix + ':commandButton action="{'
+					markup += '<div class="btnStandardForm">' + this.tagPrefix + ':commandButton action="{'
 					markup += '!save}" value="Save" onclick="statusSaving(this);" ';
                     
                     //Set rerender attribute
@@ -165,14 +165,14 @@
 					markup += ' />';
 
 					//Add Cancel Button
-					markup += this.tagPrefix + ':commandButton value="Cancel" onclick="history.go(-1);" />';
+					markup += this.tagPrefix + ':commandButton value="Cancel" onclick="history.go(-1);" /></div>';
                     
                     markup += '</';
                     markup += 'apex:form>';                                     
                     
 					//Set bottom markup
-                    pattern = 'o(-1);" />' + '</' + 'apex:form>';
-                    var markupBottom = (markupAct[1].split(pattern)[0].length > 1) ? markupAct[1].split(pattern)[1] : markupAct[1].split(pattern)[0];
+                    pattern = 'o(-1);" /></div>' + '</' + 'apex:form>';
+                    var markupBottom = (markupAct[1].split(pattern).length > 1) ? markupAct[1].split(pattern)[1] : markupAct[1].split(pattern)[0];
                     apexPage.Markup = markupAct[0] + markup + markupBottom;
                     
                     try{

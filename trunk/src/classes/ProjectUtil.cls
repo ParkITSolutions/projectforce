@@ -36,9 +36,12 @@ public class ProjectUtil {
         // Insert all the allowed sobjects  
         insert sobjectsQueueAllowed;
 
+		//
+		ProjectUtil.upsertProjectOwner(projectQueueId, projId);
+
     }
     
-	@future
+	//@future
 	public static void upsertProjectOwner (String projectQueueId, String projId){
 		try{
 			System.debug('tttt');

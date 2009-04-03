@@ -28,10 +28,15 @@
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
     
+    <style>
+    	div.btnStandardForm{
+    		display: none;
+    	}
+    </style>
     
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsCreateNewTeam.css')}" />
     
-    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/teamsCreateNewTeam.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectCreateNewProject.js')}" />
         
     <apex:includeScript value="/soap/ajax/12.0/connection.js"/>
         <script>
@@ -134,7 +139,7 @@
 	                    <div class="Formcontentfolder">	
 	                    	<!-- Dynamic Layout Output don't remove -->
 		                    <div class="DynamicLayoutResponse">
-	<apex:form ><label>Project Name</label><apex:inputField value="{!project.Name}" required="true" /><br/><br/><label>Description</label><apex:inputField value="{!project.Description__c}" required="true" /><br/><br/><label>Priority</label><apex:inputField value="{!project.Priority__c}" required="true" /><br/><br/><label>Sprint</label><apex:inputField value="{!project.Sprint__c}" required="true" /><br/><br/><apex:commandButton action="{!save}" value="Save" onclick="statusSaving(this);" rerender="NewProjectFormContainer" oncomplete="onCompleteCallBackFunction();"  /><apex:commandButton value="Cancel" onclick="history.go(-1);" /></apex:form>
+	<apex:form ><label>Project Name</label><apex:inputField value="{!project.Name}" required="true" /><br/><br/><label>Description</label><apex:inputField value="{!project.Description__c}" required="true" /><br/><br/><label>Priority</label><apex:inputField value="{!project.Priority__c}" required="true" /><br/><br/><label>Sprint</label><apex:inputField value="{!project.Sprint__c}" required="true" /><br/><br/><div class="btnStandardForm"><apex:commandButton action="{!save}" value="Save" onclick="statusSaving(this);" rerender="NewProjectFormContainer" oncomplete="onCompleteCallBackFunction();"  /><apex:commandButton value="Cancel" onclick="history.go(-1);" /></div></apex:form>
 		                    </div>
 		            	</div>
 		            	<!--Divs to format the page  -->

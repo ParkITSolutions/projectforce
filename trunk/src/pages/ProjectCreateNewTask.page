@@ -1,6 +1,7 @@
 <apex:page sidebar="false" tabStyle="Project2__c" id="ProjectCreateNewTask" controller="ProjectCreateNewTaskController">
     <meta http-equiv = "Content-Type" content="text/html; charset=iso-8859-1" />
     
+    
     <!-- CSS de TS -->
     <link rel="stylesheet"  href = "{!URLFOR($Resource.commonResources, '/inc/css/validator.css')}" />    
     <link rel="stylesheet"  href = "{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />  
@@ -23,54 +24,125 @@
     <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/validator.js')}"/>
     
-    <!-- CSS styles for Portal Integration -->
+    <!-- CSS styles for Portal Integration --> 
     <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
     
     
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsCreateNewTeam.css')}" />    
-    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/teamsCreateNewTeam.js')}" />        
+    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectCreateNewProject.js')}" />        
     <apex:includeScript value="/soap/ajax/12.0/connection.js"/>
-        <script>
-        	document.observe('dom:loaded', function (){		
-			    	createLayout();
-			    	readPortalCSSRules();
-	        	}
-	        );
+    
+    <style>
+    	div.btnStandardForm{
+    		display: none;
+    	}
+    </style>
+    
+    <script>
+       	document.observe('dom:loaded', function (){		
+		    	createLayout();
+		    	readPortalCSSRules();
+        	}
+        );
+       
+        /**
+        * Namespace Prefix Getter
+        */
+        var namespace = "{!namespace}";
         
-	        /**
-	        * Namespace Prefix Getter
-	        */
-	        var namespace = "{!namespace}";
-	        
-	        /**
-	        * Initialize toolkit connection
-	        *@void
-	        */
-	        function init(){
-	            sforce.connection.sessionId = '{!$Api.Session_ID}';
-	            sforce.connection.defaultNamespace = namespace;
-	            
-	        }
+        /**
+        * Initialize toolkit connection
+        *@void
+        */
+        function init(){
+            sforce.connection.sessionId = '{!$Api.Session_ID}';
+            sforce.connection.defaultNamespace = namespace;
+            
+        }
 
+    
+	    function createLayout(){
+	
+			var div = $$('.DynamicLayoutResponse')[0];	
+			var form = div.firstDescendant();	
+			var btnSaveForm = form.getElementsByClassName('btn')[0];
+		
+			//Format save button	
+			btnSaveForm.addClassName('SaveBtn');	
+			btnSaveForm.value = "Create";
+		
+			//Insert the buttonsdiv	
+			var buttonsDiv = $('btnContainer');	
+			buttonsDiv.innerHTML = '';
+			buttonsDiv.show();
 
-        </script>
+			//Format cancel button	
+			var btnCancelForm = form.getElementsByClassName('btn')[1];	
+			btnCancelForm.addClassName('cancelBtn');
+		
+			//Insert the buttons into the div
+			buttonsDiv.insert(btnSaveForm);
+			buttonsDiv.insert(btnCancelForm);
+		
+			//Format TextAreas	
+			var textAreas=document.getElementsByTagName('textarea');
+			for (i in textAreas){
+				textAreas[i].rows = '4';
+				textAreas[i].cols = '75';
+			}
+			
+			//Set required fields
+			$$('.requiredInput').each(function(elem){
+					var height = elem.getHeight();
+					elem.childNodes[0].innerHTML = '&nbsp;';
+		
+					if(elem.childNodes[1].type == 'textarea')
+						elem.childNodes[0].style.height = (height-4) + 'px';
+		
+					if(elem.childNodes[1].type == 'text')
+						elem.childNodes[0].style.height = (height-3) + 'px';
+		
+					if(elem.childNodes[1].type == 'select-one')
+						elem.childNodes[0].style.height = (height-2) + 'px';
+				}
+			);		
+		
+		}
+	
+		/**
+		* Call back function for save event
+		*/
+		function onCompleteCallBackFunction(){
+			createLayout();
+			if($$('.errorMsg').length > 0){
+				Effect.Appear('warning_to_user');
+				Effect.ScrollTo('anchorForError');
+			}else{
+				Effect.Fade('warning_to_user');
+				$$('.secondFormAction')[0].click();
+			}
+		
+		}
+
+    </script>
         
-        <div id="bubble" class="bubble">
-	        <div class="top_border">
-	        	&nbsp;
-	        </div>
-	        <div class="content">
-	            <img class="arrowBubble" src="{!URLFOR($Resource.ProjectResources, 'images/bubbleNewTeam/bubble_arrow.gif')}" />               
-	            <!-- Content here -->
-	            <div class="innerContBubble" id="innerContBubble">
-	            </div>
-	        </div>
-	        <div class="bottom_border">
-	        	&nbsp;
-	        </div>
-    	</div>
+	<!-- Bubble -->
+	<div id="bubble" class="bubble">
+        <div class="top_border">
+        	&nbsp;
+        </div>
+        <div class="content">
+            <img class="arrowBubble" src="{!URLFOR($Resource.ProjectResources, 'images/bubbleNewTeam/bubble_arrow.gif')}" />               
+            <!-- Content here -->
+            <div class="innerContBubble" id="innerContBubble">
+            </div>
+        </div>
+        <div class="bottom_border">
+        	&nbsp;
+        </div>
+   	</div>
     
     <!-- Header -->
     <apex:composition template="HeaderTemplate">
@@ -146,104 +218,78 @@
                	<apex:outputPanel id="NewProjectFormContainer">
                     <div class="Formcontentfolder">	
                     	<!-- Dynamic Layout Output don't remove -->
-	                    <div class="DynamicLayoutResponse"></div>
+	                    <div class="DynamicLayoutResponse">
+	<apex:form ><label>Task Name</label><apex:inputField value="{!task.Name}" required="true" /><br/><br/><label>Owner</label><apex:inputField value="{!task.OwnerId}" required="false" /><br/><label>Description</label><apex:inputField value="{!task.Description__c}" required="true" /><br/><label>Project</label><apex:inputField value="{!task.Project__c}" required="false" /><br/><label>Start Date</label><apex:inputField value="{!task.StartDate__c}" required="true" /><br/><label>End Date</label><apex:inputField value="{!task.EndDate__c}" required="false" /><br/><label>Duration</label><apex:inputField value="{!task.Duration__c}" required="true" /><br/><label>ParentTask</label><apex:inputField value="{!task.ParentTask__c}" required="false" /><br/><label>Priority</label><apex:inputField value="{!task.Priority__c}" required="false" /><br/><label>Percent Completed</label><apex:inputField value="{!task.PercentCompleted__c}" required="false" /><br/><label>Milestone</label><apex:inputField value="{!task.Milestone__c}" required="false" /><br/><label>Sprint</label><apex:inputField value="{!task.Sprint__c}" required="true" /><br/><label>Rank</label><apex:inputField value="{!task.Rank__c}" required="false" /><br/><div class="btnStandardForm"><apex:commandButton action="{!save}" value="Save" onclick="statusSaving(this);" rerender="NewProjectFormContainer" oncomplete="onCompleteCallBackFunction();"  /><apex:commandButton value="Cancel" onclick="history.go(-1);" /></div></apex:form></div>
+
 	            	</div>
 	            	<!--Divs to format the page  -->
-	           </apex:outputPanel>
-		           
-		        <apex:form >
-		        
-		        <hr color="#999999" size="1px" />  
-							<a  href="javascript:;" onclick="hideAdvanced()" id="advancedLinks" class="advanced">Advanced options...</a>
-							<br/><br/>  
-							<div id="advanced" style="display: none;">
-								<label>Priority</label><span class="no_requeried"></span>
-								<apex:selectList id="taskPriority" value="{!Task.Priority__c}" title="" multiselect="false" size="1" >
-						  	 	 	<apex:selectOptions value="{!Priority}"/>  
-						  	 	</apex:selectList><br/>
-						  	 	<label>File(s)</label><span class="no_requeried"></span>
-						  	 	<div class="attach_list">
-							  	 	<apex:repeat value="{!AttachmentList}" var="at"  >	
-							  	 		<div id="attach{!at.idAttachment}" class="attach_item">
-								  	 		<a href="javascript:;" class="{!at.contentType}">{!at.nameAttachment}({!at.bodyLenght}k)</a>
-								  	 		<a href="javascript:;" onclick="removeAttachment('{!at.idAttachment}')"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}" align="absmiddle"/></a>
-										</div>
-									</apex:repeat>
-								</div>
-								
-						  	 	<div id="inputTeamFileContainer" class="inputTeamFileContainer">
-									<span class="inputFileClassShow">
-										<apex:inputFile styleclass="inputFileClass" value="{!att1.Body}" fileSize="{!att1.BodyLength}" fileName="{!att1.Name}" contentType="{!att1.ContentType}"/><a href="javascript:;" onclick="resetInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>									
-									</span>
-									<span class="inputFileClassHide">
-										<apex:inputFile value="{!att2.Body}" fileName="{!att2.Name}" fileSize="{!att2.BodyLength}" contentType="{!att2.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>								
-									</span>
-									<span class="inputFileClassHide">
-										<apex:inputFile value="{!att3.Body}" fileName="{!att3.Name}" fileSize="{!att3.BodyLength}" contentType="{!att3.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
-									</span>
-									<span class="inputFileClassHide">
-										<apex:inputFile value="{!att4.Body}" fileName="{!att4.Name}" fileSize="{!att4.BodyLength}" contentType="{!att4.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
-									</span>
-									<span class="inputFileClassHide">
-										<apex:inputFile value="{!att5.Body}" fileName="{!att5.Name}" fileSize="{!att5.BodyLength}" contentType="{!att5.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
-									</span>
-									<span class="inputFileClassHide">
-										<apex:inputFile value="{!att6.Body}" fileName="{!att6.Name}" fileSize="{!att6.BodyLength}" contentType="{!att6.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
-									</span>
-									<span class="inputFileClassHide">
-										<apex:inputFile value="{!att7.Body}" fileName="{!att7.Name}" fileSize="{!att7.BodyLength}" contentType="{!att7.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
-									</span>
-									<span class="inputFileClassHide">
-									<apex:inputFile value="{!att8.Body}" fileName="{!att8.Name}" fileSize="{!att8.BodyLength}" contentType="{!att8.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
-									</span>
-									<span class="inputFileClassHide">
-										<apex:inputFile value="{!att9.Body}" fileName="{!att9.Name}" fileSize="{!att9.BodyLength}" contentType="{!att9.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
-										</span>
-									<span class="inputFileClassHide">
-										<apex:inputFile value="{!att10.Body}" fileName="{!att10.Name}" fileSize="{!att10.BodyLength}" contentType="{!att10.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br />
-									</span>
-								</div>
-								<div class="attachAnotherWrapp">
-									<a class="assigned" id="attachAnother" href="javascript:;" onclick="showInputFile();">Attach another file</a>
-								</div>								
-								<br/>
-								<hr color="#999999" size="1px" />
+	          	</apex:outputPanel>
+
+				<!-- Attachment and Assignees form -->
+				<apex:form id="secondForm" >
+	        		<div style="" class="title_line_btn"/>
+						<a  href="javascript:;" onclick="hideAdvanced()" id="advancedLinks" class="advanced">Advanced options...</a>
+						<br/>
+						<div id="advanced" style="display: none;">
+							<label>Priority</label><span class="no_requeried"></span>
+							<apex:selectList id="taskPriority" value="{!Task.Priority__c}" title="" multiselect="false" size="1" >
+					  	 	 	<apex:selectOptions value="{!Priority}"/>  
+					  	 	</apex:selectList><br/>
+					  	 	<label>File(s)</label><span class="no_requeried"></span>
+					  	 	<div class="attach_list">
+						  	 	<apex:repeat value="{!AttachmentList}" var="at"  >	
+						  	 		<div id="attach{!at.idAttachment}" class="attach_item">
+							  	 		<a href="javascript:;" class="{!at.contentType}">{!at.nameAttachment}({!at.bodyLenght}k)</a>
+							  	 		<a href="javascript:;" onclick="removeAttachment('{!at.idAttachment}')"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}" align="absmiddle"/></a>
+									</div>
+								</apex:repeat>
 							</div>
 							
-							<apex:outputpanel rendered="{!IF(TypeOfAction == 'Edit',true,false)}" layout="block">	
-								<label>Created by &nbsp;</label>
-								<a class="desc" href="peopleprofiledisplay?id={!Task.CreatedById}">{!Task.CreatedBy.Name}  </a>{!dateMy.createDate}
-								<br/>
-								<br/>
-								<label>Last Modify by &nbsp; </label><a class="desc" href="peopleprofiledisplay?id={!Task.LastModifiedById}">{!Task.LastModifiedBy.Name}  </a>{!dateMy.lastModify}
-								<br/>
-								<br/>
-								<hr color="#999999" size="1px" />
-								<br/>
-							</apex:outputpanel>
-							<div style="position: relative; height: 80px;">
-								<div class="buttons">
-									<span id="currentEventAction"></span>					 
-									<apex:commandButton styleClass="SaveBtn auto" action="{!saveTask}" onclick="memberAssigne(); saveTaskMessage(); checkMilestone();" value="Save" id="saveButton" />
-									<apex:commandButton styleClass="cancelBtn auto" onclick="document.location.href ='/apex/ProjectTaskList?id={!$CurrentPage.parameters.id}';return false;" value="Cancel" id="cancelButton"/>
-								</div>  
-								<div class="clear"></div>  
+					  	 	<div id="inputTeamFileContainer" class="inputTeamFileContainer">
+								<span class="inputFileClassShow">
+									<apex:inputFile styleclass="inputFileClass" value="{!att1.Body}" fileSize="{!att1.BodyLength}" fileName="{!att1.Name}" contentType="{!att1.ContentType}"/><a href="javascript:;" onclick="resetInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>									
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att2.Body}" fileName="{!att2.Name}" fileSize="{!att2.BodyLength}" contentType="{!att2.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>								
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att3.Body}" fileName="{!att3.Name}" fileSize="{!att3.BodyLength}" contentType="{!att3.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att4.Body}" fileName="{!att4.Name}" fileSize="{!att4.BodyLength}" contentType="{!att4.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att5.Body}" fileName="{!att5.Name}" fileSize="{!att5.BodyLength}" contentType="{!att5.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att6.Body}" fileName="{!att6.Name}" fileSize="{!att6.BodyLength}" contentType="{!att6.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att7.Body}" fileName="{!att7.Name}" fileSize="{!att7.BodyLength}" contentType="{!att7.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+								</span>
+								<span class="inputFileClassHide">
+								<apex:inputFile value="{!att8.Body}" fileName="{!att8.Name}" fileSize="{!att8.BodyLength}" contentType="{!att8.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att9.Body}" fileName="{!att9.Name}" fileSize="{!att9.BodyLength}" contentType="{!att9.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+									</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att10.Body}" fileName="{!att10.Name}" fileSize="{!att10.BodyLength}" contentType="{!att10.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.PeopleResourceFiles, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br />
+								</span>
 							</div>
-							<div class="clear"></div>
+							<div class="attachAnotherWrapp">
+							 	<a class="assigned" id="attachAnother" href="javascript:;" onclick="showInputFile();">Attach another file</a>
 							</div>
-					</apex:form>
-					
-					   
-                
+							<br/>
+						</div>
+						
+						<div class="clear"></div>
+					</div>
+					<apex:commandButton styleClass="secondFormAction" style="display:none;" action="{!saveAttachmentsAndAccess}" onclick="statusSaving()"/>
+				</apex:form>
 				
-				<div id="formUploadContainer" style="display:none;">
-					<!-- Iframe for upload file -->
-					<form action="/p/attach/NoteAttach" enctype="multipart/form-data" id="uploadImageForm_0" target="iframeUpload0" method="post">
-						<span id="inputFileContainer" style="display:none;"></span>
-						<input type="hidden" class="hiddenClass" name="pid" id="done_pid" value="" />
-					</form>
-					<iframe name="iframeUpload0" style="display:none;" ></iframe>
-				</div>
+				<div class="title_line_btn" style="display:none;"></div>
+				<div id="btnContainer"></div>
 
     		</div> <!-- end holder -->
     	</div>
@@ -258,34 +304,23 @@
 		</apex:repeat>
 		
 		/**
-
 		* Hide or Show Advance information
-
 		*@void
-
 		*/
-
 		function hideAdvanced(){
 
 			if($('advanced').style.display == 'none'){
-
 				$('advanced').style.display = 'block';
-
 				$('advancedLinks').addClassName('open');
-
 			}
 
 			else if($('advanced').style.display == 'block'){
 
 				$('advanced').style.display = 'none';
-
 				$('advancedLinks').removeClassName('open');
 
 			}
-
 		}
-		
-		
 		
 	</script>
 </apex:page>

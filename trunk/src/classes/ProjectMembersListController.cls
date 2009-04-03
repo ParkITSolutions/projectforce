@@ -90,15 +90,8 @@ public without sharing class ProjectMembersListController {
 	public void joinProject(){
 		ProjectMember__c projectMember = new ProjectMember__c();
 		projectMember.User__c = UserInfo.getUserId();
-		System.debug('papapa ' +  ProjectDetailController.userPermission.getCanManage());
-		if (ProjectDetailController.getUserPermissions().getCanManage()){
-			projectMember.Profile__c = [select Id from ProjectProfile__c where Name = 'Project Administrator' limit 1].Id;
-		}else{
-			projectMember.Profile__c = [select Id from ProjectProfile__c where Name = 'Member Profile' limit 1].Id;
-		}
-		
+		projectMember.Profile__c = [select Id from ProjectProfile__c where Name = 'Project Administrator' limit 1].Id;
 		projectMember.Project__c = this.getProjectId();
-		
 		insert projectMember;
 	}
 	

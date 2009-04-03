@@ -27,11 +27,7 @@
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
 	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamDetailMarkupTop.css')}" />
-	<script>
-		function aa(){
-			alert('aa in static');
-		}
-	</script>
+
 		
 	<style> 
 		.bodyDiv a.blackbutton {
@@ -48,8 +44,10 @@
 		#btnDiv {
 			margin: 5px 0px 0px 500px;
 		}
+		
 	
 	</style>
+
 	<script>
 		/**
 		* On DOM ready functions
@@ -59,12 +57,127 @@
 				var detailTable = $$('.detailList')[0];
 				detailTable.style.width = '100%';
 				$$('.sfdcDetailFormated')[0].insert(detailTable);
+				resizeSidebar();
+				
 			}
 		);
 	</script>
-	<a href="Javascript:;" onclick="aa();">
-		<span> Delete </span>
-	</a>
+	<!-- c:TeamsOverlayNewTask />
+	< c:TeamsOverlayNewMilestone / -->
+	<c:ProjectOverlayDeleteProject />
+	
+	<!-- ### Initialize the overlay box for modal.js ### -->
+	<a href="#modal_container" id="initializeModal" style="display:none;"></a>
+	<div id="modal_container" ></div>
+	<script>createOverlay('initializeModal')</script>
+	<div id="all" style="overflow:hidden;">
+		
+		<!-- Header -->
+		<apex:composition template="HeaderTemplate">
+			<apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
+		    <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
+		    <apex:define name="title">Project Detail</apex:define>
+		    <apex:define name="search">
+		    	<c:Search module="project" />
+		    </apex:define>
+	    </apex:composition>	
+	    <apex:outputPanel style="display: none;" >
+	    	{!userPermission}
+	    </apex:outputPanel>	
+		<apex:outputPanel id="thisForm">
+			<apex:form >
+				<apex:outputPanel styleClass="isLastMemberAdmin" style="display: none;" >{!isLastMemberAdmin}</apex:outputPanel>
+				<apex:outputPanel layout="block" styleClass="breadcrumbs">
+					<div id="btnDiv">
+						<apex:outputPanel rendered="{!IF(isManager,true,false)}">
+							<a class="blackbutton" href="Javascript:;" onclick="deleteProjectOverlay();">
+								<span> Delete </span>
+							</a>
+							<a class="blackbutton" href="Javascript:;">
+								<span> Edit </span>
+							</a>
+						</apex:outputPanel>			
+						<apex:commandLink styleClass="blackbutton" action="{!joinProject}" rendered="{!IF(AND(NOT(isMember),isPublic),true,false)}" onclick="setClassWaiting('.blackbutton');" oncomplete="refreshAssignToTask();refreshAssignToMilestone();" rerender="thisForm">
+							<span> Join </span>
+						</apex:commandLink>			
+						<apex:commandLink styleClass="blackbutton" rendered="{!IF(isMember,true,false)}" onclick="setClassWaiting('.blackbutton');"  rerender="thisForm" action="{!unjoinProject}" onComplete="refreshAssignToTask();refreshAssignToMilestone();showWarningIsLastAdmin();">
+							<span> Unjoin </span>
+						</apex:commandLink>				
+					</div>				
+				</apex:outputPanel>
+			</apex:form>	
+		</apex:outputPanel>
+		<!-- Sidebar -->
+		<div class="sidebar">
+			<!-- Project Quick Links -->
+			<c:ProjectDetailQuickLinks />
+			<!-- Team Suscribe -->
+			<c:ProjectSubscribe /> 
+			<!-- Team members -->
+			<c:ProjectMembersWidget />	
+			
+			<div class="clear"></div>
+		</div>
+		<!-- Join Team Message -->
+		<div style="width: ; position: relative; overflow: hidden;">
+			<apex:outputPanel id="okMessageContainer" layout="block" style="overflow:hidden;position:relative;">	
+				<!-- Task Created Information Panel -->
+				<div class="informationPanel clear" id="infoToUser" style="display:none;"></div>
+				<apex:form >
+					<apex:outputPanel layout="block" styleClass="joinMessage informationPanel clear" style="display:none;">
+						<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}" alt="ok" /><div>You are a member of this {!$ObjectType.Project2__c.label}&nbsp;<apex:commandLink action="{!unjoinProject}" value="Undo" rerender="thisForm, okMessageContainer" oncomplete="refreshLeaveButton();refreshJoinButton();rerenderMemberList();hideJoinMessageToUser();" onclick="disableAndShowProgress(this);" /></div>
+					</apex:outputPanel>	
+				</apex:form>
+				<apex:form >
+					<apex:outputPanel layout="block" styleClass="okMessage informationPanel clear" style="display:none;">
+						<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}" alt="ok" /><div>Member has been added to this {!$ObjectType.Project2__c.label}</div>
+					</apex:outputPanel>
+				</apex:form>
+			</apex:outputPanel>
+		</div>
+				
+	</div>
+
+	<div class="main_content">
+		<div class="centerCol">
+			<div class="holder">
+				
+				<!-- sfdc detail -->
+				<div style="display:none;" class="sfdcDetail">
+					<apex:detail subject="{!teamIdParam}" relatedList="false" title="false" />
+				</div>
+				<div class="sfdcDetailFormated"></div>
+				
+				<apex:form id="mainContentForm">
+                    
+                    <apex:actionFunction name="reloadMainContent" rerender="mainContentForm"/>
+                    
+					<!-- Project Tasks -->
+					<c:ProjectWidgetTaskMain team="{!teamIdParam}"/>			 
+	
+					<!-- Project Milestones -->
+					<c:ProjectDetailMilestones team="{!teamIdParam}" /> 
+	
+					<!-- Project Attachment -->
+					<c:ProjectOverlayNewAttachment parentId="{!teamIdParam}" />
+					<c:ProjectDetailAttachment project="{!teamIdParam}"/> 
+				</apex:form>
+			</div>
+		</div>
+	</div>
+		
+
+	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupBottom.js')}" />
+	
+		
+	<c:ProjectOverlayNewTask />
+	<c:ProjectOverlayNewMilestone />
+ 
+	<script>
+		readPortalCSSRules();
+	</script>
+	
+		
 
 		
 </apex:page>

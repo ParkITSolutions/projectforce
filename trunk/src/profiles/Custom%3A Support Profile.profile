@@ -1222,6 +1222,14 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
+        <field>ProjectTask__c.Rank__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>ProjectTask__c.Sprint__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
         <field>ProjectTask__c.StartDate__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
