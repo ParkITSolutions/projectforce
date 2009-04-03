@@ -3,25 +3,6 @@
 */
 public class ProjectCreateNewTaskController {
 	
-	/**
-	* Constructor
-	*/
-	public ProjectCreateNewTaskController(){
-   		genPermissions();
-   		String qtEdit = System.currentPageReference().getParameters().get('ed');
-   		   		
-   		if(param != null && idTask != null) {
-   			getTaskForEdit(param, idTask);
-   			Boolean canEdit = false;
-   			for(assingTo assignee :getAssignMember()) {
-   				if(assignee.getIdMember() == UserInfo.getUserId()) canEdit = true;
-   			}
-   		}
-   		if(qtEdit == 'true'){
-   			genTempTask();
-   		}
-	}
-	
 	public ProjectTask__c theTask = new ProjectTask__c();
 	
 	//Param is the projectId
@@ -52,7 +33,39 @@ public class ProjectCreateNewTaskController {
 	dateMyFormat dateMy = new dateMyFormat();
 	assingTo assign = new assingTo();
 	
-	   	List<myAttachment> resultAt = new List<myAttachment>();
+	String ProjectPicture = '';
+    Boolean validSizePicture = true;
+    public Boolean validTypePicture = true;
+	
+	List<myAttachment> resultAt = new List<myAttachment>();
+	
+	public Attachment document = new Attachment();
+   	
+	/**
+	* Constructor
+	*/
+	public ProjectCreateNewTaskController(){
+   		genPermissions();
+   		String qtEdit = System.currentPageReference().getParameters().get('ed');
+   		   		
+   		if(param != null && idTask != null) {
+   			getTaskForEdit(param, idTask);
+   			Boolean canEdit = false;
+   			for(assingTo assignee :getAssignMember()) {
+   				if(assignee.getIdMember() == UserInfo.getUserId()) canEdit = true;
+   			}
+   		}
+   		if(qtEdit == 'true'){
+   			genTempTask();
+   		}
+	}   	
+   	
+   	public Boolean getValidSizePicture(){
+    	return validSizePicture;
+    }
+    public Boolean getValidTypePicture(){
+    	return validTypePicture;
+    }	
    	
 	/**
 	* Return a List of Attachments
@@ -513,7 +526,7 @@ public class ProjectCreateNewTaskController {
    	* Save Task
    	*@void
    	*/
-   	public PageReference saveTask(){
+   	public PageReference save(){
    		attachList.clear();
    		if(theTask.Milestone__c)
    			theTask.StartDate__c = theTask.EndDate__c;
@@ -670,28 +683,24 @@ public class ProjectCreateNewTaskController {
    	public void getTaskForEdit(String myParam, String MyidTask) {
 		setAttachment(MyidTask);
 		typeOfAction = 'Edit';
-		theTask = [Select p.Project__c, 
-				          p.StartDate__c, 
-				          p.Priority__c, 
-				          p.PercentCompleted__c, 
-				          p.ParentTask__c, 
-				          p.Name, 
-				          p.Milestone__c,
-				          p.LastModifiedDate, 
-				          p.LastModifiedById, 
-				          p.Id, p.EndDate__c, 
-				          p.Duration__c, 
-				          p.Description__c, 
-				          p.CreatedDate,  
-				          p.LastModifiedBy.Name, 
-				          p.CreatedBy.Name, 
-				          p.CreatedById, 
-				          p.ParentTask__r.Name,
-				          (Select User__c, PercentDedicated__c From ProjectsAssignees__r) 
-	    				   From ProjectTask__c p where
-	    				   p.Id =: MyidTask 
-	    				   ];
-  	      		
+		
+		Map<String, Schema.SObjectField> projectFields = Schema.SObjectType.ProjectTask__c.fields.getMap();
+	    
+	    String fields = '';
+	    String query = 'select ';
+	    
+	    //Set Object Fields
+	    for(Schema.SObjectField field : projectFields.values()){
+	    	if(field != null)
+	    		fields += (field + ', ');  	
+	    }
+	    
+	    //Execute Dynamic SOQL
+	    query += fields.substring(0, (fields.length() - 2)) + ', p.ParentTask__r.Name, ';
+	    query += '(Select User__c, PercentDedicated__c From ProjectsAssignees__r)';
+	    query += ' from ProjectTask__c p where Id = \'' + MyidTask + '\'';
+	    theTask = Database.query(query);		
+ 	      		
 		if(theTask.ProjectsAssignees__r.size() > 0 && theTask.ProjectsAssignees__r[0] != null ){
 			dateMy.setMember(theTask.ProjectsAssignees__r[0].User__c);
 			dateMy.setPercent(theTask.ProjectsAssignees__r[0].PercentDedicated__c);
@@ -739,5 +748,96 @@ public class ProjectCreateNewTaskController {
 			}
    		}
    	}
+   	
+   	public PageReference saveAttachmentsAndAccess(){
+    	
+    	attachList.clear();
+   		if(theTask.Milestone__c)
+   			theTask.StartDate__c = theTask.EndDate__c;
+   		if (att1.Name != null && att1.Name != '') {
+   			att1.ParentId = theTask.Id;
+   			attachList.add(att1);
+   			att1=new Attachment();
+   		}
+   		if (att2.Name != null && att2.Name != '') {
+   			att2.ParentId = theTask.Id;
+   			attachList.add(att2);
+   			att2=new Attachment();
+   		}
+   		if (att3.Name != null && att3.Name != '') {
+   			att3.ParentId = theTask.Id;
+   			attachList.add(att3);
+   			att3=new Attachment();
+   		}
+   		if (att4.Name != null && att4.Name != '') {
+   			att4.ParentId = theTask.Id;
+   			attachList.add(att4);
+   			att4=new Attachment();
+   		}
+   		if (att5.Name != null && att5.Name != '') {
+   			att5.ParentId = theTask.Id;
+   			attachList.add(att5);
+   			att5=new Attachment();
+   		}
+   		if (att6.Name != null && att6.Name != '') {
+   			att6.ParentId = theTask.Id;
+   			attachList.add(att6);
+   			att6=new Attachment();
+   		}
+   		if (att7.Name != null && att7.Name != '') {
+   			att7.ParentId = theTask.Id;
+   			attachList.add(att7);
+   			att7=new Attachment();
+   		}
+   		if (att8.Name != null && att8.Name != '') {
+   			att8.ParentId = theTask.Id;
+   			attachList.add(att8);
+   			att8=new Attachment();
+   		}
+   		if (att9.Name != null && att9.Name != '') {
+   			att9.ParentId = theTask.Id;
+   			attachList.add(att9);
+   			att9=new Attachment();
+   		}
+   		if (att10.Name != null && att10.Name != '') {
+   			att10.ParentId = theTask.Id;
+   			attachList.add(att10);
+   			att10=new Attachment();
+   		} 
+
+   		errorAttachList = new List<Integer>();
+   		errorAttachList = ProjectUtil.validateFileSize(attachList);
+   		   		
+   		if(errorAttachList.size() > 0)
+   			return null;
+   			
+   		if(theTask.Id == null){
+   			if(userPermissions.getCanCreate()){
+   				theTask.Project__c = param;
+   				theTask.PercentCompleted__c = 0.0;
+   				insert theTask;
+   				saveAssignees();
+   			}else{
+   				throw new CustomException('Insufficient Privileges');
+   			}
+   		}else {
+   			if(canUpdate()){
+   				update theTask;
+   				saveAssignees();
+   			}else{
+   				throw new CustomException('Insufficient Privileges');
+   			}
+   		}
+   		
+   				
+   		if (attachList.size() > 0) {
+   			insert attachList;
+   		}
+   		
+   		PageReference forward = URL_TO_LIST;
+   		forward.getParameters().put('id', theTask.Project__c);
+   		forward.setRedirect(true);
+   		return forward;
+    }
 
 }

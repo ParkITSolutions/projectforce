@@ -16,16 +16,16 @@
     private String projectType = '';	
     String teamIdParam = System.currentPageReference().getParameters().get('id');
     public String USERID =  UserInfo.getUserId(); 
-    
+    public boolean isManager = false;
     /**
     * Constructor
     */
     public ProjectDetailController(){
-        if(teamIdParam != null)
-            getTeamDetail();
-            genTeamData();        
-        	genPermissions();
-        this.projectType = getTeamspace().Type__c;
+       getTeamDetail();
+       genTeamData();        
+       genPermissions();
+       isManager = userPermission.getCanManage();
+       this.projectType = getTeamspace().Type__c;
     }   
     public Boolean getIsLastMemberAdmin(){
     	return isLastMemberAdmin;
@@ -81,7 +81,10 @@
     public static UserPermissions getUserPermissions () {
     	System.debug('Manejastatic' + userPermission.getCanManage());
         return userPermission;
-    }    
+    }  
+    public boolean getIsManager(){
+    	return isManager;
+    }  
    
     
     /**
@@ -190,14 +193,15 @@
     *@return Team__c
     */
     public Project2__c getTeamspace() {
+    	
          teamspace = [select name, description__c, Type__c from Project2__c
                      where id=: teamIdParam];
          if(teamspace == null) {
             return null;
          }else {
-            return teamspace;
+         	 return teamspace;
          }
-    }
+     }
     
     /**
     * Get Teamspace image

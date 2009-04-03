@@ -527,6 +527,7 @@ public with sharing class ProjectTaskListController {
                                          p.Duration__c,
                                          (Select Id, 
                                                  User__r.Name,
+                                                 User__r.Id,
                                                  User__c 
                                             From ProjectsAssignees__r), 
                                          p.Description__c 
@@ -547,6 +548,7 @@ public with sharing class ProjectTaskListController {
                                          p.Duration__c,
                                          (Select Id, 
                                                  User__r.Name,
+                                                 User__r.Id,
                                                  User__c 
                                           From ProjectsAssignees__r), 
                                          p.Description__c 
@@ -566,6 +568,7 @@ public with sharing class ProjectTaskListController {
                                          p.Duration__c,
                                          (Select Id, 
                                                  User__r.Name,
+                                                 User__r.Id,
                                                  User__c 
                                           From ProjectsAssignees__r), 
                                          p.Description__c 
@@ -586,6 +589,7 @@ public with sharing class ProjectTaskListController {
                                          p.Duration__c,
                                          (Select Id, 
                                                  User__r.Name,
+                                                 User__r.Id,
                                                  User__c 
                                           From ProjectsAssignees__r), 
                                          p.Description__c 
@@ -606,6 +610,7 @@ public with sharing class ProjectTaskListController {
                                          p.Duration__c,
                                          (Select Id, 
                                                  User__r.Name,
+                                                 User__r.Id,
                                                  User__c 
                                           From ProjectsAssignees__r), 
                                          p.Description__c 
@@ -626,6 +631,7 @@ public with sharing class ProjectTaskListController {
                                          p.Duration__c,
                                          (Select Id, 
                                                  User__r.Name,
+                                                 User__r.Id,
                                                  User__c 
                                           From ProjectsAssignees__r), 
                                          p.Description__c 
@@ -646,6 +652,7 @@ public with sharing class ProjectTaskListController {
                                          p.Duration__c,
                                          (Select Id, 
                                                  User__r.Name,
+                                                 User__r.Id,
                                                  User__c 
                                           From ProjectsAssignees__r), 
                                          p.Description__c 
@@ -668,6 +675,7 @@ public with sharing class ProjectTaskListController {
                                          p.Duration__c,
                                          (Select Id, 
                                                  User__r.Name,
+                                                 User__r.Id,
                                                  User__c 
                                           From ProjectsAssignees__r), 
                                          p.Description__c 
@@ -688,6 +696,7 @@ public with sharing class ProjectTaskListController {
                                          p.Duration__c,
                                          (Select Id, 
                                                  User__r.Name,
+                                                 User__r.Id,
                                                  User__c 
                                           From ProjectsAssignees__r), 
                                          p.Description__c 
@@ -709,6 +718,7 @@ public with sharing class ProjectTaskListController {
                                          p.Duration__c,
                                          (Select Id, 
                                                  User__r.Name,
+                                                 User__r.Id,
                                                  User__c 
                                           From ProjectsAssignees__r), 
                                          p.Description__c 
@@ -729,6 +739,7 @@ public with sharing class ProjectTaskListController {
                                          p.Duration__c,
                                          (Select Id, 
                                                  User__r.Name,
+                                                 User__r.Id,
                                                  User__c 
                                           From ProjectsAssignees__r), 
                                          p.Description__c 
@@ -750,6 +761,7 @@ public with sharing class ProjectTaskListController {
                                          p.Duration__c,
                                          (Select Id, 
                                                  User__r.Name,
+                                                 User__r.Id,
                                                  User__c 
                                           From ProjectsAssignees__r), 
                                          p.Description__c 
@@ -770,6 +782,7 @@ public with sharing class ProjectTaskListController {
                                          p.Duration__c,
                                          (Select Id, 
                                                  User__r.Name,
+                                                 User__r.Id,
                                                  User__c 
                                           From ProjectsAssignees__r), 
                                          p.Description__c 
@@ -790,6 +803,7 @@ public with sharing class ProjectTaskListController {
                                          p.Duration__c,
                                          (Select Id, 
                                                  User__r.Name,
+                                                 User__r.Id,
                                                  User__c 
                                           From ProjectsAssignees__r), 
                                          p.Description__c 

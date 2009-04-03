@@ -19,12 +19,17 @@ public class UserPermissions {
 	Boolean canManage = false;
 	Boolean canComment = false;
 	Boolean canView = true;
-	
+	public static Boolean canManageStatic = false;
 	/**
 	* Costructor
 	*/
 	public UserPermissions (){
 		
+	}
+	
+	public static Boolean getCanManageStatic () {
+	
+		return canManageStatic;
 	}
 	
 	/**
@@ -193,7 +198,9 @@ public class UserPermissions {
 			if(ownerId == id) 
 				canManage = true;  // Shouldnt this be called user UserId?
 			
+			canManageStatic = canManage;
 		}catch(Exception e){
+			System.debug('fallinggg ');
 			throw e;
 		}
 	}

@@ -9,7 +9,7 @@
                 <field>Name</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>Description__c</field>
             </layoutItems>
             <layoutItems>
@@ -17,7 +17,7 @@
                 <field>Project__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>StartDate__c</field>
             </layoutItems>
             <layoutItems>
@@ -25,7 +25,7 @@
                 <field>EndDate__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>Duration__c</field>
             </layoutItems>
             <layoutItems>
@@ -43,6 +43,14 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Milestone__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>Sprint__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Rank__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -71,6 +79,11 @@
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
     <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>true</detailHeading>
+        <label>Custom Links</label>
+        <layoutColumns/>
+        <layoutColumns/>
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>

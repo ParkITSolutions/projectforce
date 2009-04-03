@@ -71,7 +71,7 @@ trigger ProjectAfterInsert on Project2__c bulk(after insert) {
 
 			   	/**
 				* Create __Shared object for team
-				*/
+				*/ 
 				Project2__Share projectS = new Project2__Share();
 				projectS.ParentId = proj.Id;
 				projectS.UserOrGroupId = g.Id;
@@ -90,7 +90,6 @@ trigger ProjectAfterInsert on Project2__c bulk(after insert) {
 				firstProjectMember.Profile__c = defaultProfile.Id;
 				insert firstProjectMember;
 				
-				ProjectUtil.upsertProjectOwner(projectQueueId, proj.id);
 	
 			} 
 		}finally {
