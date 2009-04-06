@@ -70,7 +70,7 @@ public class ProjectSubscribersEmailServices {
     public void sendMailForTaskAssigned( List<String> lstPAId )
     {
         String emailMsj = '';
-        String emailSub = '';
+        String emailSub = ''; 
 
         List<ProjectAssignee__c> lstPA = new  List<ProjectAssignee__c>();    
         lstPA = [ SELECT Id, Project__c, Project__r.Name, User__r.Name, User__c, 
@@ -79,13 +79,17 @@ public class ProjectSubscribersEmailServices {
         for(ProjectAssignee__c proj : lstPA){
 	        //Sub:{Task Name} has been assigned to you
 	        //Body: {Task Details such as name and description and start and end date}      
-	        emailMsj = 'Task Name: <a href="' + Label.sfdcHostName + proj.ProjectTask__c + '">' + proj.ProjectTask__r.Name + '</a><br />Priority: ' + proj.ProjectTask__r.Priority__c + '<br />Start date: ' + proj.ProjectTask__r.StartDate__c + '<br />End date: ' + proj.ProjectTask__r.EndDate__c + '<br />Description: <br /><br />' + proj.ProjectTask__r.Description__c;
+	        emailMsj = 'Task Name: <a href="' + Label.sfdcHostName + proj.ProjectTask__c + '">' + proj.ProjectTask__r.Name + '</a><br />Priority: ' + proj.ProjectTask__r.Priority__c + '<br />Start date: ' + proj.ProjectTask__r.StartDate__c + '<br />End date: ' + proj.ProjectTask__r.EndDate__c + '<br />Description: <br /><br />' + (( proj.ProjectTask__r.Description__c == null ) ? '' : proj.ProjectTask__r.Description__c);
 	        emailSub = proj.ProjectTask__r.Name + ' has been assigned to you';
 	
-	        if (!isTest)
-	        subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, ProjectTaskChanged__c, ProjectTaskDeleted__c FROM ProjectSubscription__c WHERE Project__c =: proj.Project__c and User__c =: proj.User__c and ProjectTaskAssignedToMe__c = true ];
-	
+	        if (!isTest){
+	        	subscriptions = [ 
+	        	SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, ProjectTaskChanged__c, ProjectTaskDeleted__c 
+	        	FROM ProjectSubscription__c 
+	        	WHERE Project__c =: proj.Project__c and User__c =: proj.User__c and ProjectTaskAssignedToMe__c = true ];
+	        }
 	        genAddress( subscriptions, emailMsj, emailSub );
+	        System.debug( 'manding' + subscriptions.size());
         }
     }
     
@@ -184,8 +188,7 @@ public class ProjectSubscribersEmailServices {
         mail.setSenderDisplayName('Team Subscribe');  
         //Specify the subject line for your email address.
         mail.setSubject(subject);
-
-        //mail.setSenderDisplayName(team.Name);
+        mail.setSenderDisplayName( team.Name );
         // Set to True if you want to BCC yourself on the email.
         mail.setBccSender(false);
         // Optionally append the salesforce.com email signature to the email.

@@ -124,7 +124,6 @@ public class ProjectOverlayNewTaskController {
    		}else{	
    			newTask.Milestone__c = false;
 			newTask.Project__c = PROJECTID;
-			newTask.Project__c = currentProject.Id;
 			newTask.PercentCompleted__c = 0.0;
 			newTask.Priority__c = 'Normal';
 			insert newTask; 
@@ -132,7 +131,9 @@ public class ProjectOverlayNewTaskController {
 	  		ProjectAssignee__c Assign = new ProjectAssignee__c();
 			Assign.User__c = projectMember.User__c;
 			Assign.ProjectTask__c = newTask.Id;
+			Assign.Project__c = newTask.Project__c;
 			insert Assign;
+			
 			newTask = new ProjectTask__c();
 			Assign = new ProjectAssignee__c();
    		}

@@ -32,6 +32,13 @@
     	div.btnStandardForm{
     		display: none;
     	}
+    	.errorMsg {
+    		color: #CC0000 !important;
+       	}
+    	.max {
+    		float:left;
+			margin-left:150px;
+    	}
     </style>
     
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsCreateNewTeam.css')}" />
@@ -43,6 +50,7 @@
         	document.observe('dom:loaded', function (){ 
         			
 			    	createLayout();
+			    	startMaxlengthCheck();
 			    	readPortalCSSRules();
 	            }
 	        );
@@ -412,7 +420,7 @@
 									</td>
 								</tr>
 							</table>
-							<apex:commandButton styleClass="secondFormAction" style="display:none;" action="{!saveAttachmentsAndAccess}" onclick="statusSaving()"/>
+							<apex:commandButton styleClass="secondFormAction" style="display:none;" action="{!saveAttachmentsAndAccess}" onclick="statusSaving();"/>
 						</apex:form>
 					</div>
 					<div class="title_line_btn" style="display:none;"></div>
@@ -421,4 +429,25 @@
             </div>
         </div>
     </div>
+    <script>
+    	function onCompleteCallBackFunction(){
+			createLayout();
+			startMaxlengthCheck();
+			if($$('.errorMsg').length > 0){
+				Effect.Appear('warning_to_user');
+				moveMaxWarningToLeft();
+				
+			}else{
+				Effect.Fade('warning_to_user');
+				$$('.secondFormAction')[0].click();
+			}
+		}
+		
+		function moveMaxWarningToLeft(){
+			var maxes = $$('.max');
+			for (var i=0; i< maxes.length; i++){
+				maxes[i].style.marginLeft="0px";
+			}
+		}
+    </script>
 </apex:page>

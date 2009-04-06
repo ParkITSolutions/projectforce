@@ -70,6 +70,7 @@
 	<a href="#modal_container" id="initializeModal" style="display:none;"></a>
 	<div id="modal_container" ></div>
 	<script>createOverlay('initializeModal')</script>
+	
 	<div id="all" style="overflow:hidden;">
 		
 		<!-- Header -->
@@ -81,9 +82,11 @@
 		    	<c:Search module="project" />
 		    </apex:define>
 	    </apex:composition>	
+	   
 	    <apex:outputPanel style="display: none;" >
 	    	{!userPermission}
 	    </apex:outputPanel>	
+		
 		<apex:outputPanel id="thisForm">
 			<apex:form >
 				<apex:outputPanel styleClass="isLastMemberAdmin" style="display: none;" >{!isLastMemberAdmin}</apex:outputPanel>
@@ -107,6 +110,7 @@
 				</apex:outputPanel>
 			</apex:form>	
 		</apex:outputPanel>
+		
 		<!-- Sidebar -->
 		<div class="sidebar">
 			<!-- Project Quick Links -->
@@ -114,10 +118,11 @@
 			<!-- Team Suscribe -->
 			<c:ProjectSubscribe /> 
 			<!-- Team members -->
-			<c:ProjectMembersWidget />	
+			<c:ProjectMembersWidget projectId="{!teamIdParam}" />	
 			
 			<div class="clear"></div>
 		</div>
+		
 		<!-- Join Team Message -->
 		<div style="width: ; position: relative; overflow: hidden;">
 			<apex:outputPanel id="okMessageContainer" layout="block" style="overflow:hidden;position:relative;">	
@@ -166,10 +171,9 @@
 		</div>
 	</div>
 		
-
 	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupBottom.js')}" />
-	
 		
+	<!-- New Task and Milestone Overlays -->
 	<c:ProjectOverlayNewTask />
 	<c:ProjectOverlayNewMilestone />
  
@@ -177,7 +181,4 @@
 		readPortalCSSRules();
 	</script>
 	
-		
-
-		
 </apex:page>
