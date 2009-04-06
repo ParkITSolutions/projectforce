@@ -112,12 +112,12 @@
 	
 	<!-- Sidebar -->
 	<div class="sidebar">
+
 		<!-- Project Quick Links -->
 		<c:ProjectDetailQuickLinks />
+
 		<!-- Team Suscribe -->
 		<c:ProjectSubscribe /> 
-		<!-- Team members -->
-		<c:ProjectMembersWidget />	
 		
 		<div class="clear"></div>
 	</div>

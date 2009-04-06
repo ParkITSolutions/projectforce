@@ -123,6 +123,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SuggestController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>TeamsWidgetMyTasksAndMilController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1572,6 +1576,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectTimeline</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>SuggestDispatcher</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>

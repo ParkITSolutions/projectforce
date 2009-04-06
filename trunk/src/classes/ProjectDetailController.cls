@@ -55,10 +55,6 @@
         return (currentPageUrl != null && currentPageUrl.indexOf('TeamsSubscription') != -1);
     } 
     
-
-    
-    
-    
     /**
     * Load permission for current user
     */
@@ -75,13 +71,17 @@
     */
     
     public UserPermissions getUserPermission () {
-    	System.debug('Manejaposta' + userPermission.getCanManage());
         return userPermission;
     }
+
+    /**
+    * Static function for widgets controllers use
+    *@return UserPermissions instance
+    */
     public static UserPermissions getUserPermissions () {
-    	System.debug('Manejastatic' + userPermission.getCanManage());
         return userPermission;
     }  
+
     public boolean getIsManager(){
     	return isManager;
     }  

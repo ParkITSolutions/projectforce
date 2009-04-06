@@ -527,6 +527,9 @@ public class ProjectCreateNewTaskController {
    	*@void
    	*/
    	public PageReference save(){
+   		
+   		System.debug('Entering save method on NewTaskController: ');
+   		
    		attachList.clear();
    		if(theTask.Milestone__c)
    			theTask.StartDate__c = theTask.EndDate__c;
@@ -580,6 +583,8 @@ public class ProjectCreateNewTaskController {
    			attachList.add(att10);
    			att10=new Attachment();
    		} 
+   		
+   		System.debug('AttachList is --> ' + attachList);
 
    		errorAttachList = new List<Integer>();
    		errorAttachList = ProjectUtil.validateFileSize(attachList); 
@@ -750,6 +755,8 @@ public class ProjectCreateNewTaskController {
    	}
    	
    	public PageReference saveAttachmentsAndAccess(){
+   		
+   		System.debug('entering saveAttachmentAndAccess');
     	
     	attachList.clear();
    		if(theTask.Milestone__c)
@@ -807,9 +814,12 @@ public class ProjectCreateNewTaskController {
 
    		errorAttachList = new List<Integer>();
    		errorAttachList = ProjectUtil.validateFileSize(attachList);
+   		
+   		System.debug('attachList > ' + attachList);
    		   		
-   		if(errorAttachList.size() > 0)
+   		if(errorAttachList.size() > 0){
    			return null;
+   		}
    			
    		if(theTask.Id == null){
    			if(userPermissions.getCanCreate()){
@@ -829,7 +839,6 @@ public class ProjectCreateNewTaskController {
    			}
    		}
    		
-   				
    		if (attachList.size() > 0) {
    			insert attachList;
    		}

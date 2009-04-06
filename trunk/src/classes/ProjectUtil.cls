@@ -11,7 +11,7 @@ public class ProjectUtil {
 	
 	public static Integer MAX_SIZE = 4194304;
 	
-	@future 
+	//@future 
 	public static void insertQueueSObjects (String projectQueueId, String projId ){
         
         // ### Allow SObjects to be managed by recently created queues ###
@@ -37,7 +37,7 @@ public class ProjectUtil {
         insert sobjectsQueueAllowed;
 
 		//
-		ProjectUtil.upsertProjectOwner(projectQueueId, projId);
+		//ProjectUtil.upsertProjectOwner(projectQueueId, projId);
 
     }
     
@@ -121,5 +121,6 @@ public class ProjectUtil {
 		}
 		return errorList;
 	}
+	
 	
 }

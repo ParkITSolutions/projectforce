@@ -71,17 +71,17 @@ trigger ProjectAfterInsert on Project2__c bulk(after insert) {
 
 			   	/**
 				* Create __Shared object for team
-				*/ 
+				*/ /*
 				Project2__Share projectS = new Project2__Share();
 				projectS.ParentId = proj.Id;
 				projectS.UserOrGroupId = g.Id;
 			    projectS.AccessLevel = 'Read';
 			    projectS.RowCause = 'Manual';
 			    insert projectS;			    
-			    
+			    */
 				/**
 				* Create the first project member (the founder)
-				*/
+				*//*
 				ProjectProfile__c defaultProfile = [select Id from ProjectProfile__c where Name = 'Project Administrator' limit 1];
         		ProjectMember__c firstProjectMember = new ProjectMember__c();
 				firstProjectMember.User__c = Userinfo.getUserId();
@@ -89,7 +89,7 @@ trigger ProjectAfterInsert on Project2__c bulk(after insert) {
 				firstProjectMember.Project__c = proj.Id;
 				firstProjectMember.Profile__c = defaultProfile.Id;
 				insert firstProjectMember;
-				
+				*/
 	
 			} 
 		}finally {

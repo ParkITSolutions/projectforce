@@ -30,7 +30,7 @@
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
     
     
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsCreateNewTeam.css')}" />    
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsCreateNewTask.css')}" />    
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectCreateNewProject.js')}" />        
     <apex:includeScript value="/soap/ajax/12.0/connection.js"/>
     
@@ -62,8 +62,7 @@
             
         }
 
-    
-	    function createLayout(){
+		function createLayout(){
 	
 			var div = $$('.DynamicLayoutResponse')[0];	
 			var form = div.firstDescendant();	
@@ -110,6 +109,296 @@
 			);		
 		
 		}
+		
+		/**
+
+		* Delete Attachments
+
+		*/
+
+		function removeAttachment(id){
+
+			init();
+
+			dels = sforce.connection.deleteIds([id]);
+
+			$('attach' + id).remove();
+
+		}
+		
+		/* ### Functions to manage inputFile ### */
+
+		
+
+		function showInputFile () {
+
+			var inputFileHideList = $$('.inputFileClassHide');
+
+			var cont = $('inputTeamFileContainer');
+
+			if (inputFileHideList.length > 0) {
+
+				inputFileHideList[0].className = 'inputFileClassShow';
+
+				cont.insert(inputFileHideList[0]);
+
+			}
+
+			//If last, hide add event
+
+			if (inputFileHideList.length == 1) {
+
+				var addAnother = $('attachAnother');
+
+				addAnother.style.display = 'none';
+
+			}
+
+		}
+
+		
+
+		function hideInputFile (aElement) {
+
+			var spanParent = aElement.parentNode;
+
+			spanParent.className = 'inputFileClassHide'
+
+			var inputFile = spanParent.getElementsByTagName('input');
+
+			inputFile[0].value = '';
+
+			var addAnother = $('attachAnother');
+
+			addAnother.style.display = '';
+
+		}
+
+		
+
+		function resetInputFile (aElement) {
+
+			var spanParent = aElement.parentNode;
+
+			var inputFile = spanParent.getElementsByTagName('input');
+
+			inputFile[0].value = '';
+
+		}
+
+		
+
+		function errorAttachment(index){
+
+			$('advanced').style.display = 'block';
+
+			$('advancedLinks').addClassName('open');
+
+			var iter = 1;
+
+			var error = '<span class="errorText errAttach"><b>Error:</b> The images size must be less than 5 mb</span>';
+
+			var parentNode = $$('.inputTeamFileContainer')[0];
+
+			for(var i=0; i < parentNode.childNodes.length; i++){
+
+			    if(parentNode.childNodes[i].tagName == 'SPAN'){
+
+			    	if(iter==index){
+
+			        	parentNode.childNodes[i].className = 'inputFileClassShow';
+
+			        	parentNode.childNodes[i].insert(error);
+
+			        }
+
+			        iter++;
+
+			    }
+
+			}
+
+		}
+		
+		var divId = 1;
+		
+		/**
+		* Add Assignee
+		*@param String idUser
+		*@param String percent
+		*@void
+		*/
+
+		function addAssigne(idUser, percent){
+
+			if($('firstDedicated').style.display == 'none'){
+
+				$('firstDedicated').show();
+
+			}
+
+			var select = $('ProjectCreateNewTask:secondForm:taskAssign');
+
+			var optionPercent = '';
+
+			for(var i=0; i<101; i=i+5){
+
+				optionPercent += '<option value=\''+i+'\'>'+i+' %</option>';
+
+			}
+
+			var resultSelect = '<div class=\'assigneCont\' id=\''+divId+'\'><label>&nbsp;</label><span class=\'no_requeried\'></span><select class=\'child childValidateAssignee\'>'+select.innerHTML+'</select><label>Percent Dedicated</label><select class=\'percentChild margin\'>'+optionPercent+'</select><a class=\'notassigned\' href=\'javascript:;\' onclick=\'removeAssigne(\"'+divId+'\")\'>Remove Assignee</a><br/></div>';
+
+			divId++;			
+
+			$('result').insert(resultSelect);
+
+			var selects = $$('.child');
+
+			var selectsPer = $$('.percentChild');
+
+			if(idUser != null){
+
+				selects.each(function(s, indice){
+
+				if(selects.length == indice+1){
+
+		        	s.value = idUser;
+
+		        }
+
+		      });
+
+		      
+
+		      selectsPer.each(function(e, indice){
+
+				if(selectsPer.length == indice+1){
+
+		        	e.value = percent;
+
+		        }
+
+		      });
+
+			}
+
+			else {
+
+				selects.each(function(s, indice){
+
+				if(selects.length == indice+1){
+
+		        	s.options[0].selected ='selected';
+
+		        }
+
+		      });
+
+			}			
+
+		} 
+		
+		/**
+
+		* Validate Assignees
+
+		*@return Bool error
+
+		*/  
+
+		function validateAssigneeTeamMember() {
+
+		    error = false;
+
+			var assignee = $$('.childValidateAssignee');
+
+			clearErrorsOnAssignees();
+
+			for(var i = 0; i < assignee.length; i++) {
+
+				var value = assignee[i].selectedIndex;
+
+				for(var j = 0; j < assignee.length; j++) {
+
+					if ( j != i && value == assignee[j].selectedIndex) {
+
+						error = true;
+
+						assignee[j].style.border = 'solid #C0272D 2px';		
+
+						assignee[i].style.border = 'solid #C0272D 2px';					
+
+					}
+
+				}	
+
+			}
+
+			return error;
+
+		}
+
+		/**
+
+		* Clear error for assigees
+
+		*/
+
+		function clearErrorsOnAssignees(){
+
+			var assignee = $$('.childValidateAssignee');
+
+			for(var i = 0; i < assignee.length; i++) {
+
+				assignee[i].style.border ='';
+
+			}				
+
+		}
+		
+
+		
+
+		/**
+		* Remove Assignee
+		*@param String id
+		*/
+
+		function removeAssigne(id){
+
+			var tid = '' + id;
+
+			var div = $(tid);
+
+			div.remove();
+
+			if($$('.assigneCont').length == 0){
+
+				$('firstDedicated').hide();
+
+			}
+
+		}
+
+		
+
+		/**
+
+		* Remove DOM Element
+
+		*@param String
+
+		*/
+
+		function removeElement(id){
+
+			$(id).remove();
+
+		}
+		
+    
+	    
 	
 		/**
 		* Call back function for save event
@@ -164,23 +453,19 @@
     <div class="main_content">
     	<div>
         	<div class="holder">
+        		<div style="margin-top:15px;"> &nbsp; &#171;<a href="" style="font-weight:normal;"> 
+						Back 
+					</a>
+				</div>
         		<div class="teamTitle"  >
         			Create New {!$ObjectType.ProjectTask__c.label}
         		</div>
                 <div class="teamTitle"  >
                 	Edit {!$ObjectType.ProjectTask__c.label}
                 </div>
-                <div style="margin-top:15px;"> &nbsp; &#171; &nbsp;<a href="" style="font-weight:normal;"> 
-						Back 
-					</a>
-				</div>
-				
-				<div style="margin-top:15px;">
-				</div>
-                <div class="border_body_top" style="background: #FFFFFF;">
-                	&nbsp;
-                </div>
-                <div class="body_center">
+				<div class="border_body_top">&nbsp;</div>
+                
+                <div class="body_center" style="height: auto !important; ">
 				
 				<a id="anchorForError">
 				</a>
@@ -193,7 +478,7 @@
                         	We had trouble unserstanding one or more of your entries or we need more information
                         </strong><br />
                         <span id="messageErrorText">
-                        	Please see the field(s) highlighted
+                        	Please see the highlighted field(s)
                         </span>
                     </div>
                     <div class="clear">
@@ -219,17 +504,49 @@
                     <div class="Formcontentfolder">	
                     	<!-- Dynamic Layout Output don't remove -->
 	                    <div class="DynamicLayoutResponse">
-	<apex:form ><label>Task Name</label><apex:inputField value="{!task.Name}" required="true" /><br/><br/><label>Owner</label><apex:inputField value="{!task.OwnerId}" required="false" /><br/><label>Description</label><apex:inputField value="{!task.Description__c}" required="true" /><br/><label>Project</label><apex:inputField value="{!task.Project__c}" required="false" /><br/><label>Start Date</label><apex:inputField value="{!task.StartDate__c}" required="true" /><br/><label>End Date</label><apex:inputField value="{!task.EndDate__c}" required="false" /><br/><label>Duration</label><apex:inputField value="{!task.Duration__c}" required="true" /><br/><label>ParentTask</label><apex:inputField value="{!task.ParentTask__c}" required="false" /><br/><label>Priority</label><apex:inputField value="{!task.Priority__c}" required="false" /><br/><label>Percent Completed</label><apex:inputField value="{!task.PercentCompleted__c}" required="false" /><br/><label>Milestone</label><apex:inputField value="{!task.Milestone__c}" required="false" /><br/><label>Sprint</label><apex:inputField value="{!task.Sprint__c}" required="true" /><br/><label>Rank</label><apex:inputField value="{!task.Rank__c}" required="false" /><br/><div class="btnStandardForm"><apex:commandButton action="{!save}" value="Save" onclick="statusSaving(this);" rerender="NewProjectFormContainer" oncomplete="onCompleteCallBackFunction();"  /><apex:commandButton value="Cancel" onclick="history.go(-1);" /></div></apex:form></div>
+	<apex:form ><label>Task Name</label><apex:inputField value="{!task.Name}" required="true" /><br/><br/><label>Owner</label><apex:inputField value="{!task.OwnerId}" required="false" /><br/><br/><label>Description</label><apex:inputField value="{!task.Description__c}" required="true" /><br/><br/><label>Project</label><apex:inputField value="{!task.Project__c}" required="false" /><br/><br/><label>Start Date</label><apex:inputField value="{!task.StartDate__c}" required="true" /><br/><br/><label>End Date</label><apex:inputField value="{!task.EndDate__c}" required="false" /><br/><br/><label>Duration</label><apex:inputField value="{!task.Duration__c}" required="true" /><br/><br/><label>ParentTask</label><apex:inputField value="{!task.ParentTask__c}" required="false" /><br/><br/><label>Priority</label><apex:inputField value="{!task.Priority__c}" required="false" /><br/><br/><label>Percent Completed</label><apex:inputField value="{!task.PercentCompleted__c}" required="false" /><br/><br/><label>Milestone</label><apex:inputField value="{!task.Milestone__c}" required="false" /><br/><br/><label>Sprint</label><apex:inputField value="{!task.Sprint__c}" required="true" /><br/><br/><label>Rank</label><apex:inputField value="{!task.Rank__c}" required="false" /><br/><br/><div class="btnStandardForm"><apex:commandButton action="{!save}" value="Save" onclick="statusSaving(this);" rerender="NewProjectFormContainer" oncomplete="onCompleteCallBackFunction();"  /><apex:commandButton value="Cancel" onclick="history.go(-1);" /></div></apex:form></div>
 
 	            	</div>
 	            	<!--Divs to format the page  -->
 	          	</apex:outputPanel>
 
+			<div class = "DynamicLayoutResponse">
 				<!-- Attachment and Assignees form -->
 				<apex:form id="secondForm" >
+				
+					<div id="memberAssigned" class="errorMessageAssingUnique" style="display:none;">  
+						<strong>The task only can be assigned once to each user</strong>
+					</div>
+					<label>Assign To</label><span class="requeried"></span>
+					<apex:selectList id="taskAssign" value="{!dateMy.member}" styleClass="validateMember childValidateAssignee" title="" multiselect="false" size="1" > 
+			  	 	 	<apex:selectOptions value="{!Members}"/>
+			  	 	</apex:selectList>
+				  	
+			  	 	
+			  	 	<div id="firstDedicated" style="display:none;">
+				  	 	<label>Percent Dedicated</label>
+				  	 	<apex:selectList id="taskPercentDedicated" value="{!dateMy.Percent}" styleClass="margin" title="" multiselect="false" size="1" > 
+				  	 	 	<apex:selectOptions value="{!PercentDedicated}"/>
+				  	 	</apex:selectList>
+				  	</div>
+				  	
+					<span class="errorText f_left" id="TaskMemberErrorMessage" style="display:none;"><b>Error:</b> You must select a {!$ObjectType.Project2__c.label} member</span><br/>
+					<div id="result">
+						
+					</div>
+					<label>&nbsp;</label><span class="no_requeried"></span><a href="javascript:;" class="assigned" onclick="addAssigne();">Add another Assignee</a><br/><br/>
+					
+					<label>% Complete</label><span class="no_requeried"></span>
+					<apex:selectList id="taskPercent" styleClass="validateMember" value="{!Task.PercentCompleted__c}" title="" multiselect="false" size="1" >
+			  	 	 	<apex:selectOptions value="{!Percent}"/> 
+			  	 	</apex:selectList>
+					<br/>
+				
+				<apex:inputHidden id="assigneesCustomFormat" value="{!assignees}" />
+					<hr color="#999999" size="1"/>
 	        		<div style="" class="title_line_btn"/>
 						<a  href="javascript:;" onclick="hideAdvanced()" id="advancedLinks" class="advanced">Advanced options...</a>
-						<br/>
+						<br/><br/>  
 						<div id="advanced" style="display: none;">
 							<label>Priority</label><span class="no_requeried"></span>
 							<apex:selectList id="taskPriority" value="{!Task.Priority__c}" title="" multiselect="false" size="1" >
@@ -283,14 +600,20 @@
 							<br/>
 						</div>
 						
+						<div class="title_line_btn" style="display:none;"></div>
+						<div style="position: relative; height: 40px;">
+						<div id="btnContainer"></div>
+						
 						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
 					</div>
 					<apex:commandButton styleClass="secondFormAction" style="display:none;" action="{!saveAttachmentsAndAccess}" onclick="statusSaving()"/>
 				</apex:form>
+				</div>
 				
-				<div class="title_line_btn" style="display:none;"></div>
-				<div id="btnContainer"></div>
 
+<div class="clear"></div>
     		</div> <!-- end holder -->
     	</div>
     </div><!-- End main content div -->
