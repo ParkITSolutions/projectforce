@@ -55,7 +55,7 @@
     
     <c:ProjectOverlayNewTask />
     <c:ProjectOverlayNewMilestone />
-    <c:ProjectDeleteTaskOverlay />
+    <c:ProjectDeleteTaskOverlay id="componentDeleteTask" />
     <div class="confirmation" id="confirmation" style="display:none;">
         The selected tasks have been marked complete
     </div>
@@ -120,8 +120,8 @@
                 </div>
             </div>  
             <apex:outputpanel id="taskListPanel" layout="block" >
-                <apex:form id="ref"> 
-                    <apex:actionFunction action="{!refreshTaskList}" oncomplete="showHideOverlay();" name="sortListEvent" rerender="ref" />
+                <apex:form id="ref">
+                	<apex:actionFunction action="{!refreshTaskList}" oncomplete="showHideOverlay();" name="sortListEvent" rerender="ref" />
                     <div class="tableTopContainer" >             
                         <div class="filterContainer">  
                             <apex:selectList id="chooseOption" value="{!option}" onchange="option()" size="1">
@@ -269,7 +269,7 @@
                                         </td>
                                         <td>
                                             <apex:outputpanel rendered="{!IF(OR(editDeletePer,task.canEditAndDelete) ,true,false)}" layout="block">
-                                                <div><a href="/apex/ProjectCreateNewTask?id={!ProjectId}&task={!task.id}">Edit</a> | <a href="javascript:;" onclick="showDeleteEvent('{!task.Id}', false, {!task.Milestone});">Del</a></div>     
+                                                <div><a href="/apex/ProjectCreateNewTask?id={!ProjectId}&task={!task.id}">Edit</a> | <a href="javascript:;" onclick="showDeleteEvent('{!task.Id}');">Del</a></div>     
                                             </apex:outputpanel> 
                                         </td> 
                                         <td class="imgColumns"  align="center"> 
@@ -292,6 +292,11 @@
                                                     <img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/lowPriority.gif')}"/>
                                                 </div>
                                             </apex:outputpanel>
+                                            <apex:outputpanel rendered="{!IF(task.Priority == 'Normal',true,false)}" layout="block">
+                                                <div style="" class="center" >
+                                                    <img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/lowPriority.gif')}"/>
+                                                </div>
+                                            </apex:outputpanel>                                            
                                         </td>  
                                         <!-- Task Name -->                          
                                         <td class="proj_task_title">
@@ -404,4 +409,5 @@
         readPortalCSSRules();
     </script>
     <apex:outputpanel id="auxProjectTaskListPanel" />
+    
 </apex:page>

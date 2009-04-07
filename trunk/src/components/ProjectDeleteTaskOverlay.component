@@ -1,5 +1,5 @@
 <!--  **** Template **** -->
-<apex:component controller="ProjectTaskListController" allowDML="true">
+<apex:component id="projectDeleteTaskOverlay" controller="ProjectTaskListController" allowDML="true">
 	
 	<!-- Modal JS -->
 	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}"/>
@@ -27,13 +27,14 @@
 			</div>
 		</div>
 		<!-- Overlay Content -->
-		<div class="overlayMainContent">
+		<div id="overlayMain" class="overlayMainContent">
 			<!-- Action Status -->
 			<div id="overlayFormStatus" class="overlayFormStatus" style="display:none;">
 				{Status...}
 			</div>
 			<!-- Overlay Form -->
 			<apex:form id="overlayForm">   
+			<apex:inputHidden value="{!idDeletes}" id="inputIdToDelete"/>
 				<!-- Overlay Form Content -->
 				<div class="overlayFormContent">
 					<strong>Are you sure you want to continue?</strong><br />
@@ -43,13 +44,15 @@
 				<!-- Saven and Cancel Buttons -->
 				<div class="overlayFromButtons" align="center">
 					<span id="deleteEventContainer">
-						<apex:commandButton styleclass="overlaySaveBtn" action="{!deleteTask}" value="Continue and delete" onclick="modal.close();showSwirley();setTimeout('Effect.Fade(\'infoToUser\')', 10000);" oncomplete="redirect(); showMessageToUser('Deleted item(s)','success');" rerender="taskListPanel" />
-						<apex:inputHidden id="auxInputDeletes" value="{!idDeletes}" />
-				        <script>
+						<apex:commandButton styleClass="allButtons cancelButtons btn" style="background-color: #21637D!important;" action="{!deleteTask}" value="Continue and delete" onclick="modal.close();showSwirley();setTimeout('Effect.Fade(\'infoToUser\')', 10000);" oncomplete="redirect(); showMessageToUser('Deleted item(s)','success');" rerender="taskListPanel" />
+						<!--  apex:inputHidden id="auxInputDeletes" value="{!idDeletes}" / -->
+						<script>
+				        /*
 			        		var InputIdToDelete = '{!$Component.auxInputDeletes}';
+			        	*/
 			        	</script>
 				    </span>
-			        <input type="button" class="overlayCancelBtn" onclick="modal.close();" value="Cancel" id="cancelButton"/>
+			        <input type="button" class="allButtons cancelButtons" onclick="modal.close();" value="Cancel" id="cancelButton"/>
 				</div>
 			</apex:form>
 		</div>

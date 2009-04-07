@@ -61,6 +61,17 @@
 				
 			}
 		);
+		
+		/**
+		* Add Members overlay call back function
+		*/
+		function addMemberCallBackFunction(){
+			statusSending(this);
+			setTimeout('modal.close(); hideSwirly(\'swirly_overlay\')', 5000); 
+			showMessageToUser(); 
+			showSwirly('swirly_members'); 
+			setTimeout('hideMessageToUser()', 10000);		
+		}		
 	</script>
 	<!-- c:TeamsOverlayNewTask />
 	< c:TeamsOverlayNewMilestone / -->

@@ -1102,13 +1102,13 @@ public with sharing class ProjectTaskListController {
     */
     public void deleteTask(){
         List<String> myIds = new List<String>();
-        
+        System.debug('estoy '+ idDeletes);
         if (idDeletes != '' && idDeletes != null){
             myIds = idDeletes.split(':'); 
         }
         if(myIds.size()>0){
             List<ProjectTask__c> tasksToDelete = [select (Select User__c from ProjectsAssignees__r ), id from ProjectTask__c where id in: myIds];
-            
+      
             if (tasksToDelete.size() > 0){
                 List<ProjectTask__c> taskListToDelete = new List<ProjectTask__c>(); 
                 for (ProjectTask__c iterTask : tasksToDelete){
@@ -1126,6 +1126,7 @@ public with sharing class ProjectTaskListController {
                     }else {
                         throw new CustomException('Insufficient Privileges');   
                     }
+                   
                 }
                 if(taskListToDelete.size() > 0) {
                     delete taskListToDelete;

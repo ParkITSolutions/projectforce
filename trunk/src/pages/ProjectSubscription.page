@@ -47,11 +47,15 @@
     </apex:composition>
     
 	<div class="sidebar">
+		
 		<!-- Project Quick Links -->
 		<c:ProjectDetailQuickLinks />
+		
 		<!-- Project members -->
-		<c:ProjectMembersWidget />		
+		<c:ProjectMembersWidget projectId="{!IdProject}" />		
+	
 	</div>
+	
 	<!-- BreadCrumbs -->
 	<apex:form id="form_content" onsubmit="getInputValue(); if(!isCloneAction){if(validator('{!$Component.form_content}', 'warning_to_user'))return false;};">
 		<div class="breadcrumbs"  align="center">

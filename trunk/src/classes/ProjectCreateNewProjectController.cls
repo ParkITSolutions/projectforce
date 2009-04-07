@@ -281,19 +281,25 @@ public class ProjectCreateNewProjectController {
     *@return Project detail page reference
     *@throws Exception
     */    
-    public void saveProject(){
+    public PageReference saveProject(){
 		//Set User Permissions
     	this.genPermissions();
-    	try{	
-			if(theProject.Id == null){
-				insert theProject;
-			}else{
-	    		update theProject;	
-			}
-    	}catch(Exception e){
-    		throw e;
-    	}
-    }
+    	
+		// Set boolean to true for execute triggers
+		ProjectUtil.setIsRunnig( true );
+		
+		if(theProject.Id == null){
+			
+			insert theProject;		
+            
+		}else{
+    		update theProject;	
+		}
+
+		PageReference pageRef = new PageReference('/');
+		pageRef.setRedirect(false);
+		return pageRef;    
+	}
     
     public PageReference saveAttachmentsAndAccess(){
     	
