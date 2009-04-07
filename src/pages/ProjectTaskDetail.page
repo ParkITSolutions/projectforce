@@ -66,7 +66,7 @@
     	<!-- BreadCrumb and buttons -->     
         <div align="center" class="breadCrumbAndButtons">
 		<div class="breadCrumbs">
-			<a  href="/apex/ProjectDetail?id={!Task.ProjectId}">{!Task.ProjectName} Home</a> > <a  href="/apex/ProjectTaskList?id={!Task.ProjectId}">Tasks</a> > <strong>{!Task.Name}</strong>
+			<a  href="/apex/ProjectDetail?id={!Task.ProjectId}">{!Task.ProjectName} Home</a> > <a  href="/apex/ProjectTasksList?id={!Task.ProjectId}">Tasks</a> > <strong>{!Task.Name}</strong>
 		</div>
         <div class="buttons" style="{!IF(Task.IsTaskOwner,'width:262px;','')}">
 			<apex:outputpanel rendered="{!OR(userPermissions.canManage,Task.IsTaskOwner)}" layout="block">
@@ -91,7 +91,7 @@
 						</apex:facet>
 					</apex:actionStatus>
 				</apex:form>		        	
-		        <a class="blackbutton" href="Javascript:;" onclick="showDeleteEvent('{!Task.id}', true, {!Task.Milestone});">
+		        <a class="blackbutton" href="Javascript:;" onclick="showDeleteEvent('{!Task.id}', 'taskDetail');">
 		        	<span>Delete</span>
 		        </a>		        	
 	        </apex:outputpanel>
@@ -193,5 +193,24 @@
 	<script>
 		readPortalCSSRules();
 		clearTableDetail();
+	</script>
+	<script>
+			function showDeleteEvent(id, fromWhere){
+				var ids = (id != 'undefined' && id != '' && id != null) ? new Array(id) : getIdsToDelete();
+				var idsString = '';
+				for(var it=0; it < ids.length; it++){
+					var taskId = ids[it];	
+					if (it == ids.length - 1) {
+						idsString += taskId;
+					}else {
+						idsString += taskId + ':';
+					}
+				}
+				if (fromWhere == 'tasksList'){
+					$('ProjectsTaskList:componentDeleteTask:projectDeleteTaskOverlay:overlayForm:inputIdToDelete').value = idsString;
+				}
+				createOverlay('', 'deleteTasks', 145);	
+			}
+						
 	</script>
 </apex:page>

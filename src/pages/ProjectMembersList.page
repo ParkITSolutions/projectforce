@@ -14,7 +14,17 @@
             $( idElement2 ).style.height = (o1Dims.height * 0.98 ).round() + 'px';
             $( idElement2 ).style.width = (o1Dims.width * 0.98 ).round() + 'px';
         }
-		
+        
+		/**
+		* Add Members overlay call back function
+		*/
+		function addMemberCallBackFunction(){
+			statusSending(this);
+			setTimeout('modal.close(); hideSwirly(\'swirly_overlay\')', 5000); 
+			//showMessageToUser(); 
+			showSwirly('swirly_members'); 
+			//setTimeout('hideMessageToUser()', 10000);		
+		}        
 	</script>
 
 	<!-- Javascript -->
@@ -32,8 +42,7 @@
 	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/validator.js')}"/>
 
 	<!-- Common css for modal -->
-	<link rel="stylesheet" media="screen"
-		href="{!URLFOR($Resource.commonResources, 'inc/css/modal.css')}" />
+	<link rel="stylesheet" media="screen" href="{!URLFOR($Resource.commonResources, 'inc/css/modal.css')}" />
 
 	<!-- CSS de TS -->
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />
@@ -51,27 +60,30 @@
 	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />
 
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectCreateNewProject.js')}" />
-	
-		<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupTop.js')}" />
 
 	<!-- Modal JS -->
 	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" />
 
 	<style>
-		.memberImg 
-	{
-		padding: 0px;
-	}
+		.memberImg {
+			padding: 0px;
+		}
 	
-	.paginationOverlay{
-		background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat center 200px;
-		position:absolute;
-		width:760px;
-		opacity:.80;
-		filter:alpha(opacity=80);
-		z-index:9998;
-
-	}
+		.paginationOverlay{
+			background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat center 200px;
+			position:absolute;
+			width:760px;
+			opacity:.80;
+			filter:alpha(opacity=80);
+			z-index:9998;
+	
+		}
+		
+		div#teamMemberID{
+			display: none !important;
+		}
 	
 	</style>
 	
@@ -117,8 +129,11 @@
 		<c:ProjectDetailQuickLinks />
 
 		<!-- Team Suscribe -->
-		<c:ProjectSubscribe /> 
+		<c:ProjectSubscribe />
 		
+		<!-- Team members -->
+		<c:ProjectMembersWidget projectId="{!projectId}" />	
+		 
 		<div class="clear"></div>
 	</div>
 	

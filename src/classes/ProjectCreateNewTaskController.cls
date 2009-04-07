@@ -13,7 +13,6 @@ public class ProjectCreateNewTaskController {
 	
 	 // max picture size bytes
     public final Integer MAX_SIZE = 5240000;
-	
 	public String assignees = '';
 	
 	// Attachments
@@ -23,7 +22,6 @@ public class ProjectCreateNewTaskController {
 	
 	//Project list path
 	public PageReference URL_TO_LIST = Page.ProjectTasksList;
-	
 	List<assingTo> resultMem = new List<assingTo>();
 	
 	// Sharing rules
@@ -526,72 +524,7 @@ public class ProjectCreateNewTaskController {
    	* Save Task
    	*@void
    	*/
-   	public PageReference save(){
-   		
-   		System.debug('Entering save method on NewTaskController: ');
-   		
-   		attachList.clear();
-   		if(theTask.Milestone__c)
-   			theTask.StartDate__c = theTask.EndDate__c;
-   		if (att1.Name != null && att1.Name != '') {
-   			att1.ParentId = theTask.Id;
-   			attachList.add(att1);
-   			att1=new Attachment();
-   		}
-   		if (att2.Name != null && att2.Name != '') {
-   			att2.ParentId = theTask.Id;
-   			attachList.add(att2);
-   			att2=new Attachment();
-   		}
-   		if (att3.Name != null && att3.Name != '') {
-   			att3.ParentId = theTask.Id;
-   			attachList.add(att3);
-   			att3=new Attachment();
-   		}
-   		if (att4.Name != null && att4.Name != '') {
-   			att4.ParentId = theTask.Id;
-   			attachList.add(att4);
-   			att4=new Attachment();
-   		}
-   		if (att5.Name != null && att5.Name != '') {
-   			att5.ParentId = theTask.Id;
-   			attachList.add(att5);
-   			att5=new Attachment();
-   		}
-   		if (att6.Name != null && att6.Name != '') {
-   			att6.ParentId = theTask.Id;
-   			attachList.add(att6);
-   			att6=new Attachment();
-   		}
-   		if (att7.Name != null && att7.Name != '') {
-   			att7.ParentId = theTask.Id;
-   			attachList.add(att7);
-   			att7=new Attachment();
-   		}
-   		if (att8.Name != null && att8.Name != '') {
-   			att8.ParentId = theTask.Id;
-   			attachList.add(att8);
-   			att8=new Attachment();
-   		}
-   		if (att9.Name != null && att9.Name != '') {
-   			att9.ParentId = theTask.Id;
-   			attachList.add(att9);
-   			att9=new Attachment();
-   		}
-   		if (att10.Name != null && att10.Name != '') {
-   			att10.ParentId = theTask.Id;
-   			attachList.add(att10);
-   			att10=new Attachment();
-   		} 
-   		
-   		System.debug('AttachList is --> ' + attachList);
-
-   		errorAttachList = new List<Integer>();
-   		errorAttachList = ProjectUtil.validateFileSize(attachList); 
-   		   		
-   		if(errorAttachList.size() > 0)
-   			return null;
-   			
+   	public void save(){
    		if(theTask.Id == null){
    			if(userPermissions.getCanCreate()){
    				theTask.Project__c = param;
@@ -609,16 +542,6 @@ public class ProjectCreateNewTaskController {
    				throw new CustomException('Insufficient Privileges');
    			}
    		}
-   		
-   				
-   		if (attachList.size() > 0) {
-   			insert attachList;
-   		}
-   		
-   		PageReference forward = URL_TO_LIST;
-   		forward.getParameters().put('id', theTask.Project__c);
-   		forward.setRedirect(true);
-   		return forward;
    	}
    	
    	/**
@@ -758,14 +681,17 @@ public class ProjectCreateNewTaskController {
    		
    		System.debug('entering saveAttachmentAndAccess');
     	
-    	attachList.clear();
+    	attachList.clear(); 
    		if(theTask.Milestone__c)
    			theTask.StartDate__c = theTask.EndDate__c;
+   			
    		if (att1.Name != null && att1.Name != '') {
    			att1.ParentId = theTask.Id;
    			attachList.add(att1);
    			att1=new Attachment();
+   			System.debug('att1 in saveAttachments: ' + att1);
    		}
+   		else System.debug('att1 in saveAttachments is NULL ');
    		if (att2.Name != null && att2.Name != '') {
    			att2.ParentId = theTask.Id;
    			attachList.add(att2);

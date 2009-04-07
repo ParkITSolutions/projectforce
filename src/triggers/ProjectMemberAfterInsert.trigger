@@ -68,7 +68,7 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert)
                 }
                 
                 // Determine Different Queue Additions
-                ///////////////////////////////////////
+                //////////////////////////////////////
                 List<GroupMember> groupMembers = new List<GroupMember>();
                 ProjectProfile__c tp = new ProjectProfile__c();
                 Boolean findProfile = false;
