@@ -269,7 +269,7 @@
                                         </td>
                                         <td>
                                             <apex:outputpanel rendered="{!IF(OR(editDeletePer,task.canEditAndDelete) ,true,false)}" layout="block">
-                                                <div><a href="/apex/ProjectCreateNewTask?id={!ProjectId}&task={!task.id}">Edit</a> | <a href="javascript:;" onclick="showDeleteEvent('{!task.Id}');">Del</a></div>     
+                                                <div><a href="/apex/ProjectCreateNewTask?id={!ProjectId}&task={!task.id}">Edit</a> | <a href="javascript:;" onclick="showDeleteEvent('{!task.Id}','');">Del</a></div>     
                                             </apex:outputpanel> 
                                         </td> 
                                         <td class="imgColumns"  align="center"> 

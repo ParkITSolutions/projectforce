@@ -1075,67 +1075,6 @@ public with sharing class ProjectTaskListController {
         }
         idTaskToComplete = '';
     }
-    
-    /* ---------------------------- */
-    /*        DELETE TASK           */
-    /* ---------------------------- */
-    
-    //String 
-    public String idDeletes = '';
-    
-    /**
-    *@return String
-    */
-    public String getIdDeletes () {
-        return idDeletes;   
-    }
-    
-    /**
-    *@param String
-    */
-    public void setIdDeletes (String sidDeletes) {
-        idDeletes = sidDeletes; 
-    }
-    
-    /**
-    *Delete Task
-    */
-    public void deleteTask(){
-        List<String> myIds = new List<String>();
-        System.debug('estoy '+ idDeletes);
-        if (idDeletes != '' && idDeletes != null){
-            myIds = idDeletes.split(':'); 
-        }
-        if(myIds.size()>0){
-            List<ProjectTask__c> tasksToDelete = [select (Select User__c from ProjectsAssignees__r ), id from ProjectTask__c where id in: myIds];
-      
-            if (tasksToDelete.size() > 0){
-                List<ProjectTask__c> taskListToDelete = new List<ProjectTask__c>(); 
-                for (ProjectTask__c iterTask : tasksToDelete){
-                    Boolean cantEditAndDelete = false;
-                    Integer countAssignee = 0;
-                    while (!cantEditAndDelete && countAssignee < iterTask.ProjectsAssignees__r.size()){
-                        if(iterTask.ProjectsAssignees__r[countAssignee].User__c != USERID){
-                            cantEditAndDelete =  true;
-                        }else {
-                            countAssignee++;
-                        }
-                    }
-                    if(!cantEditAndDelete || editDeletePer || iterTask.createdById == USERID){
-                        taskListToDelete.add(iterTask);
-                    }else {
-                        throw new CustomException('Insufficient Privileges');   
-                    }
-                   
-                }
-                if(taskListToDelete.size() > 0) {
-                    delete taskListToDelete;
-                }
-            }else if (tasksToDelete.size() == 0){
-                
-            }
-        }
-        idDeletes = '';
-    }
+ 
     
 }

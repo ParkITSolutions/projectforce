@@ -107,7 +107,7 @@
 							<a class="blackbutton" href="Javascript:;" onclick="deleteProjectOverlay();">
 								<span> Delete </span>
 							</a>
-							<a class="blackbutton" href="Javascript:;">
+							<a class="blackbutton" href="/apex/projectRedirect?sO=Project2__c&attr=project&page=ProjectCreateNew&rR=NewProjectFormContainer&oC=true&eid={!teamIdParam}">
 								<span> Edit </span>
 							</a>
 						</apex:outputPanel>			

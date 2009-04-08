@@ -48,6 +48,23 @@
 			margin-left:145px;
 		}
 		
+		.DynamicLayoutResponse select {
+
+			float: left;
+			margin-bottom: 16px;
+		}
+		
+		.DynamicLayoutResponse label {
+			color:#676667;
+			font-weight:bold;
+			width: 150px;
+			margin-right: 5px;
+			float: left;
+			text-align:right;
+			font-size:13px;
+
+		}
+		
 		.DynamicLayoutResponse .attach_list{
 			display:block;
 			margin-bottom:10px;
@@ -158,12 +175,12 @@
 			var form = div.firstDescendant();	
 			var btnSaveForm = form.getElementsByClassName('btn')[0];
 		
-			//Format save button	
+			//Format save button
 			btnSaveForm.addClassName('SaveBtn');
-			btnSaveForm.value = "Create";
+			btnSaveForm.value = "Save";
 		
-			//Insert the buttonsdiv	
-			var buttonsDiv = $('btnContainer');	
+			//Insert the buttonsdiv
+			var buttonsDiv = $('btnContainer');
 			buttonsDiv.innerHTML = '';
 			buttonsDiv.show();
 
@@ -449,23 +466,22 @@
 		* Call back function for save event
 		*/
 		function onCompleteCallBackFunction(){
-			//createLayout();
+			createLayout();
+			memberAssigne();
+			alert('Assignees are: ' + $('ProjectCreateNewTask:secondForm:assigneesCustomFormat').value);
 			if($$('.errorMsg').length > 0){
 				Effect.Appear('warning_to_user');
 				Effect.ScrollTo('anchorForError');
 			}else{
 				Effect.Fade('warning_to_user');
+
 				$$('.secondFormAction')[0].click();
 			}
-		
 		}
 		
 		/**
-
 		* Member Assignee
-
 		*@void
-
 		*/
 
 		function memberAssigne(){
@@ -477,45 +493,27 @@
 			if(contChild.length > 0){
 
 				for(var it=0; it < contChild.length; it++ ){
-
 					var Userid = $F(contChild[it].getElementsByClassName('child')[0]);
-
 					var percernt = $F(contChild[it].getElementsByClassName('percentChild')[0]);
-
 					if(Userid != 'Choose a '+ globalTeamLabel +' Member') {
-
 						assigneeToSave(Userid, percernt);
-
 					}				
-
 				}
-
 				assigneeHidden.value = assigneeHidden.value.substring(0, (assigneeHidden.value.length - 1));
-
 			}
-
 		}
 		
 		/**
-
 		* Assignees to save
-
 		*/
 
 		function assigneeToSave(user, percent){
-
 			var assigneeHidden = $('ProjectCreateNewTask:secondForm:assigneesCustomFormat'); 
-
 			if(user != 'undefined' && percent != ''){
-
 				assigneeHidden.value += user + ':' + percent + ';';	
-
 			}
-
-		}
+		}	
 		
-		
-
     </script>
         
 	<!-- Bubble -->
@@ -554,11 +552,13 @@
     <div class="main_content">
     	<div>
         	<div class="holder">
+        		<!--  
         		<div style="margin-top:15px;">&laquo;
-        			<a href="" style="font-weight:normal;">
+        			<a href="javascript: history.go(-1);" style="font-weight:normal;">
         				Back
 					</a>
 				</div>
+				 -->
         		<div class="teamTitle"  >
         			{!TypeOfAction} {!$ObjectType.ProjectTask__c.label}
         		</div>

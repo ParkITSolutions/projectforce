@@ -1,6 +1,8 @@
 trigger ProjectMemberAfterInsert on ProjectMember__c (after insert) 
 {
-	try {
+    if (!ProjectUtil.currentlyExeTrigger) {
+    	ProjectUtil.currentlyExeTrigger = true;
+    	try {
 			// Send email to subscribers members
 			ProjectSubscribersEmailServices pEmail = new ProjectSubscribersEmailServices();
 			List<String> lstPMId = new List<String>();
@@ -24,13 +26,7 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert)
             List<Project2__c> teamList = [select id, name, PublicProfile__c, NewMemberProfile__c from Project2__c where id in: idsTeam];
             List<Group> ManageQueueList = [select Id, Name From Group where Name in: groupsNames];
             
-            List<ProjectProfile__c> tpList = [select
-                                                        t.Id, 
-                                                        t.Name,
-                                                        t.CreateProjectTasks__c, 
-                                                        t.ManageProjectTasks__c 
-                                                        from ProjectProfile__c t 
-                                                        where t.Id in:idsProfile];
+            List<ProjectProfile__c> tpList = [select t.Id, t.Name, t.CreateProjectTasks__c, t.ManageProjectTasks__c from ProjectProfile__c t  where t.Id in:idsProfile];
             
             for(ProjectMember__c tm : Trigger.new) {
                 //Get Team Sharing Group
@@ -98,7 +94,6 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert)
                             countGroup++;   
                         }
                     }
-
                     
                     insert groupMembers;
                     
@@ -114,7 +109,9 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert)
                 
                 }
             }   
-        } finally {
+        } 
+        finally{
         }
-    
+    	ProjectUtil.currentlyExeTrigger = false;
+    }
 }

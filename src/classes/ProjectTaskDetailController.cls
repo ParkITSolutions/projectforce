@@ -1,14 +1,18 @@
 public class ProjectTaskDetailController {
 	TaskDetails taskDetail = null;
 	boolean detailsOk;
-	
+	//private String idDeletes = '';
+	private String USERID = UserInfo.getUserId();
+	private Boolean editDeletePer = false;
+	private String projectId = '';
 	/**
 	* Constructor
 	*/
 	public ProjectTaskDetailController(){
 		param = System.currentPageReference().getParameters().get('id');
 		getTask(param);
-		genPermissions();		
+		genPermissions();
+		editDeletePer = userPermissions.getCanManage();		
 	}	
 	
 	public UserPermissions userPermissions = new UserPermissions();
@@ -53,7 +57,14 @@ public class ProjectTaskDetailController {
 			throw e;
 		}
 	}
-		
+	/*
+	public String getIdDeletes(){
+		return idDeletes;	
+	}
+	public void setIdDeletes(String idDeletes){
+		this.idDeletes = idDeletes;		
+	}
+	*/	
 	/**
 	* Get Project Task  
 	*@param String param
@@ -200,6 +211,8 @@ public class ProjectTaskDetailController {
 			detailsOk = false;		
 		}	
 	}
+	
+	
 	
 	/**
 	* Inner class for Proyect Assignee

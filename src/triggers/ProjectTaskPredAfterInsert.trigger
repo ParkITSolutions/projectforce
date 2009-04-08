@@ -4,7 +4,7 @@ trigger ProjectTaskPredAfterInsert on ProjectTaskPred__c (after insert) {
         
         List<String> teamSharingGroupNames = new List<String>();		
 		for(ProjectTaskPred__c p : Trigger.new) {
-			teamSharingGroupNames.add('projectSharing' + p.Project__c);
+			teamSharingGroupNames.add('ProjectSharing' + p.Project__c);
 		}
 		
 		Map<String, Id> teamMap = new Map<String, Id>();					
@@ -18,7 +18,7 @@ trigger ProjectTaskPredAfterInsert on ProjectTaskPred__c (after insert) {
 			
 			ProjectTaskPred__Share p = new ProjectTaskPred__Share();
 			p.ParentId = m.Id;							
-			p.UserOrGroupId = teamMap.get('projectSharing' + m.Project__c);
+			p.UserOrGroupId = teamMap.get('ProjectSharing' + m.Project__c);
 		    p.AccessLevel = 'Read';
 		    p.RowCause = 'Manual';
 		    taskpred.add(p);

@@ -28,5 +28,4 @@ public class DeleteProjectController {
 		}
 		return pr;
 	}
-
 }
