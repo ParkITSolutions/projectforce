@@ -137,7 +137,7 @@
 							<b>&nbsp;</b>
 						</li>
 						<li id="CreateNewProjectContainer">
-								<a href="/apex/projectRedirect?%73%4F%3D%50%72%6F%6A%65%63%74%32%5F%5F%63%26%61%74%74%72%3D%70%72%6F%6A%65%63%74%26%70%61%67%65%3D%50%72%6F%6A%65%63%74%43%72%65%61%74%65%4E%65%77%26%72%52%3D%4E%65%77%50%72%6F%6A%65%63%74%46%6F%72%6D%43%6F%6E%74%61%69%6E%65%72%26%6F%43%3D%74%72%75%65" >
+								<a href="/apex/projectRedirect?sO=Project2__c&attr=project&page=ProjectCreateNew&rR=NewProjectFormContainer&oC=true" >
 									<div id="left">
 									</div>
 									<div id="middle">

@@ -24,6 +24,7 @@ public class ProjectCreateNewProjectController {
     * Constructor
     */
     public ProjectCreateNewProjectController(ApexPages.StandardController controller){
+    	genPermissions();
     	
     	newProfile.projectOpenOrClosed = 'open';
     	allowCustomerActivated = [ SELECT Id FROM Group WHERE Type = 'AllCustomerPortal' ];
@@ -33,7 +34,6 @@ public class ProjectCreateNewProjectController {
         	//Read Project
         	setProject(param);
 		
-        	
         	//generate Profiles
         	genProfiles(); 
         	
@@ -283,7 +283,7 @@ public class ProjectCreateNewProjectController {
     */    
     public PageReference saveProject(){
 		//Set User Permissions
-    	this.genPermissions();
+    	genPermissions();
     	
 		// Set boolean to true for execute triggers
 		ProjectUtil.setIsRunnig( true );

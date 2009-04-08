@@ -1,5 +1,6 @@
-trigger ProjectAfterInsert on Project2__c  (after insert) {	
+trigger ProjectAfterInsert on Project2__c bulk (after insert) {	
     if (!ProjectUtil.currentlyExeTrigger) {
+    	ProjectUtil.currentlyExeTrigger = true;
         try {
             ProjectProfile__c defaultProfile = [select Id from ProjectProfile__c where Name = 'Project Administrator' limit 1];
             //Organizatrion Group 
@@ -66,15 +67,7 @@ trigger ProjectAfterInsert on Project2__c  (after insert) {
                 insert gdqw;
                 
                 String pQId = gdqw.id;
-                
-                ProjectUtil.insertQueueSObjects (pQId, team.Id );
-                Project2__c tempTeam = [select ownerId, Id, Name from Project2__c where Id =: team.Id limit 1];
-                tempTeam.ownerId = pQId;
-                // We set this to true becuase we dont want all the minifeed triggers and update 
-                // triggers firing off when all we want to do is update the owner id.
-                ProjectUtil.currentlyExeTrigger = true;
-                
-                upsert tempTeam;                /*
+                                
 		        // ### Allow SObjects to be managed by recently created queues ###
 		        List<QueueSobject> sobjectsQueueAllowed = new List<QueueSobject>();
 		        
@@ -96,17 +89,15 @@ trigger ProjectAfterInsert on Project2__c  (after insert) {
 		        
 		        // Insert all the allowed sobjects  
 		        //Database.SaveResult[] lsr = Database.insert(sobjectsQueueAllowed);
-				upsert sobjectsQueueAllowed;
-
-                //Upsert Team owner
+				upsert sobjectsQueueAllowed;                
+                
+                
                 Project2__c tempTeam = [select ownerId, Id, Name from Project2__c where Id =: team.Id limit 1];
                 tempTeam.ownerId = pQId;
                 // We set this to true becuase we dont want all the minifeed triggers and update 
                 // triggers firing off when all we want to do is update the owner id.
                 ProjectUtil.currentlyExeTrigger = true;
-                
-                update tempTeam;
-                */
+                upsert tempTeam;                
                 ProjectUtil.currentlyExeTrigger = false;
                         
                 // Create __Shared object for team
@@ -118,18 +109,17 @@ trigger ProjectAfterInsert on Project2__c  (after insert) {
                 insert teamS;  
             
                 // Create the first team member (the founder)
-                /*
                 ProjectMember__c firstTeamMember = new ProjectMember__c();
                 firstTeamMember.User__c = Userinfo.getUserId();
                 firstTeamMember.Name = UserInfo.getName();
                 firstTeamMember.Project__c = team.Id;
                 firstTeamMember.Profile__c = defaultProfile.Id;
                 insert firstTeamMember;
-                */
             }
         } finally {
             ProjectUtil.currentlyExeTrigger = false;
         }
+    	ProjectUtil.currentlyExeTrigger = false;
     }
     else {
         ProjectProfile__c defaultProfile = [select Id from ProjectProfile__c where Name = 'Project Administrator' limit 1];

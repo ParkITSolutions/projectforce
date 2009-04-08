@@ -14,13 +14,14 @@
 			//Attach event to open overlay
 			function (){
 				$$('.newAttachmentEvent')[0].observe('click', function(){
-						createOverlay('', 'newAttachmentOverlay', 200);
+						createOverlay('', 'newAttachmentOverlay', 180);
 						observeIframeUpload();
+						//Hack for IE6
+						$('uploadIframe').src = $('uploadIframe').src;
 					}
 				);
 			}
 		)
-	
 	</script>
 	
 	<!-- Generic Refresh Attachment Method -->

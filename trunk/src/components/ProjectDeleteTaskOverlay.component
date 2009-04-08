@@ -1,11 +1,11 @@
 <!--  **** Template **** -->
-<apex:component id="projectDeleteTaskOverlay" controller="ProjectTaskListController" allowDML="true">
+<apex:component id="projectDeleteTaskOverlay" controller="ProjectDeleteTaskOverlayController" allowDML="true">
 	
 	<!-- Modal JS -->
 	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}"/>
 	
 	<!-- Overlay Styles -->
-	<apex:stylesheet value="{!URLFOR($Resource.TeamsResources, 'inc/css/teamsOverlaysTemplate.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />
 	
 	<!-- ProjectDeleteTaskOverlay Common JS -->
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectDeleteTaskOverlay.js')}"/>
@@ -33,7 +33,7 @@
 				{Status...}
 			</div>
 			<!-- Overlay Form -->
-			<apex:form id="overlayForm">   
+			<apex:form id="overlayForm" onsubmit="blockSaveBtn()">   
 			<apex:inputHidden value="{!idDeletes}" id="inputIdToDelete"/>
 				<!-- Overlay Form Content -->
 				<div class="overlayFormContent">
@@ -44,15 +44,10 @@
 				<!-- Saven and Cancel Buttons -->
 				<div class="overlayFromButtons" align="center">
 					<span id="deleteEventContainer">
-						<apex:commandButton styleClass="allButtons cancelButtons btn" style="background-color: #21637D!important;" action="{!deleteTask}" value="Continue and delete" onclick="modal.close();showSwirley();setTimeout('Effect.Fade(\'infoToUser\')', 10000);" oncomplete="redirect(); showMessageToUser('Deleted item(s)','success');" rerender="taskListPanel" />
-						<!--  apex:inputHidden id="auxInputDeletes" value="{!idDeletes}" / -->
-						<script>
-				        /*
-			        		var InputIdToDelete = '{!$Component.auxInputDeletes}';
-			        	*/
-			        	</script>
-				    </span>
-			        <input type="button" class="allButtons cancelButtons" onclick="modal.close();" value="Cancel" id="cancelButton"/>
+						<apex:commandButton id="SaveBtn1"  styleClass="saveButtons  cancelButtons btn" style="background-color: #21637D!important;display: none; !important" action="{!deleteTaskFromList}" value="Continue and delete" onclick="modal.close();showSwirley();setTimeout('Effect.Fade(\'infoToUser\')', 10000);" oncomplete="redirect(); showMessageToUser('Deleted item(s)','success');" rerender="taskListPanel" />
+						<apex:commandButton id="SaveBtn2" styleClass="saveButtons  cancelButtons btn" style="background-color: #21637D!important;display: none; !important" action="{!deleteTaskFromDetail}" value="Continue and delete"/>
+					</span>
+			        <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="modal.close();" value="Cancel"/>
 				</div>
 			</apex:form>
 		</div>

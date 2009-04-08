@@ -58,6 +58,7 @@ public class ProjectSubscribersEmailServices {
 	                emailSub = 'New Project Member';
 	            }
 	            
+				if( subscriptions.size() > 0)	
 	            genAddress( subscriptions, emailMsj, emailSub );
             }
         }
@@ -88,8 +89,9 @@ public class ProjectSubscribersEmailServices {
 	        	FROM ProjectSubscription__c 
 	        	WHERE Project__c =: proj.Project__c and User__c =: proj.User__c and ProjectTaskAssignedToMe__c = true ];
 	        }
+
+			if( subscriptions.size() > 0)	
 	        genAddress( subscriptions, emailMsj, emailSub );
-	        System.debug( 'manding' + subscriptions.size());
         }
     }
     
@@ -112,8 +114,11 @@ public class ProjectSubscribersEmailServices {
 	        emailSub = proj.Name + ' has been updated';
 	
 	        if (!isTest)
-	        subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, ProjectTaskChanged__c, ProjectTaskDeleted__c FROM ProjectSubscription__c WHERE Project__c =: proj.Project__c and ProjectTaskChanged__c = true ];
-	
+	        subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, ProjectTaskChanged__c, ProjectTaskDeleted__c 
+	        FROM ProjectSubscription__c 
+	        WHERE Project__c =: proj.Project__c and ProjectTaskChanged__c = true ];
+			
+			if( subscriptions.size() > 0)	
 	        genAddress( subscriptions, emailMsj, emailSub );
         }
     }
@@ -137,6 +142,7 @@ public class ProjectSubscribersEmailServices {
 	        emailMsj = 'Task Name:' + proj.Name + '<br />Priority: ' + proj.Priority__c + '<br />Start date: ' + proj.StartDate__c + '<br />End date: ' + proj.EndDate__c + '<br />Description: <br /><br />' + proj.Description__c;
 	        emailSub = proj.Name + ' has been deleted';
 	
+			if( subscriptions.size() > 0)	
 	        genAddress( subscriptions, emailMsj, emailSub );
         }
     }
@@ -188,7 +194,7 @@ public class ProjectSubscribersEmailServices {
         mail.setSenderDisplayName('Team Subscribe');  
         //Specify the subject line for your email address.
         mail.setSubject(subject);
-        mail.setSenderDisplayName( team.Name );
+        //mail.setSenderDisplayName( team.Name );
         // Set to True if you want to BCC yourself on the email.
         mail.setBccSender(false);
         // Optionally append the salesforce.com email signature to the email.

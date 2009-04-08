@@ -119,6 +119,7 @@ public class ProjectOverlayNewTaskController {
    	*@throws CustomException message Insufficient Privileges
    	*/
    	public void insertTask (){ 
+   		system.debug( 'insertando la tasc');
    		if(!userPermissions.getCanCreate()){
         	throw new CustomException('Insufficient Privileges');
    		}else{	
@@ -127,7 +128,7 @@ public class ProjectOverlayNewTaskController {
 			newTask.PercentCompleted__c = 0.0;
 			newTask.Priority__c = 'Normal';
 			insert newTask; 
-
+system.debug ('chuchu' + PROJECTID ); 
 	  		ProjectAssignee__c Assign = new ProjectAssignee__c();
 			Assign.User__c = projectMember.User__c;
 			Assign.ProjectTask__c = newTask.Id;

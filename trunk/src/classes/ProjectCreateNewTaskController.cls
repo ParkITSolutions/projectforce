@@ -45,10 +45,17 @@ public class ProjectCreateNewTaskController {
 	public ProjectCreateNewTaskController(){
    		genPermissions();
    		String qtEdit = System.currentPageReference().getParameters().get('ed');
-   		   		
+   		
+   		if(idTask == null){
+   			if(param != null){
+   				theTask.Project__c = param;
+   			}	
+   		}
+   		
    		if(param != null && idTask != null) {
    			getTaskForEdit(param, idTask);
    			Boolean canEdit = false;
+   			
    			for(assingTo assignee :getAssignMember()) {
    				if(assignee.getIdMember() == UserInfo.getUserId()) canEdit = true;
    			}
@@ -476,7 +483,8 @@ public class ProjectCreateNewTaskController {
 	public void genTempTask(){
 		//Get Params
 		String taskAsignee = System.currentPageReference().getParameters().get('qtaid');
-		dateMy.setMember(taskAsignee);
+		if(taskAsignee != null && taskAsignee != '-1')
+			dateMy.setMember(taskAsignee);
 	}	
 	
 	/**
@@ -502,7 +510,7 @@ public class ProjectCreateNewTaskController {
 	*/
    	public List<SelectOption> getPercent() {
   	 	List<SelectOption> percents = new List<SelectOption>();
-  	 	for(Integer i = 0; i<101; i=i+5){
+  	 	for(Integer i = 0; i < 101; i=i+5){
   	 		percents.add(new SelectOption(String.valueOf(i)+'.0', String.valueOf(i)+'%'));
   	 	}
   	 	return percents;
@@ -525,19 +533,18 @@ public class ProjectCreateNewTaskController {
    	*@void
    	*/
    	public void save(){
+   		System.debug('theTaskId is:' + theTask.Id);
    		if(theTask.Id == null){
    			if(userPermissions.getCanCreate()){
    				theTask.Project__c = param;
    				theTask.PercentCompleted__c = 0.0;
    				insert theTask;
-   				saveAssignees();
    			}else{
    				throw new CustomException('Insufficient Privileges');
    			}
    		}else {
    			if(canUpdate()){
    				update theTask;
-   				saveAssignees();
    			}else{
    				throw new CustomException('Insufficient Privileges');
    			}
@@ -557,20 +564,26 @@ public class ProjectCreateNewTaskController {
    	
    	/**
    	* Save Asignees
+   	* Format: userId:percentage;userId:percentage
    	*@void
    	*/
    	public void saveAssignees(){
-   		//String Format: userId:percent;
+   		
+   		System.debug('Entering SaveAssignees!');
+   		System.debug('Assignees are: ' + assignees);
+
    		List<String> assigns = assignees.split(';');
    		if(assigns.size() == 0)
    			return;
+   			
+   		System.debug('Assigns after split' + assigns);
    		
    		List<ProjectAssignee__c> assignsToDel = new List<ProjectAssignee__c>();
    		List<ProjectAssignee__c> assignsToSave = new List<ProjectAssignee__c>();
    		
    		assignsToDel = [select Id from ProjectAssignee__c where ProjectTask__c =: theTask.Id]; 
    		
-   		//Add f-irst Assignee
+   		//Add first Assignee
    		ProjectAssignee__c assign = new ProjectAssignee__c();
    		assign.User__c = dateMy.getMember();
    		assign.Project__c = param;
@@ -578,7 +591,7 @@ public class ProjectCreateNewTaskController {
    		assign.ProjectTask__c = theTask.Id;   		
    		assignsToSave.add(assign);
    		
-   		//Add others assignees
+   		//Add other assignees
    		List<String> auxAssign = new List<String>(); 
    		for(Integer it = 0; it < assigns.size(); it++){
    			auxAssign = assigns[it].split(':');
@@ -747,27 +760,8 @@ public class ProjectCreateNewTaskController {
    			return null;
    		}
    			
-   		if(theTask.Id == null){
-   			if(userPermissions.getCanCreate()){
-   				theTask.Project__c = param;
-   				theTask.PercentCompleted__c = 0.0;
-   				insert theTask;
-   				saveAssignees();
-   			}else{
-   				throw new CustomException('Insufficient Privileges');
-   			}
-   		}else {
-   			if(canUpdate()){
-   				update theTask;
-   				saveAssignees();
-   			}else{
-   				throw new CustomException('Insufficient Privileges');
-   			}
-   		}
-   		
-   		if (attachList.size() > 0) {
-   			insert attachList;
-   		}
+  		//Save Assignees
+  		saveAssignees();
    		
    		PageReference forward = URL_TO_LIST;
    		forward.getParameters().put('id', theTask.Project__c);

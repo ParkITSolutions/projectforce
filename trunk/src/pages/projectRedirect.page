@@ -1,4 +1,4 @@
-<apex:page controller="ProjectRedirectController" sidebar="false" showHeader="false">
+<apex:page controller="ProjectRedirectController" sidebar="false" showHeader="false" action="{!isAdmin}">
     
     <!-- Apex Toolkit Include -->
     <script src="/soap/ajax/13.0/connection.js" />
@@ -165,13 +165,13 @@
 					markup += ' />';
 
 					//Add Cancel Button
-					markup += this.tagPrefix + ':commandButton value="Cancel" onclick="history.go(-1);" /></div>';
+					markup += this.tagPrefix + ':commandButton value="Cancel" onclick="history.go(-2);" /></div>';
                     
                     markup += '</';
                     markup += 'apex:form>';                                     
                     
 					//Set bottom markup
-                    pattern = 'o(-1);" /></div>' + '</' + 'apex:form>';
+                    pattern = 'o(-2);" /></div>' + '</' + 'apex:form>';
                     var markupBottom = (markupAct[1].split(pattern).length > 1) ? markupAct[1].split(pattern)[1] : markupAct[1].split(pattern)[0];
                     apexPage.Markup = markupAct[0] + markup + markupBottom;
                     
@@ -233,5 +233,4 @@
     </script>
     
     <div class="redirect">Building Form...</div>
-    
 </apex:page>

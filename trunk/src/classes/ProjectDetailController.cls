@@ -30,7 +30,7 @@
     public Boolean getIsLastMemberAdmin(){
     	return isLastMemberAdmin;
    	}
-   
+
     
     /**
     *@param String team id
