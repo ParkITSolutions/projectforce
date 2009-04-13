@@ -7,20 +7,28 @@ public with sharing class ProjectMembersWidgetController {
 	String team;
 	public Boolean isAdministrator;
 	public Boolean emailNotifications = false;
+	public Boolean isManager = false;
 	
 	/**
 	* Constructor
 	*/
 	public ProjectMembersWidgetController(){
-		
+		genPermissions();
+		isManager = userPermissions.getCanManage();
+		System.debug('maneja ' + isManager + team);
 	}
 	
+		
 	/**
 	*@param b send email notifys
 	*/
 	public void setEmailNotifications(Boolean b)
 	{
 		emailNotifications = b;
+	}
+	
+	public Boolean getIsManager(){
+		return isManager;	
 	}
 	
 	/**
@@ -57,6 +65,7 @@ public with sharing class ProjectMembersWidgetController {
 	*@param String idTeam
 	*/
 	public void setTeam(String tID) {
+		System.debug('assss' + tID + team);
 		if (team == null || team != tID) {
 			team = tID;
 			genPermissions();
@@ -664,7 +673,7 @@ public with sharing class ProjectMembersWidgetController {
 	public void genPermissions() {
 		userPermissions.setId(UserInfo.getUserId());
 		userPermissions.setProject(team);
-		userPermissions.setObjectType('Team');
+		userPermissions.setObjectType('Project');
 		userPermissions.setPermissions();		
 	}
 	

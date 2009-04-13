@@ -35,11 +35,11 @@
 		}
 		
 		div.sfdcDetailFormated table.detailList td{
-			height: 20px; !important;
+			height: 20px !important;
 		}
 		
 		div.sfdcDetailFormated table.detailList td.labelCol{
-			font-weight: bold:
+			font-weight: bold;
 		}
 		#btnDiv {
 			margin: 5px 0px 0px 500px;

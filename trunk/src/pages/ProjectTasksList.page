@@ -274,27 +274,27 @@
                                         </td> 
                                         <td class="imgColumns"  align="center"> 
                                             <apex:outputpanel rendered="{!IF(task.Milestone ,false,true)}" layout="block" styleClass="center">
-                                                <img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/task.gif')}"/>
+                                                <img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/task.gif')}" title="Task" />
                                             </apex:outputpanel>
                                             <apex:outputpanel rendered="{!IF(task.Milestone,true,false)}" layout="block" styleClass="center">                                     
-                                                <img  src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/flag_green.gif')}"  />
+                                                <img  src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/flag_green.gif')}" title="Milestone" />
                                             </apex:outputpanel>
                                         </td>
                                         <!-- Task Priority -->
                                         <td class="imgColumns" align="center">
                                             <apex:outputpanel rendered="{!IF(task.Priority == 'High',true,false)}" layout="block">
                                                 <div style="" class="center" >
-                                                    <img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/highPriority.gif')}"/>
+                                                    <img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/highPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}"/>
                                                 </div>
                                             </apex:outputpanel>
                                             <apex:outputpanel rendered="{!IF(task.Priority == 'Low',true,false)}" layout="block">
                                                 <div style="" class="center" >
-                                                    <img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/lowPriority.gif')}"/>
+                                                    <img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/lowPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}"/>
                                                 </div>
                                             </apex:outputpanel>
-                                            <apex:outputpanel rendered="{!IF(task.Priority == 'Normal',true,false)}" layout="block">
+                                            <apex:outputpanel rendered="{!IF(task.Priority == 'Medium',true,false)}" layout="block">
                                                 <div style="" class="center" >
-                                                    <img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/lowPriority.gif')}"/>
+                                                    <img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/normalPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}" />
                                                 </div>
                                             </apex:outputpanel>                                            
                                         </td>  

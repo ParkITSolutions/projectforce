@@ -1,6 +1,7 @@
 /**
 *@author Bruno Fagundez @ 06/09/2008
-*/public with sharing class ProjectDetailController 
+*/
+public with sharing class ProjectDetailController
 {
     
     Project2__c teamspace = new Project2__c();

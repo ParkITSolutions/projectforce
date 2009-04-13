@@ -165,7 +165,7 @@
 									<div>
 										<!-- BUTTONS --> 
 										<apex:outputpanel rendered="{!userPermissions.canManage}" >
-											<a onclick="createOverlay('','inviteTeam','380','showSelects()');"
+											<a onclick="createOverlay('','inviteTeam','','showSelects()','');relocateOverlay();"
 												href="javascript:;" class="blackbutton">New</a>
 											<a href="javascript:;" class="blackbutton"
 												onclick="massiveRemoveOverlay();">Remove</a>

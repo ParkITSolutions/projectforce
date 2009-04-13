@@ -23,7 +23,7 @@ public class ProjectCreateNewProjectController {
     /**
     * Constructor
     */
-    public ProjectCreateNewProjectController(ApexPages.StandardController controller){
+    public ProjectCreateNewProjectController(){
     	genPermissions();
     	
     	newProfile.projectOpenOrClosed = 'open';
@@ -93,9 +93,16 @@ public class ProjectCreateNewProjectController {
 		return document;
 	}
     
+	/**
+	*@return Boolean
+	*/
     public Boolean getValidSizePicture(){
     	return validSizePicture;
     }
+
+	/**
+	*@return Boolean
+	*/
     public Boolean getValidTypePicture(){
     	return validTypePicture;
     }	
@@ -268,7 +275,7 @@ public class ProjectCreateNewProjectController {
     	public String projectOpenOrClosed { set; get; }     	
     }
     
-    ProjectProfile newProfile = new ProjectProfile();
+    public ProjectProfile newProfile = new ProjectProfile();
     
     public ProjectProfile getnewProfile(){
     	return newProfile;
@@ -378,10 +385,9 @@ public class ProjectCreateNewProjectController {
 	*/
 	public void genProfiles(){
 		
-		System.debug('Entering genprofiles');
-		
 		Integer cnt = 0;
 		ProjectProfile__c projectProfile = new ProjectProfile__c();
+		List<ProjectProfile__c> projList = new List<ProjectProfile__c>();
 		cnt = [select count() from ProjectProfile__c where Name = 'Member Profile'];
 		
 		System.debug(cnt);
@@ -391,7 +397,7 @@ public class ProjectCreateNewProjectController {
        	    projectProfile.Name = 'Member Profile';
        	    projectProfile.ManageProjectTasks__c = false;
        	    projectProfile.CreateProjectTasks__c = true;
-       	    insert projectProfile;
+       	    projList.add( projectProfile );
        	}
        	
       	cnt = [select count() from ProjectProfile__c where Name = 'Public Profile'];
@@ -402,7 +408,7 @@ public class ProjectCreateNewProjectController {
        	    projectProfile.Name = 'Public Profile';
        	    projectProfile.ManageProjectTasks__c = false;
        	    projectProfile.CreateProjectTasks__c = false;
-       	    insert projectProfile;
+       	    projList.add( projectProfile );
        	}
        	cnt = [select count() from ProjectProfile__c where Name = 'Project Administrator'];
        	if(cnt == 0){
@@ -410,10 +416,12 @@ public class ProjectCreateNewProjectController {
        	    projectProfile.Name = 'Project Administrator';
        	    projectProfile.ManageProjectTasks__c = true;
        	    projectProfile.CreateProjectTasks__c = true;
-       	    insert projectProfile;
+       	    projList.add( projectProfile );
        	}
        	
-       	System.debug('ProjectProfile' + projectProfile);
+       	if( projList.size() > 0 )
+       	insert projList;
+       	
 	}
 	
 		
