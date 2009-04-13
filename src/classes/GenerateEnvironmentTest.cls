@@ -3,6 +3,7 @@ public class GenerateEnvironmentTest {
 	// Create 3 intances of Project2__c
 	public static Project2__c project  = new Project2__c();
 	public static Project2__c project2 = new Project2__c();
+	public static Project2__c project3 = new Project2__c();
 
 	public static ProjectMember__c member  = new ProjectMember__c();
 	public static ProjectMember__c member2 = new ProjectMember__c();
@@ -17,65 +18,70 @@ public class GenerateEnvironmentTest {
 	public static ProjectAssignee__c assi2 = new ProjectAssignee__c();
 	public static ProjectAssignee__c assi3 = new ProjectAssignee__c();
 
-
+	public static Attachment avatar = new Attachment(Name = 'avatar', Body = Crypto.generateMac('HMacSHA1', Blob.valueOf('String'), Blob.valueOf('String')));
+	public static User us = new User();
 
 	public static void gen(){
 		
+		us = [ SELECT Id, Name FROM User LIMIT 1 ];
+				
 		// Creating profiles
-		Integer cnt = 0;
-		ProjectProfile__c projectProfile = new ProjectProfile__c();
 		List<ProjectProfile__c> profList = new List<ProjectProfile__c>();
-		cnt = [select count() from ProjectProfile__c where Name = 'Member Profile'];
 		
-		//Can create tasks, cannot manage.	
-       	if(cnt == 0){
-       	    projectProfile = new ProjectProfile__c();
-       	    projectProfile.Name = 'Member Profile';
-       	    projectProfile.ManageProjectTasks__c = false;
-       	    projectProfile.CreateProjectTasks__c = true;
-       	    profList.add( projectProfile );
+   	    ProjectProfile__c projectProfile = new ProjectProfile__c();
+   	    projectProfile.Name = 'Member Profile';
+   	    projectProfile.ManageProjectTasks__c = false;
+   	    projectProfile.CreateProjectTasks__c = true;
+   	    profList.add( projectProfile );
        	    
-       	}
-       	
-      	cnt = [select count() from ProjectProfile__c where Name = 'Public Profile'];
-      	//Cant create nor manage.
-       	if(cnt == 0){
-       	    projectProfile = new ProjectProfile__c();
-       	    projectProfile.Name = 'Public Profile';
-       	    projectProfile.ManageProjectTasks__c = false;
-       	    projectProfile.CreateProjectTasks__c = false;
-       	    profList.add( projectProfile );
-       	}
-       	
-       	cnt = [select count() from ProjectProfile__c where Name = 'Project Administrator'];
-       	if(cnt == 0){
-       	    projectProfile = new ProjectProfile__c();
-       	    projectProfile.Name = 'Project Administrator';
-       	    projectProfile.ManageProjectTasks__c = true;
-       	    projectProfile.CreateProjectTasks__c = true;
-       	    profList.add( projectProfile );
-       	}
-		if( profList.size() > 0 )
+   	    projectProfile = new ProjectProfile__c();
+   	    projectProfile.Name = 'Public Profile';
+   	    projectProfile.ManageProjectTasks__c = false;
+   	    projectProfile.CreateProjectTasks__c = false;
+   	    profList.add( projectProfile );
+
+   	    projectProfile = new ProjectProfile__c();
+   	    projectProfile.Name = 'Project Administrator';
+   	    projectProfile.ManageProjectTasks__c = true;
+   	    projectProfile.CreateProjectTasks__c = true;
+   	    profList.add( projectProfile );
 		insert profList;
 
 		
 		// Persiting onjects
+		
 
 		// Project2__c
 		project.name = 'Project 1 name';
 		project.description__c = 'Description ...';
 		project.priority__c = 'High';
 		project.sprint__c = '12';
+		project.Type__c = 'open';
+		project.PublicProfile__c = profList[ 0 ].Id;
+		project.NewmemberProfile__c = profList[ 1 ].Id;
 		
 		project2.name = 'Project 2 name';
 		project2.description__c = 'Description ...';
 		project2.priority__c = 'Medium';
 		project2.sprint__c = '13';
+		project2.Type__c = 'close';
+	
+		project3.name = 'Project 2 name';
+		project3.description__c = 'Description ...';
+		project3.priority__c = 'Medium';
+		project3.sprint__c = '13';
+		project3.Type__c = 'private';
 	
 		List<Project2__c> projList = new List<Project2__c>();
 		projList.add( project );
 		projList.add( project2 );
 		insert projList;
+
+		avatar.parentId = projList[ 0 ].Id;
+		insert avatar;
+		projList[ 0 ].picture__c = avatar.id;
+		update projList[ 0 ];
+
 		
 		// Owner for all projects inserted is the same. 
 		// This project members are to delete
@@ -94,20 +100,23 @@ public class GenerateEnvironmentTest {
 	
 		// Tasks
 		task.Name = 'task 1';
+		task.Project__c = project.id;
 		task.StartDate__c = Date.today();
 		task.EndDate__c = Date.today();
 		task.Duration__c = 2;
 		
-		task2.Name = 'task 1';
-		task2.StartDate__c = Date.today();
-		task2.EndDate__c = Date.today();
-		task2.Duration__c = 2;
-		
-		mile.Name = 'task 1';
+		mile.Name = 'milestone';
+		mile.Project__c = project.id;
 		mile.StartDate__c = Date.today();
 		mile.EndDate__c = Date.today();
 		mile.Duration__c = 2;
 		mile.Milestone__c = true;
+		
+		task2.Name = 'task 2';
+		task2.Project__c = project2.id;
+		task2.StartDate__c = Date.today();
+		task2.EndDate__c = Date.today();
+		task2.Duration__c = 2;		
 		
 		List<ProjectTask__c> taskList = new List<ProjectTask__c>();
 		taskList.add( task );

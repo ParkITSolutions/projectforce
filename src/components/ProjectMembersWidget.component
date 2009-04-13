@@ -33,6 +33,7 @@
 		var myMembersIds = "{!TeamspaceMembersIds}";
 		var firstExecuteTime = true;
 		
+		
 	</script>
 	
 	<style>
@@ -42,7 +43,7 @@
 	</style>
 
 	<!-- NEW MEMBER OVERLAY -->
-	<apex:outputpanel rendered="{!IF(UserPermissions.canManage, true, false)}">
+	<apex:outputpanel rendered="{!IF(isManager, true, false)}" >
 		<!-- Common CSS Styling  -->
 		<link rel="stylesheet"
 			href="{!URLFOR($Resource.PeopleResourceFiles, 'inc/css/autocomplete.css')}"

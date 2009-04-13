@@ -29,7 +29,7 @@
 					<div class="overlaySeparateLine"></div>
 					<!-- Saven and Cancel Buttons -->
 					<div class="overlayFromButtons" align="center">
-						<apex:commandButton styleclass="overlaySaveBtn" action="{!saveNewAttach}" value="Done"/>
+						<apex:commandButton styleclass="overlaySaveBtn" action="{!saveNewAttach}" value="Done" style="background-color: #004F6D !important;"/>
 						<apex:commandButton styleClass="overlayCancelBtn" value="Cancel" onclick="cancelAction(); return false;"  />
 					</div>
 				</div>

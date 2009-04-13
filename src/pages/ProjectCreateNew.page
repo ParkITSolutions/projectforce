@@ -1,4 +1,4 @@
-<apex:page sidebar="false" tabStyle="Project2__c" id="ProjectCreateNew" standardController="Project2__c" extensions="ProjectCreateNewProjectController">
+<apex:page sidebar="false" tabStyle="Project2__c" id="ProjectCreateNew"  controller="ProjectCreateNewProjectController">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     
     <!-- CSS de TS -->
@@ -40,6 +40,7 @@
 			margin-left:150px;
 			color: #CC0000 !important;
     	}
+    	
     </style>
     
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsCreateNewTeam.css')}" />
@@ -429,25 +430,4 @@
             </div>
         </div>
     </div>
-    <script>
-    	function onCompleteCallBackFunction(){
-			createLayout();
-			startMaxlengthCheck();
-			if($$('.errorMsg').length > 0){
-				Effect.Appear('warning_to_user');
-				moveMaxWarningToLeft();
-				
-			}else{
-				Effect.Fade('warning_to_user');
-				$$('.secondFormAction')[0].click();
-			}
-		}
-		
-		function moveMaxWarningToLeft(){
-			var maxes = $$('.max');
-			for (var i=0; i< maxes.length; i++){
-				maxes[i].style.marginLeft="0px";
-			}
-		}
-    </script>
 </apex:page>

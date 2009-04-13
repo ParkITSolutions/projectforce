@@ -59,11 +59,14 @@
 							</apex:column>
 							<apex:column styleClass="first">
 								<div style="{!IF(task.Priority == 'High', '', 'display:none')};" class="prior" >
-									<img alt="" src="{!URLFOR($Resource.TeamsResources, '/images/layout/icons/highPriority.png')}"/>
+									<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/highPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}" />
 								</div>
 								<div style="{!IF(task.Priority == 'Low', '', 'display:none')};" class="prior" >
-									<img alt="" src="{!URLFOR($Resource.TeamsResources, '/images/layout/icons/lowPriority.png')}"/>
+									<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/lowPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}" />
 								</div>
+								<div style="{!IF(task.Priority == 'Medium', '', 'display:none')};" class="prior" >
+									<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/normalPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}" />
+								</div>								
 								<div class="{!task.isToLate} f_left">
 									<a href="projecttaskdetail?id={!task.TaskId}">{!task.TaskName}</a><br/>
 									<span class="gray"> {!task.EndDate}</span>
@@ -72,15 +75,15 @@
 							<apex:column >
 								<apex:outputpanel rendered="{!IF(task.Picture == 'nopicture',false,true)}">	
 									<div class="photoWrapper_32px">
-										<a href="PeopleProfileDisplay?id={!task.UserId}"><img alt="{!task.UserName}" src="/servlet/servlet.FileDownload?file={!task.Picture}" width="32" /></a>
+										<a href="/{!task.UserId}"><img alt="{!task.UserName}" src="/servlet/servlet.FileDownload?file={!task.Picture}" width="32" /></a>
 									</div>
 								</apex:outputpanel>
 								<apex:outputpanel rendered="{!IF(task.Picture == 'nopicture',true,false)}">	
 									<div class="photoWrapper_32px">
-										<a href="PeopleProfileDisplay?id={!task.UserId}"><img  src="{!URLFOR($Resource.TeamsResources, 'images/placeholders/unknownperson32x32.jpg')}"  width="32" /></a>
+										<a href="/{!task.UserId}"><img  src="{!URLFOR($Resource.TeamsResources, 'images/placeholders/unknownperson32x32.jpg')}"  width="32" /></a>
 									</div>
 								</apex:outputpanel>						
-								<a href="PeopleProfileDisplay?id={!task.UserId}"  class="name_margin">{!task.UserName}</a>	
+								<a href="/{!task.UserId}"  class="name_margin">{!task.UserName}</a>	
 							</apex:column>
 							<apex:column >
 								<span class="percent">{!task.Percent} %</span>

@@ -44,8 +44,30 @@ public class ProjectCreateNewTaskController {
 	*/
 	public ProjectCreateNewTaskController(){
    		genPermissions();
-   		String qtEdit = System.currentPageReference().getParameters().get('ed');
+   		String qtEdit = System.currentPageReference().getParameters().get('ed');  		
+   		String qtName = System.currentPageReference().getParameters().get('qtname');
+   		String qtStartDate = System.currentPageReference().getParameters().get('qtsd');  
+		String qtDueDate = System.currentPageReference().getParameters().get('qtdd');
+		String qtEstimate = System.currentPageReference().getParameters().get('qte');
    		
+   		if(qtStartDate != '' && qtStartDate != null){
+   			
+   			String[] startList = qtStartDate.split('/', 3);
+   			Date startDate = Date.valueOf(startList[2] + '-' + startList[0] + '-' + startList[1]);
+   			theTask.StartDate__c = startDate;
+		}
+		
+		if(qtDueDate != '' && qtDueDate != null){
+   			String[] dueList = qtDueDate.split('/', 3);
+   			Date dueDate = Date.valueOf(dueList[2] + '-' + dueList[0] + '-' + dueList[1]);
+   			theTask.EndDate__c = dueDate;
+		}
+		if(qtEstimate != '' && qtEstimate != null){
+   			theTask.Duration__c = Integer.valueOf(qtEstimate);
+		} 	
+   	
+   		theTask.Name = qtName;
+   				
    		if(idTask == null){
    			if(param != null){
    				theTask.Project__c = param;
@@ -63,7 +85,7 @@ public class ProjectCreateNewTaskController {
    		if(qtEdit == 'true'){
    			genTempTask();
    		}
-	}   	
+	}
    	
    	public Boolean getValidSizePicture(){
     	return validSizePicture;
