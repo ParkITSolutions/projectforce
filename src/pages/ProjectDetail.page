@@ -42,7 +42,12 @@
 			font-weight: bold;
 		}
 		#btnDiv {
-			margin: 5px 0px 0px 500px;
+			width: 170px !important;
+			margin-left: -90px;
+			*margin-left: 100px;
+		}
+		div.breadCrumbAndButtons{
+			height: 40px !important;
 		}
 		
 	
@@ -97,31 +102,28 @@
 	    <apex:outputPanel style="display: none;" >
 	    	{!userPermission}
 	    </apex:outputPanel>	
-		
-		<apex:outputPanel id="thisForm">
-			<apex:form >
-				<apex:outputPanel styleClass="isLastMemberAdmin" style="display: none;" >{!isLastMemberAdmin}</apex:outputPanel>
-				<apex:outputPanel layout="block" styleClass="breadcrumbs">
-					<div id="btnDiv">
-						<apex:outputPanel rendered="{!IF(isManager,true,false)}">
-							<a class="blackbutton" href="Javascript:;" onclick="deleteProjectOverlay();">
-								<span> Delete </span>
-							</a>
-							<a class="blackbutton" href="/apex/projectRedirect?sO=Project2__c&attr=project&page=ProjectCreateNew&rR=NewProjectFormContainer&oC=true&eid={!teamIdParam}">
-								<span> Edit </span>
-							</a>
-						</apex:outputPanel>			
-						<apex:commandLink styleClass="blackbutton" action="{!joinProject}" rendered="{!IF(AND(NOT(isMember),isPublic),true,false)}" onclick="setClassWaiting('.blackbutton');" oncomplete="refreshAssignToTask();refreshAssignToMilestone();" rerender="thisForm">
-							<span> Join </span>
-						</apex:commandLink>			
-						<apex:commandLink styleClass="blackbutton" rendered="{!IF(isMember,true,false)}" onclick="setClassWaiting('.blackbutton');"  rerender="thisForm" action="{!unjoinProject}" onComplete="refreshAssignToTask();refreshAssignToMilestone();showWarningIsLastAdmin();">
-							<span> Unjoin </span>
-						</apex:commandLink>				
-					</div>				
-				</apex:outputPanel>
-			</apex:form>	
-		</apex:outputPanel>
-		
+	    
+		 <div align="center" class="breadCrumbAndButtons">
+			<div id="btnDiv">
+				<apex:form >
+					<apex:outputPanel styleClass="isLastMemberAdmin" style="display: none;" >{!isLastMemberAdmin}</apex:outputPanel>
+					<apex:outputPanel rendered="{!IF(isManager,true,false)}">
+						<a class="blackbutton" href="Javascript:;" onclick="deleteProjectOverlay();">
+							<span> Delete </span>
+						</a>
+						<a class="blackbutton" href="/apex/projectRedirect?sO=Project2__c&attr=project&page=ProjectCreateNew&rR=NewProjectFormContainer&oC=true&eid={!teamIdParam}">
+							<span> Edit </span>
+						</a>
+					</apex:outputPanel>			
+					<apex:commandLink styleClass="blackbutton" action="{!joinProject}" rendered="{!IF(AND(NOT(isMember),isPublic),true,false)}" onclick="setClassWaiting('.blackbutton');" oncomplete="refreshAssignToTask();refreshAssignToMilestone();" rerender="thisForm">
+						<span> Join </span>
+					</apex:commandLink>			
+					<apex:commandLink styleClass="blackbutton" rendered="{!IF(isMember,true,false)}" onclick="setClassWaiting('.blackbutton');"  rerender="thisForm" action="{!unjoinProject}" onComplete="refreshAssignToTask();refreshAssignToMilestone();showWarningIsLastAdmin();">
+						<span> Unjoin </span>
+					</apex:commandLink>	
+				</apex:form>					
+			</div>				
+		</div>
 		<!-- Sidebar -->
 		<div class="sidebar">
 			<!-- Project Quick Links -->

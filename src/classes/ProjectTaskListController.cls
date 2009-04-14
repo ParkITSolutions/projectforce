@@ -4,7 +4,7 @@
 */
 public with sharing class ProjectTaskListController {
     
-    public String name;
+    public Project2__c project = null;
     public Id USERID = UserInfo.getUserId(); 
 
     public Boolean editDeletePer = false;
@@ -31,7 +31,7 @@ public with sharing class ProjectTaskListController {
         	}
         }
         sortBy = 'EndDate__c';
-        
+        loadProject();
 		refreshTaskList();
 		
         genCntPagination();
@@ -44,6 +44,10 @@ public with sharing class ProjectTaskListController {
      */
     public void refreshTaskList() {
     	filterTaskList(createSortedTaskList());
+    }
+    
+    public void loadProject(){
+    	project = [Select p.Name From Project2__c p where p.id =: PROJECTID];	
     }
     
 
@@ -169,16 +173,14 @@ public with sharing class ProjectTaskListController {
     *@return String
     */
     public String getNameProject(){
-        return this.name;
+        return project.Name;
     }
     
     /**
     *Set project's name
     *@param String
     */
-    public void setNameProject(String name){
-        this.name=name;
-    }       
+      
     
     /**
     *Set the map assignes Map<userID, User> 
