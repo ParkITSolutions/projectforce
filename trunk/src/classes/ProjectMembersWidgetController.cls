@@ -15,7 +15,6 @@ public with sharing class ProjectMembersWidgetController {
 	public ProjectMembersWidgetController(){
 		genPermissions();
 		isManager = userPermissions.getCanManage();
-		System.debug('maneja ' + isManager + team);
 	}
 	
 		

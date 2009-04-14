@@ -74,7 +74,7 @@
         <!-- BreadCrumb and buttons -->     
         <div align="center" class="breadCrumbAndButtons">
           <div class="breadCrumbs">
-            <a  href="/apex/ProjectsDetail?id={!ProjectId}" title="{!NameProject}"><script>trunkText('{!NameProject}',24);</script> </a> > <strong>Tasks and Milestones</strong>
+            <a  href="/apex/ProjectDetail?id={!ProjectId}" title="{!NameProject}"><script>trunkText('{!NameProject}',24);</script> </a> > <strong>Tasks and Milestones</strong>
           </div>
             <apex:outputpanel styleClass="buttons"  layout="block" style="width:450px;" >
                 <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">

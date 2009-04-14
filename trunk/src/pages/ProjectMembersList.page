@@ -24,7 +24,10 @@
 			//showMessageToUser(); 
 			showSwirly('swirly_members'); 
 			//setTimeout('hideMessageToUser()', 10000);		
-		}        
+		}
+		
+		
+		
 	</script>
 
 	<!-- Javascript -->
@@ -86,7 +89,15 @@
 		}
 	
 	</style>
+	<style>
+		@media screen and (-webkit-min-device-pixel-ratio:0) {
+			div#btnsDiv {
+				padding-left: 200px;
+			}
+		}
 	
+	</style>
+
 	<script>
 		document.observe('dom:loaded', function(){
 				trunkTitle();
@@ -109,34 +120,66 @@
 	<a href="#modal_container" id="initializeModal" style="display:none;"></a>
 	<div id="modal_container"></div>
 	<script>createOverlay('initializeModal')</script>
+	<div>	
+		<!-- Header -->
+		<apex:composition template="HeaderTemplate">
+			<apex:define name="moduleId">
+				<apex:variable var="moduleId" value="headerTeams" />
+			</apex:define>
+			<apex:define name="module">{!$ObjectType.Project2__c.label} Members List</apex:define>
+			<apex:define name="title">{!projectName}</apex:define>
+			<apex:define name="search">
+				<c:Search module="project" />
+			</apex:define>
+		</apex:composition>
 	
-	<!-- Header -->
-	<apex:composition template="HeaderTemplate">
-		<apex:define name="moduleId">
-			<apex:variable var="moduleId" value="headerTeams" />
-		</apex:define>
-		<apex:define name="module">{!$ObjectType.Project2__c.label} Members List</apex:define>
-		<apex:define name="title">{!projectName}</apex:define>
-		<apex:define name="search">
-			<c:Search module="project" />
-		</apex:define>
-	</apex:composition>
-	
-	<!-- Sidebar -->
-	<div class="sidebar">
-
-		<!-- Project Quick Links -->
-		<c:ProjectDetailQuickLinks />
-
-		<!-- Team Suscribe -->
-		<c:ProjectSubscribe />
+		<div align="center"  class="breadCrumbAndButtons" style="height: 30px!important;">
+			<div id="btnsDiv" style="width: 260px; *margin-left: 200px !important;">
+				<apex:form >
+					<!-- BUTTONS --> 
+					<apex:outputpanel rendered="{!userPermissions.canManage}" >
+						<a onclick="createOverlay('','inviteTeam','','showSelects()','');relocateOverlay();"
+							href="javascript:;" class="blackbutton">New</a>
+						<a href="javascript:;" class="blackbutton"
+							onclick="massiveRemoveOverlay();">Remove</a>
+						<div class="editProfile">
+							<a href="javascript:;"
+								class="blackbutton" onclick="showHideOptionsBottom();">Edit
+								{!$ObjectType.Project2__c.label} Profile | v
+							</a>
+							<div id="profileOptionsBottom" class="profileOptions"
+								style="display: none;">
+								<ul>
+									<apex:repeat value="{!projectEditProfiles}" var="item">
+										<li onclick="massiveMemberUpdate(this);"
+											onmouseover="bckColor(this)" onmouseout="bckColor(this)"
+											id="{!item.Id}">{!item.Name}
+										</li>
+									</apex:repeat>
+								</ul>
+							</div>
+						</div>
+					</apex:outputpanel> 
+				</apex:form>
+			</div>
+		</div>
 		
-		<!-- Team members -->
-		<c:ProjectMembersWidget projectId="{!projectId}" />	
-		 
-		<div class="clear"></div>
-	</div>
+		
+		<!-- Sidebar -->
+		<div class="sidebar">
 	
+			<!-- Project Quick Links -->
+			<c:ProjectDetailQuickLinks />
+	
+			<!-- Team Suscribe -->
+			<c:ProjectSubscribe />
+			
+			<!-- Team members -->
+			<c:ProjectMembersWidget projectId="{!projectId}" />	
+			 
+			<div class="clear"></div>
+		</div>
+	</div>
 	<!-- Main Content Div -->
 	<div class="main_cont">
 		<div>
@@ -153,54 +196,16 @@
 			<div class="loader"></div>
 		</div>
 		<div id="holder">
-			
-			
 			<table width="100%" align='center'>
 				<tr>
 					<td class="teamTitleButton titleTd">Members</td>
-					<td align='center'>
-						<table width="270">
-							<tr>
-								<td>
-									<div>
-										<!-- BUTTONS --> 
-										<apex:outputpanel rendered="{!userPermissions.canManage}" >
-											<a onclick="createOverlay('','inviteTeam','','showSelects()','');relocateOverlay();"
-												href="javascript:;" class="blackbutton">New</a>
-											<a href="javascript:;" class="blackbutton"
-												onclick="massiveRemoveOverlay();">Remove</a>
-												<div class="editProfile">
-										<a href="javascript:;"
-											class="blackbutton" onclick="showHideOptionsBottom();">Edit
-											{!$ObjectType.Project2__c.label} Profile | v
-										</a>
-										<div id="profileOptionsBottom" class="profileOptions"
-											style="display: none;">
-											<ul>
-												<apex:repeat value="{!projectEditProfiles}" var="item">
-													<li onclick="massiveMemberUpdate(this);"
-														onmouseover="bckColor(this)" onmouseout="bckColor(this)"
-														id="{!item.Id}">{!item.Name}
-													</li>
-												</apex:repeat>
-											</ul>
-										</div>
-									</div>
-										</apex:outputpanel> 
-										<!-- BUTTONS -->									
-										</div>
-								</td>
-							</tr>
-						</table>
-					</td>
 					<td class="teamTitleButton titleTd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 				</tr>
 			</table>
 
-			<div class="border_body_top">
-			</div>
+			<div class="border_body_top"></div>
 			
-		<!-- LETTER FILTER	-->
+			<!-- LETTER FILTER	-->
 			<br/>
 			
 			<div style="position: relative; overflow: hidden">
@@ -419,7 +424,7 @@
 							<tr>
 								<td>
 								<div><!-- BUTTONS --> <apex:outputpanel rendered="{!userPermissions.canManage}">
-									<a onclick="createOverlay('','inviteTeam','400','showSelects()');"
+									<a onclick="createOverlay('','inviteTeam','','showSelects()');relocateOverlay();"
 										href="javascript:;" class="blackbutton">New
 									</a>
 									<a href="javascript:;" class="blackbutton"

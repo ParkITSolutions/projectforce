@@ -123,6 +123,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectSearchResultController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectSubscribeController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
