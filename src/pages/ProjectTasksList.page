@@ -66,7 +66,7 @@
         <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
         <apex:define name="title">Tasks & Milestones</apex:define>
         <apex:define name="search">
-            <c:Search module="task" />
+            <c:Search module="project" teamId="{!ProjectId}"/>
         </apex:define>
     </apex:composition>
     <!-- Main Content Div -->
@@ -269,7 +269,8 @@
                                         </td>
                                         <td>
                                             <apex:outputpanel rendered="{!IF(OR(editDeletePer,task.canEditAndDelete) ,true,false)}" layout="block">
-                                                <div><a href="/apex/ProjectCreateNewTask?id={!ProjectId}&task={!task.id}">Edit</a> | <a href="javascript:;" onclick="showDeleteEvent('{!task.Id}','');">Del</a></div>     
+                                                <div><a href="/apex/projectRedirect?sO=ProjectTask__c&attr=task&page=ProjectCreateNewTask&rR=NewProjectFormContainer&oC=true&eid={!ProjectId}&task={!task.id}">
+                                                	Edit</a> | <a href="javascript:;" onclick="showDeleteEvent('{!task.Id}','');">Del</a></div>     
                                             </apex:outputpanel> 
                                         </td> 
                                         <td class="imgColumns"  align="center"> 

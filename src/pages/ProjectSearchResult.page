@@ -3,7 +3,7 @@
 	
 	<!-- CSS de TS -->
 	<link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />	
-	<link rel="stylesheet" media="screen" href="{!URLFOR($Resource.ProjectResources, 'inc/css/DiscussionSearchResults.css')}" />		
+	<link rel="stylesheet" media="screen" href="{!URLFOR($Resource.ProjectResources, 'inc/css/ProjectSearchResults.css')}" />		
 	<apex:includeScript value="/soap/ajax/12.0/connection.js"/>
 	
 	<!-- Javascript -->
@@ -37,17 +37,28 @@
     <apex:composition template="HeaderTemplate">
 		<apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
 	    <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
-	    <apex:define name="title">Detail</apex:define>
+	    <apex:define name="title">Search</apex:define>
 	    <apex:define name="search">
-	   		<c:Search module="team_detail" teamId="{!teamId}" />
+	   		<c:Search module="project" teamId="{!teamId}" />
 	    </apex:define>
  	</apex:composition>
+ 	
+ 	<style>
+ 	div.header_portal div.searchBox div div div.search_box_input div.findDiscussion{
+		width:auto !important;
+		padding:8px 10px 7px 7px;
+	}
+	
+	div.header_portal div.searchBox div div div.search_box_input div.inputSearch {
+		min-width:100px !important;
+		max-width:284px !important;
+		background-position:right;
+	}
+ 	</style>
 	
 	<!-- Sidebar -->
 	<div class="sidebar">
-	
-		<!-- Quick links & Admin widget -->
-		<c:ProjectDetailQuickLinks />
+		<c:ProjectsWidgetMyTasks />
 	</div>
 	
 	<!-- Main Content Div Start -->
@@ -123,7 +134,7 @@
 					<!-- Loader -->
 					<div style="opacity: 0.6; display: none;" id="paginationOverlay">
 							<div class="loader">
-									<img title="Loading..." src="/resource/1229617276000/discussionResourceFiles/images/common/layout/big-loader.gif" alt="Loading..."/>
+									<img title="Loading..." src="{!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}" alt="Loading..."/>
 							</div>
 					</div>
 					
@@ -133,20 +144,14 @@
 							<div class="teamInfo">
 	
 								<!-- WIKI PAGE LINK -->
-								<apex:outputpanel rendered="{!IF(item.resultType == 'Wiki Page',true, false)}">
-									<a class="title" href="/apex/WikiPage?idWP={!item.id}"><apex:outputtext value="{!item.name}" escape="false" /></a>
+								<apex:outputpanel rendered="{!IF(item.resultType == 'Project',true, false)}">
+									<a class="title" href="/apex/ProjectDetail?id={!item.id}"><apex:outputtext value="{!item.name}" escape="false" /></a>
 									<span class="resultType">( {!item.resultType} )</span>
 								</apex:outputpanel>
 	
 								<!-- PROJECT TASK LINK -->
 								<apex:outputpanel rendered="{!IF(item.resultType == 'Project Task',true, false)}">
 									<a class="title" href="/apex/ProjectTaskDetail?id={!item.id}"><apex:outputtext value="{!item.name}" escape="false" /></a>
-									<span class="resultType">( {!item.resultType} )</span>
-								</apex:outputpanel>
-	
-								<!-- TEAM MEMBER LINK -->
-								<apex:outputpanel rendered="{!IF(item.resultType == 'Team Member',true, false)}">
-									<a class="title" href="/apex/PeopleProfileDisplay?id={!item.id}"><apex:outputtext value="{!item.name}" escape="false" /></a>
 									<span class="resultType">( {!item.resultType} )</span>
 								</apex:outputpanel>
 	

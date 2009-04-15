@@ -94,7 +94,7 @@ public class TeamsWidgetMyTasksAndMilController {
 					myTask.setDaysCount(pro.EndDate__c, pro.Duration__c);
 					
 	                if(pro.Priority__c == '' || pro.Priority__c == null){
-	                	myTask.Priority = 'Normal';
+	                	myTask.Priority = 'Medium';
 	                }else {
 	                	myTask.Priority = pro.Priority__c;
 	                }

@@ -148,8 +148,9 @@
                     <apex:outputPanel id="NewProjectFormContainer">
 	                    <div class="Formcontentfolder">	
 	                    	<!-- Dynamic Layout Output don't remove -->
-		                    <div class="DynamicLayoutResponse">
-	<apex:form ><label>Project Name</label><apex:inputField value="{!project.Name}" required="true" /><br/><br/><label>Description</label><apex:inputField value="{!project.Description__c}" required="true" /><br/><br/><label>Priority</label><apex:inputField value="{!project.Priority__c}" required="true" /><br/><br/><label>Sprint</label><apex:inputField value="{!project.Sprint__c}" required="true" /><br/><br/><div class="btnStandardForm"><apex:commandButton action="{!save}" value="Save" onclick="statusSaving(this);" rerender="NewProjectFormContainer" oncomplete="onCompleteCallBackFunction();"  /><apex:commandButton value="Cancel" onclick="history.go(-2);" /></div></apex:form></div>
+		                 <div class="DynamicLayoutResponse">
+	<apex:form ><label>Project Name</label><apex:inputField value="{!project.Name}" required="true" /><br/><br/><label>Description</label><apex:inputField value="{!project.Description__c}" required="true" /><br/><br/><label>Priority</label><apex:inputField value="{!project.Priority__c}" required="true" /><br/><br/><label>Sprint</label><apex:inputField value="{!project.Sprint__c}" required="true" /><br/><br/><div class="btnStandardForm"><apex:commandButton action="{!save}" value="Save" onclick="statusSaving(this);" rerender="NewProjectFormContainer" oncomplete="onCompleteCallBackFunction();"  /><apex:commandButton value="Cancel" onclick="OnCancelEvent();" /></div></apex:form>
+							
 		            	</div>
 		            	<!--Divs to format the page  -->
 		           </apex:outputPanel>
@@ -430,4 +431,64 @@
             </div>
         </div>
     </div>
+    <script>
+    		function createLayout(){
+				$$('.DynamicLayoutResponse form')[0].onsubmit = function() {validateFormInfo()};
+				setCheckedAccess();
+				
+				var div = $$('.DynamicLayoutResponse')[0];
+				var form = div.firstDescendant();
+				var btnSaveForm = form.getElementsByClassName('btn')[0];
+				var btnCancelForm=form.getElementsByClassName('btn')[1];
+				
+				//Insert the buttons into the div
+				var buttonsDiv=$('btnContainer');
+				buttonsDiv.innerHTML= '';
+				buttonsDiv.show();
+				buttonsDiv.insert(btnSaveForm);
+				buttonsDiv.insert(btnCancelForm);
+				
+				//Format save button
+				btnSaveForm.addClassName('SaveBtn');
+				if (projectId == ''){
+					btnSaveForm.value="Create";
+				}else{
+					btnSaveForm.value="Update";
+				}
+				//Format Cancel button
+				btnCancelForm.addClassName('cancelBtn');
+				btnCancelForm.type = 'button';
+				
+				//Show the horizontal line
+				var divLine=$$('.title_line_btn')[0];
+				divLine.show();
+					
+				//Format TextAreas
+				var textAreas = document.getElementsByTagName('textarea');
+				for (i in textAreas){
+					textAreas[i].rows='4';
+					textAreas[i].cols='75';
+				}
+				
+				//Set required fields
+				$$('.requiredInput').each(function(elem){
+						var height = elem.getHeight();
+						elem.childNodes[0].innerHTML = '&nbsp;';
+						if(elem.childNodes[1].type == 'textarea')
+							elem.childNodes[0].style.height = (height-4) + 'px';
+						if(elem.childNodes[1].type == 'text')
+							elem.childNodes[0].style.height = (height-3) + 'px';
+						if(elem.childNodes[1].type == 'select-one')
+							elem.childNodes[0].style.height = (height-2) + 'px';
+			
+					}
+				)				
+			
+			}
+			
+			function OnCancelEvent(){
+				location.href = '/apex/ProjectOverview';
+				return false;
+			}
+    </script>
 </apex:page>

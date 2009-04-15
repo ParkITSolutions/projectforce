@@ -1,29 +1,21 @@
 public class ProjectSearchResultController {
-/**
+	
+	public String criteria;
+	public Integer totalItemsNumber = 0;
+	public Boolean noMatches;
+	public String teamId;
+	public List<SearchResult> searchResultList = new List<SearchResult>();
+	public List<ProjectTask__c> resultsProjectTask = new List<ProjectTask__c>();
+	public List<Project2__c> resultsProjectSearch = new List<Project2__c>();
+	
+	/**
 	* Load 'key' parameter
 	*@Constructor
 	*/
 	public ProjectSearchResultController(){
 		criteria = System.currentPageReference().getParameters().get('key');
+		teamId = System.currentPageReference().getParameters().get('id');
 	}	
-	
-	public String teamId = System.currentPageReference().getParameters().get('id');
-	
-	/**
-	*@param String teamId
-	*/
-	public void setTeamId (String team){
-		teamId = team;
-	}
-	
-	/**
-	*@return String teamId
-	*/
-	public String getTeamId () {
-		return teamId;
-	}		
-	
-	public String criteria;
 	
 	/**
 	*@return String
@@ -40,149 +32,11 @@ public class ProjectSearchResultController {
 	}
 	
 	/**
-	* Inner class for SearchResult type
-	*@class
-	*/
-	public class SearchResult {
-		String name;
-		String matches;
-		Id id;
-		String resultType;
-		String realName;
-		
-		/**
-		*@param Id id
-		*/
-		public void setId (Id id) {
-			this.id = id;
-		}
-		
-		/**
-		* Apply hightlight class to searched string
-		*@param String name
-		*@param String criteria
-		*/
-		public void setName (String name, String criteria) {
-			String highlight = '';
-			if (name != null) {
-			
-				String nameLow = name.toLowerCase();
-				String criteriaLow = criteria.toLowerCase();
-				
-				if (criteria != null && criteria != '' && nameLow.indexOf(criteriaLow) != -1) {
-					highlight = name.replaceAll('(?i)' + criteria, '<span class="highlight">$0</span>');
-				}else{
-					highlight = name;
-				}
-			}
-			this.name = highlight;	
-		}	
-		
-		/**
-		* Make a result's string, highlight the matches and show the context of resultant string
-		*@param String matches
-		*@param String criteria
-		*/
-		public void setMatches (String matches, String criteria) {
-			String highlight = '';
-			Integer maxLength = 50;
-			if (matches != null) {
-				String matchesLow = matches.toLowerCase();
-				String criteriaLow = criteria.toLowerCase();
-				matches = matches.replaceAll('(?i)<[^>]*>', '');
-				if (criteria != null && criteria != '' && matchesLow.indexOf(criteriaLow) != -1) {
-					Integer msjLength = matches.length();
-					Integer iniHighLight = matchesLow.indexOf(criteriaLow) - 50;
-					Integer criteriaLength = criteria.length();
-					Integer endHighLight = matchesLow.indexOf(criteriaLow) + criteriaLength + 50;
-					if (iniHighLight < 0) {
-						if (endHighLight > msjLength) {
-							highlight = matches.substring(0,msjLength);	
-						}else {
-							highlight = matches.substring(0,endHighLight) + '...';	
-						}
-					}else {
-						if (endHighLight > msjLength) {
-							highlight = '...' + matches.substring(iniHighLight,msjLength);	
-						}else {
-							highlight = '...' + matches.substring(iniHighLight,endHighLight) + '...';	
-						}		
-					}
-					
-					highlight = highlight.replaceAll('(?i)' + criteria, '<span class="highlight">$0</span>');
-				}else {
-					if(matches.length() <= maxLength*2) {
-						highlight = matches;	
-					}else {
-						
-						highlight = matches.substring(0,maxLength*2) + '...';	
-					}	
-				}
-			}
-			this.matches = highlight;
-		}
-		
-		/**
-		*@param String Type
-		*/
-		public void setResultType (String resultType) {
-			this.resultType = resultType;	
-		}
-		
-		/**
-		*@param String Name
-		*/
-		public void setRealName (String realName) {
-			this.realName = realName;
-		}
-		
-		/**
-		*@return Id
-		*/	
-		public Id getId () {
-			return id;
-		}
-		
-		/**
-		*@return String
-		*/
-		public String getResultType () {
-			return resultType;
-		}
-		
-		/**
-		*@return String
-		*/
-		public String getMatches () {
-			return matches;
-		}
-		
-		/**
-		*@return String
-		*/
-		public String getName () {
-			return name; 
-		}	
-		
-		/**
-		*@return String
-		*/	
-		public String getRealName () {
-			return realName;
-		}	
-			
-	}
-	
-	public Integer totalItemsNumber= 0;
-	
-	/**
 	*@return Integer
 	*/
 	public Integer getTotalItemsNumber () {
 		return totalItemsNumber;
 	}
-	
-	public Boolean noMatches;
 	
 	/**
 	*@return Boolean
@@ -190,8 +44,19 @@ public class ProjectSearchResultController {
 	public Boolean getNoMatches () {
 		return noMatches;	
 	}	
+	/**
+	*@param String teamId
+	*/
+	public void setTeamId (String team){
+		teamId = team;
+	}
 	
-	public List<SearchResult> searchResultList = new List<SearchResult>();	
+	/**
+	*@return String teamId
+	*/
+	public String getTeamId () {
+		return teamId;
+	}		
 	
 	/**
 	*@return List<SearchResult>
@@ -199,34 +64,47 @@ public class ProjectSearchResultController {
 	public List<SearchResult> getSearchResultList () {
 		return searchResultList;
 	}
-
-	public List<ProjectMember__c> resultsTeamMember = new List<ProjectMember__c>();
-	public List<Project2__c> resultsProjectSearch = new List<Project2__c>();
 	
 	/**
-	* Make the Search
+	* Makes the search
 	*/
 	public void search() {
 		
+		System.debug('Entering search()');
+		
 		List<SearchResult> tempResultList = new List<SearchResult>();	
 		
-		//List<List<SObject>> resultList = [FIND :(criteria + '*') IN ALL FIELDS RETURNING Project2__c (Id, Description__c)];
-		//resultsProjectSearch = ((List<Project2__c>)resultList[0]);
+		List<List<SObject>> resultList = [FIND :(criteria + '*') IN ALL FIELDS RETURNING Project2__c (Id, Name, Description__c), ProjectTask__c (Id, Name, Description__c, Project__c where Project__c=:teamId)];
+		resultsProjectSearch = (List<Project2__c>) resultList[0];
+		resultsProjectTask = (List<ProjectTask__c>) resultList[1];
 		
-		//System.debug('resultList is:' + resultList);
+		System.debug('resultList is:' + resultList);
 		
-		// PARSE THE Project MEMBER RESULT LIST
-		/*for(ProjectMember__c iter: resultsTeamMember){
+		// PARSE THE Projects RESULT LIST
+		for(Project2__c iter: resultsProjectSearch){
 			SearchResult currentResult = new SearchResult();
 			
-			currentResult.setName(iter.User__r.Name, criteria);
-			currentResult.setRealName(iter.User__r.Name);
-			currentResult.setId(iter.User__c);
-			currentResult.setResultType('Project Member');
-			currentResult.setMatches('', criteria);
+			currentResult.setName(iter.Name, criteria);
+			currentResult.setRealName(iter.Name);
+			currentResult.setId(iter.Id);
+			currentResult.setResultType('Project');
+			currentResult.setMatches(iter.Description__c, criteria);
 			
 			tempResultList.add(currentResult);
-		}*/
+		}
+		
+		// PARSE THE PROJECT TASK RESULT LIST
+		for(ProjectTask__c iter: resultsProjectTask){
+			SearchResult currentResult = new SearchResult();
+			
+			currentResult.setName(iter.Name, criteria);
+			currentResult.setRealName(iter.Name);
+			currentResult.setId(iter.Id);
+			currentResult.setResultType('Project Task');
+			currentResult.setMatches(iter.Description__c, criteria);
+			
+			tempResultList.add(currentResult);
+		}
 		
 
 		// ORDER THE MULTI OBJECT RESULT BY NAME
@@ -477,5 +355,139 @@ public class ProjectSearchResultController {
 	*/
 	public String getCurrentUser () {
 		return UserInfo.getUserId();
+	}
+	
+	/**
+	* Inner class for SearchResult type
+	*@class
+	*/
+	public class SearchResult {
+		String name;
+		String matches;
+		Id id;
+		String resultType;
+		String realName;
+		
+		/**
+		*@param Id id
+		*/
+		public void setId (Id id) {
+			this.id = id;
+		}
+		
+		/**
+		* Apply hightlight class to searched string
+		*@param String name
+		*@param String criteria
+		*/
+		public void setName (String name, String criteria) {
+			String highlight = '';
+			if (name != null) {
+			
+				String nameLow = name.toLowerCase();
+				String criteriaLow = criteria.toLowerCase();
+				
+				if (criteria != null && criteria != '' && nameLow.indexOf(criteriaLow) != -1) {
+					highlight = name.replaceAll('(?i)' + criteria, '<span class="highlight">$0</span>');
+				}else{
+					highlight = name;
+				}
+			}
+			this.name = highlight;	
+		}	
+		
+		/**
+		* Make a result's string, highlight the matches and show the context of resultant string
+		*@param String matches
+		*@param String criteria
+		*/
+		public void setMatches (String matches, String criteria) {
+			String highlight = '';
+			Integer maxLength = 50;
+			if (matches != null) {
+				String matchesLow = matches.toLowerCase();
+				String criteriaLow = criteria.toLowerCase();
+				matches = matches.replaceAll('(?i)<[^>]*>', '');
+				if (criteria != null && criteria != '' && matchesLow.indexOf(criteriaLow) != -1) {
+					Integer msjLength = matches.length();
+					Integer iniHighLight = matchesLow.indexOf(criteriaLow) - 50;
+					Integer criteriaLength = criteria.length();
+					Integer endHighLight = matchesLow.indexOf(criteriaLow) + criteriaLength + 50;
+					if (iniHighLight < 0) {
+						if (endHighLight > msjLength) {
+							highlight = matches.substring(0,msjLength);	
+						}else {
+							highlight = matches.substring(0,endHighLight) + '...';	
+						}
+					}else {
+						if (endHighLight > msjLength) {
+							highlight = '...' + matches.substring(iniHighLight,msjLength);	
+						}else {
+							highlight = '...' + matches.substring(iniHighLight,endHighLight) + '...';	
+						}		
+					}
+					
+					highlight = highlight.replaceAll('(?i)' + criteria, '<span class="highlight">$0</span>');
+				}else {
+					if(matches.length() <= maxLength*2) {
+						highlight = matches;	
+					}else {
+						
+						highlight = matches.substring(0,maxLength*2) + '...';	
+					}	
+				}
+			}
+			this.matches = highlight;
+		}
+		
+		/**
+		*@param String Type
+		*/
+		public void setResultType (String resultType) {
+			this.resultType = resultType;	
+		}
+		
+		/**
+		*@param String Name
+		*/
+		public void setRealName (String realName) {
+			this.realName = realName;
+		}
+		
+		/**
+		*@return Id
+		*/	
+		public Id getId () {
+			return id;
+		}
+		
+		/**
+		*@return String
+		*/
+		public String getResultType () {
+			return resultType;
+		}
+		
+		/**
+		*@return String
+		*/
+		public String getMatches () {
+			return matches;
+		}
+		
+		/**
+		*@return String
+		*/
+		public String getName () {
+			return name; 
+		}	
+		
+		/**
+		*@return String
+		*/	
+		public String getRealName () {
+			return realName;
+		}	
+			
 	}
 }
