@@ -123,7 +123,7 @@
             *@param page to add form
             *@param attribute associated
             */
-            save: function (page, attribute, rerender, oncomplete, editId){
+            save: function (page, attribute, rerender, oncomplete, editId, taskId){
                 if(this.layoutFields.length > 0){
                     
                     //Read Page
@@ -165,13 +165,13 @@
 					markup += ' />';
 
 					//Add Cancel Button
-					markup += this.tagPrefix + ':commandButton value="Cancel" onclick="history.go(-2);" /></div>';
+					markup += this.tagPrefix + ':commandButton value="Cancel" onclick="OnCancelEvent();" /></div>';
                     
                     markup += '</';
                     markup += 'apex:form>';                                     
                     
 					//Set bottom markup
-                    pattern = 'o(-2);" /></div>' + '</' + 'apex:form>';
+                    pattern = 'OnCancelEvent();" /></div>' + '</' + 'apex:form>';
                     var markupBottom = (markupAct[1].split(pattern).length > 1) ? markupAct[1].split(pattern)[1] : markupAct[1].split(pattern)[0];
                     apexPage.Markup = markupAct[0] + markup + markupBottom;
                     
@@ -186,7 +186,9 @@
 	                        $$('.redirect')[0].style.borderRight = 'solid green 5px';
 	                       
 	                        //Set Edit Id
-	                        location.href = (!editId) ? "/apex/" + apexPage.Name : "/apex/" + apexPage.Name + '?id=' + editId;
+	                        var redirectLocation = (!editId) ? apexPage.Name : apexPage.Name + '?id=' + editId;
+	                        redirectLocation += (!taskId) ? '' : '&task=' + taskId;
+	                        location.href = "/apex/" + redirectLocation;
 	                    }else{
 							this.error('Error: Unable to Save');		                    	
 	                    }
@@ -225,7 +227,8 @@
                 	getURLParam('attr'), 
                 	getURLParam('rR'), 
                 	getURLParam('oC'), 
-                	getURLParam('eid')
+                	getURLParam('eid'),
+                	getURLParam('task')
               	);        
         	}
         );

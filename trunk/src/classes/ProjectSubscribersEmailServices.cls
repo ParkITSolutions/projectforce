@@ -184,7 +184,7 @@ public class ProjectSubscribersEmailServices {
     *@param String message
     *@param String subject
     */
-    Boolean alreadySent = false;
+    public static Boolean alreadySent = false;
     public void SendMail(String[] toAddresses , Project2__c team,  String Message, String subject) {
         // Assign thsetReplyToe addresses for the To and CC lists to the mail object.
         mail.setToAddresses(toAddresses);
@@ -203,8 +203,8 @@ public class ProjectSubscribersEmailServices {
         //Set Content Mail
         mail.setHtmlBody(Message);
         // Send the email you have created.
-        if(!alreadySent)
+        if(!ProjectSubscribersEmailServices.alreadySent)
             Messaging.sendEmail(new Messaging.SingleEmailMessage[]{mail});
-        alreadySent = true;
+        ProjectSubscribersEmailServices.alreadySent = true;
     }
 }

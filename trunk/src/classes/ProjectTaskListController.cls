@@ -869,7 +869,7 @@ public with sharing class ProjectTaskListController {
         if (!sortByDesc){
             if (key == 'High')
                 return 3;
-            else if (key == 'Normal')
+            else if (key == 'Medium')
                 return 2;
             else if (key == 'Low')
                 return 1;
@@ -877,7 +877,7 @@ public with sharing class ProjectTaskListController {
         }else{
             if (key == 'High')
                 return 1;
-            else if (key == 'Normal')
+            else if (key == 'Medium')
                 return 2;
             else if (key == 'Low')
                 return 3;

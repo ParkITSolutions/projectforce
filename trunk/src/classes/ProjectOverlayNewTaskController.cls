@@ -126,9 +126,9 @@ public class ProjectOverlayNewTaskController {
    			newTask.Milestone__c = false;
 			newTask.Project__c = PROJECTID;
 			newTask.PercentCompleted__c = 0.0;
-			newTask.Priority__c = 'Normal';
+			newTask.Priority__c = 'Medium';
 			insert newTask; 
-system.debug ('chuchu' + PROJECTID ); 
+
 	  		ProjectAssignee__c Assign = new ProjectAssignee__c();
 			Assign.User__c = projectMember.User__c;
 			Assign.ProjectTask__c = newTask.Id;

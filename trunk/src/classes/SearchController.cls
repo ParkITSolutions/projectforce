@@ -6,31 +6,33 @@ public class SearchController {
 	private String key = null;
 	
 	// Parameter for seach in team
-	private String teamId = null;
+	private String teamId = System.currentPageReference().getParameters().get('id');
 	 
 	// Text of search label
-	private String label = '';
+	private String label = ''; 
 	
 	// Default input field text value
-	private String defText = '';	
-	
+	private String defText = '';
 		
 		// Map with action=>PageReference
 	private Map<String, PageReference> searchIn = new Map<String, PageReference>{
 		'project' => Page.ProjectSearchResult
-		};
+	};
 		
 	/**
 	* Redirect to the specific result
 	*@return PageReference
 	*/
 	public PageReference searchKey(){
+		
 		if(this.module != null && this.module != ''){
 			PageReference pageRef = searchIn.get(module);
 			pageRef.getParameters().put('key', this.key);
-			if(this.teamId != null || this.teamId != '')
+			if(this.teamId != null || this.teamId != ''){
 				pageRef.getParameters().put('id', this.teamId);
-			pageRef.setRedirect(true);
+			}
+			
+			pageRef.setRedirect(true);			
 			return pageRef;
 		}else {
 			return null;

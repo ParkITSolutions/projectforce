@@ -29,6 +29,16 @@
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskDetail.js')}" />
   	
  	<script>
+ 	function trunkAllTitles(){
+	 	trunkTitle();
+	 	trunkBreadcrumbs();
+ 	}
+ 	
+ 	function trunkBreadcrumbs(){
+ 		var text = $('taskNameBreadcrumb').innerHTML;
+		$('taskNameBreadcrumb').innerHTML = text.substring(0, 20) + '...';
+ 	}
+ 	
  	function trunkTitle(){
 
 			var h = $$('.arial_black')[1];
@@ -47,7 +57,7 @@
 		}
 		
  		document.observe("dom:loaded", function(){
-				trunkTitle();
+				trunkAllTitles();
 				readPortalCSSRules();
 			}
 		)
@@ -82,12 +92,13 @@
     <div class="main_content_projectList"> 
     	<!-- BreadCrumb and buttons -->     
         <div align="center" class="breadCrumbAndButtons">
-		<div class="breadCrumbs">
-			<a  href="/apex/ProjectDetail?id={!Task.ProjectId}">{!Task.ProjectName} Home</a> > <a  href="/apex/ProjectTasksList?id={!Task.ProjectId}">Tasks</a> > <strong>{!Task.Name}</strong>
+		<div class="breadCrumbs" style="width: 350px !important;">
+			<a  href="/apex/ProjectDetail?id={!Task.ProjectId}">{!Task.ProjectName} Home</a> > <a  href="/apex/ProjectTasksList?id={!Task.ProjectId}">Tasks</a> > 
+			<span style = "font-weight:bold;" id="taskNameBreadcrumb">{!Task.Name}</span>
 		</div>
         <div class="buttons" style="{!IF(Task.IsTaskOwner,'width:262px;','')}">
 			<apex:outputpanel rendered="{!OR(userPermissions.canManage,Task.IsTaskOwner)}" layout="block">
-	        	<a class="blackbutton" href="ProjectCreateNewTask?id={!Task.ProjectId}&task={!Task.id}"><span>Edit Task</span></a>
+	        	<a class="blackbutton" href="/apex/projectRedirect?sO=ProjectTask__c&attr=task&page=ProjectCreateNewTask&rR=NewProjectFormContainer&oC=true&eid={!Task.ProjectId}&task={!Task.id}"><span>Edit Task</span></a>
 	        	<apex:form id="quickMilestoneForm" styleclass="quickMilestoneForm" onsubmit="if(isCompleted){alert('The task percent is already completed.');return false}"  >	
 					<apex:actionStatus id="taskStatus">
 						<apex:facet name="start">

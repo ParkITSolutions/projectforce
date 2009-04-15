@@ -86,7 +86,9 @@ public class ProjectCreateNewTaskController {
    			genTempTask();
    		}
 	}
-   	
+   	public String getProjectId(){
+   		return param;	
+   	}
    	public Boolean getValidSizePicture(){
     	return validSizePicture;
     }
@@ -688,7 +690,7 @@ public class ProjectCreateNewTaskController {
 	*/
    	public List<SelectOption> getPriority() {
   	 	List<SelectOption> priority = new List<SelectOption>(); 
-  	 	priority.add(new SelectOption('Normal','Normal'));	 	
+  	 	priority.add(new SelectOption('Medium','Medium'));	 	
   	 	priority.add(new SelectOption('High', 'High')); 	 	
   	 	priority.add(new SelectOption('Low','Low'));
   	 	return priority;

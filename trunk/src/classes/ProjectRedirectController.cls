@@ -16,7 +16,7 @@ public class ProjectRedirectController {
     
     /**
     * Read if current user is sys admin
-    *@return pr to create project form (without modify form layout)
+    *@return pr to form page (without modify form layout)
     */
     public PageReference isAdmin(){
 		User admin = new User();

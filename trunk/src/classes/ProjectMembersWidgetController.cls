@@ -138,9 +138,9 @@ public with sharing class ProjectMembersWidgetController {
 		List<ProjectMember__c> temp = new List<ProjectMember__c>();
       	
         if(typeList == 'adminList') {
-        		temp = [select User__r.Id, User__r.Name from ProjectMember__c where Project__c =: team and User__r.IsActive != false and Profile__r.ManageProjectTasks__c = true order by User__r.Name];
+        		temp = [select User__r.Id, User__r.Name from ProjectMember__c where Project__c =: team and User__r.IsActive != false and Profile__r.ManageProjectTasks__c = true order by createdDate desc limit 10];
         }else{
-        		temp = [select User__r.Id, User__r.Name from ProjectMember__c where Project__c =: team and User__r.IsActive != false order by User__r.Name];
+        		temp = [select User__r.Id, User__r.Name from ProjectMember__c where Project__c =: team and User__r.IsActive != false order by createdDate desc limit 10];
         }
         Set<Id> users = new Set<Id>();
         for(ProjectMember__c t: temp) {
@@ -460,6 +460,7 @@ public with sharing class ProjectMembersWidgetController {
 	* Save Member and New
 	*@void
 	*/
+	/* ***
 	public void saveMembersNew () {
 		List<ProjectMember__c> newMemberList = new List<ProjectMember__c>();
 		List<String> newMembers = newMemberVars.colleagueNames.split(',');
@@ -511,7 +512,7 @@ public with sharing class ProjectMembersWidgetController {
 		newMemberVars.teamRole = '';
 		newMemberVars.profileId = '';
 		newMemberVars.message = '';
-	}
+	} **** */
 
 	/**
 	* Save Members
