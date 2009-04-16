@@ -1,10 +1,11 @@
 <apex:component controller="ProjectOverlayNewMilestoneController" allowDML="true" id="milestoneOverlay">
 
-    <!-- IMPORTANT:
-         One of this component's ancestors MUST define a function called "milestoneListChanged". This function
-         receives no parameters, and is called when a new Milestone is created. The idea is to manage the refresh
-         of views related to Milestones in the page that includes this component, and not in the component
-         itself.
+    <!-- 
+    IMPORTANT:
+    One of this component's ancestors MUST define a function called "milestoneListChanged". This function
+    receives no parameters, and is called when a new Milestone is created. The idea is to manage the refresh
+    of views related to Milestones in the page that includes this component, and not in the component
+    itself.
      -->
      
 	<!-- ### Initialize fixed Overlay ### -->
@@ -71,9 +72,9 @@
 										rerender="quickMilestoneForm"
 										status="MilestoneStatus" style="float: none;"
 										value="Save" styleclass="overlaySaveBtn"
-										oncomplete="formValidateMilestone('{!$Component.nameMilestone}', '{!$Component.dueDateMilestone}', '{!$Component.memberMilestone}')">
+										oncomplete="showSelect();formValidateMilestone('{!$Component.nameMilestone}', '{!$Component.dueDateMilestone}', '{!$Component.memberMilestone}')">
 									</apex:commandButton>
-									<apex:commandButton styleClass="overlayCancelBtn" style="float: none;" value="Cancel" onclick="resetFormNewMilestone();fixedModalNewMilestone.close(); return false;"  />
+									<apex:commandButton styleClass="overlayCancelBtn" style="float: none;" value="Cancel" onclick="showSelect();resetFormNewMilestone();fixedModalNewMilestone.close(); return false;"  />
 									<a href="javascript:;" onclick="sendTempMilestoneDetails('{!$Component.nameMilestone}','{!$Component.memberMilestone}','{!$Component.dueDateMilestone}');return false;">Edit milestone details</a>
 									<div id="quickMilestoneFormId" style="display:none;">{!$Component.quickMilestoneForm}</div>			
 								</div>
@@ -86,11 +87,11 @@
 			<div style="display:none;">
 				<form id="hiddenFormQuickMilestone" action="ProjectCreateNewTask" method="get">
                     <input id="tempProjectid" type="text" value="{!CurrentProjectId}" name="id" />
-					<input id="tempQuickMilestoneName" type="text" name="qmname" />	
+					<input id="tempQuickMilestoneName" type="text" name="qmname" />
 					<input id="tempQuickMilestoneDueDate" type="text" name="qmdd"/>
 					<input id="tempQuickMilestoneAsigneeId" type="text" name="qmaid"/>
 					<input name="ed" value="true" />
-					<input type="submit" value="tempSend" />			
+					<input type="submit" value="tempSend" />
 				</form>
 			</div>
 		</div>

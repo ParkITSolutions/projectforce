@@ -89,11 +89,11 @@
                                 <div class="overlayFromButtons" align="center">
                                     <apex:commandButton action="{!insertTask}"                                                                              
                                         status="taskStatus" style="float: none;"
-                                        onComplete="formValidate('{!$Component.name}', '{!$Component.taskEstimate}', '{!$Component.member}' ,'{!$Component.taskStartDate}' , '{!$Component.taskDueDate}');"
+                                        onComplete="showSelect();formValidate('{!$Component.name}', '{!$Component.taskEstimate}', '{!$Component.member}' ,'{!$Component.taskStartDate}' , '{!$Component.taskDueDate}');"
                                         value="Save" styleClass="overlaySaveBtn" rerender="quickTaskForm"/>
-                                    <input class="overlayCancelBtn" type="button" style="float: none;" value="Cancel"  onclick="resetFormNewTask();fixedModalNewTask.close();" />
+                                    <input class="overlayCancelBtn" type="button" style="float: none;" value="Cancel"  onclick="showSelect();resetFormNewTask();fixedModalNewTask.close();" />
                                     <a href="javascript:;" onclick="sendTempTaskDetails('{!$Component.name}','{!$Component.taskStartDate}','{!$Component.taskDueDate}', '{!$Component.taskEstimate}','{!$Component.member}'); return false;">Edit task details</a>
-                                </div>  
+                                </div> 
                                 <div id="quickTaskFormId" style="display:none;">{!$Component.quickTaskForm}</div>          
                             </apex:outputPanel>
                         </apex:facet> 

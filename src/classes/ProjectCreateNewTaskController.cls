@@ -49,6 +49,15 @@ public class ProjectCreateNewTaskController {
    		String qtStartDate = System.currentPageReference().getParameters().get('qtsd');  
 		String qtDueDate = System.currentPageReference().getParameters().get('qtdd');
 		String qtEstimate = System.currentPageReference().getParameters().get('qte');
+		
+		String isMilestone = System.currentPageReference().getParameters().get('qmname');
+
+		if(isMilestone != null){
+			qtName = System.currentPageReference().getParameters().get('qmname');
+			qtDueDate = System.currentPageReference().getParameters().get('qmdd');
+			theTask.Milestone__c = true;
+		}
+		
    		
    		if(qtStartDate != '' && qtStartDate != null){
    			
@@ -507,6 +516,10 @@ public class ProjectCreateNewTaskController {
 	public void genTempTask(){
 		//Get Params
 		String taskAsignee = System.currentPageReference().getParameters().get('qtaid');
+		
+		if(taskAsignee == null)
+			taskAsignee = System.currentPageReference().getParameters().get('qmaid');
+		
 		if(taskAsignee != null && taskAsignee != '-1')
 			dateMy.setMember(taskAsignee);
 	}	
@@ -557,11 +570,10 @@ public class ProjectCreateNewTaskController {
    	*@void
    	*/
    	public void save(){
-   		System.debug('theTaskId is:' + theTask.Id);
    		if(theTask.Id == null){
    			if(userPermissions.getCanCreate()){
    				theTask.Project__c = param;
-   				theTask.PercentCompleted__c = 0.0;
+   				//theTask.PercentCompleted__c = 0.0;
    				insert theTask;
    			}else{
    				throw new CustomException('Insufficient Privileges');
@@ -592,16 +604,11 @@ public class ProjectCreateNewTaskController {
    	*@void
    	*/
    	public void saveAssignees(){
-   		
-   		System.debug('Entering SaveAssignees!');
-   		System.debug('Assignees are: ' + assignees);
 
    		List<String> assigns = assignees.split(';');
    		if(assigns.size() == 0)
    			return;
-   			
-   		System.debug('Assigns after split' + assigns);
-   		
+   			   		
    		List<ProjectAssignee__c> assignsToDel = new List<ProjectAssignee__c>();
    		List<ProjectAssignee__c> assignsToSave = new List<ProjectAssignee__c>();
    		
@@ -715,9 +722,7 @@ public class ProjectCreateNewTaskController {
    	}
    	
    	public PageReference saveAttachmentsAndAccess(){
-   		
-   		System.debug('entering saveAttachmentAndAccess');
-    	
+   		    	
     	attachList.clear(); 
    		if(theTask.Milestone__c)
    			theTask.StartDate__c = theTask.EndDate__c;

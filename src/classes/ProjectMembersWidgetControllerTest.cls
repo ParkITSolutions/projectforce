@@ -79,7 +79,6 @@
             List<ProjectMember__c> members = team.getMemberListToolkit();
             Integer cnt = team.getMemberListToolkitCount();
             
-			team.saveMembersNew();
             team.saveMembers();            
             
             team.syncSaveMembers();

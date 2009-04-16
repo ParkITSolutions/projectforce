@@ -75,7 +75,6 @@ public class ProjectSubscriptionController {
 			subscription.Project__c = idProject;
 			subscription.User__c = UserInfo.getUserId();
 			insert subscription;
-			System.debug( '<><><>' + subscription.ProjectTaskAssignedToMe__c);
 		}
 		PageReference pageRef = Page.ProjectDetail;
 		pageRef.getParameters().put('id', idProject);

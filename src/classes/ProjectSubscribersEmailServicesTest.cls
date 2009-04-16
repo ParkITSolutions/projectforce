@@ -8,7 +8,6 @@
     	ProjectSubscribersEmailServices es = new ProjectSubscribersEmailServices();
     	
     	
-    	es.setIsTest( true );
     	es.setIsTaskEdit( true );
     	
     	List<String> lPM = new List<String>();
@@ -17,6 +16,8 @@
     	es.sendMemberJoinLeave( lPM, 'join' );
     	es.sendMemberJoinLeave( lPM, 'leave' );
     	
+    	es.setIsTest( true );
+    	es.setIsTaskEdit( true );
 		List<String> lPA = new List<String>();
 		lPA.add( GenerateEnvironmentTest.assi.Id );    	
 		lPA.add( GenerateEnvironmentTest.assi2.Id );    	

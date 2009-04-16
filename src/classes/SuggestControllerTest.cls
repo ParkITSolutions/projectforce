@@ -1,4 +1,4 @@
-public class SuggestControllerTest {
+@isTest private class SuggestControllerTest {
     static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();

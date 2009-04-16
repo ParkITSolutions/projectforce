@@ -44,7 +44,7 @@
 				<!-- Saven and Cancel Buttons -->
 				<div class="overlayFromButtons" align="center">
 					<span id="deleteEventContainer">
-						<apex:commandButton id="SaveBtn1"  styleClass="saveButtons  cancelButtons btn" style="background-color: #21637D!important;display: none; !important" action="{!deleteTaskFromList}" value="Continue and delete" onclick="modal.close();showSwirley();setTimeout('Effect.Fade(\'infoToUser\')', 10000);" oncomplete="redirect(); showMessageToUser('Deleted item(s)','success');" rerender="taskListPanel" />
+						<apex:commandButton id="SaveBtn1"  styleClass="saveButtons  cancelButtons btn" style="background-color: #21637D!important;display: none; !important" action="{!deleteTaskFromList}" value="Continue and delete" onclick="modal.close();showSwirley();setDims('holder','paginationOverlay');setTimeout('Effect.Fade(\'infoToUser\')', 10000);" oncomplete="redirect(); showMessageToUser('Deleted item(s)','success');" rerender="taskListPanel" />
 						<apex:commandButton id="SaveBtn2" styleClass="saveButtons  cancelButtons btn" style="background-color: #21637D!important;display: none; !important" action="{!deleteTaskFromDetail}" value="Continue and delete"/>
 					</span>
 			        <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="modal.close();" value="Cancel"/>

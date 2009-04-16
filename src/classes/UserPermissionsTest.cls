@@ -31,7 +31,7 @@
             ProjectMember__c teamMember = [select Id, Project__c from ProjectMember__c where User__c !=: userId limit 1];
     		
             //Test Team Permissions
-            up.setTeam(teamMember.Project__c);
+            up.setProject(teamMember.Project__c);
             up.setObjectType('Team');
             up.setPermissions();
             
@@ -43,7 +43,7 @@
             //Test getters
             userId = up.getId();        
             String objectType = up.getObjectType();
-            String teamId = up.getTeam();      
+            String teamId = up.getProject();      
             Boolean canMange = up.getCanManage();
             Boolean canCreate = up.getCanCreate();
             Boolean canComment = up.getCanComment();

@@ -33,13 +33,13 @@ public class ProjectCreateNewProjectController {
         	
         	//Read Project
         	setProject(param);
-		
+
         	//generate Profiles
-        	genProfiles(); 
+        	genProfiles();
         	
         	List<GroupMember> gm = new List<GroupMember>();
 			Group instance = new Group();
-			String instanceName = 'projectSharing' + param;
+			String instanceName = 'ProjectSharing' + param;
 			instance = [ SELECT Id FROM Group WHERE Name =: instanceName LIMIT 1 ];
 			
 			if(allowCustomerActivated.size() > 0 ){
@@ -51,7 +51,7 @@ public class ProjectCreateNewProjectController {
 				gm = [ SELECT Id FROM GroupMember WHERE GroupId =:instance.Id AND UserOrGroupId =: allowPartnetActivated[0].Id ];
 				allowPartner = (gm.size() > 0) ? true : false;
 			}
-						
+				
 			String members_profile = theProject.NewMemberProfile__r.Name;
 			String public_profile = theProject.PublicProfile__r.Name;
 			if (public_profile == 'Public Profile') {
@@ -144,6 +144,7 @@ public class ProjectCreateNewProjectController {
 	*@param Boolean
 	*/
 	public static Boolean getAllowCustomerStatic(){ 
+		System.debug('aaaa' + allowCustomer);
 		return allowCustomer ;
 	}
 	/**

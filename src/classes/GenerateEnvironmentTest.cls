@@ -21,7 +21,9 @@ public class GenerateEnvironmentTest {
 	public static Attachment avatar = new Attachment(Name = 'avatar', Body = Crypto.generateMac('HMacSHA1', Blob.valueOf('String'), Blob.valueOf('String')));
 	public static User us = new User();
 
-	public static void gen(){
+    public static testMethod void gen(){
+
+			ProjectUtil.setIsTest( true ); 
 		
 		us = [ SELECT Id, Name FROM User LIMIT 1 ];
 				
@@ -110,6 +112,7 @@ public class GenerateEnvironmentTest {
 		mile.StartDate__c = Date.today();
 		mile.EndDate__c = Date.today();
 		mile.Duration__c = 2;
+		mile.PercentCompleted__c = 55;
 		mile.Milestone__c = true;
 		
 		task2.Name = 'task 2';

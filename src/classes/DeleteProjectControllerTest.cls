@@ -1,0 +1,19 @@
+@isTest private class DeleteProjectControllerTest {
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+    	
+    	System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+    	DeleteProjectController dpc = new DeleteProjectController();
+    	
+    	dpc.setProjectId( GenerateEnvironmentTest.project.id );
+    	dpc.getProjectId();
+    	
+    	dpc.deleteProject();
+
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );
+    }     	
+}
