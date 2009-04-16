@@ -20,6 +20,9 @@ public class ProjectDetailControllerTest {
 		pD.projectRedirect();
 		pD.getTeamspace();
 		pD.getTeamspaceImage();
+		pD.getIsLastMemberAdmin();
+		pD.getUserPermission();
+		pD.getIsManager();
     	
     	pd.getInTeamSubscription();
     	

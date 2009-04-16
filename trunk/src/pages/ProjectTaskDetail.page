@@ -36,7 +36,11 @@
  	
  	function trunkBreadcrumbs(){
  		var text = $('taskNameBreadcrumb').innerHTML;
-		$('taskNameBreadcrumb').innerHTML = text.substring(0, 20) + '...';
+		$('taskNameBreadcrumb').innerHTML = text.substring(0, 24) + '...';
+		
+		var text = $('projectNameBreadcrumb').innerHTML;
+		$('projectNameBreadcrumb').innerHTML = text.substring(0, 24) + '...';
+		
  	}
  	
  	function trunkTitle(){
@@ -93,7 +97,7 @@
     	<!-- BreadCrumb and buttons -->     
         <div align="center" class="breadCrumbAndButtons">
 		<div class="breadCrumbs" style="width: 350px !important;">
-			<a  href="/apex/ProjectDetail?id={!Task.ProjectId}">{!Task.ProjectName} Home</a> > <a  href="/apex/ProjectTasksList?id={!Task.ProjectId}">Tasks</a> > 
+			<a id="projectNameBreadcrumb"  href="/apex/ProjectDetail?id={!Task.ProjectId}">{!Task.ProjectName} Home</a> > <a  href="/apex/ProjectTasksList?id={!Task.ProjectId}">Tasks</a> > 
 			<span style = "font-weight:bold;" id="taskNameBreadcrumb">{!Task.Name}</span>
 		</div>
         <div class="buttons" style="{!IF(Task.IsTaskOwner,'width:262px;','')}">

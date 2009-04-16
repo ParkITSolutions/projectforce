@@ -1,4 +1,4 @@
-<apex:component Controller="TeamsWidgetMyTasksAndMilController" >
+<apex:component Controller="ProjectWidgetMyTasksAndMilController" >
     
     <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsWidgetMyTasksAndMilestones.css')}" />
 
@@ -29,12 +29,14 @@
                                     <img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/task.png')}"/>
                                 </div>
                                 <div style="{!IF(task.Priority == 'High', '', 'display:none')}; width: 13px; margin-top: 3px;" class="center f_left" >
-                                    <img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/highPriority.png')}"/>
+                                    <img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/highPriority.gif')}"/>
                                 </div>
                                 <div style="{!IF(task.Priority == 'Low', '', 'display:none')}; width: 13px; margin-top: 3px;" class="center f_left" >
-                                    <img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/lowPriority.png')}"/>
+                                    <img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/lowPriority.gif')}"/>
                                 </div>
-                                <div style="{!IF(task.Priority == 'Normal', '', 'display:none')}; width: 13px; margin-top: 3px;" class="center f_left" ></div>
+                                <div style="{!IF(task.Priority == 'Medium', '', 'display:none')}; width: 13px; margin-top: 3px;" class="center f_left" >
+                                	<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/mediumPriority.gif')}"/>
+                                </div>
                                 <div class="f_left {!task.isToLate}">
                                     <a href="/apex/projecttaskdetail?id={!task.TaskId}">{!task.TaskName}</a><br/>
                                     <apex:outputPanel rendered="{!IF((task.isToLate == 'latter'),true,false)}" layout="block">

@@ -10,18 +10,25 @@
         try{
             GenerateEnvironmentTest.gen();
             Test.startTest();
-
+			System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
             ProjectMembersListController team = new ProjectMembersListController();
             
             team.getNamespace();
+            team.getProjectName();
+            team.getIsLastAdmin();
+            team.setEditMemberId( GenerateEnvironmentTest.member.id);
+            team.getEditMemberProfile();
+            team.setEditMemberProfile(team.getEditMemberProfile());
+            team.getProjectEditProfiles(); 
+            team.setLetter( 'a' );
+            
             
             // Team Inner Class
             ProjectMembersListController.Member member = new ProjectMembersListController.Member();
             member.getYahoo();
             member.getSkype();
             member.getUserId();
-            //member.getTeamMemberId();
-            //member.setTeamMemberId(GenerateEnvironmentTest.member.Id);
+
             member.getName();
             member.getMemberImg();
             member.getCompany();
@@ -84,19 +91,44 @@
             team.getSortByDesc();
             team.setSortBy('User__r.Name');
             team.getSortBy();
+            System.currentPageReference().getParameters().put( 'sb', 'User__r.Name' );
+            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
+            team.sortList(); // 1 SOQL
+            System.currentPageReference().getParameters().put( 'sb', 'User__r.Name' );
+            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
             team.sortList(); // 1 SOQL
             
             team.setSortBy('User__r.CompanyName');
-            team.getSortBy();
+            System.currentPageReference().getParameters().put( 'sb', 'User__r.CompanyName');
+            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
+            team.sortList(); // 1 SOQL
+            System.currentPageReference().getParameters().put( 'sb', 'User__r.CompanyName');
+            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
+            team.sortList(); // 1 SOQL
             
             team.setSortBy('User__r.Title');
-            team.getSortBy();
+            System.currentPageReference().getParameters().put( 'sb', 'User__r.Title');
+            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
+            team.sortList(); // 1 SOQL
+            System.currentPageReference().getParameters().put( 'sb', 'User__r.Title');
+            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
+            team.sortList(); // 1 SOQL
             
             team.setSortBy('TeamProfile__r.Name');
-            team.getSortBy();
+            System.currentPageReference().getParameters().put( 'sb', 'TeamProfile__r.Name');
+            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
+            team.sortList(); // 1 SOQL
+            System.currentPageReference().getParameters().put( 'sb', 'TeamProfile__r.Name');
+            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
+            team.sortList(); // 1 SOQL
             
             team.setSortBy('TeamRole__c');
-            team.getSortBy();
+            System.currentPageReference().getParameters().put( 'sb', 'TeamRole__c');
+            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
+            team.sortList(); // 1 SOQL
+            System.currentPageReference().getParameters().put( 'sb', 'TeamRole__c');
+            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
+            team.sortList(); // 1 SOQL
             
             // Methods WITH SOQL queries
             team.getAdminCount(); // 1 SOQL
@@ -112,7 +144,7 @@
            
            	System.currentPageReference().getParameters().put('ltr','true');
            	team.genMembers(); // 1 SOQL
-            
+            team.getLetterFilter();
 
             
             // Methods WITH more than 1 SOQL query

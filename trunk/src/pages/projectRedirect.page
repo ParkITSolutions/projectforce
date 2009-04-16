@@ -165,13 +165,13 @@
 					markup += ' />';
 
 					//Add Cancel Button
-					markup += this.tagPrefix + ':commandButton value="Cancel" onclick="OnCancelEvent();" /></div>';
+					markup += '<input class="btn" onclick="onCancelEvent();" type="button" value="Cancel"/></div>';
                     
                     markup += '</';
                     markup += 'apex:form>';                                     
                     
 					//Set bottom markup
-                    pattern = 'OnCancelEvent();" /></div>' + '</' + 'apex:form>';
+                    pattern = 'value="Cancel"/></div>' + '</' + 'apex:form>';
                     var markupBottom = (markupAct[1].split(pattern).length > 1) ? markupAct[1].split(pattern)[1] : markupAct[1].split(pattern)[0];
                     apexPage.Markup = markupAct[0] + markup + markupBottom;
                     

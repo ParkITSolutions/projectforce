@@ -13,13 +13,15 @@
     	mile.setTeamId( GenerateEnvironmentTest.project.Id );
     	mile.setSidebar( false );
 
+    	mile.setTeamId( GenerateEnvironmentTest.project.Id );
     	mile.genAllProjectTasks();
     	mile.getAllProjectTasks();
     	mile.getUserPermissions();
     	mile.getListSize();
     	mile.getSidebar();
     	mile.getTeamId();
-    	
+    	mile.refresh();
+    	mile.getUserPermissions();
     	
     	// Inner class
     	ProjectDetailMilestoneController.ProjectTasks inn = new ProjectDetailMilestoneController.ProjectTasks();
@@ -49,7 +51,10 @@
     	inn.getPicture();
     	inn.getDayPercentRight();
     	inn.getDayPercent();
-    	
+
+
+
+    	    	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     }     	

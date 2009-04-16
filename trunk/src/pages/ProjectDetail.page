@@ -36,13 +36,15 @@
 		
 		div.sfdcDetailFormated table.detailList td{
 			height: 20px !important;
+			border:none;
 		}
 		
 		div.sfdcDetailFormated table.detailList td.labelCol{
 			font-weight: bold;
+			border:none;
 		}
 		#btnDiv {
-			width: 170px !important;
+			width: 190px !important;
 			margin-left: -90px;
 			*margin-left: 100px;
 		}
@@ -105,7 +107,7 @@
 	    
 		 <div align="center" class="breadCrumbAndButtons">
 			<div id="btnDiv">
-				<apex:form >
+				<apex:form id="thisForm" >
 					<apex:outputPanel styleClass="isLastMemberAdmin" style="display: none;" >{!isLastMemberAdmin}</apex:outputPanel>
 					<apex:outputPanel rendered="{!IF(isManager,true,false)}">
 						<a class="blackbutton" href="Javascript:;" onclick="deleteProjectOverlay();">
@@ -192,6 +194,8 @@
  
 	<script>
 		readPortalCSSRules();
+
+		
 	</script>
 	
 </apex:page>

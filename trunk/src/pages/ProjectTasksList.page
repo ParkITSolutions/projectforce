@@ -30,6 +30,15 @@
         .breadCrumbs a{
             font-weight: normal;
         }
+        
+        #paginationOverlay{
+			background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat center;
+			position:absolute;
+			opacity:.80;
+			filter:alpha(opacity=80);
+			z-index:9998;
+		
+		}
     </style>
     
     
@@ -78,12 +87,12 @@
           </div>
             <apex:outputpanel styleClass="buttons"  layout="block" style="width:450px;" >
                 <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
-                    <a class="blackbutton"  onclick="fixedModalNewTask.open();">
+                    <a class="blackbutton"  onclick="fixedModalNewTask.open();hideSelect();">
                         <span>New Task</span>
                     </a>
                 </apex:outputpanel>
                 <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
-                    <a class="blackbutton"  onclick="fixedModalNewMilestone.open();">
+                    <a class="blackbutton"  onclick="fixedModalNewMilestone.open();hideSelect();">
                         <span>New Milestone</span>
                     </a>
                 </apex:outputpanel>
@@ -112,13 +121,9 @@
         </div>
         <!-- Holder -->  
         <div class="informationPanel clear" id="infoToUser" style="display:none;"></div>
-        <div class="holder" style="position:relative;overflow:hidden;">
+        <div id='holder' class="holder" style="position:relative;overflow:hidden;">
             <!-- Overlay -->
-            <div id="paginationOverlay" style="display:none;">
-                <div class="loader">
-                        <img src="{!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}" alt="Loading..." title="Loading..." />
-                </div>
-            </div>  
+            <div id="paginationOverlay" style="display:none;"></div>  
             <apex:outputpanel id="taskListPanel" layout="block" >
                 <apex:form id="ref">
                 	<apex:actionFunction action="{!refreshTaskList}" oncomplete="showHideOverlay();" name="sortListEvent" rerender="ref" />
@@ -306,10 +311,7 @@
                                         <!-- Task Asignee -->
                                         <td class="proj_task_assigned"> 
                                             <a href="javascript:;">
-                                                <apex:outputpanel styleClass="photoWrapper_32px photo" layout="block" style="" rendered="{!IF(task.AsigneeName != null,true,false)}" >  
-                                                    <img alt="Username" src="/servlet/servlet.FileDownload?file={!task.AsigneeName}" width="32" />
-                                                </apex:outputpanel>
-                                                <apex:outputpanel rendered="" styleClass="photoWrapper_32px photo" layout="block" rendered="{!IF(task.AsigneeName == null,true,false)}" >                                               
+                                                <apex:outputpanel styleClass="photoWrapper_32px photo" layout="block">                                               
                                                     <img  src="{!URLFOR($Resource.commonResources, 'images/placeholders/unknownperson32x32.jpg')}"  width="32" />
                                                 </apex:outputpanel>
                                             </a>
@@ -366,12 +368,12 @@
         <div align="center" class="breadCrumbAndButtons">
             <apex:outputpanel styleClass="buttons"  layout="block" style="width:450px;" >
                 <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
-                    <a class="blackbutton"  onclick="fixedModalNewTask.open();">
+                    <a class="blackbutton"  onclick="fixedModalNewTask.open();hideSelect();">
                         <span>New Task</span>
                     </a>
                 </apex:outputpanel>
                 <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
-                    <a class="blackbutton"  onclick="fixedModalNewMilestone.open();"><span>New Milestone</span></a>
+                    <a class="blackbutton"  onclick="fixedModalNewMilestone.open();hideSelect();"><span>New Milestone</span></a>
                 </apex:outputpanel>
                 <apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
                     <apex:form >
@@ -408,6 +410,7 @@
     <script>
         showActionSuccess();
         readPortalCSSRules();
+            
     </script>
     <apex:outputpanel id="auxProjectTaskListPanel" />
     

@@ -192,17 +192,8 @@ public without sharing class ProjectMembersListController {
 	public void assignRemoveId () {
 		if (System.currentPageReference().getParameters().get('delId') != null) {
 			removeMemberId = System.currentPageReference().getParameters().get('delId');	
-		}
-		
-		System.debug('REMOVE ID ->  ' + [select User__r.Name 
-				   from ProjectMember__c 
-				   where User__c =: removeMemberId 
-				       and project__c =: idProject].User__r.Name);
-				       
-		delName = [select User__r.Name 
-				   from ProjectMember__c 
-				   where User__c =: removeMemberId 
-				       and project__c =: idProject].User__r.Name;
+		}		       
+		delName = [select User__r.Name from ProjectMember__c where User__c =: removeMemberId and project__c =: idProject limit 1].User__r.Name; 
 	}
 	
 	/**
@@ -256,18 +247,7 @@ public without sharing class ProjectMembersListController {
 		if (System.currentPageReference().getParameters().get('editId') != null) {
 			editMemberId = 	System.currentPageReference().getParameters().get('editId');
 		}
-		editMember = [select id, User__r.name, Profile__c, User__r.companyName, User__r.Title  
-					  from ProjectMember__c 
-					  where User__c =: editMemberId and project__c =: idProject];
-		
-		/*
-		PeopleProfile__c img = [SELECT Picture__c from PeopleProfile__c WHERE User__c =: editMemberId LIMIT 1];
-		if (img == null) {
-			imgEditMember = '';
-		}else {
-			imgEditMember = img.Picture__c;
-		}
-		*/
+		editMember = [select id, User__r.name, Profile__c, User__r.companyName, User__r.Title  from ProjectMember__c  where User__c =: editMemberId and project__c =: idProject limit 1];
 		
 		Integer countAdmin = [select count() 
 							  from ProjectMember__c 
@@ -276,7 +256,7 @@ public without sharing class ProjectMembersListController {
 		Boolean isAdmin = [select Profile__r.ManageProjectTasks__c 
 						   from ProjectMember__c 
 						   where Project__c =:idProject
-						       and User__c=:editMemberId].Profile__r.ManageProjectTasks__c;
+						       and User__c=:editMemberId limit 1 ].Profile__r.ManageProjectTasks__c;
 		
 		isLastAdmin = (editMemberId == UserInfo.getUserId()) && isAdmin;
 		

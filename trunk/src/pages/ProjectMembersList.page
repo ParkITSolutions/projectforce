@@ -19,16 +19,13 @@
 		* Add Members overlay call back function
 		*/
 		function addMemberCallBackFunction(){
-			//statusSending(this);
+			statusSending(this);
 			setTimeout('modal.close(); hideSwirly(\'swirly_overlay\')', 5000); 
-			//showMessageToUser();
+			//showMessageToUser(); 
 			$('membersListSwirly').show(); 
 			setDims('holder','membersListSwirly');
-			//showSwirly('swirly_members'); 
 			//setTimeout('hideMessageToUser()', 10000);		
 		}
-		
-		
 		
 	</script>
 
@@ -76,17 +73,17 @@
 			padding: 0px;
 		}
 	
+		div#teamMemberID{
+			display: none !important;
+		}
+		
 		.paginationOverlay{
-			background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat center 200px;
+			background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat center;
 			position:absolute;
 			opacity:.80;
 			filter:alpha(opacity=80);
 			z-index:9998;
 	
-		}
-		
-		div#teamMemberID{
-			display: none !important;
 		}
 	
 	</style>
@@ -96,7 +93,6 @@
 				padding-left: 200px;
 			}
 		}
-	
 	</style>
 
 	<script>
@@ -191,7 +187,6 @@
 					alt="OK" />Member has been added to this {!$ObjectType.Project2__c.label}
 			</apex:outputPanel>
 		</apex:form>
-		
 		
 		
 		
@@ -364,18 +359,13 @@
 										<apex:param name="delId" value="{!item.userId}" />
 									</apex:commandLink>
 								</apex:outputpanel></td>
-								<td class="memberImg"><apex:outputpanel rendered="{!IF(item.memberImg == '',true,false)}">
-									<div class="photoWrapper_32px"><img
-										src="{!URLFOR($Resource.commonResources, 'images/placeholders/unknownperson32x32.jpg')}"
-										width="32" /></div>
-								</apex:outputpanel> <apex:outputpanel rendered="{!IF(item.memberImg == '',false,true)}">
-									<div class="photoWrapper_32px"><img
-										src="/servlet/servlet.FileDownload?file={!item.memberImg}"
-										width="32" /></div>
-								</apex:outputpanel></td>
-								<td class="member_detail_description"><a href="javascript:;"
-									onclick="location.href='https://na1.salesforce.com/apex/PeopleProfileDisplay?id={!item.userId}'"
-									class="member_detail_description_underline">{!item.Name}</a> 
+								<td class="memberImg">
+									<div class="photoWrapper_32px">
+										<img src="{!URLFOR($Resource.commonResources, 'images/placeholders/unknownperson32x32.jpg')}" width="32" />
+									</div>
+								</td>
+								<td class="member_detail_description">
+									<a href="/{!item.userId}" class="member_detail_description_underline">{!item.Name}</a> 
 								</td>
 								<td class="member_detail_description">{!item.company}</td>
 								<td class="member_detail_description">{!item.title}</td>
@@ -477,4 +467,5 @@
 	
 	<c:ProjectOverlayNewTask />
 	<c:ProjectOverlayNewMilestone />
+	
 </apex:page>
