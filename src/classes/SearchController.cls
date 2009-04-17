@@ -9,7 +9,7 @@ public class SearchController {
 	private String teamId = System.currentPageReference().getParameters().get('id');
 	 
 	// Text of search label
-	private String label = ''; 
+	private String labelName = null;
 	
 	// Default input field text value
 	private String defText = '';
@@ -31,7 +31,6 @@ public class SearchController {
 			if(this.teamId != null || this.teamId != ''){
 				pageRef.getParameters().put('id', this.teamId);
 			}
-			
 			pageRef.setRedirect(true);			
 			return pageRef;
 		}else {
@@ -84,31 +83,32 @@ public class SearchController {
 	/**
 	* Get value of label
 	*@return String label
-	*/
-	public String getLabel(){
-		String txt;
-		if(module == 'project'){
-			txt = 'Project';
-		}else if(module == 'task') {
-			txt = 'Task';
-		}else{
-			txt = '';
+	*/ 
+	
+	public String getLabelName(){
+		if(System.currentPageReference().getParameters().get('id') == null){
+			return this.labelName;
 		}
-		this.label = txt;
-		return this.label;
+		else{
+			return 'Tasks';
+		}
+	}
+	
+	/**
+	* Set value of label
+	* @param String
+	*/
+	public void setLabelName(String s){
+		this.labelName = s;
 	}
 	
 	/**
 	* Get value of default input field value
-	*@return String text
+	* @return String text
 	*/
 	public String getDefaultText(){
 		String txt = 'Enter ';
-		if(module == 'project'){
-			txt = txt + 'Project';
-		}else if(module == 'task'){
-			txt = txt + 'Task';
-		}
+		txt += this.getLabelName();
 		txt += ' name...';
 		this.defText = txt;
 		return this.defText;

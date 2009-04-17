@@ -247,6 +247,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>TriggersTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>UploadAttachmentController</apexClass>
         <enabled>true</enabled>
     </classAccesses>

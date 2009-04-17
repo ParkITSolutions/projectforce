@@ -8,7 +8,14 @@
                     
             ProjectMembersWidgetController team = new ProjectMembersWidgetController();
             String curUser = team.getCurrentUser(); 
-            
+            team.setEmailNotifications( true );
+            team.getIsManager();
+            team.getEmailNotifications();
+            team.setIsAdministrator( true );
+            team.getIsAdministrator();
+            team.getTeamspaceMembersIds();
+            team.getAlready();
+
             team.getNamespace();
             Project2__c t = GenerateEnvironmentTest.project;
             team.setIdTeam(t.Id);
@@ -34,7 +41,7 @@
             
             ProjectMembersWidgetController.Member member = new ProjectMembersWidgetController.Member();
             member = team.getNewMemberVars();
-                        
+            /*            
             Profile p = [select id from profile where name='System Administrator'];
             User newUser1 = new User(alias = 'test1', email='test1@testorg.com', 
                                     emailencodingkey='UTF-8', lastname='Testing2', languagelocalekey='en_US', 
@@ -55,11 +62,11 @@
                                     timezonesidkey='America/Los_Angeles', username='test3@testorg.com');
             
             insert newUser3;
-            
+            */
             List<User> users = new User[3];
-            users[0] = newUser1;
-            users[1] = newUser2;
-            users[2] = newUser3;
+            users[0] = GenerateEnvironmentTest.us;
+            users[1] = GenerateEnvironmentTest.us;
+            users[2] = GenerateEnvironmentTest.us;
             
             
             String names = null;

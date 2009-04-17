@@ -1,9 +1,9 @@
 trigger ProjectAfterUpdate on Project2__c (after update) {
-
+			
 			List<String> groupsNames = new List<String>();
 			List<String> idsProject = new List<String>();
 			for (Project2__c iterProj : Trigger.new) {
-				groupsNames.add('projectSharing' + iterProj.Id);
+				groupsNames.add('ProjectSharing' + iterProj.Id);
 				idsProject.add(iterProj.Id);
 			}
 			List<Group> groupList = [select id, name from Group where name in:groupsNames];
@@ -13,10 +13,12 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 			
             //Customer Portal Group            
             List<Group> portalGroup = new List<Group>();
+            //if(ProjectCreateNewProjectController.getAllowCustomerStatic()) 
            	portalGroup = [Select g.Type, g.Name from Group g where Type = 'AllCustomerPortal'];
 
             //Partner Portal Group
             List<Group> partnerGroup = new List<Group>();
+            //if(ProjectCreateNewProjectController.getAllowPartnerStatic())
            	partnerGroup = [Select g.Type, g.Name from Group g where Type = 'PRMOrganization'];	
             			
 			for (Integer it = 0; it < Trigger.new.size(); it++) {
@@ -94,10 +96,11 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 						}
 						insert groupMembers;
 					}else{
-						
+						System.debug('uaqui');
 						//If Customer Portal group exist add GroupMember
 						List<GroupMember> gm2 = new List<GroupMember>();
 						Group instance = new Group();
+						System.debug('cussss' + ProjectCreateNewProjectController.getAllowCustomerStatic() + portalGroup.size());
 						if(portalGroup.size() > 0 ){
 							GroupMember gmPortal = new GroupMember();
 							// Get GroupMember if exists
@@ -119,6 +122,7 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 	
 						//If Partner Portal group exist add GroupMember
 						if(partnerGroup.size() > 0 ){
+								
 							GroupMember gmPortal = new GroupMember();
 							// Get GroupMember if exists
 							instance = [ SELECT Id FROM Group WHERE Name =: groupsNames[ it ] LIMIT 1 ];
@@ -135,13 +139,15 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 								groupMembersIds.add(gm2[0].id);
 								ProjectUtil.deleteGroupMembers(groupMembersIds);
 							}											
+						}else{
+							
 						}					
 					}
 				}else{
 
 					if(newProj.PublicProfile__c != null || newProj.NewMemberProfile__c != null){
 						
-						String groupName = 'projectSharing' + newProj.Id;
+						String groupName = 'ProjectSharing' + newProj.Id;
 						Group projectGroup;
 						Boolean findGroup = false;
 						Integer countGroup = 0;
@@ -173,19 +179,23 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 						insert newGroupMember;
 
 						//If Customer Portal group exist add GroupMember
-						if(portalGroup.size() > 0 ){
-							GroupMember gmPortal = new GroupMember();
-		                    gmPortal.GroupId = projectGroup.Id;
-		                    gmPortal.UserOrGroupId = portalGroup[0].Id;
-		                    insert gmPortal;
-						}                
+						if(ProjectCreateNewProjectController.getAllowCustomerStatic()){
+							if(portalGroup.size() > 0 ){
+								GroupMember gmPortal = new GroupMember();
+			                    gmPortal.GroupId = projectGroup.Id;
+			                    gmPortal.UserOrGroupId = portalGroup[0].Id;
+			                    insert gmPortal;
+							}  
+						}              
 	
 						//If Partner Portal group exist add GroupMember
-						if(partnerGroup.size() > 0 ){
-							GroupMember gmPortal = new GroupMember();
-		                    gmPortal.GroupId = projectGroup.Id;
-		                    gmPortal.UserOrGroupId = partnerGroup[0].Id;
-		                    insert gmPortal;
+						if(ProjectCreateNewProjectController.getAllowPartnerStatic()){
+							if(partnerGroup.size() > 0 ){
+								GroupMember gmPortal = new GroupMember();
+			                    gmPortal.GroupId = projectGroup.Id;
+			                    gmPortal.UserOrGroupId = partnerGroup[0].Id;
+			                    insert gmPortal;
+							}
 						}
 					}
 				}

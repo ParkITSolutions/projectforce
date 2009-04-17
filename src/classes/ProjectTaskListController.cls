@@ -578,7 +578,7 @@ public with sharing class ProjectTaskListController {
                                          where Project__c =: PROJECTID  
                                          order by Name desc];               
             }
-            else if (sortBy == 'User__c.Name') { // This one just does not work.  AssignTo cant be sorted on since it can be more then one
+            else if (sortBy == 'User__c.Name') {// This one just does not work.  AssignTo cant be sorted on since it can be more then one
                 resultTaskList = [Select 
                                          p.Project__c,
                                          p.Priority__c, 

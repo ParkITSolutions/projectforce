@@ -1,4 +1,4 @@
-public class ProjectSearchResultController {
+public with sharing class ProjectSearchResultController {
 	
 	public String criteria;
 	public Integer totalItemsNumber = 0;
@@ -74,38 +74,43 @@ public class ProjectSearchResultController {
 		
 		List<SearchResult> tempResultList = new List<SearchResult>();	
 		
-		List<List<SObject>> resultList = [FIND :(criteria + '*') IN ALL FIELDS RETURNING Project2__c (Id, Name, Description__c), ProjectTask__c (Id, Name, Description__c, Project__c where Project__c=:teamId)];
-		resultsProjectSearch = (List<Project2__c>) resultList[0];
-		resultsProjectTask = (List<ProjectTask__c>) resultList[1];
-		
-		System.debug('resultList is:' + resultList);
-		
-		// PARSE THE Projects RESULT LIST
-		for(Project2__c iter: resultsProjectSearch){
-			SearchResult currentResult = new SearchResult();
+		if(teamId != null){ //Searching project TASKS	
+			List<List<SObject>> resultList = [FIND :(criteria + '*') IN ALL FIELDS RETURNING ProjectTask__c (Id, Name, Description__c, Project__c where Project__c=:teamId)];
+			resultsProjectTask = (List<ProjectTask__c>) resultList[0];
 			
-			currentResult.setName(iter.Name, criteria);
-			currentResult.setRealName(iter.Name);
-			currentResult.setId(iter.Id);
-			currentResult.setResultType('Project');
-			currentResult.setMatches(iter.Description__c, criteria);
-			
-			tempResultList.add(currentResult);
+			// PARSE THE PROJECT TASK RESULT LIST
+			for(ProjectTask__c iter: resultsProjectTask){
+				SearchResult currentResult = new SearchResult();
+				
+				currentResult.setName(iter.Name, criteria);
+				currentResult.setRealName(iter.Name);
+				currentResult.setId(iter.Id);
+				currentResult.setResultType('Project Task');
+				currentResult.setMatches(iter.Description__c, criteria);
+				
+				tempResultList.add(currentResult);
+			}
 		}
-		
-		// PARSE THE PROJECT TASK RESULT LIST
-		for(ProjectTask__c iter: resultsProjectTask){
-			SearchResult currentResult = new SearchResult();
+		else{
+			List<List<SObject>> resultList = [FIND :(criteria + '*') IN ALL FIELDS RETURNING Project2__c (Id, Name, Description__c)];
+			resultsProjectSearch = (List<Project2__c>) resultList[0];
 			
-			currentResult.setName(iter.Name, criteria);
-			currentResult.setRealName(iter.Name);
-			currentResult.setId(iter.Id);
-			currentResult.setResultType('Project Task');
-			currentResult.setMatches(iter.Description__c, criteria);
+			System.debug('resultList is:' + resultList);
 			
-			tempResultList.add(currentResult);
+			// PARSE THE Projects RESULT LIST
+			for(Project2__c iter: resultsProjectSearch){
+				SearchResult currentResult = new SearchResult();
+				
+				currentResult.setName(iter.Name, criteria);
+				currentResult.setRealName(iter.Name);
+				currentResult.setId(iter.Id);
+				currentResult.setResultType('Project');
+				currentResult.setMatches(iter.Description__c, criteria);
+				
+				tempResultList.add(currentResult);
+			}
+			
 		}
-		
 
 		// ORDER THE MULTI OBJECT RESULT BY NAME
 		Integer n;

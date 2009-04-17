@@ -144,7 +144,6 @@ public class ProjectCreateNewProjectController {
 	*@param Boolean
 	*/
 	public static Boolean getAllowCustomerStatic(){ 
-		System.debug('aaaa' + allowCustomer);
 		return allowCustomer ;
 	}
 	/**
@@ -289,7 +288,7 @@ public class ProjectCreateNewProjectController {
     *@return Project detail page reference
     *@throws Exception
     */    
-    public PageReference saveProject(){
+    public void saveProject(){
 		//Set User Permissions
     	genPermissions();
     	
@@ -303,10 +302,6 @@ public class ProjectCreateNewProjectController {
 		}else{
     		update theProject;	
 		}
-
-		PageReference pageRef = new PageReference('/');
-		pageRef.setRedirect(false);
-		return pageRef;    
 	}
     
     public PageReference saveAttachmentsAndAccess(){
@@ -338,7 +333,7 @@ public class ProjectCreateNewProjectController {
 		}	
 		
 		if(newProfile.projectOpenOrClosed == 'open'){
-			theProject.PublicProfile__c = [ SELECT id FROM ProjectProfile__c WHERE Name =: 'Public Profile' ].id;
+			theProject.PublicProfile__c = [ SELECT id FROM ProjectProfile__c WHERE Name =: 'Public Profile' limit 1].id;
 			theProject.Type__c = 'open';			
 		}else if (newProfile.projectOpenOrClosed == 'close') {
 			theProject.NewMemberProfile__c = [ SELECT id FROM ProjectProfile__c WHERE Name =: 'Member Profile' limit 1 ].id;

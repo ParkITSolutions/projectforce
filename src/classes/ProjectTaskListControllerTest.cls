@@ -1,4 +1,4 @@
-public class ProjectTaskListControllerTest {
+@isTest private class ProjectTaskListControllerTest {
     static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();
@@ -108,7 +108,8 @@ public class ProjectTaskListControllerTest {
         taskList.setSORTBYPARAM('Milestone__c');
         taskList.createSortedTaskList();
         
-        // getSortBy() 
+        //sdafsadfsadfsa
+        // getSortBy()
         // @return String
         String sortedBy = taskList.getSortBy();
         taskList.createSortedTaskList();
@@ -173,6 +174,72 @@ public class ProjectTaskListControllerTest {
         
         taskList.setSortByPrev('asc');
         taskList.reConstruct();    	
+        
+        
+        
+        taskList.setSortBy('Milestone__c');
+        taskList.getSortBy();
+        taskList.setSortBy('Priority__c');
+        taskList.getSortBy();
+        taskList.setSortBy('Name');
+        taskList.getSortBy();
+        taskList.setSortBy('User__c.Name');
+        taskList.getSortBy();
+        taskList.setSortBy('Percent_Completed__c');
+        taskList.getSortBy();
+        taskList.setSortBy('Duration__c');
+        taskList.getSortBy();
+        taskList.setSortBy('EndDate__c');
+        taskList.getSortBy();
+
+		System.debug('-----------------------------------------------------------------------------------------');
+		
+		taskList.setSortBy('Milestone__c');
+        taskList.createSortedTaskList();
+		taskList.setSortBy('Milestone__c');
+        taskList.createSortedTaskList();
+		taskList.setSortBy('Milestone__c');
+        taskList.createSortedTaskList();
+
+		taskList.setSortBy('Priority__c');
+        taskList.createSortedTaskList();
+		taskList.setSortBy('Priority__c');
+        taskList.createSortedTaskList();
+		taskList.setSortBy('Priority__c');
+        taskList.createSortedTaskList();
+        
+		taskList.setSortBy('Name');
+        taskList.createSortedTaskList();
+		taskList.setSortBy('Name');
+        taskList.createSortedTaskList();
+		taskList.setSortBy('Name');
+        taskList.createSortedTaskList();
+        
+
+        
+		taskList.setSortBy('Percent_Completed__c');
+        taskList.createSortedTaskList();
+		taskList.setSortBy('Percent_Completed__c');
+        taskList.createSortedTaskList();
+		taskList.setSortBy('Percent_Completed__c');
+        taskList.createSortedTaskList();
+        
+		taskList.setSortBy('Duration__c');
+        taskList.createSortedTaskList();
+		taskList.setSortBy('Duration__c');
+        taskList.createSortedTaskList();
+		taskList.setSortBy('Duration__c');
+        taskList.createSortedTaskList();
+        
+		taskList.setSortBy('EndDate__c');
+        taskList.createSortedTaskList();
+		taskList.setSortBy('EndDate__c');
+        taskList.createSortedTaskList();
+		taskList.setSortBy('EndDate__c');
+        taskList.createSortedTaskList();
+
+        
+        
 
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );

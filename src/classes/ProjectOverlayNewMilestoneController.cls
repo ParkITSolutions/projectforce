@@ -11,7 +11,6 @@ public class ProjectOverlayNewMilestoneController {
     /**
     * Constructor
     */
-    
     public ProjectOverlayNewMilestoneController(){
         getCurrentProject();
         genPermissions();   
@@ -21,7 +20,6 @@ public class ProjectOverlayNewMilestoneController {
     /**
     *@return String
     */
-    
     public String getCurrentProjectId(){
         return PROJECTID;
     }
@@ -103,7 +101,6 @@ public class ProjectOverlayNewMilestoneController {
     /**
     * Read User permissions
     */
-    
     public void genPermissions () {
         userPermissions.setId(UserInfo.getUserId());
         userPermissions.setProject(PROJECTID);
@@ -125,15 +122,16 @@ public class ProjectOverlayNewMilestoneController {
     * Create new Milestone
     *@throws CustomExceptions, message Insufficient Privileges
     */
-    
     public void insertMilestone (){ 
         if(!userPermissions.getCanCreate()){
             throw new CustomException('Insufficient Privileges'); 
         }       
+        
         newTask.Milestone__c = true;
         newTask.Project__c = PROJECTID;
         newTask.StartDate__c = newTask.EndDate__c;
         newTask.PercentCompleted__c = 0.0;
+        newTask.Priority__c = 'Medium';
         newTask.Project__c = currentProject.Id;
         newTask.Duration__c = 0.0;
         insert newTask; 

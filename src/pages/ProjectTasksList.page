@@ -75,7 +75,7 @@
         <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
         <apex:define name="title">Tasks & Milestones</apex:define>
         <apex:define name="search">
-            <c:Search module="project" teamId="{!ProjectId}"/>
+            <c:Search module="project" label="Tasks" projectId="{!ProjectId}"/>
         </apex:define>
     </apex:composition>
     <!-- Main Content Div -->
