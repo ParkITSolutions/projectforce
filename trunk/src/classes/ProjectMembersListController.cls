@@ -824,7 +824,7 @@ public without sharing class ProjectMembersListController {
 		List<ProjectMember__c> memberResultList = new List<ProjectMember__c>();
 
 		if (sortByDesc) {
-			if (letter == null || letter == '' || letter== 'ALL') {
+			if (letter == null || letter == '' || letter== 'ALL') {System.debug( '<###############>' + letter  + ':' +  sortBy);
 				if (sortBy == 'User__r.Name') {
 					memberResultList = [select id, 
 											   Name, 
@@ -838,7 +838,7 @@ public without sharing class ProjectMembersListController {
 										where project__c =: idProject and User__r.IsActive != false
 										order by User__r.Name desc];
 				}
-				if (sortBy == 'User__r.CompanyName') {
+				if (sortBy == 'User__r.CompanyName') {System.debug( '<###############>' + letter  + ':' +  sortBy);
 					memberResultList = [select id, 
 											   Name, 
 											   Profile__r.Name, 
@@ -851,7 +851,7 @@ public without sharing class ProjectMembersListController {
 										where project__c =: idProject and User__r.IsActive != false
 										order by User__r.CompanyName desc];						
 				}	
-				if (sortBy == 'User__r.Title') {
+				if (sortBy == 'User__r.Title') {System.debug( '<###############>' + letter  + ':' +  sortBy);
 					memberResultList = [select id, 
 											   Name, 											   
 											   Profile__r.Name, 
@@ -864,7 +864,7 @@ public without sharing class ProjectMembersListController {
 										where project__c =: idProject and User__r.IsActive != false
 										order by User__r.Title desc];							
 				}
-				if (sortBy == 'Profile__r.Name') {
+				if (sortBy == 'Profile__r.Name') {System.debug( '<###############>' + letter  + ':' +  sortBy);
 					memberResultList = [select id, 
 											   Name, 											   
 											   Profile__r.Name, 
@@ -878,7 +878,7 @@ public without sharing class ProjectMembersListController {
 										order by Profile__r.Name desc];						
 				}		
 			}else {
-				if (sortBy == 'User__r.Name') {
+				if (sortBy == 'User__r.Name') {System.debug( '<###############>' + letter  + ':' +  sortBy);
 					memberResultList = [select id, 
 											   Name, 											   
 											   Profile__r.Name, 
@@ -892,7 +892,7 @@ public without sharing class ProjectMembersListController {
 										and project__c =: idProject and User__r.IsActive != false
 										order by User__r.Name desc];					
 				}
-				if (sortBy == 'User__r.CompanyName') {
+				if (sortBy == 'User__r.CompanyName') {System.debug( '<###############>' + letter  + ':' +  sortBy);
 					memberResultList = [select id, 
 											   Name,											   
 											   Profile__r.Name, 
@@ -906,7 +906,7 @@ public without sharing class ProjectMembersListController {
 										and project__c =: idProject and User__r.IsActive != false
 										order by User__r.CompanyName desc];							
 				}	
-				if (sortBy == 'User__r.Title') {
+				if (sortBy == 'User__r.Title') {System.debug( '<###############>' + letter  + ':' +  sortBy);
 					memberResultList = [select id, 
 											   Name, 
 											   Profile__r.Name, 
@@ -920,7 +920,7 @@ public without sharing class ProjectMembersListController {
 										and project__c =: idProject and User__r.IsActive != false
 										order by User__r.Title desc];							
 				}
-				if (sortBy == 'Profile__r.Name') {
+				if (sortBy == 'Profile__r.Name') {System.debug( '<###############>' + letter  + ':' +  sortBy);
 					memberResultList = [select id, 
 											   Name, 
 											   Profile__r.Name, 
@@ -936,7 +936,7 @@ public without sharing class ProjectMembersListController {
 				}
 			}
 		}else {
-			if (letter == null || letter == '' || letter== 'ALL') {
+			if (letter == null || letter == '' || letter== 'ALL') {System.debug( '<###############>' + letter  + ':' +  sortBy);
 				if (sortBy == 'User__r.Name') {
 					memberResultList = [select id, 
 											   Name, 
@@ -951,7 +951,7 @@ public without sharing class ProjectMembersListController {
 										where project__c =: idProject and User__r.IsActive != false
 										order by User__r.Name];
 				}
-				if (sortBy == 'User__r.CompanyName') {
+				if (sortBy == 'User__r.CompanyName') {System.debug( '<###############>' + letter  + ':' +  sortBy);
 					memberResultList = [select id, 
 											   Name, 
 											   Profile__r.Name, 
@@ -964,7 +964,7 @@ public without sharing class ProjectMembersListController {
 										where project__c =: idProject and User__r.IsActive != false
 										order by User__r.CompanyName asc];						
 				}	
-				if (sortBy == 'User__r.Title') {
+				if (sortBy == 'User__r.Title') {System.debug( '<###############>' + letter  + ':' +  sortBy);
 					memberResultList = [select id, 
 											   Name, 
 											   Profile__r.Name, 
@@ -977,7 +977,7 @@ public without sharing class ProjectMembersListController {
 										where project__c =: idProject and User__r.IsActive != false
 										order by User__r.Title];							
 				}
-				if (sortBy == 'Profile__r.Name') {
+				if (sortBy == 'Profile__r.Name') {System.debug( '<###############>' + letter  + ':' +  sortBy);
 					memberResultList = [select id, 
 											   Name, 
 											   Profile__r.Name, 
@@ -991,7 +991,7 @@ public without sharing class ProjectMembersListController {
 										order by Profile__r.Name];						
 				}
 			}else {
-				if (sortBy == 'User__r.Name') {
+				if (sortBy == 'User__r.Name') {System.debug( '<###############>' + letter  + ':' +  sortBy);
 					memberResultList = [select id, 
 											   Name,    
 											   Profile__r.Name, 
@@ -1005,7 +1005,7 @@ public without sharing class ProjectMembersListController {
 										and project__c =: idProject and User__r.IsActive != false
 										order by User__r.Name];					
 				}
-				if (sortBy == 'User__r.CompanyName') {
+				if (sortBy == 'User__r.CompanyName') {System.debug( '<###############>' + letter  + ':' +  sortBy);
 					memberResultList = [select id, 
 											   Name, 
 											   Profile__r.Name, 
@@ -1019,7 +1019,7 @@ public without sharing class ProjectMembersListController {
 										and project__c =: idProject and User__r.IsActive != false
 										order by User__r.CompanyName];							
 				}	
-				if (sortBy == 'User__r.Title') {
+				if (sortBy == 'User__r.Title') {System.debug( '<###############>' + letter  + ':' +  sortBy);
 					memberResultList = [select id, 
 											   Name, 
 											   Profile__r.Name, 
@@ -1033,7 +1033,7 @@ public without sharing class ProjectMembersListController {
 										and project__c =: idProject and User__r.IsActive != false
 										order by User__r.Title];							
 				}
-				if (sortBy == 'Profile__r.Name') {
+				if (sortBy == 'Profile__r.Name') {System.debug( '<###############>' + letter  + ':' +  sortBy);
 					memberResultList = [select id, 
 											   Name, 
 											   Profile__r.Name, 

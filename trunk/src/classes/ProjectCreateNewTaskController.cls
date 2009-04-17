@@ -533,7 +533,7 @@ public class ProjectCreateNewTaskController {
   	 	List<SelectOption> options = new List<SelectOption>();
   	 	if(param != null){
 	  	 	teamMembers = [Select t.Project__c, t.User__r.Name, t.Name, t.User__c, t.Id From ProjectMember__c t where t.Project__c =: param];  
-	  	 	options.add(new SelectOption('Choose a team Member', 'Choose a team Member'));
+	  	 	options.add(new SelectOption('Choose a Project Member', 'Choose a Project Member'));
 	  	 	for(ProjectMember__c c: teamMembers) {
 	    		options.add(new SelectOption(c.User__c, c.User__r.Name)); 
 	 		}
@@ -731,9 +731,8 @@ public class ProjectCreateNewTaskController {
    			att1.ParentId = theTask.Id;
    			attachList.add(att1);
    			att1=new Attachment();
-   			System.debug('att1 in saveAttachments: ' + att1);
    		}
-   		else System.debug('att1 in saveAttachments is NULL ');
+
    		if (att2.Name != null && att2.Name != '') {
    			att2.ParentId = theTask.Id;
    			attachList.add(att2);

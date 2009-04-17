@@ -16,15 +16,15 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CustomExceptionTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>DeleteProjectController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>DeleteProjectControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>FlexWebService</apexClass>
@@ -32,11 +32,11 @@
     </classAccesses>
     <classAccesses>
         <apexClass>FlexWebServiceTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>GenerateEnvironmentTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>PaginatorController</apexClass>
@@ -44,7 +44,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>PaginatorControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectCreateNewProjectController</apexClass>
@@ -52,7 +52,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectCreateNewProjectControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectCreateNewTaskController</apexClass>
@@ -60,15 +60,15 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectCreateNewTaskControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectDeleteTaskOverlayController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectDeleteTaskOverlayControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectDetailAttachmentController</apexClass>
@@ -76,7 +76,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectDetailAttachmentControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectDetailController</apexClass>
@@ -84,7 +84,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectDetailControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectDetailMilestoneController</apexClass>
@@ -92,7 +92,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectDetailMilestoneControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectMembersListController</apexClass>
@@ -100,7 +100,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectMembersListControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectMembersWidgetController</apexClass>
@@ -108,15 +108,15 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectMembersWidgetControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectOverlayNewAttachmentController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectOverlayNewAttachmentTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectOverlayNewMilestoneController</apexClass>
@@ -124,7 +124,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectOverlayNewMilestoneControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectOverlayNewTaskController</apexClass>
@@ -132,7 +132,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectOverlayNewTaskControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectOverviewController</apexClass>
@@ -140,7 +140,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectOverviewControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectRedirectController</apexClass>
@@ -148,15 +148,15 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectRedirectControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectSearchResultController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectSearchResultControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectSubscribeController</apexClass>
@@ -164,7 +164,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectSubscribeControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectSubscribersEmailServices</apexClass>
@@ -172,23 +172,23 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectSubscribersEmailServicesTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectSubscriptionController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectSubscriptionControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectTaskDetailController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectTaskDetailControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectTaskListController</apexClass>
@@ -196,7 +196,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectTaskListControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectTimelineController</apexClass>
@@ -204,7 +204,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectTimelineControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectUtil</apexClass>
@@ -212,7 +212,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectUtilTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectWidgetMyTasksAndMilController</apexClass>
@@ -220,7 +220,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectWidgetMyTasksAndMilControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectWidgetTasksMainController</apexClass>
@@ -228,7 +228,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectWidgetTasksMainControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>SearchController</apexClass>
@@ -236,15 +236,19 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SearchControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>SuggestController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>SuggestControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TriggersTest</apexClass>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>UploadAttachmentController</apexClass>
@@ -252,7 +256,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>UploadAttachmentControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>UserPermissions</apexClass>
@@ -1639,11 +1643,11 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectSubscription</apexPage>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectTaskDetail</apexPage>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectTasksList</apexPage>
@@ -1655,7 +1659,7 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>SuggestDispatcher</apexPage>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>UploadAttachment</apexPage>

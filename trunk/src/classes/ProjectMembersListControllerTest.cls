@@ -20,7 +20,7 @@
             team.getEditMemberProfile();
             team.setEditMemberProfile(team.getEditMemberProfile());
             team.getProjectEditProfiles(); 
-            team.setLetter( 'a' );
+            team.setLetter( 'ALL' );
             
             
             // Team Inner Class
@@ -47,7 +47,7 @@
             
             // Letters Inner Class
             ProjectMembersListController.Letters letter = new ProjectMembersListController.Letters();
-            letter.setLetter('');
+            letter.setLetter('ALL');
             letter.getLetter();
             letter.setContainMembers(0);
             letter.getContainMembers();
@@ -68,7 +68,6 @@
             Boolean b4 = team.getNextPageShow();
             
             // Methods without SOQL queries
-            //team.setIdTeam(GenerateEnvironmentTest.project.Id);
             team.setRemoveMemberId(GenerateEnvironmentTest.member.User__c);
             //team.getTeamId();
             //team.getCurrentUser();
@@ -92,43 +91,49 @@
             team.setSortBy('User__r.Name');
             team.getSortBy();
             System.currentPageReference().getParameters().put( 'sb', 'User__r.Name' );
-            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
             team.sortList(); // 1 SOQL
             System.currentPageReference().getParameters().put( 'sb', 'User__r.Name' );
-            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
+            team.sortList(); // 1 SOQL
+			team.setLetter( 'A' );
+            System.currentPageReference().getParameters().put( 'sb', 'User__r.Name' );
+            team.sortList(); // 1 SOQL
+            System.currentPageReference().getParameters().put( 'sb', 'User__r.Name' );
             team.sortList(); // 1 SOQL
             
-            team.setSortBy('User__r.CompanyName');
-            System.currentPageReference().getParameters().put( 'sb', 'User__r.CompanyName');
-            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
+			team.setLetter( 'All' );
+            System.currentPageReference().getParameters().put( 'sb', 'User__r.CompanyName' );
             team.sortList(); // 1 SOQL
-            System.currentPageReference().getParameters().put( 'sb', 'User__r.CompanyName');
-            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
+            System.currentPageReference().getParameters().put( 'sb', 'User__r.CompanyName' );
             team.sortList(); // 1 SOQL
-            
-            team.setSortBy('User__r.Title');
-            System.currentPageReference().getParameters().put( 'sb', 'User__r.Title');
-            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
+			team.setLetter( 'A' );
+            System.currentPageReference().getParameters().put( 'sb', 'User__r.CompanyName' );
             team.sortList(); // 1 SOQL
-            System.currentPageReference().getParameters().put( 'sb', 'User__r.Title');
-            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
+            System.currentPageReference().getParameters().put( 'sb', 'User__r.CompanyName' );
             team.sortList(); // 1 SOQL
-            
-            team.setSortBy('TeamProfile__r.Name');
-            System.currentPageReference().getParameters().put( 'sb', 'TeamProfile__r.Name');
-            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
+
+
+			team.setLetter( 'All' );
+            System.currentPageReference().getParameters().put( 'sb', 'User__r.Title' );
             team.sortList(); // 1 SOQL
-            System.currentPageReference().getParameters().put( 'sb', 'TeamProfile__r.Name');
-            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
+            System.currentPageReference().getParameters().put( 'sb', 'User__r.Title' );
             team.sortList(); // 1 SOQL
-            
-            team.setSortBy('TeamRole__c');
-            System.currentPageReference().getParameters().put( 'sb', 'TeamRole__c');
-            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
+			team.setLetter( 'A' );
+            System.currentPageReference().getParameters().put( 'sb', 'User__r.Title' );
             team.sortList(); // 1 SOQL
-            System.currentPageReference().getParameters().put( 'sb', 'TeamRole__c');
-            System.currentPageReference().getParameters().put ( 'ltr',  'ALL' );
+            System.currentPageReference().getParameters().put( 'sb', 'User__r.Title' );
             team.sortList(); // 1 SOQL
+
+			team.setLetter( 'All' );
+            System.currentPageReference().getParameters().put( 'sb', 'Profile__r.Name' );
+            team.sortList(); // 1 SOQL
+            System.currentPageReference().getParameters().put( 'sb', 'Profile__r.Name' );
+            team.sortList(); // 1 SOQL
+			team.setLetter( 'A' );
+            System.currentPageReference().getParameters().put( 'sb', 'Profile__r.Name' );
+            team.sortList(); // 1 SOQL
+            System.currentPageReference().getParameters().put( 'sb', 'Profile__r.Name' );
+            team.sortList(); // 1 SOQL
+
             
             // Methods WITH SOQL queries
             team.getAdminCount(); // 1 SOQL

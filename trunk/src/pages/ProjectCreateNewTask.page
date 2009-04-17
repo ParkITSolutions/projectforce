@@ -172,16 +172,24 @@
 		.inputFileClassShow a {
 			margin-bottom: 20px;
 		}
+		
+		.max {
+			color:#CC0000 !important;
+			float:left;
+			margin-left:150px;
+		}
 			
     </style>
     
     <script>
+    
     	var globalTeamLabel = 'Project';
     	var taskId = "{!task.id}";
     	var proj = "{!projectId}";
        	document.observe('dom:loaded', function (){		
 		    	createLayout();
 		    	readPortalCSSRules();
+		    	startMaxlengthCheck();
         	}
         );
        
@@ -393,7 +401,7 @@
 
 			}
 
-			var resultSelect = '<div class=\'assigneCont\' id=\''+divId+'\'><label>&nbsp;</label><span class=\'no_requeried\'></span><select class=\'child childValidateAssignee\'>'+select.innerHTML+'</select><label>Percent Dedicated</label><select class=\'percentChild margin\'>'+optionPercent+'</select><a class=\'notassigned\' href=\'javascript:;\' onclick=\'removeAssigne(\"'+divId+'\")\'>Remove Assignee</a><br/></div>';
+			var resultSelect = '<div class=\'assigneCont\' id=\''+divId+'\'><label>&nbsp;</label><span class=\'no_requeried\'></span><select class=\'child childValidateAssignee\' onchange=\'checkOtherAsignees(this)\'>'+select.innerHTML+'</select><label>Percent Dedicated</label><select class=\'percentChild margin\'>'+optionPercent+'</select><a class=\'notassigned\' href=\'javascript:;\' onclick=\'removeAssigne(\"'+divId+'\")\'>Remove Assignee</a><br/></div>';
 
 			divId++;			
 
@@ -433,30 +441,23 @@
 			}
 		}
 		
-		/**
-		* Validate Assignees
-		*@return Bool error
-		*/  
-
-		function validateAssigneeTeamMember() {
-
-		    error = false;
+		function checkOtherAsignees(obj){
+			var error = false;
 			var assignee = $$('.childValidateAssignee');
-			clearErrorsOnAssignees();
-			for(var i = 0; i < assignee.length; i++) {
-				var value = assignee[i].selectedIndex;
-				for(var j = 0; j < assignee.length; j++) {
-					if ( j != i && value == assignee[j].selectedIndex) {
-
+			if (obj.selectedIndex != 0){
+				for (var i = 0; i < assignee.length; i++){
+					//alert(obj.ancestors()[0].id + '  ' + assignee[i].ancestors()[0].id);
+					if (obj.ancestors()[0].id != assignee[i].ancestors()[0].id && obj.selectedIndex == assignee[i].selectedIndex){
 						error = true;
-						assignee[j].style.border = 'solid #C0272D 2px';		
-						assignee[i].style.border = 'solid #C0272D 2px';					
-
 					}
-				}	
+				}
 			}
-			return error;
+			if (error){
+				alert('This member has already been assigned');
+				obj.selectedIndex = 0;
+			}	
 		}
+
 
 		/**
 		* Clear error for assigees
@@ -654,7 +655,7 @@
 						<strong>The task only can be assigned once to each user</strong>
 					</div>
 					<label>Assign To</label><span class="requeried"></span>
-					<apex:selectList id="taskAssign" value="{!dateMy.member}" styleClass="validateMember childValidateAssignee" title="" multiselect="false" size="1" > 
+					<apex:selectList id="taskAssign" value="{!dateMy.member}" styleClass="validateMember childValidateAssignee" title="" multiselect="false" size="1" onchange="checkOtherAsignees(this)" > 
 			  	 	 	<apex:selectOptions value="{!Members}"/>
 			  	 	</apex:selectList>
 				  	

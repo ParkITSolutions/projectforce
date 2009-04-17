@@ -19,12 +19,9 @@
 		* Add Members overlay call back function
 		*/
 		function addMemberCallBackFunction(){
-			statusSending(this);
 			setTimeout('modal.close(); hideSwirly(\'swirly_overlay\')', 5000); 
-			//showMessageToUser(); 
 			$('membersListSwirly').show(); 
 			setDims('holder','membersListSwirly');
-			//setTimeout('hideMessageToUser()', 10000);		
 		}
 		
 	</script>
@@ -126,36 +123,18 @@
 			<apex:define name="module">{!$ObjectType.Project2__c.label} Members List</apex:define>
 			<apex:define name="title">{!projectName}</apex:define>
 			<apex:define name="search">
-				<c:Search module="project" />
+				<c:Search module="project" projectId="{!projectId}" label="Tasks" />
 			</apex:define>
 		</apex:composition>
 	
 		<div align="center"  class="breadCrumbAndButtons" style="height: 30px!important;">
 			<div id="btnsDiv" style="width: 260px; *margin-left: 200px !important;">
 				<apex:form >
-					<!-- BUTTONS --> 
 					<apex:outputpanel rendered="{!userPermissions.canManage}" >
 						<a onclick="createOverlay('','inviteTeam','','showSelects()','');relocateOverlay();"
 							href="javascript:;" class="blackbutton">New</a>
 						<a href="javascript:;" class="blackbutton"
 							onclick="massiveRemoveOverlay();">Remove</a>
-						<div class="editProfile">
-							<a href="javascript:;"
-								class="blackbutton" onclick="showHideOptionsBottom();">Edit
-								{!$ObjectType.Project2__c.label} Profile | v
-							</a>
-							<div id="profileOptionsBottom" class="profileOptions"
-								style="display: none;">
-								<ul>
-									<apex:repeat value="{!projectEditProfiles}" var="item">
-										<li onclick="massiveMemberUpdate(this);"
-											onmouseover="bckColor(this)" onmouseout="bckColor(this)"
-											id="{!item.Id}">{!item.Name}
-										</li>
-									</apex:repeat>
-								</ul>
-							</div>
-						</div>
 					</apex:outputpanel> 
 				</apex:form>
 			</div>
@@ -421,24 +400,7 @@
 									<a href="javascript:;" class="blackbutton"
 										onclick="massiveRemoveOverlay();">Remove
 									</a>
-									<div class="editProfile">
-										<a href="javascript:;"
-											class="blackbutton" onclick="showHideOptionsBottom();">Edit
-											{!$ObjectType.Project2__c.label} Profile | v
-										</a>
-										<div id="profileOptionsBottom" class="profileOptions"
-											style="display: none;">
-											<ul>
-												<apex:repeat value="{!projectEditProfiles}" var="item">
-													<li onclick="massiveMemberUpdate(this);"
-														onmouseover="bckColor(this)" onmouseout="bckColor(this)"
-														id="{!item.Id}">{!item.Name}
-													</li>
-												</apex:repeat>
-											</ul>
-										</div>
-									</div>
-									</apex:outputpanel> <!-- BUTTONS -->
+									</apex:outputpanel>
 								</div>
 								</td>
 							</tr>

@@ -38,6 +38,16 @@
 
  
 		newT = new ProjectCreateNewTaskController();
+		newT.att1.Name = 'nameman';   
+		newT.att2.Name = 'nameman';   
+		newT.att3.Name = 'nameman';   
+		newT.att4.Name = 'nameman';   
+		newT.att5.Name = 'nameman';   
+		newT.att6.Name = 'nameman';   
+		newT.att7.Name = 'nameman';   
+		newT.att8.Name = 'nameman';   
+		newT.att9.Name = 'nameman';   
+		newT.att10.Name = 'nameman';   
 		newT.getValidSizePicture();
 		newT.saveAssignees();
 		newT.getProjectId(); 
@@ -65,6 +75,7 @@
 		newT.getMembers();
 		newT.getPercent();
 		newT.getPercentDedicated();
+		newT.saveAttachmentsAndAccess();
 		//newT.getTaskForEdit();
 		newT.getPriority();
 
@@ -76,6 +87,37 @@
 		newT.setTask(  GenerateEnvironmentTest.task );
 		newT.setAssignees(  GenerateEnvironmentTest.assi.Id );
 
+		ProjectCreateNewTaskController.assingTo ss = new ProjectCreateNewTaskController.assingTo();
+		ss.setPercent( null );
+		ss.setPercent( 10 );
+		ss.setIdMember( 'idOfAMember' );
+		ss.getIdMember();
+		ss.getPercent();
+		ProjectCreateNewTaskController.myAttachment tt = new ProjectCreateNewTaskController.myAttachment();
+		tt.setBodyLenght( 10 );
+		tt.setIdAttachment( 'sdsad' );
+		tt.setNameAttachment( 'sadas' );
+		tt.setContentType('image/jpeg');
+		tt.setContentType('application/pdf');
+		tt.setContentType('text/plain');
+		tt.setContentType('application/msword');
+		tt.setContentType('application/x-zip-compressed');
+		tt.setContentType( 'dsfas');
+		tt.getNameAttachment();
+		tt.getContentType();
+		tt.getidAttachment();
+		tt.getBodyLenght();
+		ProjectCreateNewTaskController.dateMyFormat dd = new ProjectCreateNewTaskController.dateMyFormat();
+		dd.setLastModify( System.now());
+		dd.setCreateDate( System.now());
+		dd.setHours( 2 );
+		dd.setMember( 'ada' );
+		dd.setPercent( 3 );
+		dd.getPercent();
+		dd.getMember();
+		dd.getHours();
+		dd.getCreateDate();
+		dd.getLastModify();
 
 		newT.genTempTask();
     	Test.stopTest();

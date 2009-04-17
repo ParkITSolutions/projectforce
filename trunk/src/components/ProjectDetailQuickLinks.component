@@ -51,7 +51,7 @@
         
         <!-- Widget Container -->          
         <div class="box_content">
-            <div class="thinBody">
+            <div class="thinBody" style = "padding:7px;">
 	            <div class="team_detail_commentedItemLeftProfile">					    
 				    <img class="imgSmallLeft" src="{!URLFOR($Resource.TeamsResources, '/images/layout/icons/star.gif')}"  />
 				    <span>

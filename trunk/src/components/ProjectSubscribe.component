@@ -21,7 +21,7 @@
         <!-- Widget Container -->          
         <div class="box_content">
             <div class="thinBody">
-                <div>                       
+                <div style = "padding:7px;">                       
                     <apex:outputpanel layout="block" styleClass="suscribeTeam">
 		                <apex:outputPanel id="teamLinkSuscribe">
 		                	<a class="sus" href="ProjectSubscription?id={!idProject}">Manage Subscriptions</a>

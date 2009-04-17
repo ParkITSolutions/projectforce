@@ -39,7 +39,7 @@
 	    <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
 	    <apex:define name="title">Search</apex:define>
 	    <apex:define name="search">
-	   		<c:Search module="project" teamId="{!teamId}" />
+	   		<c:Search module="project" projectId="{!teamId}"  />
 	    </apex:define>
  	</apex:composition>
  	
