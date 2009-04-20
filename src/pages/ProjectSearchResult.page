@@ -39,7 +39,7 @@
 	    <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
 	    <apex:define name="title">Search</apex:define>
 	    <apex:define name="search">
-	   		<c:Search module="project" projectId="{!teamId}"  />
+	   		<c:Search module="project" label="" projectId="{!teamId}"  />
 	    </apex:define>
  	</apex:composition>
  	
@@ -143,23 +143,17 @@
 						<div class="searchResultItem">
 							<div class="teamInfo">
 	
-								<!-- WIKI PAGE LINK -->
+								<!-- Project PAGE LINK -->
 								<apex:outputpanel rendered="{!IF(item.resultType == 'Project',true, false)}">
 									<a class="title" href="/apex/ProjectDetail?id={!item.id}"><apex:outputtext value="{!item.name}" escape="false" /></a>
-									<span class="resultType">( {!item.resultType} )</span>
 								</apex:outputpanel>
 	
 								<!-- PROJECT TASK LINK -->
 								<apex:outputpanel rendered="{!IF(item.resultType == 'Project Task',true, false)}">
 									<a class="title" href="/apex/ProjectTaskDetail?id={!item.id}"><apex:outputtext value="{!item.name}" escape="false" /></a>
-									<span class="resultType">( {!item.resultType} )</span>
 								</apex:outputpanel>
 	
-								<!-- DISCUSSION MESSAGE LINK -->
-								<apex:outputpanel rendered="{!IF(item.resultType == 'Discussion Message',true, false)}">
-									<a class="title" href="/apex/DiscussionDetail?id={!item.id}"><apex:outputtext value="{!item.name}" escape="false" /></a>
-									<span class="resultType">( {!item.resultType} )</span>
-								</apex:outputpanel><br />
+								<br />
 								<div class="matches">
 									<apex:outputText escape="false" value="{!item.matches}" />
 								</div>

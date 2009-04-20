@@ -559,7 +559,7 @@ public with sharing class ProjectMembersWidgetController {
 				
 				Id idProfile = null;
 				if( isAdministrator )
-					idProfile = [SELECT Id FROM ProjectProfile__c WHERE Name = 'Project Administrator' ].id;
+					idProfile = [SELECT Id FROM ProjectProfile__c WHERE Name = 'Project Administrator' limit 1].id;
 				else{
 					List<ProjectProfile__c> profileIdList = new List<ProjectProfile__c>();
 					profileIdList = [ SELECT id FROM ProjectProfile__c WHERE Name =: 'Member Profile' ]; 

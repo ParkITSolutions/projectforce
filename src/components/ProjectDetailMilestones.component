@@ -6,11 +6,7 @@
 
 	<!-- Javascript includes -->
 	<apex:includeScript value="{!URLFOR($Resource.TeamsResources, 'inc/js/TeamsWidgetMilestones.js')}"/>
-	<style>
-		.milestonesTable {
-			width: 50% !important;
-		}
-	</style>
+
 	<!--### Rerender Method ###-->
 	<apex:actionFunction name="reloadMilestoneList" action="{!genAllProjectTasks}" rerender="milestonePanelCenter, milestonePanelright" onComplete="hideSwirly('swirly_milestone')" />
     
@@ -49,9 +45,9 @@
 							</div>
 							<!-- Widget Container -->
 							<div style="position: relative; overflow: hidden;">
-							<div style="{!IF(listSize > 0, '', 'display:none')};text-align:center;">
-								<apex:dataTable value="{!AllProjectTasks}" var="task" id="ActiveDiscussionTable" styleClass="pageList milestonesTable" >	
-									<apex:column width="350">	
+							<div style="{!IF(listSize > 0, '', 'display:none')};text-align:left;">
+								<apex:dataTable value="{!AllProjectTasks}" var="task" id="ActiveDiscussionTable" style="width: 100%" styleClass="pageList" >	
+									<apex:column width="224">	
 										<div class="{!task.isToLate}">
 											<a href="projectTaskDetail?id={!task.TaskId}">{!task.TaskName}</a><br/>
 			                       			<apex:outputpanel layout="block" rendered="{!IF(task.isToLate == 'latter',false,true)}"  styleClass="margin_top">	
@@ -76,14 +72,14 @@
 											</apex:outputpanel>
 										</div>
 									</apex:column>
-									<apex:column width="200">						
+									<apex:column width="250">						
 										
 										<apex:outputpanel >	
-											<div class="photoWrapper_32px_right">
+											<div class="photoWrapper_32px_right" style="float: left;">
 												<a href="PeopleProfileDisplay?id={!task.UserId}"><img  title="{!task.UserName}" src="{!URLFOR($Resource.TeamsResources, 'images/placeholders/unknownperson32x32.jpg')}"  width="32" /></a>	
 											</div>
 										</apex:outputpanel>
-										<a href="PeopleProfileDisplay?id={!task.UserId}"  class="name_margin f_right ">{!task.UserName}</a>
+										<a href="PeopleProfileDisplay?id={!task.UserId}"  class="name_margin">{!task.UserName}</a>
 									</apex:column>
 								</apex:dataTable>
 							</div>

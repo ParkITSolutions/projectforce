@@ -97,7 +97,7 @@
 	    <apex:define name="module">{!$ObjectType.Project2__c.labelPlural}</apex:define>
 	    <apex:define name="title">Overview</apex:define>
 	    <apex:define name="search">
-	    	<c:Search module="project" label="Project" />
+	    	<c:Search module="project" label="Projects" />
 	    </apex:define>
     </apex:composition>
 	<!-- Sidebar -->
@@ -105,8 +105,8 @@
 		<c:ProjectsWidgetMyTasks />
 		<c:ProjectsWidgetMyMilestones />  
 	</div>
-	<!-- Main Content Div -->
-	<div class="main_content" >		
+	<!-- Main Content Div --> 
+	<div class="main_content" >
 		
 		<div class="RightOverview">
 			<!-- Tabs -->

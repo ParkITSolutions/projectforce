@@ -10,10 +10,8 @@
     	
     	sc.setModule('project');
     	sc.getDefaultText();
-    	sc.getLabel();
     	sc.setModule('task');
     	sc.getDefaultText();
-    	sc.getLabel();
     	    	
     	sc.setKey( 'kkey' );
     	sc.setTeamId(GenerateEnvironmentTest.project.id );

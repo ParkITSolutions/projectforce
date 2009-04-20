@@ -132,9 +132,9 @@
 				<apex:form >
 					<apex:outputpanel rendered="{!userPermissions.canManage}" >
 						<a onclick="createOverlay('','inviteTeam','','showSelects()','');relocateOverlay();"
-							href="javascript:;" class="blackbutton">New</a>
+							href="javascript:;" class="blackbutton"><span>New</span></a>
 						<a href="javascript:;" class="blackbutton"
-							onclick="massiveRemoveOverlay();">Remove</a>
+							onclick="massiveRemoveOverlay();"><span>Remove</span></a>
 					</apex:outputpanel> 
 				</apex:form>
 			</div>
@@ -393,13 +393,13 @@
 						<table width="270">
 							<tr>
 								<td>
-								<div><!-- BUTTONS --> <apex:outputpanel rendered="{!userPermissions.canManage}">
-									<a onclick="createOverlay('','inviteTeam','','showSelects()');relocateOverlay();"
-										href="javascript:;" class="blackbutton">New
-									</a>
-									<a href="javascript:;" class="blackbutton"
-										onclick="massiveRemoveOverlay();">Remove
-									</a>
+								<div>
+									<!-- BUTTONS -->
+									<apex:outputpanel rendered="{!userPermissions.canManage}">
+										<a onclick="createOverlay('','inviteTeam','','showSelects()');relocateOverlay();"
+											href="javascript:;" class="blackbutton"><span>New</span></a>
+										<a href="javascript:;" class="blackbutton"
+											onclick="massiveRemoveOverlay();"><span>Remove</span></a>
 									</apex:outputpanel>
 								</div>
 								</td>
@@ -427,7 +427,7 @@
 
 	</apex:outputpanel>
 	
-	<c:ProjectOverlayNewTask />
+	<c:ProjectOverlayNewTask / >
 	<c:ProjectOverlayNewMilestone />
 	
 </apex:page>
