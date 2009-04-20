@@ -57,7 +57,7 @@
 							<apex:column width="16px" styleClass="icon">
 								<img alt="" src="{!URLFOR($Resource.TeamsResources, '/images/layout/icons/task.png')}"/>
 							</apex:column>
-							<apex:column styleClass="first">
+							<apex:column styleClass="first" style="width: 340px">
 								<div style="{!IF(task.Priority == 'High', '', 'display:none')};" class="prior" >
 									<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/highPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}" />
 								</div>

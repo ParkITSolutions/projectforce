@@ -42,7 +42,10 @@
 			height: auto !important;
 			
 		}
-						
+		
+		div#result {
+			margin-top: 10px;
+		}			
 			
 		.teamTitle {
 			margin-bottom: 20px;
@@ -72,18 +75,22 @@
 		div.DynamicLayoutResponse label, div.SecondDiv label {
 			color:#676667;
 			font-weight:bold;
-			width: 150px;
+			width: 140px;
 			margin-right: 5px;
 			float: left;
 			text-align:right;
 			font-size:13px;
 
 		}
+		.errorRed {
+			color: #C0272D;
+			margin-bottom: 10px;
+			margin-left: 150px;
+		}
 		
 		.DynamicLayoutResponse .attach_list, div.SecondDiv .attach_list{
-			display:bloc k;
-			margin-bottom:10px;
-			margin-left:145px;
+			display:block;
+			margin-left:146px;
 		}
     	
 	   	.look {	
@@ -209,7 +216,8 @@
         }
 
 		function createLayout(){
-	
+			$$('.DynamicLayoutResponse form')[0].onsubmit = function() {validateFormInfo()};
+			
 			var div = $$('.DynamicLayoutResponse')[0];	
 			var form = div.firstDescendant();	
 			var btnSaveForm = form.getElementsByClassName('btn')[0];
@@ -259,6 +267,20 @@
 				}
 			);		
 		
+		}
+		
+		var error = false;
+		
+		function validateFormInfo(){
+			error = false;
+			var select = $('ProjectCreateNewTask:secondForm:taskAssign');
+			if (select.selectedIndex == 0){ 
+				error = true;
+				$('assigneeError').show();
+			}else{
+				error = false;
+				$('assigneeError').hide();
+			}
 		}
 		
 		/**
@@ -508,7 +530,7 @@
 		function onCompleteCallBackFunction(){
 			createLayout();
 			memberAssigne();
-			if($$('.errorMsg').length > 0){
+			if($$('.errorMsg').length > 0 || error){
 				Effect.Appear('warning_to_user');
 				Effect.ScrollTo('anchorForError');
 			}else{
@@ -651,23 +673,21 @@
 				<!-- Attachment and Assignees form -->
 				<apex:form id="secondForm" >
 				
-					<div id="memberAssigned" class="errorMessageAssingUnique" style="display:none;">  
-						<strong>The task only can be assigned once to each user</strong>
-					</div>
 					<label>Assign To</label><span class="requeried"></span>
-					<apex:selectList id="taskAssign" value="{!dateMy.member}" styleClass="validateMember childValidateAssignee" title="" multiselect="false" size="1" onchange="checkOtherAsignees(this)" > 
+					<apex:selectList id="taskAssign" value="{!dateMy.member}" styleClass="validateMember childValidateAssignee" title="" multiselect="false" size="1" onchange="checkOtherAsignees(this)" style="margin-bottom: 0px;" > 
 			  	 	 	<apex:selectOptions value="{!Members}"/>
 			  	 	</apex:selectList>
+			  	 	
 				  	
 			  	 	
 			  	 	<div id="firstDedicated" style="display:none;">
 				  	 	<label>Percent Dedicated</label>
-				  	 	<apex:selectList id="taskPercentDedicated" value="{!dateMy.Percent}" styleClass="margin" title="" multiselect="false" size="1" > 
+				  	 	<apex:selectList id="taskPercentDedicated" value="{!dateMy.Percent}" styleClass="margin" title="" multiselect="false" size="1" style="margin-bottom: 0px;"> 
 				  	 	 	<apex:selectOptions value="{!PercentDedicated}"/>
 				  	 	</apex:selectList>
 				  	</div>
-				  	
-					<span class="errorText f_left" id="TaskMemberErrorMessage" style="display:none;"><b>Error:</b> You must select a {!$ObjectType.Project2__c.label} member</span><br/>
+				  	<br>
+					<span class="errorRed" id="assigneeError" style="display:none;"><b>Error:</b> You must select a {!$ObjectType.Project2__c.label} member</span><br/>
 					<div id="result">
 						
 					</div>

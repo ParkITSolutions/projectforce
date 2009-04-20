@@ -1,7 +1,9 @@
 <apex:component controller="SearchController"> 
     <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/search.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/searchComponent.js')}" />
+        <script type="text/javascript" src="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}" ></script>
     <script>
-        var globalDefaultText = "{!defaultText}";
+        var globalDefaultText = "{!defaultText}";        
         
     </script>
     <apex:attribute name="module" description="Type of search" type="String" required="true" assignTo="{!module}" />    
@@ -16,7 +18,7 @@
                             <div class="legend_portal">
                                 <span><img class="f_left" alt="" src="{!URLFOR($Resource.ProjectResources, 'images/layout/magnifier.gif')}" />Find {!labelName}</span>
                             </div>
-                            <apex:inputText value="{!key}" styleClass="key_imput" onfocus="changeInputValue('focus');" onblur="changeInputValue('blur');"/>
+                            <apex:inputText value="{!key}" id="searchQuery" styleClass="key_imput" onfocus="changeInputValue('focus');" onblur="changeInputValue('blur');"/>
                             <apex:inputText style="display: none;"/>
                         </div>
                         <apex:commandButton value="Search" action="{!searchKey}" id="searchBtn" styleClass="search_btn f_left" style="background-image: none !important;" />

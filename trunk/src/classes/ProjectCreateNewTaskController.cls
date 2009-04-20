@@ -616,6 +616,7 @@ public class ProjectCreateNewTaskController {
    		
    		//Add first Assignee
    		ProjectAssignee__c assign = new ProjectAssignee__c();
+   		System.debug('aaaa' + dateMy.getMember());
    		assign.User__c = dateMy.getMember();
    		assign.Project__c = param;
    		assign.PercentDedicated__c = dateMy.getPercent(); 

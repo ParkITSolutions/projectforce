@@ -1,4 +1,5 @@
 public class SearchController {
+	
 	// Parameter with action
 	private String module = null;
 	
@@ -14,7 +15,7 @@ public class SearchController {
 	// Default input field text value
 	private String defText = '';
 		
-		// Map with action=>PageReference
+	// Map with action=>PageReference
 	private Map<String, PageReference> searchIn = new Map<String, PageReference>{
 		'project' => Page.ProjectSearchResult
 	};
@@ -87,7 +88,7 @@ public class SearchController {
 	
 	public String getLabelName(){
 		if(System.currentPageReference().getParameters().get('id') == null){
-			return this.labelName;
+			return 'Projects';
 		}
 		else{
 			return 'Tasks';
@@ -107,11 +108,13 @@ public class SearchController {
 	* @return String text
 	*/
 	public String getDefaultText(){
-		String txt = 'Enter ';
-		txt += this.getLabelName();
-		txt += ' name...';
-		this.defText = txt;
-		return this.defText;
+		if(this.getLabelName() == 'Projects'){
+			this.defText = 'Enter Project name...';
+			return this.defText;
+		}
+		else{
+			this.defText = 'Enter Task name...';
+			return this.defText;
+		}
 	}
-
 }
