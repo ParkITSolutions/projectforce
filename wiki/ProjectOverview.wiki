@@ -1,0 +1,15 @@
+==In this page you have three tabs: ==
+
+In My Projects you can see all the projects in which you are a member.
+
+In New Projects you can see all the new projects except the ones which are private.
+
+In AllProjects you can see all the projects except the ones which are private.
+
+==In the left of the screen there are two lists:==
+
+In My Upcoming Tasks you see the 5 tasks that that were most recently created.
+
+In My Upcoming Milestones you see the 5 milestones that were most recently created.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/ProjectOverviewReal.png" align="left" />
