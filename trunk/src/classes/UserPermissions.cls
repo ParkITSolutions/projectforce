@@ -8,6 +8,7 @@ public class UserPermissions {
 	String project;
 	String objectType;
 	String ownerId;
+
 	
 	User projectAdmin = null;
 	List<ProjectMember__c> members = null;
@@ -20,6 +21,7 @@ public class UserPermissions {
 	Boolean canComment = false;
 	Boolean canView = true;
 	public static Boolean canManageStatic = false;
+
 	/**
 	* Costructor
 	*/
@@ -28,7 +30,6 @@ public class UserPermissions {
 	}
 	
 	public static Boolean getCanManageStatic () {
-	
 		return canManageStatic;
 	}
 	
@@ -124,7 +125,7 @@ public class UserPermissions {
 			
 			if(projectAdmin == null || projectAdmin.Id != UserInfo.getUserId())
 				projectAdmin = [Select id, Profile.PermissionsModifyAllData, ProfileId, Name From User where id =: id limit 1];
-			System.debug('permisos' + projectAdmin.Profile.PermissionsModifyAllData);
+			
 			if(projectAdmin.Profile.PermissionsModifyAllData){
 				canManage = true;
 				canCreate = true;
@@ -132,8 +133,8 @@ public class UserPermissions {
 				canComment = true;
 				isAdmin = true;
 			}
+			
 			if(!isAdmin){
-				if(members == null){
 					members = new List<ProjectMember__c>();
 					
 					members = [select
@@ -145,50 +146,41 @@ public class UserPermissions {
 							  where User__c =:id 
 							  and Project__c=:Project 
 							  limit 1];
-					
-				}
+				
 				// If the user is a member of the project we should use the profile assigned to that user
 				if (members.size() > 0) {
-					
 					profile = members[0].Profile__r;
-					
+				
 				// If the user is not a member of the project then we have to go to the public profile of the project
 				// to figure out the permissions.
 				}else{
-					if(currentProject == null){
-						currentProject = new List<Project2__c>();
+					currentProject = new List<Project2__c>();
+					
+					List<Project2__c> currentProject = [SELECT PublicProfile__c, 
+												 Id,
+												 PublicProfile__r.ManageProjectTasks__c,
+												 PublicProfile__r.CreateProjectTasks__c,
+												 PublicProfile__r.Description__c
+										  FROM Project2__c
+										  WHERE Id =: Project];
+					
+					if(currentProject.size() > 0) 
+						profile = currentProject[0].PublicProfile__r;
 						
-						List<Project2__c> currentProject = [SELECT PublicProfile__c, 
-													 Id,
-													 PublicProfile__r.ManageProjectTasks__c,
-													 PublicProfile__r.CreateProjectTasks__c,
-													 PublicProfile__r.Description__c
-											  FROM Project2__c
-											  WHERE Id =: Project];
-										
-						if(currentProject.size() > 0) 
-						
-							profile = currentProject[0].PublicProfile__r;
-						
-					}
 				}				
 				if (profile != null) {
 					/*		PROJECT		*/
 					if (objectType == 'Project') {
+						
 						if(profile.CreateProjectTasks__c)
 							canCreate = true;	
+						
 						if (profile.ManageProjectTasks__c){
 							canManage = true; 
 							canCreate = true;
 						}
+					
 					}
-					/*     ATTACHMENT   */
-					/*
-					if(objectType == 'Attachment') {
-						if(profile.ManageAttachments__c)
-							canManage = true;
-					}
-					*/
 				}
 			}
 			

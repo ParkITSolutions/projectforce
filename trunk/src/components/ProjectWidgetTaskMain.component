@@ -13,8 +13,8 @@
 				<!-- Widget Links Holder -->
 				<div class="linkAction">
 						<!--### Rerender Method ###-->
-						<apex:actionFunction name="reloadProjectTask" action="{!getAllProjectTasks}"
-		       			rerender="noTopicList,TaskWidgetFull" onComplete="hideLoader('results_task_loader');" /><!--hideSwirly('swirly_task')" /> -->
+						<apex:actionFunction name="reloadProjectTask" action="{!getAllProjectTasks}" rerender="noTopicList,TaskWidgetFull" onComplete="hideLoader('results_task_loader');" />
+						
 						<ul class="links_sup">
 							<apex:outputpanel rendered="{!userPermissions.canCreate}"> 
 								<li><a class="topRightLinks" href="javascript:;" onclick="fixedModalNewTask.open();">New</a> |</li>
@@ -48,7 +48,11 @@
 						<div style="{!IF(listSize > 0, 'display:none', '')};" class="empty">
 							<ul class="notasks">
 								<li>
-									No Tasks<br/><a  onclick="fixedModalNewTask.open();" href="javascript:;" >Create New Task</a>
+									No Tasks
+									<br/>
+									<apex:outputpanel rendered="{!userPermissions.canCreate}"> 
+										<a onclick="fixedModalNewTask.open();" href="javascript:;" >Create New Task</a>
+									</apex:outputpanel>
 								</li>
 							</ul>
 							<div class="clear"></div>

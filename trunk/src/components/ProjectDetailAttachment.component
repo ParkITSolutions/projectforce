@@ -35,7 +35,9 @@
 			</div>
 			<!-- Widget Links Holder -->
 			<div class="linkAction">
-				<a href="Javascript:;" class="newAttachmentEvent">New Attachment</a>
+				<apex:outputpanel rendered="{!userPermissions.canCreate}">
+					<a href="Javascript:;" class="newAttachmentEvent">New Attachment</a>
+				</apex:outputPanel>
 			</div>
 			<!-- Widget Container --> 		
 			<div class="wideBody">
@@ -55,6 +57,7 @@
 									<td>
 										<apex:commandLink action="{!DeleteAttach}"
 											rerender="projectAttachmentWidget"
+											rendered="{!IF(OR(userPermissions.canManage, attachment.isOwner), true, false)}"
 											onclick="if(confirm('Are you sure you want to delete this file?')){showSwirly('swirlyAttachment');}else{return false;}"
 											oncomplete="hideSwirly('swirlyAttachment');"												
 											value="Delete" >

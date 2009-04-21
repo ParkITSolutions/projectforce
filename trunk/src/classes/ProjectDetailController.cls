@@ -18,6 +18,7 @@ public with sharing class ProjectDetailController
     String teamIdParam = System.currentPageReference().getParameters().get('id');
     public String USERID =  UserInfo.getUserId(); 
     public boolean isManager = false;
+    
     /**
     * Constructor
     */
@@ -28,11 +29,11 @@ public with sharing class ProjectDetailController
        isManager = userPermission.getCanManage();
        this.projectType = getTeamspace().Type__c;
     }   
+    
     public Boolean getIsLastMemberAdmin(){
     	return isLastMemberAdmin;
    	}
 
-    
     /**
     *@param String team id
     */
@@ -59,12 +60,11 @@ public with sharing class ProjectDetailController
     /**
     * Load permission for current user
     */
- 	  public void genPermissions () {
+ 	public void genPermissions () {
         userPermission.setId(UserInfo.getUserId());
         userPermission.setProject(teamIdParam);
         userPermission.setObjectType('Project');
         userPermission.setPermissions();
-        System.debug('Manage generado ' + userPermission.getCanManage());
     }
     
     /**
@@ -136,59 +136,65 @@ public with sharing class ProjectDetailController
 			}
 		}
 	}
+	
 	public void setIsPublic(Boolean isp){
 		this.isPublic = isp;
 	}
+	
 	public void setIsMember(Boolean ism){
 		this.isMember = ism;
 	}
+	
 	public boolean getIsPublic(){
 		return this.isPublic;
 	}
+	
 	public boolean getIsMember(){
 		return this.isMember;	
 	}
     
     /**
-    * For show join button
-    *@void
+    * Join Project
     */
-   
-    
-    /**
-    * Join Team
-    */
-
-    
     public void joinProject(){
 		pmc.setProjectId(System.currentPageReference().getParameters().get('id'));
 		pmc.joinProject();
+		genPermissions();
 		isMember = true;
 	}
+	
+	/**
+	* Unjoin Project
+	*/
 	public PageReference unjoinProject(){
 		pmc.setProjectId(System.currentPageReference().getParameters().get('id'));
 		if(!pmc.isLastMemberAdmin()){
+			
 			pmc.unjoinProject();
 			isMember = false;
+			
+			genPermissions();
 			isLastMemberAdmin = false;			
+
 			if( this.projectType == 'private'  )
 				return this.projectRedirect();
+
 		}else{
 			isLastMemberAdmin = true;
 		}
+	
 		return null;
+
 	}
+
+	/**
+	* Redirect to ProjectOverview
+	*/
 	public PageReference projectRedirect(){
 		PageReference discOver = Page.projectOverview;
 		return discOver;
 	}
     
-    
-    /**
-    * Perform the remove from the team
-    *@throws Exception
-    */      
-   
     /**
     * Get Teamspace
     *@return Team__c

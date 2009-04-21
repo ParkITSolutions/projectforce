@@ -119,7 +119,6 @@ public class ProjectOverlayNewTaskController {
    	*@throws CustomException message Insufficient Privileges
    	*/
    	public void insertTask (){ 
-   		system.debug( 'insertando la tasc');
    		if(!userPermissions.getCanCreate()){
         	throw new CustomException('Insufficient Privileges');
    		}else{	

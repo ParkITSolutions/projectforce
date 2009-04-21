@@ -31,7 +31,7 @@
         
     <style> 
         .bodyDiv a.blackbutton {
-                background: transparent url({!URLFOR($Resource.ProjectResources, 'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right top;
+        	background: transparent url({!URLFOR($Resource.ProjectResources, 'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right top;
         }
         
         div.sfdcDetailFormated table.detailList td{
@@ -43,16 +43,16 @@
             font-weight: bold;
             border:none;
         }
+        
         #btnDiv {
             width: 190px !important;
             margin-left: -90px;
             *margin-left: 100px;
         }
+        
         div.breadCrumbAndButtons{
             height: 40px !important;
         }
-        
-    
     </style>
 
     <script>
@@ -79,8 +79,8 @@
             setTimeout('hideMessageToUser()', 10000);       
         }       
     </script>
-    <!-- c:TeamsOverlayNewTask />
-    < c:TeamsOverlayNewMilestone / -->
+    
+	<!-- Delete Project Overlay -->   
     <c:ProjectOverlayDeleteProject />
     
     <!-- ### Initialize the overlay box for modal.js ### -->
@@ -100,15 +100,13 @@
             </apex:define>
         </apex:composition> 
        
-        <apex:outputPanel style="display: none;" >
-            {!userPermission}
-        </apex:outputPanel> 
-        
          <div align="center" class="breadCrumbAndButtons">
             <div id="btnDiv">
                 <apex:form id="thisForm" >
                     <apex:outputPanel styleClass="isLastMemberAdmin" style="display: none;" >{!isLastMemberAdmin}</apex:outputPanel>
-                    <apex:outputPanel rendered="{!IF(isManager,true,false)}">
+                    
+                    <!-- Edit-Delete Project Buttons -->
+                    <apex:outputPanel rendered="{!IF(userPermission.canManage, true, false)}">
                         <a class="blackbutton" href="Javascript:;" onclick="deleteProjectOverlay();">
                             <span> Delete </span>
                         </a>
@@ -116,24 +114,41 @@
                             <span> Edit </span>
                         </a>
                     </apex:outputPanel>         
-                    <apex:commandLink styleClass="blackbutton" action="{!joinProject}" rendered="{!IF(AND(NOT(isMember),isPublic),true,false)}" onclick="setClassWaiting('.blackbutton');" oncomplete="refreshAssignToTask();refreshAssignToMilestone();" rerender="thisForm">
+                    
+                    <!-- Join Button -->
+                    <apex:commandLink styleClass="blackbutton" action="{!joinProject}" 
+                    	rendered="{!IF(AND(NOT(isMember),isPublic),true,false)}" 
+                    	onclick="setClassWaiting('.blackbutton');" 
+                    	oncomplete="refreshAssignToTask();refreshAssignToMilestone();" 
+                    	rerender="thisForm, mainContentForm, sidebarWidgets">
                         <span> Join </span>
                     </apex:commandLink>         
-                    <apex:commandLink styleClass="blackbutton" rendered="{!IF(isMember,true,false)}" onclick="setClassWaiting('.blackbutton');"  rerender="thisForm" action="{!unjoinProject}" onComplete="refreshAssignToTask();refreshAssignToMilestone();showWarningIsLastAdmin();">
+                    
+                    <!-- Unjoin Button -->
+                    <apex:commandLink styleClass="blackbutton" rendered="{!IF(isMember,true,false)}" 
+                    	onclick="setClassWaiting('.blackbutton');"  
+                    	rerender="thisForm, mainContentForm, sidebarWidgets" action="{!unjoinProject}" 
+                    	onComplete="refreshAssignToTask();refreshAssignToMilestone();showWarningIsLastAdmin();">
                         <span> Unjoin </span>
-                    </apex:commandLink> 
+                    </apex:commandLink>
+                     
                 </apex:form>                    
             </div>              
         </div>
+        
         <!-- Sidebar -->
         <div class="sidebar">
-            <!-- Project Quick Links -->
-            <c:ProjectDetailQuickLinks />
-            <!-- Team Suscribe -->
-            <c:ProjectSubscribe /> 
-            <!-- Team members -->
-            <c:ProjectMembersWidget projectId="{!teamIdParam}" />   
-            
+			<apex:outputPanel id="sidebarWidgets">
+	            <!-- Project Quick Links -->
+	            <c:ProjectDetailQuickLinks />
+	
+	            <!-- Team Suscribe -->
+	            <c:ProjectSubscribe /> 
+	
+	            <!-- Team members -->
+	            <c:ProjectMembersWidget projectId="{!teamIdParam}" />   
+			
+			</apex:outputPanel>
             <div class="clear"></div>
         </div>
         
@@ -157,10 +172,10 @@
                 
     </div>
 
+	<!-- Main Content -->
     <div class="main_content">
         <div class="centerCol">
             <div class="holder">
-                
                 <!-- sfdc detail -->
                 <div style="display:none;" class="sfdcDetail">
                     <apex:detail subject="{!teamIdParam}" relatedList="false" title="false" />
@@ -168,7 +183,6 @@
                 <div class="sfdcDetailFormated"></div>
                 
                 <apex:form id="mainContentForm">
-                    
                     <apex:actionFunction name="reloadMainContent" rerender="mainContentForm"/>
                     
                     <!-- Project Tasks -->
@@ -177,9 +191,10 @@
                     <!-- Project Milestones -->
                     <c:ProjectDetailMilestones team="{!teamIdParam}" /> 
     
-                    <!-- Project Attachment -->
+                    <!-- Project Attachments (Overlay and Widget) -->
                     <c:ProjectOverlayNewAttachment parentId="{!teamIdParam}" />
                     <c:ProjectDetailAttachment project="{!teamIdParam}"/> 
+                
                 </apex:form>
             </div>
         </div>

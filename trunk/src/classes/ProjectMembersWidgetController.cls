@@ -682,6 +682,8 @@ public with sharing class ProjectMembersWidgetController {
 	*@return UserPermissions
 	*/
 	public UserPermissions getUserPermissions () {
+		//Refresh user permissions
+		genPermissions();
 		return userPermissions;
 	}	
 	

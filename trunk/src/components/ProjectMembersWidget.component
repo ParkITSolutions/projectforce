@@ -52,7 +52,6 @@
 			href="{!URLFOR($Resource.ProjectResources, 'inc/css/teamOverlyInviteNewMember.css')}"
 			type="text/css" />
 
-
 		<!-- Content  -->
 		<div id="inviteTeam" style="display: none;" class="overlayForm">
 		<div class="swirly_overlay" style="display: none;"></div>
@@ -64,6 +63,7 @@
 			src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}"
 			alt="Close Window" title="Close Window" /> </a></div>
 		</div>
+		
 		<div class="overlayMainContent"><!-- Required Information --> 
 			<span class="overlayRequiredInfo">= Required Information</span> 
 				<apex:form id="newMemberForm"
@@ -174,8 +174,6 @@
 	</div>
 	<!-- On Hover Bubble Team member -->
 
-
-
 	<!-- Team Details Widget -->
 	<div class="teamWidget mySmallWidget" id="teamMemberID">
 		<!-- Widget Title -->
@@ -198,14 +196,12 @@
 			<div class="swirly_members" style="display: none;"></div>
 			<div class="thinBody">
 				<div class="contentHolder">
-					<apex:outputpanel rendered="{!renderLinkAction}">
-						<div class="linkAction">
-							<apex:outputpanel >
-								<a onclick="createOverlay('','inviteTeam','260','selectFixIE6();startFunction();');" href="javascript:;">New</a> |
-							</apex:outputpanel>
-							<a href="/apex/ProjectMembersList?id={!team}#" class="topRightLinks">See More&#187;</a>
-						</div>
-					</apex:outputpanel>
+					<div class="linkAction">
+						<apex:outputpanel rendered="{!userPermissions.canManage}">
+							<a onclick="createOverlay('','inviteTeam','260','selectFixIE6();startFunction();');" href="javascript:;">New</a> |
+						</apex:outputpanel>
+						<a href="/apex/ProjectMembersList?id={!team}#" class="topRightLinks">See More&#187;</a>
+					</div>
 				</div>
 	  			<apex:outputPanel layout="block" id="membersListContainer">
 					

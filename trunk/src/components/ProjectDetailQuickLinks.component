@@ -52,22 +52,25 @@
         <!-- Widget Container -->          
         <div class="box_content">
             <div class="thinBody" style = "padding:7px;">
-	            <div class="team_detail_commentedItemLeftProfile">					    
-				    <img class="imgSmallLeft" src="{!URLFOR($Resource.TeamsResources, '/images/layout/icons/star.gif')}"  />
-				    <span>
-				    	<span class="text_link_underlineColorPaddRight">
-				    	  	<a href="Javascript:fixedModalNewTask.open();">New Task</a>
-				    	</span>
-				   	</span>
-				</div>
-				<div class="team_detail_commentedItemLeftProfile">					    
-				    <img class="imgSmallLeft" src="{!URLFOR($Resource.TeamsResources, '/images/layout/icons/star.gif')}"  />
-				    <span>
-				    	<span class="text_link_underlineColorPaddRight">
-				    	  	<a href="Javascript:fixedModalNewMilestone.open();">New Milestone</a>
-				    	</span>
-				   	</span>
-				</div>
+	            
+	            <apex:outputPanel rendered="{!userPermission.canCreate}">
+		            <div class="team_detail_commentedItemLeftProfile">					    
+					    <img class="imgSmallLeft" src="{!URLFOR($Resource.TeamsResources, '/images/layout/icons/star.gif')}"  />
+					    <span>
+					    	<span class="text_link_underlineColorPaddRight">
+					    	  	<a href="Javascript:fixedModalNewTask.open();">New Task</a>
+					    	</span>
+					   	</span>
+					</div>
+					<div class="team_detail_commentedItemLeftProfile">					    
+					    <img class="imgSmallLeft" src="{!URLFOR($Resource.TeamsResources, '/images/layout/icons/star.gif')}"  />
+					    <span>
+					    	<span class="text_link_underlineColorPaddRight">
+					    	  	<a href="Javascript:fixedModalNewMilestone.open();">New Milestone</a>
+					    	</span>
+					   	</span>
+					</div>
+				</apex:outputPanel>
 				
 				<div class="team_detail_commentedItemLeftProfile">					    
 				    <img class="imgSmallLeft" src="{!URLFOR($Resource.TeamsResources, '/images/layout/icons/star.gif')}"  />

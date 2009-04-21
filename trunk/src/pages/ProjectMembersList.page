@@ -128,6 +128,10 @@
 		</apex:composition>
 	
 		<div align="center"  class="breadCrumbAndButtons" style="height: 30px!important;">
+			<div class="breadCrumbs" style="padding-left: 5px;">
+				<a id="projectNameBreadcrumb"  href="/apex/ProjectDetail?id={!ProjectId}">{!projectName} Home</a> > 
+				<span style = "font-weight:bold; font-size: 11px;"><strong>Member List</strong></span>		
+			</div>
 			<div id="btnsDiv" style="width: 260px; *margin-left: 200px !important;">
 				<apex:form >
 					<apex:outputpanel rendered="{!userPermissions.canManage}" >
@@ -158,7 +162,6 @@
 	</div>
 	<!-- Main Content Div -->
 	<div class="main_cont">
-		<div>
 			<div class="main_cont">
 		<apex:form >
 			<apex:outputPanel layout="block" styleClass="okMessage" style="display:none;">

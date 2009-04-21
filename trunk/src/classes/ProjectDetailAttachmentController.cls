@@ -33,6 +33,27 @@ public class ProjectDetailAttachmentController {
 	public Boolean getAttachmentCount(){
 		return attachments.size() > 0;
 	}
+	
+	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
+	
+	/**
+	* Read user permissions
+	*/
+	public void genPermissions() {
+		userPermissions.setId(UserInfo.getUserId());
+		userPermissions.setProject(project);
+		userPermissions.setObjectType('Project');
+		userPermissions.setPermissions();		
+	}
+	
+	/**
+	*@return UserPermissions
+	*/
+	public UserPermissions getUserPermissions () {
+		//Refresh user permissions
+		genPermissions();
+		return userPermissions;
+	}	
 
 	/**
 	*@param project id
@@ -41,7 +62,7 @@ public class ProjectDetailAttachmentController {
 		List<Attachment> attachmentsList = new List<Attachment>();
 		if(project != null){
 			attachmentsList = [select name, id, parentid, ContentType, BodyLength, 
-							LastModifiedDate, LastModifiedBy.Name
+							LastModifiedDate, LastModifiedBy.Name, CreatedById
 							from attachment 
 							where parentid =: project
 							order by name];
@@ -62,6 +83,7 @@ public class ProjectDetailAttachmentController {
             info.setId(item.Id);
             info.setName(item.Name);
             info.setAttachment(item);
+            info.setIsOwner(item.CreatedById == UserInfo.getUserId());
             
             String ContentType = item.ContentType;
             String image = '';
@@ -146,6 +168,7 @@ public class ProjectDetailAttachmentController {
         String attachImage;
 		String id;
 		Attachment attach;
+		Boolean isOwner = false;
 		      
         /**
         *@return String Attach id
@@ -201,6 +224,20 @@ public class ProjectDetailAttachmentController {
         */
         public Attachment getAttachment() {
                 return attach;
+        }
+        
+        /**
+        *@param b is owner
+        */
+        public void setIsOwner(Boolean b){
+        	isOwner = b;
+        }
+        
+        /**
+        *@retrun is owner
+        */
+        public Boolean getIsOwner(){
+        	return isOwner;
         }
                                      
 	}
