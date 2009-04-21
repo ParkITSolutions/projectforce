@@ -87,10 +87,11 @@ public without sharing class ProjectMembersListController {
 	public void setSortBy (String s){
 		sortBy = s;	
 	}
+	
 	public void joinProject(){
 		ProjectMember__c projectMember = new ProjectMember__c();
 		projectMember.User__c = UserInfo.getUserId();
-		projectMember.Profile__c = [select Id from ProjectProfile__c where Name = 'Project Administrator' limit 1].Id;
+		projectMember.Profile__c = [select Id from ProjectProfile__c where Name = 'Member Profile' limit 1].Id;
 		projectMember.Project__c = this.getProjectId();
 		insert projectMember;
 	}

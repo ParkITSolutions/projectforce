@@ -3,9 +3,15 @@
 */
 public class ProjectRedirectController {
     
+	public String pageName = System.currentPageReference().getParameters().get('page');
+	public String editId = System.currentPageReference().getParameters().get('eid');
+	public String taskId = System.currentPageReference().getParameters().get('task');
+
+	/**
+	* Constructor
+	*/
     public ProjectRedirectController (){}   
 
-	 
     /**
     * Read namespace
     *@return string namespace
@@ -16,20 +22,37 @@ public class ProjectRedirectController {
     
     /**
     * Read if current user is sys admin
-    *@return pr to form page (without modify form layout)
+    *@return page reference to new/edit page (without modify form layout)
     */
     public PageReference isAdmin(){
+		
 		User admin = new User();
 		PageReference pr = null;
 		String userId = UserInfo.getUserId();
-		String pageName = System.currentPageReference().getParameters().get('page');
-		String editId = System.currentPageReference().getParameters().get('eid');
+
+		//Is admin User
 		admin = [Select id, Profile.PermissionsModifyAllData, ProfileId, Name From User where id =: userId limit 1];    
+    	
+    	//Non admin users can't modify layout
     	if(!admin.Profile.PermissionsModifyAllData){
-    		String url = (editId == null) ? pageName : pageName + '?id=' + editId;
+    		
+    		//ApexPage Name
+    		String url = pageName;
+    		
+    		//project Id
+    		if(editId != null)
+    			url += '?id=' + editId;
+    		
+    		//task Id	
+    		if(taskId != null){
+    			url += '&task=' + taskId;
+    		}
+    		
+    		//Forward to page
     		pr = new PageReference('/apex/' + url);
     		pr.setRedirect(true);
     	}
+    	
     	return pr;
     }
 

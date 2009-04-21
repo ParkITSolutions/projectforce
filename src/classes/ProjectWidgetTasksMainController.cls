@@ -89,6 +89,8 @@ public class ProjectWidgetTasksMainController {
 	*@return UserPermissions
 	*/
 	public UserPermissions getUserPermissions () {
+		//Refresh user permissions
+		genPermissions();
 		return userPermissions;
 	}
 
