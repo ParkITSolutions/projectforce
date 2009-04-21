@@ -2,7 +2,7 @@ In Project there are three types of projects: Open, Closed and Private.
 In each type of project there are three profiles: Public, Member and Admin.
 Member users can do anything Public users can.
 Admin users can do anything Member or Public users can.
-In every project anyone can delete or edit the project, task and milestones he creates.
+In every project anyone can delete or edit the project, tasks and milestones he creates.
 
 _The rules for the different type of projects are the following:_
 
