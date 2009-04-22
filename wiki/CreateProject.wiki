@@ -1,4 +1,4 @@
-In the Create New Discussion Project page you will be able to choose the name, description, priority , logo ,portal users and access type of the new project.
+In the Create New Discussion Project page you will be able to choose the name, description, priority, type, logo, portal users and access type of the new project.
 
 If you select the option "Allow Customer Portal Users", the customer portal users can see the project.
 
