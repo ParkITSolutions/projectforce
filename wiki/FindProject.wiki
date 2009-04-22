@@ -1,4 +1,4 @@
-From all the pages of Project you can search for projects. 
+From Project Overview and Search Projects pages you can search for the projects.
 
 To locate a project must have at least one project that contains the word of the search.
 
