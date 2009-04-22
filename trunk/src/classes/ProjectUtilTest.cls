@@ -1,4 +1,11 @@
+/**
+*@author Miguel Soares @ 04/14/2009
+*/
 public class ProjectUtilTest {
+		
+	/**
+	* Test  ProjectUtil
+	*/
     static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();

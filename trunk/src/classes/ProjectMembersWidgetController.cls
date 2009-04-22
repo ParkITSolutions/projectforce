@@ -1,5 +1,5 @@
 /**
-*@author Bruno Fagundez @ 6-9-2008
+*@author Ignacio Toledo @ 3-20-2009
 */
 public with sharing class ProjectMembersWidgetController {
 	
@@ -8,6 +8,18 @@ public with sharing class ProjectMembersWidgetController {
 	public Boolean isAdministrator;
 	public Boolean emailNotifications = false;
 	public Boolean isManager = false;
+	// Add new Member
+	public String idTeam = System.currentPageReference().getParameters().get('id');
+	public List<ProjectMember__c> memberListToolkit = new List<ProjectMember__c>();
+	String typeList;
+	public List<ProjectMember__c> membersToInsert = new List<ProjectMember__c>();
+	public List<User> mailList = new List<User>();
+	public Integer groupCount = 1;
+	public String teamName = null;
+	public Integer memberListToolkitCount = 0;
+	Boolean already = false;
+	public Member newMemberVars = new Member();
+	
 	
 	/**
 	* Constructor
@@ -64,7 +76,7 @@ public with sharing class ProjectMembersWidgetController {
 	*@param String idTeam
 	*/
 	public void setTeam(String tID) {
-		System.debug('assss' + tID + team);
+		
 		if (team == null || team != tID) {
 			team = tID;
 			genPermissions();
@@ -90,7 +102,7 @@ public with sharing class ProjectMembersWidgetController {
 		return team;
 	}
 
-	String typeList;
+	
 	
 	/**
 	* Setter method for Team Id variable
@@ -188,123 +200,13 @@ public with sharing class ProjectMembersWidgetController {
     	}
     	return ret;
     } 
-    
-    /**
-    * Inner class for TeamMeber type
-    *@class
-    */
-    public class TeamMember{
-        
-        ProjectMember__c member;
-        User profile = new User();
-        String username = null;
-        String yahoo = '';
-        String skype = '';
-        String Id = '';
-        String picture = '';
-        Boolean isPrivate = false;
-        
-		/**
-		* Costructor
-		*@param ProjectMember__c
-		*@param PeopleProfile__c
-		*/
-        public TeamMember(ProjectMember__c m, User u) {
-            member = m; 
-            profile = u;                     
-        }       
-        
-        /**
-        *@return String idTeamMember
-        */
-        public String getId(){
-        	return Id;
-        }
-		
-		/**
-		*@return ProjectMember__c
-		*/
-        public ProjectMember__c getMember() {
-            return member;
-        }
-        
-        /**
-        *@return String
-        */
-        public String getUsername() { 
-       		return username; 
-        }
-        
-        /**
-        *@return Boolean
-        */
-        public Boolean getIsPrivate() { 
-       		return isPrivate; 
-        }
-        
-        /**
-        *@return String
-        */
-        public String getYahoo(){
-        	if(profile != null){
-        		return yahoo;
-        	}else {
-        	 	return '';
-        	}
-        }
-        
-        /**
-        *@return String
-        */
-        public String getSkype(){
-        	if(profile != null){	
-        		return skype;
-        	} else {
-        	 	return '';
-        	}
-        }
-        
-        /**
-        *@return String
-        */
-        public String getStatus() {	
-			return '';
-        }
-        
-        /**
-        *@return PeopleProfile__c
-        */
-        public User getProfile(){         
-			return profile;
-       	}
-		
-        /**
-        *@return String
-        */
-        public String getImage() {
-        	if(profile != null){
-        		return picture;
-        	} else {
-         		return '';
-         	}
-        }
-    }
-	
-	// Add new Member
-	public String idTeam = System.currentPageReference().getParameters().get('id');
-	
+    		
 	/**
 	*@param String ID
 	*/
 	public void setIdTeam(String s){
 		idTeam = s;
 	}
-	
-	public List<ProjectMember__c> membersToInsert = new List<ProjectMember__c>();
-	public List<User> mailList = new List<User>();
-	public Integer groupCount = 1;
-	
-	public String teamName = null;
 	
 	/**
 	* Get Team Name
@@ -335,7 +237,7 @@ public with sharing class ProjectMembersWidgetController {
 	}
 	
 
-	public Member newMemberVars = new Member();
+	
 	
 	/**
 	* Assign new Member vars to new Profile
@@ -363,82 +265,13 @@ public with sharing class ProjectMembersWidgetController {
 	}
 	
 	/**
-	*@class
-	*/
-	public class Member {
-		String profileId;
-		String message;
-		String teamRole;
-		String colleagueNames;
-		
-		/**
-        *@return String
-        */
-		public String getColleagueNames () {
-			return colleagueNames;
-		}
-		
-		/**
-        *@param String names
-        */
-		public void setColleagueNames (String names) {
-			this.colleagueNames = names;
-		}
-		
-		/**
-        *@return String ID
-        */
-		public String getProfileId () {
-			return profileId;
-		}
-		
-		/**
-        *@param String ID
-        */
-		public void setProfileId (String profile) {
-			this.profileId = profile;
-		}	
-		
-		/**
-        *@return String Message
-        */
-		public String getMessage () {
-			return message;
-		}
-		
-		/**
-        *@param String Message
-        */
-		public void setMessage (String msj) {
-			this.message = msj;
-		}
-		
-		/**
-        *@return String Role
-        */
-		public String getTeamRole () {
-			return teamRole;
-		}
-		
-		/**
-        *@param String Role
-        */
-		public void setTeamRole (String tRole) {
-			this.teamRole = tRole;
-		}	
-		
-	}
-	
-	public List<ProjectMember__c> memberListToolkit = new List<ProjectMember__c>();
-	
-	/**
 	*@return List<ProjectMember__c>
 	*/
 	public List<ProjectMember__c> getMemberListToolkit () {
 		return memberListToolkit;
 	}
 	
-	public Integer memberListToolkitCount = 0;
+	
 	
 	/**
 	*@return Integer
@@ -447,7 +280,7 @@ public with sharing class ProjectMembersWidgetController {
 		return memberListToolkitCount;
 	}
 		
-	Boolean already = false;
+	
 	
 	/**
 	*@return already exist
@@ -693,5 +526,173 @@ public with sharing class ProjectMembersWidgetController {
 	public void refreshMethod(){
 		
 	}
-
+	
+	/**
+    * Inner class for TeamMeber type
+    *@class
+    */
+    public class TeamMember{
+        
+        ProjectMember__c member;
+        User profile = new User();
+        String username = null;
+        String yahoo = '';
+        String skype = '';
+        String Id = '';
+        String picture = '';
+        Boolean isPrivate = false;
+        
+		/**
+		* Costructor
+		*@param ProjectMember__c
+		*@param PeopleProfile__c
+		*/
+        public TeamMember(ProjectMember__c m, User u) {
+            member = m; 
+            profile = u;                     
+        }       
+        
+        /**
+        *@return String idTeamMember
+        */
+        public String getId(){
+        	return Id;
+        }
+		
+		/**
+		*@return ProjectMember__c
+		*/
+        public ProjectMember__c getMember() {
+            return member;
+        }
+        
+        /**
+        *@return String
+        */
+        public String getUsername() { 
+       		return username; 
+        }
+        
+        /**
+        *@return Boolean
+        */
+        public Boolean getIsPrivate() { 
+       		return isPrivate; 
+        }
+        
+        /**
+        *@return String
+        */
+        public String getYahoo(){
+        	if(profile != null){
+        		return yahoo;
+        	}else {
+        	 	return '';
+        	}
+        }
+        
+        /**
+        *@return String
+        */
+        public String getSkype(){
+        	if(profile != null){	
+        		return skype;
+        	} else {
+        	 	return '';
+        	}
+        }
+        
+        /**
+        *@return String
+        */
+        public String getStatus() {	
+			return '';
+        }
+        
+        /**
+        *@return PeopleProfile__c
+        */
+        public User getProfile(){         
+			return profile;
+       	}
+		
+        /**
+        *@return String
+        */
+        public String getImage() {
+        	if(profile != null){
+        		return picture;
+        	} else {
+         		return '';
+         	}
+        }
+    }//End Class TeamMember
+	
+	/**
+	*@class Member
+	*/
+	public class Member {
+		String profileId;
+		String message;
+		String teamRole;
+		String colleagueNames;
+		
+		/**
+        *@return String
+        */
+		public String getColleagueNames () {
+			return colleagueNames;
+		}
+		
+		/**
+        *@param String names
+        */
+		public void setColleagueNames (String names) {
+			this.colleagueNames = names;
+		}
+		
+		/**
+        *@return String ID
+        */
+		public String getProfileId () {
+			return profileId;
+		}
+		
+		/**
+        *@param String ID
+        */
+		public void setProfileId (String profile) {
+			this.profileId = profile;
+		}	
+		
+		/**
+        *@return String Message
+        */
+		public String getMessage () {
+			return message;
+		}
+		
+		/**
+        *@param String Message
+        */
+		public void setMessage (String msj) {
+			this.message = msj;
+		}
+		
+		/**
+        *@return String Role
+        */
+		public String getTeamRole () {
+			return teamRole;
+		}
+		
+		/**
+        *@param String Role
+        */
+		public void setTeamRole (String tRole) {
+			this.teamRole = tRole;
+		}	
+		
+	}
+	
 }

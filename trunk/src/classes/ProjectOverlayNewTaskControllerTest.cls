@@ -1,4 +1,11 @@
+/**
+*@author Miguel Soares @ 04/14/2009
+*/
 @isTest private class ProjectOverlayNewTaskControllerTest {
+	
+	/**
+	* Test  ProjectOverlayNewTaskController
+	*/
     static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();

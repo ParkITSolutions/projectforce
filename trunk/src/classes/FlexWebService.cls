@@ -6,7 +6,7 @@ global class FlexWebService {
     public UserPermissions userPermissions = new UserPermissions();
     
     /**
-    * Load permissions for one user for some team
+    * Load permissions for one user for some project
     *@param String project id
     *@param Stirng user id
     */
@@ -18,7 +18,7 @@ global class FlexWebService {
     }
     
     /**
-    * Generate permissions for one user for some team (web service use)
+    * Generate permissions for one user for some project
     *@static
     *@param String project id
     *@param Stirng user id

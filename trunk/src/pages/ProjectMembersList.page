@@ -26,7 +26,6 @@
 		
 	</script>
 
-	<!-- Javascript -->
 	<!-- Prototype + Scriptaculous -->
 	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}" />
 	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}" />
@@ -63,7 +62,7 @@
 	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupTop.js')}" />
 
 	<!-- Modal JS -->
-	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" />
+	<script src="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" />
 
 	<style>
 		.memberImg {
@@ -83,6 +82,10 @@
 	
 		}
 	
+		.breadCrumbsLast{
+			font-weight:bold; 
+			font-size: 11px;
+		}
 	</style>
 	<style>
 		@media screen and (-webkit-min-device-pixel-ratio:0) {
@@ -90,12 +93,13 @@
 				padding-left: 200px;
 			}
 		}
+		
 	</style>
 
 	<script>
 		document.observe('dom:loaded', function(){
-				trunkTitle();
 				readPortalCSSRules();
+				//trunkTitle(); 
 			}
 		)
 	</script>
@@ -111,12 +115,13 @@
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/teamsMembersList.js')}" />
 	
 	<!-- Initialize the overlay box for modal.js -->
-	<a href="#modal_container" id="initializeModal" style="display:none;"></a>
+	<a href="#modal_container" id="initializeModal" style="display:none;"></a>     
 	<div id="modal_container"></div>
-	<script>createOverlay('initializeModal')</script>
+	<script>createOverlay('initializeModal');</script> 
+
 	<div>	
 		<!-- Header -->
-		<apex:composition template="HeaderTemplate">
+		<apex:composition template="HeaderTemplate"> 
 			<apex:define name="moduleId">
 				<apex:variable var="moduleId" value="headerTeams" />
 			</apex:define>
@@ -130,15 +135,13 @@
 		<div align="center"  class="breadCrumbAndButtons" style="height: 30px!important;">
 			<div class="breadCrumbs" style="padding-left: 5px;">
 				<a id="projectNameBreadcrumb"  href="/apex/ProjectDetail?id={!ProjectId}">{!projectName} Home</a> > 
-				<span style = "font-weight:bold; font-size: 11px;"><strong>Member List</strong></span>		
+				<span class="breadCrumbsLast">Member List</span>		
 			</div>
 			<div id="btnsDiv" style="width: 260px; *margin-left: 200px !important;">
 				<apex:form >
 					<apex:outputpanel rendered="{!userPermissions.canManage}" >
-						<a onclick="createOverlay('','inviteTeam','','showSelects()','');relocateOverlay();"
-							href="javascript:;" class="blackbutton"><span>New</span></a>
-						<a href="javascript:;" class="blackbutton"
-							onclick="massiveRemoveOverlay();"><span>Remove</span></a>
+						<a onclick="createOverlay('','inviteTeam','','showSelects()','');relocateOverlay();" href="javascript:;" class="blackbutton"><span>New</span></a>
+						<a href="javascript:;" class="blackbutton"	onclick="massiveRemoveOverlay();"><span>Remove</span></a>
 					</apex:outputpanel> 
 				</apex:form>
 			</div>
@@ -147,12 +150,7 @@
 		
 		<!-- Sidebar -->
 		<div class="sidebar">
-	
-			<!-- Project Quick Links -->
-			<c:ProjectDetailQuickLinks />
-	
-			<!-- Team Suscribe -->
-			<c:ProjectSubscribe />
+ 
 			
 			<!-- Team members -->
 			<c:ProjectMembersWidget projectId="{!projectId}" />	
@@ -187,35 +185,24 @@
 			<br/>
 			
 			<div style="position: relative; overflow: hidden">
-				<img id="twistImage" style="vertical-align: middle;" 
-					class="twistImg"
-					onclick="showHideElement(document.getElementById('filterDiv'),this);"
-					src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}"
-					title="Hide Section" alt="Hide Section" /> &nbsp; 
-					<a href="javascript:;"
-					onclick="showHideElement(document.getElementById('filterDiv'),document.getElementById('twistImage'));"
-					class="filterLink">Filter</a>
+				<img id="twistImage" style="vertical-align: middle;" class="twistImg" onclick="showHideElement(document.getElementById('filterDiv'),this);" src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" title="Hide Section" alt="Hide Section" /> &nbsp; 
+				<a href="javascript:;" onclick="showHideElement(document.getElementById('filterDiv'),document.getElementById('twistImage'));" class="filterLink">
+					Filter
+				</a>
 			</div>
 			
 			<div class="filter" id="filterDiv">
 				<div align="center"><apex:form id="filterForm">
 					<ul class="letterFilter">
 						<li>
-						 	<apex:commandLink action="{!genMembers}" 
-							 	value="ALL" 
-							 	styleclass="AllBtn" 
-							 	rerender="membersList"
-							 	onclick="$('paginationOverlay').show();setHeight('holder', 'paginationOverlay')" 
-							 	oncomplete="$('paginationOverlay').hide()">
+						 	<apex:commandLink action="{!genMembers}" value="ALL" styleclass="AllBtn" rerender="membersList" onclick="$('paginationOverlay').show();setHeight('holder', 'paginationOverlay')"  oncomplete="$('paginationOverlay').hide()">
 								<apex:param name="ltr" value="ALL" />
 							</apex:commandLink>
 						</li>
 						<apex:repeat id="letterFilterRepeat" value="{!letterFilter}" var="item">
 							<li>
 								<apex:outputpanel rendered="{!NOT(item.containMembers)}">
-									<apex:commandLink styleclass="contains" action="{!genMembers}" value="{!item.letter}" 
-										onclick="$('paginationOverlay').show();setHeight('holder', 'paginationOverlay')" oncomplete="$('paginationOverlay').hide()"
-										rerender="membersList">
+									<apex:commandLink styleclass="contains" action="{!genMembers}" value="{!item.letter}" onclick="$('paginationOverlay').show();setHeight('holder', 'paginationOverlay')" oncomplete="$('paginationOverlay').hide()" rerender="membersList">
 										<apex:param name="ltr" value="{!item.letter}" />
 									</apex:commandLink>
 								</apex:outputpanel> 
@@ -223,7 +210,6 @@
 							</li>
 						</apex:repeat>
 					</ul>
-					
 					<br style="clear: both; font-size: 3px;" />
 					</apex:form> 
 				</div>
@@ -240,18 +226,14 @@
 						<apex:form >
 							<ul>
 								<li class="prev {!IF(prevPageShow,'prev_disabled','')}">
-									<apex:commandLink action="{!prevPage}" value="Previous Page" 
-										rerender="membersList"
-										rendered="{!prevPageLinkShow}" /> 
+									<apex:commandLink action="{!prevPage}" value="Previous Page" rerender="membersList" rendered="{!prevPageLinkShow}" /> 
 									<apex:outputText value="Previous Page" rendered="{!prevPageShow}" />
 								</li>
 								<li>
 									({!currentPagination} - {!cntPagination})
 								</li>
 								<li class="next {!IF(nextPageShow,'next_disabled','')}">
-									<apex:commandLink action="{!nextPage}" value="Next Page" 
-										rerender="membersList"
-										rendered="{!nextPageLinkShow}" /> 
+									<apex:commandLink action="{!nextPage}" value="Next Page" rerender="membersList" rendered="{!nextPageLinkShow}" /> 
 									<apex:outputText value="Next Page" rendered="{!nextPageShow}" />
 								</li>
 							</ul>
@@ -264,26 +246,24 @@
 					<thead>
 						<tr>
 							<td width="3%"><apex:outputpanel rendered="{!userPermissions.canManage}">
-								<input class="actionCheckAll" onclick="checkUnCheck(this);"
-									type="checkbox" />
+								<input class="actionCheckAll" onclick="checkUnCheck(this);" type="checkbox" />
 							</apex:outputpanel></td>
-							<td width="9%"><apex:outputpanel rendered="{!userPermissions.canManage}" style="font-weight:bold;">Action</apex:outputpanel>
+							<td width="9%">
+								<apex:outputpanel rendered="{!userPermissions.canManage}" style="font-weight:bold;">Action</apex:outputpanel>
 							</td>
-							<td width="29%" colspan="2"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
-								value="Name" rerender="membersList">
+							<td width="29%" colspan="2">
+								<apex:commandLink styleclass="member_title_description" action="{!sortList}" value="Name" rerender="membersList">
 								<apex:param name="sb" value="User__r.Name" />
 							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'name',true,false)}">
 								<apex:outputpanel rendered="{!sortByDesc}">
-									<img
-										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
+									<img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
 								</apex:outputpanel>
 								<apex:outputpanel rendered="{!NOT(sortByDesc)}">
-									<img
-										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
+									<img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
 								</apex:outputpanel>
 							</apex:outputpanel></td>
-							<td width="16%"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
-								value="Company" rerender="membersList">
+							<td width="16%">
+								<apex:commandLink styleclass="member_title_description" action="{!sortList}" value="Company" rerender="membersList">
 								<apex:param name="sb" value="User__r.CompanyName" />
 							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'company',true,false)}">
 								<apex:outputpanel rendered="{!sortByDesc}">
@@ -427,10 +407,9 @@
 	<apex:outputpanel id="overlaysPanel">
 		<apex:include pageName="ProjectMembersRemove" />
 		<apex:include pageName="ProjectMembersMassiveRemove" />
-
 	</apex:outputpanel>
 	
-	<c:ProjectOverlayNewTask / >
+	<c:ProjectOverlayNewTask />
 	<c:ProjectOverlayNewMilestone />
 	
 </apex:page>

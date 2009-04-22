@@ -5,11 +5,18 @@ public class DeleteProjectController {
 	
 	private String projectId = System.currentPageReference().getParameters().get('id');
 
-	//Getters and Setters
+	/**
+    * Get the Project Id
+    *@return String projectId 
+    */
 	public String getProjectId() {	
 		return projectId;
 	}
 	
+	/**
+    * Set the Project Id
+    *@param String projectId 
+    */
 	public void setProjectId(String id) {	
 		projectId = id;
 	}

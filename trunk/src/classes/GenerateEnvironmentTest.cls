@@ -1,6 +1,11 @@
+/**
+*@author: Miguel Soares @ 07-04-2009
+*/
 public class GenerateEnvironmentTest {
 
-    // Create 3 intances of Project2__c
+    /**
+    * Create 3 intances of Project2__c
+    */ 
     public static Project2__c project  = new Project2__c();
     public static Project2__c project2 = new Project2__c();
     public static Project2__c project3 = new Project2__c();
@@ -8,24 +13,34 @@ public class GenerateEnvironmentTest {
     public static ProjectMember__c member  = new ProjectMember__c();
     public static ProjectMember__c member2 = new ProjectMember__c();
 
-    // Create 2 intances of ProjectTask__c and 1 milestones
+    /**
+    *  Create 2 intances of ProjectTask__c and 1 milestones
+    */
     public static ProjectTask__c task  = new ProjectTask__c();
     public static ProjectTask__c task2 = new ProjectTask__c();
     public static ProjectTask__c mile  = new ProjectTask__c();
     
     public static ProjectTaskPred__c pred = new ProjectTaskPred__c();
     
-    // Create 2 project assignee
+     /**
+    *  Create 3 project assignee
+    */
     public static ProjectAssignee__c assi = new ProjectAssignee__c();
     public static ProjectAssignee__c assi2 = new ProjectAssignee__c();
     public static ProjectAssignee__c assi3 = new ProjectAssignee__c();
 
+	/**
+    *  Create 1 attachment
+    */
     public static Attachment avatar = new Attachment(Name = 'avatar', Body = Crypto.generateMac('HMacSHA1', Blob.valueOf('String'), Blob.valueOf('String')));
     public static User us = new User();
     
     public static List<ProjectProfile__c> profList = new List<ProjectProfile__c>();
      
-
+	
+	/**
+    *  Generate enviroment to test
+    */
     public static testMethod void gen(){
 
             ProjectUtil.setIsTest( true ); 

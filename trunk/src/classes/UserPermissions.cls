@@ -192,7 +192,6 @@ public class UserPermissions {
 			
 			canManageStatic = canManage;
 		}catch(Exception e){
-			System.debug('fallinggg ');
 			throw e;
 		}
 	}

@@ -292,6 +292,305 @@ public class ProjectCreateNewTaskController {
 		return att10;
 	}
 	
+	
+	/**
+	* Generate user permissions
+	*@void
+	*/
+	public void genPermissions() {
+		userPermissions.setId(UserInfo.getUserId());
+		userPermissions.setProject(param);
+		userPermissions.setObjectType('Project');		
+		userPermissions.setPermissions();		
+	}
+	
+	/**
+	* Generate a TempTask
+	*@void
+	*/
+	public void genTempTask(){
+		//Get Params
+		String taskAsignee = System.currentPageReference().getParameters().get('qtaid');
+		
+		if(taskAsignee == null)
+			taskAsignee = System.currentPageReference().getParameters().get('qmaid');
+		
+		if(taskAsignee != null && taskAsignee != '-1')
+			dateMy.setMember(taskAsignee);
+	}	
+	
+	/**
+	* Return an Options List with Members in
+	*@return List<SelectOption>
+	*/
+	public List<SelectOption> getMembers() {
+    	List<ProjectMember__c> projectMembers = new List<ProjectMember__c>();  
+  	 	List<SelectOption> options = new List<SelectOption>();
+  	 	if(param != null){
+	  	 	projectMembers = [Select t.Project__c, t.User__r.Name, t.Name, t.User__c, t.Id From ProjectMember__c t where t.Project__c =: param];  
+	  	 	options.add(new SelectOption('Choose a Project Member', 'Choose a Project Member'));
+	  	 	for(ProjectMember__c c: projectMembers) {
+	    		options.add(new SelectOption(c.User__c, c.User__r.Name)); 
+	 		}
+  	 	}
+  	 	return options;
+   	}
+   	
+	/**
+	* Return an Options List with Percents in
+	*@return List<SelectOption>
+	*/
+   	public List<SelectOption> getPercent() {
+  	 	List<SelectOption> percents = new List<SelectOption>();
+  	 	for(Integer i = 0; i < 101; i=i+5){
+  	 		percents.add(new SelectOption(String.valueOf(i)+'.0', String.valueOf(i)+'%'));
+  	 	}
+  	 	return percents;
+   	}
+   	
+	/**
+	* Return an Options List with Percents in
+	*@return List<SelectOption>
+	*/
+   	public List<SelectOption> getPercentDedicated() {
+  	 	List<SelectOption> percentsD = new List<SelectOption>();
+  	 	for(Integer i = 0; i<101; i=i+5){
+  	 		percentsD.add(new SelectOption(String.valueOf(i)+'.0', String.valueOf(i)+'%'));
+  	 	}
+  	 	return percentsD;
+   	}
+   	
+   	/**
+   	* Save Task
+   	*@void
+   	*/
+   	public void save(){
+   		if(theTask.Id == null){
+   			if(userPermissions.getCanCreate()){
+   				theTask.Project__c = param;
+   				//theTask.PercentCompleted__c = 0.0;
+   				insert theTask;
+   			}else{
+   				throw new CustomException('Insufficient Privileges');
+   			}
+   		}else {
+   			if(canUpdate()){
+   				update theTask;
+   			}else{
+   				throw new CustomException('Insufficient Privileges');
+   			}
+   		}
+   	}
+   	
+   	/**
+   	*@return Boolean
+   	*/
+   	public boolean canUpdate(){
+   		Boolean canEdit = false;
+   		for(assingTo assignee :getAssignMember()){
+   			if(assignee.getIdMember() == UserInfo.getUserId()) canEdit = true;	
+   		}
+   		return (userPermissions.getCanManage() || canEdit );
+   	}
+   	
+   	/**
+   	* Save Asignees
+   	* Format: userId:percentage;userId:percentage
+   	*@void
+   	*/
+   	public void saveAssignees(){
+
+   		List<String> assigns = assignees.split(';');
+   		if(assigns.size() == 0)
+   			return;
+   			   		
+   		List<ProjectAssignee__c> assignsToDel = new List<ProjectAssignee__c>();
+   		List<ProjectAssignee__c> assignsToSave = new List<ProjectAssignee__c>();
+   		
+   		assignsToDel = [select Id from ProjectAssignee__c where ProjectTask__c =: theTask.Id]; 
+   		
+   		//Add first Assignee
+   		ProjectAssignee__c assign = new ProjectAssignee__c();
+   		assign.User__c = dateMy.getMember();
+   		assign.Project__c = param;
+   		assign.PercentDedicated__c = dateMy.getPercent(); 
+   		assign.ProjectTask__c = theTask.Id;   		
+   		assignsToSave.add(assign);
+   		
+   		//Add other assignees
+   		List<String> auxAssign = new List<String>(); 
+   		for(Integer it = 0; it < assigns.size(); it++){
+   			auxAssign = assigns[it].split(':');
+   			if(auxAssign.size() == 2){
+	   			assign = new ProjectAssignee__c();
+	   			assign.User__c = auxAssign[0];
+	   			assign.Project__c = param;
+	   			assign.PercentDedicated__c = Double.valueOf(auxAssign[1]); 
+	   			assign.ProjectTask__c = theTask.Id;
+	   			assignsToSave.add(assign);
+   			}
+   		}
+   		if(assignsToSave.size() > 0)
+   			insert assignsToSave;
+   			
+   	    // For order of operation purposes we have to move the 
+   	    // delete to after the insert so on an edit we have a clear picture of 
+   	    // used to be the assignee.
+   	    // Other option is to create a real update :)
+   	    if(assignsToDel.size() > 0)
+   			delete assignsToDel;
+   	}
+   	
+   	/**
+   	* Get Task for Edit
+   	*@param String myParam
+   	*@param String task
+   	*@void
+   	*/
+   	public void getTaskForEdit(String myParam, String MyidTask) {
+		setAttachment(MyidTask);
+		typeOfAction = 'Edit';
+		
+		Map<String, Schema.SObjectField> projectFields = Schema.SObjectType.ProjectTask__c.fields.getMap();
+	    
+	    String fields = '';
+	    String query = 'select ';
+	    
+	    //Set Object Fields
+	    for(Schema.SObjectField field : projectFields.values()){
+	    	if(field != null)
+	    		fields += (field + ', ');  	
+	    }
+	    
+	    //Execute Dynamic SOQL
+	    query += fields.substring(0, (fields.length() - 2)) + ', p.ParentTask__r.Name, ';
+	    query += '(Select User__c, PercentDedicated__c From ProjectsAssignees__r)';
+	    query += ' from ProjectTask__c p where Id = \'' + MyidTask + '\'';
+	    theTask = Database.query(query);		
+ 	      		
+		if(theTask.ProjectsAssignees__r.size() > 0 && theTask.ProjectsAssignees__r[0] != null ){
+			dateMy.setMember(theTask.ProjectsAssignees__r[0].User__c);
+			dateMy.setPercent(theTask.ProjectsAssignees__r[0].PercentDedicated__c);
+		}
+		if(theTask.ParentTask__r.Name != null && theTask.ParentTask__r.Name != ''){	
+   			ParentName = theTask.ParentTask__r.Name;
+   		}
+		for(ProjectAssignee__c t: theTask.ProjectsAssignees__r){  
+			assingTo assignMem = new assingTo();
+			assignMem.setPercent(t.PercentDedicated__c); 
+			assignMem.setIdMember(t.User__c);
+			resultMem.add(assignMem);
+		}
+		dateMy.setHours(theTask.Duration__c);
+		dateMy.setlastModify(theTask.LastModifiedDate);
+		dateMy.setcreateDate(theTask.CreatedDate);
+   	}
+   	
+	/**
+	* Return an Options List with Priorities in
+	*@return List<SelectOption>
+	*/
+   	public List<SelectOption> getPriority() {
+  	 	List<SelectOption> priority = new List<SelectOption>(); 
+  	 	priority.add(new SelectOption('Medium','Medium'));	 	
+  	 	priority.add(new SelectOption('High', 'High')); 	 	
+  	 	priority.add(new SelectOption('Low','Low'));
+  	 	return priority;
+   	}
+   	
+   	/**
+   	*@param String idTask
+   	*/
+   	public void setAttachment(String taskId){
+   		List<Attachment> res = new List<Attachment>();
+   		res = [Select Name, Id, ParentId, ContentType, BodyLength From Attachment where ParentId =: taskId ];
+   		if(res.size() > 0){
+   			for(Attachment t: res){
+				myAttachment at = new myAttachment();
+				at.setBodyLenght(t.BodyLength);
+				at.setIdAttachment(t.Id);
+				at.setContentType(t.ContentType);
+				at.setNameAttachment(t.Name);
+				resultAt.add(at);
+			}
+   		}
+   	}
+   	
+   	public PageReference saveAttachmentsAndAccess(){
+   		    	
+    	attachList.clear(); 
+   		if(theTask.Milestone__c)
+   			theTask.StartDate__c = theTask.EndDate__c;
+   			
+   		if (att1.Name != null && att1.Name != '') {
+   			att1.ParentId = theTask.Id;
+   			attachList.add(att1);
+   			att1=new Attachment();
+   		}
+
+   		if (att2.Name != null && att2.Name != '') {
+   			att2.ParentId = theTask.Id;
+   			attachList.add(att2);
+   			att2=new Attachment();
+   		}
+   		if (att3.Name != null && att3.Name != '') {
+   			att3.ParentId = theTask.Id;
+   			attachList.add(att3);
+   			att3=new Attachment();
+   		}
+   		if (att4.Name != null && att4.Name != '') {
+   			att4.ParentId = theTask.Id;
+   			attachList.add(att4);
+   			att4=new Attachment();
+   		}
+   		if (att5.Name != null && att5.Name != '') {
+   			att5.ParentId = theTask.Id;
+   			attachList.add(att5);
+   			att5=new Attachment();
+   		}
+   		if (att6.Name != null && att6.Name != '') {
+   			att6.ParentId = theTask.Id;
+   			attachList.add(att6);
+   			att6=new Attachment();
+   		}
+   		if (att7.Name != null && att7.Name != '') {
+   			att7.ParentId = theTask.Id;
+   			attachList.add(att7);
+   			att7=new Attachment();
+   		}
+   		if (att8.Name != null && att8.Name != '') {
+   			att8.ParentId = theTask.Id;
+   			attachList.add(att8);
+   			att8=new Attachment();
+   		}
+   		if (att9.Name != null && att9.Name != '') {
+   			att9.ParentId = theTask.Id;
+   			attachList.add(att9);
+   			att9=new Attachment();
+   		}
+   		if (att10.Name != null && att10.Name != '') {
+   			att10.ParentId = theTask.Id;
+   			attachList.add(att10);
+   			att10=new Attachment();
+   		} 
+
+   		errorAttachList = new List<Integer>();
+   		errorAttachList = ProjectUtil.validateFileSize(attachList);
+   		   		  		   		
+   		if(errorAttachList.size() > 0){
+   			return null;
+   		}
+   			
+  		//Save Assignees
+  		saveAssignees();
+   		
+   		PageReference forward = URL_TO_LIST;
+   		forward.getParameters().put('id', theTask.Project__c);
+   		forward.setRedirect(true);
+   		return forward;
+    }
+	
+	
 	/**
    	* Inner class for assignTo type
    	*@class
@@ -334,7 +633,7 @@ public class ProjectCreateNewTaskController {
         }
    	}
    	
-   	   /**
+    /**
    	* Inner Class myAttachment
    	*@class
    	*/
@@ -498,304 +797,4 @@ public class ProjectCreateNewTaskController {
    	}
 	
 	
-	/**
-	* Generate user permissions
-	*@void
-	*/
-	public void genPermissions() {
-		userPermissions.setId(UserInfo.getUserId());
-		userPermissions.setProject(param);
-		userPermissions.setObjectType('Project');		
-		userPermissions.setPermissions();		
-	}
-	
-	/**
-	* Generate a TempTask
-	*@void
-	*/
-	public void genTempTask(){
-		//Get Params
-		String taskAsignee = System.currentPageReference().getParameters().get('qtaid');
-		
-		if(taskAsignee == null)
-			taskAsignee = System.currentPageReference().getParameters().get('qmaid');
-		
-		if(taskAsignee != null && taskAsignee != '-1')
-			dateMy.setMember(taskAsignee);
-	}	
-	
-	/**
-	* Return an Options List with Members in
-	*@return List<SelectOption>
-	*/
-	public List<SelectOption> getMembers() {
-    	List<ProjectMember__c> teamMembers = new List<ProjectMember__c>();  
-  	 	List<SelectOption> options = new List<SelectOption>();
-  	 	if(param != null){
-	  	 	teamMembers = [Select t.Project__c, t.User__r.Name, t.Name, t.User__c, t.Id From ProjectMember__c t where t.Project__c =: param];  
-	  	 	options.add(new SelectOption('Choose a Project Member', 'Choose a Project Member'));
-	  	 	for(ProjectMember__c c: teamMembers) {
-	    		options.add(new SelectOption(c.User__c, c.User__r.Name)); 
-	 		}
-  	 	}
-  	 	return options;
-   	}
-   	
-	/**
-	* Return an Options List with Percents in
-	*@return List<SelectOption>
-	*/
-   	public List<SelectOption> getPercent() {
-  	 	List<SelectOption> percents = new List<SelectOption>();
-  	 	for(Integer i = 0; i < 101; i=i+5){
-  	 		percents.add(new SelectOption(String.valueOf(i)+'.0', String.valueOf(i)+'%'));
-  	 	}
-  	 	return percents;
-   	}
-   	
-	/**
-	* Return an Options List with Percents in
-	*@return List<SelectOption>
-	*/
-   	public List<SelectOption> getPercentDedicated() {
-  	 	List<SelectOption> percentsD = new List<SelectOption>();
-  	 	for(Integer i = 0; i<101; i=i+5){
-  	 		percentsD.add(new SelectOption(String.valueOf(i)+'.0', String.valueOf(i)+'%'));
-  	 	}
-  	 	return percentsD;
-   	}
-   	
-   	/**
-   	* Save Task
-   	*@void
-   	*/
-   	public void save(){
-   		if(theTask.Id == null){
-   			if(userPermissions.getCanCreate()){
-   				theTask.Project__c = param;
-   				//theTask.PercentCompleted__c = 0.0;
-   				insert theTask;
-   			}else{
-   				throw new CustomException('Insufficient Privileges');
-   			}
-   		}else {
-   			if(canUpdate()){
-   				update theTask;
-   			}else{
-   				throw new CustomException('Insufficient Privileges');
-   			}
-   		}
-   	}
-   	
-   	/**
-   	*@return Boolean
-   	*/
-   	public boolean canUpdate(){
-   		Boolean canEdit = false;
-   		for(assingTo assignee :getAssignMember()){
-   			if(assignee.getIdMember() == UserInfo.getUserId()) canEdit = true;	
-   		}
-   		return (userPermissions.getCanManage() || canEdit );
-   	}
-   	
-   	/**
-   	* Save Asignees
-   	* Format: userId:percentage;userId:percentage
-   	*@void
-   	*/
-   	public void saveAssignees(){
-
-   		List<String> assigns = assignees.split(';');
-   		if(assigns.size() == 0)
-   			return;
-   			   		
-   		List<ProjectAssignee__c> assignsToDel = new List<ProjectAssignee__c>();
-   		List<ProjectAssignee__c> assignsToSave = new List<ProjectAssignee__c>();
-   		
-   		assignsToDel = [select Id from ProjectAssignee__c where ProjectTask__c =: theTask.Id]; 
-   		
-   		//Add first Assignee
-   		ProjectAssignee__c assign = new ProjectAssignee__c();
-   		System.debug('aaaa' + dateMy.getMember());
-   		assign.User__c = dateMy.getMember();
-   		assign.Project__c = param;
-   		assign.PercentDedicated__c = dateMy.getPercent(); 
-   		assign.ProjectTask__c = theTask.Id;   		
-   		assignsToSave.add(assign);
-   		
-   		//Add other assignees
-   		List<String> auxAssign = new List<String>(); 
-   		for(Integer it = 0; it < assigns.size(); it++){
-   			auxAssign = assigns[it].split(':');
-   			if(auxAssign.size() == 2){
-	   			assign = new ProjectAssignee__c();
-	   			assign.User__c = auxAssign[0];
-	   			assign.Project__c = param;
-	   			assign.PercentDedicated__c = Double.valueOf(auxAssign[1]); 
-	   			assign.ProjectTask__c = theTask.Id;
-	   			assignsToSave.add(assign);
-   			}
-   		}
-   		if(assignsToSave.size() > 0)
-   			insert assignsToSave;
-   			
-   	    // For order of operation purposes we have to move the 
-   	    // delete to after the insert so on an edit we have a clear picture of 
-   	    // used to be the assignee.
-   	    // Other option is to create a real update :)
-   	    if(assignsToDel.size() > 0)
-   			delete assignsToDel;
-   	}
-   	
-   	/**
-   	* Get Task for Edit
-   	*@param String team
-   	*@param String task
-   	*@void
-   	*/
-   	public void getTaskForEdit(String myParam, String MyidTask) {
-		setAttachment(MyidTask);
-		typeOfAction = 'Edit';
-		
-		Map<String, Schema.SObjectField> projectFields = Schema.SObjectType.ProjectTask__c.fields.getMap();
-	    
-	    String fields = '';
-	    String query = 'select ';
-	    
-	    //Set Object Fields
-	    for(Schema.SObjectField field : projectFields.values()){
-	    	if(field != null)
-	    		fields += (field + ', ');  	
-	    }
-	    
-	    //Execute Dynamic SOQL
-	    query += fields.substring(0, (fields.length() - 2)) + ', p.ParentTask__r.Name, ';
-	    query += '(Select User__c, PercentDedicated__c From ProjectsAssignees__r)';
-	    query += ' from ProjectTask__c p where Id = \'' + MyidTask + '\'';
-	    theTask = Database.query(query);		
- 	      		
-		if(theTask.ProjectsAssignees__r.size() > 0 && theTask.ProjectsAssignees__r[0] != null ){
-			dateMy.setMember(theTask.ProjectsAssignees__r[0].User__c);
-			dateMy.setPercent(theTask.ProjectsAssignees__r[0].PercentDedicated__c);
-		}
-		if(theTask.ParentTask__r.Name != null && theTask.ParentTask__r.Name != ''){	
-   			ParentName = theTask.ParentTask__r.Name;
-   		}
-		for(ProjectAssignee__c t: theTask.ProjectsAssignees__r){  
-			assingTo assignMem = new assingTo();
-			assignMem.setPercent(t.PercentDedicated__c); 
-			assignMem.setIdMember(t.User__c);
-			resultMem.add(assignMem);
-		}
-		dateMy.setHours(theTask.Duration__c);
-		dateMy.setlastModify(theTask.LastModifiedDate);
-		dateMy.setcreateDate(theTask.CreatedDate);
-   	}
-   	
-	/**
-	* Return an Options List with Priorities in
-	*@return List<SelectOption>
-	*/
-   	public List<SelectOption> getPriority() {
-  	 	List<SelectOption> priority = new List<SelectOption>(); 
-  	 	priority.add(new SelectOption('Medium','Medium'));	 	
-  	 	priority.add(new SelectOption('High', 'High')); 	 	
-  	 	priority.add(new SelectOption('Low','Low'));
-  	 	return priority;
-   	}
-   	
-   	/**
-   	*@param String idTask
-   	*/
-   	public void setAttachment(String taskId){
-   		List<Attachment> res = new List<Attachment>();
-   		res = [Select Name, Id, ParentId, ContentType, BodyLength From Attachment where ParentId =: taskId ];
-   		if(res.size() > 0){
-   			for(Attachment t: res){
-				myAttachment at = new myAttachment();
-				at.setBodyLenght(t.BodyLength);
-				at.setIdAttachment(t.Id);
-				at.setContentType(t.ContentType);
-				at.setNameAttachment(t.Name);
-				resultAt.add(at);
-			}
-   		}
-   	}
-   	
-   	public PageReference saveAttachmentsAndAccess(){
-   		    	
-    	attachList.clear(); 
-   		if(theTask.Milestone__c)
-   			theTask.StartDate__c = theTask.EndDate__c;
-   			
-   		if (att1.Name != null && att1.Name != '') {
-   			att1.ParentId = theTask.Id;
-   			attachList.add(att1);
-   			att1=new Attachment();
-   		}
-
-   		if (att2.Name != null && att2.Name != '') {
-   			att2.ParentId = theTask.Id;
-   			attachList.add(att2);
-   			att2=new Attachment();
-   		}
-   		if (att3.Name != null && att3.Name != '') {
-   			att3.ParentId = theTask.Id;
-   			attachList.add(att3);
-   			att3=new Attachment();
-   		}
-   		if (att4.Name != null && att4.Name != '') {
-   			att4.ParentId = theTask.Id;
-   			attachList.add(att4);
-   			att4=new Attachment();
-   		}
-   		if (att5.Name != null && att5.Name != '') {
-   			att5.ParentId = theTask.Id;
-   			attachList.add(att5);
-   			att5=new Attachment();
-   		}
-   		if (att6.Name != null && att6.Name != '') {
-   			att6.ParentId = theTask.Id;
-   			attachList.add(att6);
-   			att6=new Attachment();
-   		}
-   		if (att7.Name != null && att7.Name != '') {
-   			att7.ParentId = theTask.Id;
-   			attachList.add(att7);
-   			att7=new Attachment();
-   		}
-   		if (att8.Name != null && att8.Name != '') {
-   			att8.ParentId = theTask.Id;
-   			attachList.add(att8);
-   			att8=new Attachment();
-   		}
-   		if (att9.Name != null && att9.Name != '') {
-   			att9.ParentId = theTask.Id;
-   			attachList.add(att9);
-   			att9=new Attachment();
-   		}
-   		if (att10.Name != null && att10.Name != '') {
-   			att10.ParentId = theTask.Id;
-   			attachList.add(att10);
-   			att10=new Attachment();
-   		} 
-
-   		errorAttachList = new List<Integer>();
-   		errorAttachList = ProjectUtil.validateFileSize(attachList);
-   		
-   		System.debug('attachList > ' + attachList);
-   		   		
-   		if(errorAttachList.size() > 0){
-   			return null;
-   		}
-   			
-  		//Save Assignees
-  		saveAssignees();
-   		
-   		PageReference forward = URL_TO_LIST;
-   		forward.getParameters().put('id', theTask.Project__c);
-   		forward.setRedirect(true);
-   		return forward;
-    }
-
 }

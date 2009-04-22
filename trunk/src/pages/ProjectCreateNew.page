@@ -1,4 +1,4 @@
-<apex:page sidebar="false" tabStyle="Project2__c" id="ProjectCreateNew"  controller="ProjectCreateNewProjectController">
+<apex:page sidebar="false" tabStyle="Project2__c" id="ProjectCreateNew"  controller="ProjectCreateNewController">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     
     <!-- CSS de TS -->
@@ -28,21 +28,7 @@
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
     
-    <style>
-    	div.btnStandardForm{
-    		display: none;
-    	}
-    	.errorMsg {
-    		color: #CC0000 !important;
-       	}
-    	.max {
-    		float:left;
-			margin-left:150px;
-			color: #CC0000 !important;
-    	}
-    	
-    </style>
-    
+     
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsCreateNewTeam.css')}" />
     
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectCreateNewProject.js')}" />
@@ -72,13 +58,6 @@
             
         }
         var projectId='{!Project.Id}';
-        /*
-        var publicProfile = '{!Project.PublicProfile__c}';
-        var newMemberProfile = '{!Project.NewMemberProfile__c}';
-        
-        var globalProjectLabel = '{!$ObjectType.Project2__c.label}';
-        var globalUserId = '{!$User.Id}';
-        */
         </script>
     
     <div id="bubble" class="bubble">
@@ -429,10 +408,4 @@
             </div>
         </div>
     </div>
-    <script>
-    		function onCancelEvent(){
-				location.href = '/apex/ProjectOverview';
-				return false;
-			}
-    </script>
 </apex:page>

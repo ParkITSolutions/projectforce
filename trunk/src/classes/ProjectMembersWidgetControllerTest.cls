@@ -1,5 +1,11 @@
+/**
+*@author Miguel Soares @ 04/08/2009
+*/
 @IsTest private class ProjectMembersWidgetControllerTest {
-
+	
+	/**
+	* Test ProjectMembersWidgetController
+	*/
     public static testMethod void testTeam() {
         try{ 
             

@@ -1,14 +1,15 @@
 /**
-*@author Martin Prado @ 06/24/2008
+*@author Miguel Soares @ 03/17/2009
 * refactoring for project force
 */
 public class ProjectOverlayNewTaskController {
 	
     public ProjectTask__c newTask = new ProjectTask__c();
-   	
    	public String PROJECTID = System.currentPageReference().getParameters().get('id'); 
    	public Project2__c currentProject = null;   
-   	
+    public ProjectMember__c projectMember = new ProjectMember__c();    
+   	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
+   	 
     /**
     * Constructor
     */
@@ -39,7 +40,7 @@ public class ProjectOverlayNewTaskController {
     }
     
 
-    public ProjectMember__c projectMember = new ProjectMember__c();    
+   
     /**
     *@return ProjectMember__c
     */
@@ -102,7 +103,7 @@ public class ProjectOverlayNewTaskController {
 	*/
 	public void dummyRefresh (){}   
 	
-	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
+	
 	/**
 	* Read user permissions
 	*/
