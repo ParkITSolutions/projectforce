@@ -1,11 +1,9 @@
-*_From Project Overview and Search Projects pages you can search for the projects.
+From Project Overview and Search Projects pages you can search for the projects.
 
 To locate a project must have at least one project that contains the word of the search.
-_*
 
+http://projectforce.googlecode.com/svn/wiki/images/FindProjectReal.png
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/FindProjectReal.png" align="left" />
+The results are displayed:
 
-*_The results are displayed:_*
-
-<img src="http://projectforce.googlecode.com/svn/wiki/images/FindResultsProjectReal.png" align="left" />
+http://projectforce.googlecode.com/svn/wiki/images/FindResultsProjectReal.png
