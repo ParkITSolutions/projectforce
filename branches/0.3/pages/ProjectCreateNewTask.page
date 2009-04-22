@@ -1,0 +1,791 @@
+<apex:page sidebar="false" tabStyle="Project2__c" id="ProjectCreateNewTask" controller="ProjectCreateNewTaskController">
+    <meta http-equiv = "Content-Type" content="text/html; charset=iso-8859-1" />
+    
+    
+    <!-- CSS de TS -->
+    <link rel="stylesheet"  href = "{!URLFOR($Resource.commonResources, '/inc/css/validator.css')}" />    
+    <link rel="stylesheet"  href = "{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />  
+    <link rel="stylesheet"  href = "{!URLFOR($Resource.ProjectResources, '/inc/css/teamDetailEdit.css')}" />   
+    <link rel="stylesheet"  href = "{!URLFOR($Resource.ProjectResources, '/inc/css/teamDetail.css')}" />   
+    <link rel="stylesheet"  href = "{!URLFOR($Resource.ProjectResources, '/inc/css/teamCreateNew.css')}" />
+    <link rel="stylesheet"  href = "{!URLFOR($Resource.ProjectResources, '/inc/css/projectCreateNew.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" /> 
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverview.css')}" />
+    
+    <!-- Prototype + Scriptaculous -->
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>
+    
+    <!-- Portal Support -->
+    <apex:includeScript value="{!$Resource.portalSupport}"/>
+     
+    <!-- Common Js for All Sections -->
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/validator.js')}"/>
+    
+    <!-- CSS styles for Portal Integration --> 
+    <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
+    
+    
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsCreateNewTask.css')}" />    
+    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectCreateNewProject.js')}" />        
+    <apex:includeScript value="/soap/ajax/12.0/connection.js"/>
+    
+    <style>
+     
+    	div.body_center{
+			background: #FFFFFF none repeat scroll 0 0;
+			border: 1px solid #B5B5B5;
+			height: auto !important;
+			
+		}
+		
+		div#result {
+			margin-top: 10px;
+		}			
+			
+		.teamTitle {
+			margin-bottom: 20px;
+		}
+		
+		div.btnStandardForm{
+    		display: none;
+    	}
+    	
+    	/*
+    	.inputTeamFileContainer{
+    		margin-left:145px;
+    	}
+    	*/
+    	
+    	div.attachAnotherWrapp 
+    	{
+			margin-left:145px;
+		}
+		
+		div.DynamicLayoutResponse select, div.SecondDiv select {
+
+			float: left;
+			margin-bottom: 16px;
+		}
+		
+		div.DynamicLayoutResponse label, div.SecondDiv label {
+			color:#676667;
+			font-weight:bold;
+			width: 140px;
+			margin-right: 5px;
+			float: left;
+			text-align:right;
+			font-size:13px;
+
+		}
+		.errorRed {
+			color: #C0272D;
+			margin-bottom: 10px;
+			margin-left: 150px;
+		}
+		
+		.DynamicLayoutResponse .attach_list, div.SecondDiv .attach_list{
+			display:block;
+			margin-left:146px;
+		}
+    	
+	   	.look {	
+			background:url({!URLFOR($Resource.ProjectResources, 'images/layout/lookup.gif')}) no-repeat left top;
+			}
+	
+		.look:hover {
+			background:url({!URLFOR($Resource.ProjectResources, 'images/layout/lookup.gif')}) no-repeat -22px top;	
+			}
+	
+		.DynamicLayoutResponse  a.advanced, .SecondDiv  a.advanced {
+			background:url({!URLFOR($Resource.commonResources, 'images/arrows/arrow_up_blue.gif')}) no-repeat left center;
+			padding-left: 12px;
+		}
+		
+		.DynamicLayoutResponse  a.advanced.open, .DynamicLayoutResponse  a.advanced.open {	
+			background:url({!URLFOR($Resource.commonResources, 'images/arrows/arrow_down_blue.gif')}) no-repeat left center;
+			}
+	
+		.bubble .content {
+			background:url({!URLFOR($Resource.TeamsResources, 'images/bubbleNewTeam/bubble_bg.png')}) repeat-y;
+			}
+
+		* html .bubble .content {
+			filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="{!URLFOR($Resource.TeamsResources, 'images/bubbleNewTeam/bubble_bg.png')}", sizingMethod="scale")
+			}
+		
+		.bubble .bottom_border {
+			background:url({!URLFOR($Resource.TeamsResources, 'images/bubbleNewTeam/bubble_bottom.png')}) no-repeat;
+			}
+
+		* html .bubble .bottom_border {
+			filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="{!URLFOR($Resource.TeamsResources, 'images/bubbleNewTeam/bubble_bottom.png')}", sizingMethod="scale")}			
+		
+		.bubble .top_border {
+			background:url({!URLFOR($Resource.TeamsResources, 'images/bubbleNewTeam/bubble_top.png')}) no-repeat;
+			}
+		
+		* html .bubble .top_border {
+			filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="{!URLFOR($Resource.TeamsResources, 'images/bubbleNewTeam/bubble_top.png')}", sizingMethod="scale")}			
+
+		a.assigned {
+			background: url({!URLFOR($Resource.commonResources, '/images/icons/add_gray.gif')}) no-repeat left center;
+			}
+		
+		.notassigned {
+			background: url({!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}) no-repeat left center;
+			}
+			
+		a.pdfType{
+			background: url('{!URLFOR($Resource.FileTypeIcons, 'pdf.gif')}') left center no-repeat;
+			}
+		
+		a.imageType{
+			background: url('{!URLFOR($Resource.FileTypeIcons, 'images.gif')}') left center no-repeat;
+			}
+		
+		a.txtType{
+			background: url('{!URLFOR($Resource.FileTypeIcons, 'txt.gif')}') left center no-repeat;
+			}
+		
+		a.docType{
+			background: url('{!URLFOR($Resource.FileTypeIcons, 'doc.gif')}') left center no-repeat;
+			}
+
+		a.zipType{
+			background: url('{!URLFOR($Resource.FileTypeIcons, 'zip.gif')}') left center no-repeat;
+			}
+
+		a.unknowType{
+			background: url('{!URLFOR($Resource.FileTypeIcons, 'generic.gif')}') left center no-repeat;
+			}
+			
+		.inputFileClassShow input{
+			float: left;
+		}
+		
+		.inputFileClassHide input, .inputFileClassShow input {
+			width:228px !important;
+		}
+		
+		#advancedLinks {
+			margin-left: 10px;
+		}
+		
+		.inputFileClassShow a {
+			margin-bottom: 20px;
+		}
+		
+		.max {
+			color:#CC0000 !important;
+			float:left;
+			margin-left:150px;
+		}
+			
+    </style>
+    
+    <script>
+    
+    	var globalTeamLabel = 'Project';
+    	var taskId = "{!task.id}";
+    	var proj = "{!projectId}";
+       	document.observe('dom:loaded', function (){		
+		    	createLayout();
+		    	readPortalCSSRules();
+		    	startMaxlengthCheck();
+        	}
+        );
+       
+        /**
+        * Namespace Prefix Getter
+        */
+        var namespace = "{!namespace}";
+        
+        /**
+        * Initialize toolkit connection
+        *@void
+        */
+        function init(){
+            sforce.connection.sessionId = '{!$Api.Session_ID}';
+            sforce.connection.defaultNamespace = namespace;
+            
+        }
+
+		function createLayout(){
+			$$('.DynamicLayoutResponse form')[0].onsubmit = function() {validateFormInfo()};
+			
+			var div = $$('.DynamicLayoutResponse')[0];	
+			var form = div.firstDescendant();	
+			var btnSaveForm = form.getElementsByClassName('btn')[0];
+		
+			//Format save button
+			btnSaveForm.addClassName('SaveBtn');
+			if (taskId == ''){
+				btnSaveForm.value="Create";
+			}else{
+				btnSaveForm.value="Update";
+			}
+		
+			//Insert the buttonsdiv
+			var buttonsDiv = $('btnContainer');
+			buttonsDiv.innerHTML = '';
+			buttonsDiv.show();
+
+			//Format cancel button	
+			var btnCancelForm = form.getElementsByClassName('btn')[1];	
+			btnCancelForm.addClassName('cancelBtn');
+			//btnCancelForm.type = 'button';
+		
+			//Insert the buttons into the div
+			buttonsDiv.insert(btnSaveForm);
+			buttonsDiv.insert(btnCancelForm);
+		
+			//Format TextAreas	
+			var textAreas=document.getElementsByTagName('textarea');
+			for (i in textAreas){
+				textAreas[i].rows = '4';
+				textAreas[i].cols = '75';
+			}
+			
+			//Set required fields
+			$$('.requiredInput').each(function(elem){
+					var height = elem.getHeight();
+					elem.childNodes[0].innerHTML = '&nbsp;';
+		
+					if(elem.childNodes[1].type == 'textarea')
+						elem.childNodes[0].style.height = (height-4) + 'px';
+		
+					if(elem.childNodes[1].type == 'text')
+						elem.childNodes[0].style.height = (height-3) + 'px';
+		
+					if(elem.childNodes[1].type == 'select-one')
+						elem.childNodes[0].style.height = (height-2) + 'px';
+				}
+			);		
+		
+		}
+		
+		var error = false;
+		
+		function validateFormInfo(){
+			error = false;
+			var select = $('ProjectCreateNewTask:secondForm:taskAssign');
+			if (select.selectedIndex == 0){ 
+				error = true;
+				$('assigneeError').show();
+			}else{
+				error = false;
+				$('assigneeError').hide();
+			}
+		}
+		
+		/**
+
+		* Delete Attachments
+
+		*/
+
+		function removeAttachment(id){
+
+			init();
+
+			dels = sforce.connection.deleteIds([id]);
+
+			$('attach' + id).remove();
+
+		}
+		
+		/* ### Functions to manage inputFile ### */
+
+		function onCancelEvent(){
+			location.href = '/apex/ProjectDetail?id=' + proj;
+			return false;
+		}
+
+		function showInputFile () {
+
+			var inputFileHideList = $$('.inputFileClassHide');
+
+			var cont = $('inputTeamFileContainer');
+
+			if (inputFileHideList.length > 0) {
+
+				inputFileHideList[0].className = 'inputFileClassShow';
+
+				cont.insert(inputFileHideList[0]);
+
+			}
+
+			//If last, hide add event
+
+			if (inputFileHideList.length == 1) {
+
+				var addAnother = $('attachAnother');
+
+				addAnother.style.display = 'none';
+
+			}
+
+		}
+
+		
+
+		function hideInputFile (aElement) {
+
+			var spanParent = aElement.parentNode;
+
+			spanParent.className = 'inputFileClassHide'
+
+			var inputFile = spanParent.getElementsByTagName('input');
+
+			inputFile[0].value = '';
+
+			var addAnother = $('attachAnother');
+
+			addAnother.style.display = '';
+
+		}
+
+		
+
+		function resetInputFile (aElement) {
+
+			var spanParent = aElement.parentNode;
+
+			var inputFile = spanParent.getElementsByTagName('input');
+
+			inputFile[0].value = '';
+
+		}
+
+		
+
+		function errorAttachment(index){
+
+			$('advanced').style.display = 'block';
+
+			$('advancedLinks').addClassName('open');
+
+			var iter = 1;
+
+			var error = '<span class="errorText errAttach"><b>Error:</b> The images size must be less than 5 mb</span>';
+
+			var parentNode = $$('.inputTeamFileContainer')[0];
+
+			for(var i=0; i < parentNode.childNodes.length; i++){
+
+			    if(parentNode.childNodes[i].tagName == 'SPAN'){
+
+			    	if(iter==index){
+
+			        	parentNode.childNodes[i].className = 'inputFileClassShow';
+
+			        	parentNode.childNodes[i].insert(error);
+
+			        }
+
+			        iter++;
+
+			    }
+
+			}
+
+		}
+		
+		var divId = 1;
+		
+		/**
+		* Add Assignee
+		*@param String idUser
+		*@param String percent
+		*@void
+		*/
+
+		function addAssigne(idUser, percent){
+
+			if($('firstDedicated').style.display == 'none'){
+
+				$('firstDedicated').show();
+
+			}
+
+			var select = $('ProjectCreateNewTask:secondForm:taskAssign');
+
+			var optionPercent = '';
+
+			for(var i=0; i<101; i=i+5){
+
+				optionPercent += '<option value=\''+i+'\'>'+i+' %</option>';
+
+			}
+
+			var resultSelect = '<div class=\'assigneCont\' id=\''+divId+'\'><label>&nbsp;</label><span class=\'no_requeried\'></span><select class=\'child childValidateAssignee\' onchange=\'checkOtherAsignees(this)\'>'+select.innerHTML+'</select><label>Percent Dedicated</label><select class=\'percentChild margin\'>'+optionPercent+'</select><a class=\'notassigned\' href=\'javascript:;\' onclick=\'removeAssigne(\"'+divId+'\")\'>Remove Assignee</a><br/></div>';
+
+			divId++;			
+
+			$('result').insert(resultSelect);
+
+			var selects = $$('.child');
+
+			var selectsPer = $$('.percentChild');
+
+			if(idUser != null){
+
+				selects.each(function(s, indice){
+
+				if(selects.length == indice+1){
+
+		        	s.value = idUser;
+		        }
+		      });
+
+		      selectsPer.each(function(e, indice){
+
+				if(selectsPer.length == indice+1){
+
+		        	e.value = percent;
+		        }
+		      });
+			}
+			else {
+
+				selects.each(function(s, indice){
+
+				if(selects.length == indice+1){
+
+		        	s.options[0].selected ='selected';
+		        }
+		      });
+			}
+		}
+		
+		function checkOtherAsignees(obj){
+			var error = false;
+			var assignee = $$('.childValidateAssignee');
+			if (obj.selectedIndex != 0){
+				for (var i = 0; i < assignee.length; i++){
+					//alert(obj.ancestors()[0].id + '  ' + assignee[i].ancestors()[0].id);
+					if (obj.ancestors()[0].id != assignee[i].ancestors()[0].id && obj.selectedIndex == assignee[i].selectedIndex){
+						error = true;
+					}
+				}
+			}
+			if (error){
+				alert('This member has already been assigned');
+				obj.selectedIndex = 0;
+			}	
+		}
+
+
+		/**
+		* Clear error for assigees
+		*/
+
+		function clearErrorsOnAssignees(){
+			var assignee = $$('.childValidateAssignee');
+
+			for(var i = 0; i < assignee.length; i++) {
+				assignee[i].style.border ='';
+			}				
+		}				
+
+		/**
+		* Remove Assignee
+		*@param String id
+		*/
+
+		function removeAssigne(id){
+
+			var tid = '' + id;
+
+			var div = $(tid);
+
+			div.remove();
+
+			if($$('.assigneCont').length == 0){
+
+				$('firstDedicated').hide();
+
+			}
+
+		}
+
+		
+		/**
+		* Remove DOM Element
+		*@param String
+		*/
+
+		function removeElement(id){
+			$(id).remove();
+		}
+		
+		/**
+		* Call back function for save event
+		*/
+		function onCompleteCallBackFunction(){
+			createLayout();
+			memberAssigne();
+			if($$('.errorMsg').length > 0 || error){
+				Effect.Appear('warning_to_user');
+				Effect.ScrollTo('anchorForError');
+			}else{
+				Effect.Fade('warning_to_user');
+
+				$$('.secondFormAction')[0].click();
+			}
+		}
+		
+		/**
+		* Member Assignee
+		*@void
+		*/
+
+		function memberAssigne(){
+
+			var contChild = $$('.assigneCont');	
+
+			var assigneeHidden = $('ProjectCreateNewTask:secondForm:assigneesCustomFormat');
+
+			if(contChild.length > 0){
+
+				for(var it=0; it < contChild.length; it++ ){
+					var Userid = $F(contChild[it].getElementsByClassName('child')[0]);
+					var percernt = $F(contChild[it].getElementsByClassName('percentChild')[0]);
+					if(Userid != 'Choose a '+ globalTeamLabel +' Member') {
+						assigneeToSave(Userid, percernt);
+					}				
+				}
+				assigneeHidden.value = assigneeHidden.value.substring(0, (assigneeHidden.value.length - 1));
+			}
+		}
+		
+		/**
+		* Assignees to save
+		*/
+
+		function assigneeToSave(user, percent){
+			var assigneeHidden = $('ProjectCreateNewTask:secondForm:assigneesCustomFormat'); 
+			if(user != 'undefined' && percent != ''){
+				assigneeHidden.value += user + ':' + percent + ';';	
+			}
+		}	
+		
+    </script>
+        
+	<!-- Bubble -->
+	<div id="bubble" class="bubble">
+        <div class="top_border">
+        	&nbsp;
+        </div>
+        <div class="content">
+            <img class="arrowBubble" src="{!URLFOR($Resource.ProjectResources, 'images/bubbleNewTeam/bubble_arrow.gif')}" />               
+            <!-- Content here -->
+            <div class="innerContBubble" id="innerContBubble">
+            </div>
+        </div>
+        <div class="bottom_border">
+        	&nbsp;
+        </div>
+   	</div>
+    
+    <!-- Header -->
+    <apex:composition template="HeaderTemplate">
+        <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
+        <apex:define name="module">{!$ObjectType.ProjectTask__c.label}</apex:define>
+        <apex:define name="title">New {!$ObjectType.ProjectTask__c.label}</apex:define>
+        <apex:define name="search">
+            <c:Search module="Project" />
+        </apex:define>
+    </apex:composition>
+    
+    <!-- Sidebar -->
+    <div class="sidebar">
+		<c:ProjectsWidgetMyTasks />
+		<c:ProjectsWidgetMyMilestones />
+	</div>
+	
+	<!-- Main Content Div -->
+    <div class="main_content">
+    	<div>
+        	<div class="holder">
+        		<!--  
+        		<div style="margin-top:15px;">&laquo;
+        			<a href="javascript: history.go(-1);" style="font-weight:normal;">
+        				Back
+					</a>
+				</div>
+				 -->
+        		<div class="teamTitle"  >
+        			{!TypeOfAction} {!$ObjectType.ProjectTask__c.label}
+        		</div>
+				
+                
+                <div class="body_center" style="height: auto !important; ">
+				
+				<a id="anchorForError">
+				</a>
+                <div id="warning_to_user" class="message_to_user" style="display:none;" >
+                    <div class="f_left">
+                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/error_icon.gif')}" />
+                    </div>
+                    <div class="f_left">
+                        <strong>
+                        	We had trouble unserstanding one or more of your entries or we need more information
+                        </strong><br />
+                        <span id="messageErrorText">
+                        	Please see the highlighted field(s)
+                        </span>
+                    </div>
+                    <div class="clear">
+                    </div>
+                </div><!-- end waring_to_user -->
+                
+                <div align="right">
+                    <table border="0" style="margin: 5px 0px 5px 0px;">
+                        <tr>
+                            <td style="width: 4px;">
+                                <span class="requiredLegend"></span>
+                            </td>
+                            <td>
+                                <span class="infoText" style="font-size: 9px; font-family: Arial, Helvetica, sans-serif;">
+                                    =&nbsp;Required Information 
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                
+               	<apex:outputPanel id="NewProjectFormContainer">
+                    <div class="Formcontentfolder">	
+                    	<!-- Dynamic Layout Output don't remove -->
+	                    <div class="DynamicLayoutResponse">
+	<apex:form ><label>Task Name</label><apex:inputField value="{!task.Name}" required="true" /><br/><br/><label>Owner</label><apex:inputField value="{!task.OwnerId}" required="false" /><br/><br/><label>Description</label><apex:inputField value="{!task.Description__c}" required="true" /><br/><br/><label>Project</label><apex:inputField value="{!task.Project__c}" required="false" /><br/><br/><label>Start Date</label><apex:inputField value="{!task.StartDate__c}" required="true" /><br/><br/><label>End Date</label><apex:inputField value="{!task.EndDate__c}" required="false" /><br/><br/><label>Duration</label><apex:inputField value="{!task.Duration__c}" required="true" /><br/><br/><label>ParentTask</label><apex:inputField value="{!task.ParentTask__c}" required="false" /><br/><br/><label>Priority</label><apex:inputField value="{!task.Priority__c}" required="false" /><br/><br/><label>Percent Completed</label><apex:inputField value="{!task.PercentCompleted__c}" required="false" /><br/><br/><label>Milestone</label><apex:inputField value="{!task.Milestone__c}" required="false" /><br/><br/><label>Sprint</label><apex:inputField value="{!task.Sprint__c}" required="true" /><br/><br/><label>Rank</label><apex:inputField value="{!task.Rank__c}" required="false" /><br/><br/><div class="btnStandardForm"><apex:commandButton action="{!save}" value="Save" onclick="statusSaving(this);" rerender="NewProjectFormContainer" oncomplete="onCompleteCallBackFunction();"  /><input class="btn" onclick="onCancelEvent();" type="button" value="Cancel"/></div></apex:form></div>
+	            	</div>
+	            	<!--Divs to format the page  -->
+	          	</apex:outputPanel>
+
+			<div class="SecondDiv">
+				<!-- Attachment and Assignees form -->
+				<apex:form id="secondForm" >
+				
+					<label>Assign To</label><span class="requeried"></span>
+					<apex:selectList id="taskAssign" value="{!dateMy.member}" styleClass="validateMember childValidateAssignee" title="" multiselect="false" size="1" onchange="checkOtherAsignees(this)" style="margin-bottom: 0px;" > 
+			  	 	 	<apex:selectOptions value="{!Members}"/>
+			  	 	</apex:selectList>
+			  	 	
+				  	
+			  	 	
+			  	 	<div id="firstDedicated" style="display:none;">
+				  	 	<label>Percent Dedicated</label>
+				  	 	<apex:selectList id="taskPercentDedicated" value="{!dateMy.Percent}" styleClass="margin" title="" multiselect="false" size="1" style="margin-bottom: 0px;"> 
+				  	 	 	<apex:selectOptions value="{!PercentDedicated}"/>
+				  	 	</apex:selectList>
+				  	</div>
+				  	<br>
+					<span class="errorRed" id="assigneeError" style="display:none;"><b>Error:</b> You must select a {!$ObjectType.Project2__c.label} member</span><br/>
+					<div id="result">
+						
+					</div>
+					<label>&nbsp;</label><span class="no_requeried"></span><a href="javascript:;" class="assigned" onclick="addAssigne();">Add another Assignee</a><br/><br/>
+				
+				<apex:inputHidden id="assigneesCustomFormat" value="{!assignees}" />
+						<a  href="javascript:;" onclick="hideAdvanced()" id="advancedLinks" class="advanced">Advanced options...</a>
+						<br/><br/>  
+						<div id="advanced" style="display: none;">
+					  	 	<label>File(s)</label><span class="no_requeried"></span>
+					  	 	<div class="attach_list">
+						  	 	<apex:repeat value="{!AttachmentList}" var="at"  >	
+						  	 		<div id="attach{!at.idAttachment}" class="attach_item">
+							  	 		<a href="javascript:;" class="{!at.contentType}">{!at.nameAttachment}({!at.bodyLenght}k)</a>
+							  	 		<a href="javascript:;" onclick="removeAttachment('{!at.idAttachment}')"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}" align="absmiddle"/></a>
+									</div>
+								</apex:repeat>
+							</div>
+							
+					  	 	<div id="inputTeamFileContainer" class="inputTeamFileContainer">
+								<span class="inputFileClassShow">
+									<apex:inputFile styleclass="inputFileClass" value="{!att1.Body}" fileSize="{!att1.BodyLength}" fileName="{!att1.Name}" contentType="{!att1.ContentType}"/><a href="javascript:;" onclick="resetInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>									
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att2.Body}" fileName="{!att2.Name}" fileSize="{!att2.BodyLength}" contentType="{!att2.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>								
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att3.Body}" fileName="{!att3.Name}" fileSize="{!att3.BodyLength}" contentType="{!att3.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att4.Body}" fileName="{!att4.Name}" fileSize="{!att4.BodyLength}" contentType="{!att4.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att5.Body}" fileName="{!att5.Name}" fileSize="{!att5.BodyLength}" contentType="{!att5.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att6.Body}" fileName="{!att6.Name}" fileSize="{!att6.BodyLength}" contentType="{!att6.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att7.Body}" fileName="{!att7.Name}" fileSize="{!att7.BodyLength}" contentType="{!att7.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+								</span>
+								<span class="inputFileClassHide">
+								<apex:inputFile value="{!att8.Body}" fileName="{!att8.Name}" fileSize="{!att8.BodyLength}" contentType="{!att8.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att9.Body}" fileName="{!att9.Name}" fileSize="{!att9.BodyLength}" contentType="{!att9.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+									</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att10.Body}" fileName="{!att10.Name}" fileSize="{!att10.BodyLength}" contentType="{!att10.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br />
+								</span>
+							</div>
+							<div class="attachAnotherWrapp">
+							 	<a class="assigned" id="attachAnother" href="javascript:;" onclick="showInputFile();">Attach another file</a>
+							</div>
+							<br/>
+							
+						</div>
+						<div class="title_line_btn"></div>
+						<div id="btnContainer"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+					</div>
+					<apex:commandButton styleClass="secondFormAction" style="display:none;" action="{!saveAttachmentsAndAccess}" onclick="statusSaving()"/>
+				</apex:form>
+				</div>
+				
+
+<div class="clear"></div>
+    		</div> <!-- end holder -->
+    	</div>
+    </div><!-- End main content div -->
+	<script>
+		<apex:repeat value="{!AssignMember}" var="member" first="1" >
+	 		addAssigne('{!member.IdMember}','{!member.Percent}');
+		</apex:repeat>
+	
+		<apex:repeat value="{!errorAttachList}" var="errAttach">
+			errorAttachment('{!errAttach}');
+		</apex:repeat>
+		
+		/**
+		* Hide or Show Advance information
+		*@void
+		*/
+		function hideAdvanced(){
+
+			if($('advanced').style.display == 'none'){
+				$('advanced').style.display = 'block';
+				$('advancedLinks').addClassName('open');
+			}
+
+			else if($('advanced').style.display == 'block'){
+
+				$('advanced').style.display = 'none';
+				$('advancedLinks').removeClassName('open');
+
+			}
+		}
+		
+	</script>
+</apex:page>

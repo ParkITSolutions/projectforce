@@ -1,0 +1,122 @@
+<apex:component id="overNewTask" controller="ProjectOverlayNewTaskController" allowDML="true">
+
+    <!-- IMPORTANT:
+         One of this component's ancestors MUST define a function called "taskListChanged". This function
+         receives no parameters, and is called when a new Task is created. The idea is to manage the refresh
+         of views related to Tasks in the page that includes this component, and not in the component
+         itself.
+     -->
+     
+    <!-- STYLE -->
+    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsOverlayNewTask.css')}" />
+
+    <!-- SCRIPT -->
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamsOverlayNewTask.js')}" />
+    
+    
+    <script>
+        var org_country = '{!$Organization.Country}';   
+        document.observe('dom:loaded',newTaskLoad);
+        
+		/**
+		* Temp source move to static
+		*/
+    </script>
+    
+    <!-- ### Initialize fixed Overlay ### -->
+    <div id="newTaskOverlay" class="fixedModalOverlay" style="display:none;"></div>
+    
+    <!-- Overlay Container -->
+    <div id="newTask" style="display:none;" class="overlayForm">
+        
+        <!-- Overlay Title -->
+        <div class="overlayTitleContent">
+            <div class="overlayTitle">Create New Task</div>
+            <div class="overlayCloseEvent">
+                <a href="Javascript:;" onclick="fixedModalNewTask.close();resetFormNewTask();">
+                    <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
+                </a>
+            </div>
+        </div>
+        
+        <!-- Overlay Content -->
+        <div class="overlayMainContent">
+            <!-- Required Information -->
+            <span class="overlayRequiredInfo">= Required Information</span>
+            <div class="overlay_form">
+            <apex:outputPanel id="refreshTaskOverlay" ></apex:outputPanel>
+            <apex:form >
+                <apex:actionFunction name="refreshAssignToTask" action="{!dummyRefresh}" rerender="assignToTask" />
+            </apex:form>
+            <apex:form id="quickTaskForm" onSubmit="if(checkFormNewTaskOverlay('{!$Component.member}','{!$Component.taskEstimate}','{!$Component.name}','{!$Component.taskStartDate}','{!$Component.taskDueDate	}')){true;}else {return false;};"  >  
+                <div id="formTaskID" style="display:none;">{!$Component.quickTaskForm}</div>
+                <apex:actionStatus id="taskStatus" layout="block">
+                        <apex:facet name="start"><apex:outputText value="Saving Task..." /></apex:facet>
+                        <apex:facet name="stop">    
+                            <apex:outputPanel id="taskPanel" layout="block">   
+                                <div class="overlayFormContent">
+                                    <label>Task Name</label><span class="required"></span>
+                                    <apex:inputField id="name" value="{!Task.name}" styleClass="medium" style="_margin-left: -10px;" required="true"/>
+                                    <div class="red" style="display: none; width: 170px;" id="taskNameError"><strong>Error:</strong> You must enter a value</div>
+                                    <br/>
+                                    <label>Start Date</label><span class="required"></span>
+                                    <apex:inputField id="taskStartDate" value="{!Task.StartDate__c}" styleClass="medium" required="true" />
+                                    <div id="taskStartDate-comp" style="display:none;">{!$Component.taskStartDate}</div>
+                                    <div class="red" style="display: none;" id="startDateError"><strong>Error:</strong> You must enter a value</div>
+                                    <div class="red" style="display: none;" id="startDateInvalid"><strong>Error:</strong> You must enter a valid value</div>
+                                    <br/>
+                                    <label>Due Date</label><span class="notrequired"></span>
+                                    <apex:inputField id="taskDueDate" value="{!Task.EndDate__c}" styleClass="medium" required="false" />
+                                    <div id="taskDueDate-comp" style="display:none;">{!$Component.taskDueDate}</div>
+                                    <div class="red" style="display: none;" id="dueDateError"><strong>Error:</strong> You must enter a greater value</div>
+                                    <div class="red" style="display: none;" id="dueDateInvalid"><strong>Error:</strong> You must enter a valid value</div>
+                                    <br/> 
+                                    <label>Estimate</label><span class="required"></span>
+                                    <apex:inputField value="{!Task.Duration__c}" required="true" styleClass="small" style="_margin-left: -10px;" id="taskEstimate"/><span class="desc">Hours</span>
+                                    <div class="red" style="display: none;" id="estimateError"><strong>Error:</strong> You must enter an estimate in hours</div><br/> 
+                                    <br/>
+                                    <label>Assign to</label><span class="required"></span>
+                                    <apex:outputpanel id="assignToTask" layout="block"> 
+                                        <apex:selectList value="{!projectMember.User__c}" required="true"  id="member" multiselect="false" size="1">
+                                            <apex:selectOptions value="{!projectMembers}" />
+                                        </apex:selectList><div class="red" style="display: none;" id="memberError"><strong>Error:</strong> You must select a value</div>
+                                    </apex:outputpanel>
+                                    <br/>
+                                </div>
+                                <div class="overlaySeparateLine" />
+                                <!-- Save and Cancel Buttons -->
+                                <div class="overlayFromButtons" align="center">
+                                    <apex:commandButton action="{!insertTask}" id="taskSaveBtn"                                                                              
+                                        status="taskStatus" style="float: none;width: 70px !important;"
+                                        onComplete="try{showSelect();}catch(e){}formValidate('{!$Component.name}', '{!$Component.taskEstimate}', '{!$Component.member}' ,'{!$Component.taskStartDate}' , '{!$Component.taskDueDate}');"
+                                        value="Save" styleClass="allButtons dummyBtn" rerender="quickTaskForm"/>
+                                    <input class="allButtons" type="button" style="float: none;width: 70px !important;background:#989999 none repeat scroll 0 0 !important;" value="Cancel"  onclick="try{showSelect();}catch(e){}resetFormNewTask();fixedModalNewTask.close();" />
+                                    <a href="javascript:;" onclick="sendTempTaskDetails('{!$Component.name}','{!$Component.taskStartDate}','{!$Component.taskDueDate}', '{!$Component.taskEstimate}','{!$Component.member}'); return false;">Edit task details</a>
+                                </div> 
+                                <div id="quickTaskFormId" style="display:none;">{!$Component.quickTaskForm}</div>          
+                            </apex:outputPanel>
+                        </apex:facet> 
+                    </apex:actionStatus>
+                </apex:form>
+            </div>
+            </div>
+            
+            <!-- The hidden form to send partial data to edit -->
+            <div style="display:none;">
+                <form id="hiddenFormQuickTask" action="ProjectCreateNewTask" method="get">
+                    <input id="tempProjectid" type="text" value="{!CurrentProjectId}" name="id" />
+                    <input id="tempQuickTaskName" type="text" name="qtname" />
+                    <input id="tempQuickTaskStartDate" type="text" name="qtsd"/>
+                    <input id="tempQuickTaskDueDate" type="text" name="qtdd"/>
+                    <input id="tempQuickTaskEstimate" type="text" name="qte"/>
+                    <input id="tempQuickTaskAsigneeId" type="text" name="qtaid"/>
+                    <input name="ed" value="true" />
+                    <input type="submit" value="tempSend" />            
+                </form>
+            </div>
+    </div>
+    <script>
+    	$$('.dummyBtn')[0].className = 'allButtons';
+    </script>
+</apex:component>
