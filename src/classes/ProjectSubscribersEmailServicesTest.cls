@@ -1,4 +1,11 @@
+/**
+*@author Miguel Soares @ 04/14/2009
+*/
 @isTest private class ProjectSubscribersEmailServicesTest {
+	
+	/**
+	* Test  ProjectSubscribersEmailServices
+	*/
     static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();

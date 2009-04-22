@@ -70,11 +70,11 @@
 								<div class="overlayFromButtons" align="center">
 									<apex:commandButton action="{!insertMilestone}" 										 										
 										rerender="quickMilestoneForm"
-										status="MilestoneStatus" style="float: none;"
-										value="Save" styleclass="overlaySaveBtn"
+										status="MilestoneStatus" style="float: none;width: 70px !important;"
+										value="Save" styleclass="allButtons dummyBtn"
 										oncomplete="try{showSelect();}catch(e){}formValidateMilestone('{!$Component.nameMilestone}', '{!$Component.dueDateMilestone}', '{!$Component.memberMilestone}')">
 									</apex:commandButton>
-									<apex:commandButton styleClass="overlayCancelBtn" style="float: none;" value="Cancel" onclick="try{showSelect();}catch(e){}resetFormNewMilestone();fixedModalNewMilestone.close(); return false;"  />
+									<apex:commandButton styleClass="allButtons dummyBtn" style="float: none;width: 70px !important;background:#989999 none repeat scroll 0 0 !important;" value="Cancel" onclick="try{showSelect();}catch(e){}resetFormNewMilestone();fixedModalNewMilestone.close(); return false;"  />
 									<a href="javascript:;" onclick="sendTempMilestoneDetails('{!$Component.nameMilestone}','{!$Component.memberMilestone}','{!$Component.dueDateMilestone}');return false;">Edit milestone details</a>
 									<div id="quickMilestoneFormId" style="display:none;">{!$Component.quickMilestoneForm}</div>			
 								</div>
@@ -96,5 +96,7 @@
 			</div>
 		</div>
 	</div>
-	
+	<script>
+		$$('.dummyBtn')[0].className = 'allButtons';
+	</script>
 </apex:component>

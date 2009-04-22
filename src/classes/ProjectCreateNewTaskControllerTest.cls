@@ -1,5 +1,10 @@
+/**
+*@author Miguel Soares @ 4/8/2009
+*/
 @isTest private class ProjectCreateNewTaskControllerTest {
-
+	/**
+	* Test ProjectCreateNewTaskController
+	*/
     static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();

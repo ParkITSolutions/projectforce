@@ -1,8 +1,6 @@
 <apex:component controller="ProjectDetailAttachmentController" allowDML="true">
-	
 	<!-- Set Attribure for project id. -->
 	<apex:attribute name="project" description="Project Id" type="String" required="true" assignTo="{!project}" />	
-	
 	<style>
 		div.wideBody div.swirlyAttachment{
 			height:100% !important;

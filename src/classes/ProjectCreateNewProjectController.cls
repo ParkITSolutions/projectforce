@@ -386,7 +386,7 @@ public class ProjectCreateNewProjectController {
 		List<ProjectProfile__c> projList = new List<ProjectProfile__c>();
 		cnt = [select count() from ProjectProfile__c where Name = 'Member Profile'];
 		
-		System.debug(cnt);
+		
 		//Can create tasks, cannot manage.	
        	if(cnt == 0){
        	    projectProfile = new ProjectProfile__c();

@@ -1,3 +1,6 @@
+/**
+*@author Miguel Soares @ 04/14/2009
+*/
 public class ProjectUtil {
 
 	public static Boolean currentlyExeTrigger = false;
@@ -10,7 +13,7 @@ public class ProjectUtil {
     private static List<Group> portalGroup = new List<Group>();           
     private static List<Group> partnerGroup = new List<Group>();
 	public static Boolean isTest = false;
-	
+	public static Integer MAX_SIZE = 4194304;
     
 	/**
 	*@param boolean
@@ -32,8 +35,6 @@ public class ProjectUtil {
 	public static Boolean getIsTest(){
 		return ProjectUtil.isTest;
 	}
-	
-	public static Integer MAX_SIZE = 4194304;
     
     /**
 	* Return the Namespace Prefix

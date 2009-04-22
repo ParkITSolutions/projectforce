@@ -1,3 +1,6 @@
+/**
+*@author Nicolas Gunther @ 03/30/2009
+*/
 public class ProjectTaskDetailController {
 	TaskDetails taskDetail = null;
 	boolean detailsOk;
@@ -5,6 +8,7 @@ public class ProjectTaskDetailController {
 	private String USERID = UserInfo.getUserId();
 	private Boolean editDeletePer = false;
 	private String projectId = '';
+	public UserPermissions userPermissions = new UserPermissions();
 	/**
 	* Constructor
 	*/
@@ -15,7 +19,7 @@ public class ProjectTaskDetailController {
 		editDeletePer = userPermissions.getCanManage();		
 	}	
 	
-	public UserPermissions userPermissions = new UserPermissions();
+	
 	
 	/**
 	* Generate permissions for an especific user

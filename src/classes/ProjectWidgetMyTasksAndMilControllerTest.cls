@@ -1,4 +1,10 @@
+/**
+*@author Miguel Soares @ 04/14/2009
+*/
 @isTest private class ProjectWidgetMyTasksAndMilControllerTest {
+	/**
+	* Test  ProjectWidgetMyTasksAndMilController
+	*/
     static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();

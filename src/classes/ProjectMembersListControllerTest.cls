@@ -1,11 +1,17 @@
+/**
+*@author Miguel Soares @ 04/08/2009
+*/
 @isTest private class ProjectMembersListControllerTest {
+	
 
     public static String idTeam = System.currentPageReference().getParameters().get('id');
     public static Boolean sortByDesc = false;
-    
     public static String sortBy = 'User__r.Name';
     User newUser = [select id from User where id !=: UserInfo.getUserId() limit 1];
     
+    /**
+	* Test ProjectMembersListController
+	*/
     public static testMethod void testTeam() {
         try{
             GenerateEnvironmentTest.gen();
@@ -171,8 +177,5 @@
             throw e;
         }
     }
-    
-    public static testMethod void Test1(){
-    
-    }
+   
 }

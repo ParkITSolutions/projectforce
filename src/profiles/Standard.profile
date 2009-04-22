@@ -47,12 +47,16 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProjectCreateNewProjectController</apexClass>
+        <apexClass>ProjectCreateNewController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProjectCreateNewProjectControllerTest</apexClass>
+        <apexClass>ProjectCreateNewControllerTest</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProjectCreateNewProjectController</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectCreateNewTaskController</apexClass>

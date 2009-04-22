@@ -1,3 +1,6 @@
+/**
+*@author Alvaro Scuccimarra @ 03/16/2009
+*/
 public class SearchController {
 	
 	// Parameter with action
@@ -15,29 +18,6 @@ public class SearchController {
 	// Default input field text value
 	private String defText = '';
 		
-	// Map with action=>PageReference
-	private Map<String, PageReference> searchIn = new Map<String, PageReference>{
-		'project' => Page.ProjectSearchResult
-	};
-		
-	/**
-	* Redirect to the specific result
-	*@return PageReference
-	*/
-	public PageReference searchKey(){
-		
-		if(this.module != null && this.module != ''){
-			PageReference pageRef = searchIn.get(module);
-			pageRef.getParameters().put('key', this.key);
-			if(this.teamId != null || this.teamId != ''){
-				pageRef.getParameters().put('id', this.teamId);
-			}
-			pageRef.setRedirect(true);			
-			return pageRef;
-		}else {
-			return null;
-		}
-	}
 	
 	/**
 	*@param String action
@@ -117,4 +97,29 @@ public class SearchController {
 			return this.defText;
 		}
 	}
+	
+	// Map with action=>PageReference
+	private Map<String, PageReference> searchIn = new Map<String, PageReference>{
+		'project' => Page.ProjectSearchResult
+	};
+		
+	/**
+	* Redirect to the specific result
+	*@return PageReference
+	*/
+	public PageReference searchKey(){
+		
+		if(this.module != null && this.module != ''){
+			PageReference pageRef = searchIn.get(module);
+			pageRef.getParameters().put('key', this.key);
+			if(this.teamId != null || this.teamId != ''){
+				pageRef.getParameters().put('id', this.teamId);
+			}
+			pageRef.setRedirect(true);			
+			return pageRef;
+		}else {
+			return null;
+		}
+	}
+	
 }

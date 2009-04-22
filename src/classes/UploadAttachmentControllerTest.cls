@@ -1,3 +1,6 @@
+/**
+*@author Miguel Soares @ 04/15/2009
+*/
 @isTest private class UploadAttachmentControllerTest {
     static testMethod void myUnitTest(){
     	

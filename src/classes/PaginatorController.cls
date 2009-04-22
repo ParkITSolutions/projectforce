@@ -1,22 +1,9 @@
+/**
+*@author: Alvaro Scuccimarra @ 16-03-2009
+*/
 public class PaginatorController {
 		 
     public Integer totalItemsNumber= 0;
-    
-    /**
-    * Set total num of items
-    *@param Integer num
-    */
-    public void setTotalItemsNumber(Integer num) {
-        totalItemsNumber = num;
-    }
-    
-    /**
-    * Get total items num
-    *@return Integer totalItemNumber
-    */
-    public Integer getTotalItemsNumber () {
-        return totalItemsNumber;
-    }
     
     /**
     * Set of Integers to control pagination
@@ -27,31 +14,6 @@ public class PaginatorController {
     public Integer firstRow = 0;
     
     /**
-    * Set total items to show
-    *@param Integer noits
-    */
-    public void setNumberOfItemsToShow (Integer noits) {
-    	numberOfItemsToShow = noits;	
-    }
-    
-    /**
-    * Set current page num
-    *@param Integer cp
-    */
-    public void setCurrentPagination (Integer cp) {
-    	currentPagination = cp;
-    }
-    
-    /**
-    * Set total num of pages
-    *@param Integer i
-    */
-    public void setCntPagination (Integer i){
-        cntPagination = i;
-    }
-    
-    
-    /**
     * Set of Booleans to show or not prev / next links
     */
     public boolean prevPageLinkShow = false;
@@ -60,92 +22,25 @@ public class PaginatorController {
     public boolean nextPageShow  = false;
     public boolean disabledInput  = false;
     
+    public Integer jumpPage = 1;
+    
     /**
-    * Set next page to show
-    *@param Boolean nps
+    * Get total items num
+    *@return Integer totalItemNumber
     */
-    public void setNextPageShow (Boolean nps) {
-    	nextPageShow = nps;
+    public Integer getTotalItemsNumber () {
+        return totalItemsNumber;
     }
     
     /**
-    * Set previus page to show
-    *@param Boolean pps
+    * Set total num of items
+    *@param Integer num
     */
-    public void setPrevPageShow (Boolean pps) {
-    	prevPageShow = pps; 
+    public void setTotalItemsNumber(Integer num) {
+        totalItemsNumber = num;
     }
     
-    /**
-    * Get disabled input (uses in jump to page)
-    *@return Boolean disbledInput
-    */
-    public boolean getdisabledInput() {
-        if(nextPageShow && prevPageShow){
-            disabledInput = true;
-        }else {
-            disabledInput = false;
-        }
-        return disabledInput;
-    }
-        
-    /**
-    * Set total num of pages
-    */
-    public void genCntPagination() {
-        cntPagination = (totalItemsNumber - (Math.mod(totalItemsNumber, numberOfItemsToShow)))/ numberOfItemsToShow;    
-        if (Math.mod(totalItemsNumber, numberOfItemsToShow) != 0 ) {
-            cntPagination++;
-        }   
-    }
-    
-    /**
-    * Clear pagination for re-use instance
-    */
-    public void clearPagination(){
-        firstRow = 0;
-        currentPagination = 1;
-    }
-    
-    /**
-    * Move to next page
-    */
-    public void nextPage () {
-        currentPagination++;
-        jumpPage = currentPagination;
-        firstRow = firstRow + numberOfItemsToShow;          
-    }
-    
-    /**
-    * Move to previus page
-    */
-    public void prevPage () {
-        currentPagination--;
-        jumpPage = currentPagination;
-        firstRow = firstRow - numberOfItemsToShow;  
-    }
-
-    /**
-    * Move to last page
-    */
-    public void lastPage () {
-        currentPagination = cntPagination;
-        jumpPage = cntPagination;
-        firstRow = (jumpPage - 1)* numberOfItemsToShow;     
-    }
-    
-    /**
-    * Move to first page
-    */
-    public void firstPage () {
-        currentPagination = 1;
-        jumpPage = 1;
-        firstRow = (jumpPage - 1)* numberOfItemsToShow; 
-    }
-
-    public void refreshPages () {}
-    
-    /**
+        /**
     * Get first item
     *@return Integer firstRow
     */
@@ -257,7 +152,7 @@ public class PaginatorController {
     
 
     
-    public Integer jumpPage = 1;
+    
 	/**
 	* Jump to page
 	*@return Integer jumpPage
@@ -265,6 +160,119 @@ public class PaginatorController {
     public Integer getJumpPage () {
         return jumpPage;
     }
+    
+    /**
+    * Set total items to show
+    *@param Integer noits
+    */
+    public void setNumberOfItemsToShow (Integer noits) {
+    	numberOfItemsToShow = noits;	
+    }
+    
+    /**
+    * Set current page num
+    *@param Integer cp
+    */
+    public void setCurrentPagination (Integer cp) {
+    	currentPagination = cp;
+    }
+    
+    /**
+    * Set total num of pages
+    *@param Integer i
+    */
+    public void setCntPagination (Integer i){
+        cntPagination = i;
+    }
+    
+    
+
+    /**
+    * Set next page to show
+    *@param Boolean nps
+    */
+    public void setNextPageShow (Boolean nps) {
+    	nextPageShow = nps;
+    }
+    
+    /**
+    * Set previus page to show
+    *@param Boolean pps
+    */
+    public void setPrevPageShow (Boolean pps) {
+    	prevPageShow = pps; 
+    }
+    
+    /**
+    * Get disabled input (uses in jump to page)
+    *@return Boolean disbledInput
+    */
+    public boolean getdisabledInput() {
+        if(nextPageShow && prevPageShow){
+            disabledInput = true;
+        }else {
+            disabledInput = false;
+        }
+        return disabledInput;
+    }
+        
+    /**
+    * Set total num of pages
+    */
+    public void genCntPagination() {
+        cntPagination = (totalItemsNumber - (Math.mod(totalItemsNumber, numberOfItemsToShow)))/ numberOfItemsToShow;    
+        if (Math.mod(totalItemsNumber, numberOfItemsToShow) != 0 ) {
+            cntPagination++;
+        }   
+    }
+    
+    /**
+    * Clear pagination for re-use instance
+    */
+    public void clearPagination(){
+        firstRow = 0;
+        currentPagination = 1;
+    }
+    
+    /**
+    * Move to next page
+    */
+    public void nextPage () {
+        currentPagination++;
+        jumpPage = currentPagination;
+        firstRow = firstRow + numberOfItemsToShow;          
+    }
+    
+    /**
+    * Move to previus page
+    */
+    public void prevPage () {
+        currentPagination--;
+        jumpPage = currentPagination;
+        firstRow = firstRow - numberOfItemsToShow;  
+    }
+
+    /**
+    * Move to last page
+    */
+    public void lastPage () {
+        currentPagination = cntPagination;
+        jumpPage = cntPagination;
+        firstRow = (jumpPage - 1)* numberOfItemsToShow;     
+    }
+    
+    /**
+    * Move to first page
+    */
+    public void firstPage () {
+        currentPagination = 1;
+        jumpPage = 1;
+        firstRow = (jumpPage - 1)* numberOfItemsToShow; 
+    }
+
+    public void refreshPages () {}
+    
+
     
     /**
     * Set jumpo to page

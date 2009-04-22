@@ -13,12 +13,12 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 			
             //Customer Portal Group            
             List<Group> portalGroup = new List<Group>();
-            //if(ProjectCreateNewProjectController.getAllowCustomerStatic()) 
+          
            	portalGroup = [Select g.Type, g.Name from Group g where Type = 'AllCustomerPortal'];
 
             //Partner Portal Group
             List<Group> partnerGroup = new List<Group>();
-            //if(ProjectCreateNewProjectController.getAllowPartnerStatic())
+           
            	partnerGroup = [Select g.Type, g.Name from Group g where Type = 'PRMOrganization'];	
             			
 			for (Integer it = 0; it < Trigger.new.size(); it++) {
@@ -96,18 +96,16 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 						}
 						insert groupMembers;
 					}else{
-						System.debug('uaqui');
 						//If Customer Portal group exist add GroupMember
 						List<GroupMember> gm2 = new List<GroupMember>();
 						Group instance = new Group();
-						System.debug('cussss' + ProjectCreateNewProjectController.getAllowCustomerStatic() + portalGroup.size());
 						if(portalGroup.size() > 0 ){
 							GroupMember gmPortal = new GroupMember();
 							// Get GroupMember if exists
 							instance = [ SELECT Id FROM Group WHERE Name =: groupsNames[ it ] LIMIT 1 ];
 							gm2 = [ SELECT Id FROM GroupMember WHERE GroupId =: instance.Id AND UserOrGroupId =: portalGroup[0].Id ];
 							
-							if(ProjectCreateNewProjectController.getAllowCustomerStatic()){
+							if(ProjectCreateNewController.getAllowCustomerStatic()){
 								if( gm2.size() == 0 ){					
 				                    gmPortal.GroupId = instance.Id;
 				                    gmPortal.UserOrGroupId = portalGroup[0].Id;
@@ -128,7 +126,7 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 							instance = [ SELECT Id FROM Group WHERE Name =: groupsNames[ it ] LIMIT 1 ];
 							gm2 = [ SELECT Id FROM GroupMember WHERE GroupId =: instance.Id AND UserOrGroupId =: partnerGroup[0].Id ];
 							
-							if(ProjectCreateNewProjectController.getAllowPartnerStatic()){
+							if(ProjectCreateNewController.getAllowPartnerStatic()){
 								if( gm2.size() == 0 ){					
 				                    gmPortal.GroupId = instance.Id;
 				                    gmPortal.UserOrGroupId = partnerGroup[0].Id;
@@ -179,7 +177,7 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 						insert newGroupMember;
 
 						//If Customer Portal group exist add GroupMember
-						if(ProjectCreateNewProjectController.getAllowCustomerStatic()){
+						if(ProjectCreateNewController.getAllowCustomerStatic()){
 							if(portalGroup.size() > 0 ){
 								GroupMember gmPortal = new GroupMember();
 			                    gmPortal.GroupId = projectGroup.Id;
@@ -189,7 +187,7 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 						}              
 	
 						//If Partner Portal group exist add GroupMember
-						if(ProjectCreateNewProjectController.getAllowPartnerStatic()){
+						if(ProjectCreateNewController.getAllowPartnerStatic()){
 							if(partnerGroup.size() > 0 ){
 								GroupMember gmPortal = new GroupMember();
 			                    gmPortal.GroupId = projectGroup.Id;

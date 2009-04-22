@@ -1,15 +1,15 @@
 /**
-*@author Miguel Soares de Lima @ 09/03/2009
+*@author Miguel Soares de Lima @ 03/09/2009
 */
 public class ProjectSubscribersEmailServices {
 
     //E-mail services instance
     private Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
     private List<ProjectSubscription__c> subscriptions = new List<ProjectSubscription__c>();
-    
     public Boolean isTaskEdit = false;  
     public Boolean isTest = false;
-
+	public static Boolean alreadySent = false;
+	 
     /**
     * Constructor (def)
     */
@@ -65,7 +65,7 @@ public class ProjectSubscribersEmailServices {
     }
 
     /**
-    *@Send meail to subscribers
+    *@Send mail to subscribers
     */
    
     public void sendMailForTaskAssigned( List<String> lstPAId )
@@ -97,7 +97,7 @@ public class ProjectSubscribersEmailServices {
     
 
     /**
-    *@Send meail to subscribers
+    *@Send mail to subscribers
     */
     public void sendMailForTaskChanged( List<String> lstPTId )
     {
@@ -124,7 +124,7 @@ public class ProjectSubscribersEmailServices {
     }
 
     /**
-    *@Send meail to subscribers
+    *@Send mail to subscribers
     */
     public void sendMailForTaskDeleted( List<String> lstTasksId )
     {
@@ -184,7 +184,7 @@ public class ProjectSubscribersEmailServices {
     *@param String message
     *@param String subject
     */
-    public static Boolean alreadySent = false;
+   
     public void SendMail(String[] toAddresses , Project2__c team,  String Message, String subject) {
         // Assign thsetReplyToe addresses for the To and CC lists to the mail object.
         mail.setToAddresses(toAddresses);

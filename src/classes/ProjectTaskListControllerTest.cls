@@ -1,4 +1,11 @@
+/**
+*@author Miguel Soares @ 04/14/2009
+*/
 @isTest private class ProjectTaskListControllerTest {
+	
+	/**
+	* Test  ProjectTaskListController
+	*/
     static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();
@@ -192,7 +199,7 @@
         taskList.setSortBy('EndDate__c');
         taskList.getSortBy();
 
-		System.debug('-----------------------------------------------------------------------------------------');
+		
 		
 		taskList.setSortBy('Milestone__c');
         taskList.createSortedTaskList();

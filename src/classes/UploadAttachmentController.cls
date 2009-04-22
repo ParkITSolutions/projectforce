@@ -4,10 +4,12 @@
 public class UploadAttachmentController {
 	// Parent Id parameter
 	public String parentId = System.currentPageReference().getParameters().get('pId');
-	
+	// Set place witch the Form is used
+	public String buttonStyle = '';
 	// max attachment size bytes
     public final Integer MAX_SIZE = 5240000;
-    
+  	// New Attachment Object
+	public Attachment newAttach = new Attachment();
     public Boolean validAttSize = true;
 	
 	/**
@@ -38,9 +40,7 @@ public class UploadAttachmentController {
 	public void constructMethods () {
 	}
 	
-	// Set place witch the Form is used
-	public String buttonStyle = '';
-	
+		
 	/**
 	* Get place witch the Form is used
 	*@return String
@@ -55,9 +55,6 @@ public class UploadAttachmentController {
 	public Boolean getValidAttSize(){
 		return validAttSize;
 	}	
-	
-	// New Attachment Object
-	public Attachment newAttach = new Attachment();
 	
 	/**
 	*@param Attachment

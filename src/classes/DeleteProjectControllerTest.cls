@@ -1,5 +1,12 @@
+/**
+*@author: Miguel Soares @ 15-04-2009
+*/
 @isTest private class DeleteProjectControllerTest {
-    static testMethod void myUnitTest(){
+	
+	/**
+    * Test DeleteProjectController
+    */
+	static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
@@ -10,10 +17,10 @@
     	
     	dpc.setProjectId( GenerateEnvironmentTest.project.id );
     	dpc.getProjectId();
-    	
     	dpc.deleteProject();
 
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
-    }     	
+    }
+         	
 }

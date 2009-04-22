@@ -5,7 +5,7 @@ public class ProjectDetailAttachmentController {
 
 	private String project = null;
 	private List<AttachmentInfo> attachments = new List<AttachmentInfo>();
-	
+	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
 	public ProjectDetailAttachmentController (){}
 
 	/**
@@ -34,7 +34,7 @@ public class ProjectDetailAttachmentController {
 		return attachments.size() > 0;
 	}
 	
-	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
+	
 	
 	/**
 	* Read user permissions

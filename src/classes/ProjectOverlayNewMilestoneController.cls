@@ -1,5 +1,5 @@
 /**
-*@author Bruno Fagundez @ 07/10/2008
+*@author Miguel Soares @ 03/18/2009
 * refactoring for projectforce
 */
 public class ProjectOverlayNewMilestoneController {
@@ -7,7 +7,10 @@ public class ProjectOverlayNewMilestoneController {
     
     ProjectTask__c newTask = new ProjectTask__c();
     public String PROJECTID = System.currentPageReference().getParameters().get('id');
-    
+    public ProjectMember__c projectMember = new ProjectMember__c();
+    public Project2__c currentProject = null;
+    public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
+     
     /**
     * Constructor
     */
@@ -24,6 +27,7 @@ public class ProjectOverlayNewMilestoneController {
         return PROJECTID;
     }
     
+      
     /**
     *@param String project Id
     */
@@ -31,9 +35,6 @@ public class ProjectOverlayNewMilestoneController {
         PROJECTID = s;
     }
     
-    public Project2__c currentProject = null;
-    
-
     /**
     *@return ProjectTask__c
     */
@@ -48,11 +49,18 @@ public class ProjectOverlayNewMilestoneController {
         newTask = pT;
     }
     
+       
+    /**
+    * Returns user location
+    *@return String
+    */
+    public String getUserLocale(){
+        return Userinfo.getLocale();    
+    }
+    
     /**
     *@return ProjectMember__c
     */
-
-    public ProjectMember__c projectMember = new ProjectMember__c();
     public ProjectMember__c getProjectMember(){ 
         return projectMember;
     }
@@ -97,7 +105,7 @@ public class ProjectOverlayNewMilestoneController {
             currentProject = [select Id from Project2__c where Id =: PROJECTID limit 1];
     }
     
-    public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
+   
     /**
     * Read User permissions
     */
@@ -106,15 +114,6 @@ public class ProjectOverlayNewMilestoneController {
         userPermissions.setProject(PROJECTID);
         userPermissions.setObjectType('Project');
         userPermissions.setPermissions();       
-    }
-    
-    
-    /**
-    * Returns user location
-    *@return String
-    */
-    public String getUserLocale(){
-        return Userinfo.getLocale();    
     }
     
     

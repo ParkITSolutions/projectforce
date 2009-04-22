@@ -1,3 +1,6 @@
+/**
+*@author Nicolas Gunther - 04/13/2009
+*/
 public with sharing class ProjectSearchResultController {
 	
 	public String criteria;
@@ -7,7 +10,21 @@ public with sharing class ProjectSearchResultController {
 	public List<SearchResult> searchResultList = new List<SearchResult>();
 	public List<ProjectTask__c> resultsProjectTask = new List<ProjectTask__c>();
 	public List<Project2__c> resultsProjectSearch = new List<Project2__c>();
-	
+	   	
+   	// Set of Integers to control pagination
+   	public Integer numberOfItemsToShow = 10;
+   	public Integer cntPagination;
+   	public Integer currentPagination = 1;
+   	public Integer firstRow = 0;
+   	
+   	// Set of Booleans to show or not prev / next links
+   	public boolean prevPageLinkShow = false;
+   	public boolean prevPageShow  = false;
+   	public boolean nextPageLinkShow  = false;
+   	public boolean nextPageShow  = false;
+   	
+   	public Integer jumpPage = 1;
+   	
 	/**
 	* Load 'key' parameter
 	*@Constructor
@@ -70,7 +87,7 @@ public with sharing class ProjectSearchResultController {
 	*/
 	public void search() {
 		
-		System.debug('Entering search()');
+
 		
 		List<SearchResult> tempResultList = new List<SearchResult>();	
 		
@@ -95,7 +112,7 @@ public with sharing class ProjectSearchResultController {
 			List<List<SObject>> resultList = [FIND :(criteria + '*') IN ALL FIELDS RETURNING Project2__c (Id, Name, Description__c)];
 			resultsProjectSearch = (List<Project2__c>) resultList[0];
 			
-			System.debug('resultList is:' + resultList);
+			
 			
 			// PARSE THE Projects RESULT LIST
 			for(Project2__c iter: resultsProjectSearch){
@@ -147,19 +164,7 @@ public with sharing class ProjectSearchResultController {
 		
 	}
 	
-   	
-   	// Set of Integers to control pagination
-   	public Integer numberOfItemsToShow = 10;
-   	public Integer cntPagination;
-   	public Integer currentPagination = 1;
-   	public Integer firstRow = 0;
-   	
-   	// Set of Booleans to show or not prev / next links
-   	public boolean prevPageLinkShow = false;
-   	public boolean prevPageShow  = false;
-   	public boolean nextPageLinkShow  = false;
-   	public boolean nextPageShow  = false;
-   	
+
    	/**
    	* Count number of result pages
    	*@void
@@ -319,7 +324,7 @@ public with sharing class ProjectSearchResultController {
    	}	
    	
 	
-	public Integer jumpPage = 1;
+	
 	
 	/**
 	* Jump to page

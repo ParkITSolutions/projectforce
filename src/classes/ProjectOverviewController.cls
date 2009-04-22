@@ -1,5 +1,5 @@
 /**
-*@author Rodrigo Birriel @ 17/03/2009
+*@author Rodrigo Birriel @ 03/17/2009
 */
 public with sharing class ProjectOverviewController {
 
@@ -13,6 +13,9 @@ public with sharing class ProjectOverviewController {
     public PaginatorController paginator = new PaginatorController();
     public Boolean isTest = false;
     List<Project> retProjects = new List<Project>();
+    public List<Letters> letterFilter = new List<Letters>();
+    //Letters list
+    public List<String> lettersList = new List<String>{'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};    
     
     /**
     * Construct
@@ -220,74 +223,9 @@ public with sharing class ProjectOverviewController {
     }
     
     public Boolean isAllProjects { get; set; }
-    
-    /*
-    * Class project
-    */
-    public class Project {
-        
-        //Atributes, getters and setters
-        public String name { get; set; }
-        public String createDate{ 
-            get; 
-            set{
-                createDate = value;
-            } 
-        }
-        public String id { get; set; }
-        /**
-        *@return String
-        */
-        public String image {   
-            set {
-                if(value == null) 
-                    image = 'null';
-                else
-                    image = '/servlet/servlet.FileDownload?file=' + value;
-            }
-            get; 
-        }
-        public Integer members { get; set; }
-        public Integer tasks { get; set; }
-        public Integer milestones { get; set; }        
-    }
-    
 
-    //Letters list
-    public List<String> lettersList = new List<String>{'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};    
-
-    /**
-    * Class Letters
-    */
-    public class Letters{
-        
-        Boolean containSites;
-        public String Letter{ get; set; }
-        public Integer CntSites { get; set; }
-
-        /**
-        * Set num of ocurs.
-        *@param Integer
-        */
-        public void setContainSites (Integer cntSites){
-            if (cntSites == 0){
-                this.containSites = false;
-            }else{
-                this.containSites = true;
-            }
-        }
-        
-        /**
-        * Returns num of ocurs.
-        *@return Boolean
-        */
-        public Boolean getContainSites (){
-            return containSites;
-        }
-    }   
     
-    public List<Letters> letterFilter = new List<Letters>();
-    
+  
     /**
     * Get Letter Filter
     *@return List<Letters> 
@@ -340,5 +278,65 @@ public with sharing class ProjectOverviewController {
         paginator.clearPagination();
         paginator.setTotalItemsNumber(retProjects.size());
         paginator.genCntPagination();           
+    }
+    /**
+    * Class Letters
+    */
+    public class Letters{
+        
+        Boolean containSites;
+        public String Letter{ get; set; }
+        public Integer CntSites { get; set; }
+
+        /**
+        * Set num of ocurs.
+        *@param Integer
+        */
+        public void setContainSites (Integer cntSites){
+            if (cntSites == 0){
+                this.containSites = false;
+            }else{
+                this.containSites = true;
+            }
+        }
+        
+        /**
+        * Returns num of ocurs.
+        *@return Boolean
+        */
+        public Boolean getContainSites (){
+            return containSites;
+        }
+    }  
+        
+    /*
+    * Class project
+    */
+    public class Project {
+        
+        //Atributes, getters and setters
+        public String name { get; set; }
+        public String createDate{ 
+            get; 
+            set{
+                createDate = value;
+            } 
+        }
+        public String id { get; set; }
+        /**
+        *@return String
+        */
+        public String image {   
+            set {
+                if(value == null) 
+                    image = 'null';
+                else
+                    image = '/servlet/servlet.FileDownload?file=' + value;
+            }
+            get; 
+        }
+        public Integer members { get; set; }
+        public Integer tasks { get; set; }
+        public Integer milestones { get; set; }        
     }
 }

@@ -1,4 +1,11 @@
+/**
+*@author: Miguel Soares @ 15-04-2009
+*/
 @isTest private class FlexWebServiceTest {
+	
+	/**
+    * Test FlexWebService
+    */
     static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();

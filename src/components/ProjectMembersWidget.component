@@ -177,13 +177,15 @@
 	<!-- Team Details Widget -->
 	<div class="teamWidget mySmallWidget" id="teamMemberID">
 		<!-- Widget Title -->
-		<div class="thinHeader"><apex:outputpanel rendered="{!(ComponentHeader!='Team Admins')}">
-			<div>
+		<div class="thinHeader">
+			<apex:outputpanel rendered="{!(ComponentHeader!='Team Admins')}">
 				<div>
-					<h4>{!$ObjectType.Project2__c.label} Members</h4>
+					<div>
+						<h4>{!$ObjectType.Project2__c.label} Members</h4>
+					</div>
 				</div>
-			</div>
-			</apex:outputpanel> <apex:outputpanel rendered="{!(ComponentHeader=='Team Admins')}">
+			</apex:outputpanel> 
+			<apex:outputpanel rendered="{!(ComponentHeader=='Team Admins')}">
 				<div>
 					<div>
 						<h4>{!$ObjectType.Project2__c.label} Admins</h4>

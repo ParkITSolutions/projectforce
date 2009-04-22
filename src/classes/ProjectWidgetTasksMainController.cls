@@ -1,10 +1,15 @@
 /**
-*@author Martin Prado @ 06/17/2008
+*@author Miguel Soares @ 03/24/2008
 */
 public class ProjectWidgetTasksMainController {
 
 	
 	String teamId;
+	Integer listSize = 0;
+	public Boolean sidebar = false;
+	List<ProjectTask__c> tasks = new List<ProjectTask__c>();
+	List<ProjectTask> taskResults = new List<ProjectTask>();
+	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
 	
 	/**
 	* Constructor
@@ -31,7 +36,7 @@ public class ProjectWidgetTasksMainController {
 		return teamId;
 	}
 	
-	public Boolean sidebar = false;
+	
 	
 	/**
 	* Set Sidebar
@@ -64,7 +69,7 @@ public class ProjectWidgetTasksMainController {
 		taskResults = pt;
 	}
 	
-	Integer listSize = 0;
+	
 	/**
 	* Get task list size
 	*@return Integer
@@ -73,7 +78,7 @@ public class ProjectWidgetTasksMainController {
 		return listSize;
 	}
 	
-	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
+	
 	
 	/**
 	* Read user permissions
@@ -94,8 +99,7 @@ public class ProjectWidgetTasksMainController {
 		return userPermissions;
 	}
 
-	List<ProjectTask__c> tasks = new List<ProjectTask__c>();
-	List<ProjectTask> taskResults = new List<ProjectTask>();
+	
 	
 	/**
 	* Load all project task

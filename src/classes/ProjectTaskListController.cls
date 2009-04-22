@@ -6,9 +6,7 @@ public with sharing class ProjectTaskListController {
     
     public Project2__c project = null;
     public Id USERID = UserInfo.getUserId(); 
-
     public Boolean editDeletePer = false;
-    
     public boolean isProjectMember = false;
     public String PROJECTID = System.currentPageReference().getParameters().get('id');
     public String filter = System.currentPageReference().getParameters().get('filter');
@@ -16,6 +14,28 @@ public with sharing class ProjectTaskListController {
     public Map<String, User> mapAsignees = new Map<String, User>();
     List<TaskDetails> taskList = new List<TaskDetails>();
     String option = 'all';
+    public UserPermissions userPermissions = new UserPermissions();
+    public Boolean sortByDesc = false;
+    public String sortBy;
+    public String oldSortBy;
+    
+    /**
+    * Set of Integers to control pagination
+    */
+    public Integer totalItemsNumber = taskList.size();
+    public Integer numberOfItemsToShow = 18;
+    public Integer cntPagination = 0;
+    public Integer currentPagination = 1;
+    public Integer firstRow = 0;
+    
+    /**
+    * Set of Booleans to show or not prev / next links
+    */
+    public boolean prevPageLinkShow = false;
+    public boolean prevPageShow  = false;
+    public boolean nextPageLinkShow  = false;
+    public boolean nextPageShow  = false;
+    
     
     /**
     *Constructor
@@ -135,10 +155,8 @@ public with sharing class ProjectTaskListController {
     }
     
     
-    /* ---------------------------- */
-    /*       SHARING RULES          */
-    /* ---------------------------- */  
-    public UserPermissions userPermissions = new UserPermissions();
+  
+ 
     
     /**
     *Generates user permissions
@@ -194,123 +212,8 @@ public with sharing class ProjectTaskListController {
         }
     }
 
-    
-    /**
-    *Class TaskDetails
-    *@author Bruno Fagundez
-    */
-    public class TaskDetails {
 
-            // Task Id
-            public String id { get; set; }
-            
-            // Task Asignee
-            public String AsigneeName = null;         
-            
-            /**
-            *Assignes user to task
-            *@param User
-            */
-            public void setAsigneeName(User u){ 
-                this.userTask = u;
-            }            
-            
-            /**
-            *Get User assigned to task
-            *@return String
-            */
-            public String getAsigneeName (){
-                if(this.userTask != null){
-                    if(userTask.Project__r.size() <= 0){
-                        return '';
-                    }else {
-                        return userTask.Project__r[0].Picture__c;
-                    }
-                }else {
-                    return '';
-                }
-             
-            }
-
-            // Is Task Owner
-            public boolean isTaskOwner {
-                get;
-                set ;
-            }
-            
-            // Task Name
-            public String Name { get; set; }
-                        
-            // Project Name
-            public String ProjectName { get; set; }
-            
-            // Priority
-            public String Priority { get; set; }
-            
-            // Start Date
-            public String StartDate { get; set; }
-            
-            // Due Date
-            public String DueDate { get; set; } 
-            
-            // Estimated Time 
-            public Integer Estimate { get; set; }
-            
-            // Description 
-            public String Description { get; set; } 
-            
-            public boolean Milestone { 
-                get { 
-                    return Milestone; 
-                }
-                set {
-                    Milestone = value;
-                }
-            }
-            
-            public Integer Percent_Completed { 
-                get; set; 
-            }  
-            
-            public boolean comparoFecha { 
-                get; set; 
-            }
-            
-            public Integer cantDias { 
-                get; set; 
-            }  
-            
-            public User userTask { 
-                get; set; 
-            }  
-            
-            public Boolean canEditAndDelete { 
-                get; set; 
-            } 
-                
-    }
     
-    /**
-    * Pagination
-    *
-    */
-    
-    /**
-    * Set of Integers to control pagination
-    */
-    public Integer totalItemsNumber = taskList.size();
-    public Integer numberOfItemsToShow = 18;
-    public Integer cntPagination = 0;
-    public Integer currentPagination = 1;
-    public Integer firstRow = 0;
-    
-    /**
-    * Set of Booleans to show or not prev / next links
-    */
-    public boolean prevPageLinkShow = false;
-    public boolean prevPageShow  = false;
-    public boolean nextPageLinkShow  = false;
-    public boolean nextPageShow  = false;
     
     /**
     *Generates number of pages
@@ -433,14 +336,8 @@ public with sharing class ProjectTaskListController {
         } 
         return nextPageShow;
     }
-    /* ---------------------------- */
-    /*           ORDER BY           */
-    /* ---------------------------- */
-    public Boolean sortByDesc = false;
-    
-    public String sortBy;
-    public String oldSortBy;
-    
+  
+     
     public void setSortBy(String sortBy) {
     	if (this.oldSortBy != null && oldSortBy.equals(sortBy))
     		sortByDesc = !sortByDesc;
@@ -1077,6 +974,100 @@ public with sharing class ProjectTaskListController {
         }
         idTaskToComplete = '';
     }
- 
+ 	    
+    /**
+    *Class TaskDetails
+    *@author Bruno Fagundez
+    */
+    public class TaskDetails {
+
+            // Task Id
+            public String id { get; set; }
+            
+            // Task Asignee
+            public String AsigneeName = null;         
+            
+            /**
+            *Assignes user to task
+            *@param User
+            */
+            public void setAsigneeName(User u){ 
+                this.userTask = u;
+            }            
+            
+            /**
+            *Get User assigned to task
+            *@return String
+            */
+            public String getAsigneeName (){
+                if(this.userTask != null){
+                    if(userTask.Project__r.size() <= 0){
+                        return '';
+                    }else {
+                        return userTask.Project__r[0].Picture__c;
+                    }
+                }else {
+                    return '';
+                }
+             
+            }
+
+            // Is Task Owner
+            public boolean isTaskOwner {
+                get;
+                set ;
+            }
+            
+            // Task Name
+            public String Name { get; set; }
+                        
+            // Project Name
+            public String ProjectName { get; set; }
+            
+            // Priority
+            public String Priority { get; set; }
+            
+            // Start Date
+            public String StartDate { get; set; }
+            
+            // Due Date
+            public String DueDate { get; set; } 
+            
+            // Estimated Time 
+            public Integer Estimate { get; set; }
+            
+            // Description 
+            public String Description { get; set; } 
+            
+            public boolean Milestone { 
+                get { 
+                    return Milestone; 
+                }
+                set {
+                    Milestone = value;
+                }
+            }
+            
+            public Integer Percent_Completed { 
+                get; set; 
+            }  
+            
+            public boolean comparoFecha { 
+                get; set; 
+            }
+            
+            public Integer cantDias { 
+                get; set; 
+            }  
+            
+            public User userTask { 
+                get; set; 
+            }  
+            
+            public Boolean canEditAndDelete { 
+                get; set; 
+            } 
+                
+    }
     
 }

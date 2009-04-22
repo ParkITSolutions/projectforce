@@ -1,5 +1,11 @@
+/**
+*@author Miguel Soares @ 04/08/2009
+*/
 public class ProjectDetailControllerTest {
-
+	
+	/**
+	* Test ProjectDetailController
+	*/
     static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();

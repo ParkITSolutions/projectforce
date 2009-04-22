@@ -1,4 +1,11 @@
+/**
+*@author: Miguel Soares @ 04-15-2009
+*/
 @isTest private class PaginatorControllerTest {
+	
+	/**
+    * Test PaginatorController
+    */
     static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();
@@ -6,7 +13,7 @@
     	Test.startTest();
     	
     	
-PaginatorController n = new PaginatorController();
+		PaginatorController n = new PaginatorController();
         n.setNumberOfItemsToShow(8);
         n.setTotalItemsNumber(10);
         Integer totalItem = n.getTotalItemsNumber();

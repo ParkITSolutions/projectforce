@@ -1,14 +1,18 @@
 /**
-*@author Alvaro Scuccimarra @ 07/04/2009
+*@author Alvaro Scuccimarra @ 04/07/2009
 */
 public class ProjectDeleteTaskOverlayController {
+	
 	private Id USERID = UserInfo.getUserId(); 
 	private String idDeletes = '';
 	private UserPermissions userPermissions = new UserPermissions();
 	private String projectId = '';
 		
 	public ProjectDeleteTaskOverlayController(){} 
-	   
+	 
+	/**
+    * Generate User Permissions
+    */
     public void genPermissions () {
         userPermissions.setId(UserInfo.getUserId());
         userPermissions.setProject(projectId);
@@ -17,13 +21,20 @@ public class ProjectDeleteTaskOverlayController {
             
     }
     
+    /**
+    *@return idDeletes
+    */
     public String getIdDeletes () {
         return idDeletes;   
     }
     
+    /**
+    *@param sidDeletes
+    */
     public void setIdDeletes (String sidDeletes) {
         idDeletes = sidDeletes; 
     }
+    
     
     public void deleteTaskFromList(){
     	deleteTask();	
@@ -31,8 +42,7 @@ public class ProjectDeleteTaskOverlayController {
     
     public PageReference deleteTaskFromDetail(){
     	deleteTask();
-    	System.debug('estoytoy' + projectId);
-    	PageReference pr = new PageReference('/apex/ProjectDetail?id=' + projectId);
+       	PageReference pr = new PageReference('/apex/ProjectDetail?id=' + projectId);
         pr.setRedirect(true);
         return pr;
     }
@@ -67,8 +77,7 @@ public class ProjectDeleteTaskOverlayController {
                    
                 }
                 if(taskListToDelete.size() > 0) {
-                	System.debug('estoy' + projectId);
-                    delete taskListToDelete;
+                	delete taskListToDelete;
 	            }
             }
         }

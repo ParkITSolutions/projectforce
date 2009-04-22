@@ -1,6 +1,10 @@
+/**
+*@author Nicolas Gunther @ 3-27-2009
+*/
 public class ProjectOverlayNewAttachmentController {
 	
 	private String parentId = ''; 
+	public ProjectOverlayNewAttachmentController(){}
 	
 	/**
 	*@return attach parent id
@@ -16,6 +20,6 @@ public class ProjectOverlayNewAttachmentController {
 		parentId = id;
 	}
 	
-	public ProjectOverlayNewAttachmentController(){}
+	
 
 }

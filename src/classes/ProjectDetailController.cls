@@ -1,10 +1,9 @@
 /**
-*@author Bruno Fagundez @ 06/09/2008
+*@author Miguel Soares @ 03/17/2009
 */
 public with sharing class ProjectDetailController
 {
-    
-    Project2__c teamspace = new Project2__c();
+	Project2__c teamspace = new Project2__c();
     public Boolean isLastMemberAdmin = false;
     boolean noImage; 
     boolean emailTeamspace;
@@ -13,11 +12,12 @@ public with sharing class ProjectDetailController
    	private Boolean isMember;
 	private Boolean isPublic;
     public ProjectMembersListController pmc = new ProjectMembersListController(); 
-    public static UserPermissions userPermission = new UserPermissions();
     private String projectType = '';	
     String teamIdParam = System.currentPageReference().getParameters().get('id');
     public String USERID =  UserInfo.getUserId(); 
     public boolean isManager = false;
+    public static ProjectTask__c taskT;
+    public static UserPermissions userPermission = new UserPermissions();
     
     /**
     * Constructor
@@ -33,6 +33,26 @@ public with sharing class ProjectDetailController
     public Boolean getIsLastMemberAdmin(){
     	return isLastMemberAdmin;
    	}
+   	
+   	 /**
+    *@return UserPermission
+    */
+    
+    public UserPermissions getUserPermission () {
+        return userPermission;
+    }
+
+    /**
+    * Static function for widgets controllers use
+    *@return UserPermissions instance
+    */
+    public static UserPermissions getUserPermissions () {
+        return userPermission;
+    }  
+
+    public boolean getIsManager(){
+    	return isManager;
+    }  
 
     /**
     *@param String team id
@@ -46,7 +66,36 @@ public with sharing class ProjectDetailController
     */
     public String getTeamIdParam(){
         return teamIdParam;
-    }    
+    } 
+    
+    /**
+    *@param Boolean isp
+    */	
+	public void setIsPublic(Boolean isp){
+		this.isPublic = isp;
+	}
+	
+	/**
+    *@param Boolean ism
+    */	
+	public void setIsMember(Boolean ism){
+		this.isMember = ism;
+	}
+	
+	/**
+    * @return boolean isPublic
+    */
+	public boolean getIsPublic(){
+		return this.isPublic;
+	}
+	
+	/**
+    * @return boolean isMember
+    */	
+	public boolean getIsMember(){
+		return this.isMember;	
+	}
+       
     
     /**
     * Check if is TeamsSuscription page
@@ -67,27 +116,7 @@ public with sharing class ProjectDetailController
         userPermission.setPermissions();
     }
     
-    /**
-    *@return UserPermission
-    */
-    
-    public UserPermissions getUserPermission () {
-        return userPermission;
-    }
-
-    /**
-    * Static function for widgets controllers use
-    *@return UserPermissions instance
-    */
-    public static UserPermissions getUserPermissions () {
-        return userPermission;
-    }  
-
-    public boolean getIsManager(){
-    	return isManager;
-    }  
-   
-    
+      
     /**
     * Read Team
     *@throws Exception
@@ -136,23 +165,7 @@ public with sharing class ProjectDetailController
 			}
 		}
 	}
-	
-	public void setIsPublic(Boolean isp){
-		this.isPublic = isp;
-	}
-	
-	public void setIsMember(Boolean ism){
-		this.isMember = ism;
-	}
-	
-	public boolean getIsPublic(){
-		return this.isPublic;
-	}
-	
-	public boolean getIsMember(){
-		return this.isMember;	
-	}
-    
+
     /**
     * Join Project
     */
@@ -223,14 +236,4 @@ public with sharing class ProjectDetailController
             return '';
         return '/servlet/servlet.FileDownload?file=' + teamAvatar[0].Picture__c;
     }  
-    
- 
-    /**
-    * Refresh wiki list for widgets
-    *@void
-    */
-    public void refreshWikis () {}
-    
-    public static ProjectTask__c taskT;
-
 }

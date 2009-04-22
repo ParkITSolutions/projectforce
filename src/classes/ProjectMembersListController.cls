@@ -1,6 +1,5 @@
 /**
-*@author Ignacio Toledo
-*@date 3/17/2008
+*@author Ignacio Toledo @ 3/17/2008
 */
 
 public without sharing class ProjectMembersListController {
@@ -88,6 +87,10 @@ public without sharing class ProjectMembersListController {
 		sortBy = s;	
 	}
 	
+	/**
+	* Join Project
+	*@void
+	*/
 	public void joinProject(){
 		ProjectMember__c projectMember = new ProjectMember__c();
 		projectMember.User__c = UserInfo.getUserId();
@@ -96,6 +99,11 @@ public without sharing class ProjectMembersListController {
 		insert projectMember;
 	}
 	
+	
+	/**
+	* Unjoin Project
+	*@void
+	*/
 	public void unjoinProject(){
 		List<ProjectMember__c> member = [select Id, User__c from ProjectMember__c where User__c =: UserInfo.getUserId() and Project__c =: this.getProjectId()];
 		if(member.size() > 0){
@@ -415,7 +423,483 @@ public without sharing class ProjectMembersListController {
 		
 	}
 	
+
 	
+	
+	/** Pagination */
+	
+	/**
+   	* Count number of result pages
+   	*@void
+   	*/
+   	public void genCntPagination () {
+   		cntPagination = (totalItemsNumber - (Math.mod(totalItemsNumber, numberOfItemsToShow)))/ numberOfItemsToShow;	
+   		if (Math.mod(totalItemsNumber, numberOfItemsToShow) != 0 ) {
+   			cntPagination++;
+   		} 	
+   	}
+   	
+   	/**
+   	* Go next result page
+   	*/
+   	public void nextPage () {
+   		currentPagination++;
+   		firstRow = firstRow + numberOfItemsToShow;   		
+   	}
+   	
+   	/**
+   	* Go previus result page
+   	*/
+   	public void prevPage () {
+   		currentPagination--;
+   		firstRow = firstRow - numberOfItemsToShow;	
+   	}
+   	
+   	/**
+	*@return Integer
+	*/
+	public Integer getTotalItemsNumber () {
+		return totalItemsNumber;
+	}
+	
+   	/**
+   	* Pagination Integer Getters
+   	*@return Integer
+   	*/
+   	public Integer getFirstItem () {
+		return (firstRow + 1);
+	}
+	
+	/**
+	* Assign a number to the last page's result
+	*@return Integer
+	*/
+	public Integer getLastItem () {
+		Integer lastItem;
+		if ((currentPagination == cntPagination) || (currentPagination == 1 && (totalItemsNumber < numberOfItemsToShow))) {
+			lastItem = firstRow + Math.mod(totalItemsNumber, numberOfItemsToShow);
+		}else {
+			lastItem = firstRow + 10;
+		}
+		return lastItem;
+	}
+   	
+   	/**
+   	* Return current page number
+   	*@return Integer
+   	*/
+   	public Integer getCurrentPagination () {
+   		return currentPagination;
+   	}
+   	
+   	/**
+   	* Return number of result pages
+   	*@return Integer
+   	*/
+   	public Integer getCntPagination () {
+   		return cntPagination;
+   	}
+   	
+   	/**
+   	* Return number of results
+   	*@return Integer
+   	*/
+   	public Integer getNumberOfItemsToShow () {
+   		return numberOfItemsToShow;
+   	}
+   	
+   	/**
+   	* Return the number of the first item of page
+   	*@return Integer
+   	*/
+   	public Integer getFirstRow () {
+   		return firstRow;
+   	}
+   	
+   	/**
+   	* Return if show Prev Link
+   	*@return boolean
+   	*/
+	public boolean getPrevPageLinkShow () {
+		return currentPagination != 1;
+   	}
+   	
+   	/**
+   	* Return if show Prev Link
+   	*@return boolean
+   	*/
+   	public boolean getPrevPageShow () {
+   		return currentPagination == 1;
+   	}
+   	
+   	/**
+   	* Return if show Next Link
+   	*@return boolean
+   	*/
+   	public boolean getNextPageLinkShow () {
+   		return !(currentPagination == cntPagination) || (cntPagination == 0);
+   	}
+   	
+   	/**
+   	* Return if show Next Link
+   	*@return boolean
+   	*/
+   	public boolean getNextPageShow () {
+   		return (currentPagination == cntPagination) || (cntPagination == 0);
+   	}
+   	
+   		
+	/**
+	* Return list with letters and if contain Project members
+	*@return List<Letters>
+	*/
+	public List<Letters> getLetterFilter () {
+		List<Letters> letterFilter = new List<Letters>();
+   		for (String item : lettersList) {
+   			Letters currentLetter = new Letters();
+   			Integer cntMembers = [select count() 
+					   			  from ProjectMember__c 
+					   			  where User__r.Name like :(item + '%') and project__c =:idProject];
+   			currentLetter.setLetter(item);
+   			currentLetter.setContainMembers(cntMembers);
+   			letterFilter.add(currentLetter);
+   		}
+   		return letterFilter;		
+	}
+	
+	/**
+	* Return the Namespace Prefix
+	*@return String
+	*/
+	public String getNamespace () {
+        return ProjectUtil.getNamespace();
+    } 
+    
+    /**
+	*@param String idProject
+	*/
+	public void setIdProject(String proj){
+		idProject = proj;
+	}
+	
+	/**
+	* Set memberId to remove
+	*@param String memberId
+	*/
+	public void setRemoveMemberId (String memberId){
+		removeMemberId = memberId; 
+	}
+	
+	/*
+	 * This is a temporary method to cover us until dynamic apex is back.  This will use hard coded
+	 * SOQL statements in place of the dynamic statements
+	 */
+	public void sortList () {
+		List<Member> membersList = new List<Member>();
+		if (sortBy == System.currentPageReference().getParameters().get('sb')) {
+			sortByDesc = !sortByDesc;
+		}else {
+			sortByDesc = false;
+		}
+		
+		//Sort param
+		if(System.currentPageReference().getParameters().get('sb') != null)
+			sortBy = System.currentPageReference().getParameters().get('sb');
+		
+		List<ProjectMember__c> memberResultList = new List<ProjectMember__c>();
+
+		if (sortByDesc) {
+			if (letter == null || letter == '' || letter== 'ALL') {
+				if (sortBy == 'User__r.Name') {
+					memberResultList = [select id, 
+											   Name, 
+											   Profile__r.Name, 
+											   Profile__r.Description__c, 
+											   User__r.Name, 
+											   User__r.Title, 
+											   User__r.Id, 
+											   User__r.CompanyName 
+										from ProjectMember__c 
+										where project__c =: idProject and User__r.IsActive != false
+										order by User__r.Name desc];
+				}
+				if (sortBy == 'User__r.CompanyName') {
+					memberResultList = [select id, 
+											   Name, 
+											   Profile__r.Name, 
+											   Profile__r.Description__c, 
+											   User__r.Name, 
+											   User__r.Title, 
+											   User__r.Id, 
+											   User__r.CompanyName 
+										from ProjectMember__c 
+										where project__c =: idProject and User__r.IsActive != false
+										order by User__r.CompanyName desc];						
+				}	
+				if (sortBy == 'User__r.Title') {
+					memberResultList = [select id, 
+											   Name, 											   
+											   Profile__r.Name, 
+											   Profile__r.Description__c, 
+											   User__r.Name, 
+											   User__r.Title, 
+											   User__r.Id, 
+											   User__r.CompanyName 
+										from ProjectMember__c 
+										where project__c =: idProject and User__r.IsActive != false
+										order by User__r.Title desc];							
+				}
+				if (sortBy == 'Profile__r.Name') {
+					memberResultList = [select id, 
+											   Name, 											   
+											   Profile__r.Name, 
+											   Profile__r.Description__c, 
+											   User__r.Name, 
+											   User__r.Title, 
+											   User__r.Id, 
+											   User__r.CompanyName 
+										from ProjectMember__c 
+										where project__c =: idProject and User__r.IsActive != false
+										order by Profile__r.Name desc];						
+				}		
+			}else {
+				if (sortBy == 'User__r.Name') {
+					memberResultList = [select id, 
+											   Name, 											   
+											   Profile__r.Name, 
+											   Profile__r.Description__c, 
+											   User__r.Name, 
+											   User__r.Title, 
+											   User__r.Id, 
+											   User__r.CompanyName 
+										from ProjectMember__c 
+										where User__r.Name like: (letter + '%') 
+										and project__c =: idProject and User__r.IsActive != false
+										order by User__r.Name desc];					
+				}
+				if (sortBy == 'User__r.CompanyName') {
+					memberResultList = [select id, 
+											   Name,											   
+											   Profile__r.Name, 
+											   Profile__r.Description__c, 
+											   User__r.Name, 
+											   User__r.Title, 
+											   User__r.Id, 
+											   User__r.CompanyName 
+										from ProjectMember__c 
+										where User__r.Name like: (letter + '%') 
+										and project__c =: idProject and User__r.IsActive != false
+										order by User__r.CompanyName desc];							
+				}	
+				if (sortBy == 'User__r.Title') {
+					memberResultList = [select id, 
+											   Name, 
+											   Profile__r.Name, 
+											   Profile__r.Description__c, 
+											   User__r.Name, 
+											   User__r.Title, 
+											   User__r.Id, 
+											   User__r.CompanyName 
+										from ProjectMember__c 
+										where User__r.Name like: (letter + '%') 
+										and project__c =: idProject and User__r.IsActive != false
+										order by User__r.Title desc];							
+				}
+				if (sortBy == 'Profile__r.Name') {
+					memberResultList = [select id, 
+											   Name, 
+											   Profile__r.Name, 
+											   Profile__r.Description__c, 
+											   User__r.Name, 
+											   User__r.Title, 
+											   User__r.Id, 
+											   User__r.CompanyName 
+										from ProjectMember__c 
+										where User__r.Name like: (letter + '%') 
+										and project__c =: idProject and User__r.IsActive != false
+										order by Profile__r.Name desc];						
+				}
+			}
+		}else {
+			if (letter == null || letter == '' || letter== 'ALL') {
+				if (sortBy == 'User__r.Name') {
+					memberResultList = [select id, 
+											   Name, 
+									
+											   Profile__r.Name, 
+											   Profile__r.Description__c, 
+											   User__r.Name, 
+											   User__r.Title, 
+											   User__r.Id, 
+											   User__r.CompanyName 
+										from ProjectMember__c 
+										where project__c =: idProject and User__r.IsActive != false
+										order by User__r.Name];
+				}
+				if (sortBy == 'User__r.CompanyName') {
+					memberResultList = [select id, 
+											   Name, 
+											   Profile__r.Name, 
+											   Profile__r.Description__c, 
+											   User__r.Name, 
+											   User__r.Title, 
+											   User__r.Id, 
+											   User__r.CompanyName 
+										from ProjectMember__c 
+										where project__c =: idProject and User__r.IsActive != false
+										order by User__r.CompanyName asc];						
+				}	
+				if (sortBy == 'User__r.Title') {
+					memberResultList = [select id, 
+											   Name, 
+											   Profile__r.Name, 
+											   Profile__r.Description__c, 
+											   User__r.Name, 
+											   User__r.Title, 
+											   User__r.Id, 
+											   User__r.CompanyName 
+										from ProjectMember__c 
+										where project__c =: idProject and User__r.IsActive != false
+										order by User__r.Title];							
+				}
+				if (sortBy == 'Profile__r.Name') {
+					memberResultList = [select id, 
+											   Name, 
+											   Profile__r.Name, 
+											   Profile__r.Description__c, 
+											   User__r.Name, 
+											   User__r.Title, 
+											   User__r.Id, 
+											   User__r.CompanyName 
+										from ProjectMember__c 
+										where project__c =: idProject and User__r.IsActive != false
+										order by Profile__r.Name];						
+				}
+			}else {
+				if (sortBy == 'User__r.Name') {
+					memberResultList = [select id, 
+											   Name,    
+											   Profile__r.Name, 
+											   Profile__r.Description__c, 
+											   User__r.Name, 
+											   User__r.Title, 
+											   User__r.Id, 
+											   User__r.CompanyName 
+										from ProjectMember__c 
+										where User__r.Name like: (letter + '%') 
+										and project__c =: idProject and User__r.IsActive != false
+										order by User__r.Name];					
+				}
+				if (sortBy == 'User__r.CompanyName') {
+					memberResultList = [select id, 
+											   Name, 
+											   Profile__r.Name, 
+											   Profile__r.Description__c, 
+											   User__r.Name, 
+											   User__r.Title, 
+											   User__r.Id, 
+											   User__r.CompanyName 
+										from ProjectMember__c 
+										where User__r.Name like: (letter + '%') 
+										and project__c =: idProject and User__r.IsActive != false
+										order by User__r.CompanyName];							
+				}	
+				if (sortBy == 'User__r.Title') {
+					memberResultList = [select id, 
+											   Name, 
+											   Profile__r.Name, 
+											   Profile__r.Description__c, 
+											   User__r.Name, 
+											   User__r.Title, 
+											   User__r.Id, 
+											   User__r.CompanyName 
+										from ProjectMember__c 
+										where User__r.Name like: (letter + '%') 
+										and project__c =: idProject and User__r.IsActive != false
+										order by User__r.Title];							
+				}
+				if (sortBy == 'Profile__r.Name') {
+					memberResultList = [select id, 
+											   Name, 
+											   Profile__r.Name, 
+											   Profile__r.Description__c, 
+											   User__r.Name, 
+											   User__r.Title, 
+											   User__r.Id, 
+											   User__r.CompanyName 
+										from ProjectMember__c 
+										where User__r.Name like: (letter + '%') 
+										and project__c =: idProject and User__r.IsActive != false
+										order by Profile__r.Name];						
+				}
+			}			
+		}
+				 
+		for (ProjectMember__c item: memberResultList) {
+			Member memberItem = new Member();
+			memberItem.setName(item.User__r.Name);
+			memberItem.setProfile(item.Profile__r.Name);
+			memberItem.setTitle(item.User__r.Title);
+			memberItem.setUserId(item.User__r.Id);	
+			memberItem.setMemberImg(item.User__r.Id);
+			memberItem.setCompany(item.User__r.CompanyName);
+			membersList.add(memberItem);
+		}
+			
+		totalItemsNumber = membersList.size();
+		if (totalItemsNumber == 0 ) {
+			cntPagination = 0;	
+			firstRow = 0;
+			currentPagination = 1;
+		}else {
+			firstRow = 0;
+			currentPagination = 1;
+			genCntPagination();	
+		}
+		members = membersList;	
+	}
+	
+   	
+   	/**
+	* Inner class for Letters type
+	*
+	*/
+	public class Letters {
+		String letter;
+		Boolean containMembers;
+		
+		/**
+		*@param String
+		*/
+		public void setLetter (String letter) {
+			this.letter = letter;
+		}
+		
+		/**
+		*@return String
+		*/
+		public String getLetter () {
+			return letter;
+		}
+		
+		/**
+		*@param Integer
+		*/
+		public void setContainMembers (Integer cntMembers) {
+			this.containMembers = cntMembers == 0;
+		}
+		
+		/**
+		*@return Boolean
+		*/
+		public Boolean getContainMembers () {
+			return containMembers;
+		}
+		
+		
+	} //End class Letters
+
+		
 	/**
 	* Inner class for Member class
 	*@class
@@ -600,480 +1084,6 @@ public without sharing class ProjectMembersListController {
 		public Boolean getAdmin () {
 			return admin;
 		}
-	}
-	
-	
-	
-	/** Pagination */
-	
-	/**
-   	* Count number of result pages
-   	*@void
-   	*/
-   	public void genCntPagination () {
-   		cntPagination = (totalItemsNumber - (Math.mod(totalItemsNumber, numberOfItemsToShow)))/ numberOfItemsToShow;	
-   		if (Math.mod(totalItemsNumber, numberOfItemsToShow) != 0 ) {
-   			cntPagination++;
-   		} 	
-   	}
-   	
-   	/**
-   	* Go next result page
-   	*/
-   	public void nextPage () {
-   		currentPagination++;
-   		firstRow = firstRow + numberOfItemsToShow;   		
-   	}
-   	
-   	/**
-   	* Go previus result page
-   	*/
-   	public void prevPage () {
-   		currentPagination--;
-   		firstRow = firstRow - numberOfItemsToShow;	
-   	}
-   	
-   	/**
-	*@return Integer
-	*/
-	public Integer getTotalItemsNumber () {
-		return totalItemsNumber;
-	}
-	
-   	/**
-   	* Pagination Integer Getters
-   	*@return Integer
-   	*/
-   	public Integer getFirstItem () {
-		return (firstRow + 1);
-	}
-	
-	/**
-	* Assign a number to the last page's result
-	*@return Integer
-	*/
-	public Integer getLastItem () {
-		Integer lastItem;
-		if ((currentPagination == cntPagination) || (currentPagination == 1 && (totalItemsNumber < numberOfItemsToShow))) {
-			lastItem = firstRow + Math.mod(totalItemsNumber, numberOfItemsToShow);
-		}else {
-			lastItem = firstRow + 10;
-		}
-		return lastItem;
-	}
-   	
-   	/**
-   	* Return current page number
-   	*@return Integer
-   	*/
-   	public Integer getCurrentPagination () {
-   		return currentPagination;
-   	}
-   	
-   	/**
-   	* Return number of result pages
-   	*@return Integer
-   	*/
-   	public Integer getCntPagination () {
-   		return cntPagination;
-   	}
-   	
-   	/**
-   	* Return number of results
-   	*@return Integer
-   	*/
-   	public Integer getNumberOfItemsToShow () {
-   		return numberOfItemsToShow;
-   	}
-   	
-   	/**
-   	* Return the number of the first item of page
-   	*@return Integer
-   	*/
-   	public Integer getFirstRow () {
-   		return firstRow;
-   	}
-   	
-   	/**
-   	* Return if show Prev Link
-   	*@return boolean
-   	*/
-	public boolean getPrevPageLinkShow () {
-		return currentPagination != 1;
-   	}
-   	
-   	/**
-   	* Return if show Prev Link
-   	*@return boolean
-   	*/
-   	public boolean getPrevPageShow () {
-   		return currentPagination == 1;
-   	}
-   	
-   	/**
-   	* Return if show Next Link
-   	*@return boolean
-   	*/
-   	public boolean getNextPageLinkShow () {
-   		return !(currentPagination == cntPagination) || (cntPagination == 0);
-   	}
-   	
-   	/**
-   	* Return if show Next Link
-   	*@return boolean
-   	*/
-   	public boolean getNextPageShow () {
-   		return (currentPagination == cntPagination) || (cntPagination == 0);
-   	}
-   	
-   	/**
-	* Inner class for Letters type
-	*
-	*/
-	public class Letters {
-		String letter;
-		Boolean containMembers;
-		
-		/**
-		*@param String
-		*/
-		public void setLetter (String letter) {
-			this.letter = letter;
-		}
-		
-		/**
-		*@return String
-		*/
-		public String getLetter () {
-			return letter;
-		}
-		
-		/**
-		*@param Integer
-		*/
-		public void setContainMembers (Integer cntMembers) {
-			this.containMembers = cntMembers == 0;
-		}
-		
-		/**
-		*@return Boolean
-		*/
-		public Boolean getContainMembers () {
-			return containMembers;
-		}
-		
-		
-	} //End class Letters
-	
-	/**
-	* Return list with letters and if contain Project members
-	*@return List<Letters>
-	*/
-	public List<Letters> getLetterFilter () {
-		List<Letters> letterFilter = new List<Letters>();
-   		for (String item : lettersList) {
-   			Letters currentLetter = new Letters();
-   			Integer cntMembers = [select count() 
-					   			  from ProjectMember__c 
-					   			  where User__r.Name like :(item + '%') and project__c =:idProject];
-   			currentLetter.setLetter(item);
-   			currentLetter.setContainMembers(cntMembers);
-   			letterFilter.add(currentLetter);
-   		}
-   		return letterFilter;		
-	}
-	
-	/**
-	* Return the Namespace Prefix
-	*@return String
-	*/
-	public String getNamespace () {
-        return ProjectUtil.getNamespace();
-    } 
-    
-    /**
-	*@param String idProject
-	*/
-	public void setIdProject(String proj){
-		idProject = proj;
-	}
-	
-	/**
-	* Set memberId to remove
-	*@param String memberId
-	*/
-	public void setRemoveMemberId (String memberId){
-		removeMemberId = memberId; 
-	}
-	
-	/*
-	 * This is a temporary method to cover us until dynamic apex is back.  This will use hard coded
-	 * SOQL statements in place of the dynamic statements
-	 */
-	public void sortList () {
-		List<Member> membersList = new List<Member>();
-		if (sortBy == System.currentPageReference().getParameters().get('sb')) {
-			sortByDesc = !sortByDesc;
-		}else {
-			sortByDesc = false;
-		}
-		
-		//Sort param
-		if(System.currentPageReference().getParameters().get('sb') != null)
-			sortBy = System.currentPageReference().getParameters().get('sb');
-		
-		List<ProjectMember__c> memberResultList = new List<ProjectMember__c>();
-
-		if (sortByDesc) {
-			if (letter == null || letter == '' || letter== 'ALL') {System.debug( '<###############>' + letter  + ':' +  sortBy);
-				if (sortBy == 'User__r.Name') {
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where project__c =: idProject and User__r.IsActive != false
-										order by User__r.Name desc];
-				}
-				if (sortBy == 'User__r.CompanyName') {System.debug( '<###############>' + letter  + ':' +  sortBy);
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where project__c =: idProject and User__r.IsActive != false
-										order by User__r.CompanyName desc];						
-				}	
-				if (sortBy == 'User__r.Title') {System.debug( '<###############>' + letter  + ':' +  sortBy);
-					memberResultList = [select id, 
-											   Name, 											   
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where project__c =: idProject and User__r.IsActive != false
-										order by User__r.Title desc];							
-				}
-				if (sortBy == 'Profile__r.Name') {System.debug( '<###############>' + letter  + ':' +  sortBy);
-					memberResultList = [select id, 
-											   Name, 											   
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where project__c =: idProject and User__r.IsActive != false
-										order by Profile__r.Name desc];						
-				}		
-			}else {
-				if (sortBy == 'User__r.Name') {System.debug( '<###############>' + letter  + ':' +  sortBy);
-					memberResultList = [select id, 
-											   Name, 											   
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where User__r.Name like: (letter + '%') 
-										and project__c =: idProject and User__r.IsActive != false
-										order by User__r.Name desc];					
-				}
-				if (sortBy == 'User__r.CompanyName') {System.debug( '<###############>' + letter  + ':' +  sortBy);
-					memberResultList = [select id, 
-											   Name,											   
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where User__r.Name like: (letter + '%') 
-										and project__c =: idProject and User__r.IsActive != false
-										order by User__r.CompanyName desc];							
-				}	
-				if (sortBy == 'User__r.Title') {System.debug( '<###############>' + letter  + ':' +  sortBy);
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where User__r.Name like: (letter + '%') 
-										and project__c =: idProject and User__r.IsActive != false
-										order by User__r.Title desc];							
-				}
-				if (sortBy == 'Profile__r.Name') {System.debug( '<###############>' + letter  + ':' +  sortBy);
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where User__r.Name like: (letter + '%') 
-										and project__c =: idProject and User__r.IsActive != false
-										order by Profile__r.Name desc];						
-				}
-			}
-		}else {
-			if (letter == null || letter == '' || letter== 'ALL') {System.debug( '<###############>' + letter  + ':' +  sortBy);
-				if (sortBy == 'User__r.Name') {
-					memberResultList = [select id, 
-											   Name, 
-									
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where project__c =: idProject and User__r.IsActive != false
-										order by User__r.Name];
-				}
-				if (sortBy == 'User__r.CompanyName') {System.debug( '<###############>' + letter  + ':' +  sortBy);
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where project__c =: idProject and User__r.IsActive != false
-										order by User__r.CompanyName asc];						
-				}	
-				if (sortBy == 'User__r.Title') {System.debug( '<###############>' + letter  + ':' +  sortBy);
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where project__c =: idProject and User__r.IsActive != false
-										order by User__r.Title];							
-				}
-				if (sortBy == 'Profile__r.Name') {System.debug( '<###############>' + letter  + ':' +  sortBy);
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where project__c =: idProject and User__r.IsActive != false
-										order by Profile__r.Name];						
-				}
-			}else {
-				if (sortBy == 'User__r.Name') {System.debug( '<###############>' + letter  + ':' +  sortBy);
-					memberResultList = [select id, 
-											   Name,    
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where User__r.Name like: (letter + '%') 
-										and project__c =: idProject and User__r.IsActive != false
-										order by User__r.Name];					
-				}
-				if (sortBy == 'User__r.CompanyName') {System.debug( '<###############>' + letter  + ':' +  sortBy);
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where User__r.Name like: (letter + '%') 
-										and project__c =: idProject and User__r.IsActive != false
-										order by User__r.CompanyName];							
-				}	
-				if (sortBy == 'User__r.Title') {System.debug( '<###############>' + letter  + ':' +  sortBy);
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where User__r.Name like: (letter + '%') 
-										and project__c =: idProject and User__r.IsActive != false
-										order by User__r.Title];							
-				}
-				if (sortBy == 'Profile__r.Name') {System.debug( '<###############>' + letter  + ':' +  sortBy);
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where User__r.Name like: (letter + '%') 
-										and project__c =: idProject and User__r.IsActive != false
-										order by Profile__r.Name];						
-				}
-			}			
-		}
-				 
-		for (ProjectMember__c item: memberResultList) {
-			Member memberItem = new Member();
-			memberItem.setName(item.User__r.Name);
-			memberItem.setProfile(item.Profile__r.Name);
-			memberItem.setTitle(item.User__r.Title);
-			memberItem.setUserId(item.User__r.Id);	
-			memberItem.setMemberImg(item.User__r.Id);
-			memberItem.setCompany(item.User__r.CompanyName);
-			membersList.add(memberItem);
-		}
-			
-		totalItemsNumber = membersList.size();
-		if (totalItemsNumber == 0 ) {
-			cntPagination = 0;	
-			firstRow = 0;
-			currentPagination = 1;
-		}else {
-			firstRow = 0;
-			currentPagination = 1;
-			genCntPagination();	
-		}
-		members = membersList;	
-	}
-	
+	}//End class Member
 	
 }

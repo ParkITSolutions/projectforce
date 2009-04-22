@@ -1,10 +1,15 @@
 /**
-*@author Martin Prado @ 06/18/2008
+*@author Miguel Soares @ 03/23/2009
 */
 public class ProjectDetailMilestoneController {
 
 	String teamId;
-	
+	public Boolean sidebar = false;
+	//Size of List
+	Integer listSize = 0;
+	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
+	List<ProjectTasks> result = new List<ProjectTasks>();
+		
 	/**
 	*@param String
 	*/
@@ -23,7 +28,7 @@ public class ProjectDetailMilestoneController {
 		return teamId;
 	} 
 	
-	public Boolean sidebar = false;
+	
 	
 	/**
 	* Set Sidebar
@@ -41,8 +46,7 @@ public class ProjectDetailMilestoneController {
 		return sidebar;
 	}	
 	
-	//Size of List
-	Integer listSize = 0;
+	
 	/**
 	*@return Integer
 	*/
@@ -56,7 +60,7 @@ public class ProjectDetailMilestoneController {
 	public void refresh(){}
 	
 	
-	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
+
 	
 	/**
 	* Read user permissions
@@ -79,7 +83,7 @@ public class ProjectDetailMilestoneController {
 		return userPermissions;
 	}
 	
-	List<ProjectTasks> result = new List<ProjectTasks>();
+	
 	/**
 	*@return List<ProjectTasks>
 	*/
@@ -158,7 +162,7 @@ public class ProjectDetailMilestoneController {
 	
 	
 	 /**
-	 * Class ProjectTasks
+	 * Inner Class ProjectTasks
 	 */
 	 public class ProjectTasks {
 		

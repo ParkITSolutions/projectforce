@@ -1,3 +1,6 @@
+/**
+*@author Alvaro Scuccimarra @ 03/16/2009
+*/
 public class ProjectWidgetMyTasksAndMilController {
     
     public String currentDate = '';
@@ -29,9 +32,6 @@ public class ProjectWidgetMyTasksAndMilController {
         return overdueAlreadyShow;
     }
  
-    
-    
-  
     public void loadAllProjectTasksAndMilestones(){
         //All Project task
         List<ProjectTask__c> allProjectsTasks = new List<ProjectTask__c>();

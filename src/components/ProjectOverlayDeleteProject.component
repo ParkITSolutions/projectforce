@@ -7,7 +7,6 @@
 		<!-- PROBABLY DELETE div id="auxForumInputHiddenId" style="display:none;">{!$Component.projectId}</div -->
 	</apex:form>
 	<apex:outputPanel id="dummy"></apex:outputPanel>
-	
 	<!-- Delete Comment -->
 	<div id="deleteProjectOverlay" style="display:none;" class="overlayForm">	
 		<!-- Overlay Title -->

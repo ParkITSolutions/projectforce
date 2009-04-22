@@ -1,3 +1,6 @@
+/**
+*@author Miguel Soares @ 04/16/2009
+*/
 @isTest private class TriggersTest {
     static testMethod void myUnitTest(){
     	
@@ -13,7 +16,7 @@
 
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
-    }          	
+    }         	
 
        	
     
