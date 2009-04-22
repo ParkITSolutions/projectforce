@@ -5,4 +5,5 @@ If you select the option "Allow Customer Portal Users", the customer portal user
 If you select the option "Allow Partner Portal Users", the partner portal users can see the project. 
 
 After that you click on Create to finish creating the project.
+
 <img  src="http://projectforce.googlecode.com/svn/wiki/images/CreateProjectReal.png" align="left" />
