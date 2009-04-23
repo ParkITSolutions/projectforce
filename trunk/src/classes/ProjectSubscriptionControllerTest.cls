@@ -4,6 +4,8 @@
 @isTest private class ProjectSubscriptionControllerTest {
 	/**
 	* Test  ProjectSubscribersEmailServices
+	*@void
+    *@static
 	*/
     static testMethod void myUnitTest(){
     	

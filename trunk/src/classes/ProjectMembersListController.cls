@@ -5,7 +5,6 @@
 public without sharing class ProjectMembersListController {
 	
 	// Attributes \\
-	
 	public String idProject = System.currentPageReference().getParameters().get('id');
 	public String removeMemberId = System.currentPageReference().getParameters().get('delId');
 	public String delName;
@@ -86,49 +85,7 @@ public without sharing class ProjectMembersListController {
 	public void setSortBy (String s){
 		sortBy = s;	
 	}
-	
-	/**
-	* Join Project
-	*@void
-	*/
-	public void joinProject(){
-		ProjectMember__c projectMember = new ProjectMember__c();
-		projectMember.User__c = UserInfo.getUserId();
-		projectMember.Profile__c = [select Id from ProjectProfile__c where Name = 'Member Profile' limit 1].Id;
-		projectMember.Project__c = this.getProjectId();
-		insert projectMember;
-	}
-	
-	
-	/**
-	* Unjoin Project
-	*@void
-	*/
-	public void unjoinProject(){
-		List<ProjectMember__c> member = [select Id, User__c from ProjectMember__c where User__c =: UserInfo.getUserId() and Project__c =: this.getProjectId()];
-		if(member.size() > 0){
-			delete member[0];
-		}
-	}
-	
-	/**
-	* Refresh member list
-	*@void
-	*/
-	public void refresh() {
-		genMembers();
-	}
-	
-	/**
-	* Generate user permissions
-	*@void
-	*/
-	public void genPermissions() {
-		userPermissions.setId(UserInfo.getUserId());
-		userPermissions.setProject(idProject);
-		userPermissions.setObjectType('Project');
-		userPermissions.setPermissions();		
-	}
+
 	
 	/**
 	* Return user permissions
@@ -137,6 +94,46 @@ public without sharing class ProjectMembersListController {
 	public UserPermissions getUserPermissions () {
 		return userPermissions;
 	}	
+	
+	/**
+	* Return if the user to delete is the last admin
+	*@return Boolean
+	*/
+	public Boolean getIsLastAdmin () {
+		return isLastAdmin;	
+	}
+	
+		
+	/**
+	* Return idProfile from edit member
+	*@return String
+	*/
+	public String getEditMemberProfile () {
+		return editMemberProfile;
+	}
+	
+	/**
+	* Set idProfile to edit member
+	*@param String
+	*/
+	public void setEditMemberProfile (String profile) {
+		this.editMemberProfile = profile;
+	}
+	
+	/**
+	*@return ProjectMember__c
+	*/
+	public ProjectMember__c getEditMember () {
+		return editMember;
+	}
+	/**
+	* Sets the id of the member to edit
+	*@param s member id
+	*/
+	public void setEditMemberId (String s){
+		editMemberId = s;	
+	}
+	
 	
 	/**
 	*@return String Name
@@ -213,6 +210,50 @@ public without sharing class ProjectMembersListController {
 		return delName;
 	}
 	
+		
+	/**
+	* Join Project
+	*@void
+	*/
+	public void joinProject(){
+		ProjectMember__c projectMember = new ProjectMember__c();
+		projectMember.User__c = UserInfo.getUserId();
+		projectMember.Profile__c = [select Id from ProjectProfile__c where Name = 'Member Profile' limit 1].Id;
+		projectMember.Project__c = this.getProjectId();
+		insert projectMember;
+	}
+	
+	
+	/**
+	* Unjoin Project
+	*@void
+	*/
+	public void unjoinProject(){
+		List<ProjectMember__c> member = [select Id, User__c from ProjectMember__c where User__c =: UserInfo.getUserId() and Project__c =: this.getProjectId()];
+		if(member.size() > 0){
+			delete member[0];
+		}
+	}
+	
+	/**
+	* Refresh member list
+	*@void
+	*/
+	public void refresh() {
+		genMembers();
+	}
+	
+	/**
+	* Generate user permissions
+	*@void
+	*/
+	public void genPermissions() {
+		userPermissions.setId(UserInfo.getUserId());
+		userPermissions.setProject(idProject);
+		userPermissions.setObjectType('Project');
+		userPermissions.setPermissions();		
+	}
+	
 	/**
 	* Redirect after remove a member
 	*@return PageReference
@@ -232,22 +273,7 @@ public without sharing class ProjectMembersListController {
 		return pageRef;	
 	}
 	
-	/**
-	* Return if the user to delete is the last admin
-	*@return Boolean
-	*/
-	public Boolean getIsLastAdmin () {
-		return isLastAdmin;	
-	}
-	
-	/**
-	* Sets the id of the member to edit
-	*@param s member id
-	*/
-	public void setEditMemberId (String s){
-		editMemberId = s;	
-	}
-	
+
 	/**
 	* Stuff before edit
 	*@void
@@ -272,29 +298,7 @@ public without sharing class ProjectMembersListController {
 		//editMemberRole = editmember.TeamRole__c;
 		editMemberProfile = editMember.Profile__c;
 	}
-	
-	/**
-	* Return idProfile from edit member
-	*@return String
-	*/
-	public String getEditMemberProfile () {
-		return editMemberProfile;
-	}
-	
-	/**
-	* Set idProfile to edit member
-	*@param String
-	*/
-	public void setEditMemberProfile (String profile) {
-		this.editMemberProfile = profile;
-	}
-	
-	/**
-	*@return ProjectMember__c
-	*/
-	public ProjectMember__c getEditMember () {
-		return editMember;
-	}
+
 	
 	public Boolean isLastMemberAdmin (){
 		List<ProjectMember__c> members = new List<ProjectMember__c>();
@@ -865,8 +869,9 @@ public without sharing class ProjectMembersListController {
 	*
 	*/
 	public class Letters {
+		
 		String letter;
-		Boolean containMembers;
+		Boolean containMembers = false;
 		
 		/**
 		*@param String

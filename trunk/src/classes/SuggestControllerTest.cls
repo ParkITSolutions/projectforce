@@ -4,6 +4,8 @@
 @isTest private class SuggestControllerTest {
 	/**
 	* Test  SearchController
+	*@void
+    *@static
 	*/
     static testMethod void myUnitTest(){
     	

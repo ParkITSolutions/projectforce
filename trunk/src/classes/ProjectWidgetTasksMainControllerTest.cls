@@ -4,6 +4,8 @@
 @isTest private class ProjectWidgetTasksMainControllerTest {
 	/**
 	* Test  ProjectWidgetTasksMainController
+	*@void
+    *@static
 	*/
     static testMethod void myUnitTest(){
         

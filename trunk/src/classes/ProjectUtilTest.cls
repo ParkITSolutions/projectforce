@@ -5,6 +5,8 @@ public class ProjectUtilTest {
 		
 	/**
 	* Test  ProjectUtil
+	*@void
+    *@static
 	*/
     static testMethod void myUnitTest(){
     	

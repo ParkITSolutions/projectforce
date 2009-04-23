@@ -2,27 +2,25 @@
 *@author: Alvaro Scuccimarra @ 03-24-2009
 */
 public class ProjectCreateNewController {
-    
-        
+           
     //Get id from Project item
     String param = System.currentPageReference().getParameters().get('id');
-    
     // max picture size bytes
     public final Integer MAX_SIZE = 524288;
     Project2__c theProject = new Project2__c();
     String ProjectPicture = '';
     Boolean validSizePicture = true;
     public Boolean validTypePicture = true;
-    public static Boolean allowCustomer = false;
-    public static Boolean allowPartner = false;  
-    
-
     List<Group> allowCustomerActivated = new List<Group>();
     List<Group> allowPartnetActivated = new List<Group>();
-    
-   
     public Attachment document = new Attachment();
-        
+    public UserPermissions userPermissions = null;
+    public ProjectProfile newProfile = new ProjectProfile();
+    public static Boolean allowCustomer = false;
+    public static Boolean allowPartner = false;  
+   	
+
+   
     /**
     * Constructor
     */
@@ -143,7 +141,7 @@ public class ProjectCreateNewController {
         return projectPicture;
     }
     
-        /**
+    /**
     *@param Boolean
     */
     public static Boolean getAllowCustomerStatic(){ 
@@ -192,11 +190,25 @@ public class ProjectCreateNewController {
     public Boolean getAllowPartnerActivated(){
         return allowPartnetActivated.size() > 0;
     }   
-
-    public UserPermissions userPermissions = null;
     
     /**
+    * Get Project Picture
+    *@void
+    */
+    public void getProjectImage() {
+        if(theProject.Picture__c != null) ProjectPicture = '/servlet/servlet.FileDownload?file=' + theProject.Picture__c;
+    }
+ 
+    public ProjectProfile getnewProfile(){
+        return newProfile;
+    }
+     public void setnewProfile(ProjectProfile pr){
+        newProfile=pr;
+    }
+
+    /**
     * Load permission for cuerrent user
+    *@void
     */
     public void genPermissions () {
         userPermissions = new UserPermissions();
@@ -208,12 +220,10 @@ public class ProjectCreateNewController {
     
     public String ProjectType {get; set;}
     
-    /**
-    * Get Project
-    *@param String Project id
+ 	/**	Set Project
+    *@param String pId
     *@void
     */
-   
     public void setProject (String pId){
         
         Map<String, Schema.SObjectField> projectFields = Schema.SObjectType.Project2__c.fields.getMap();
@@ -257,39 +267,10 @@ public class ProjectCreateNewController {
         }
         return options;
     }
-        
-    
-    /**
-    * Get Project Picture
-    *@void
-    */
-    public void getProjectImage() {
-        if(theProject.Picture__c != null) ProjectPicture = '/servlet/servlet.FileDownload?file=' + theProject.Picture__c;
-    }
-    
-
-    /**
-    * Class ProjectProfile
-    */
-    public class ProjectProfile {
-        public String publicProfileOpen { set; get; }
-        public String newProfileOpen { set; get; }
-        public String publicProfileClosed { set; get; }
-        public String projectOpenOrClosed { set; get; }         
-    }
-    
-    public ProjectProfile newProfile = new ProjectProfile();
-    
-    public ProjectProfile getnewProfile(){
-        return newProfile;
-    }
-     public void setnewProfile(ProjectProfile pr){
-        newProfile=pr;
-    }
+   
     /**
     * Save Project
     *@return Project detail page reference
-    *@throws Exception
     */    
     public void saveProject(){
         //Set User Permissions
@@ -307,6 +288,10 @@ public class ProjectCreateNewController {
         }
     }
     
+    /**
+    *Save attachments and type of project
+    *@return PageReference
+    */
     public PageReference saveAttachmentsAndAccess(){
         
         validSizePicture = true;
@@ -355,10 +340,18 @@ public class ProjectCreateNewController {
         return pageRef;
     }
     
+    /**
+    *Save Project
+    *@void
+    */
     public void save(){
         saveProject();
     }
- 
+ 	
+ 	/**
+    *Remove Avatar
+    *@return PageReference
+    */
     public PageReference removeAvatar(){
         if( this.theProject != null ){
                 Attachment avatar = new Attachment();
@@ -381,6 +374,7 @@ public class ProjectCreateNewController {
     
     /**
     *Generate the profiles 
+    *@void
     */
     public void genProfiles(){
         
@@ -422,6 +416,15 @@ public class ProjectCreateNewController {
         insert projList;
         
     }
-    
+    /**
+    *Inner Class ProjectProfile
+    *@class
+    */
+    public class ProjectProfile {
+        public String publicProfileOpen { set; get; }
+        public String newProfileOpen { set; get; }
+        public String publicProfileClosed { set; get; }
+        public String projectOpenOrClosed { set; get; }         
+    }
         
 }

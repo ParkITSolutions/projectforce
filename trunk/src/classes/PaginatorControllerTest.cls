@@ -5,6 +5,8 @@
 	
 	/**
     * Test PaginatorController
+    *@void
+    *@static
     */
     static testMethod void myUnitTest(){
     	

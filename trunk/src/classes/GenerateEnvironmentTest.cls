@@ -40,6 +40,8 @@ public class GenerateEnvironmentTest {
 	
 	/**
     *  Generate enviroment to test
+    *@void
+    *@static
     */
     public static testMethod void gen(){
 

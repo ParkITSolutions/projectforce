@@ -5,6 +5,8 @@
 	
 	/**
 	* Test  ProjectOverlayNewMilestoneController
+	*@void
+    *@static
 	*/
     static testMethod void myUnitTest(){
     	

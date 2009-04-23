@@ -6,23 +6,11 @@
     <!-- Add scrip.aculo.us includes -->
     <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
-    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>    
-    
-    <style>
-    	body{
-    		margin: 0px;
-    	}
-    	
-    	div.redirect{
-    		background: #FFFFCC;
-    		font-weight: bold;
-    		font-family: Arial;
-    		font-size: 12px;
-    		padding: 5px;
-			float:left;
-    		border-right: solid red 5px;
-    	}
-    </style>
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>
+     
+    <!-- Include stylesheet -->    
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectRedirect.css')}" />
+  
     
     <script>
         var _API_SESSION_ID = '{!$Api.Session_ID}';

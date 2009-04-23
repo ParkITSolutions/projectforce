@@ -3,7 +3,6 @@
 */
 public class ProjectWidgetTasksMainController {
 
-	
 	String teamId;
 	Integer listSize = 0;
 	public Boolean sidebar = false;

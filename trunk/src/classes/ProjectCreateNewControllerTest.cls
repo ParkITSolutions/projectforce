@@ -1,9 +1,13 @@
 /**
 *@author: Miguel Soares @ 04-08-2009
 */
-
 @isTest private class ProjectCreateNewControllerTest {
-
+	
+	/**
+    * Test ProjectCreateNewController
+    *@void
+    *@static
+    */
     static testMethod void myUnitTest(){
         
         GenerateEnvironmentTest.gen();
@@ -20,8 +24,7 @@
         pNew.setProject( GenerateEnvironmentTest.project );
         pNew.setAllowCustomer( true );
         pNew.setAllowPartner( true );
-        //pNew.();
-        
+              
         //   Save methods
         ProjectCreateNewController.ProjectProfile pf = new ProjectCreateNewController.ProjectProfile();
         pNew.newProfile.projectOpenOrClosed = 'open';

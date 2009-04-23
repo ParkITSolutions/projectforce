@@ -38,6 +38,7 @@ public class ProjectDetailAttachmentController {
 	
 	/**
 	* Read user permissions
+	*@void
 	*/
 	public void genPermissions() {
 		userPermissions.setId(UserInfo.getUserId());
@@ -148,6 +149,7 @@ public class ProjectDetailAttachmentController {
 
 	/**
 	* Delete Attachment
+	*@void
 	*/
 	public void deleteAttach (){
 		String attachId = System.currentPageReference().getParameters().get('idAttach');
@@ -161,6 +163,7 @@ public class ProjectDetailAttachmentController {
 	
 	/**
 	* Class AttachmentInfo
+	*@void
 	*/ 
 	public class AttachmentInfo {
         

@@ -23,9 +23,9 @@ public class DeleteProjectController {
 	
 	/**
 	* Delete Project
+	*@return PageReference pr 
 	*/
 	public PageReference deleteProject(){
-
 		PageReference pr = new PageReference( '/apex/projectOverview' );
 		List<Project2__c> projectToDelete = new List<Project2__c>();		
 		projectToDelete = [select Id from Project2__c where Id =: projectId];

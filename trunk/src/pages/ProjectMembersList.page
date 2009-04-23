@@ -1,29 +1,7 @@
-<apex:page sidebar="false" id="ProjectMembersList"
-	tabStyle="Project2__c" controller="ProjectMembersListController">
+<apex:page sidebar="false" id="ProjectMembersList" tabStyle="Project2__c" controller="ProjectMembersListController">
 	<apex:includeScript value="/soap/ajax/12.0/connection.js" />
 	<script>
 		var API_SESSION_ID = '{!$Api.Session_ID}'; 
-		
-		/**
-        *Set e2 height with e1 height + 15px
-        *For paginationOverlay to cover membersList
-        *@Param ids for element one and two 
-        */
-        function setHeight( idElement1, idElement2 ){
-            o1Dims = $( idElement1 ).getDimensions();
-            $( idElement2 ).style.height = (o1Dims.height * 0.98 ).round() + 'px';
-            $( idElement2 ).style.width = (o1Dims.width * 0.98 ).round() + 'px';
-        }
-        
-		/**
-		* Add Members overlay call back function
-		*/
-		function addMemberCallBackFunction(){
-			setTimeout('modal.close(); hideSwirly(\'swirly_overlay\')', 5000); 
-			$('membersListSwirly').show(); 
-			setDims('holder','membersListSwirly');
-		}
-		
 	</script>
 
 	<!-- Prototype + Scriptaculous -->
@@ -60,59 +38,34 @@
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectCreateNewProject.js')}" />
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}" />
 	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupTop.js')}" />
-
-	<!-- Modal JS -->
-	<script src="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" />
-
-	<style>
-		.memberImg {
-			padding: 0px;
-		}
 	
-		div#teamMemberID{
-			display: none !important;
-		}
-		
-		.paginationOverlay{
-			background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat center;
-			position:absolute;
-			opacity:.80;
-			filter:alpha(opacity=80);
-			z-index:9998;
 	
-		}
-	
-		.breadCrumbsLast{
-			font-weight:bold; 
-			font-size: 11px;
-		}
-	</style>
-	<style>
-		@media screen and (-webkit-min-device-pixel-ratio:0) {
-			div#btnsDiv {
-				padding-left: 200px;
-			}
-		}
-		
-	</style>
-
-	<script>
-		document.observe('dom:loaded', function(){
-				readPortalCSSRules();
-				//trunkTitle(); 
-			}
-		)
-	</script>
-	
-	<apex:form >
-		<apex:actionFunction name="reloadMemberList" action="{!refresh}" rerender="membersList" oncomplete="$('membersListSwirly').hide();" />
-	</apex:form>
-
 	<!-- ProjectMemebersList CSS 	-->
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsMembersList.css')}" />
 
 	<!-- ProjectMemebersList JS  -->
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/teamsMembersList.js')}" />
+
+	<!-- Modal JS -->
+	<script src="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" />
+
+
+	<script>
+		document.observe('dom:loaded', function(){
+				readPortalCSSRules();
+				trunkTitle(); 
+			}
+		)
+	</script>
+	<style>
+		.paginationOverlay{
+			background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat center;
+		}
+	</style>
+	
+	<apex:form >
+		<apex:actionFunction name="reloadMemberList" action="{!refresh}" rerender="membersList" oncomplete="$('membersListSwirly').hide();" />
+	</apex:form>
 	
 	<!-- Initialize the overlay box for modal.js -->
 	<a href="#modal_container" id="initializeModal" style="display:none;"></a>     
@@ -140,8 +93,10 @@
 			<div id="btnsDiv" style="width: 260px; *margin-left: 200px !important;">
 				<apex:form >
 					<apex:outputpanel rendered="{!userPermissions.canManage}" >
-						<a onclick="createOverlay('','inviteTeam','','showSelects()','');relocateOverlay();" href="javascript:;" class="blackbutton"><span>New</span></a>
-						<a href="javascript:;" class="blackbutton"	onclick="massiveRemoveOverlay();"><span>Remove</span></a>
+						<a onclick="createOverlay('','inviteTeam','','showSelects()','');relocateOverlay();"
+							href="javascript:;" class="blackbutton"><span>New</span></a>
+						<a href="javascript:;" class="blackbutton"
+							onclick="massiveRemoveOverlay();"><span>Remove</span></a>
 					</apex:outputpanel> 
 				</apex:form>
 			</div>
@@ -150,7 +105,12 @@
 		
 		<!-- Sidebar -->
 		<div class="sidebar">
- 
+	
+			<!-- Project Quick Links -->
+			<c:ProjectDetailQuickLinks />
+	
+			<!-- Team Suscribe -->
+			<c:ProjectSubscribe />
 			
 			<!-- Team members -->
 			<c:ProjectMembersWidget projectId="{!projectId}" />	
@@ -185,24 +145,35 @@
 			<br/>
 			
 			<div style="position: relative; overflow: hidden">
-				<img id="twistImage" style="vertical-align: middle;" class="twistImg" onclick="showHideElement(document.getElementById('filterDiv'),this);" src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" title="Hide Section" alt="Hide Section" /> &nbsp; 
-				<a href="javascript:;" onclick="showHideElement(document.getElementById('filterDiv'),document.getElementById('twistImage'));" class="filterLink">
-					Filter
-				</a>
+				<img id="twistImage" style="vertical-align: middle;" 
+					class="twistImg"
+					onclick="showHideElement(document.getElementById('filterDiv'),this);"
+					src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}"
+					title="Hide Section" alt="Hide Section" /> &nbsp; 
+					<a href="javascript:;"
+					onclick="showHideElement(document.getElementById('filterDiv'),document.getElementById('twistImage'));"
+					class="filterLink">Filter</a>
 			</div>
 			
 			<div class="filter" id="filterDiv">
 				<div align="center"><apex:form id="filterForm">
 					<ul class="letterFilter">
 						<li>
-						 	<apex:commandLink action="{!genMembers}" value="ALL" styleclass="AllBtn" rerender="membersList" onclick="$('paginationOverlay').show();setHeight('holder', 'paginationOverlay')"  oncomplete="$('paginationOverlay').hide()">
+						 	<apex:commandLink action="{!genMembers}" 
+							 	value="ALL" 
+							 	styleclass="AllBtn" 
+							 	rerender="membersList"
+							 	onclick="$('paginationOverlay').show();setHeight('holder', 'paginationOverlay')" 
+							 	oncomplete="$('paginationOverlay').hide()">
 								<apex:param name="ltr" value="ALL" />
 							</apex:commandLink>
 						</li>
 						<apex:repeat id="letterFilterRepeat" value="{!letterFilter}" var="item">
 							<li>
 								<apex:outputpanel rendered="{!NOT(item.containMembers)}">
-									<apex:commandLink styleclass="contains" action="{!genMembers}" value="{!item.letter}" onclick="$('paginationOverlay').show();setHeight('holder', 'paginationOverlay')" oncomplete="$('paginationOverlay').hide()" rerender="membersList">
+									<apex:commandLink styleclass="contains" action="{!genMembers}" value="{!item.letter}" 
+										onclick="$('paginationOverlay').show();setHeight('holder', 'paginationOverlay')" oncomplete="$('paginationOverlay').hide()"
+										rerender="membersList">
 										<apex:param name="ltr" value="{!item.letter}" />
 									</apex:commandLink>
 								</apex:outputpanel> 
@@ -210,6 +181,7 @@
 							</li>
 						</apex:repeat>
 					</ul>
+					
 					<br style="clear: both; font-size: 3px;" />
 					</apex:form> 
 				</div>
@@ -226,14 +198,18 @@
 						<apex:form >
 							<ul>
 								<li class="prev {!IF(prevPageShow,'prev_disabled','')}">
-									<apex:commandLink action="{!prevPage}" value="Previous Page" rerender="membersList" rendered="{!prevPageLinkShow}" /> 
+									<apex:commandLink action="{!prevPage}" value="Previous Page" 
+										rerender="membersList"
+										rendered="{!prevPageLinkShow}" /> 
 									<apex:outputText value="Previous Page" rendered="{!prevPageShow}" />
 								</li>
 								<li>
 									({!currentPagination} - {!cntPagination})
 								</li>
 								<li class="next {!IF(nextPageShow,'next_disabled','')}">
-									<apex:commandLink action="{!nextPage}" value="Next Page" rerender="membersList" rendered="{!nextPageLinkShow}" /> 
+									<apex:commandLink action="{!nextPage}" value="Next Page" 
+										rerender="membersList"
+										rendered="{!nextPageLinkShow}" /> 
 									<apex:outputText value="Next Page" rendered="{!nextPageShow}" />
 								</li>
 							</ul>
@@ -246,24 +222,26 @@
 					<thead>
 						<tr>
 							<td width="3%"><apex:outputpanel rendered="{!userPermissions.canManage}">
-								<input class="actionCheckAll" onclick="checkUnCheck(this);" type="checkbox" />
+								<input class="actionCheckAll" onclick="checkUnCheck(this);"
+									type="checkbox" />
 							</apex:outputpanel></td>
-							<td width="9%">
-								<apex:outputpanel rendered="{!userPermissions.canManage}" style="font-weight:bold;">Action</apex:outputpanel>
+							<td width="9%"><apex:outputpanel rendered="{!userPermissions.canManage}" style="font-weight:bold;">Action</apex:outputpanel>
 							</td>
-							<td width="29%" colspan="2">
-								<apex:commandLink styleclass="member_title_description" action="{!sortList}" value="Name" rerender="membersList">
+							<td width="29%" colspan="2"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
+								value="Name" rerender="membersList">
 								<apex:param name="sb" value="User__r.Name" />
 							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'name',true,false)}">
 								<apex:outputpanel rendered="{!sortByDesc}">
-									<img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
 								</apex:outputpanel>
 								<apex:outputpanel rendered="{!NOT(sortByDesc)}">
-									<img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
 								</apex:outputpanel>
 							</apex:outputpanel></td>
-							<td width="16%">
-								<apex:commandLink styleclass="member_title_description" action="{!sortList}" value="Company" rerender="membersList">
+							<td width="16%"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
+								value="Company" rerender="membersList">
 								<apex:param name="sb" value="User__r.CompanyName" />
 							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'company',true,false)}">
 								<apex:outputpanel rendered="{!sortByDesc}">

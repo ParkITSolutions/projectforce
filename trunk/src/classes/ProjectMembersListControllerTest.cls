@@ -11,6 +11,8 @@
     
     /**
 	* Test ProjectMembersListController
+	*@void
+    *@static
 	*/
     public static testMethod void testTeam() {
         try{

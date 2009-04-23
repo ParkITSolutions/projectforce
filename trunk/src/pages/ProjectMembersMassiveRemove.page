@@ -27,7 +27,7 @@
 					</table>
 				</div>
 				<div class="overlaySeparateLine" />
-				<!-- Saven and Cancel Buttons -->
+				<!-- Save and Cancel Buttons -->
 				<div class="overlayFromButtons" align="center">
 					<input type="button" class="overlaySaveBtn" onclick="massiveMemberRemove(); modal.close();" value="Continue"/> 
 					<input class="overlayCancelBtn" type="button" value="Cancel" onclick="modal.close();"/>

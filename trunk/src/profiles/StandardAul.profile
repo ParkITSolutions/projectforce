@@ -55,10 +55,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProjectCreateNewProjectController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ProjectCreateNewTaskController</apexClass>
         <enabled>true</enabled>
     </classAccesses>

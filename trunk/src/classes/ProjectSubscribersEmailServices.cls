@@ -30,7 +30,6 @@ public class ProjectSubscribersEmailServices {
         this.isTaskEdit = isTaskEdit;
     }
 
-
     /**
     *@Send meail to subscribers
     */
@@ -67,7 +66,6 @@ public class ProjectSubscribersEmailServices {
     /**
     *@Send mail to subscribers
     */
-   
     public void sendMailForTaskAssigned( List<String> lstPAId )
     {
         String emailMsj = '';

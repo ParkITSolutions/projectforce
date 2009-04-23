@@ -4,41 +4,31 @@
 public class ProjectCreateNewTaskController {
 	
 	public ProjectTask__c theTask = new ProjectTask__c();
-	
 	//Param is the projectId
 	public String param = System.currentPageReference().getParameters().get('id');
-	
 	//idTask is only for edit
    	public String idTask = System.currentPageReference().getParameters().get('task');
-	
-	 // max picture size bytes
-    public final Integer MAX_SIZE = 5240000;
-	public String assignees = '';
-	
+	// max picture size bytes
+  	public String assignees = '';
 	// Attachments
    	public List<Attachment> attachList = new List<Attachment>(); 
-	
 	public List<Integer> errorAttachList = new List<Integer>();
-	
-	//Project list path
-	public PageReference URL_TO_LIST = Page.ProjectTasksList;
 	List<assingTo> resultMem = new List<assingTo>();
-	
 	// Sharing rules
 	public UserPermissions userPermissions = new UserPermissions();
-	
 	//Inner class for manage dates
 	dateMyFormat dateMy = new dateMyFormat();
 	assingTo assign = new assingTo();
-	
 	String ProjectPicture = '';
     Boolean validSizePicture = true;
     public Boolean validTypePicture = true;
-	
 	List<myAttachment> resultAt = new List<myAttachment>();
-	
 	public Attachment document = new Attachment();
-   	
+   	public final Integer MAX_SIZE = 5240000;
+   	//Project list path
+	public PageReference URL_TO_LIST = Page.ProjectTasksList;
+	
+	
 	/**
 	* Constructor
 	*/
@@ -368,7 +358,6 @@ public class ProjectCreateNewTaskController {
    		if(theTask.Id == null){
    			if(userPermissions.getCanCreate()){
    				theTask.Project__c = param;
-   				//theTask.PercentCompleted__c = 0.0;
    				insert theTask;
    			}else{
    				throw new CustomException('Insufficient Privileges');
@@ -516,6 +505,10 @@ public class ProjectCreateNewTaskController {
    		}
    	}
    	
+   	/**
+	* Save attachments and project type
+	*@return PageReference
+	*/
    	public PageReference saveAttachmentsAndAccess(){
    		    	
     	attachList.clear(); 
@@ -714,7 +707,7 @@ public class ProjectCreateNewTaskController {
    	}
 
    	/*
-   	* Inner Class 
+   	*Inner Class dateMyFormat
    	*@class
    	*/
   	public class dateMyFormat {

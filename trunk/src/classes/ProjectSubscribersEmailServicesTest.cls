@@ -5,6 +5,8 @@
 	
 	/**
 	* Test  ProjectSubscribersEmailServices
+	*@void
+    *@static
 	*/
     static testMethod void myUnitTest(){
     	

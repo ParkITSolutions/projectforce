@@ -5,6 +5,8 @@
 	
 	/**
 	* Test ProjectOverlayNewAttachment
+	*@void
+    *@static
 	*/
     static testMethod void myUnitTest(){
     	

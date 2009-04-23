@@ -5,6 +5,8 @@
 	
 	/**
     * Test DeleteProjectController
+    *@void
+    *@static
     */
 	static testMethod void myUnitTest(){
     	

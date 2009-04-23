@@ -9,6 +9,7 @@ public class ProjectTaskDetailController {
 	private Boolean editDeletePer = false;
 	private String projectId = '';
 	public UserPermissions userPermissions = new UserPermissions();
+	
 	/**
 	* Constructor
 	*/

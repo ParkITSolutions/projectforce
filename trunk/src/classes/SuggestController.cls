@@ -5,7 +5,6 @@
 public class SuggestController {
 
 	private List<Suggestions> suggestionList = new List<Suggestions>();
-
 	public String paramInput;
 	public String paramClass;
 	public String paramTeamId;

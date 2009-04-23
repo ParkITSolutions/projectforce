@@ -5,6 +5,8 @@
 	
 	/**
 	* Test ProjectDetailAttachmentController
+	*@void
+    *@static
 	*/
     static testMethod void myUnitTest(){
     	

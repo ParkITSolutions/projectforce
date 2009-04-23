@@ -12,6 +12,7 @@ public class ProjectDeleteTaskOverlayController {
 	 
 	/**
     * Generate User Permissions
+    *@void
     */
     public void genPermissions () {
         userPermissions.setId(UserInfo.getUserId());
@@ -35,11 +36,16 @@ public class ProjectDeleteTaskOverlayController {
         idDeletes = sidDeletes; 
     }
     
-    
+    /** deleteTask
+    *@void
+    */
     public void deleteTaskFromList(){
     	deleteTask();	
     }
     
+    /** deleteTask
+    *@return PageReference
+    */
     public PageReference deleteTaskFromDetail(){
     	deleteTask();
        	PageReference pr = new PageReference('/apex/ProjectDetail?id=' + projectId);
@@ -47,6 +53,9 @@ public class ProjectDeleteTaskOverlayController {
         return pr;
     }
     
+    /** deleteTask
+    *@void
+    */
     public void deleteTask(){
         List<String> myIds = new List<String>();
         if (idDeletes != '' && idDeletes != null){

@@ -5,6 +5,8 @@ public class ProjectDetailControllerTest {
 	
 	/**
 	* Test ProjectDetailController
+	*@void
+    *@static
 	*/
     static testMethod void myUnitTest(){
     	

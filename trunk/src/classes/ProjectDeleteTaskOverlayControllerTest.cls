@@ -5,6 +5,8 @@
 	
 	/**
 	* Test ProjectDeleteTaskOverlayController
+	*@void
+    *@static
 	*/
     static testMethod void myUnitTest(){
     	
