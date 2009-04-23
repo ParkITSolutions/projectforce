@@ -29,37 +29,6 @@
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskDetail.js')}" />
   	
  	<script>
- 	function trunkAllTitles(){
-	 	trunkTitle();
-	 	trunkBreadcrumbs();
- 	}
- 	
- 	function trunkBreadcrumbs(){
- 		var text = $('taskNameBreadcrumb').innerHTML;
-		$('taskNameBreadcrumb').innerHTML = text.substring(0, 24) + '...';
-		
-		var text = $('projectNameBreadcrumb').innerHTML;
-		$('projectNameBreadcrumb').innerHTML = text.substring(0, 24) + '...';
-		
- 	}
- 	
- 	function trunkTitle(){
-
-			var h = $$('.arial_black')[1];
-			var text = h.innerHTML;
-			var ofs = $$('div.header_portal div.searchBox')[0].positionedOffset();
-			var ps = $$('.page_section')[0];
-			var size = parseInt(h.getStyles().fontSize, 10);
-			ps.style.width = parseInt(ofs) + 'px';
-			var lettersLength = (parseInt(text.length, 10)) * (size);
-			var cantLetters = Math.round((parseInt(ofs) / size) -4);
-		
-			if(lettersLength > parseInt(ofs)){
-				h.innerHTML = text.truncate(cantLetters);
-			}
-		
-		}
-		
  		document.observe("dom:loaded", function(){
 				trunkAllTitles();
 				readPortalCSSRules();
@@ -67,13 +36,6 @@
 		)
  		var currentTeam = '{!Task.ProjectId}';	
  	</script>
-
- 	<style>
-		table.detailList td{
-			height: 20px; !important;
-		}		
-  	</style>
-  
 
 	<div class="confirmation" id="confirmation" style="display:none;">
    		This task has been marked complete

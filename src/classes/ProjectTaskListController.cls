@@ -18,6 +18,7 @@ public with sharing class ProjectTaskListController {
     public Boolean sortByDesc = false;
     public String sortBy;
     public String oldSortBy;
+    public String idTaskToComplete = '';
     
     /**
     * Set of Integers to control pagination
@@ -57,26 +58,6 @@ public with sharing class ProjectTaskListController {
         genCntPagination();
         getUserProfile();    
     }    
-
-
-
-    /** This method recreates the task list, filtering and sorting it.
-     */
-    public void refreshTaskList() {
-    	filterTaskList(createSortedTaskList());
-    }
-    
-    public void loadProject(){
-    	project = [Select p.Name From Project2__c p where p.id =: PROJECTID];	
-    }
-    
-
-    /**
-    *Clear the task list
-    */
-    public void reConstruct(){
-        ListTask.clear();
-    }
 
     /**
     *Get option
@@ -156,6 +137,25 @@ public with sharing class ProjectTaskListController {
     
     
   
+
+
+    /** This method recreates the task list, filtering and sorting it.
+     */
+    public void refreshTaskList() {
+    	filterTaskList(createSortedTaskList());
+    }
+    
+    public void loadProject(){
+    	project = [Select p.Name From Project2__c p where p.id =: PROJECTID];	
+    }
+    
+
+    /**
+    *Clear the task list
+    */
+    public void reConstruct(){
+        ListTask.clear();
+    }
  
     
     /**
@@ -913,11 +913,7 @@ public with sharing class ProjectTaskListController {
         } 
     }
   
-    /* ---------------------------- */
-    /*        MARK COMPLETE         */
-    /* ---------------------------- */
-    public String idTaskToComplete = '';
-    
+           
     /**
     *Get task to complete
     *@return String task id

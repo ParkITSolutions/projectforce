@@ -2,6 +2,11 @@
 *@author Miguel Soares @ 04/15/2009
 */
 @isTest private class UploadAttachmentControllerTest {
+	/**
+	* Test UploadAttachmentController
+	*@void
+    *@static
+	*/
     static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();

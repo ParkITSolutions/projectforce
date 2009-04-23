@@ -5,7 +5,7 @@
 	<apex:attribute name="sidebar" description="Holder" type="Boolean" required="false" assignTo="{!sidebar}" />	  
 
 	<!-- Javascript includes -->
-	<apex:includeScript value="{!URLFOR($Resource.TeamsResources, 'inc/js/TeamsWidgetMilestones.js')}"/>
+	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/TeamsWidgetMilestones.js')}"/>
 
 	<!--### Rerender Method ###-->
 	<apex:actionFunction name="reloadMilestoneList" action="{!genAllProjectTasks}" rerender="milestonePanelCenter, milestonePanelright" onComplete="hideSwirly('swirly_milestone')" />
@@ -55,20 +55,20 @@
 													<div class="proj_percent_complete_outline_milestone white_day" style="width:{!task.DayPercent}px ">  
 														<span class="gray"> {!task.DaysCount}</span>   		
 						                       		</div>
-						                       		<div class="sup_margin"><img  src="{!IF(task.isToLate == '',URLFOR($Resource.TeamsResources, '/images/layout/icons/flag_green.png'),URLFOR($Resource.TeamsResources, '/images/layout/icons/flag_red.png'))}"  /></div>	
+						                       		<div class="sup_margin"><img  src="{!IF(task.isToLate == '',URLFOR($Resource.ProjectResources, '/images/layout/icons/flag_green.png'),URLFOR($Resource.ProjectResources, '/images/layout/icons/flag_red.png'))}"  /></div>	
 					                       		</apex:outputpanel>
 					                       		<apex:outputpanel layout="block" rendered="{!IF(task.DayPercent > 44 ,false,true)}">
 													<div class="proj_percent_complete_outline_milestone white_day" style="width:{!task.DayPercent}px "></div>
 													<span class="gray f_left_margin"> {!task.DaysCount}</span>
 						                       		<div class="sup_margin">
-						                       			<img  src="{!IF(task.isToLate == '',URLFOR($Resource.TeamsResources, '/images/layout/icons/flag_green.png'),URLFOR($Resource.TeamsResources, '/images/layout/icons/flag_red.png'))}"  />
+						                       			<img  src="{!IF(task.isToLate == '',URLFOR($Resource.ProjectResources, '/images/layout/icons/flag_green.png'),URLFOR($Resource.ProjectResources, '/images/layout/icons/flag_red.png'))}"  />
 						                       		</div>	
 					                       		</apex:outputpanel>
 											</apex:outputpanel>
 											<apex:outputpanel layout="block"  rendered="{!IF(task.isToLate == 'latter',true,false)}" styleClass="div_left margin_top">	
 												<div class="proj_percent_complete_outline_milestone" style="width:{!task.DayPercent}px "></div>
 					                       		<span class="gray f_left_margin"> {!task.DaysCount}</span> 
-					                       		<div class="sup_margin"><img  src="{!IF(task.isToLate == '',URLFOR($Resource.TeamsResources, '/images/layout/icons/flag_green.png'),URLFOR($Resource.TeamsResources, '/images/layout/icons/flag_red.png'))}"  /></div>	
+					                       		<div class="sup_margin"><img  src="{!IF(task.isToLate == '',URLFOR($Resource.ProjectResources, '/images/layout/icons/flag_green.png'),URLFOR($Resource.ProjectResources, '/images/layout/icons/flag_red.png'))}"  /></div>	
 											</apex:outputpanel>
 										</div>
 									</apex:column>
@@ -76,7 +76,7 @@
 										
 										<apex:outputpanel >	
 											<div class="photoWrapper_32px_right" style="float: left;">
-												<a href="PeopleProfileDisplay?id={!task.UserId}"><img  title="{!task.UserName}" src="{!URLFOR($Resource.TeamsResources, 'images/placeholders/unknownperson32x32.jpg')}"  width="32" /></a>	
+												<a href="PeopleProfileDisplay?id={!task.UserId}"><img  title="{!task.UserName}" src="{!URLFOR($Resource.ProjectResources, 'images/placeholders/unknownperson32x32.jpg')}"  width="32" /></a>	
 											</div>
 										</apex:outputpanel>
 										<a href="PeopleProfileDisplay?id={!task.UserId}"  class="name_margin">{!task.UserName}</a>

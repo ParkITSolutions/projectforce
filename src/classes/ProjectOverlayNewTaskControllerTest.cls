@@ -5,6 +5,8 @@
 	
 	/**
 	* Test  ProjectOverlayNewTaskController
+	*@void
+    *@static
 	*/
     static testMethod void myUnitTest(){
     	

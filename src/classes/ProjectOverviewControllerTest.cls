@@ -5,6 +5,8 @@
 	
 	/**
 	* Test  ProjectOverviewController
+	*@void
+    *@static
 	*/
     static testMethod void myUnitTest(){
     	

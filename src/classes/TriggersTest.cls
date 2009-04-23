@@ -2,6 +2,12 @@
 *@author Miguel Soares @ 04/16/2009
 */
 @isTest private class TriggersTest {
+	
+	/**
+	* Test1
+	*@void
+    *@static
+	*/
     static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();
@@ -19,7 +25,11 @@
     }         	
 
        	
-    
+    /**
+	* Test2
+	*@void
+    *@static
+	*/
     static testMethod void myUnitTest2(){
     	
 		GenerateEnvironmentTest.gen();
@@ -33,8 +43,13 @@
 		
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
-    }          	
-
+    }   
+           	
+  	/**
+	* Test3
+	*@void
+    *@static
+	*/
     static testMethod void myUnitTest3(){
     	
 		GenerateEnvironmentTest.gen();

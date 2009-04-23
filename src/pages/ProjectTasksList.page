@@ -27,17 +27,8 @@
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskList.css')}" />
     
     <style>
-        .breadCrumbs a{
-            font-weight: normal;
-        }
-        
         #paginationOverlay{
 			background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat center;
-			position:absolute;
-			opacity:.80;
-			filter:alpha(opacity=80);
-			z-index:9998;
-		
 		}
     </style>
     

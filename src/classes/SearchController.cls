@@ -5,16 +5,12 @@ public class SearchController {
 	
 	// Parameter with action
 	private String module = null;
-	
 	// Parameter with search string
 	private String key = null;
-	
 	// Parameter for seach in team
 	private String teamId = System.currentPageReference().getParameters().get('id');
-	 
 	// Text of search label
 	private String labelName = null;
-	
 	// Default input field text value
 	private String defText = '';
 		

@@ -118,6 +118,7 @@ public class ProjectOverlayNewTaskController {
    	/**
    	* Create new task
    	*@throws CustomException message Insufficient Privileges
+   	*@void
    	*/
    	public void insertTask (){ 
    		if(!userPermissions.getCanCreate()){

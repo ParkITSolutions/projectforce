@@ -14,10 +14,10 @@ public with sharing class ProjectDetailController
     public ProjectMembersListController pmc = new ProjectMembersListController(); 
     private String projectType = '';	
     String teamIdParam = System.currentPageReference().getParameters().get('id');
-    public String USERID =  UserInfo.getUserId(); 
     public boolean isManager = false;
     public static ProjectTask__c taskT;
     public static UserPermissions userPermission = new UserPermissions();
+    public String USERID =  UserInfo.getUserId();
     
     /**
     * Constructor
@@ -37,7 +37,6 @@ public with sharing class ProjectDetailController
    	 /**
     *@return UserPermission
     */
-    
     public UserPermissions getUserPermission () {
         return userPermission;
     }
@@ -48,8 +47,11 @@ public with sharing class ProjectDetailController
     */
     public static UserPermissions getUserPermissions () {
         return userPermission;
-    }  
-
+    } 
+     
+	/**
+    *@return boolean IsManager
+    */
     public boolean getIsManager(){
     	return isManager;
     }  
@@ -108,6 +110,7 @@ public with sharing class ProjectDetailController
     
     /**
     * Load permission for current user
+    *@void
     */
  	public void genPermissions () {
         userPermission.setId(UserInfo.getUserId());
@@ -124,12 +127,9 @@ public with sharing class ProjectDetailController
     public void getTeamDetail(){
         try {
             teamspace = [Select  
-                            //t.SystemModstamp, 
                             t.OwnerId, t.Name,                      
                             t.LastModifiedDate,
                             t.LastModifiedById, 
-                            //t.NewMemberProfile__c,
-                            //t.PublicProfile__c,
                             t.IsDeleted,
                             t.Id, 
                             t.Description__c, 
@@ -168,6 +168,7 @@ public with sharing class ProjectDetailController
 
     /**
     * Join Project
+    *@void
     */
     public void joinProject(){
 		pmc.setProjectId(System.currentPageReference().getParameters().get('id'));
@@ -178,6 +179,7 @@ public with sharing class ProjectDetailController
 	
 	/**
 	* Unjoin Project
+	*@void
 	*/
 	public PageReference unjoinProject(){
 		pmc.setProjectId(System.currentPageReference().getParameters().get('id'));
@@ -202,6 +204,7 @@ public with sharing class ProjectDetailController
 
 	/**
 	* Redirect to ProjectOverview
+	*@return PageReference
 	*/
 	public PageReference projectRedirect(){
 		PageReference discOver = Page.projectOverview;

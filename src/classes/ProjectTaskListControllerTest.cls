@@ -5,6 +5,8 @@
 	
 	/**
 	* Test  ProjectTaskListController
+	*@void
+    *@static
 	*/
     static testMethod void myUnitTest(){
     	

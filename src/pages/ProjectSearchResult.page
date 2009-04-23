@@ -43,18 +43,6 @@
 	    </apex:define>
  	</apex:composition>
  	
- 	<style>
- 	div.header_portal div.searchBox div div div.search_box_input div.findDiscussion{
-		width:auto !important;
-		padding:8px 10px 7px 7px;
-	}
-	
-	div.header_portal div.searchBox div div div.search_box_input div.inputSearch {
-		min-width:100px !important;
-		max-width:284px !important;
-		background-position:right;
-	}
- 	</style>
 	
 	<!-- Sidebar -->
 	<div class="sidebar">

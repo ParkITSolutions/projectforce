@@ -19,7 +19,9 @@ public with sharing class ProjectMembersWidgetController {
 	public Integer memberListToolkitCount = 0;
 	Boolean already = false;
 	public Member newMemberVars = new Member();
-	
+	//New save
+	public Integer countSaved = 0;
+	public Boolean reset = false;
 	
 	/**
 	* Constructor
@@ -290,64 +292,6 @@ public with sharing class ProjectMembersWidgetController {
 	}	
 			
 	/**
-	* Save Member and New
-	*@void
-	*/
-	/* ***
-	public void saveMembersNew () {
-		List<ProjectMember__c> newMemberList = new List<ProjectMember__c>();
-		List<String> newMembers = newMemberVars.colleagueNames.split(',');
-		List<User> userList = new List<User>();
-		already = false;
-		for(String item: newMembers) {
-			List<User> userItem = new List<User>();
-			String itemTrim = item.trim();
-			userItem = [select id, Name, Email from User where IsActive != false and Name =:itemTrim limit 1];
-			if (userItem.size() > 0) {
-				already = false;
-				Integer listPos = 0;
-				while (!already && listPos < userList.size()) {
-					if(userList[listPos].Name == userItem[0].Name) {
-						already = true;
-					}
-					listPos++;
-				}
-				if (!already) {
-					userList.add(userItem[0]);
-				}
-				else
-					already = true;
-			}
-		}
-		
-		for (User user : userList) {
-			Integer isMember = [select count() from ProjectMember__c where Project__c =:idTeam and User__r.IsActive != false and user__c =: user.id];
-			if (isMember == 0) {
-				ProjectMember__c newMember = new ProjectMember__c();
-				newMember.User__c = user.id;
-				newMember.Name = user.Name;
-				newMember.Project__c = idTeam;
-				newMember.Profile__c = newMemberVars.profileId;
-				newMemberList.add(newMember); 
-				mailList.add(user);
-				 
-			}
-		}
-		
-		userList.clear();
-		
-		memberListToolkit = newMemberList;
-		memberListToolkitCount = newMemberList.size();
-		
-		membersToInsert = newMemberList;	
-		
-		newMemberVars.colleagueNames = '';
-		newMemberVars.teamRole = '';
-		newMemberVars.profileId = '';
-		newMemberVars.message = '';
-	} **** */
-
-	/**
 	* Save Members
 	*@void
 	*/
@@ -425,9 +369,6 @@ public with sharing class ProjectMembersWidgetController {
 		newMemberVars.message = '';
 	}
 	
-	//New save
-	public Integer countSaved = 0;
-	public Boolean reset = false;
 	
 	/**
 	* Sync Save Members

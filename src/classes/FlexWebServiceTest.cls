@@ -5,6 +5,8 @@
 	
 	/**
     * Test FlexWebService
+    *@void
+    *@static
     */
     static testMethod void myUnitTest(){
     	

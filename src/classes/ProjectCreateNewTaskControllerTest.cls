@@ -4,6 +4,8 @@
 @isTest private class ProjectCreateNewTaskControllerTest {
 	/**
 	* Test ProjectCreateNewTaskController
+	*@void
+    *@static
 	*/
     static testMethod void myUnitTest(){
     	
@@ -81,7 +83,6 @@
 		newT.getPercent();
 		newT.getPercentDedicated();
 		newT.saveAttachmentsAndAccess();
-		//newT.getTaskForEdit();
 		newT.getPriority();
 
     	Attachment att = new Attachment(Name = 'avatar', Body = Crypto.generateMac('HMacSHA1', Blob.valueOf('String'), Blob.valueOf('String')));

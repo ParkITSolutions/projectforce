@@ -4,7 +4,9 @@
 @isTest private class ProjectDetailMilestoneControllerTest {
 	
 	/**
-	* Test ProjectDetailController
+	* Test ProjectDetailMilestoneController
+	*@void
+    *@static
 	*/
 	static testMethod void myUnitTest(){
     	GenerateEnvironmentTest.gen();

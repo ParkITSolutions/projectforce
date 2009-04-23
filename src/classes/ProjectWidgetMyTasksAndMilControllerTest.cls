@@ -4,6 +4,8 @@
 @isTest private class ProjectWidgetMyTasksAndMilControllerTest {
 	/**
 	* Test  ProjectWidgetMyTasksAndMilController
+	*@void
+    *@static
 	*/
     static testMethod void myUnitTest(){
     	

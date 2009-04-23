@@ -28,32 +28,6 @@
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamDetailMarkupTop.css')}" />
 
-        
-    <style> 
-        .bodyDiv a.blackbutton {
-        	background: transparent url({!URLFOR($Resource.ProjectResources, 'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right top;
-        }
-        
-        div.sfdcDetailFormated table.detailList td{
-            height: 20px !important;
-            border:none;
-        }
-        
-        div.sfdcDetailFormated table.detailList td.labelCol{
-            font-weight: bold;
-            border:none;
-        }
-        
-        #btnDiv {
-            width: 190px !important;
-            margin-left: -90px;
-            *margin-left: 100px;
-        }
-        
-        div.breadCrumbAndButtons{
-            height: 40px !important;
-        }
-    </style>
 
     <script>
         /**
@@ -68,17 +42,7 @@
                 
             }
         );
-        
-        /**
-        * Add Members overlay call back function
-        */
-        function addMemberCallBackFunction(){
-            setTimeout('modal.close(); hideSwirly(\'swirly_overlay\')', 5000); 
-            showMessageToUser(); 
-            showSwirly('swirly_members'); 
-            setTimeout('hideMessageToUser()', 10000);       
-        }       
-    </script>
+     </script>
     
 	<!-- Delete Project Overlay -->   
     <c:ProjectOverlayDeleteProject />
@@ -208,8 +172,5 @@
  
     <script>
         readPortalCSSRules();
-
-        
     </script>
-    
 </apex:page>

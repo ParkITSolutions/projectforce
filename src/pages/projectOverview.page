@@ -33,60 +33,18 @@
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverview.css')}" />
 	
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/teamOverview.js')}" />
-	
-	<style>
-		div.rightWidget div.rightWidgetContent a.DiscussionNewTopic
-		{
-			background: url( {!URLFOR($Resource.ProjectResources, 'images/layout/icons/help_icon.gif')} ) no-repeat;
-		}	
 		
-		ul.tabsgray li {
-			background: url({!URLFOR($Resource.ProjectResources, 'images/tabs/gray.png')}) repeat-x bottom;
-		}
-		
-		ul.tabsgray li b {
-			background: url({!URLFOR($Resource.ProjectResources, 'images/tabs/right_gray.png')}) no-repeat right;
-		}
-		
-		ul.tabsgray li a{
-			background: url({!URLFOR($Resource.ProjectResources, 'images/tabs/left_gray.png')}) no-repeat left;
-		}
-		ul.tabsgray li.selected {
-			background: url({!URLFOR($Resource.ProjectResources, 'images/tabs/blue.png')}) repeat-x bottom;
-		}
-		
-		ul.tabsgray li.selected b{
-			background: url({!URLFOR($Resource.ProjectResources, 'images/tabs/right_blue.png')}) no-repeat right;
-		}
-		
-		ul.tabsgray li.selected a{
-			background: url({!URLFOR($Resource.ProjectResources, 'images/tabs/left_blue.png')}) no-repeat left;
-		}
-		
-		#holderNew div.loader{
-			background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat center 200px;
-		}
-		
-		.header_blue_top {
-			background: #fff url({!URLFOR($Resource.ProjectResources, 'images/layout/back_header.png')}) repeat-x left top;
-		}
-		
-		.create_new {
-			background:  url({!URLFOR($Resource.ProjectResources, 'images/layout/right_border.png')}) no-repeat scroll right center;
-		}
-		
-		.create_new b {
-			background: url({!URLFOR($Resource.ProjectResources, 'images/layout/left_border.png')}) no-repeat left center;
-		}	
-	</style>
-	
 	<script>
 	
 		var API_SESSION_ID = '{!$Api.Session_ID}';
 		document.observe('dom:loaded', footerBug);
 
 	</script>
-	
+	<style>
+		#holderNew div.loader {
+			background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat scroll center 200px;
+		}
+	</style>	
 	<!-- Initialize the overlay box for modal.js -->
 	<a href="#modal_container" id="initializeModal" style="display:none;"></a>
 	<div id="modal_container"></div>

@@ -5,6 +5,8 @@
 	
 	/**
 	* Test  ProjectRedirectController
+	*@void
+    *@static
 	*/
     static testMethod void myUnitTest(){
     	

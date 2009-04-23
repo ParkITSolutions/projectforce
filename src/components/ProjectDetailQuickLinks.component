@@ -53,7 +53,7 @@
 	            
 	            <apex:outputPanel rendered="{!userPermission.canCreate}">
 		            <div class="team_detail_commentedItemLeftProfile">					    
-					    <img class="imgSmallLeft" src="{!URLFOR($Resource.TeamsResources, '/images/layout/icons/star.gif')}"  />
+					    <img class="imgSmallLeft" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/star.gif')}"  />
 					    <span>
 					    	<span class="text_link_underlineColorPaddRight">
 					    	  	<a href="Javascript:fixedModalNewTask.open();">New Task</a>
@@ -61,7 +61,7 @@
 					   	</span>
 					</div>
 					<div class="team_detail_commentedItemLeftProfile">					    
-					    <img class="imgSmallLeft" src="{!URLFOR($Resource.TeamsResources, '/images/layout/icons/star.gif')}"  />
+					    <img class="imgSmallLeft" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/star.gif')}"  />
 					    <span>
 					    	<span class="text_link_underlineColorPaddRight">
 					    	  	<a href="Javascript:fixedModalNewMilestone.open();">New Milestone</a>
@@ -70,7 +70,7 @@
 					</div>
 				</apex:outputPanel>
 				<div class="team_detail_commentedItemLeftProfile">					    
-				    <img class="imgSmallLeft" src="{!URLFOR($Resource.TeamsResources, '/images/layout/icons/star.gif')}"  />
+				    <img class="imgSmallLeft" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/star.gif')}"  />
 				    <span>
 				    	<span class="text_link_underlineColorPaddRight">
 				    	  	<a href="ProjectTimeline?id={!teamIdParam}">Timeline</a>

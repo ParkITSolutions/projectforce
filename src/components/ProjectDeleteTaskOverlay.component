@@ -22,7 +22,7 @@
 			<div class="overlayTitle">Delete</div>
 			<div class="overlayCloseEvent">
 				<a href="Javascript:;" onclick="modal.close();">
-					<img src="{!URLFOR($Resource.TeamsResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
+					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
 				</a>
 			</div>
 		</div>

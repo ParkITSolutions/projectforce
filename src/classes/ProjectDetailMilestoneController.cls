@@ -12,6 +12,7 @@ public class ProjectDetailMilestoneController {
 		
 	/**
 	*@param String
+	*@void
 	*/
 	public void setTeamId(String id) {
 		if (teamId == null || teamId != id) {
@@ -27,9 +28,7 @@ public class ProjectDetailMilestoneController {
 	public String getTeamId(){
 		return teamId;
 	} 
-	
-	
-	
+		
 	/**
 	* Set Sidebar
 	*@param Boolean
@@ -45,8 +44,7 @@ public class ProjectDetailMilestoneController {
 	public Boolean getSidebar(){
 		return sidebar;
 	}	
-	
-	
+		
 	/**
 	*@return Integer
 	*/
@@ -56,14 +54,13 @@ public class ProjectDetailMilestoneController {
 	
 	/**
 	* For rerender use
+	*@void
 	*/
 	public void refresh(){}
-	
-	
 
-	
 	/**
 	* Read user permissions
+	*@void
 	*/
 	
 	public void genPermissions () {
@@ -93,6 +90,7 @@ public class ProjectDetailMilestoneController {
 	
 	/**
 	* Read List of milestones
+	*@void
 	*/
 	public void genAllProjectTasks() {
 		List<ProjectTask__c> milestones = new List<ProjectTask__c>();
@@ -163,6 +161,7 @@ public class ProjectDetailMilestoneController {
 	
 	 /**
 	 * Inner Class ProjectTasks
+	 *@class
 	 */
 	 public class ProjectTasks {
 		

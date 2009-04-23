@@ -22,7 +22,6 @@ public with sharing class ProjectSearchResultController {
    	public boolean prevPageShow  = false;
    	public boolean nextPageLinkShow  = false;
    	public boolean nextPageShow  = false;
-   	
    	public Integer jumpPage = 1;
    	
 	/**
@@ -84,6 +83,7 @@ public with sharing class ProjectSearchResultController {
 	
 	/**
 	* Makes the search
+	*@void
 	*/
 	public void search() {
 		

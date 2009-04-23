@@ -42,22 +42,22 @@
 			    	readPortalCSSRules();
 	            }
 	        );
-        
-        /**
-        * Namespace Prefix Getter
-        */
-        var namespace = "{!namespace}";     
-        
-        /**
-        * Initialize toolkit connection
-        *@void
-        */
-        function init(){
-            sforce.connection.sessionId = '{!$Api.Session_ID}';
-            sforce.connection.defaultNamespace = namespace;
-            
-        }
-        var projectId='{!Project.Id}';
+	        
+	        /**
+	        * Namespace Prefix Getter
+	        */
+	        var namespace = "{!namespace}";     
+	        
+	        /**
+	        * Initialize toolkit connection
+	        *@void
+	        */
+	        function init(){
+	            sforce.connection.sessionId = '{!$Api.Session_ID}';
+	            sforce.connection.defaultNamespace = namespace;
+	            
+	        }
+	        var projectId='{!Project.Id}';
         </script>
     
     <div id="bubble" class="bubble">
