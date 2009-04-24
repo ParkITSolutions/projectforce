@@ -29,8 +29,8 @@
 				<div class="overlaySeparateLine" />
 				<!-- Save and Cancel Buttons -->
 				<div class="overlayFromButtons" align="center">
-					<input type="button" class="overlaySaveBtn" onclick="massiveMemberRemove(); modal.close();" value="Continue"/> 
-					<input class="overlayCancelBtn" type="button" value="Cancel" onclick="modal.close();"/>
+					<input type="button" class="btn allButtons" style="background:#21637D none repeat scroll 0 0 !important;" onclick="massiveMemberRemove(); modal.close();" value="Continue and delete members"/> 
+					<input class="allButtons cancelButtons" type="button" value="Cancel" onclick="modal.close();"/>
 				</div>
 			</apex:form>
 		</div>

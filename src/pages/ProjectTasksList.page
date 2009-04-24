@@ -160,6 +160,19 @@
                                         </apex:outputpanel>
                                     </th>
                                     <th width="8%" style="padding:3px 0px;"> Action </th>                            
+                                    <th width="8%" style="padding:3px 0px;">
+                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="ID" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Id__c';" oncomplete="showHideOverlay();">
+                                            <apex:param name="sortBy" value="Id__c" assignTo="{!sortBy}"/>
+                                        </apex:commandLink>&nbsp;
+                                        <apex:outputpanel rendered="{!IF(sortBy == 'autoId',true,false)}">
+                                            <apex:outputpanel rendered="{!sortByDesc}">
+                                                <img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
+                                            </apex:outputpanel>
+                                            <apex:outputpanel rendered="{!NOT(sortByDesc)}">
+                                                <img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
+                                            </apex:outputpanel>
+                                        </apex:outputpanel>
+                                    </th>                            
                                     <th width="5%" style="text-align: center">
                                            <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Type" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Milestone__c';" oncomplete="showHideOverlay();">
                                             <apex:param name="sortBy" value="Milestone__c" assignTo="{!sortBy}"/> 
@@ -186,7 +199,7 @@
                                             </apex:outputpanel>
                                         </apex:outputpanel>
                                     </th>
-                                    <th width="25%" >
+                                    <th width="15%" >
                                         <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Name" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Name';" oncomplete="showHideOverlay();">
                                             <apex:param name="sortBy" value="Name" assignTo="{!sortBy}"/>
                                         </apex:commandLink>&nbsp;
@@ -199,6 +212,21 @@
                                             </apex:outputpanel>
                                         </apex:outputpanel>
                                     </th>
+
+                                    <th width="10%" >
+                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Status" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Status';" oncomplete="showHideOverlay();">
+                                            <apex:param name="sortBy" value="Status__c" assignTo="{!sortBy}"/>
+                                        </apex:commandLink>&nbsp;
+                                        <apex:outputpanel rendered="{!IF(sortBy == 'status',true,false)}">
+                                            <apex:outputpanel rendered="{!sortByDesc}">
+                                                <img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
+                                            </apex:outputpanel>
+                                            <apex:outputpanel rendered="{!NOT(sortByDesc)}">
+                                                <img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
+                                            </apex:outputpanel>
+                                        </apex:outputpanel>
+                                    </th>
+                                    
                                     <th width="20%" >
                                         <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Assigned to" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'User__c.Name';" oncomplete="showHideOverlay();">
                                             <apex:param name="sortBy" value="User__c.Name" assignTo="{!sortBy}"/>
@@ -269,6 +297,11 @@
                                                 	Edit</a> | <a href="javascript:;" onclick="showDeleteEvent('{!task.Id}','');">Del</a></div>     
                                             </apex:outputpanel> 
                                         </td> 
+                                        <td>
+                                        	<div>
+                                        		<a href="projecttaskdetail?id={!task.id}" class="">{!task.autoId}</a>
+                                        	</div>	
+                                        </td>
                                         <td class="imgColumns"  align="center"> 
                                             <apex:outputpanel rendered="{!IF(task.Milestone ,false,true)}" layout="block" styleClass="center">
                                                 <img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/task.gif')}" title="Task" />
@@ -298,6 +331,10 @@
                                         <!-- Task Name -->                          
                                         <td class="proj_task_title">
                                             <div><a href="projecttaskdetail?id={!task.id}" class="">{!task.Name}</a></div>
+                                        </td> 
+                                        <!-- Task Status -->                          
+                                        <td class="proj_task_title">
+                                            <div>{!task.status}</div>
                                         </td> 
                                         <!-- Task Asignee -->
                                         <td class="proj_task_assigned"> 

@@ -28,6 +28,6 @@
 	        var keyImput = $$('.key_imput')[0];
 	        keyImput.value = "{!$CurrentPage.parameters.key}";
 	    }
-    	function auxMeth();
+    	auxMeth();
     </script>
 </apex:component>

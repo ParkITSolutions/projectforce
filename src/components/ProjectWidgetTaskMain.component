@@ -61,7 +61,7 @@
 							<apex:column width="16px" styleClass="icon">
 								<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/task.png')}"/>
 							</apex:column>
-							<apex:column styleClass="first" style="width: 340px">
+							<apex:column styleClass="first" style="width: 38%">
 								<div style="{!IF(task.Priority == 'High', '', 'display:none')};" class="prior" >
 									<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/highPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}" />
 								</div>
@@ -79,7 +79,7 @@
 							<apex:column >
 								<apex:outputpanel rendered="{!IF(task.Picture == 'nopicture',false,true)}">	
 									<div class="photoWrapper_32px">
-										<a href="/{!task.UserId}"><img alt="{!task.UserName}" src="/servlet/servlet.FileDownload?file={!task.Picture}" width="32" /></a>
+										<a href="/{!task.UserId}"><img alt="{!task.UserName}" src="/servlet/servlet.FileDownload?file={!task.Picture}" ="32" /></a>
 									</div>
 								</apex:outputpanel>
 								<apex:outputpanel rendered="{!IF(task.Picture == 'nopicture',true,false)}">	
@@ -89,6 +89,9 @@
 								</apex:outputpanel>						
 								<a href="/{!task.UserId}"  class="name_margin">{!task.UserName}</a>	
 							</apex:column>
+							<apex:column >
+								{!task.status}
+							</apex:column>							
 							<apex:column >
 								<span class="percent">{!task.Percent} %</span>
 								<div class="proj_percent_complete_outline">

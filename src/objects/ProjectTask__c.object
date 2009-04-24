@@ -25,6 +25,12 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Id__c</fullName>
+        <displayFormat>#{0}</displayFormat>
+        <label>Id</label>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
         <fullName>Indent__c</fullName>
         <description>indent</description>
         <label>Indent</label>
@@ -107,6 +113,39 @@
         <description>StartDate</description>
         <label>Start Date</label>
         <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <description>Describe task status</description>
+        <label>Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Open</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Assigned</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>In Progress</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Resolved</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reopened</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Closed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
     </fields>
     <fields>
         <fullName>TaskPosition__c</fullName>

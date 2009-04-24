@@ -64,7 +64,7 @@
 	</style>
 	
 	<apex:form >
-		<apex:actionFunction name="reloadMemberList" action="{!refresh}" rerender="membersList" oncomplete="$('membersListSwirly').hide();" />
+		<apex:actionFunction name="reloadMemberList" action="{!refresh}" rerender="membersList" oncomplete="$('paginationOverlay').hide();" />
 	</apex:form>
 	
 	<!-- Initialize the overlay box for modal.js -->
@@ -131,7 +131,7 @@
 		
 		
 		<div id="holder">
-			<div id="membersListSwirly" style="display: none;" class="paginationOverlay"></div>
+			<div id="paginationOverlay" style="display: none;" class="paginationOverlay"></div>
 			<table width="100%" align='center'>
 				<tr>
 					<td class="teamTitleButton titleTd">Members</td>
@@ -163,7 +163,7 @@
 							 	value="ALL" 
 							 	styleclass="AllBtn" 
 							 	rerender="membersList"
-							 	onclick="$('paginationOverlay').show();setHeight('holder', 'paginationOverlay')" 
+							 	onclick="$('paginationOverlay').show();setDims('holder', 'paginationOverlay')" 
 							 	oncomplete="$('paginationOverlay').hide()">
 								<apex:param name="ltr" value="ALL" />
 							</apex:commandLink>
@@ -172,7 +172,7 @@
 							<li>
 								<apex:outputpanel rendered="{!NOT(item.containMembers)}">
 									<apex:commandLink styleclass="contains" action="{!genMembers}" value="{!item.letter}" 
-										onclick="$('paginationOverlay').show();setHeight('holder', 'paginationOverlay')" oncomplete="$('paginationOverlay').hide()"
+										onclick="$('paginationOverlay').show();setDims('holder', 'paginationOverlay')" oncomplete="$('paginationOverlay').hide()"
 										rerender="membersList">
 										<apex:param name="ltr" value="{!item.letter}" />
 									</apex:commandLink>
@@ -383,7 +383,7 @@
 	</div>
 	
 	<apex:outputpanel id="overlaysPanel">
-		<apex:include pageName="ProjectMembersRemove" />
+		<apex:include id="includeMemRem" pageName="ProjectMembersRemove" />
 		<apex:include pageName="ProjectMembersMassiveRemove" />
 	</apex:outputpanel>
 	

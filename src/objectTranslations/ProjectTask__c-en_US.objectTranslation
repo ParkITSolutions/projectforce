@@ -20,6 +20,10 @@
         <name>EndDate__c</name>
     </fields>
     <fields>
+        <label><!-- Id --></label>
+        <name>Id__c</name>
+    </fields>
+    <fields>
         <label><!-- Indent --></label>
         <name>Indent__c</name>
     </fields>
@@ -60,6 +64,10 @@
     <fields>
         <label><!-- Start Date --></label>
         <name>StartDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>Status__c</name>
     </fields>
     <fields>
         <label><!-- TaskPosition --></label>
