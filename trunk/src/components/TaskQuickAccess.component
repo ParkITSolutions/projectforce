@@ -1,0 +1,20 @@
+<apex:component >
+	<style>
+		div.quickAccessTask input{
+			border: solid 1px #CCCCCC;
+		}	
+	</style>
+	
+	<script>
+		$$('.quickAccessTask')[0].getElementsByTagName('input')[0].observe('click', function(this){
+				this.value = 'Task #';		
+			}
+		)
+	</script>
+
+	<div class="quickAccessTask">
+		<span>Task ID:</span>
+		<input type="text" />
+		<a href="Javascript:;" value="task#">Go</a>
+	</div>
+</apex:component>

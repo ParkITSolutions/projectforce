@@ -1,14 +1,10 @@
 /**
-*@author Miguel Soares @ 03/24/2008
+*@author Martin Prado @ 06/17/2008
 */
 public class ProjectWidgetTasksMainController {
 
+	
 	String teamId;
-	Integer listSize = 0;
-	public Boolean sidebar = false;
-	List<ProjectTask__c> tasks = new List<ProjectTask__c>();
-	List<ProjectTask> taskResults = new List<ProjectTask>();
-	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
 	
 	/**
 	* Constructor
@@ -35,7 +31,7 @@ public class ProjectWidgetTasksMainController {
 		return teamId;
 	}
 	
-	
+	public Boolean sidebar = false;
 	
 	/**
 	* Set Sidebar
@@ -68,7 +64,7 @@ public class ProjectWidgetTasksMainController {
 		taskResults = pt;
 	}
 	
-	
+	Integer listSize = 0;
 	/**
 	* Get task list size
 	*@return Integer
@@ -77,7 +73,7 @@ public class ProjectWidgetTasksMainController {
 		return listSize;
 	}
 	
-	
+	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
 	
 	/**
 	* Read user permissions
@@ -98,7 +94,8 @@ public class ProjectWidgetTasksMainController {
 		return userPermissions;
 	}
 
-	
+	List<ProjectTask__c> tasks = new List<ProjectTask__c>();
+	List<ProjectTask> taskResults = new List<ProjectTask>();
 	
 	/**
 	* Load all project task
@@ -108,7 +105,8 @@ public class ProjectWidgetTasksMainController {
 		tasks = [Select p.Priority__c, 
 	 					p.PercentCompleted__c, 
 	 					p.Name, 
-	 					p.Id, 
+	 					p.Id,
+	 					p.Status__c, 
 	 					p.EndDate__c, 
 	 					p.Duration__c, 
 	 					p.Project__c,
@@ -138,7 +136,8 @@ public class ProjectWidgetTasksMainController {
 		tasks = [Select p.Priority__c, 
 	 					p.PercentCompleted__c, 
 	 					p.Name, 
-	 					p.Id, 
+	 					p.Id,
+	 					p.Status__c, 
 	 					p.EndDate__c, 
 	 					p.Duration__c, 
 	 					p.Description__c, 
@@ -174,19 +173,23 @@ public class ProjectWidgetTasksMainController {
 	 	taskResults.clear();
 	 	if(tasks.size() > 0){
 		 	for( Integer i = 0; i < tasks.size() ; i++){
+				
 				ProjectTask miTasks = new ProjectTask();
 				miTasks.setTaskName(tasks[i].Name);
 				miTasks.setPriority(tasks[i].Priority__c);
 				miTasks.setPercent(tasks[i].PercentCompleted__c);
 				miTasks.setTaskId(tasks[i].Id);
+				miTasks.setStatus(tasks[i].Status__c);
 				
 				if(tasks[i].ProjectsAssignees__r.size() > 0){
 					miTasks.setUser(userMap.get(tasks[i].ProjectsAssignees__r[0].User__c));					
 				}
+				
 				if(tasks[i].EndDate__c != null){
 					miTasks.setEndDate(tasks[i].EndDate__c);
 					miTasks.setIsToLate(tasks[i].EndDate__c);  
 				}
+				
 				taskResults.add(miTasks);
 		 	}
 	 	} 
@@ -209,6 +212,8 @@ public class ProjectWidgetTasksMainController {
 		public String EndDate;
         public String Picture = 'nopicture';
         public String isToLate;
+        public String status;
+        
       	DateTime now = System.now();
 	
       	/**
@@ -242,6 +247,20 @@ public class ProjectWidgetTasksMainController {
       	*/
       	public String getPicture() {
       		return Picture;
+        }
+        
+        /**
+        *@return task status
+        */
+        public String getStatus(){
+        	return status;
+        }
+        
+        /**
+        *@param s task status
+        */
+        public void setStatus(String s){
+        	status = s;
         }
       	
       	/**

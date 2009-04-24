@@ -195,11 +195,11 @@ public with sharing class ProjectDetailController
 				return this.projectRedirect();
 
 		}else{
+			genPermissions();
 			isLastMemberAdmin = true;
 		}
 	
 		return null;
-
 	}
 
 	/**

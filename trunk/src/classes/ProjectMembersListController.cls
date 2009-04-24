@@ -11,7 +11,8 @@ public without sharing class ProjectMembersListController {
 	public String letter = System.currentPageReference().getParameters().get('ltr');
 	public Boolean sortByDesc = false;
 	public String sortBy = 'User__r.Name';
-	
+	public Boolean error = false;
+	public Boolean finish = false;
 	// Set of Integers to control pagination
    	public Integer numberOfItemsToShow = 10;
    	public Integer cntPagination;
@@ -85,7 +86,40 @@ public without sharing class ProjectMembersListController {
 	public void setSortBy (String s){
 		sortBy = s;	
 	}
-
+	/**
+	* Return error
+	*@return error
+	*/
+	public Boolean getError(){
+		return error;	
+	}
+	
+	/**
+	*@param Boolean e
+	*/
+	public void setError(Boolean e){
+		error = e;
+	}
+	
+	/**
+	* Return error
+	*@return error
+	*/
+	public Boolean getFinish(){
+		return finish;	
+	}
+	
+	/**
+	*@param Boolean e
+	*/
+	public void setFinish(Boolean f){
+		finish = f;
+	}
+	
+	public void resetErrorAndFinish(){
+		error = false;	
+		finish = false;
+	}
 	
 	/**
 	* Return user permissions
@@ -258,19 +292,29 @@ public without sharing class ProjectMembersListController {
 	* Redirect after remove a member
 	*@return PageReference
 	*/
-	public PageReference removeMember () {
-		if (removeMemberId != UserInfo.getUserId()) {
-			ProjectMember__c delMember = [select User__r.Name 
-									   	  from ProjectMember__c 
-										  where User__c =: removeMemberId 
-										  	and project__c =: idProject];
-			delete delMember;
+	public void removeMember () {
+		error = false;
+		
+		ProjectMember__c delMember = [select User__r.Name  from ProjectMember__c where User__c =: removeMemberId and project__c =: idProject];
+									  	
+		List<ProjectMember__c> admins = new List<ProjectMember__c>(); 
+		admins = [Select p.Id From ProjectMember__c p where p.Profile__r.Name = 'Project Administrator' and p.Project__c =: idProject and User__c !=: removeMemberId];
+		
+		if (admins.size() >0){
+			error = false;
+			finish = true;
+			delete delMember;	
+		}else{
+			error = true;
+			finish = false;	
 		}
-		PageReference pageRef = Page.ProjectMembersList;
-		pageRef.getParameters().put('remMsg', 'true');
-		pageRef.getParameters().put('id', idProject);
-		pageRef.setRedirect(true);
-		return pageRef;	
+		System.debug('ellleee' + error + admins.size());
+	
+		//PageReference pageRef = Page.ProjectMembersList;
+		//pageRef.getParameters().put('remMsg', 'true');
+		//pageRef.getParameters().put('id', idProject);
+		//pageRef.setRedirect(true);
+		//return pageRef;	
 	}
 	
 

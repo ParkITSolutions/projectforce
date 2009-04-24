@@ -1512,6 +1512,11 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>false</editable>
+        <field>ProjectTask__c.Id__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
         <field>ProjectTask__c.Indent__c</field>
         <hidden>true</hidden>
     </fieldLevelSecurities>
@@ -1558,6 +1563,11 @@
     <fieldLevelSecurities>
         <editable>true</editable>
         <field>ProjectTask__c.StartDate__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>ProjectTask__c.Status__c</field>
+        <hidden>true</hidden>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>false</editable>

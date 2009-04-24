@@ -88,9 +88,9 @@
                                 <!-- Save and Cancel Buttons -->
                                 <div class="overlayFromButtons" align="center">
                                     <apex:commandButton action="{!insertTask}" id="taskSaveBtn"                                                                              
-                                        status="taskStatus" style="float: none;width: 70px !important;"
+                                        status="taskStatus" style="float: none;width: 70px !important;background: #21637D none repeat scroll 0 0 !important;"
                                         onComplete="try{showSelect();}catch(e){}formValidate('{!$Component.name}', '{!$Component.taskEstimate}', '{!$Component.member}' ,'{!$Component.taskStartDate}' , '{!$Component.taskDueDate}');"
-                                        value="Save" styleClass="allButtons dummyBtn" rerender="quickTaskForm"/>
+                                        value="Save" styleClass="btn allButtons" rerender="quickTaskForm"/>
                                     <input class="allButtons" type="button" style="float: none;width: 70px !important;background:#989999 none repeat scroll 0 0 !important;" value="Cancel"  onclick="try{showSelect();}catch(e){}resetFormNewTask();fixedModalNewTask.close();" />
                                     <a href="javascript:;" onclick="sendTempTaskDetails('{!$Component.name}','{!$Component.taskStartDate}','{!$Component.taskDueDate}', '{!$Component.taskEstimate}','{!$Component.member}'); return false;">Edit task details</a>
                                 </div> 
@@ -116,7 +116,4 @@
                 </form>
             </div>
     </div>
-    <script>
-    	$$('.dummyBtn')[0].className = 'allButtons';
-    </script>
 </apex:component>
