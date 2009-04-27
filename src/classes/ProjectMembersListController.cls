@@ -126,6 +126,7 @@ public without sharing class ProjectMembersListController {
 	*@return UserPermissions
 	*/
 	public UserPermissions getUserPermissions () {
+		genPermissions();
 		return userPermissions;
 	}	
 	
@@ -174,7 +175,8 @@ public without sharing class ProjectMembersListController {
 	*/	
 	public String getProjectName () {
 		Project2__c currentProject = [select Name from Project2__c where id=: idProject];
-		return currentProject.Name;	 
+		String pName = ( currentProject.Name.length() > 15 ) ? currentProject.Name.substring(0, 15) + '...' : currentProject.Name;
+		return pName;	 
 	}
 	
 	/**
@@ -274,6 +276,7 @@ public without sharing class ProjectMembersListController {
 	*@void
 	*/
 	public void refresh() {
+		genPermissions();
 		genMembers();
 	}
 	
@@ -294,11 +297,12 @@ public without sharing class ProjectMembersListController {
 	*/
 	public void removeMember () {
 		error = false;
+		finish = false;
 		
-		ProjectMember__c delMember = [select User__r.Name  from ProjectMember__c where User__c =: removeMemberId and project__c =: idProject];
+		ProjectMember__c delMember = [select User__r.Name  from ProjectMember__c where Id =: removeMemberId and project__c =: idProject];
 									  	
 		List<ProjectMember__c> admins = new List<ProjectMember__c>(); 
-		admins = [Select p.Id From ProjectMember__c p where p.Profile__r.Name = 'Project Administrator' and p.Project__c =: idProject and User__c !=: removeMemberId];
+		admins = [Select p.Id From ProjectMember__c p where p.Profile__r.Name = 'Project Administrator' and p.Project__c =: idProject and Id !=: removeMemberId];
 		
 		if (admins.size() >0){
 			error = false;
@@ -308,13 +312,18 @@ public without sharing class ProjectMembersListController {
 			error = true;
 			finish = false;	
 		}
-		System.debug('ellleee' + error + admins.size());
-	
+		
+		genPermissions(); 
+		System.debug('aaaa' + userPermissions.getCanManage());
 		//PageReference pageRef = Page.ProjectMembersList;
 		//pageRef.getParameters().put('remMsg', 'true');
 		//pageRef.getParameters().put('id', idProject);
 		//pageRef.setRedirect(true);
 		//return pageRef;	
+	}
+	
+	public static boolean getCanManageStatic(){
+		return UserPermissions.getCanManageStatic();	
 	}
 	
 
@@ -636,6 +645,10 @@ public without sharing class ProjectMembersListController {
 	*/
 	public void setRemoveMemberId (String memberId){
 		removeMemberId = memberId; 
+	}
+	
+	public String getRemoveMemberId(){
+		return removeMemberId;	
 	}
 	
 	/*

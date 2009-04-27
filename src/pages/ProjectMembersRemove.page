@@ -13,26 +13,30 @@
 			</div>
 		</div>
 		<div class="overlayMainContent">
-			<apex:form id="newMemberForm">
+			<apex:form id="removeMemberForm">
 			    <script>
                     var removeStatus = '{!finish}';
                     if( removeStatus == 'true' ){
-                    	reloadMemberList();
                         modal.close();
+                        reloadMemberList();
+                        reloadButtons();
                     }
                 </script>
-				<apex:outputPanel rendered="{!NOT(error)}">
-					<div class="overlayFormContent" style="padding-bottom: 10px;">
-						<table style="width:95%;"> 
-							<tr>
-								<td ><span class="inputInfoDark">Are you sure you want to remove {!delName} from {!projectName}?</span></td>
-							</tr>
-							<tr>
-								<td ><span class="inputInfo">Once a member is removed there is no way to undo this action.</span></td>
-							</tr>
-						</table>
-					</div>
-				</apex:outputPanel>
+                <div class="overlayFormContent" style="padding-bottom: 10px;">
+                	<apex:inputHidden id="idToDelete" value="{!RemoveMemberId}" />
+					<apex:outputPanel rendered="{!NOT(error)}">
+						
+							<table style="width:95%;"> 
+								<tr>
+									<td ><span class="inputInfoDark">Are you sure you want to remove {!delName} from {!projectName}?</span></td>
+								</tr>
+								<tr>
+									<td ><span class="inputInfo">Once a member is removed there is no way to undo this action.</span></td>
+								</tr>
+							</table>
+						
+					</apex:outputPanel>
+				</div>
 				<apex:outputPanel rendered="{!error}">
                         <table style="width: 95%;">
                             <tr>
@@ -50,7 +54,7 @@
 				<apex:outputPanel rendered="{!NOT(error)}" id="removeMemberFormButtons">
 					<!-- Save and Cancel Buttons -->
 					<div class="overlayFromButtons" align="center">
-						<apex:commandButton styleclass="btn allButtons" onclick="$('paginationOverlay').show();setDims('holder','paginationOverlay');" action="{!removeMember}" style="float: none;background: #21637D none repeat scroll 0 0 !important;" value="Continue and delete member" rerender="newMemberForm"/> 
+						<apex:commandButton styleclass="btn allButtons" onclick="statusDeleting(this);$('paginationOverlay').show();setDims('holder','paginationOverlay');" action="{!removeMember}" style="float: none;background: #21637D none repeat scroll 0 0 !important;" value="Continue and delete member" rerender="removeMemberForm"/> 
 						<input class="allButtons cancelButtons" style="float: none;" type="button" value="Cancel" onclick="modal.close();"/>
 					</div>
 				</apex:outputPanel>
