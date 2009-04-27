@@ -56,17 +56,23 @@
 				trunkTitle(); 
 			}
 		)
+		var globalTeamId = "{!projectId}";
 	</script>
 	<style>
 		.paginationOverlay{
 			background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat center;
 		}
+		div#quickLinksContainer{
+			display: none;
+		}
 	</style>
 	
 	<apex:form >
-		<apex:actionFunction name="reloadMemberList" action="{!refresh}" rerender="membersList" oncomplete="$('paginationOverlay').hide();" />
+		<apex:actionFunction name="reloadMemberList" action="{!refresh}" rerender="headerBtnContainer, membersList" oncomplete="$('paginationOverlay').hide();" />
 	</apex:form>
-	
+	<apex:form >
+		<apex:actionFunction name="reloadButtons" action="{!refresh}" rerender="headForm" />
+	</apex:form>
 	<!-- Initialize the overlay box for modal.js -->
 	<a href="#modal_container" id="initializeModal" style="display:none;"></a>     
 	<div id="modal_container"></div>
@@ -91,8 +97,8 @@
 				<span class="breadCrumbsLast">Member List</span>		
 			</div>
 			<div id="btnsDiv" style="width: 260px; *margin-left: 200px !important;">
-				<apex:form >
-					<apex:outputpanel rendered="{!userPermissions.canManage}" >
+				<apex:form id="headForm" rendered="{!userPermissions.canManage}" >
+					<apex:outputpanel id="headerBtnContainer" rendered="{!IF(userPermissions.canManage,true,false)}" >
 						<a onclick="createOverlay('','inviteTeam','','showSelects()','');relocateOverlay();"
 							href="javascript:;" class="blackbutton"><span>New</span></a>
 						<a href="javascript:;" class="blackbutton"
@@ -192,7 +198,6 @@
 			</apex:outputpanel>
 			
 			<apex:outputpanel id="membersList">
-			
 				<apex:outputpanel styleClass="pagination" layout="block" rendered="{!IF(AND(prevPageShow,nextPageShow),false,true)}">
 					<div class="pages">
 						<apex:form >
@@ -293,12 +298,8 @@
 								</apex:outputpanel></td>
 								<td>
 									<apex:outputpanel rendered="{!userPermissions.canManage}">
-									<apex:commandLink styleclass="member_detail_description_underline" value="Del"
-										action="{!assignRemoveId}" rerender="overlaysPanel"
-										oncomplete="createOverlay('','removeMemberOverlay','155','');">
-										<apex:param name="delId" value="{!item.userId}" />
-									</apex:commandLink>
-								</apex:outputpanel></td>
+									 <a href="Javascript:;" onclick="setHiddenMemberId('{!item.projectMemberId}'); createOverlay('','removeMemberOverlay','155','relocateOverlay()');">Delete</a>
+									</apex:outputpanel></td>
 								<td class="memberImg">
 									<div class="photoWrapper_32px">
 										<img src="{!URLFOR($Resource.commonResources, 'images/placeholders/unknownperson32x32.jpg')}" width="32" />
@@ -389,5 +390,4 @@
 	
 	<c:ProjectOverlayNewTask />
 	<c:ProjectOverlayNewMilestone />
-	
 </apex:page>

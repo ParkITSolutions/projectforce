@@ -38,7 +38,7 @@
     <!-- ProjectTaskList JS -->
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskList.js')}"/>
     
-    <div class="teamWidget mySmallWidget" >
+    <div class="teamWidget mySmallWidget" id="quickLinksContainer" >
         <!-- Widget Title -->       
         <div class="thinHeader">
             <div>

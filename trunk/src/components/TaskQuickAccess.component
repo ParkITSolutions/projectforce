@@ -1,20 +1,40 @@
-<apex:component >
-	<style>
-		div.quickAccessTask input{
-			border: solid 1px #CCCCCC;
-		}	
-	</style>
-	
-	<script>
-		$$('.quickAccessTask')[0].getElementsByTagName('input')[0].observe('click', function(this){
-				this.value = 'Task #';		
-			}
-		)
-	</script>
+<apex:component controller="TaskQuickAccessController">
+    <style>
+        div.quickAccessTask input{
+            border: solid 1px #CCCCCC;
+        }
+        
+        div.header_portal div.help div {
+        	margin-top: 13px !important;
+        }
+        
+        div.header_portal div.help{
+        	width: 230px !important;
+        }
+        
+        div.quickAccessTask span.quickAccessError{
+        	padding-right: 18px;
+        }
+    </style>
 
+	<script>
+		function hideQuickAccessError(element){
+			var spans = $$('.quickAccessError');
+			if(spans.length > 0)
+				spans[0].hide();
+		}
+	</script>
+	
 	<div class="quickAccessTask">
-		<span>Task ID:</span>
-		<input type="text" />
-		<a href="Javascript:;" value="task#">Go</a>
-	</div>
+        <apex:form id="quickAccessForm">
+            <span>Task ID:</span>
+            <apex:inputText value="{!taskId}" />
+            <apex:actionFunction name="quickAccessToTask" action="{!go}" rerender="quickAccessForm" />
+            <a href="Javascript:;" class="actionQuickAccess" onclick="hideQuickAccessError(); quickAccessToTask(this); ">Go</a>
+            <apex:outputPanel styleClass="quickAccessError" rendered="{!error}">
+            	<br/>Error: Task does not exist
+            </apex:outputPanel>
+        </apex:form>
+    </div>
+    
 </apex:component>
