@@ -28,7 +28,6 @@
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamDetailMarkupTop.css')}" />
 
-
     <script>
         /**
         * On DOM ready functions

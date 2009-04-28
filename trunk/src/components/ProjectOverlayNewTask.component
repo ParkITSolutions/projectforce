@@ -49,7 +49,7 @@
             <apex:form >
                 <apex:actionFunction name="refreshAssignToTask" action="{!dummyRefresh}" rerender="assignToTask" />
             </apex:form>
-            <apex:form id="quickTaskForm" onSubmit="if(checkFormNewTaskOverlay('{!$Component.member}','{!$Component.taskEstimate}','{!$Component.name}','{!$Component.taskStartDate}','{!$Component.taskDueDate	}')){true;}else {return false;};"  >  
+            <apex:form id="quickTaskForm" onSubmit=" return checkFormNewTaskOverlay('{!$Component.member}','{!$Component.taskEstimate}','{!$Component.name}','{!$Component.taskStartDate}','{!$Component.taskDueDate	}');"  >  
                 <div id="formTaskID" style="display:none;">{!$Component.quickTaskForm}</div>
                 <apex:actionStatus id="taskStatus" layout="block">
                         <apex:facet name="start"><apex:outputText value="Saving Task..." /></apex:facet>

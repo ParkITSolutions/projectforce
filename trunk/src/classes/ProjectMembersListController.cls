@@ -26,6 +26,14 @@ public without sharing class ProjectMembersListController {
    	public boolean nextPageLinkShow  = false;
    	public boolean nextPageShow  = false;
    	
+   	public boolean renderfoo = false;
+   	public boolean getrenderfoo(){
+   		System.debug('primero');
+   		genPermissions(); 
+   		renderfoo = userPermissions.getcanManage();
+   		return renderfoo; 
+   	}
+   	
    	public List<String> lettersList = new List<String>{'A','B','C','D','E','F','G','H','I','J',
    		'K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
    		
@@ -276,6 +284,7 @@ public without sharing class ProjectMembersListController {
 	*@void
 	*/
 	public void refresh() {
+		System.debug('desde refresh()');
 		genPermissions();
 		genMembers();
 	}
@@ -289,6 +298,10 @@ public without sharing class ProjectMembersListController {
 		userPermissions.setProject(idProject);
 		userPermissions.setObjectType('Project');
 		userPermissions.setPermissions();		
+		
+		System.debug('aaaa' + userPermissions.getCanManage());
+
+		
 	}
 	
 	/**
@@ -298,7 +311,7 @@ public without sharing class ProjectMembersListController {
 	public void removeMember () {
 		error = false;
 		finish = false;
-		
+		System.debug( 'segundo' );
 		ProjectMember__c delMember = [select User__r.Name  from ProjectMember__c where Id =: removeMemberId and project__c =: idProject];
 									  	
 		List<ProjectMember__c> admins = new List<ProjectMember__c>(); 
@@ -314,7 +327,6 @@ public without sharing class ProjectMembersListController {
 		}
 		
 		genPermissions(); 
-		System.debug('aaaa' + userPermissions.getCanManage());
 		//PageReference pageRef = Page.ProjectMembersList;
 		//pageRef.getParameters().put('remMsg', 'true');
 		//pageRef.getParameters().put('id', idProject);

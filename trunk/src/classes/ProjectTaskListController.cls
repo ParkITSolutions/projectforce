@@ -595,7 +595,9 @@ public with sharing class ProjectTaskListController {
             TaskDetail.Milestone = resultTaskList[i].Milestone__c;
             TaskDetail.status = resultTaskList[i].status__c;
             TaskDetail.autoId = resultTaskList[i].id__c;
-            TaskDetail.canEditAndDelete = ( resultTaskList[i].ProjectsAssignees__r[0].User__c == USERID ) ? true : false;
+            
+            if(resultTaskList[i].ProjectsAssignees__r.size() > 0)
+            	TaskDetail.canEditAndDelete = (resultTaskList[i].ProjectsAssignees__r[0].User__c == USERID ) ? true : false;
 
              if(resultTaskList[i].PercentCompleted__c!=null){
                 TaskDetail.Percent_Completed= (resultTaskList[i].PercentCompleted__c).intValue();
