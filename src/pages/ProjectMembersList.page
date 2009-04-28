@@ -57,11 +57,10 @@
 			}
 		)
 		var globalTeamId = "{!projectId}";
+		
 	</script>
 	<style>
-		.paginationOverlay{
-			background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat center;
-		}
+		
 		div#quickLinksContainer{
 			display: none;
 		}
@@ -137,7 +136,7 @@
 		
 		
 		<div id="holder">
-			<div id="paginationOverlay" style="display: none;" class="paginationOverlay"></div>
+			<div id="paginationOverlay" style="display: none;"  class="paginationOverlay"></div>
 			<table width="100%" align='center'>
 				<tr>
 					<td class="teamTitleButton titleTd">Members</td>

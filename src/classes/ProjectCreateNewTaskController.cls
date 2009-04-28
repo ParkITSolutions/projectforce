@@ -27,8 +27,10 @@ public class ProjectCreateNewTaskController {
    	public final Integer MAX_SIZE = 5240000;
    	//Project list path
 	public PageReference URL_TO_LIST = Page.ProjectTasksList;
+	public Boolean errorInDates = false;
 	
 	
+	public Boolean getErrorInDates(){ return errorInDates; }
 	/**
 	* Constructor
 	*/
@@ -183,7 +185,7 @@ public class ProjectCreateNewTaskController {
 	*/
 	public String getNamespace () {
         return ProjectUtil.getNamespace();
-    } 
+    }
 	
 	/**
 	*@return inputs file erros index
@@ -464,6 +466,15 @@ public class ProjectCreateNewTaskController {
 		if(theTask.ParentTask__r.Name != null && theTask.ParentTask__r.Name != ''){	
    			ParentName = theTask.ParentTask__r.Name;
    		}
+   		
+   		if( fields.indexOf( 'StartDate__c') != -1 && fields.indexOf( 'EndDate__c') != -1){
+   		
+   			Date startDate = theTask.StartDate__c;
+   			Date endDate = theTask.EndDate__c;
+   			
+   			this.errorInDates = ( startDate  > endDate ) ? true : false;
+   		}
+   		
 		for(ProjectAssignee__c t: theTask.ProjectsAssignees__r){  
 			assingTo assignMem = new assingTo();
 			assignMem.setPercent(t.PercentDedicated__c); 
@@ -572,6 +583,8 @@ public class ProjectCreateNewTaskController {
    		   		  		   		
    		if(errorAttachList.size() > 0){
    			return null;
+   		}else{
+   			insert attachList;	
    		}
    			
   		//Save Assignees

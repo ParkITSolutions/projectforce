@@ -44,7 +44,6 @@
 		.name_error {
 			color: #FF0000;
 		}
-
 	</style>
 
 	<!-- NEW MEMBER OVERLAY -->
@@ -127,9 +126,9 @@
 					<div class="overlayFromButtons" align="center">
 						<apex:commandButton action="{!saveMembers}"
 							oncomplete="addMemberCallBackFunction()"
-							styleclass="allButtons dummyBtn" style="height: auto !important;" value="Send"
+							styleclass="btn allButtons" style="float: none;width: 70px !important;background: #21637D none repeat scroll 0 0 !important;" value="Send"
 							rerender="membersListContainer" /> 
-						<input class="btn overlayCancelBtn" type="button" value="Cancel" style="height: 25px !important;" onclick="modal.close();stopFunction();" />
+						<input id="cancelBtn" class="allButtons" type="button" value="Cancel" onclick="modal.close();stopFunction();" />
 					</div>
 				</apex:form>
 			</div>
@@ -263,9 +262,8 @@
 	</div>
 	<div class="clear"></div>
 	<script>
-		$$('.dummyBtn')[0].className = 'allButtons';
 		function addMemberCallBackFunction(){
-			setTimeout('modal.close(); hideSwirly(\'swirly_overlay\')', 5000); 
+			setTimeout('modal.close(); hideSwirly(\'swirly_overlay\')', 5000);
 			$('paginationOverlay').show(); 
 			setDims('holder','paginationOverlay');
 		}

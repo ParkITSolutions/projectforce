@@ -4,7 +4,7 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
 	ProjectSubscribersEmailServices pEmail = new ProjectSubscribersEmailServices();
 	List<String> lstPTId = new List<String>();
     for ( ProjectTask__c pT : Trigger.new ){
-    	lstPTId.add(pT.id);
+    	lstPTId.add(pT.Id);
     }
     pEmail.sendMailForTaskChanged( lstPTId );
 }
