@@ -22,6 +22,28 @@
 		/**
 		* Temp source move to static
 		*/
+		
+		function enabDisbTask( par ){		
+			if( par == 'on'){
+				$('theImg').style.visibility = 'hidden';
+				$$('.comBxSel')[0].enable();
+			}
+			else if( par == 'off'){
+				$$('.comBxSel')[0].disable();
+				$('theImg').show();
+			}		
+		}
+
+		function enabDisbMile( par ){		
+			if( par == 'on'){
+				$('swrNewMile').style.visibility = 'hidden';
+				$$('.comBxNewMile' )[0].enable();
+			}
+			else if( par == 'off'){
+				$$('.comBxNewMile')[0].disable();
+				$('swrNewMile').show();
+			}
+		}
     </script>
     
     <!-- ### Initialize fixed Overlay ### -->
@@ -47,7 +69,7 @@
             <div class="overlay_form">
             <apex:outputPanel id="refreshTaskOverlay" ></apex:outputPanel>
             <apex:form >
-                <apex:actionFunction name="refreshAssignToTask" action="{!dummyRefresh}" rerender="assignToTask" />
+                <apex:actionFunction name="refreshAssignToTask" action="{!dummyRefresh}" rerender="assignToTask" oncomplete="enabDisbTask('on')" />
             </apex:form>
             <apex:form id="quickTaskForm" onSubmit=" return checkFormNewTaskOverlay('{!$Component.member}','{!$Component.taskEstimate}','{!$Component.name}','{!$Component.taskStartDate}','{!$Component.taskDueDate	}');"  >  
                 <div id="formTaskID" style="display:none;">{!$Component.quickTaskForm}</div>
@@ -78,9 +100,11 @@
                                     <br/>
                                     <label>Assign to</label><span class="required"></span>
                                     <apex:outputpanel id="assignToTask" layout="block"> 
-                                        <apex:selectList value="{!projectMember.User__c}" required="true"  id="member" multiselect="false" size="1">
+                                        <apex:selectList value="{!projectMember.User__c}" required="true"  id="member" multiselect="false" size="1" styleClass="comBxSel">
                                             <apex:selectOptions value="{!projectMembers}" />
-                                        </apex:selectList><div class="red" style="display: none;" id="memberError"><strong>Error:</strong> You must select a value</div>
+                                        </apex:selectList>
+                                        <div class="red" style="display: none;" id="memberError"><strong>Error:</strong> You must select a value</div>
+                                        &nbsp;<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/small_loader.gif')}" id="theImg" />
                                     </apex:outputpanel>
                                     <br/>
                                 </div>

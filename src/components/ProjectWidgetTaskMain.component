@@ -17,7 +17,7 @@
 						
 						<ul class="links_sup">
 							<apex:outputpanel rendered="{!userPermissions.canCreate}"> 
-								<li><a class="topRightLinks" href="javascript:;" onclick="fixedModalNewTask.open();">New</a> |</li>
+								<li><a class="topRightLinks" href="javascript:;" onclick="fixedModalNewTask.open();refreshAssignToTask();enabDisbTask('off');">New</a> |</li>
 							</apex:outputpanel>
 							<li class="contact_border_active" style="position: relative;">
 								<a href="javascript:;" id="filter" class="contact_border"  onclick="dropDownContact(this);">View: All Tasks</a>

@@ -292,9 +292,18 @@
                                             </apex:outputpanel> 
                                         </td>
                                         <td>
-                                            <apex:outputpanel rendered="{!IF(OR(editDeletePer,task.canEditAndDelete) ,true,false)}" layout="block">
-                                                <div><a href="/apex/projectRedirect?sO=ProjectTask__c&attr=task&page=ProjectCreateNewTask&rR=NewProjectFormContainer&oC=true&eid={!ProjectId}&task={!task.id}">
-                                                	Edit</a> | <a href="javascript:;" onclick="showDeleteEvent('{!task.Id}','');">Del</a></div>     
+                                            <apex:outputpanel rendered="{!IF(OR(OR(editDeletePer,task.canEditAndDelete), task.isTaskOwner) ,true,false)}" layout="block">
+                                                <div>
+                                                	<a href="/apex/projectRedirect?sO=ProjectTask__c&attr=task&page=ProjectCreateNewTask&rR=NewProjectFormContainer&oC=true&eid={!ProjectId}&task={!task.id}">
+                                                		Edit
+                                                	</a> 
+                                                	<apex:outputpanel rendered="{!OR(editDeletePer,task.isTaskOwner)}">
+	                                                	| 
+	                                                	<a href="javascript:;" onclick="showDeleteEvent('{!task.Id}','');">
+	                                                		Del
+	                                                	</a>
+	                                                </apex:outputpanel>
+                                                </div>     
                                             </apex:outputpanel> 
                                         </td> 
                                         <td>

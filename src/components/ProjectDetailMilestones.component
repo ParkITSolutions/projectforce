@@ -21,7 +21,7 @@
 			<div class="linkAction">
 				<div class="linkAction">
 					<apex:outputpanel rendered="{!userPermissions.canCreate}"  > 
-						<a class="topRightLinks" href="javascript:;" onclick="fixedModalNewMilestone.open();hideErrors();" >New</a> |  
+						<a class="topRightLinks" href="javascript:;" onclick="fixedModalNewMilestone.open();hideErrors();refreshAssignToMilestone();enabDisbMile('off');" >New</a> |  
 					</apex:outputpanel>
 					<a href="ProjectTimeLine?id={!TeamId}">Timeline</a> |
 					<a href="ProjectTasksList?id={!TeamId}&filter=allMilestones" class="topRightLinks" >See More&#187;</a>

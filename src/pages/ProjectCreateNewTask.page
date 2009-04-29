@@ -33,12 +33,6 @@
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsCreateNewTask.css')}" />    
     <apex:includeScript value="/soap/ajax/12.0/connection.js"/>
  	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectCreateNewTask.js')}" />
- 	<style>
- 	div.errorMsg{
- 	
- 		/*float:none !important;*/
- 	}
- 	</style>
  	
     <script>
     
@@ -47,9 +41,9 @@
     	var proj = "{!projectId}";
        	document.observe('dom:loaded', function (){		
 		    	createLayout();
-		    	readPortalCSSRules();
 		    	startMaxlengthCheck();
-        	}
+		    	readPortalCSSRules();
+		    }
         );
        
         /**
@@ -66,63 +60,7 @@
             sforce.connection.defaultNamespace = namespace;
             
         }
-      	
-      	function startMaxlengthCheck(){
-			var required = $$('.requiredInput');
-			for (var i=0; i< required.length; i++){
-				var input = required[i].childElements()[1];
-				if (input.type == 'text' || input.type == 'textarea'){
-					if (input.getAttribute('maxlength') != null){
-						input.onkeyup = function() {charCount(this)};
-						var maxlength = input.getAttribute('maxlength');
-						var br = document.createElement("br");
-						required[i].appendChild(br); 
-						var span = '<span class="max" style="display: none;">Max length reached (' + maxlength + ')</span>';
-						required[i].insert(span,'after');
-					}
-				}
-			}
-		}
-		
-		function charCount (inp){
-			var x = inp.next();
-			//If the next element is the breakline, the "max" span is after the breakline
-			if (x.tagName == 'BR'){
-				var span = x.next();
-				if (inp.value.length >= inp.getAttribute('maxlength')){
-					span.show();
-				}else{
-					span.hide();
-				}
-			}
-			//If the next element is the errorMsg div remove the div from the dom (this if will only be entered one time)
-			if (x.tagName == 'DIV' || x.tagName == 'div'){
-				var span = x.next().next();
-				span.style.marginTop="-10px";
-				if (inp.value.length >= inp.getAttribute('maxlength')){
-					span.show();
-				}else{
-					span.hide();
-				}
-				//alert(x.innerHTML);
-				x.remove();
-			}
-		}
-		
-		function onCompleteCallBackFunction(){
-			createLayout();
-			memberAssigne();
-			startMaxLengthCheck();
-			if($$('.errorMsg').length > 0 || error){
-				Effect.Appear('warning_to_user');
-				Effect.ScrollTo('anchorForError');
-			}else{
-				Effect.Fade('warning_to_user');
-		
-				$$('.secondFormAction')[0].click();
-			}
-		}
-			
+    			
     </script>
         
 	<!-- Bubble -->

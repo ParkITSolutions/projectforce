@@ -144,6 +144,31 @@ public class ProjectSubscribersEmailServices {
 	        genAddress( subscriptions, emailMsj, emailSub );
         }
     }
+	public void sendMailForAssDeleted( List<String> lstAssId ){
+        String emailMsj = '';
+        String emailSub = '';
+		
+		List<ProjectAssignee__c> pAs = new List<ProjectAssignee__c>();
+		pAs = [ SELECT Id, ProjectTask__c FROM ProjectAssignee__c WHERE Id in: lstAssId limit 1];
+		
+        List<ProjectTask__c> lstTask = new  List<ProjectTask__c>();    
+        lstTask = [ SELECT Id, Project__c, Project__r.Name, Name, Description__c, EndDate__c, StartDate__c, Priority__c FROM ProjectTask__c WHERE Id  in : lsObjToLsIds(pAs) ];
+	
+        if(!isTest)
+	    subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, ProjectTaskChanged__c, ProjectTaskDeleted__c FROM ProjectSubscription__c WHERE Project__c =: lstTask[0].Project__c and ProjectTaskDeleted__c = true ];
+        
+		if( subscriptions.size() > 0)	
+        genAddress( subscriptions, emailMsj, emailSub );
+	}
+
+	public List<string> lsObjToLsIds( List<SObject> so ){
+		List<string> lsIds;
+		
+		for( SObject o : so )
+			lsIds.add( o.Id);
+			 
+		return lsIds;
+	}
 
 
     public void genAddress( List<ProjectSubscription__c> subscriptions, String emailMsj, String emailSub )

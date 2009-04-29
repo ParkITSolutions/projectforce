@@ -26,14 +26,6 @@ public without sharing class ProjectMembersListController {
    	public boolean nextPageLinkShow  = false;
    	public boolean nextPageShow  = false;
    	
-   	public boolean renderfoo = false;
-   	public boolean getrenderfoo(){
-   		System.debug('primero');
-   		genPermissions(); 
-   		renderfoo = userPermissions.getcanManage();
-   		return renderfoo; 
-   	}
-   	
    	public List<String> lettersList = new List<String>{'A','B','C','D','E','F','G','H','I','J',
    		'K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
    		
@@ -969,7 +961,7 @@ public without sharing class ProjectMembersListController {
 		public Boolean getContainMembers () {
 			return containMembers;
 		}
-		
+		 
 		
 	} //End class Letters
 

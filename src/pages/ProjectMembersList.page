@@ -52,18 +52,31 @@
 
 	<script>
 		document.observe('dom:loaded', function(){
+				trunkTitle();
+				//alignButtonsForSafari();
 				readPortalCSSRules();
-				trunkTitle(); 
 			}
 		)
 		var globalTeamId = "{!projectId}";
-		
+		function alignButtonsForSafari(){
+			alert('entre');
+			var div = $('btnsDiv');
+			div.style.marginLeft = "40%";
+			alert(div.style.marginLeft);
+		}
 	</script>
 	<style>
 		
 		div#quickLinksContainer{
 			display: none;
 		}
+		@media screen and (-webkit-min-device-pixel-ratio:0) {
+			div#btnsDiv {
+				width: 260px;
+				margin-left: -30% !important;
+			}
+		}
+		
 	</style>
 	
 	<apex:form >
@@ -95,16 +108,13 @@
 				<a id="projectNameBreadcrumb"  href="/apex/ProjectDetail?id={!ProjectId}">{!projectName} Home</a> > 
 				<span class="breadCrumbsLast">Member List</span>		
 			</div>
-			<div id="btnsDiv" style="width: 260px; *margin-left: 200px !important;">
-				<apex:form id="headForm" rendered="{!userPermissions.canManage}" >
-					<apex:outputpanel id="headerBtnContainer" rendered="{!IF(userPermissions.canManage,true,false)}" >
-						<a onclick="createOverlay('','inviteTeam','','showSelects()','');relocateOverlay();"
-							href="javascript:;" class="blackbutton"><span>New</span></a>
-						<a href="javascript:;" class="blackbutton"
-							onclick="massiveRemoveOverlay();"><span>Remove</span></a>
-					</apex:outputpanel> 
-				</apex:form>
-			</div>
+			
+			
+			
+			
+			
+			
+			
 		</div>
 		
 		
@@ -140,7 +150,18 @@
 			<table width="100%" align='center'>
 				<tr>
 					<td class="teamTitleButton titleTd">Members</td>
-					<td class="teamTitleButton titleTd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+					<td align="center">
+						<div id="btnsDiv">
+							<apex:form id="headForm"  >
+								<apex:outputpanel id="headerBtnContainer" rendered="{!IF(userPermissions.canManage,true,false)}" >
+									<a onclick="createOverlay('','inviteTeam','','showSelects()','');relocateOverlay();"
+										href="javascript:;" class="blackbutton"><span>New</span></a>
+									<a href="javascript:;" class="blackbutton"
+										onclick="massiveRemoveOverlay();"><span>Remove</span></a>
+								</apex:outputpanel> 
+							</apex:form>
+						</div>
+					</td>
 				</tr>
 			</table>
 
@@ -273,7 +294,7 @@
 							<td width="16%"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
 								value="{!$ObjectType.Project2__c.label} Profile"
 								rerender="membersList">
-								<apex:param name="sb" value="TeamProfile__r.Name" />
+								<apex:param name="sb" value="Profile__r.Name" />
 							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'profile',true,false)}">
 								<apex:outputpanel rendered="{!sortByDesc}">
 									<img
@@ -351,7 +372,7 @@
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					</td>
 					<td align='center'>
-						<table width="270">
+						<table>
 							<tr>
 								<td>
 								<div>
