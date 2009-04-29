@@ -37,7 +37,11 @@
 		var myMembersIds = "{!TeamspaceMembersIds}";
 		var firstExecuteTime = true;
 		
+		function ifInPrjDetail(){
 		
+			if( location.href.include( 'projectDetail' ))
+			refreshAssignToTask();
+		}
 	</script>
 	
 	<style>

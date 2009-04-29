@@ -171,6 +171,13 @@
     <searchLayouts/>
     <sharingModel>Private</sharingModel>
     <validationRules>
+        <fullName>PercentNotNegative</fullName>
+        <active>true</active>
+        <errorConditionFormula>PercentCompleted__c  &lt; 0</errorConditionFormula>
+        <errorDisplayField>PercentCompleted__c</errorDisplayField>
+        <errorMessage>The percent must be greater than zero</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>startDateMinorEndDate</fullName>
         <active>true</active>
         <description>User should not be able to enter the start date greater than the end date.</description>

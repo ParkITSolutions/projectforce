@@ -33,7 +33,7 @@
 			</div>
 		</div>
 		<apex:form >
-			<apex:actionFunction name="refreshAssignToMilestone" action="{!dummyRefresh}" rerender="assignToMilestone" />
+			<apex:actionFunction name="refreshAssignToMilestone" action="{!dummyRefresh}" rerender="assignToMilestone" oncomplete="enabDisbMile('on')" />
 		</apex:form>
 		<div class="overlayMainContent">
 			<!-- Required Information -->
@@ -60,9 +60,11 @@
 									<br/>
 									<label>Assign to</label><span class="required"></span>
 									<apex:outputpanel id="assignToMilestone">
-										<apex:selectList value="{!projectMember.User__c}" id="memberMilestone" multiselect="false" size="1">
+										<apex:selectList value="{!projectMember.User__c}" id="memberMilestone" multiselect="false" size="1" styleClass="comBxNewMile">
 				        					<apex:selectOptions value="{!projectMembers}" />
-				               			</apex:selectList><div id="memberErrorMilestone" class="red" style="display: none;"><strong>Error:</strong> You must select a value</div> 
+				               			</apex:selectList>
+				               			<div id="memberErrorMilestone" class="red" style="display: none;"><strong>Error:</strong> You must select a value</div> 
+				               			&nbsp;&nbsp;<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/small_loader.gif')}" id="swrNewMile" />
 				               		</apex:outputpanel>
 				               	</div>
 								<div class="overlaySeparateLine"></div>
