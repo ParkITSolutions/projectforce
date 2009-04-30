@@ -53,17 +53,10 @@
 	<script>
 		document.observe('dom:loaded', function(){
 				trunkTitle();
-				//alignButtonsForSafari();
 				readPortalCSSRules();
 			}
 		)
 		var globalTeamId = "{!projectId}";
-		function alignButtonsForSafari(){
-			alert('entre');
-			var div = $('btnsDiv');
-			div.style.marginLeft = "40%";
-			alert(div.style.marginLeft);
-		}
 	</script>
 	<style>
 		
@@ -72,8 +65,7 @@
 		}
 		@media screen and (-webkit-min-device-pixel-ratio:0) {
 			div#btnsDiv {
-				width: 260px;
-				margin-left: -30% !important;
+				padding-right: 6%;
 			}
 		}
 		

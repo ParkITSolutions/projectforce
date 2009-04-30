@@ -6,8 +6,10 @@
 	<div class="quickAccessTask">
         <apex:form id="quickAccessForm">
             <span>Task ID:</span>
-            <apex:inputText value="{!taskId}" onkeyup="handleKeyPress(event)" />
-            <apex:actionFunction name="quickAccessToTask" action="{!go}" rerender="quickAccessForm" />
+            <span id="taskIdInputSpan">
+            	 <apex:inputText value="{!taskId}" onkeyup="handleKeyPress(event)" />
+            </span>
+        	<apex:actionFunction name="quickAccessToTask" action="{!go}" rerender="quickAccessForm" />
             <span class="taskIdInputWrapper">
             	<a href="Javascript:;" class="actionQuickAccess" onclick="hideQuickAccessError(); quickAccessToTask(this);">Go</a>
             </span>

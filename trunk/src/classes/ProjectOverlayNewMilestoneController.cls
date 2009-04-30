@@ -137,6 +137,7 @@ public class ProjectOverlayNewMilestoneController {
         
         ProjectAssignee__c Assign = new ProjectAssignee__c();
         Assign.User__c = projectMember.User__c;
+        Assign.Project__c = newTask.Project__c;
         Assign.ProjectTask__c = newTask.Id;
         insert Assign;
         

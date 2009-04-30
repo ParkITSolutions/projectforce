@@ -29,7 +29,7 @@
 				<div class="overlaySeparateLine" />
 				<!-- Save and Cancel Buttons -->
 				<div class="overlayFromButtons" align="center">
-					<apex:commandButton styleclass="btn allButtons" onclick="massiveMemberRemove2();statusDeleting(this);$('paginationOverlay').show();setDims('holder', 'paginationOverlay');" style="float: none;background: #21637D none repeat scroll 0 0 !important;" value="Continue and delete members" rerender="massiveMemberRemoveForm" oncomplete="modal.close();reloadMemberList();"/>  
+					<apex:commandButton styleclass="btn allButtons" onclick="fixCancelBtn(this);statusDeleting(this);massiveMemberRemove2();$('paginationOverlay').show();setDims('holder', 'paginationOverlay');" style="float: none;background: #21637D none repeat scroll 0 0 !important;" value="Continue and delete members" rerender="massiveMemberRemoveForm" oncomplete="modal.close();reloadMemberList();"/>  
 					<input class="allButtons cancelButtons" type="button" value="Cancel" onclick="modal.close();"/>
 				</div>
 			</apex:form>

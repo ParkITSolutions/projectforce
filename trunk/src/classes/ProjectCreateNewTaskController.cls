@@ -586,7 +586,7 @@ public class ProjectCreateNewTaskController {
    		}else{
    			insert attachList;	
    		}
-   			
+   		   			
   		//Save Assignees
   		saveAssignees();
    		

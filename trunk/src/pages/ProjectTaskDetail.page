@@ -34,7 +34,7 @@
 				readPortalCSSRules();
 			}
 		)
- 		var currentTeam = '{!Task.ProjectId}';	
+ 		var currentTeam = '{!Task.ProjectId}';
  	</script>
 
 	<div class="confirmation" id="confirmation" style="display:none;">
@@ -50,7 +50,7 @@
 	    <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
 	    <apex:define name="title">{!Task.ProjectName}</apex:define>
 	    <apex:define name="search">
-	    	<c:Search module="Project" />
+	    	<c:Search module="project" projectId="{!Task.ProjectId}"/>
 	    </apex:define>
     </apex:composition>
 	

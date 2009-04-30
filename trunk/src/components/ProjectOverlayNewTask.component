@@ -23,27 +23,6 @@
 		* Temp source move to static
 		*/
 		
-		function enabDisbTask( par ){		
-			if( par == 'on'){
-				$('theImg').style.visibility = 'hidden';
-				$$('.comBxSel')[0].enable();
-			}
-			else if( par == 'off'){
-				$$('.comBxSel')[0].disable();
-				$('theImg').show();
-			}		
-		}
-
-		function enabDisbMile( par ){		
-			if( par == 'on'){
-				$('swrNewMile').style.visibility = 'hidden';
-				$$('.comBxNewMile' )[0].enable();
-			}
-			else if( par == 'off'){
-				$$('.comBxNewMile')[0].disable();
-				$('swrNewMile').show();
-			}
-		}
     </script>
     
     <!-- ### Initialize fixed Overlay ### -->
@@ -104,7 +83,7 @@
                                             <apex:selectOptions value="{!projectMembers}" />
                                         </apex:selectList>
                                         <div class="red" style="display: none;" id="memberError"><strong>Error:</strong> You must select a value</div>
-                                        &nbsp;<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/small_loader.gif')}" id="theImg" />
+                                        &nbsp;<img style="display: none;" src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/small_loader.gif')}" id="theImg" />
                                     </apex:outputpanel>
                                     <br/>
                                 </div>

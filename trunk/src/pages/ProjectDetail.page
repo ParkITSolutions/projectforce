@@ -81,7 +81,6 @@
                     <apex:commandLink styleClass="blackbutton" action="{!joinProject}" 
                     	rendered="{!IF(AND(NOT(isMember),isPublic),true,false)}" 
                     	onclick="setClassWaiting('.blackbutton');" 
-                    	oncomplete="refreshAssignToTask();refreshAssignToMilestone();" 
                     	rerender="thisForm, mainContentForm, sidebarWidgets">
                         <span> Join </span>
                     </apex:commandLink>         
@@ -90,7 +89,7 @@
                     <apex:commandLink styleClass="blackbutton" rendered="{!IF(isMember,true,false)}" 
                     	onclick="setClassWaiting('.blackbutton');"  
                     	rerender="thisForm, mainContentForm, sidebarWidgets" action="{!unjoinProject}" 
-                    	onComplete="refreshAssignToTask();refreshAssignToMilestone();showWarningIsLastAdmin();">
+                    	onComplete="showWarningIsLastAdmin();">
                         <span> Unjoin </span>
                     </apex:commandLink>
                 </apex:form>    

@@ -64,7 +64,7 @@
 				        					<apex:selectOptions value="{!projectMembers}" />
 				               			</apex:selectList>
 				               			<div id="memberErrorMilestone" class="red" style="display: none;"><strong>Error:</strong> You must select a value</div> 
-				               			&nbsp;&nbsp;<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/small_loader.gif')}" id="swrNewMile" />
+				               			&nbsp;&nbsp;<img style="display: none;" src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/small_loader.gif')}" id="swrNewMile" />
 				               		</apex:outputpanel>
 				               	</div>
 								<div class="overlaySeparateLine"></div>
