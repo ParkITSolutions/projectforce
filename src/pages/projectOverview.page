@@ -44,7 +44,7 @@
 		#holderNew div.loader {
 			background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat scroll center 200px;
 		}
-		
+
 	</style>	
 	<!-- Initialize the overlay box for modal.js -->
 	<a href="#modal_container" id="initializeModal" style="display:none;"></a>

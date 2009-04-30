@@ -19,6 +19,7 @@ trigger ProjectAssigneeAfterInsert on ProjectAssignee__c (after insert)
 		
 		
 		List<ProjectAssignee__Share> assignee = new List<ProjectAssignee__Share>();
+		
 		for(ProjectAssignee__c m : Trigger.new) {
 			ProjectAssignee__Share p = new ProjectAssignee__Share();
 			p.ParentId = m.Id;							
@@ -29,6 +30,7 @@ trigger ProjectAssigneeAfterInsert on ProjectAssignee__c (after insert)
 		}
 		
 		//Insert share objects
+		System.debug( '(***)' + assignee.size());
 		insert assignee;
 		
 		//Send e-mail notifications

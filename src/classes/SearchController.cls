@@ -104,7 +104,6 @@ public class SearchController {
 	*@return PageReference
 	*/
 	public PageReference searchKey(){
-		
 		if(this.module != null && this.module != ''){
 			PageReference pageRef = searchIn.get(module);
 			pageRef.getParameters().put('key', this.key);
@@ -113,6 +112,7 @@ public class SearchController {
 			}
 			pageRef.setRedirect(true);			
 			return pageRef;
+			
 		}else {
 			return null;
 		}

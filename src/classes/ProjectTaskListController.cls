@@ -459,7 +459,6 @@ public with sharing class ProjectTaskListController {
             }           
         }                
         
-        
         // Sorting by priority or assignee name can't be implemented in the SOQL query
         // and require a bit of tricky
         if (sortBy == 'Priority__c')
@@ -600,7 +599,7 @@ public with sharing class ProjectTaskListController {
             if(resultTaskList[i].ProjectsAssignees__r.size() > 0)
             	TaskDetail.canEditAndDelete = (resultTaskList[i].ProjectsAssignees__r[0].User__c == USERID ) ? true : false;
 
-             if(resultTaskList[i].PercentCompleted__c!=null){
+            if(resultTaskList[i].PercentCompleted__c!=null){
                 TaskDetail.Percent_Completed= (resultTaskList[i].PercentCompleted__c).intValue();
             }else{
                 TaskDetail.Percent_Completed= 0;
