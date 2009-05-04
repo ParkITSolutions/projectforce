@@ -4,12 +4,14 @@ trigger ProjectAssigneeAfterInsert on ProjectAssignee__c (after insert)
 	ProjectSubscribersEmailServices emailServices = new ProjectSubscribersEmailServices();
 	List<String> assignees = new List<String>();
 
+
+   	
 	try {
         
   		List<String> teamSharingGroupNames = new List<String>();		
 		for(ProjectAssignee__c p : Trigger.new) {
 			teamSharingGroupNames.add('ProjectSharing' + p.Project__c);
-			assignees.add(p.id);
+			assignees.add(p.id);	
 		}
 		
 		Map<String, Id> teamMap = new Map<String, Id>();					

@@ -79,7 +79,7 @@ public class ProjectSubscribersEmailServices {
         for(ProjectAssignee__c proj : lstPA){
 	        //Sub:{Task Name} has been assigned to you
 	        //Body: {Task Details such as name and description and start and end date}      
-	        emailMsj = 'Task Name: <a href="' + Label.sfdcHostName + proj.ProjectTask__c + '">' + proj.ProjectTask__r.Name + '</a><br />Priority: ' + proj.ProjectTask__r.Priority__c + '<br />Start date: ' + proj.ProjectTask__r.StartDate__c + '<br />End date: ' + proj.ProjectTask__r.EndDate__c + '<br />Description: <br /><br />' + (( proj.ProjectTask__r.Description__c == null ) ? '' : proj.ProjectTask__r.Description__c);
+	        emailMsj = 'Task Name: <a href="' + Label.sfdcHostName + proj.ProjectTask__c + '">' + proj.ProjectTask__r.Name + '</a><br />Priority: ' + proj.ProjectTask__r.Priority__c + '<br />Start date: ' + proj.ProjectTask__r.StartDate__c + '<br />End date: ' + proj.ProjectTask__r.EndDate__c + '<br />Description: ' + (( proj.ProjectTask__r.Description__c == null ) ? '' : proj.ProjectTask__r.Description__c);
 	        emailSub = proj.ProjectTask__r.Name + ' has been assigned to you';
 	
 	        if (!isTest){
@@ -111,7 +111,7 @@ public class ProjectSubscribersEmailServices {
         for(ProjectTask__c proj : lstPT){
 	        //Sub:{Task Name} has been updated
 	        //Body: {Task Details such as name and description and start and end date}      
-	        emailMsj = 'Task Name: <a href="' + Label.sfdcHostName + proj.Id + '">' + proj.Name + '</a><br />Priority: ' + proj.Priority__c + '<br />Start date: ' + proj.StartDate__c + '<br />End date: ' + proj.EndDate__c + '<br />Description: <br /><br />' + proj.Description__c;
+	        emailMsj = 'Task Name: <a href="' + Label.sfdcHostName + proj.Id + '">' + proj.Name + '</a><br />Priority: ' + proj.Priority__c + '<br />Start date: ' + proj.StartDate__c + '<br />End date: ' + proj.EndDate__c + '<br />Description: ' + proj.Description__c;
 	        emailSub = proj.Name + ' has been updated';
 	
 	        if (!isTest){
@@ -139,9 +139,9 @@ public class ProjectSubscribersEmailServices {
 	        subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, ProjectTaskChanged__c, ProjectTaskDeleted__c FROM ProjectSubscription__c WHERE Project__c =: lstTask[0].Project__c and ProjectTaskDeleted__c = true ];
         }
         for(ProjectTask__c proj : lstTask){
-	        //Sub:{Task Name} has been assigned to you
+	        //Sub:{Task Name} has been deleted
 	        //Body: {Task Details such as name and description and start and end date}      
-	        emailMsj = 'Task Name:' + proj.Name + '<br />Priority: ' + proj.Priority__c + '<br />Start date: ' + proj.StartDate__c + '<br />End date: ' + proj.EndDate__c + '<br />Description: <br /><br />' + proj.Description__c;
+	        emailMsj = 'Task Name:' + proj.Name + '<br />Priority: ' + proj.Priority__c + '<br />Start date: ' + proj.StartDate__c + '<br />End date: ' + proj.EndDate__c + '<br />Description: ' + proj.Description__c;
 	        emailSub = proj.Name + ' has been deleted';
 	
 			if( subscriptions.size() > 0)	
@@ -157,10 +157,10 @@ public class ProjectSubscribersEmailServices {
 		ProjectTask__r.EndDate__c, ProjectTask__r.StartDate__c, ProjectTask__r.Priority__c FROM ProjectAssignee__c WHERE Id in: lstAssId ];
 			
         if(!isTest)
-	    subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, Project__r.Name, ProjectTaskAssignToMeChanged__c FROM ProjectSubscription__c WHERE Project__c =: pAs[0].Project__c and ProjectTaskAssignToMeChanged__c = true ];
+	    subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, Project__r.Name, ProjectTaskAssignToMeChanged__c FROM ProjectSubscription__c WHERE Project__c =: pAs[0].Project__c and ProjectTaskAssignedToMe__c = true ];
 
 		for( ProjectAssignee__c pA : pAs ){
-	        emailMsj = 'Task Name:' + pA.ProjectTask__r.Name + '<br />Priority: ' + pA.ProjectTask__r.Priority__c + '<br />Start date: ' + pA.ProjectTask__r.StartDate__c + '<br />End date: ' + pA.ProjectTask__r.EndDate__c + '<br />Description: <br /><br />' + pA.ProjectTask__r.Description__c;
+	        emailMsj = 'Task Name:' + pA.ProjectTask__r.Name + '<br />Priority: ' + pA.ProjectTask__r.Priority__c + '<br />Start date: ' + pA.ProjectTask__r.StartDate__c + '<br />End date: ' + pA.ProjectTask__r.EndDate__c + '<br />Description:' + pA.ProjectTask__r.Description__c;
 	        emailSub = 'You were unassigned from the task ' + pA.ProjectTask__r.Name + '.';
 		
 			if( subscriptions.size() > 0)

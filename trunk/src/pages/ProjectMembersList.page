@@ -310,7 +310,7 @@
 								</apex:outputpanel></td>
 								<td>
 									<apex:outputpanel rendered="{!userPermissions.canManage}">
-									 <a href="Javascript:;" onclick="setHiddenMemberId('{!item.projectMemberId}'); createOverlay('','removeMemberOverlay','155','relocateOverlay()');">Delete</a>
+									 <a href="Javascript:;" onclick="setHiddenMemberId('{!item.projectMemberId}'); createOverlay('','removeMemberOverlay','160','relocateOverlay()');">Delete</a>
 									</apex:outputpanel></td>
 								<td class="memberImg">
 									<div class="photoWrapper_32px">

@@ -12,7 +12,7 @@
 			//Attach event to open overlay
 			function (){
 				$$('.newAttachmentEvent')[0].observe('click', function(){
-						createOverlay('', 'newAttachmentOverlay', 180);
+						createOverlay('', 'newAttachmentOverlay', 170);
 						observeIframeUpload();
 						//Hack for IE6
 						$('uploadIframe').src = $('uploadIframe').src;

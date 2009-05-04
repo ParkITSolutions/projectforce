@@ -197,7 +197,7 @@
 				<div class="contentHolder">
 					<div class="linkAction">
 						<apex:outputpanel rendered="{!userPermissions.canManage}">
-							<a onclick="createOverlay('','inviteTeam','280','selectFixIE6();startFunction();');" href="javascript:;">New</a> |
+							<a onclick="createOverlay('','inviteTeam','260','selectFixIE6();startFunction();relocateOverlay()');" href="javascript:;">New</a> |
 						</apex:outputpanel>
 						<a href="/apex/ProjectMembersList?id={!team}#" class="topRightLinks">See More&#187;</a>
 					</div>
@@ -221,8 +221,9 @@
 					<apex:form >
 						<apex:actionPoller action="{!syncSaveMembers}"
 							enabled="{!initAddMembers}"
-							rerender="auxPanel, membersListContainer" interval="5"
+							rerender="auxPanel, membersListContainer, thisForm" interval="5"
 							onComplete="refreshCount(); refreshSwirly();" />
+						
 						<!-- Action Function for Refresh Member List -->
 						<apex:actionFunction name="rerenderMemberList"
 							action="{!refreshMethod}" rerender="membersListContainer" />

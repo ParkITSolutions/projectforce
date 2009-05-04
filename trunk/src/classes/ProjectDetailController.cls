@@ -23,9 +23,9 @@ public with sharing class ProjectDetailController
     * Constructor
     */
     public ProjectDetailController(){
-       getTeamDetail();
-       genTeamData();        
-       genPermissions();
+       genPermissions();   	   
+   	   getTeamDetail();
+       genTeamData(); 
        isManager = userPermission.getCanManage();
        this.projectType = getTeamspace().Type__c;
     }   
@@ -38,6 +38,7 @@ public with sharing class ProjectDetailController
     *@return UserPermission
     */
     public UserPermissions getUserPermission () {
+    	genPermissions();
         return userPermission;
     }
 
@@ -47,7 +48,7 @@ public with sharing class ProjectDetailController
     */
     public static UserPermissions getUserPermissions () {
         return userPermission;
-    } 
+    }
      
 	/**
     *@return boolean IsManager
@@ -95,6 +96,8 @@ public with sharing class ProjectDetailController
     * @return boolean isMember
     */	
 	public boolean getIsMember(){
+		//Read project data first to load any changes.
+		genTeamData();
 		return this.isMember;	
 	}
        
@@ -152,6 +155,8 @@ public with sharing class ProjectDetailController
 		if(teamIdParam != null){
 			this.teamspace = [select Id, Name, PublicProfile__c from Project2__c where id =: teamIdParam limit 1];
 			if(teamspace.PublicProfile__c != null){
+				this.setIsPublic(true);
+			}else if (userPermission.getCanManage()){
 				this.setIsPublic(true);
    			}else {
 				this.setIsPublic(false);
