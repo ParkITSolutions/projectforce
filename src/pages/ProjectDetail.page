@@ -79,8 +79,8 @@
                     
                     <!-- Join Button -->
                     <apex:commandLink styleClass="blackbutton" action="{!joinProject}" 
-                    	rendered="{!IF(AND(NOT(isMember),isPublic),true,false)}" 
-                    	onclick="setClassWaiting('.blackbutton');" 
+                    	rendered="{!IF(AND(NOT(isMember), isPublic),true,false)}" 
+	                   	onclick="setClassWaiting('.blackbutton');" 
                     	rerender="thisForm, mainContentForm, sidebarWidgets">
                         <span> Join </span>
                     </apex:commandLink>         
@@ -121,8 +121,6 @@
                     <apex:outputPanel layout="block" styleClass="joinMessage informationPanel clear" style="display:none;">
                         <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}" alt="ok" /><div>You are a member of this {!$ObjectType.Project2__c.label}&nbsp;<apex:commandLink action="{!unjoinProject}" value="Undo" rerender="thisForm, okMessageContainer" oncomplete="refreshLeaveButton();refreshJoinButton();rerenderMemberList();hideJoinMessageToUser();" onclick="disableAndShowProgress(this);" /></div>
                     </apex:outputPanel> 
-                </apex:form>
-                <apex:form >
                     <apex:outputPanel layout="block" styleClass="okMessage informationPanel clear" style="display:none;">
                         <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}" alt="ok" /><div>Member has been added to this {!$ObjectType.Project2__c.label}</div>
                     </apex:outputPanel>
