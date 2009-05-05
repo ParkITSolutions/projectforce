@@ -1,10 +1,10 @@
 From Project Overview, Project Detail, Project Task List, Project Task Detail, Project Member List and Search Tasks pages, you can search tasks and milestones by ID.
 
 To locate a task or milestone must have at least one task or milestone with the input ID.
+Click on "Go" link.
 
 http://projectforce.googlecode.com/svn/wiki/images/FindTaskIDReal.png
 
-Click on "Go" link.
 The results are displayed.
 
 http://projectforce.googlecode.com/svn/wiki/images/FindTaskResultsIDReal.png
