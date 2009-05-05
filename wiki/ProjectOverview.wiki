@@ -14,6 +14,6 @@ In My Upcoming Milestones you see the 5 milestones that were most recently creat
 
 ==In the top right of the screen there are a task finder:==
 
-Enter the ID of any task or milestone, and the finder will redirect you to a task detail page.
+Enter the ID of a given task or milestone and the finder will redirect you to a task detail page.
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/ProjectOverviewReal.png" align="left" />
