@@ -51,7 +51,7 @@
 									No Tasks
 									<br/>
 									<apex:outputpanel rendered="{!userPermissions.canCreate}"> 
-										<a onclick="fixedModalNewTask.open();" href="javascript:;" >Create New Task</a>
+										<a onclick="fixedModalNewTask.open();refreshAssignToTask();enabDisbTask('off');" href="javascript:;" >Create New Task</a>
 									</apex:outputpanel>
 								</li>
 							</ul>

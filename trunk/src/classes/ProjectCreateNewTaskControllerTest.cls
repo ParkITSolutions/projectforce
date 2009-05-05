@@ -43,18 +43,18 @@
 		System.currentPageReference().getParameters().put( 'qtdd', Date.toDay().format());
 		System.currentPageReference().getParameters().put( 'qte', '2' );		
 
- 
+  
 		newT = new ProjectCreateNewTaskController();
-		newT.att1.Name = 'nameman';   
-		newT.att2.Name = 'nameman';   
-		newT.att3.Name = 'nameman';   
-		newT.att4.Name = 'nameman';   
-		newT.att5.Name = 'nameman';   
-		newT.att6.Name = 'nameman';   
-		newT.att7.Name = 'nameman';   
-		newT.att8.Name = 'nameman';   
-		newT.att9.Name = 'nameman';   
-		newT.att10.Name = 'nameman';   
+		newT.att1  = new Attachment(Name = 'avatar', Body = Crypto.generateMac('HMacSHA1', Blob.valueOf('String'), Blob.valueOf('String')));
+		newT.att2  = new Attachment(Name = 'avatar', Body = Crypto.generateMac('HMacSHA1', Blob.valueOf('String'), Blob.valueOf('String')));   
+		newT.att3  = new Attachment(Name = 'avatar', Body = Crypto.generateMac('HMacSHA1', Blob.valueOf('String'), Blob.valueOf('String')));   
+		newT.att4  = new Attachment(Name = 'avatar', Body = Crypto.generateMac('HMacSHA1', Blob.valueOf('String'), Blob.valueOf('String')));   
+		newT.att5  = new Attachment(Name = 'avatar', Body = Crypto.generateMac('HMacSHA1', Blob.valueOf('String'), Blob.valueOf('String')));   
+		newT.att6  = new Attachment(Name = 'avatar', Body = Crypto.generateMac('HMacSHA1', Blob.valueOf('String'), Blob.valueOf('String')));   
+		newT.att7  = new Attachment(Name = 'avatar', Body = Crypto.generateMac('HMacSHA1', Blob.valueOf('String'), Blob.valueOf('String')));   
+		newT.att8  = new Attachment(Name = 'avatar', Body = Crypto.generateMac('HMacSHA1', Blob.valueOf('String'), Blob.valueOf('String')));   
+		newT.att9  = new Attachment(Name = 'avatar', Body = Crypto.generateMac('HMacSHA1', Blob.valueOf('String'), Blob.valueOf('String')));   
+		newT.att10 = new Attachment(Name = 'avatar', Body = Crypto.generateMac('HMacSHA1', Blob.valueOf('String'), Blob.valueOf('String')));   
 		newT.getValidSizePicture();
 		newT.saveAssignees();
 		newT.getProjectId(); 
@@ -82,6 +82,7 @@
 		newT.getMembers();
 		newT.getPercent();
 		newT.getPercentDedicated();
+		newT.setTask(  GenerateEnvironmentTest.task );
 		newT.saveAttachmentsAndAccess();
 		newT.getPriority();
 

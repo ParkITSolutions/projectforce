@@ -304,11 +304,12 @@ public without sharing class ProjectMembersListController {
 		error = false;
 		finish = false;
 		System.debug( 'segundo' );
-		ProjectMember__c delMember = [select User__r.Name  from ProjectMember__c where Id =: removeMemberId and project__c =: idProject];
+		List<ProjectMember__c> delMember = new List<ProjectMember__c>();
+		delMember = [select User__r.Name  from ProjectMember__c where Id =: removeMemberId and project__c =: idProject];
 									  	
 		List<ProjectMember__c> admins = new List<ProjectMember__c>(); 
 		admins = [Select p.Id From ProjectMember__c p where p.Profile__r.Name = 'Project Administrator' and p.Project__c =: idProject and Id !=: removeMemberId];
-		
+	
 		if (admins.size() >0){
 			error = false;
 			finish = true;
