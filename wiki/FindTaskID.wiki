@@ -7,4 +7,4 @@ http://projectforce.googlecode.com/svn/wiki/images/FindTaskIDReal.png
 Click on "Go" link.
 The results are displayed.
 
-http://projectforce.googlecode.com/svn/wiki/images/FindResultsTaskIDReal.png
+http://projectforce.googlecode.com/svn/wiki/images/FindTaskResultsIDReal.png
