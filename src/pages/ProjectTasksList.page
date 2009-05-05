@@ -29,6 +29,7 @@
     <style>
         #paginationOverlay{
 			background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat center;
+	
 		}
     </style>
     
@@ -120,7 +121,7 @@
                 	<apex:actionFunction action="{!refreshTaskList}" oncomplete="showHideOverlay();" name="sortListEvent" rerender="ref" />
                     <div class="tableTopContainer" >             
                         <div class="filterContainer">  
-                            <apex:selectList id="chooseOption" value="{!option}" onchange="option()" size="1">
+                            <apex:selectList id="chooseOption" value="{!option}" onchange="option();showHideOverlay();setDims('holder','paginationOverlay');" size="1">
                                 <apex:selectOption itemValue="all" itemLabel="All Tasks"/>
                                 <apex:selectOption itemValue="my" itemLabel="My Tasks"/>
                                 <apex:selectOption itemValue="complete" itemLabel="100% Complete Tasks"/>

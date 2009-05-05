@@ -224,8 +224,8 @@
 								<tr>
 									<td height="10px"></td>
 								</tr>
-								<apex:outputPanel rendered="{!AllowCustomerActivated}" >
-									<tr>
+								<apex:outputPanel rendered="{!AllowCustomerActivated}">
+									<tr class="PortalUs" style="display: {!IF(newProfile.projectOpenOrClosed == 'private', 'none;', 'block;' )}">
 									    <td class="alignTop">
 											<label>Portal Users</label>
 									    </td>
@@ -238,21 +238,20 @@
 								</apex:outputPanel>
 								
 								<apex:outputPanel rendered="{!AllowPartnerActivated}" >
-								<tr>
-								    <td class="alignTop">
-										<span class="inputInfoTitle">
-											<apex:outputPanel rendered="{!NOT( AllowCustomerActivated )}" >
-												Portal Users &nbsp;
-											</apex:outputPanel>
-										</span>
-								    </td>
-								    <td>
-								    </td>
-								    <td colspan="2">&nbsp;<apex:inputCheckbox value="{!AllowPartner}"/>
-								    <span class="inputInfoDescription">Allow Partner Portal Users</span>
-								    </td>    
-								</tr>
-								
+									<tr class="PortalUs"  style="display: {!IF(newProfile.projectOpenOrClosed == 'private', 'none;', 'block;' )}">
+									    <td class="alignTop">
+											<span class="inputInfoTitle">
+												<apex:outputPanel rendered="{!NOT( AllowCustomerActivated )}" >
+													Portal Users &nbsp;
+												</apex:outputPanel>
+											</span>
+									    </td>
+									    <td>
+									    </td>
+									    <td colspan="2">&nbsp;<apex:inputCheckbox value="{!AllowPartner}"/>
+									    <span class="inputInfoDescription">Allow Partner Portal Users</span>
+									    </td>    
+									</tr>								
 								<tr>
 									<td class="alignTop">
 										<span class="inputInfoTitle"></span>
@@ -270,7 +269,7 @@
 									</td>
 									<td>
 									</td>
-									<td colspan="2">&nbsp;<input type="radio" id="openTeam" checked="checked" name="access" onclick="setAccess(this);" /> 
+									<td colspan="2">&nbsp;<input type="radio" id="openTeam" checked="checked" name="access" onclick="setAccess(this);hideShowPortalUsBoxes('sh');" /> 
 										<span class="inputInfoDescription">Open</span>
 									</td>
 								</tr>
@@ -324,7 +323,7 @@
 									</td>
 									<td></td>
 									<td colspan="2">
-										&nbsp; <input type="radio" id="closedTeam" name="access" onclick="setAccess(this);" /> 
+										&nbsp; <input type="radio" id="closedTeam" name="access" onclick="setAccess(this);hideShowPortalUsBoxes('sh');" /> 
 										<span class="inputInfoDescription">Closed</span>
 									</td>
 								</tr>
@@ -361,7 +360,7 @@
 									<td></td>
 									<td colspan="2">
 										&nbsp; 
-										<input type="radio" id="privateTeam" name="access" onclick="setAccess(this);" /> 
+										<input type="radio" id="privateTeam" name="access" onclick="setAccess(this);hideShowPortalUsBoxes('hide');" /> 
 										<span class="inputInfoDescription">Private</span>
 									</td>
 								</tr>

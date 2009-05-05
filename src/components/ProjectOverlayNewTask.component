@@ -83,7 +83,7 @@
                                             <apex:selectOptions value="{!projectMembers}" />
                                         </apex:selectList>
                                         <div class="red" style="display: none;" id="memberError"><strong>Error:</strong> You must select a value</div>
-                                        &nbsp;<img style="display: none;" src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/small_loader.gif')}" id="theImg" />
+                                        &nbsp;<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/small_loader.gif')}" id="theImg" />
                                     </apex:outputpanel>
                                     <br/>
                                 </div>

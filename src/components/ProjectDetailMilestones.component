@@ -37,7 +37,7 @@
 										<li>
 											No Milestones<br/>
 											<apex:outputpanel rendered="{!userPermissions.canCreate}"  > 
-												<a  href="javascript:;" onclick="fixedModalNewMilestone.open();hideErrors();">Create New Milestone</a>
+												<a  href="javascript:;" onclick="fixedModalNewMilestone.open();refreshAssignToMilestone();enabDisbMile('off');hideErrors();">Create New Milestone</a>
 											</apex:outputpanel>
 										</li>
 									</ul>

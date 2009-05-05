@@ -123,7 +123,7 @@ public class ProjectTaskDetailController {
 						}
 						assignees.add(assignUser);
 						if(item.User__c == UserInfo.getUserId()) 
-							taskDetail.IsTaskOwner = true;	
+							taskDetail.assignToMe = true;	
 					}
 					taskDetail.Asignee = assignees;
 					if(UserInfo.getUserId() == TD.CreatedById){
@@ -369,7 +369,14 @@ public class ProjectTaskDetailController {
 			*/
 			public boolean IsTaskOwner { 
 				get; set; 
-			}				
+			}	
+			
+			/**
+			* Current user has assigned the task
+			*/
+			public boolean assignToMe {
+				get; set;
+			}			
 			
 			/**
 			* Task Name
