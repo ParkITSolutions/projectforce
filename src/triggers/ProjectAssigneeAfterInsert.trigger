@@ -35,34 +35,31 @@ trigger ProjectAssigneeAfterInsert on ProjectAssignee__c (after insert)
 	    // Send email to subscribers members
 		ProjectSubscribersEmailServices emailServices = new ProjectSubscribersEmailServices();
 		List<String> assignees = new List<String>();		
-	
 		List<String> assigneesToDel = new List<String>();		
-	     Set<String> assigneesToDelAux;
+
 	
 		Map<String,ProjectAssignee__c> BaseMap=ProjectUtil.BaseMap;
-		for(ProjectAssignee__c m : Trigger.new) {
-		
+
+		for(ProjectAssignee__c m : Trigger.new) {	
 	               if (BaseMap.get(m.user__c)!=null){
 	                     BaseMap.remove(m.user__c);
 	               }else{
-	                  assignees.add(m.Id);
+	                     assignees.add(m.Id);
 	               }
 		}
 	  	
-	  	
-	  		
-	 
+
+		//Conver map to Set to list 
+	  	Set<String> BaseSet=new Set<String>();
+	  	BaseSet=BaseMap.KeySet();
+
+	  	for (String Idmp : BaseSet){
+	  		assigneesToDel.add(BaseMap.get(IdMp).Id);
+	  	}	
+ 
 		//Send e-mail notifications
-		//assigneesToDelAux=BaseMap.keySet();
-		//assigneesToDel=
-		
-			
-		//emailServices.sendMailForAssDeleted(assigneesToDel);
+		emailServices.sendMailForAssDeleted(assigneesToDel);	
 		emailServices.sendMailForTaskAssigned(assignees);		
-	
-	
-	
-	
 		
 	} catch(Exception e) {
 

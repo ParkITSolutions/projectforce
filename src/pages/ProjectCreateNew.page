@@ -224,177 +224,105 @@
 								<tr>
 									<td height="10px"></td>
 								</tr>
-								<apex:outputPanel rendered="{!AllowCustomerActivated}">
-									<tr class="PortalUs" style="display: {!IF(newProfile.projectOpenOrClosed == 'private', 'none;', 'block;' )}">
-									    <td class="alignTop">
-											<label>Portal Users</label>
-									    </td>
-									    <td>	
-									    </td>
-									    <td colspan="2">&nbsp;<apex:inputCheckbox value="{!AllowCustomer}" /> 
-											<span class="inputInfoDescription">Allow Customer Portal Users</span>
-									    </td>    
-									</tr>
-								</apex:outputPanel>
-								
-								<apex:outputPanel rendered="{!AllowPartnerActivated}" >
-									<tr class="PortalUs"  style="display: {!IF(newProfile.projectOpenOrClosed == 'private', 'none;', 'block;' )}">
-									    <td class="alignTop">
-											<span class="inputInfoTitle">
-												<apex:outputPanel rendered="{!NOT( AllowCustomerActivated )}" >
-													Portal Users &nbsp;
-												</apex:outputPanel>
-											</span>
-									    </td>
-									    <td>
-									    </td>
-									    <td colspan="2">&nbsp;<apex:inputCheckbox value="{!AllowPartner}"/>
-									    <span class="inputInfoDescription">Allow Partner Portal Users</span>
-									    </td>    
-									</tr>								
+								</table>
+	                      	<table cellpadding="0" cellspacing="0" class="newTeamForm" width="100%">			
 								<tr>
-									<td class="alignTop">
-										<span class="inputInfoTitle"></span>
-									</td>
-									<td></td>
-									<td colspan="2">
-										&nbsp; 
-										<span class="inputInfoList">&nbsp;</span>
-										<span class="inputInfoSubDescription">&nbsp;</span>
+									<td width="60px"></td>
+									<td>
+										<apex:outputPanel rendered="{!AllowCustomerActivated}">
+											<table class="PortalUs" style="display: {!IF(newProfile.projectOpenOrClosed == 'private', 'none;', 'block;' )}" cellpadding="0" cellspacing="0" width="100%">
+												<tr>
+												    <td width="80px">
+														<strong>Portal Users</strong>
+												    </td>
+												    <td>
+												    	&nbsp;
+												    	<apex:inputCheckbox value="{!AllowCustomer}" /> 
+														<span class="inputInfoDescription">Allow Customer Portal Users</span>
+												    </td>    
+												</tr>
+											</table>
+										</apex:outputPanel>
 									</td>
 								</tr>
-								</apex:outputPanel>
 								<tr>
-									<td class="alignTop"><label>Access</label>
-									</td>
+									<td width="60px"></td>
 									<td>
+										<apex:outputPanel rendered="{!AllowPartnerActivated}" >
+											<table class="PortalUs"  style="display: {!IF(newProfile.projectOpenOrClosed == 'private', 'none;', 'block;' )}" cellpadding="0" cellspacing="0" width="100%">
+												<tr>
+												    <td width="80px">
+														<apex:outputPanel rendered="{!NOT( AllowCustomerActivated )}" styleClass="inputInfoTitle" >
+															<strong>Portal Users</strong> &nbsp;
+														</apex:outputPanel>
+												    </td>
+												    <td>
+												    	&nbsp;
+												    	<apex:inputCheckbox value="{!AllowPartner}"/>
+												    	<span class="inputInfoDescription">Allow Partner Portal Users</span>
+												    </td>    
+												</tr>								
+											</table>
+										</apex:outputPanel>
 									</td>
-									<td colspan="2">&nbsp;<input type="radio" id="openTeam" checked="checked" name="access" onclick="setAccess(this);hideShowPortalUsBoxes('sh');" /> 
+								</tr>
+							</table>
+	                      	<table cellpadding="0" cellspacing="0" class="newTeamForm" width="100%">			
+							
+								<tr>
+									<td width="60px"></td>
+									<td width="80px">
+										<strong>Access</strong>
+									</td>
+
+									<td>
+										&nbsp;
+										<input type="radio" id="openTeam" checked="checked" name="access" onclick="setAccess(this);hideShowPortalUsBoxes('sh');" /> 
 										<span class="inputInfoDescription">Open</span>
 									</td>
 								</tr>
 								<tr>
-									<td class="alignTop">
-										<span class="inputInfoTitle"></span>
-									</td>
-									<td></td>
-									<td colspan="2">
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>
 										&nbsp; 
 										<span class="inputInfoList">&nbsp;</span>
 										<span class="inputInfoSubDescription">Anyone can join. Anyone can see the {!$ObjectType.Project2__c.label} information and content. </span>
 									</td>
 								</tr>
 								<tr>
-									<td colspan="6">
-									<table class="newTeamForm">
-										<tr>
-											<td class="alignTopLeft"></td>
-											<td></td>
-											<td id="openTeamPublicProfileId">
-												<div class="tooltipWrap">
-													<!-- info tooltip -->
-													<div id="divToolTip2" class="tooltip2">
-														<div id="messageTooltip2"></div>
-													</div>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td height="10px"></td>
-										</tr>
-										<tr>
-											<td class="alignTopLeft"></td>
-											<td></td>
-											<td>
-												<div class="tooltipWrap">
-													<!-- info tooltip -->
-													<div id="divToolTip2" class="tooltip2">
-														<div id="messageTooltip2"></div>
-													</div>
-												</div>
-											</td>
-										</tr>
-									</table>
-									</td>
-								</tr>
-								<tr>
-									<td class="alignTop">
-										<span class="inputInfoTitle"></span>
-									</td>
-									<td></td>
-									<td colspan="2">
-										&nbsp; <input type="radio" id="closedTeam" name="access" onclick="setAccess(this);hideShowPortalUsBoxes('sh');" /> 
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>
+										&nbsp; 
+										<input type="radio" id="closedTeam" name="access" onclick="setAccess(this);hideShowPortalUsBoxes('sh');" /> 
 										<span class="inputInfoDescription">Closed</span>
 									</td>
 								</tr>
 								<tr>
-									<td class="alignTop">
-										<span class="inputInfoTitle"></span>
-									</td>
-									<td></td>
-									<td colspan="2">
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>
 										<span class="inputInfoList">&nbsp;</span> 
 										<span class="inputInfoSubDescription">{!$ObjectType.Project2__c.label} Administrator must invite users to join. Anyone can see the {!$ObjectType.Project2__c.label} information and content.</span>
 									</td>
 								</tr>
 								<tr>
-									<td colspan="6">
-									<table>
-										<tr>
-											<td class="alignTopLeftClose"></td>
-											<td></td>
-											<td id="profileClosedTeam">
-												<div class="tooltipWrap">
-													<!-- info tooltip -->
-													<div id="divToolTip2" class="tooltip2">
-														<div id="messageTooltip2"></div>
-													</div>
-												</div>
-											</td>
-										</tr>
-									</table>
-									</td>
-								</tr>
-								<tr>
-									<td class="alignTop"><span class="inputInfoTitle"></span></td>
-									<td></td>
-									<td colspan="2">
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>
 										&nbsp; 
 										<input type="radio" id="privateTeam" name="access" onclick="setAccess(this);hideShowPortalUsBoxes('hide');" /> 
 										<span class="inputInfoDescription">Private</span>
 									</td>
 								</tr>
 								<tr>
-									<td class="alignTop">
-										<span class="inputInfoTitle"></span>
-									</td>
-									<td></td>
-									<td colspan="2">
-										&nbsp; 
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>
 										<span class="inputInfoList">&nbsp;</span>
-										<span class="inputInfoSubDescription">This {!$ObjectType.Project2__c.label} will not appear in search results or in the profiles of its members. </span>
-									</td>
-								</tr>
-								<tr>
-									<td class="alignTop">
-										<span class="inputInfoTitle"></span>
-									</td>
-									<td></td>
-									<td colspan="2">
-										&nbsp; 
-										<span class="inputInfoList">&nbsp;</span>
-										<span class="inputInfoSubDescription">Membership is by invitation only, and only members can see the {!$ObjectType.Project2__c.label}</span>
-									</td>
-								</tr>
-								<tr>
-									<td class="alignTop">
-										<span class="inputInfoTitle"></span>
-									</td>
-									<td></td>
-									<td colspan="2">
-										&nbsp; 
-										<span class="inputInfoList">&nbsp;</span>
-										<span class="inputInfoSubDescription">information and content.</span>
+										<span class="inputInfoSubDescription">This {!$ObjectType.Project2__c.label} will not appear in search results or in the profiles of its members.Membership is by invitation only,</span>
+										<span class="inputInfoSubDescription">and only members can see the {!$ObjectType.Project2__c.label}	information and content.</span>
 									</td>
 								</tr>
 							</table>
