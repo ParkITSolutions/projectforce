@@ -10,6 +10,10 @@ From here you'll get the url and the user to input into the CheckoutSVN .
 
 3. Create a folder where you want to save the project.
 
-4. Inside the created folder make click in the right mouse button.
+4. Inside the created folder make click in the right mouse button and select the SVN Checkout option.
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/SVNCheckout.png" align="left" />
+
+5. Enter a URL obtained in step 1 and click on OK button.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/SVNCheckoutWindow.png" align="left" />
