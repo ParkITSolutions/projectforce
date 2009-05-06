@@ -1,7 +1,7 @@
 To do the deployment with the command "ant" you have to do the following steps:
 
 1. Go to the "SourceSVN" tab.
-From here you'll get the url and the user to input into the CheckoutSVN . 
+From here you'll get the url and the user to input into the SVN Checkout . 
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeSource.png" align="left" />
 
@@ -10,7 +10,7 @@ From here you'll get the url and the user to input into the CheckoutSVN .
 
 3. Create a folder where you want to save the project.
 
-4. Inside the created folder make click in the right mouse button and select the SVN Checkout option.
+4. Inside the created folder make click in the right mouse button and select the SVN Checkout... option.
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/SVNCheckout.png" align="left" />
 
