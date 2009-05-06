@@ -17,3 +17,7 @@ From here you'll get the url and the user to input into the SVN Checkout .
 5. Enter a URL obtained in step 1 and click on OK button.
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/SVNCheckoutWindow.png" align="left" />
+
+6. The project creates in the folder.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeFolder.png" align="left" />
