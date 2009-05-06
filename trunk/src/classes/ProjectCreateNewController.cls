@@ -35,9 +35,6 @@ public class ProjectCreateNewController {
             //Read Project
             setProject(param);
 
-            //generate Profiles
-            genProfiles();
-            
             List<GroupMember> gm = new List<GroupMember>();
             Group instance = new Group();
             String instanceName = 'ProjectSharing' + param;
@@ -276,6 +273,9 @@ public class ProjectCreateNewController {
         //Set User Permissions
         genPermissions();
         
+        //generate Profiles
+        genProfiles();
+        
         // Set boolean to true for execute triggers
         ProjectUtil.setIsRunnig( true );
         
@@ -409,7 +409,7 @@ public class ProjectCreateNewController {
             projectProfile.Name = 'Project Administrator';
             projectProfile.ManageProjectTasks__c = true;
             projectProfile.CreateProjectTasks__c = true;
-            projList.add( projectProfile );
+            projList.add( projectProfile);
         }
         
         if( projList.size() > 0 )

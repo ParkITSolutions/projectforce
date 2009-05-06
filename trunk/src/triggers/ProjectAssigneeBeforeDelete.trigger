@@ -7,4 +7,6 @@ trigger ProjectAssigneeBeforeDelete on ProjectAssignee__c (before delete) {
     lstassId.add(pA.id);
     
     pEmail.sendMailForAssDeleted( lstassId );
+    
+
 }
