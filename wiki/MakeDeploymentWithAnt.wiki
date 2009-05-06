@@ -1,0 +1,5 @@
+To do the deployment with the command "ant" you have to do the following steps:
+
+1. Go to the "Source" tab.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeSource.png" align="left" />
