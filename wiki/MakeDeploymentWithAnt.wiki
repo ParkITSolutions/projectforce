@@ -7,3 +7,9 @@ From here you'll get the url and the user to input into the CheckoutSVN .
 
 2. To enable the deployment, you must have the TortoiseSVN program installed.
 [http://tortoisesvn.net/downloads To download the TortoiseSVN click  here]
+
+3. Create a folder where you want to save the project.
+
+4. Inside the created folder make click in the right mouse button.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/SVNCheckout.png" align="left" />
