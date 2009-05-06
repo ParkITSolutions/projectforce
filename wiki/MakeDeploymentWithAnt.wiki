@@ -4,6 +4,7 @@ To do the deployment with the command "ant" you have to do the following steps:
 From here you'll get the url and the user to input into the CheckoutSVN . 
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeSource.png" align="left" />
+
 2. To enable the deployment, you must have the TortoiseSVN program installed.
 [http://tortoisesvn.net/downloads To download the TortoiseSVN click  here]
 
