@@ -25,3 +25,7 @@ From here you'll get the url and the user to input into the SVN Checkout .
 7. Make double click in the trunk folder.
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeTrunkFolder.png" align="left" />
+
+8. Edit the build.properties file.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeBuildPropertiesFile.png" align="left" />
