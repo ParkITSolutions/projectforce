@@ -35,6 +35,6 @@ From here you'll get the url and the user to input into the SVN Checkout .
 
 10. Open the console.
 
-11. Go to the directory.
+11. Go to the directory which contains the build.properties and buil.xml files, in the trunk folder.
 
 12. Excecute the ANT command.
