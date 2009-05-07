@@ -1,0 +1,69 @@
+<apex:page id="proMemRem" sidebar="false" tabStyle="Project2__c" controller="ProjectMembersListController">
+	
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsMembersRemove.css')}" />
+	<!-- Content  -->
+	<div id="removeMemberOverlay" style="display:none;" class="overlayForm">	
+		<!-- Overlay Title -->
+		<div class="overlayTitleContent">
+			<div class="overlayTitle">Confirmation</div>
+			<div class="overlayCloseEvent">
+				<a href="Javascript:;" onclick="modal.close();">
+					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
+				</a>
+			</div>
+		</div>
+		<div class="overlayMainContent">
+			<apex:form id="removeMemberForm">
+			    <script>
+                    var removeStatus = '{!finish}';
+                    if( removeStatus == 'true' ){
+                        modal.close();
+                        reloadMemberList();
+                        reloadButtons();
+                    }
+                </script>
+                <div class="overlayFormContent" style="padding-bottom: 10px;">
+                	<apex:inputHidden id="idToDelete" value="{!RemoveMemberId}" />
+					<apex:outputPanel rendered="{!NOT(error)}">
+						
+							<table style="width:95%;"> 
+								<tr>
+									<td ><span class="inputInfoDark">Are you sure you want to remove {!delName} from {!projectName}?</span></td>
+								</tr>
+								<tr>
+									<td ><span class="inputInfo">Once a member is removed there is no way to undo this action.</span></td>
+								</tr>
+							</table>
+						
+					</apex:outputPanel>
+				</div>
+				<apex:outputPanel rendered="{!error}">
+                        <table style="width: 95%;">
+                            <tr>
+                                <td>
+                                    <span class="inputInfoDark">
+                                        You can not remove all admin members
+                                    </span>
+                                    <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/error_icon.png')}" /> 
+                                </td>
+                            </tr>
+                        </table>
+                </apex:outputPanel>
+				<div class="overlaySeparateLine" />
+				
+				<apex:outputPanel rendered="{!NOT(error)}" id="removeMemberFormButtons">
+					<!-- Save and Cancel Buttons -->
+					<div class="overlayFromButtons" align="center">
+						<apex:commandButton styleclass="btn allButtons" onclick="fixCancelBtn(this);statusDeleting(this);$('paginationOverlay').show();setDims('holder','paginationOverlay');" action="{!removeMember}" style="float: none;background: #21637D none repeat scroll 0 0 !important;" value="Continue and delete member" rerender="removeMemberForm"/> 
+						<input class="allButtons cancelButtons" style="float: none;" type="button" value="Cancel" onclick="modal.close();"/>
+					</div>
+				</apex:outputPanel>
+				<div align="center">
+					<apex:outputPanel layout="block" id="cancelBtnContainer" rendered="{!error}">
+	      			    <apex:commandButton styleClass="allButtons cancelButtons" id="removeCancelButton" action="{!resetErrorAndFinish}" rerender="newMemberForm" value="Cancel" onclick="modal.close();$('paginationOverlay').hide();" />
+	      		</apex:outputPanel>
+	            </div>
+			</apex:form>
+		</div>
+	</div>
+</apex:page>
