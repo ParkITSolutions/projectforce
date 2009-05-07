@@ -51,6 +51,6 @@ From here you'll get the url and the user to input into the SVN Checkout .
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeDeploy.PNG" align="left" />
 
-15.
+15. At the end of the deployment you will see this screen.
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeAntCommandFinished.png" align="left" />
