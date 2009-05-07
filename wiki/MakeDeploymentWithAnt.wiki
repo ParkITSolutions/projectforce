@@ -1,11 +1,11 @@
 To do the deployment with the command "ant" you have to do the following steps:
 
-1. Go to the "SourceSVN" tab.
+1. Go to the "Source" tab.
 From here you'll get the url and the user to input into the SVN Checkout . 
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeSource.png" align="left" />
 
-2. To enable the deployment, you must have the TortoiseSVN program installed.
+2. To enable the deployment, you must have the TortoiseSVN program installed or another SVN clients.
 [http://tortoisesvn.net/downloads To download the TortoiseSVN click  here]
 
 3. Create a folder where you want to save the project.
@@ -35,7 +35,7 @@ From here you'll get the url and the user to input into the SVN Checkout .
 <img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeBuildPropertiesFile.PNG" align="left" />
 
 10. You must have the ANT program installed.
-[http://ant.apache.org/bindownload.cgi To download the ANT click  here]
+[http://ant.apache.org/bindownload.cgi To download the Apache-ANT click  here]
 
 11. In the folder lib of the apache-ant installed, add file ant-salesforce.jar. To get the ant-salesforce.jar file go to the ant folder.
 
