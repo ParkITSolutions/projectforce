@@ -38,6 +38,6 @@ From here you'll get the url and the user to input into the SVN Checkout .
 11. Go to the directory which contains the build.properties and buil.xml files, in the trunk folder.
 
 12. Excecute the ANT command.
-<img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeAntCommand.PNG" align="left" vspace=10px  />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeAntCommand.PNG" align="left" vspace=1px  />
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeDeploy.PNG" align="left" vspace=10px />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeDeploy.PNG" align="left" vspace=1px />
