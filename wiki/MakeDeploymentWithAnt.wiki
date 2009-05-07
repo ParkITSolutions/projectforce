@@ -28,4 +28,4 @@ From here you'll get the url and the user to input into the SVN Checkout .
 
 8. Edit the build.properties file.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeBuildPropertiesFile.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeBuildPropertiesFile.PNG" align="left" />
