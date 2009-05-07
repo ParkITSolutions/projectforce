@@ -39,3 +39,5 @@ From here you'll get the url and the user to input into the SVN Checkout .
 
 12. Excecute the ANT command.
 <img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeAntCommand.PNG" align="left" />
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeDeploy.PNG" align="left" />
