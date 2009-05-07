@@ -32,7 +32,7 @@ From here you'll get the url and the user to input into the SVN Checkout .
 
 9. In the folder lib of the apache-ant installed, add file ant-salesforce.jar. To get the ant-salesforce.jar file go to the ant folder.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeAntFolder.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeAntFolder.PNG" align="left" />
 
 10. Edit the build.properties file and save the changes.
 
