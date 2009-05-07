@@ -2,7 +2,7 @@
 
 1. Go to the "Source" tab. From here you'll get the url and the user to input into the SVN Checkout.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeSource.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeSource.png"  />
 
 2. To enable the deployment, you must have the TortoiseSVN program installed or another SVN clients. [http://tortoisesvn.net/downloads To download the TortoiseSVN click  here]
 
@@ -10,24 +10,23 @@
 
 4. Inside the created folder make click in the right mouse button and select the SVN Checkout... option.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/SVNCheckout.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/SVNCheckout.png"  />
 
 5. Enter a URL obtained in step 1 and click on OK button.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/SVNCheckoutWindow.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/SVNCheckoutWindow.png"  />
 
 6. Enter the SVN username and the SVN password obtained in the step 1.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt
-/SVNAutentication.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/SVNAutentication.png" />
 
 7. The project creates in the folder.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeFolder.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeFolder.png"  />
 
 8. Make double click in the trunk folder.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeTrunkFolder.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeTrunkFolder.png"  />
 
 9. Edit the build.properties file and save the changes.
 
@@ -37,7 +36,6 @@
 [http://ant.apache.org/bindownload.cgi To download the Apache-ANT click  here]
 
 11. In the folder lib of the apache-ant installed, add file ant-salesforce.jar. To get the ant-salesforce.jar file go to the ant folder.
-
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeAntFolder.PNG" />
 
@@ -54,4 +52,4 @@
 
 15. At the end of the deployment you will see this screen.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeAntCommandFinished.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeAntCommandFinished.png"  />
