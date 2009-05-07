@@ -24,7 +24,7 @@ public with sharing class ProjectTaskListController {
     * Set of Integers to control pagination
     */
     public Integer totalItemsNumber = taskList.size();
-    public Integer numberOfItemsToShow = 18;
+    public Integer numberOfItemsToShow = 10;
     public Integer cntPagination = 0;
     public Integer currentPagination = 1;
     public Integer firstRow = 0;

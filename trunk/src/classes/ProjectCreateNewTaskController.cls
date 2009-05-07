@@ -388,8 +388,72 @@ public class ProjectCreateNewTaskController {
    	* Save Asignees
    	* Format: userId:percentage;userId:percentage
    	*@void
+   	*Version with Real update by Alvaro Acuna
    	*/
    	public void saveAssignees(){
+
+   		List<String> assigns = assignees.split(';');
+   		if(assigns.size() == 0)
+   			return;
+   
+        Map<String,ProjectAssignee__c> BaseMap = new Map<String,ProjectAssignee__c>();
+
+	    for (ProjectAssignee__c iter :[Select p.User__c,p.Project__c,p.PercentDedicated__c,ProjectTask__c From ProjectAssignee__c p where projectTask__c =: theTask.Id]) {
+		     BaseMap.put(iter.User__c, iter);
+	    }	  	
+   	    
+   		List<ProjectAssignee__c> assignsToDel = new List<ProjectAssignee__c>();
+   		List<ProjectAssignee__c> assignsToSave = new List<ProjectAssignee__c>();
+   		List<ProjectAssignee__c> NewAssignees = new List<ProjectAssignee__c>();
+
+   		//Add first Assignee
+   		ProjectAssignee__c assign = new ProjectAssignee__c();
+   		assign.User__c = dateMy.getMember();
+   		assign.Project__c = param;
+   		assign.PercentDedicated__c = dateMy.getPercent(); 
+   		assign.ProjectTask__c = theTask.Id;   		
+   		assignsToSave.add(assign);
+   		
+   		//Add other assignees
+   		List<String> auxAssign = new List<String>(); 
+   		for(Integer it = 0; it < assigns.size(); it++){
+   			auxAssign = assigns[it].split(':');
+   			if(auxAssign.size() == 2){
+	   			assign = new ProjectAssignee__c();
+	   			assign.User__c = auxAssign[0];
+	   			assign.Project__c = param;
+	   			assign.PercentDedicated__c = Double.valueOf(auxAssign[1]); 
+	   			assign.ProjectTask__c = theTask.Id;
+	   			assignsToSave.add(assign);
+   			}
+   		}
+   		
+   		
+   		for (ProjectAssignee__c fa: assignsToSave ){
+   			if(BaseMap.get(Fa.User__c)!=null){
+   				BaseMap.remove(fa.user__c);
+   			}else{
+   			    NewAssignees.add(fa); 
+   			}
+   		}
+   		
+   		assignsToDel=BaseMap.values();  		
+   		
+   		if(assignsToSave.size() > 0)
+   			insert NewAssignees;
+   			
+   	    if(assignsToDel.size() > 0)
+   			delete assignsToDel;
+   	}
+  
+  
+    	/**
+   	* Save Asignees
+   	* Format: userId:percentage;userId:percentage
+   	*@void
+   	*old version without real update
+   	*/
+   	/*public void saveAssignees(){
 
    		List<String> assigns = assignees.split(';');
    		if(assigns.size() == 0)
@@ -431,6 +495,7 @@ public class ProjectCreateNewTaskController {
    	    if(assignsToDel.size() > 0)
    			delete assignsToDel;
    	}
+  */
    	
    	/**
    	* Get Task for Edit

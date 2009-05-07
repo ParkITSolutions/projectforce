@@ -1,12 +1,17 @@
 trigger ProjectAssigneeAfterInsert on ProjectAssignee__c (after insert) 
 {
+	// Send email to subscribers members
+	ProjectSubscribersEmailServices emailServices = new ProjectSubscribersEmailServices();
+	List<String> assignees = new List<String>();
+
+
    	
 	try {
         
   		List<String> teamSharingGroupNames = new List<String>();		
 		for(ProjectAssignee__c p : Trigger.new) {
 			teamSharingGroupNames.add('ProjectSharing' + p.Project__c);
-			 
+			assignees.add(p.id);
 		}
 		
 		Map<String, Id> teamMap = new Map<String, Id>();					
@@ -27,39 +32,11 @@ trigger ProjectAssigneeAfterInsert on ProjectAssignee__c (after insert)
 		}
 		
 		//Insert share objects
+		System.debug( '(***)' + assignee.size());
 		insert assignee;
-
-
-
-	
-	    // Send email to subscribers members
-		ProjectSubscribersEmailServices emailServices = new ProjectSubscribersEmailServices();
-		List<String> assignees = new List<String>();		
-		List<String> assigneesToDel = new List<String>();		
-
-	
-		Map<String,ProjectAssignee__c> BaseMap=ProjectUtil.BaseMap;
-
-		for(ProjectAssignee__c m : Trigger.new) {	
-	               if (BaseMap.get(m.user__c)!=null){
-	                     BaseMap.remove(m.user__c);
-	               }else{
-	                     assignees.add(m.Id);
-	               }
-		}
-	  	
-
-		//Conver map to Set to list 
-	  	Set<String> BaseSet=new Set<String>();
-	  	BaseSet=BaseMap.KeySet();
-
-	  	for (String Idmp : BaseSet){
-	  		assigneesToDel.add(BaseMap.get(IdMp).Id);
-	  	}	
- 
+		
 		//Send e-mail notifications
-		emailServices.sendMailForAssDeleted(assigneesToDel);	
-		emailServices.sendMailForTaskAssigned(assignees);		
+		emailServices.sendMailForTaskAssigned(assignees);
 		
 	} catch(Exception e) {
 

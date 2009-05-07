@@ -186,7 +186,7 @@
 								<div class="item">
 									<div class="imageTeams">
 										<a href="/apex/TeamsRedirect?id={!t.Id}">
-											<img alt="" width="47" height="47" src="{!IF(t.image == 'null',(URLFOR($Resource.commonResources, '/images/placeholders/default_team_100x100.png')) ,t.image)}"  />
+											<img alt="" width="47" height="47" src="{!IF( t.image == 'null',(URLFOR($Resource.commonResources, '/images/placeholders/default_team_100x100.png')) ,t.image)}"  />
 										</a>
 									</div>
 									<div class="detailTeams">

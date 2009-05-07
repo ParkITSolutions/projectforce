@@ -21,6 +21,15 @@ public class ProjectTimelineController {
 		return project;
     }
     
+    
+    /**
+    * Get Namespace
+    *@return namespace
+    */
+    public String getNamespace(){
+    	return ProjectUtil.getNamespace();
+    }
+    
     /**
     * Get Team and Project for current team id
     *@void
@@ -31,4 +40,5 @@ public class ProjectTimelineController {
             project = [select Id, Name from Project2__c p where p.Id =: param];
         }
     }
+
 }
