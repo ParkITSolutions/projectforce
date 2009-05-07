@@ -3,7 +3,7 @@ To do the deployment with the command "ant" you have to do the following steps:
 1. Go to the "SourceSVN" tab.
 From here you'll get the url and the user to input into the SVN Checkout . 
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeSource.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeSource.png" align="left" />
 
 2. To enable the deployment, you must have the TortoiseSVN program installed.
 [http://tortoisesvn.net/downloads To download the TortoiseSVN click  here]
@@ -12,32 +12,35 @@ From here you'll get the url and the user to input into the SVN Checkout .
 
 4. Inside the created folder make click in the right mouse button and select the SVN Checkout... option.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/SVNCheckout.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/SVNCheckout.png" align="left" />
 
 5. Enter a URL obtained in step 1 and click on OK button.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/SVNCheckoutWindow.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/SVNCheckoutWindow.png" align="left" />
 
 6. The project creates in the folder.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeFolder.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeFolder.png" align="left" />
 
 7. Make double click in the trunk folder.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeTrunkFolder.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeTrunkFolder.png" align="left" />
 
-8. Edit the build.properties file and save the changes.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeBuildPropertiesFile.PNG" align="left" />
-
-9. To excecute the ANT command, you must have the ANT program installed.
+8. You must have the ANT program installed.
 [http://ant.apache.org/bindownload.cgi To download the ANT click  here]
 
-10. Open the console.
+9. In the filder lib of the apache-ant installed, add file ant-salesforce.jar. To get the ant-salesforce.jar file go to the ant folder.
 
-11. Go to the directory which contains the build.properties and buil.xml files, in the trunk folder.
+10. Edit the build.properties file and save the changes.
 
-12. Excecute the ANT command.
-<img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeAntCommand.PNG" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeBuildPropertiesFile.PNG" align="left" />
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/GoogleCodeDeploy.PNG" align="left" />
+11. To excecute the ANT command you must open the console.
+
+12. Go to the directory which contains the build.properties and buil.xml files, in the trunk folder.
+
+13. Excecute the ANT command.
+<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeAntCommand.PNG" align="left" />
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/DeploymentWithAnt/GoogleCodeDeploy.PNG" align="left" />
