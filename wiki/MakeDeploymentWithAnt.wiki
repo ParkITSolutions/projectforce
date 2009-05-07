@@ -32,6 +32,9 @@ From here you'll get the url and the user to input into the SVN Checkout .
 
 9. To excecute the ANT command, you must have the ANT program installed.
 [http://ant.apache.org/bindownload.cgi To download the ANT click  here]
+
 10. Open the console.
+
 11. Go to the directory.
+
 12. Excecute the ANT command.
