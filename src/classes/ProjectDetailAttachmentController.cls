@@ -78,70 +78,74 @@ public class ProjectDetailAttachmentController {
 	*/
 	public void loadAttachmentList(List<Attachment> attachs){
 		List<AttachmentInfo> attachList = new List<AttachmentInfo>();
+		String avatarId;
+		avatarId = [ select Picture__c from Project2__c where Id =: project limit 1 ].Picture__c ;
 		for (Attachment item: attachs){	
-            AttachmentInfo info = new AttachmentInfo();
-            
-            info.setId(item.Id);
-            info.setName(item.Name);
-            info.setAttachment(item);
-            info.setIsOwner(item.CreatedById == UserInfo.getUserId());
-            
-            String ContentType = item.ContentType;
-            String image = '';
-            
-            if (ContentType == null || ContentType == '') {
-            	
-            	// Using extension
-            	Integer extPos = item.Name.lastIndexOf('.') + 1;
-            	String extension = item.Name.substring(extPos);
-            	
-            	// containsKey does a case sensitive comparison
-            	extension = extension.toLowerCase();
-           		Map<String, String> typesExt = new Map<String, String>{
-           			'rar' => 'rar.gif', 
-           			'xls' => 'xls.gif', 
-           			'ppt' => 'ppt.gif', 
-           			'avi' => 'video.gif', 
-           			'mpg' => 'video.gif', 
-           			'mpeg' => 'video.gif', 
-           			'flv' => 'video.gif', 
-           			'mp3' => 'audio.gif', 
-           			'doc' => 'doc.gif'
-       			};
-           		if(typesExt.containsKey(extension)) {
-           			image = typesExt.get(extension);
-           		}else {
-           			image = 'generic.gif';
-           		}
-            }else {
-           		
-           		// Using mime type
-           		Map<String, String> typesMime = new Map<String, String>{
-           			'image/jpeg' => 'images.gif', 
-           			'image/pjpeg' => 'images.gif', 
-           			'image/png' => 'images.gif', 
-           			'image/x-png' => 'images.gif', 
-           			'image/gif' => 'images.gif', 
-           			'image/bmp' => 'images.gif', 
-           			'text/plain' => 'txt.gif', 
-           			'application/pdf' => 'pdf.gif', 
-           			'application/msword' => 'doc.gif', 
-           			'application/x-zip-compressed' => 'zip.gif', 
-           			'audio/wav' => 'audio.gif', 
-           			'audio/mpeg' => 'audio.gif', 
-           			'video/mpeg' => 'video.gif', 
-           			'video/avi' => 'video.gif'
-       			};	
-           		if(typesMime.containsKey(ContentType)) {
-           			image = typesMime.get(ContentType);
-           		}else {
-           			image = 'generic.gif';
-           		}
-            }
-            
-            info.setAttachImage(image);
-            attachList.add(info);
-
+			
+			if( item.id != avatarId ){
+	            AttachmentInfo info = new AttachmentInfo();
+	            
+	            info.setId(item.Id);
+	            info.setName(item.Name);
+	            info.setAttachment(item);
+	            info.setIsOwner(item.CreatedById == UserInfo.getUserId());
+	            
+	            String ContentType = item.ContentType;
+	            String image = '';
+	            
+	            if (ContentType == null || ContentType == '') {
+	            	
+	            	// Using extension
+	            	Integer extPos = item.Name.lastIndexOf('.') + 1;
+	            	String extension = item.Name.substring(extPos);
+	            	
+	            	// containsKey does a case sensitive comparison
+	            	extension = extension.toLowerCase();
+	           		Map<String, String> typesExt = new Map<String, String>{
+	           			'rar' => 'rar.gif', 
+	           			'xls' => 'xls.gif', 
+	           			'ppt' => 'ppt.gif', 
+	           			'avi' => 'video.gif', 
+	           			'mpg' => 'video.gif', 
+	           			'mpeg' => 'video.gif', 
+	           			'flv' => 'video.gif', 
+	           			'mp3' => 'audio.gif', 
+	           			'doc' => 'doc.gif'
+	       			};
+	           		if(typesExt.containsKey(extension)) {
+	           			image = typesExt.get(extension);
+	           		}else {
+	           			image = 'generic.gif';
+	           		}
+	            }else {
+	           		
+	           		// Using mime type
+	           		Map<String, String> typesMime = new Map<String, String>{
+	           			'image/jpeg' => 'images.gif', 
+	           			'image/pjpeg' => 'images.gif', 
+	           			'image/png' => 'images.gif', 
+	           			'image/x-png' => 'images.gif', 
+	           			'image/gif' => 'images.gif', 
+	           			'image/bmp' => 'images.gif', 
+	           			'text/plain' => 'txt.gif', 
+	           			'application/pdf' => 'pdf.gif', 
+	           			'application/msword' => 'doc.gif', 
+	           			'application/x-zip-compressed' => 'zip.gif', 
+	           			'audio/wav' => 'audio.gif', 
+	           			'audio/mpeg' => 'audio.gif', 
+	           			'video/mpeg' => 'video.gif', 
+	           			'video/avi' => 'video.gif'
+	       			};	
+	           		if(typesMime.containsKey(ContentType)) {
+	           			image = typesMime.get(ContentType);
+	           		}else {
+	           			image = 'generic.gif';
+	           		}
+	            }
+	            
+	            info.setAttachImage(image);
+	            attachList.add(info);
+			}
         }
 		attachments = attachList;
 	}

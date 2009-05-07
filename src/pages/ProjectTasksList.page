@@ -77,38 +77,7 @@
           <div class="breadCrumbs">
             <a  href="/apex/ProjectDetail?id={!ProjectId}" title="{!NameProject}"><script>trunkText('{!NameProject}',24);</script> </a> > <strong>Tasks and Milestones</strong>
           </div>
-            <apex:outputpanel styleClass="buttons"  layout="block" style="width:450px;" >
-                <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
-                    <a class="blackbutton"  onclick="fixedModalNewTask.open();hideSelect();">
-                        <span>New Task</span>
-                    </a>
-                </apex:outputpanel>
-                <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
-                    <a class="blackbutton"  onclick="fixedModalNewMilestone.open();hideSelect();">
-                        <span>New Milestone</span>
-                    </a>
-                </apex:outputpanel>
-                <apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
-                    <apex:form >
-                        <apex:commandLink action="{!markComplete}" oncomplete="fadeUpdating();" rerender="auxProjectTaskListPanel" styleclass="blackbutton" onclick="bulkTaskCompleted('{!$Component.auxInputTextTop}');">
-                            <span>Mark Complete</span>  
-                        </apex:commandLink>
-                        <apex:inputText id="auxInputTextTop" style="display:none;" value="{!idTaskToComplete}" />
-                    </apex:form>
-                </apex:outputpanel>
-                <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
-                    <a class="blackbutton" href="/apex/ProjectTimeLine?id={!ProjectId}">
-                        <span>Timeline</span>
-                    </a>
-                </apex:outputpanel>
-                <apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
-                    <apex:form >
-                        <a class="blackbutton" onclick="bulkTaskDelete();">
-                            <span>Delete</span>
-                        </a>
-                    </apex:form>
-                </apex:outputpanel>
-             </apex:outputpanel>
+
              <apex:messages id="taskMessages"/>
         </div>
         <!-- Holder -->  
@@ -119,8 +88,8 @@
             <apex:outputpanel id="taskListPanel" layout="block" >
                 <apex:form id="ref">
                 	<apex:actionFunction action="{!refreshTaskList}" oncomplete="showHideOverlay();" name="sortListEvent" rerender="ref" />
-                    <div class="tableTopContainer" >             
-                        <div class="filterContainer">  
+                    <div class="tableTopContainer" style="height: auto;">             
+                        <div class="filterContainer" >  
                             <apex:selectList id="chooseOption" value="{!option}" onchange="option();showHideOverlay();setDims('holder','paginationOverlay');" size="1">
                                 <apex:selectOption itemValue="all" itemLabel="All Tasks"/>
                                 <apex:selectOption itemValue="my" itemLabel="My Tasks"/>
@@ -129,23 +98,55 @@
                                 <apex:selectOption itemValue="oMiles" itemLabel="Overdue Milestones"/>
                                 <apex:selectOption itemValue="allMilestones" itemLabel="All Milestones"/>
                             </apex:selectList>
-                        </div>
                         <!-- top pagination BEGIN -->
-                        <apex:outputpanel styleClass="pagination" layout="block" rendered="{!IF(AND(prevPageShow,nextPageShow),false,true)}">
-                            <div class="pages"> 
-                                <ul>
-                                    <li class="prev {!IF(prevPageShow,'prev_disabled','')}">
-                                        <apex:commandLink action="{!prevPage}" value="Previous Page" rerender="taskListPanel" rendered="{!prevPageLinkShow}"  onclick="showHideOverlay();" oncomplete="showHideOverlay();" />
-                                        <apex:outputText value="Previous Page" rendered="{!prevPageShow}" />
-                                    </li>
-                                    <li>({!currentPagination} - {!cntPagination})</li>
-                                    <li class="next {!IF(nextPageShow,'next_disabled','')}">
-                                        <apex:commandLink action="{!nextPage}" value="Next Page" rerender="taskListPanel" rendered="{!nextPageLinkShow}"   onclick="showHideOverlay();" oncomplete="showHideOverlay();" />                                      
-                                        <apex:outputText value="Next Page" rendered="{!nextPageShow}" />
-                                    </li>
-                                </ul>                               
-                            </div>
-                        </apex:outputpanel>
+                        
+                        <center>
+
+				            <apex:outputpanel styleClass="buttons"  layout="block" style="width:450px;" >
+				                <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
+				                    <a class="blackbutton"  onclick="fixedModalNewTask.open();hideSelect();">
+				                        <span>New Task</span>
+				                    </a>
+				                </apex:outputpanel>
+				                <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
+				                    <a class="blackbutton"  onclick="fixedModalNewMilestone.open();hideSelect();">
+				                        <span>New Milestone</span>
+				                    </a>
+				                </apex:outputpanel>
+				                <apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
+				                        <apex:commandLink action="{!markComplete}" oncomplete="fadeUpdating();" rerender="auxProjectTaskListPanel" styleclass="blackbutton" onclick="bulkTaskCompleted('{!$Component.auxInputTextTop}');">
+				                            <span>Mark Complete</span>  
+				                        </apex:commandLink>
+				                        <apex:inputText id="auxInputTextTop" style="display:none;" value="{!idTaskToComplete}" />
+				                </apex:outputpanel>
+				                <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
+				                    <a class="blackbutton" href="/apex/ProjectTimeLine?id={!ProjectId}">
+				                        <span>Timeline</span>
+				                    </a>
+				                </apex:outputpanel>
+				                <apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
+				                        <a class="blackbutton" onclick="bulkTaskDelete();">
+				                            <span>Delete</span>
+				                        </a>
+				                </apex:outputpanel>
+				             </apex:outputpanel>
+	                        <apex:outputpanel styleClass="pagination" layout="block" rendered="{!IF(AND(prevPageShow,nextPageShow),false,true)}">
+	                            <div class="pages"> 
+	                                <ul>
+	                                    <li class="prev {!IF(prevPageShow,'prev_disabled','')}">
+	                                        <apex:commandLink action="{!prevPage}" value="Previous Page" rerender="taskListPanel" rendered="{!prevPageLinkShow}"  onclick="showHideOverlay();" oncomplete="showHideOverlay();" />
+	                                        <apex:outputText value="Previous Page" rendered="{!prevPageShow}" />
+	                                    </li>
+	                                    <li>({!currentPagination} - {!cntPagination})</li>
+	                                    <li class="next {!IF(nextPageShow,'next_disabled','')}">
+	                                        <apex:commandLink action="{!nextPage}" value="Next Page" rerender="taskListPanel" rendered="{!nextPageLinkShow}"   onclick="showHideOverlay();" oncomplete="showHideOverlay();" />                                      
+	                                        <apex:outputText value="Next Page" rendered="{!nextPageShow}" />
+	                                    </li>
+	                                </ul>                               
+	                            </div>
+	                        </apex:outputpanel>
+	                    </center>
+	                	</div>
                     </div> 
                     <!-- top pagination END -->            
                     <!-- task list BEGIN -->
@@ -382,6 +383,7 @@
                     <!-- task list END -->
                     <!-- Pagination -->
                     <div class="tableTopContainer" >
+                    <center>
                         <apex:outputpanel styleClass="pagination" layout="block" rendered="{!IF(AND(prevPageShow,nextPageShow),false,true)}">
                             <div class="pages" >
                                 <ul>
@@ -394,17 +396,13 @@
                                         <apex:commandLink action="{!nextPage}" value="Next Page" rerender="taskListPanel" rendered="{!nextPageLinkShow}"  onclick="showHideOverlay();" oncomplete="showHideOverlay();" />                                       
                                         <apex:outputText value="Next Page" rendered="{!nextPageShow}" />
                                     </li>
-                                </ul>                               
+                                </ul>                                
                             </div>
                         </apex:outputpanel>
-                    </div>
-                    <!-- bottom pagination END -->
-                </apex:form>
-            </apex:outputpanel>    
-        </div>   
-        <!-- BreadCrumb and buttons -->     
-        <div align="center" class="breadCrumbAndButtons">
-            <apex:outputpanel styleClass="buttons"  layout="block" style="width:450px;" >
+                   </center>
+                        
+ 			<center>
+             <apex:outputpanel styleClass="buttons"  layout="block" style="width:450px;" >
                 <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
                     <a class="blackbutton"  onclick="fixedModalNewTask.open();hideSelect();">
                         <span>New Task</span>
@@ -414,13 +412,11 @@
                     <a class="blackbutton"  onclick="fixedModalNewMilestone.open();hideSelect();"><span>New Milestone</span></a>
                 </apex:outputpanel>
                 <apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
-                    <apex:form >
-                        <apex:commandLink action="{!markComplete}" oncomplete="fadeUpdating();" rerender="auxProjectTaskListPanel" styleclass="blackbutton" onclick="bulkTaskCompleted('{!$Component.auxInputTextBotton}');">
+                         <apex:commandLink action="{!markComplete}" oncomplete="fadeUpdating();" rerender="auxProjectTaskListPanel" styleclass="blackbutton" onclick="bulkTaskCompleted('{!$Component.auxInputTextBotton}');">
                             <span>Mark Complete</span>  
                         </apex:commandLink>
                         <apex:inputText id="auxInputTextBotton" style="display:none;" value="{!idTaskToComplete}" />
-                    </apex:form>
-                </apex:outputpanel>
+                 </apex:outputpanel>
                 <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
                     <a class="blackbutton" href="/apex/ProjectTimeLine?id={!ProjectId}">
                         <span>Timeline</span>
@@ -432,6 +428,16 @@
                     </a>
                 </apex:outputpanel>
             </apex:outputpanel>
+          </center>              
+                        
+                    </div>
+                    <!-- bottom pagination END -->
+                </apex:form>
+            </apex:outputpanel>    
+        </div>   
+        <!-- BreadCrumb and buttons -->     
+        <div align="center" class="breadCrumbAndButtons">
+
         </div>   
     </div>   
     <apex:form >

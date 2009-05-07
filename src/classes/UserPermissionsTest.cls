@@ -31,7 +31,8 @@
         List<Project2__c> teamList = new List<Project2__c>();
         teamList = [SELECT id FROM Project2__c];
         if (teamList.size() > 0 ) {
-            ProjectMember__c teamMember = [select Id, Project__c from ProjectMember__c where User__c !=: userId limit 1];
+        	ProjectMember__c teamMember = new ProjectMember__c();
+            teamMember = [select Id, Project__c from ProjectMember__c where User__c !=: userId limit 1];
     		
             //Test Team Permissions
             up.setProject(teamMember.Project__c);

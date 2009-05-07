@@ -87,12 +87,13 @@ public with sharing class ProjectSearchResultController {
 	*/
 	public void search() {
 		
-
-		
 		List<SearchResult> tempResultList = new List<SearchResult>();	
+		String namespace = (ProjectUtil.getNamespace() != null) ? ProjectUtil.getNamespace() : '';		
 		
 		if(teamId != null){ //Searching project TASKS	
-			List<List<SObject>> resultList = [FIND :(criteria + '*') IN ALL FIELDS RETURNING ProjectTask__c (Id, Name, Description__c, Project__c where Project__c=:teamId)];
+
+			String sosl = 'FIND \'' + criteria + '*\' IN ALL FIELDS RETURNING ' + namespace + 'ProjectTask__c (Id, Name, Description__c, Project__c where Project__c = \'' + teamId + '\')';
+			List<List<SObject>> resultList = search.query(sosl);
 			resultsProjectTask = (List<ProjectTask__c>) resultList[0];
 			
 			// PARSE THE PROJECT TASK RESULT LIST
@@ -107,12 +108,9 @@ public with sharing class ProjectSearchResultController {
 				
 				tempResultList.add(currentResult);
 			}
-		}
-		else{
-			List<List<SObject>> resultList = [FIND :(criteria + '*') IN ALL FIELDS RETURNING Project2__c (Id, Name, Description__c)];
+		}else{
+			List<List<SObject>> resultList = search.query('FIND \'' + criteria + '*\' IN ALL FIELDS RETURNING ' + namespace + 'Project2__c (Id, Name, Description__c)');
 			resultsProjectSearch = (List<Project2__c>) resultList[0];
-			
-			
 			
 			// PARSE THE Projects RESULT LIST
 			for(Project2__c iter: resultsProjectSearch){
