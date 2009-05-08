@@ -174,7 +174,20 @@
                                                 <img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
                                             </apex:outputpanel>
                                         </apex:outputpanel>
-                                    </th>                            
+                                    </th>
+									<th width="8%" style="padding:3px 0px;">
+                                    	<apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Sprint" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Sprint__c';" oncomplete="showHideOverlay();">
+                                            <apex:param name="sortBy" value="Sprint__c" assignTo="{!sortBy}"/>
+                                        </apex:commandLink>&nbsp;
+                                        <apex:outputpanel rendered="{!IF(sortBy == 'Sprint',true,false)}">
+                                            <apex:outputpanel rendered="{!sortByDesc}">
+                                                <img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
+                                            </apex:outputpanel>
+                                            <apex:outputpanel rendered="{!NOT(sortByDesc)}">
+                                                <img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
+                                            </apex:outputpanel>
+                                        </apex:outputpanel>
+                                    </th>  
                                     <th width="5%" style="text-align: center">
                                            <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Type" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Milestone__c';" oncomplete="showHideOverlay();">
                                             <apex:param name="sortBy" value="Milestone__c" assignTo="{!sortBy}"/> 
@@ -308,11 +321,16 @@
                                                 </div>     
                                             </apex:outputpanel> 
                                         </td> 
+                                        <!-- Auto ID -->
                                         <td>
                                         	<div>
                                         		<a href="projecttaskdetail?id={!task.id}" class="">{!task.autoId}</a>
                                         	</div>	
                                         </td>
+                                        <!-- Sprint Name -->                          
+                                        <td align="center">
+                                            <div>{!task.Sprint}</div>
+                                        </td>  
                                         <td class="imgColumns"  align="center"> 
                                             <apex:outputpanel rendered="{!IF(task.Milestone ,false,true)}" layout="block" styleClass="center">
                                                 <img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/task.gif')}" title="Task" />
@@ -349,11 +367,6 @@
                                         </td> 
                                         <!-- Task Asignee -->
                                         <td class="proj_task_assigned"> 
-                                            <a href="javascript:;">
-                                                <apex:outputpanel styleClass="photoWrapper_32px photo" layout="block">                                               
-                                                    <img  src="{!URLFOR($Resource.commonResources, 'images/placeholders/unknownperson32x32.jpg')}"  width="32" />
-                                                </apex:outputpanel>
-                                            </a>
                                             <div class="username" >                         
                                                 <a href="/{!task.userTask.id}">{!task.userTask.name}</a>
                                             </div>

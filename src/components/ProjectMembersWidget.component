@@ -129,7 +129,7 @@
 					<!-- Save and Cancel Buttons -->
 					<div class="overlayFromButtons" align="center">
 						<apex:commandButton action="{!saveMembers}"
-							oncomplete="addMemberCallBackFunction()"
+							oncomplete="addMemberCallBackFunction();"
 							styleclass="btn allButtons" style="float: none;width: 70px !important;background: #21637D none repeat scroll 0 0 !important;" value="Send"
 							rerender="membersListContainer" /> 
 						<input id="cancelBtn" class="allButtons" type="button" value="Cancel" onclick="modal.close();stopFunction();" />
@@ -192,8 +192,8 @@
 		</div>
 		<!-- Widget Container -->
 		<div class="box_content">
-			<div class="swirly_members" style="display: none;"></div>
-			<div class="thinBody">
+			<div class="swirly_members" id="swirly_members" style="display: none;"></div>
+			<div class="thinBody" id="thinBody">
 				<div class="contentHolder">
 					<div class="linkAction">
 						<apex:outputpanel rendered="{!userPermissions.canManage}">
@@ -269,8 +269,14 @@
 	<script>
 		function addMemberCallBackFunction(){
 			setTimeout('modal.close(); hideSwirly(\'swirly_overlay\')', 5000);
-			$('paginationOverlay').show(); 
-			setDims('holder','paginationOverlay');
+
+			if( window.location.href.include('MemberList')){
+				$('paginationOverlay').show(); 
+				setDims('holder','paginationOverlay');
+			}
+			
+			$$( '.swirly_members' )[ 0 ].show();
+			setDims( 'thinBody', $$( '.swirly_members' )[ 0 ].id );
 		}
 		
 	</script>

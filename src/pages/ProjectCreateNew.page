@@ -128,7 +128,7 @@
 						<div class="Formcontentfolder">                    	
                     		<!-- Dynamic Layout Output don't remove -->
 							<div class="DynamicLayoutResponse">
-	<apex:form ><label>Project Name</label><apex:inputField value="{!project.Name}" required="true" /><br/><br/><label>Description</label><apex:inputField value="{!project.Description__c}" required="true" /><br/><br/><label>Priority</label><apex:inputField value="{!project.Priority__c}" required="true" /><br/><br/><label>Sprint</label><apex:inputField value="{!project.Sprint__c}" required="true" /><br/><br/><div class="btnStandardForm"><apex:commandButton action="{!save}" value="Save" onclick="statusSaving(this);" rerender="NewProjectFormContainer" oncomplete="onCompleteCallBackFunction();"  /><input class="btn" onclick="onCancelEvent();" type="button" value="Cancel"/></div></apex:form></div>
+	<apex:form ><label>Project Name</label><apex:inputField value="{!project.Name}" required="true" /><br/><br/><label>Description</label><apex:inputField value="{!project.Description__c}" required="true" /><br/><br/><label>Priority</label><apex:inputField value="{!project.Priority__c}" required="true" /><br/><br/><div class="btnStandardForm"><apex:commandButton action="{!save}" value="Save" onclick="statusSaving(this);" rerender="NewProjectFormContainer" oncomplete="onCompleteCallBackFunction();"  /><input class="btn" onclick="onCancelEvent();" type="button" value="Cancel"/></div></apex:form></div>
 						</div>
 		           </apex:outputPanel>
                     <div>

@@ -16,6 +16,7 @@
 	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}"/>
 	<!-- CSS de TS -->
 	<link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />	
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />
 	<link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/profileEdition.css')}" />
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetail.css')}" />
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgets/TeamMemberWidget.css')}" />	
@@ -32,7 +33,9 @@
 		.inputButton{
 			background:transparent url({!URLFOR($Resource.ProjectResources, 'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right bottom;
 		}
-	
+        div.sidebar{
+			top: 90px;
+		}		
 	</style>
 	<!-- Header -->
 	<apex:composition template="HeaderTemplate">
@@ -58,17 +61,23 @@
 	
 	<!-- BreadCrumbs -->
 	<apex:form id="form_content" onsubmit="getInputValue(); if(!isCloneAction){if(validator('{!$Component.form_content}', 'warning_to_user'))return false;};">
-		<div class="breadcrumbs"  align="center">
-			<apex:outputpanel rendered="{!IF(subscriptionCount == 0, true, false)}">
-				<apex:commandButton value="Save" action="{!saveSubscription}"/>
-			</apex:outputpanel>
-			<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}">
-				<apex:commandButton value="Update" action="{!saveSubscription}"/>
-			</apex:outputpanel>
-			<apex:commandButton value="Cancel" action="{!cancelSubscription}"/>
-			<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}">
-				<apex:commandButton value="Unsubscribe" action="{!deleteSubscription}"/>
-			</apex:outputpanel>
+		<div align="center"  class="breadCrumbAndButtons" style="height: 30px!important;">
+			<div class="breadcrumbs"  align="center">
+	          <div class="breadCrumbs">
+	            <a  href="/apex/ProjectDetail?id={!IdProject}" title="{!NameProject}"><script>trunkText('{!NameProject}',24);</script> </a> > <strong>Tasks and Milestones</strong>
+	          </div>
+	
+				<apex:outputpanel rendered="{!IF(subscriptionCount == 0, true, false)}">
+					<apex:commandButton value="Save" action="{!saveSubscription}"/>
+				</apex:outputpanel>
+				<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}">
+					<apex:commandButton value="Update" action="{!saveSubscription}"/>
+				</apex:outputpanel>
+				<apex:commandButton value="Cancel" action="{!cancelSubscription}"/>
+				<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}">
+					<apex:commandButton value="Unsubscribe" action="{!deleteSubscription}"/>
+				</apex:outputpanel>
+			</div>
 		</div>
 		<!-- Main Content Div -->
 		<div class="main_content">		

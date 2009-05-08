@@ -1117,10 +1117,6 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
-        <field>Project2__c.Sprint__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
         <field>Project2__c.SyncToCalendar__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
