@@ -36,10 +36,11 @@
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
 		
-		delete GenerateEnvironmentTest.pred;
+		upsert GenerateEnvironmentTest.assi;
+        delete GenerateEnvironmentTest.assi;
+ 		delete GenerateEnvironmentTest.pred;
 		delete GenerateEnvironmentTest.task;
 		delete GenerateEnvironmentTest.member;
-
 		
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );

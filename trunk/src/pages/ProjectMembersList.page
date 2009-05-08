@@ -1,7 +1,12 @@
 <apex:page sidebar="false" id="ProjectMembersList" tabStyle="Project2__c" controller="ProjectMembersListController">
 	<apex:includeScript value="/soap/ajax/12.0/connection.js" />
 	<script>
-		var API_SESSION_ID = '{!$Api.Session_ID}'; 
+	
+		var API_SESSION_ID = '{!$Api.Session_ID}';
+		
+		var namespace = "{!namespace}";
+		sforce.connection.defaultNamespace = namespace;	 
+	
 	</script>
 
 	<!-- Prototype + Scriptaculous -->
@@ -59,7 +64,7 @@
 		var globalTeamId = "{!projectId}";
 	</script>
 	<style>
-		
+	
 		div#quickLinksContainer{
 			display: none;
 		}
@@ -68,7 +73,7 @@
 				padding-right: 6%;
 			}
 		}
-		
+
 	</style>
 	
 	<apex:form >
@@ -126,8 +131,6 @@
 					alt="OK" />Member has been added to this {!$ObjectType.Project2__c.label}
 			</apex:outputPanel>
 		</apex:form>
-		
-		
 		
 		<div id="holder">
 			<div id="paginationOverlay" style="display: none;"  class="paginationOverlay"></div>

@@ -72,12 +72,6 @@
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Sprint__c</fullName>
-        <label>Sprint</label>
-        <length>255</length>
-        <type>Text</type>
-    </fields>
-    <fields>
         <fullName>SyncToCalendar__c</fullName>
         <defaultValue>false</defaultValue>
         <description>SyncToCalendar</description>

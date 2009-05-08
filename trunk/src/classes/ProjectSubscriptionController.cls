@@ -13,6 +13,15 @@ public class ProjectSubscriptionController {
 		constructMethods(); 
 	}
 	
+	
+	/**
+	*@return String
+	*/
+	public String getNameProject(){
+		String pName = [ select Id, Name from Project2__c where Id =: idProject limit 1 ].Name;
+		return pName;	
+	}
+	
 	/**
 	*@return Integer
 	*/

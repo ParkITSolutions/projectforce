@@ -78,7 +78,6 @@ public class GenerateEnvironmentTest {
         project.name = 'Project 1 name';
         project.description__c = 'Description ...';
         project.priority__c = 'High';
-        project.sprint__c = '12';
         project.Type__c = 'open';
         project.PublicProfile__c = profList[ 0 ].Id;
         project.NewmemberProfile__c = profList[ 1 ].Id;
@@ -86,13 +85,11 @@ public class GenerateEnvironmentTest {
         project2.name = 'Project 2 name';
         project2.description__c = 'Description ...';
         project2.priority__c = 'Medium';
-        project2.sprint__c = '13';
         project2.Type__c = 'close';
     
         project3.name = 'Project 2 name';
         project3.description__c = 'Description ...';
         project3.priority__c = 'Medium';
-        project3.sprint__c = '13';
         project3.Type__c = 'private';
     
         List<Project2__c> projList = new List<Project2__c>();
