@@ -26,6 +26,8 @@ In Gantt you are able to drag tasks and milestones into the timeline and shrink 
 
 For drag the task or milestones you have to select the task, press the left button of the mouse, hold the left mouse button pressed, move the task to the right or left, and place it in the desired date.
 
-For shrink the tasks, you have to go put the cursor on the end of the task, the cursor becomes a two arrows, one pointing to the left and another pointing to the right.
+For shrink the tasks, you have to put the cursor on the end of the task, the cursor becomes a two arrows, one pointing to the left and another pointing to the right, press the left button of the mouse, hold the left mouse button pressed, shrink the task to the left.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttTaskChart.png" align="left" />
+For enlarge the tasks, you have to put the cursor on the end of the task, the cursor becomes a two arrows, one pointing to the left and another pointing to the right, press the left button of the mouse, hold the left mouse button pressed, enlarge the task to the right.
+
+When you srink or enlarge the tasks, the start date and the end date are modified.
