@@ -1,0 +1,27 @@
+==In this page you have five buttons: ==
+
+With the New button you can create new projects or milestones above or below other tasks or milestones.
+
+With the Edit button you can edit the created tasks or milestones.
+
+With the Delete button you can delete the created tasks or milestones, to do this before you must select the task or milestone which want to delete.
+
+When you select a task and click on the right identation arrow, the selected task is now parent of the task below.
+
+When you select a task which is parent of another task, and click on the left identation arrow, the selected task is not more the parent of the task below.
+
+== There are six columns:==
+
+Task Name : In this column you would see the name of the created task or milestone.
+
+Est(hrs)  : In this column you will see the estimated time in hours for the task or milestone.
+
+Start Date: This column displays the date of start of the task.
+
+Due Date  : This column displays the end date for the task or milestone.
+
+%Complete : In this column you can see the percent complete for the task or milestone.
+
+Assegnee  : In this colum display the assegnee of the task or milestone.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttTaskList.png" align="left" />
