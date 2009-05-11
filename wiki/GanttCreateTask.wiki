@@ -19,7 +19,7 @@ To create a task from this page follow these steps:
 
 To create a task from this page follow these steps:
 
-1. Select the task you want to be below the new task.
+1. Select the task you want to be under the new task.
 
 2. Click on New button and select the Insert Task Above option.
 
@@ -34,7 +34,5 @@ To create a task from this page follow these steps:
 5. Click on Add Assegnee link, and choose the assegnee for the task.
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskOverlayAssegnee.png" align="left" />
-
-
 
 
