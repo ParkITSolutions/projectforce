@@ -1,4 +1,4 @@
-=There are two possible ways to edit a task: =
+=There are three possible ways to edit a task: =
 
 ==1.From the task list page==
 
@@ -21,6 +21,8 @@ To edit a task from this page follow these steps:
 
 1. Select the task you want to edit.
 
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttEditTaskEditButton.png" align="left" />
+
 2. Click on Edit button, enter the data you want to change and click on Save button.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskAbove.png" align="left" />
+==3.From the task chart page making double click on the task or milestone you want to edit==
