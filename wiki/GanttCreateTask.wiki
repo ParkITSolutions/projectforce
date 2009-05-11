@@ -33,7 +33,7 @@ To create a task from this page follow these steps:
 
 5. Click on Add Assegnee link. 
 
-6. Click on add another assegnee and choose the assegnee for the task.
+6. Click on Add Another Assegnee and choose the assegnee for the task.
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskOverlayAssegnee.png" align="left" />
 
@@ -41,6 +41,6 @@ To create a task from this page follow these steps:
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskView.png" align="left" />
 
-If instead of creating a task, you want to create a milestone, click the check box. Automatically the due date and the estimate field are disabled.
+If instead of creating a task, you want to create a milestone, click the Is Milestone?check box. Automatically the due date and the estimate field are disabled.
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateMilestone.png" align="left" />
