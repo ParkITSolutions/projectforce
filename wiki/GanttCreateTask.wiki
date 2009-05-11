@@ -35,4 +35,11 @@ To create a task from this page follow these steps:
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskOverlayAssegnee.png" align="left" />
 
+6. Click on Save button. The task is added with all the information.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskView.png" align="left" />
+
+If instead of creating a task, you want to create a milestone, click the check box. Automatically the due date and the estimate field are disabled.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateMilestone.png" align="left" />
 
