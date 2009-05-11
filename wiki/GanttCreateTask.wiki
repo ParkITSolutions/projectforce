@@ -1,6 +1,6 @@
-==There are three possible ways to create a task: ==
+=There are three possible ways to create a task: =
 
-=1.From the task list page=
+==1.From the task list page==
 
 To create a task from this page follow these steps:
 
@@ -15,4 +15,4 @@ To create a task from this page follow these steps:
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskNameEnter.png" align="left" />
 
-=2.From the task chart page with the insert task above option=
+==2.From the task chart page with the insert task above option==
