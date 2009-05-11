@@ -41,6 +41,18 @@ To create a task from this page follow these steps:
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskView.png" align="left" />
 
-If instead of creating a task, you want to create a milestone, click the Is Milestone?check box. Automatically the due date and the estimate field are disabled.
+If instead of creating a task, you want to create a milestone, click the Is Milestone? check box. Automatically the due date and the estimate field are disabled.
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateMilestone.png" align="left" />
+
+==3.From the task chart page with the insert task below option==
+
+To create a task from this page follow these steps:
+
+1. Select the task you want to be above the new task.
+
+2. Click on New button and select the Insert Task Below option.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskBelow.png" align="left" />
+
+4. Repeat the steps from 4 to 7 of the previous case.
