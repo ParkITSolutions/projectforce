@@ -16,12 +16,12 @@ Task Name : In this column you would see the name of the created task or milesto
 
 Est(hrs)  : In this column you will see the estimated time in hours for the task or milestone.
 
-Start Date: This column displays the date of start of the task.
+Start Date: This column displays the start date of the task.
 
 Due Date  : This column displays the end date for the task or milestone.
 
 %Complete : In this column you can see the percent complete for the task or milestone.
 
-Assegnee  : In this colum display the assegnee of the task or milestone.
+Assegnee  : This colum display the assegnee of the task or milestone.
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttTaskList.png" align="left" />
