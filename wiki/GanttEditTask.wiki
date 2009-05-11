@@ -26,3 +26,9 @@ To edit a task from this page follow these steps:
 2. Click on Edit button, enter the data you want to change and click on Save button.
 
 ==3.From the task chart page making double click on the task or milestone you want to edit==
+
+1. Make double click on the task or milestone you want to edit.
+
+2. A Edit Task overlay shows up.
+
+3. Enter the data you want to change and click on Save button.
