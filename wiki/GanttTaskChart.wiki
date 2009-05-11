@@ -31,3 +31,7 @@ For shrink the tasks, you have to put the cursor on the end of the task, the cur
 For enlarge the tasks, you have to put the cursor on the end of the task, the cursor becomes a two arrows, one pointing to the left and another pointing to the right, press the left button of the mouse, hold the left mouse button pressed, enlarge the task to the right.
 
 When you srink or enlarge the tasks, the start date and the end date are modified.
+
+With the Gantt Navigator you can move for all the timeline to see all task and milestones.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttNavigator.png" align="left" />
