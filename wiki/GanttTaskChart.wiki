@@ -14,7 +14,7 @@ When you select a task which is parent of another task, and click on the left id
 
 The first view is the Day, with this view you can see all the task for the selected day. By default shows the todays day.
 
-The second view is the Week, with this view you can see all the tasks for all the selected week.
+The second view is the Week, with this view you can see all the tasks by week.
 
 The third view is the Month, with htis view you can see all the tasks by month.
 
