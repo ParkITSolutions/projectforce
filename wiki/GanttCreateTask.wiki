@@ -5,6 +5,7 @@
 To create a task from this page follow these steps:
 
 1. Make double click on the Task Name column.
+
 2. Enter the name of the task.
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskName.png" align="left" />
@@ -15,4 +16,3 @@ To create a task from this page follow these steps:
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskNameEnter.png" align="left" />
 
 =2.From the task chart page with the insert task above option=
-
