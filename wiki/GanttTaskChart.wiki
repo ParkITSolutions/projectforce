@@ -21,3 +21,11 @@ The third view is the Month, with htis view you can see all the tasks by month.
 The fourth view is the Year, with this view you can see all tasks by year.
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttTaskChart.png" align="left" />
+
+In Gantt you are able to drag tasks and milestones into the timeline and shrink and enlarge the tasks with the mouse.
+
+For drag the task or milestones you have to select the task, press the left button of the mouse, hold the left mouse button pressed, move the task to the right or left, and place it in the desired date.
+
+For shrink the tasks, you have to go put the cursor on the end of the task, the cursor becomes a two arrows, one pointing to the left and another pointing to the right.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttTaskChart.png" align="left" />
