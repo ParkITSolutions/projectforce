@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>sfdcHostName</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>sfdcHostName</shortDescription>
+        <value>http://na1.salesforce.com</value>
+    </labels>
+</CustomLabels>

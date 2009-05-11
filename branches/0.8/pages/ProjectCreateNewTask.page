@@ -1,0 +1,264 @@
+<apex:page sidebar="false" tabStyle="Project2__c" id="ProjectCreateNewTask" controller="ProjectCreateNewTaskController">
+    <meta http-equiv = "Content-Type" content="text/html; charset=iso-8859-1" />
+    
+    
+    <!-- CSS de TS -->
+    <link rel="stylesheet"  href = "{!URLFOR($Resource.commonResources, '/inc/css/validator.css')}" />    
+    <link rel="stylesheet"  href = "{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />  
+    <link rel="stylesheet"  href = "{!URLFOR($Resource.ProjectResources, '/inc/css/teamDetailEdit.css')}" />   
+    <link rel="stylesheet"  href = "{!URLFOR($Resource.ProjectResources, '/inc/css/teamDetail.css')}" />   
+    <link rel="stylesheet"  href = "{!URLFOR($Resource.ProjectResources, '/inc/css/teamCreateNew.css')}" />
+    <link rel="stylesheet"  href = "{!URLFOR($Resource.ProjectResources, '/inc/css/projectCreateNew.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" /> 
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverview.css')}" />
+    
+    <!-- Prototype + Scriptaculous -->
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>
+    
+    <!-- Portal Support -->
+    <apex:includeScript value="{!$Resource.portalSupport}"/>
+     
+    <!-- Common Js for All Sections -->
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/validator.js')}"/>
+    
+    <!-- CSS styles for Portal Integration --> 
+    <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
+    
+    
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsCreateNewTask.css')}" />    
+    <apex:includeScript value="/soap/ajax/12.0/connection.js"/>
+ 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectCreateNewTask.js')}" />
+ 	
+    <script>
+    
+    	var globalTeamLabel = 'Project';
+    	var taskId = "{!task.id}";
+    	var proj = "{!projectId}";
+       	document.observe('dom:loaded', function (){		
+		    	createLayout();
+		    	startMaxlengthCheck();
+		    	readPortalCSSRules();
+		    }
+        );
+       
+        /**
+        * Namespace Prefix Getter
+        */
+        var namespace = "{!namespace}";
+        
+        /**
+        * Initialize toolkit connection
+        *@void
+        */
+        function init(){
+            sforce.connection.sessionId = '{!$Api.Session_ID}';
+            sforce.connection.defaultNamespace = namespace;
+            
+        }
+    			
+    </script>
+        
+	<!-- Bubble -->
+	<div id="bubble" class="bubble">
+        <div class="top_border">
+        	&nbsp;
+        </div>
+        <div class="content">
+            <img class="arrowBubble" src="{!URLFOR($Resource.ProjectResources, 'images/bubbleNewTeam/bubble_arrow.gif')}" />               
+            <!-- Content here -->
+            <div class="innerContBubble" id="innerContBubble">
+            </div>
+        </div>
+        <div class="bottom_border">
+        	&nbsp;
+        </div>
+   	</div>
+    
+    <!-- Header -->
+    <apex:composition template="HeaderTemplate">
+        <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
+        <apex:define name="module">{!$ObjectType.ProjectTask__c.label}</apex:define>
+        <apex:define name="title">New {!$ObjectType.ProjectTask__c.label}</apex:define>
+        <apex:define name="search">
+            <c:Search module="Project" />
+        </apex:define>
+    </apex:composition>
+    
+    <!-- Sidebar -->
+    <div class="sidebar">
+		<c:ProjectsWidgetMyTasks />
+		<c:ProjectsWidgetMyMilestones />
+	</div>
+	
+	<!-- Main Content Div -->
+    <div class="main_content">
+    	<div>
+        	<div class="holder">
+        		<!--  
+        		<div style="margin-top:15px;">&laquo;
+        			<a href="javascript: history.go(-1);" style="font-weight:normal;">
+        				Back
+					</a>
+				</div>
+				 -->
+        		<div class="teamTitle"  >
+        			{!TypeOfAction} {!$ObjectType.ProjectTask__c.label}
+        		</div>
+				
+                
+                <div class="body_center" style="height: auto !important; ">
+				
+				<a id="anchorForError">
+				</a>
+                <div id="warning_to_user" class="message_to_user" style="display:none;" >
+                    <div class="f_left">
+                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/error_icon.gif')}" />
+                    </div>
+                    <div class="f_left">
+                        <strong>
+                        	We had trouble unserstanding one or more of your entries or we need more information
+                        </strong><br />
+                        <apex:outputPanel rendered="{!NOT(errorInDates)}">
+	                        <span id="messageErrorText">
+	                        	Please see the highlighted field(s)
+	                        </span>
+	                    </apex:outputPanel>
+                        <apex:outputPanel rendered="{!errorInDates}">
+	                        <span id="messageErrorText">
+	                        	The End Date must be greater than Start Date
+	                        </span>
+	                    </apex:outputPanel>
+                    </div>
+                    <div class="clear">
+                    </div>
+                </div><!-- end waring_to_user -->
+                
+                <div align="right">
+                    <table border="0" style="margin: 5px 0px 5px 0px;">
+                        <tr>
+                            <td style="width: 4px;">
+                                <span class="requiredLegend"></span>
+                            </td>
+                            <td>
+                                <span class="infoText" style="font-size: 9px; font-family: Arial, Helvetica, sans-serif;">
+                                    =&nbsp;Required Information 
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                
+               	<apex:outputPanel id="NewProjectFormContainer">
+                    <div class="Formcontentfolder">	
+                    	<!-- Dynamic Layout Output don't remove -->
+	                    <div class="DynamicLayoutResponse">
+	<apex:form ><label>Id</label><apex:inputField value="{!task.Id__c}" required="false" /><br/><br/><label>Task Name</label><apex:inputField value="{!task.Name}" required="true" /><br/><br/><label>Description</label><apex:inputField value="{!task.Description__c}" required="true" /><br/><br/><label>Project</label><apex:inputField value="{!task.Project__c}" required="false" /><br/><br/><label>Start Date</label><apex:inputField value="{!task.StartDate__c}" required="true" /><br/><br/><label>End Date</label><apex:inputField value="{!task.EndDate__c}" required="false" /><br/><br/><label>Duration</label><apex:inputField value="{!task.Duration__c}" required="true" /><br/><br/><label>Status</label><apex:inputField value="{!task.Status__c}" required="false" /><br/><br/><label>ParentTask</label><apex:inputField value="{!task.ParentTask__c}" required="false" /><br/><br/><label>Priority</label><apex:inputField value="{!task.Priority__c}" required="false" /><br/><br/><label>Percent Completed</label><apex:inputField value="{!task.PercentCompleted__c}" required="false" /><br/><br/><label>Milestone</label><apex:inputField value="{!task.Milestone__c}" required="false" /><br/><br/><label>Sprint</label><apex:inputField value="{!task.Sprint__c}" required="true" /><br/><br/><label>Rank</label><apex:inputField value="{!task.Rank__c}" required="false" /><br/><br/><div class="btnStandardForm"><apex:commandButton action="{!save}" value="Save" onclick="statusSaving(this);" rerender="NewProjectFormContainer" oncomplete="onCompleteCallBackFunction();"  /><input class="btn" onclick="onCancelEvent();" type="button" value="Cancel"/></div></apex:form></div>
+	            	</div>
+	            	<!--Divs to format the page  -->
+	          	</apex:outputPanel>
+
+			<div class="SecondDiv">
+				<!-- Attachment and Assignees form -->
+				<apex:form id="secondForm" >
+				
+					<label>Assign To</label><span class="requeried"></span>
+					<apex:selectList id="taskAssign" value="{!dateMy.member}" styleClass="validateMember childValidateAssignee" title="" multiselect="false" size="1" onchange="checkOtherAsignees(this)" style="margin-bottom: 0px;" > 
+			  	 	 	<apex:selectOptions value="{!Members}"/>
+			  	 	</apex:selectList>
+			  	 	
+				  	
+			  	 	
+			  	 	<div id="firstDedicated" style="display:none;">
+				  	 	<label>Percent Dedicated</label>
+				  	 	<apex:selectList id="taskPercentDedicated" value="{!dateMy.Percent}" styleClass="margin" title="" multiselect="false" size="1" style="margin-bottom: 0px;"> 
+				  	 	 	<apex:selectOptions value="{!PercentDedicated}"/>
+				  	 	</apex:selectList>
+				  	</div>
+				  	<br>
+					<span class="errorRed" id="assigneeError" style="display:none;"><b>Error:</b> You must select a {!$ObjectType.Project2__c.label} member</span><br/>
+					<div id="result">
+						
+					</div>
+					<label>&nbsp;</label><span class="no_requeried"></span><a href="javascript:;" class="assigned" onclick="addAssigne();">Add another Assignee</a><br/><br/>
+				
+				<apex:inputHidden id="assigneesCustomFormat" value="{!assignees}" />
+						<a  href="javascript:;" onclick="hideAdvanced()" id="advancedLinks" class="advanced">Advanced options...</a>
+						<br/><br/>  
+						<div id="advanced" style="display: none;">
+					  	 	<label>File(s)</label><span class="no_requeried"></span>
+					  	 	<div class="attach_list">
+						  	 	<apex:repeat value="{!AttachmentList}" var="at"  >	
+						  	 		<div id="attach{!at.idAttachment}" class="attach_item">
+							  	 		<a href="javascript:;" class="{!at.contentType}">{!at.nameAttachment}({!at.bodyLenght}k)</a>
+							  	 		<a href="javascript:;" onclick="removeAttachment('{!at.idAttachment}')"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}" align="absmiddle"/></a>
+									</div>
+								</apex:repeat>
+							</div>
+							
+					  	 	<div id="inputTeamFileContainer" class="inputTeamFileContainer">
+								<span class="inputFileClassShow">
+									<apex:inputFile styleclass="inputFileClass" value="{!att1.Body}" fileSize="{!att1.BodyLength}" fileName="{!att1.Name}" contentType="{!att1.ContentType}"/><a href="javascript:;" onclick="resetInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>									
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att2.Body}" fileName="{!att2.Name}" fileSize="{!att2.BodyLength}" contentType="{!att2.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>								
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att3.Body}" fileName="{!att3.Name}" fileSize="{!att3.BodyLength}" contentType="{!att3.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att4.Body}" fileName="{!att4.Name}" fileSize="{!att4.BodyLength}" contentType="{!att4.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att5.Body}" fileName="{!att5.Name}" fileSize="{!att5.BodyLength}" contentType="{!att5.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att6.Body}" fileName="{!att6.Name}" fileSize="{!att6.BodyLength}" contentType="{!att6.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att7.Body}" fileName="{!att7.Name}" fileSize="{!att7.BodyLength}" contentType="{!att7.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+								</span>
+								<span class="inputFileClassHide">
+								<apex:inputFile value="{!att8.Body}" fileName="{!att8.Name}" fileSize="{!att8.BodyLength}" contentType="{!att8.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+								</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att9.Body}" fileName="{!att9.Name}" fileSize="{!att9.BodyLength}" contentType="{!att9.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br>
+									</span>
+								<span class="inputFileClassHide">
+									<apex:inputFile value="{!att10.Body}" fileName="{!att10.Name}" fileSize="{!att10.BodyLength}" contentType="{!att10.ContentType}"/><a href="javascript:;" onclick="hideInputFile(this)"><img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/delete.png')}"/> Remove Attachment</a><br />
+								</span>
+							</div>
+							<div class="attachAnotherWrapp">
+							 	<a class="assigned" id="attachAnother" href="javascript:;" onclick="showInputFile();">Attach another file</a>
+							</div>
+							<br/>
+							
+						</div>
+						<div class="title_line_btn"></div>
+						<div id="btnContainer"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+					</div>
+					<apex:commandButton styleClass="secondFormAction" style="display:none;" action="{!saveAttachmentsAndAccess}" onclick="statusSaving()"/>
+				</apex:form>
+				</div>
+				
+
+<div class="clear"></div>
+    		</div> <!-- end holder -->
+    	</div>
+    </div><!-- End main content div -->
+	<script>
+		<apex:repeat value="{!AssignMember}" var="member" first="1" >
+	 		addAssigne('{!member.IdMember}','{!member.Percent}');
+		</apex:repeat>
+	
+		<apex:repeat value="{!errorAttachList}" var="errAttach">
+			errorAttachment('{!errAttach}');
+		</apex:repeat>
+	</script>
+</apex:page>
