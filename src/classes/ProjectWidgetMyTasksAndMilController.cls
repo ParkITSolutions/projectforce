@@ -21,12 +21,11 @@ public class ProjectWidgetMyTasksAndMilController {
     }
     
     public List<ProjectTasks> getTasksList(){
-        return tasksList;
+        return tasksList; 
     }
     public List<ProjectTasks> getMilestonesList(){
         return milestonesList;
     }
-    
    
     public Integer getOverdueAlreadyShow(){
         return overdueAlreadyShow;
@@ -58,15 +57,8 @@ public class ProjectWidgetMyTasksAndMilController {
         }
         
         //Populate myProjectsTasks
-        myProjectsTasks = [ Select 
-                        p.Priority__c, 
-                        p.Name, 
-                        p.Milestone__c, 
-                        p.Id, p.EndDate__c,
-                        p.PercentCompleted__c, 
-                        p.Duration__c
-                        From ProjectTask__c  p where p.Id in : projToMe and  p.EndDate__c != null  order by p.EndDate__c asc ];
-        
+        myProjectsTasks = [ Select p.Priority__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.PercentCompleted__c, p.Duration__c From ProjectTask__c  p where p.Id in : projToMe and  p.EndDate__c != null  order by p.EndDate__c asc ];
+        System.debug( 'lolololo: ' +  myProjectsTasks.size());
         for( ProjectTask__c pro : myProjectsTasks) {
             if(pro.PercentCompleted__c < 100 || pro.PercentCompleted__c == null){
                     ProjectTasks myTask = new ProjectTasks();
@@ -102,13 +94,14 @@ public class ProjectWidgetMyTasksAndMilController {
                     myTask.setIsToLate(pro.EndDate__c);  
                     myTask.isMilestone  = pro.Milestone__c; 
                     if ((countTask+countMilestones) < myProjectsTasks.size() ){
+                    	System.debug( 'chuchua : ' );
                         if (!myTask.isMilestone){
                             if(countTask < 5){
                                 tasksList.add(myTask);
                                 countTask ++;
                             }   
                         }else{
-                            if(countTask < 5){
+                            if(countMilestones < 5){
                                 milestonesList.add(myTask);
                                 countMilestones++;
                             }
@@ -119,7 +112,6 @@ public class ProjectWidgetMyTasksAndMilController {
         } 
             tasksListSize = tasksList.size();
             milestonesListSize = milestonesList.size();
-           
   }
     
     /**

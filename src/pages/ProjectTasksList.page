@@ -75,7 +75,7 @@
         <!-- BreadCrumb and buttons -->     
         <div align="center" class="breadCrumbAndButtons">
           <div class="breadCrumbs">
-            <a  href="/apex/ProjectDetail?id={!ProjectId}" title="{!NameProject}"><script>trunkText('{!NameProject}',24);</script> </a> > <strong>Tasks and Milestones</strong>
+            <a  href="/apex/ProjectDetail?id={!ProjectId}" title="{!NameProject}"><script>trunkText("{!NameProject}",24);</script> </a> > <strong>Tasks and Milestones</strong>
           </div>
 
              <apex:messages id="taskMessages"/>
@@ -309,7 +309,8 @@
                                         <td>
                                             <apex:outputpanel rendered="{!IF(OR(OR(editDeletePer,task.canEditAndDelete), task.isTaskOwner) ,true,false)}" layout="block">
                                                 <div>
-                                                	<a href="/apex/projectRedirect?sO=ProjectTask__c&attr=task&page=ProjectCreateNewTask&rR=NewProjectFormContainer&oC=true&eid={!ProjectId}&task={!task.id}">
+                                                	<!-- /apex/projectRedirect?sO=ProjectTask__c&attr=task&page=ProjectCreateNewTask&rR=NewProjectFormContainer&oC=true&eid={!ProjectId}&task={!task.id} -->
+                                                	<a href="/{!task.id}/e">
                                                 		Edit
                                                 	</a> 
                                                 	<apex:outputpanel rendered="{!OR(editDeletePer, task.isTaskOwner)}">

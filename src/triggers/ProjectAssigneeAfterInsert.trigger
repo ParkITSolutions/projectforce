@@ -34,6 +34,7 @@ trigger ProjectAssigneeAfterInsert on ProjectAssignee__c (after insert)
 		//Insert share objects
 		System.debug( '(***)' + assignee.size());
 		insert assignee;
+		    System.debug('\n\n//////////////////////////\n ProjectAssigneeAfterInsert: ' + assignees + '\n//////////////////////////\n\n');
 		
 		//Send e-mail notifications
 		emailServices.sendMailForTaskAssigned(assignees);

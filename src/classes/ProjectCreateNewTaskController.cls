@@ -447,55 +447,7 @@ public class ProjectCreateNewTaskController {
    	}
   
   
-    	/**
-   	* Save Asignees
-   	* Format: userId:percentage;userId:percentage
-   	*@void
-   	*old version without real update
-   	*/
-   	/*public void saveAssignees(){
-
-   		List<String> assigns = assignees.split(';');
-   		if(assigns.size() == 0)
-   			return;
-   			   		
-   		List<ProjectAssignee__c> assignsToDel = new List<ProjectAssignee__c>();
-   		List<ProjectAssignee__c> assignsToSave = new List<ProjectAssignee__c>();
-   		
-   		assignsToDel = [select Id from ProjectAssignee__c where ProjectTask__c =: theTask.Id]; 
-   		
-   		//Add first Assignee
-   		ProjectAssignee__c assign = new ProjectAssignee__c();
-   		assign.User__c = dateMy.getMember();
-   		assign.Project__c = param;
-   		assign.PercentDedicated__c = dateMy.getPercent(); 
-   		assign.ProjectTask__c = theTask.Id;   		
-   		assignsToSave.add(assign);
-   		
-   		//Add other assignees
-   		List<String> auxAssign = new List<String>(); 
-   		for(Integer it = 0; it < assigns.size(); it++){
-   			auxAssign = assigns[it].split(':');
-   			if(auxAssign.size() == 2){
-	   			assign = new ProjectAssignee__c();
-	   			assign.User__c = auxAssign[0];
-	   			assign.Project__c = param;
-	   			assign.PercentDedicated__c = Double.valueOf(auxAssign[1]); 
-	   			assign.ProjectTask__c = theTask.Id;
-	   			assignsToSave.add(assign);
-   			}
-   		}
-   		if(assignsToSave.size() > 0)
-   			insert assignsToSave;
-   			
-   	    // For order of operation purposes we have to move the 
-   	    // delete to after the insert so on an edit we have a clear picture of 
-   	    // used to be the assignee.
-   	    // Other option is to create a real update :)
-   	    if(assignsToDel.size() > 0)
-   			delete assignsToDel;
-   	}
-  */
+  
    	
    	/**
    	* Get Task for Edit

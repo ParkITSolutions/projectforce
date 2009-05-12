@@ -1471,6 +1471,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Project2__c-Project2 Layout</layout>
+        <recordType>Project2__c.Test</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Project2__c-Project2 Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ProjectAssignee__c-ProjectAssignee Layout</layout>
@@ -1710,6 +1714,11 @@
         <default>false</default>
         <recordType>Idea.InternalIdeasIdeaRecordType</recordType>
         <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <recordType>Project2__c.Test</recordType>
+        <visible>true</visible>
     </recordTypeVisibilities>
     <tabVisibilities>
         <tab>Project2__c</tab>

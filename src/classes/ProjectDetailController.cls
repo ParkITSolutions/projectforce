@@ -22,13 +22,17 @@ public with sharing class ProjectDetailController
     /**
     * Constructor
     */
-    public ProjectDetailController(){
+    public ProjectDetailController(ApexPages.StandardController ctrl){
        genPermissions();   	   
    	   getTeamDetail();
        genTeamData(); 
        isManager = userPermission.getCanManage();
        this.projectType = getTeamspace().Type__c;
     }   
+    
+    public ProjectDetailController (){
+    
+    }
     
     public Boolean getIsLastMemberAdmin(){
     	return isLastMemberAdmin;

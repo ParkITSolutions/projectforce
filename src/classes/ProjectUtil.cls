@@ -14,7 +14,7 @@ public class ProjectUtil {
     private static List<Group> partnerGroup = new List<Group>();
 	public static Boolean isTest = false;
 	public static Integer MAX_SIZE = 4194304;
-	public static Map<String,ProjectAssignee__c> BaseMap = new Map<String,ProjectAssignee__c>();
+	public static Map<String,ProjectTask__c> BaseMap = new Map<String,ProjectTask__c>();
     
 	/**
 	*@param boolean

@@ -34,8 +34,8 @@
                                 <div style="{!IF(task.Priority == 'Low', '', 'display:none')}; width: 13px; margin-top: 3px;" class="center f_left" >
                                     <img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/lowPriority.gif')}"/>
                                 </div>
-                                <div style="{!IF(task.Priority == 'Medium', '', 'display:none')}; width: 13px; margin-top: 3px;" class="center f_left" >
-                                	<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/mediumPriority.gif')}"/>
+                                <div style="{!IF(task.Priority=='Medium', '', 'display:none')}; width: 13px; margin-top: 3px;" class="center f_left" >
+                                	<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/normalPriority.gif')}"/>
                                 </div>
                                 <div class="f_left {!task.isToLate}">
                                     <a href="/apex/projecttaskdetail?id={!task.TaskId}">{!task.TaskName}</a><br/>

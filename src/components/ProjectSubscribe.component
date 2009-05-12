@@ -1,12 +1,7 @@
 <apex:component allowDML="true" controller="ProjectSubscribeController">
 
 	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/projectSubscribe.css')}" />
-	<style>
-		a.sus {
-			background:url('{!URLFOR($Resource.ProjectResources, 'images/layout/icons/user_rss.gif')}') no-repeat left center;
-			padding: 4px 0px 4px 22px;
-		}
-	</style>
+ 
 	
     <div class="teamWidget mySmallWidget" >
         <!-- Widget Title -->       

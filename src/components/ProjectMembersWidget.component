@@ -197,7 +197,7 @@
 				<div class="contentHolder">
 					<div class="linkAction">
 						<apex:outputpanel rendered="{!userPermissions.canManage}">
-							<a onclick="createOverlay('','inviteTeam','260','selectFixIE6();startFunction();relocateOverlay()');" href="javascript:;">New</a> |
+							<a onclick="createOverlay('','inviteTeam','280','selectFixIE6();startFunction();relocateOverlay()');" href="javascript:;">New</a> |
 						</apex:outputpanel>
 						<a href="/apex/ProjectMembersList?id={!team}#" class="topRightLinks">See More&#187;</a>
 					</div>
@@ -247,7 +247,7 @@
 										url="/servlet/servlet.FileDownload?file={!tm.image}" /> </a>
 								</apex:outputPanel>
 								<apex:outputPanel layout="block" styleClass="membersDescription" style="float:left;width:120px;">
-									<a href="PeopleProfileDisplay?id={!tm.Id}" style="text-decoration: none;"> 
+									<a href="/{!tm.Id}" style="text-decoration: none;"> 
 										<apex:outputText value="{!tm.Username}"></apex:outputText> 
 									</a>
 								</apex:outputPanel>
@@ -270,7 +270,7 @@
 		function addMemberCallBackFunction(){
 			setTimeout('modal.close(); hideSwirly(\'swirly_overlay\')', 5000);
 
-			if( window.location.href.include('MemberList')){
+			if( window.location.href.include('MembersList')){
 				$('paginationOverlay').show(); 
 				setDims('holder','paginationOverlay');
 			}
