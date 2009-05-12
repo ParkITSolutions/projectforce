@@ -31,3 +31,6 @@ To delete a task from this page follow these steps:
 3. Click on Continue and Delete button.
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttDeleteTaskChart.png" align="left" />
+
+The task is deleted and is not displayed in the page.
+
