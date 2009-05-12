@@ -1,8 +1,8 @@
-=There are three possible ways to edit a task: =
+=There are three possible ways to edit a task or mielestone: =
 
 ==1.From the task list page==
 
-To edit a task from this page follow these steps:
+To edit a task or milestone from this page follow these steps:
 
 1. Make double click on the Assegnee column.
 
@@ -17,7 +17,7 @@ To edit a task from this page follow these steps:
 
 ==2.From the task chart page with the Edit button==
 
-To edit a task from this page follow these steps:
+To edit a task or milestone from this page follow these steps:
 
 1. Select the task you want to edit.
 
