@@ -1,0 +1,7 @@
+==In Gantt you can make a task parent of another task==
+
+
+
+
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttTaskList.png" align="left" />
