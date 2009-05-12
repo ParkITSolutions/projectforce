@@ -10,7 +10,7 @@ When you select a task and click on the right identation arrow, the selected tas
 
 When you select a task which is parent of another task, and click on the left identation arrow, the selected task is not more the parent of the task below.
 
-== There are four views:==
+== There are four views, this are in the top right of the page:==
 
 The first view is the Day, with this view you can see all the task for the selected day. By default shows the todays day.
 
