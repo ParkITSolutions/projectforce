@@ -1,0 +1,29 @@
+=There are two posible ways to delete a task: =
+
+==1.From the task list page==
+
+To delete a task from this page follow these steps:
+
+1. Select the task you want to remove.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskView.png" align="left" />
+
+2. Click on Delete button, or press the Delete button in the keyboard. A Delete overlay shows up.
+
+3. Click on Continue and Delete button.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttDeleteTaskList.png" align="left" />
+
+==2.From the task chart page with the Edit button==
+
+To delete a task from this page follow these steps:
+
+1. Select the task you want to remove.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskView.png" align="left" />
+
+2. Click on Delete button. A Delete overlay shows up.
+
+3. Click on Continue and Delete button, or press the Delete button in the keyboard.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttDeleteTaskChart.png" align="left" />
