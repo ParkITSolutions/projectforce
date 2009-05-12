@@ -19,3 +19,5 @@
 The selected task in the step 4, is now the parent of the task selected in the step 1. The parent task change the color to green and is resized to fit the child task.
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttParentTaskOverview.png" align="left" />
+
+===2. Using the right dentation button:===
