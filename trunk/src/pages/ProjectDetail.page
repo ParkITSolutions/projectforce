@@ -1,4 +1,4 @@
-<apex:page sidebar="false" cache="true" tabStyle="Project2__c" controller="ProjectDetailController">
+<apex:page sidebar="false" cache="true" standardController="Project2__c" extensions="ProjectDetailController" tabStyle="Project2__c">
             
     <!-- Ajax Toolkit -->
     <script type="text/javascript" src="/soap/ajax/11.1/connection.js" ></script>
@@ -38,7 +38,6 @@
                 detailTable.style.width = '100%';
                 $$('.sfdcDetailFormated')[0].insert(detailTable);
                 resizeSidebar();
-                
             }
         );
      </script>
@@ -72,7 +71,8 @@
                         <a class="blackbutton" href="Javascript:;" onclick="deleteProjectOverlay();">
                             <span> Delete </span>
                         </a>
-                        <a class="blackbutton" href="/apex/projectRedirect?sO=Project2__c&attr=project&page=ProjectCreateNew&rR=NewProjectFormContainer&oC=true&eid={!teamIdParam}">
+                        <!-- /apex/projectRedirect?sO=Project2__c&attr=project&page=ProjectCreateNew&rR=NewProjectFormContainer&oC=true&eid={!teamIdParam} -->
+                        <a class="blackbutton" href="/{!teamIdParam}/e">
                             <span> Edit </span>
                         </a>
                     </apex:outputPanel>         

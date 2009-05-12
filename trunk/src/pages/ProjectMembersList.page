@@ -73,7 +73,6 @@
 				padding-right: 6%;
 			}
 		}
-
 	</style>
 	
 	<apex:form >
@@ -329,7 +328,7 @@
 			</apex:form>
 			
 			<hr class="filterHR" />
-			
+			<center>
 			<apex:outputpanel styleClass="pagination" layout="block"
 				rendered="{!IF(AND(prevPageShow,nextPageShow),false,true)}">
 				<div class="pages">
@@ -355,7 +354,9 @@
 						</ul>
 					</apex:form>
 				</div>
-			</apex:outputpanel> <!-- pagination -->
+			</apex:outputpanel> 
+			</center>
+			<!-- pagination -->
 			
 			<apex:outputpanel rendered="{!IF(AND(prevPageShow,nextPageShow),false,true)}">
 				<hr class="filterHR" />

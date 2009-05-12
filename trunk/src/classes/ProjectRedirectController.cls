@@ -31,11 +31,11 @@ public class ProjectRedirectController {
 		String userId = UserInfo.getUserId();
 
 		//Is admin User
-		//admin = [Select id, Profile.PermissionsModifyAllData, ProfileId, Name From User where id =: userId limit 1];    
+		admin = [Select id, Profile.PermissionsModifyAllData, ProfileId, Name From User where id =: userId limit 1];    
     	
     	//Non admin users can't modify layout
     	// ### Redirect always ###
-    	//if(!admin.Profile.PermissionsModifyAllData){
+    	if(!admin.Profile.PermissionsModifyAllData){
     		
     		//ApexPage Name
     		String url = pageName;
@@ -52,7 +52,7 @@ public class ProjectRedirectController {
     		//Forward to page
     		pr = new PageReference('/apex/' + url);
     		pr.setRedirect(true);
-    	//}
+    	}
     	
     	return pr;
     }
