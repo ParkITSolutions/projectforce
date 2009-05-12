@@ -8,7 +8,9 @@ To delete a task from this page follow these steps:
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttTaskList.png" align="left" />
 
-2. Click on Delete button, or press the Delete key in the keyboard. A Delete overlay shows up.
+2. Click on Delete button, or press the Delete key in the keyboard. A Delete Task overlay shows up.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttDeleteTaskListButton.png" align="left" />
 
 3. Click on Continue and Delete button.
 
@@ -22,7 +24,9 @@ To delete a task from this page follow these steps:
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskView.png" align="left" />
 
-2. Click on Delete button, or press the Delete key in the keyboard. A Delete overlay shows up.
+2. Click on Delete button, or press the Delete key in the keyboard. A Delete Task overlay shows up.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttDeleteTaskChartButton.png" align="left" />
 
 3. Click on Continue and Delete button.
 
