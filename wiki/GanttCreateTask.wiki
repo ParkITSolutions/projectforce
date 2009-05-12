@@ -55,4 +55,4 @@ To create a task from this page follow these steps:
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskBelow.png"/>
 
-4. Repeat the steps from 4 to 7 of the previous case.
+3. Repeat the steps from 4 to 7 of the previous case.
