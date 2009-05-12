@@ -2,7 +2,7 @@
 
 ===1. Editing the task:===
 
-1. Select the task you want to do the child.
+1. Select the task you want to be the child.
 
 2. Click on edit button. A Edit Task overlay shows up.
 
