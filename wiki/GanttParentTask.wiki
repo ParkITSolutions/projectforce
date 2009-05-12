@@ -1,5 +1,7 @@
 ==In Gantt you can make a task parent of another task==
 
+===To create a task from this page follow these steps:===
+
 
 
 
