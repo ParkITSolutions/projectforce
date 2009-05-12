@@ -15,3 +15,7 @@
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttParentTaskOverlay.png" align="left" />
 
 5. Click on Save button.
+
+The selected task in the step 4, is now the parent of the task selected in the step 1. The parent task change the color to light green,and change the size to comprehend the child task.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttParentTaskOverview.png" align="left" />
