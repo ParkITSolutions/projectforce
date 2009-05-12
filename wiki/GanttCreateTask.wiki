@@ -8,12 +8,12 @@ To create a task from this page follow these steps:
 
 2. Enter the name of the task.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskName.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskName.png"/>
 
 
 3.Press enter. The task is created with default values. In the Etr(hrs) and %Complete columns the zero value is by default, in the  Start Date and Due Date todays date is by default, and in the Assegnee column the logged user is by default.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskNameEnter.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskNameEnter.png"/>
 
 ==2.From the task chart page with the insert task above option==
 
@@ -23,27 +23,27 @@ To create a task from this page follow these steps:
 
 2. Click on New button and select the Insert Task Above option.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskAbove.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskAbove.png"/>
 
 3. A Create New Task overlay shows up.
 
 4. Enter all the data for the task.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskOverlay.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskOverlay.png"/>
 
 5. Click on Add Assegnee link. 
 
 6. Click on Add Another Assegnee and choose the assegnee for the task.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskOverlayAssegnee.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskOverlayAssegnee.png"/>
 
 7. Click on Save button. The task is added with all the information.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskView.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskView.png"/>
 
 If instead of creating a task, you want to create a milestone, click the Is Milestone? check box. Automatically the due date and the estimate field are disabled.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateMilestone.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateMilestone.png"/>
 
 ==3.From the task chart page with the insert task below option==
 
@@ -53,6 +53,6 @@ To create a task from this page follow these steps:
 
 2. Click on New button and select the Insert Task Below option.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskBelow.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskBelow.png"/>
 
 4. Repeat the steps from 4 to 7 of the previous case.
