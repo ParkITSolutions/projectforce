@@ -29,3 +29,5 @@ The selected task in the step 4, is now the parent of the task selected in the s
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttParentTaskRightIdentationButton.png" align="left" />
 
 The selected task in the step 1, is now child of the task above. The parent task change the color to green and is resized to fit the child task.
+
+The right identations works only for one task, if you want to make one task parent of many tasks, you have to do the step one for all the tasks you want to be childs. 
