@@ -6,15 +6,15 @@ To delete a task from this page follow these steps:
 
 1. Select the task you want to remove.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttTaskList.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttTaskList.png"/>
 
 2. Click on Delete button, or press the Delete key in the keyboard. A Delete Task overlay shows up.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttDeleteTaskListButton.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttDeleteTaskListButton.png"/>
 
 3. Click on Continue and Delete button.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttDeleteTaskList.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttDeleteTaskList.png"/>
 
 ==2.From the task chart page with the Delete button==
 
@@ -22,15 +22,14 @@ To delete a task from this page follow these steps:
 
 1. Select the task you want to remove.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskView.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskView.png"/>
 
 2. Click on Delete button, or press the Delete key in the keyboard. A Delete Task overlay shows up.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttDeleteTaskChartButton.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttDeleteTaskChartButton.png"/>
 
 3. Click on Continue and Delete button.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttDeleteTaskChart.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttDeleteTaskChart.png"/>
 
 The task is deleted and is not displayed in the page.
-
