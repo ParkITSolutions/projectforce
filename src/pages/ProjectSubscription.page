@@ -51,7 +51,9 @@
 		
 		<!-- Project Quick Links -->
 		<c:ProjectDetailQuickLinks />
-		
+
+        <div class="clear"></div>
+		<br />
 		<!-- Project members -->
 		<c:ProjectMembersWidget projectId="{!IdProject}" />		
 	

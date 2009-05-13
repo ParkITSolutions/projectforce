@@ -16,16 +16,6 @@
         <name>PercentDedicated__c</name>
     </fields>
     <fields>
-        <label><!-- ProjectIssue --></label>
-        <name>ProjectIssue__c</name>
-        <relationshipLabel><!-- Project Assignee --></relationshipLabel>
-    </fields>
-    <fields>
-        <label><!-- ProjectRisk --></label>
-        <name>ProjectRisk__c</name>
-        <relationshipLabel><!-- Project Assignee --></relationshipLabel>
-    </fields>
-    <fields>
         <label><!-- ProjectTask --></label>
         <name>ProjectTask__c</name>
         <relationshipLabel><!-- Project Assignee --></relationshipLabel>

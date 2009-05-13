@@ -10,7 +10,7 @@
     </fields>
     <fields>
         <fullName>Image__c</fullName>
-        <formula>IF(Picture__c != null, IMAGE(&quot;/servlet/servlet.FileDownload?file=&quot; &amp; Picture__c, &apos;Project Avatar&apos;, 70, 70) , &quot;[No Image]&quot;) &amp; &apos; &apos; &amp; HYPERLINK(&apos;Javascript:onclick()&apos;, &apos;Change Image&apos;)</formula>
+        <formula>IF(Picture__c != null, IMAGE(&quot;/servlet/servlet.FileDownload?file=&quot; &amp; Picture__c, &apos;Project Avatar&apos;, 70, 70) , &quot;[No Image]&quot;)  &amp; HYPERLINK(&apos;javascript: addAvatar()&apos;, &apos;Change Image&apos;, &apos;&apos;)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Image</label>
         <type>Text</type>

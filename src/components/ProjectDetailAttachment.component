@@ -1,6 +1,7 @@
 <apex:component controller="ProjectDetailAttachmentController" allowDML="true">
 	<!-- Set Attribure for project id. -->
 	<apex:attribute name="project" description="Project Id" type="String" required="true" assignTo="{!project}" />	
+	
 	<style>
 		div.wideBody div.swirlyAttachment{
 			height:100% !important;
@@ -8,18 +9,13 @@
 	</style>	
 	
 	<script>
-		document.observe('dom:loaded', 
-			//Attach event to open overlay
-			function (){
-				$$('.newAttachmentEvent')[0].observe('click', function(){
-						createOverlay('', 'newAttachmentOverlay', 170);
-						observeIframeUpload();
-						//Hack for IE6
-						$('uploadIframe').src = $('uploadIframe').src;
-					}
-				);
-			}
-		)
+		function openAttachmentOverlay(){
+			createOverlay('', 'newAttachmentOverlay', 170);
+			newAttachmentToProject();
+			observeIframeUpload();
+			//Hack for IE6
+			$('uploadIframe').src = $('uploadIframe').src;
+		}
 	</script>
 	
 	<!-- Generic Refresh Attachment Method -->
@@ -34,7 +30,7 @@
 			<!-- Widget Links Holder -->
 			<div class="linkAction">
 				<apex:outputpanel rendered="{!userPermissions.canCreate}">
-					<a href="Javascript:;" class="newAttachmentEvent">New Attachment</a>
+					<a href="Javascript:;" onclick="openAttachmentOverlay();">New Attachment</a>
 				</apex:outputPanel>
 			</div>
 			<!-- Widget Container --> 		
@@ -73,7 +69,7 @@
 										<apex:outputField value="{!attachment.Attachment.LastModifiedDate}"/>
 									</td>
 									<td> 
-										<a href="/{!attachment.Attachment.LastModifiedBy}"  class="name_margin">{!attachment.Attachment.LastModifiedBy.Name}</a>	
+										<a href="/{!attachment.Attachment.LastModifiedBy}" class="name_margin">{!attachment.Attachment.LastModifiedBy.Name}</a>	
 									</td>
 								</tr>
 							</apex:repeat>

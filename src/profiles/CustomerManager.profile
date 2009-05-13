@@ -111,6 +111,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectOverlayNewAssigneeController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectOverlayNewAttachmentController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1282,16 +1286,6 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>false</editable>
-        <field>ProjectAssignee__c.ProjectIssue__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectAssignee__c.ProjectRisk__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
         <field>ProjectAssignee__c.ProjectTask__c</field>
         <hidden>true</hidden>
     </fieldLevelSecurities>
@@ -1303,36 +1297,6 @@
     <fieldLevelSecurities>
         <editable>false</editable>
         <field>ProjectAssignee__c.User__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectIssue__c.DeadLine__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectIssue__c.PercentComplete__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectIssue__c.Priority__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectIssue__c.ProjectTask__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectIssue__c.Project__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectIssue__c.StartDate__c</field>
         <hidden>true</hidden>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
@@ -1363,71 +1327,6 @@
     <fieldLevelSecurities>
         <editable>false</editable>
         <field>ProjectProfile__c.ManageProjectTasks__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectRisk__c.Category__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectRisk__c.DateClosed__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectRisk__c.DateDue__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectRisk__c.DateOpened__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectRisk__c.DaysImpact__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectRisk__c.Description__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectRisk__c.ImpactDescription__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectRisk__c.MitigationPlan__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectRisk__c.Priority__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectRisk__c.Probability__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectRisk__c.ProjectTask__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectRisk__c.Project__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectRisk__c.Status__c</field>
         <hidden>true</hidden>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
@@ -1696,16 +1595,10 @@
         <layout>ProjectAssignee__c-ProjectAssignee Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>ProjectIssue__c-ProjectIssue Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>ProjectMember__c-ProjectMember Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ProjectProfile__c-ProjectProfile Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ProjectRisk__c-ProjectRisk Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ProjectSubscription__c-ProjectSubscription Layout</layout>
@@ -1773,16 +1666,10 @@
         <object>ProjectAssignee__c</object>
     </objectPermissions>
     <objectPermissions>
-        <object>ProjectIssue__c</object>
-    </objectPermissions>
-    <objectPermissions>
         <object>ProjectMember__c</object>
     </objectPermissions>
     <objectPermissions>
         <object>ProjectProfile__c</object>
-    </objectPermissions>
-    <objectPermissions>
-        <object>ProjectRisk__c</object>
     </objectPermissions>
     <objectPermissions>
         <object>ProjectSubscription__c</object>

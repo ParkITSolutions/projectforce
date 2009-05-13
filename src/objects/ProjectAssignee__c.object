@@ -18,22 +18,6 @@
         <type>Percent</type>
     </fields>
     <fields>
-        <fullName>ProjectIssue__c</fullName>
-        <description>ProjectIssue</description>
-        <label>ProjectIssue</label>
-        <referenceTo>ProjectIssue__c</referenceTo>
-        <relationshipName>ProjectsAssignees</relationshipName>
-        <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>ProjectRisk__c</fullName>
-        <description>ProjectRisk</description>
-        <label>ProjectRisk</label>
-        <referenceTo>ProjectRisk__c</referenceTo>
-        <relationshipName>ProjectsAssignees</relationshipName>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>ProjectTask__c</fullName>
         <description>ProjectTask</description>
         <label>ProjectTask</label>

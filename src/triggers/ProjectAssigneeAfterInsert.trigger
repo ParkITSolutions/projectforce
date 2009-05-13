@@ -19,7 +19,6 @@ trigger ProjectAssigneeAfterInsert on ProjectAssignee__c (after insert)
 			teamMap.put(g.Name, g.Id);
 		}
 		
-		
 		List<ProjectAssignee__Share> assignee = new List<ProjectAssignee__Share>();
 		
 		for(ProjectAssignee__c m : Trigger.new) {
@@ -30,17 +29,14 @@ trigger ProjectAssigneeAfterInsert on ProjectAssignee__c (after insert)
 		    p.RowCause = 'Manual';
 		    assignee.add(p);
 		}
-		
+
 		//Insert share objects
-		System.debug( '(***)' + assignee.size());
 		insert assignee;
-		    System.debug('\n\n//////////////////////////\n ProjectAssigneeAfterInsert: ' + assignees + '\n//////////////////////////\n\n');
-		
+	
 		//Send e-mail notifications
 		emailServices.sendMailForTaskAssigned(assignees);
 		
 	} catch(Exception e) {
-
 	}
 
 }
