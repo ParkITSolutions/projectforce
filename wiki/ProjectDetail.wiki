@@ -1,4 +1,9 @@
 From this page you can edit, delete, unjoin and add a image to the project.
+
 Also you can add a tasks or milestones and add attachments.
 
 <img  src="http://projectforce.googlecode.com/svn/wiki/images/ProjectDetailReal.png"/>
+
+To add a task click on New link, in the All Tasks section, or click on New Taks link on the Project Quick links widget.
+
+<img  src="http://projectforce.googlecode.com/svn/wiki/images/ProjectOverviewCreateTask.png"/>
