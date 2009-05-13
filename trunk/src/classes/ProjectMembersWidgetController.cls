@@ -1,10 +1,10 @@
 /**
 *@author Ignacio Toledo @ 3-20-2009
 */
-public with sharing class ProjectMembersWidgetController {
+public with sharing class ProjectMembersWidgetController { 
 	
 	// Get Team Id Attribute
-	String team;
+	String team = '';
 	public Boolean isAdministrator;
 	public Boolean emailNotifications = false;
 	public Boolean isManager = false;
@@ -216,7 +216,7 @@ public with sharing class ProjectMembersWidgetController {
 	*/
 	public String getTeamName () {
 		if(teamName == null)
-			teamName = [select Name from Project2__c where id =: idTeam].Name;
+			teamName = ( team == '' ) ? [select Name from Project2__c where id =: idTeam].Name : [select Name from Project2__c where id =: team].Name;
 		return teamName;	
 	}
 	
@@ -332,7 +332,7 @@ public with sharing class ProjectMembersWidgetController {
 				ProjectMember__c newMember = new ProjectMember__c();
 				newMember.User__c = user.id;
 				newMember.Name = user.Name;
-				newMember.Project__c = idTeam;
+				newMember.Project__c = ( team == '' ) ? idTeam : team;
 				
 				Id idProfile = null;
 				if( isAdministrator )

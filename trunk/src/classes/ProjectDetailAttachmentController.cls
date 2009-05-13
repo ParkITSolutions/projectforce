@@ -79,10 +79,14 @@ public class ProjectDetailAttachmentController {
 	public void loadAttachmentList(List<Attachment> attachs){
 		List<AttachmentInfo> attachList = new List<AttachmentInfo>();
 		String avatarId;
+		
+		//Get current Avatar
 		avatarId = [ select Picture__c from Project2__c where Id =: project limit 1 ].Picture__c ;
+		
 		for (Attachment item: attachs){	
 			
 			if( item.id != avatarId ){
+	            
 	            AttachmentInfo info = new AttachmentInfo();
 	            
 	            info.setId(item.Id);
@@ -112,12 +116,14 @@ public class ProjectDetailAttachmentController {
 	           			'mp3' => 'audio.gif', 
 	           			'doc' => 'doc.gif'
 	       			};
+	           		
 	           		if(typesExt.containsKey(extension)) {
 	           			image = typesExt.get(extension);
 	           		}else {
 	           			image = 'generic.gif';
 	           		}
-	            }else {
+	            
+	            }else{
 	           		
 	           		// Using mime type
 	           		Map<String, String> typesMime = new Map<String, String>{
@@ -136,18 +142,22 @@ public class ProjectDetailAttachmentController {
 	           			'video/mpeg' => 'video.gif', 
 	           			'video/avi' => 'video.gif'
 	       			};	
+	           		
 	           		if(typesMime.containsKey(ContentType)) {
 	           			image = typesMime.get(ContentType);
 	           		}else {
 	           			image = 'generic.gif';
 	           		}
+	            
 	            }
 	            
 	            info.setAttachImage(image);
 	            attachList.add(info);
 			}
         }
+		
 		attachments = attachList;
+	
 	}
 	
 

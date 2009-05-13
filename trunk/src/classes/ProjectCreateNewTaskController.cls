@@ -490,6 +490,8 @@ public class ProjectCreateNewTaskController {
    			Date endDate = theTask.EndDate__c;
    			
    			this.errorInDates = ( startDate  > endDate ) ? true : false;
+   			 System.debug('\n\n//////////////////////////\n this.errorInDates: ' + this.errorInDates + '\n//////////////////////////\n\n');
+   			
    		}
    		
 		for(ProjectAssignee__c t: theTask.ProjectsAssignees__r){  

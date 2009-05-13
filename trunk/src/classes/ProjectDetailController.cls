@@ -25,7 +25,7 @@ public with sharing class ProjectDetailController
     public ProjectDetailController(ApexPages.StandardController ctrl){
        genPermissions();   	   
    	   getTeamDetail();
-       genTeamData(); 
+       genTeamData();
        isManager = userPermission.getCanManage();
        this.projectType = getTeamspace().Type__c;
     }   

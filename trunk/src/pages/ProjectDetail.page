@@ -29,17 +29,56 @@
     <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamDetailMarkupTop.css')}" />
 
     <script>
+		/**
+		* Move detail table to custom container
+		*/
+		function projectDetail(){
+	        $$('.centerCol')[0].style.marginRigth = '0px';
+	        var detailTable = $$('.detailList')[0];
+	        detailTable.style.width = '100%';
+	        $$('.sfdcDetailFormated')[0].insert(detailTable);
+			
+			var newAvatar = detailTable.getElementsByTagName('img')[0].nextSibling;
+			newAvatar.style.marginLeft = '7px';
+			newAvatar.removeAttribute('target');
+			newAvatar.onclick = function(){openAvatarUploader()}
+	        
+	        resizeSidebar();
+		}        
+        
         /**
         * On DOM ready functions
         */
-        document.observe('dom:loaded', function(){
-                $$('.centerCol')[0].style.marginRigth = '0px';
-                var detailTable = $$('.detailList')[0];
-                detailTable.style.width = '100%';
-                $$('.sfdcDetailFormated')[0].insert(detailTable);
-                resizeSidebar();
-            }
-        );
+        document.observe('dom:loaded', function(){projectDetail()});
+        
+        /**
+        * Open Uploader for Avatar
+        */
+        function openAvatarUploader(){
+        	createOverlay('', 'newAttachmentOverlay', 170);
+        	$('uploadIframe').src = $('uploadIframe').src + '&asAvatar=true';
+        	observeIframeUpload();
+        	newAttachmentToAvatar();
+        }
+		
+		/**
+		* Observe avatar uploader overlay  and rerender project detail
+		*/
+		function newAttachmentToAvatar(){
+			if(uploadEnd){
+				
+				//On success, close overlay and refrsh list
+				uploadClose = true;
+				modal.close();
+				reloadMainContent();
+								
+				//Reset upload status
+				uploadEnd = false;
+			
+			} else if (!uploadClose){
+				setTimeout('newAttachmentToAvatar();', 1000);
+			}
+		}			        
      </script>
     
 	<!-- Delete Project Overlay -->   
@@ -72,7 +111,7 @@
                             <span> Delete </span>
                         </a>
                         <!-- /apex/projectRedirect?sO=Project2__c&attr=project&page=ProjectCreateNew&rR=NewProjectFormContainer&oC=true&eid={!teamIdParam} -->
-                        <a class="blackbutton" href="/{!teamIdParam}/e">
+                        <a class="blackbutton" href="/{!teamIdParam}/e?retURL=/{!teamIdParam}">
                             <span> Edit </span>
                         </a>
                     </apex:outputPanel>         
@@ -134,26 +173,27 @@
     <div class="main_content">
         <div class="centerCol">
             <div class="holder">
-                <!-- sfdc detail -->
-                <div style="display:none;" class="sfdcDetail">
-                    <apex:detail subject="{!teamIdParam}" relatedList="false" title="false" />
-                </div>
-                <div class="sfdcDetailFormated"></div>
-                
                 <apex:form id="mainContentForm">
-                    <apex:actionFunction name="reloadMainContent" rerender="mainContentForm"/>
-                    
-                    <!-- Project Tasks -->
-                    <c:ProjectWidgetTaskMain team="{!teamIdParam}"/>             
-    
-                    <!-- Project Milestones -->
-                    <c:ProjectDetailMilestones team="{!teamIdParam}" /> 
-    
-                    <!-- Project Attachments (Overlay and Widget) -->
-                    <c:ProjectOverlayNewAttachment parentId="{!teamIdParam}" />
-                    <c:ProjectDetailAttachment project="{!teamIdParam}"/> 
-                
-                </apex:form>
+	                
+	                <!-- sfdc detail -->
+	                <div style="display:none;" class="sfdcDetail">
+	                    <apex:detail subject="{!teamIdParam}" relatedList="false" title="false" />
+	                </div>
+	                <div class="sfdcDetailFormated"></div>
+	                
+	                <apex:actionFunction name="reloadMainContent" rerender="mainContentForm" oncomplete="projectDetail()"/>
+	                
+	                <!-- Project Tasks -->
+	                <c:ProjectWidgetTaskMain team="{!teamIdParam}"/>             
+	
+	                <!-- Project Milestones -->
+	                <c:ProjectDetailMilestones team="{!teamIdParam}" /> 
+	
+	                <!-- Project Attachments (Overlay and Widget) -->
+	                <c:ProjectOverlayNewAttachment parentId="{!teamIdParam}" />
+	                <c:ProjectDetailAttachment project="{!teamIdParam}"/>
+	                
+	         	</apex:form> 
             </div>
         </div>
     </div>

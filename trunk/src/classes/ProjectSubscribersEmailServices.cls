@@ -70,15 +70,18 @@ public class ProjectSubscribersEmailServices {
     {
         String emailMsj = '';
         String emailSub = ''; 
-
- System.debug('\n\n//////////////////////////\n lstPAId: ' + lstPAId + '\n//////////////////////////\n\n');
-
         List<String> lstUserId = new  List<String>();   
 
         List<ProjectAssignee__c> lstPA = new  List<ProjectAssignee__c>();    
         lstPA = [ SELECT Id, Project__c, Project__r.Name, User__r.Name, User__c, 
         ProjectTask__c, ProjectTask__r.Name, ProjectTask__r.Description__c, ProjectTask__r.EndDate__c, ProjectTask__r.StartDate__c, ProjectTask__r.Priority__c FROM ProjectAssignee__c WHERE Id in : lstPAId ];
      
+        string pId='';
+        List<ProjectTask__c> ptL = [SELECT Project__c from ProjectTask__c where id=:lstPA[0].ProjectTask__c];
+       	if (ptL.size() > 0) {
+       		pId=ptL[0].Project__c;
+       	}
+
         for(ProjectAssignee__c proj : lstPA){
 	        //Sub:{Task Name} has been assigned to you
 	        //Body: {Task Details such as name and description and start and end date}      
@@ -86,21 +89,13 @@ public class ProjectSubscribersEmailServices {
 	        emailSub = proj.ProjectTask__r.Name + ' has been assigned to you';
 	
 	        lstUserId.add(proj.user__c);
- System.debug('\n\n//////////////////////////\n proj: ' + proj + '\n//////////////////////////\n\n');
 
         }
-                      	System.debug('\n\n//////////////////////////\n  lstPAId: ' +  lstPAId + '\n//////////////////////////\n\n');
-        System.debug('\n\n//////////////////////////\n  pas : ' + lstPA + '\n//////////////////////////\n\n');
-        System.debug('\n\n//////////////////////////\n  pas[0] : ' + lstPA[0] + '\n//////////////////////////\n\n');
            
         if (!isTest){
           	 subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, ProjectTaskChanged__c, ProjectTaskDeleted__c FROM ProjectSubscription__c WHERE  Project__c =: lstPA[0].Project__c and ProjectTaskAssignedToMe__c = true and User__c in : lstUserId ];
-         System.debug('\n\n//////////////////////////\n subscriptions: ' + subscriptions + '\n//////////////////////////\n\n');
-        
          }
     	if( subscriptions.size() > 0){	
-    		 System.debug('\n\n//////////////////////////\n subscriptions: ' + subscriptions + '\n//////////////////////////\n\n');
-    		
     	        genAddress( subscriptions, emailMsj, emailSub );
 		}  
 	  } 
@@ -121,7 +116,7 @@ public class ProjectSubscribersEmailServices {
         
         List<String> SubAssignees = new List<String>();
 
-              	System.debug('\n\n//////////////////////////\n  lstAssId: ' +  lstPTId + '\n//////////////////////////\n\n');
+        //System.debug('\n\n//////////////////////////\n  lstAssId: ' +  lstPTId + '\n//////////////////////////\n\n');
         System.debug('\n\n//////////////////////////\n  pas : ' + lstPT + '\n//////////////////////////\n\n');
         System.debug('\n\n//////////////////////////\n  pas[0] : ' + lstPT[0] + '\n//////////////////////////\n\n');
            
@@ -142,10 +137,6 @@ public class ProjectSubscribersEmailServices {
 	    	     genAddress( subscriptions, emailMsj, emailSub );
 			}        
         }
-     
- 
-
-
     }
 
 
@@ -158,8 +149,7 @@ public class ProjectSubscribersEmailServices {
     
         Double OldPercent=BaseMap.get(lstPTId[0]).PercentCompleted__c;
         String OldStatus=BaseMap.get(lstPTId[0]).Status__c;
-    
-    
+     
         String emailMsj = '';
         String emailSub = '';
 
@@ -169,20 +159,9 @@ public class ProjectSubscribersEmailServices {
         lstPT = [ SELECT Id, Project__c, Project__r.Name, Name, Description__c, EndDate__c, StartDate__c, Priority__c,PercentCompleted__c,Status__c FROM ProjectTask__c WHERE Id in : lstPTId ];
         
         List<String> SubAssignees = new List<String>();
-System.debug('\n\n//////////////////////////\n:oldPercent ' + oldPercent + '\n//////////////////////////\n\n');
- System.debug('\n\n//////////////////////////\n :lstPT[0].PercentCompleted__c ' + lstPT[0].PercentCompleted__c + '\n//////////////////////////\n\n');
 
           
         if ((lstPT.size()>0)&&(oldPercent!=lstPT[0].PercentCompleted__c)){
- System.debug('\n\n//////////////////////////\n ENTRA?: ' +  + '\n//////////////////////////\n\n');
-
-        	 if(oldStatus!=lstPT[0].Status__c){
-        	      //The status has changed
-        	      //In Gannt Status doesn't exists
-        	}
-        	
-      
-        	
             for (ProjectAssignee__c a :[select id, user__c from ProjectAssignee__c where ProjectTask__c =: lstPT[0].id]){
         		SubAssignees.add(a.user__c);
             }
@@ -232,30 +211,25 @@ System.debug('\n\n//////////////////////////\n:oldPercent ' + oldPercent + '\n//
 		
 		pAs = [ SELECT Id,User__c,ProjectTask__r.Project__c, ProjectTask__c, Project__c, Project__r.Name, ProjectTask__r.Name, ProjectTask__r.Description__c, 
 		ProjectTask__r.EndDate__c, ProjectTask__r.StartDate__c, ProjectTask__r.Priority__c FROM ProjectAssignee__c WHERE Id in: lstAssId ];
-       	System.debug('\n\n//////////////////////////\n  lstAssId: ' +  lstAssId + '\n//////////////////////////\n\n');
-        System.debug('\n\n//////////////////////////\n  pas : ' + pas + '\n//////////////////////////\n\n');
-        System.debug('\n\n//////////////////////////\n  pas[0] : ' + pas[0] + '\n//////////////////////////\n\n');
+
+        string pId='';
+        List<ProjectTask__c> ptL = [SELECT Project__c from ProjectTask__c where id=:pas[0].ProjectTask__c];
+       	if (ptL.size() > 0) {
+       		pId=ptL[0].Project__c;
+       	}
+
+        
         
         if (pAs.size()>0){
-        	 
 				for( ProjectAssignee__c pA : pAs ){
 			        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='+ pA.Project__c + '">' + pA.Project__r.Name + '</a><br />Task Name: <a href="' + Label.sfdcHostName+'apex/projecttaskdetail?id='+pA.ProjectTask__c + '">' + pA.ProjectTask__r.Name + '</a><br />Priority: ' + pA.ProjectTask__r.Priority__c + '<br />Start date: ' + pA.ProjectTask__r.StartDate__c + '<br />End date: ' + pA.ProjectTask__r.EndDate__c + '<br />Description:' + pA.ProjectTask__r.Description__c;
-			        emailSub = 'You were unassigned from the task ' + pA.ProjectTask__r.Name + '.';
-				    
+			        emailSub = 'You were unassigned from the task ' + pA.ProjectTask__r.Name + '.';			    
 				    lstUserId.add(pA.user__c);
 				}
-		System.debug('\n\n//////////////////////////\n  lstUserId: ' +  lstUserId + '\n//////////////////////////\n\n');
-				
 				if(!isTest){
-									System.debug('\n\n//////////////////////////\n  pAs: ' + pAs+ '\n//////////////////////////\n\n');
-					
-		System.debug('\n\n//////////////////////////\n  pAs[0].Project__c: ' + pAs[0].Project__c + '\n//////////////////////////\n\n');
-					
-			    	subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, Project__r.Name, ProjectTaskAssignToMeChanged__c FROM ProjectSubscription__c WHERE Project__c =: pAs[0].Project__c and ProjectTaskAssignedToMe__c = true and User__c in : lstUserId ];
+			    	subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, Project__r.Name, ProjectTaskAssignToMeChanged__c FROM ProjectSubscription__c WHERE Project__c =: pId and ProjectTaskAssignedToMe__c = true and User__c in : lstUserId ];
 		        }	
 				if( subscriptions.size() > 0){
-		System.debug('\n\n//////////////////////////\n subscriptions: ' + subscriptions + '\n//////////////////////////\n\n');
-					
 		    	    genAddress( subscriptions, emailMsj, emailSub );
 				}
         }

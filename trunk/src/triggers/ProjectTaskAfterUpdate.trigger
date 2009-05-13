@@ -7,21 +7,15 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
     	lstPTId.add(pT.Id);
     	
     }
-    
-         System.debug('\n\n//////////////////////////\n lstPTId: ' + lstPTId + '\n//////////////////////////\n\n');
-    
-     System.debug('\n\n//////////////////////////\n INICIO: ' + + '\n//////////////////////////\n\n');
+        System.debug('\n\n//////////////////////////\n  lstPTId: ' + lstPTId+ '\n//////////////////////////\n\n');
+
     
     pEmail.sendMailForTaskChanged( lstPTId );
-         System.debug('\n\n//////////////////////////\n MEDIO: ' + + '\n//////////////////////////\n\n');
-    
-    
-    	ProjectSubscribersEmailServices pEmail2 = new ProjectSubscribersEmailServices();
+   	ProjectSubscribersEmailServices pEmail2 = new ProjectSubscribersEmailServices();
     
     pEmail2.sendMailForTaskPercentChanged( lstPTId );
-         System.debug('\n\n//////////////////////////\n FINAL: ' + + '\n//////////////////////////\n\n');
-    
-    
-    
+
+
+   
     
 }

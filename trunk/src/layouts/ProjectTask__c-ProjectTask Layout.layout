@@ -96,14 +96,6 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <relatedList>ProjectIssue__c.ProjectTask__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <relatedList>ProjectRisk__c.ProjectTask__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
         <relatedList>ProjectAssignee__c.ProjectTask__c</relatedList>
     </relatedLists>
     <relatedLists>

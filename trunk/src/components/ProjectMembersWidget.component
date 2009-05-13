@@ -139,7 +139,7 @@
 		</div>
 	</apex:outputpanel>
 	<!-- On Hover Bubble team member -->
-	<div id="bubble" class="bubble">
+	<div id="bubble" class="bubble" style="display: none">
 		<div class="top_border">&nbsp;</div>
 		<div class="content"><img class="arrowBubble"
 			src="{!URLFOR($Resource.ProjectResources, '/images/layout/bubbles/arrow.gif')}" />

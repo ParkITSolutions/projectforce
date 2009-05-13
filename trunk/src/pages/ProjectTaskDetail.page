@@ -1,4 +1,4 @@
-<apex:page id="ProjectTaskDetail" controller="ProjectTaskDetailController" sidebar="false" tabStyle="Project2__c">
+<apex:page id="ProjectTaskDetail" standardController="ProjectTask__c" extensions="ProjectTaskDetailController" sidebar="false" tabStyle="Project2__c">
 	<!-- Ajax Toolkit SDFC -->
 	<apex:includeScript value="/soap/ajax/11.1/connection.js"/>
 	
@@ -21,6 +21,8 @@
 
 	<!-- ProjectTaskDetail CSS --> 
    	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskDetails.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgets/TeamMemberWidget.css')}" />	
 	 
 	<!-- ProjectTaskList CSS --> 
    	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskList.css')}" />
@@ -66,7 +68,7 @@
         <div class="buttons" style="{!IF(Task.IsTaskOwner,'width:262px;','')}">
 			<apex:outputpanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}" layout="block">
 				<!-- /apex/projectRedirect?sO=ProjectTask__c&attr=task&page=ProjectCreateNewTask&rR=NewProjectFormContainer&oC=true&eid={!Task.ProjectId}&task={!Task.id} -->
-	        	<a class="blackbutton" href="/{!Task.id}/e"><span>Edit Task</span></a>
+	        	<a class="blackbutton" href="/{!Task.id}/e?retURL=/{!Task.id}"><span>Edit Task</span></a>
 	        	<apex:form id="quickMilestoneForm" styleclass="quickMilestoneForm" onsubmit="if(isCompleted){alert('The task percent is already completed.');return false}"  >	
 					<apex:actionStatus id="taskStatus">
 						<apex:facet name="start">
@@ -95,8 +97,23 @@
 	        </apex:outputpanel>
           </div>
         </div>       
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+	
+            <!-- Team members -->
+            <c:ProjectMembersWidget projectId="{!Task.ProjectId}"  />   
+			
+			<c:ProjectOverlayNewAssignee /> 
+            <div class="clear"></div>
+        </div>
+
+
+
+
+
         <!-- Holder -->      
-        <div class="holder" style="overflow:hidden;clear:both;">
+        <div class="holder" style="overflow:hidden;clear:both;margin:0px;margin-left:200px;margin-bottom:10px;">
         	<apex:outputpanel rendered="{!IF(!detailsOk,true,false)}"  layout="block">
         		<p>No Id given , no id to look for</p>
         	</apex:outputpanel>
@@ -149,13 +166,18 @@
 		                                          <td><a href="PeopleProfileDisplay?id={!item.Id}">{!item.Name}</a></td>
 		                                          <td class="percent">{!item.percent}%</td>
 		                                      </tr>                                     </apex:repeat>
+		                                      <tr>
+		                                      	<td><a href="javascript:;" onclick="createOverlay('','addAssigneeOverlay','150','');">New assignee</a></td>
+		                                      </tr>
 		                              </table>
 		                          </apex:outputpanel>
 		                          <apex:outputpanel rendered="{!IF(!Task.HasAsignee,true,false)}" >
 		                              Nobody Asigned to this task.
+   		                   			<a href="javascript:;" onclick="createOverlay('','addAssigneeOverlay','280','');">New assignee</a>
 		                          </apex:outputpanel>
 		                      </td>
 		                   </tr>
+		       
 						</tbody>					
 					</table>
 				</div><br style="clear:both;" />				

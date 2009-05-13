@@ -13,7 +13,7 @@ public class ProjectTaskDetailController {
 	/**
 	* Constructor
 	*/
-	public ProjectTaskDetailController(){
+	public ProjectTaskDetailController(ApexPages.StandardController ctrl){
 		param = System.currentPageReference().getParameters().get('id');
 		getTask(param);
 		genPermissions();
@@ -78,30 +78,7 @@ public class ProjectTaskDetailController {
 	public void getTask (String param){
 		if((param != null) && (param != '')){
 			detailsOk = true;
-			ProjectTask__c TD = [Select 
-									p.Id,												
-									p.Project__c,
-									p.Project__r.Name, 
-									p.StartDate__c, 
-									p.Priority__c, 
-									p.PercentCompleted__c,
-									p.Name, 
-									p.Milestone__c, 
-									p.LastModifiedById, 
-									p.LastModifiedBy.Name,
-									p.LastModifiedDate,
-									p.EndDate__c, 
-									p.Duration__c, 
-									p.Description__c, 
-									p.ParentTask__c,
-									p.ParentTask__r.Name,
-									p.ParentTask__r.Id,
-									p.CreatedById,
-									p.CreatedBy.Name,
-									p.CreatedDate, 
-									(Select Id, Name, ContentType, BodyLength From Attachments),
-									(Select Id, User__c, User__r.Name, User__r.Id,PercentDedicated__c From ProjectsAssignees__r order by User__r.Name) 
-									From ProjectTask__c p where p.Id =: param ];
+			ProjectTask__c TD = [Select p.Id,p.Project__c,p.Project__r.Name,p.StartDate__c,p.Priority__c,p.PercentCompleted__c, p.Name, p.Milestone__c,p.LastModifiedById,p.LastModifiedBy.Name,p.LastModifiedDate,	p.EndDate__c, p.Duration__c, p.Description__c,p.ParentTask__c,p.ParentTask__r.Name,p.ParentTask__r.Id,p.CreatedById, p.CreatedBy.Name,p.CreatedDate,	(Select Id, Name, ContentType, BodyLength From Attachments), (Select Id, User__c, User__r.Name, User__r.Id,PercentDedicated__c From ProjectsAssignees__r order by User__r.Name) From ProjectTask__c p where p.Id =: param ];
 			
 			if(TD != null ){
 				taskDetail = new TaskDetails();

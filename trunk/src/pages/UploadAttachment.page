@@ -33,6 +33,8 @@
 						<apex:commandButton styleClass="btn allButtons" value="Cancel" style="float: none;width: 70px !important;background: #989999 none repeat scroll 0 0 !important;" onclick="cancelAction(); return false;"  />
 					</div>
 				</div>
+				
+				<input type="hidden" id="asAvatar" name="asAvatar" />
 			</apex:form>
 		</div>
 		<div id="uploadCancel" style="display: none;"></div>
