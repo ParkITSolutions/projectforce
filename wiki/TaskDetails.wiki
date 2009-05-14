@@ -1,3 +1,32 @@
 From here you can see all the fields, edit, mark complete and delete the task or milestone.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailReal.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailReal.png" />
+
+You can add files to the task. To do this make the following steps.
+
+1. Click on Add New Attachment.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailAttachment.png" />
+
+2. Click on Browse... button and select the file.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailAttachmentBrowse.png" />
+
+3. Click on Done button.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailAttachmentSave.png" />
+
+The file is added to the task or milestone.
+
+Also you can add Assegnees to the task or milestone. To do this make the following steps.
+
+1. Click on New Assegnee link.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetaiAssegnee.png" />
+
+2. Select a member and a percent dedicated, and click on Save button. I you want to add more than one assegnee click on Save and New button.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailAssegneeOverlay.png" />
+
+The assegnee is added to the task or milestone.
+
