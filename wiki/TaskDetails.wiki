@@ -16,7 +16,7 @@ You can add files to the task. To do this make the following steps.
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailAttachmentSave.png" />
 
-The file is added to the task or milestone.
+The file is added in the task or milestone.
 
 Also you can add Assegnees to the task or milestone. To do this make the following steps.
 
@@ -28,5 +28,4 @@ Also you can add Assegnees to the task or milestone. To do this make the followi
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailAssegneeOverlay.png" />
 
-The assegnee is added to the task or milestone.
-
+The assegnee is added in the task or milestone.
