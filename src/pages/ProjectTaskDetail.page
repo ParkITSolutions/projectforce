@@ -1,7 +1,7 @@
 <apex:page id="ProjectTaskDetail" standardController="ProjectTask__c" extensions="ProjectTaskDetailController" sidebar="false" tabStyle="Project2__c">
 	<!-- Ajax Toolkit SDFC -->
 	<apex:includeScript value="/soap/ajax/11.1/connection.js"/>
-	
+	 
 	<!-- Prototype + Scriptaculous -->
 	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
 	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
@@ -30,6 +30,15 @@
 	<!-- ProjectTaskDetail JS -->
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskDetail.js')}" />
   	
+ 	<style>
+ 	.DistincLink{
+ 		margin-bottom: 5px;
+ 	}
+ 	.DistincLink a{
+ 		text-decoration:none !important;
+ 	}
+ 	</style>
+
  	<script>
  		document.observe("dom:loaded", function(){
 				trunkAllTitles();
@@ -38,15 +47,50 @@
 			}
 		)
  		var currentTeam = '{!Task.ProjectId}';
+ 		
+        /**
+        * Open Uploader for Avatar
+        */
+        function openAttachmentUploader(){
+        	createOverlay('', 'newAttachmentOverlay', 170);
+        	observeIframeUpload();
+        	newAttachmentToTask();
+        } 	
+        
+        /**
+		* Observe attachment uploader overlay and rerender task detail
+		*/
+		function newAttachmentToTask(){
+			if(uploadEnd){
+				
+				//On success, close overlay and refrsh list
+				uploadClose = true;
+				modal.close();
+				refreshDetail();
+								
+				//Reset upload status
+				uploadEnd = false;
+			
+			} else if (!uploadClose){
+				setTimeout('newAttachmentToTask();', 1000);
+			}
+		}
+		
+	function showDeleteAssigneeEvent(id){
+		$(inputIdToDelete2).value = id;
+     	createOverlay('','DeleteAssigneeOverlay','140','relocateOverlay()');
+    }
  	</script>
-
+ 	
+ 
 	<div class="confirmation" id="confirmation" style="display:none;">
    		This task has been marked complete
     </div>
 	
 	<!-- Delete Task Overlay -->
 	<c:ProjectDeleteTaskOverlay id="projectDeleteComponent"/>
-	
+	<c:ProjectOverlayDeleteAssignee id="projectDeleteAssigneeComponent"/> 
+
 	<!-- Header -->
 	<apex:composition template="HeaderTemplate">
 		<apex:define name="moduleId"><apex:variable var="moduleId" value="headerProject"/></apex:define>
@@ -105,21 +149,23 @@
             <c:ProjectMembersWidget projectId="{!Task.ProjectId}"  />   
 			
 			<c:ProjectOverlayNewAssignee /> 
+
             <div class="clear"></div>
         </div>
-
-
-
-
 
         <!-- Holder -->      
         <div class="holder" style="overflow:hidden;clear:both;margin:0px;margin-left:200px;margin-bottom:10px;">
         	<apex:outputpanel rendered="{!IF(!detailsOk,true,false)}"  layout="block">
         		<p>No Id given , no id to look for</p>
         	</apex:outputpanel>
-			<apex:outputpanel styleClass="projectTaskDetail" rendered="{!detailsOk}" layout="block" style="overflow:hidden;position:relative;clear:both;" >
-				<apex:detail relatedList="false"  title="false">			
-				</apex:detail>
+			<apex:outputpanel id="detailContainer" styleClass="projectTaskDetail" rendered="{!detailsOk}" layout="block" style="overflow:hidden; position:relative; clear:both;" >
+
+				<!-- Method to refresh task detail -->
+				<apex:form >				
+					<apex:detail subject="{!Task.Id}" relatedList="false"  title="false" />
+					<apex:actionFunction name="refreshDetail" action="{!doRefresh}" rerender="detailContainer" oncomplete="clearTableDetail();"/>
+				</apex:form>
+				
 				<div class="bPageBlock">
 					<table class="detailList">
 						<tbody>
@@ -148,9 +194,19 @@
 							<tr >
 								<td class="labelCol vTop">Files</td>
 								<td class="dataCol">
+									<!-- Upload Attachment -->
+									<c:ProjectOverlayNewAttachment parentId="{!Task.Id}" />
+									<div class="DistincLink">
+									<a href="Javascript:;" onclick="openAttachmentUploader();">
+										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add Attachment" title="Add Attachment" />
+										Add New Attachment
+									</a>
+									</div>
 									<apex:repeat value="{!Task.Files}" var="item" >
+										<div>
 											<img style="vertical-align:bottom;" src="{!URLFOR($Resource.FileTypeIcons, item.attachImage)}"/> &nbsp;
-											<a href="javascript:;" onclick="window.open('/servlet/servlet.FileDownload?file={!item.Id}')" >{!item.Name}</a><br>
+											<a href="javascript:;" onclick="window.open('/servlet/servlet.FileDownload?file={!item.Id}')" >{!item.Name}</a>
+										</div>
 									</apex:repeat>							
 								</td>			
 							</tr>
@@ -159,25 +215,29 @@
 		                              Assigned To
 		                      	</td>
 		                      <td class="dataCol">
-		                          <apex:outputpanel rendered="{!Task.HasAsignee}" >
+		                      	<div class="DistincLink">
+			                      	  <a href="javascript:;" onclick="createOverlay('','addAssigneeOverlay','200','relocateOverlay()');" >
+										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add assignee" title="Add assignee" />
+			                      	  	New assignee
+			                      	  </a>
+		                      	</div>
+		                      	  <div style="display: none;" id="sw_al" class="swirly_members"/>
+		                          <apex:outputpanel rendered="{!Task.HasAsignee}" id="assList">
 		                              <table class="assignedToTable">
-		                                  <apex:repeat value="{!Task.Asignee}" var="item">
-		                                      <tr>
-		                                          <td><a href="PeopleProfileDisplay?id={!item.Id}">{!item.Name}</a></td>
-		                                          <td class="percent">{!item.percent}%</td>
-		                                      </tr>                                     </apex:repeat>
-		                                      <tr>
-		                                      	<td><a href="javascript:;" onclick="createOverlay('','addAssigneeOverlay','150','');">New assignee</a></td>
-		                                      </tr>
+		                              	<apex:repeat value="{!Task.Asignee}" var="item">
+	                                      	<tr>
+	                                        	<td><a href="PeopleProfileDisplay?id={!item.Id}">{!item.Name}</a></td>
+	                                          	<td class="percent">{!item.percent}%</td>
+												<td><a value="{!item.Id}" onclick="showDeleteAssigneeEvent('{!item.Id}')" href="javascript:;">Remove</a></td>		                                          
+	                                      	</tr>                                     
+		                              	</apex:repeat>
 		                              </table>
 		                          </apex:outputpanel>
 		                          <apex:outputpanel rendered="{!IF(!Task.HasAsignee,true,false)}" >
 		                              Nobody Asigned to this task.
-   		                   			<a href="javascript:;" onclick="createOverlay('','addAssigneeOverlay','280','');">New assignee</a>
 		                          </apex:outputpanel>
 		                      </td>
 		                   </tr>
-		       
 						</tbody>					
 					</table>
 				</div><br style="clear:both;" />				

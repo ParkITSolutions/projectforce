@@ -8,19 +8,26 @@ public class ProjectTaskDetailController {
 	private String USERID = UserInfo.getUserId();
 	private Boolean editDeletePer = false;
 	private String projectId = '';
+
+	public String param = ''; 
 	public UserPermissions userPermissions = new UserPermissions();
 	
 	/**
 	* Constructor
 	*/
 	public ProjectTaskDetailController(ApexPages.StandardController ctrl){
-		param = System.currentPageReference().getParameters().get('id');
+		param = System.currentPageReference().getParameters().get('id'); 
 		getTask(param);
 		genPermissions();
 		editDeletePer = userPermissions.getCanManage();		
-	}	
+	}
 	
-	
+	/**
+	* Do refresh
+	*/	
+	public void doRefresh (){
+		this.getTask(param);
+	}
 	
 	/**
 	* Generate permissions for an especific user
@@ -40,14 +47,20 @@ public class ProjectTaskDetailController {
 	}
 	/* ---------------------------- */
 	
-	public String param {get; set;}
-
 	/**
 	* Set the value of task id
 	*@param String
 	*/
 	public void setTaskId(String s) {
 		param = s;
+	}
+	
+	/**
+	* Get task id
+	*@retun id
+	*/
+	public String getParam(){
+		return param;
 	}
 	
 	/**

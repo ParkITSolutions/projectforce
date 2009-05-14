@@ -7,6 +7,23 @@ public class ProjectDeleteTaskOverlayController {
 	private String idDeletes = '';
 	private UserPermissions userPermissions = new UserPermissions();
 	private String projectId = '';
+	private String taskName='';
+	
+	public String getTaskName () {
+	    if (ApexPages.currentPage().getUrl().contains('projecttaskslist')){
+	    	taskName='tasks';
+	    }else{
+	    	List<ProjectTask__c> TN=[SELECT name FROM ProjectTask__c WHERE ID=:ApexPages.currentPage().getParameters().get('id')];
+	    	if (TN.size()>0){
+	    		taskName=TN[0].name;
+	    	}else{
+	    		taskName='tasks';
+	    	}
+	    	
+	    
+	    }
+		return taskName;
+	}
 		
 	public ProjectDeleteTaskOverlayController(){} 
 	 
