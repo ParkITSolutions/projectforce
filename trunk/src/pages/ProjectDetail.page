@@ -38,7 +38,15 @@
 	        detailTable.style.width = '100%';
 	        $$('.sfdcDetailFormated')[0].insert(detailTable);
 			
-			var newAvatar = detailTable.getElementsByTagName('img')[0].nextSibling;
+			var tds = detailTable.getElementsByTagName('td');
+			
+			for(var i=0; i < tds.length; i++){
+			    if(tds[i].innerHTML == 'Image'){
+			        var theTd = tds[i].nextSibling;
+			        var newAvatar = theTd.getElementsByTagName('a')[0];
+			    }
+			}
+
 			newAvatar.style.marginLeft = '7px';
 			newAvatar.removeAttribute('target');
 			newAvatar.onclick = function(){openAvatarUploader()}

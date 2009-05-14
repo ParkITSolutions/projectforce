@@ -111,6 +111,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectOverlayDeleteAssigneeController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectOverlayNewAssigneeController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
