@@ -115,13 +115,7 @@ public class ProjectSubscribersEmailServices {
         lstPT = [ SELECT Id, Project__c, Project__r.Name, Name, Description__c, EndDate__c, StartDate__c, Priority__c FROM ProjectTask__c WHERE Id in : lstPTId ];
         
         List<String> SubAssignees = new List<String>();
-
-        //System.debug('\n\n//////////////////////////\n  lstAssId: ' +  lstPTId + '\n//////////////////////////\n\n');
-        System.debug('\n\n//////////////////////////\n  pas : ' + lstPT + '\n//////////////////////////\n\n');
-        System.debug('\n\n//////////////////////////\n  pas[0] : ' + lstPT[0] + '\n//////////////////////////\n\n');
-           
         if (lstPT.size()>0){
-        	
             for (ProjectAssignee__c a :[select id, user__c from ProjectAssignee__c where ProjectTask__c =: lstPT[0].id]){
         		SubAssignees.add(a.user__c);
             }
@@ -220,7 +214,7 @@ public class ProjectSubscribersEmailServices {
 
         
         
-        if (pAs.size()>0){
+        if ((pAs.size()>0) && !(ProjectUtil.DeleteTaskMailSent)){
 				for( ProjectAssignee__c pA : pAs ){
 			        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='+ pA.Project__c + '">' + pA.Project__r.Name + '</a><br />Task Name: <a href="' + Label.sfdcHostName+'apex/projecttaskdetail?id='+pA.ProjectTask__c + '">' + pA.ProjectTask__r.Name + '</a><br />Priority: ' + pA.ProjectTask__r.Priority__c + '<br />Start date: ' + pA.ProjectTask__r.StartDate__c + '<br />End date: ' + pA.ProjectTask__r.EndDate__c + '<br />Description:' + pA.ProjectTask__r.Description__c;
 			        emailSub = 'You were unassigned from the task ' + pA.ProjectTask__r.Name + '.';			    
@@ -233,11 +227,11 @@ public class ProjectSubscribersEmailServices {
 		    	    genAddress( subscriptions, emailMsj, emailSub );
 				}
         }
+        ProjectUtil.DeleteTaskMailSent=false;
 	}
 
     public void genAddress( List<ProjectSubscription__c> subscriptions, String emailMsj, String emailSub )
     {
-    	
         //Array address
         String[] address = new String[]{}; 
         Integer it = 0;

@@ -15,7 +15,7 @@ public class ProjectUtil {
 	public static Boolean isTest = false;
 	public static Integer MAX_SIZE = 4194304;
 	public static Map<String,ProjectTask__c> BaseMap = new Map<String,ProjectTask__c>();
-    
+    public static Boolean DeleteTaskMailSent = false;
 	/**
 	*@param boolean
 	*/

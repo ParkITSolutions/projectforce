@@ -20,7 +20,7 @@
         </div>
         <!-- Widget Container -->       
         <div class="box_content">
-            <div class="thinBody">
+            <div class="thinBodyFixed">
                 <div style="{!IF(tasksListSize > 0, 'display:none', '')}; ">
                     <div class="grayColor noitems" >You have no upcoming Tasks</div>
                 </div>

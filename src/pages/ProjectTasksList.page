@@ -315,7 +315,7 @@
                                                 	</a> 
                                                 	<apex:outputpanel rendered="{!OR(editDeletePer, task.isTaskOwner)}">
 	                                                	| 
-	                                                	<a href="javascript:;" onclick="showDeleteEvent('{!task.Id}','');">
+	                                                	<a href="javascript:;" onclick="showDeleteEvent('{!task.Id}','', '{!task.name}');" >
 	                                                		Del
 	                                                	</a>
 	                                                </apex:outputpanel>

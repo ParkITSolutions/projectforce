@@ -7,8 +7,6 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
     	lstPTId.add(pT.Id);
     	
     }
-        System.debug('\n\n//////////////////////////\n  lstPTId: ' + lstPTId+ '\n//////////////////////////\n\n');
-
     
     pEmail.sendMailForTaskChanged( lstPTId );
    	ProjectSubscribersEmailServices pEmail2 = new ProjectSubscribersEmailServices();

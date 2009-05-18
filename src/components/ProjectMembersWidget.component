@@ -193,7 +193,7 @@
 		<!-- Widget Container -->
 		<div class="box_content">
 			<div class="swirly_members" id="swirly_members" style="display: none;"></div>
-			<div class="thinBody" id="thinBody">
+			<div class="thinBodyFixed thinBody" id="thinBody">
 				<div class="contentHolder">
 					<div class="linkAction">
 						<apex:outputpanel rendered="{!userPermissions.canManage}">

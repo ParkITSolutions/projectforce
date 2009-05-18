@@ -47,22 +47,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProjectCreateNewController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectCreateNewControllerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectCreateNewTaskController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectCreateNewTaskControllerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ProjectDeleteTaskOverlayController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -148,14 +132,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectOverviewControllerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectRedirectController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectRedirectControllerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -1170,6 +1146,18 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
+        <field>Project2__c.Access__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>Project2__c.AllowCustomerUsers__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>Project2__c.AllowPartnerUsers__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
         <field>Project2__c.Description__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
@@ -1441,6 +1429,9 @@
         <layout>Campaign-Campaign Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>CampaignMember-Campaign Member Page Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Case-Case Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -1621,14 +1612,6 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>ProjectCreateNew</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>ProjectCreateNewTask</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>ProjectDetail</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
@@ -1674,10 +1657,6 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>projectOverview</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>projectRedirect</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <recordTypeVisibilities>

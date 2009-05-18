@@ -1,7 +1,6 @@
 <apex:component allowDML="true" controller="ProjectSubscribeController">
 
-	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/projectSubscribe.css')}" />
- 
+	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/projectSubscribe.css')}" /> 
 	
     <div class="teamWidget mySmallWidget" >
         <!-- Widget Title -->       
@@ -15,14 +14,14 @@
         
         <!-- Widget Container -->          
         <div class="box_content">
-            <div class="thinBody">
+            <div class="thinBodyFixed">
                 <div style = "padding:7px;">                       
                     <apex:outputpanel layout="block" styleClass="suscribeTeam">
 		                <apex:outputPanel id="teamLinkSuscribe">
 		                	<a class="sus" href="ProjectSubscription?id={!idProject}">Manage Subscriptions</a>
 		                </apex:outputPanel> 
 					</apex:outputpanel>
-                </div>   
+                </div>
             </div>               
         </div>
         

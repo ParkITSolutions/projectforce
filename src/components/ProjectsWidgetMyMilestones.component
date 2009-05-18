@@ -2,6 +2,7 @@
     
     <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsWidgetMyTasksAndMilestones.css')}" />
 
+
     <div class="teamWidget mySmallWidget" >
         <!-- Widget Title -->       
         <div class="thinHeader">
@@ -9,7 +10,7 @@
         </div>
         <!-- Widget Container -->       
         <div class="box_content">
-            <div class="thinBody">
+            <div class="thinBodyFixed">
                 <div style="{!IF(milestonesListSize > 0, 'display:none', '')}; ">
                     <div class="grayColor noitems" >You have no upcoming Milstones</div>
                 </div>
