@@ -15,11 +15,22 @@
 	<div id="modal_container" style="display:none;"></div>
 	<script>
 		createOverlay('initializeModalOverlay');
+		function setTaskNameHeader() {
+			var taskNameHeader = document.getElementById('taskName');
+			if (nameToDelete != null && nameToDelete != '') {
+				taskNameHeader.innerHTML = nameToDelete;
+			}
+			else {
+				taskNameHeader.innerHTML = 'Tasks';
+			}
+		}
+		
 	</script>
 	<div id="deleteTasks" style="display:none;" class="overlayForm">	
 		<!-- Overlay Title -->
+
 		<div class="overlayTitleContent">
-			<div class="overlayTitle">Delete {!taskName}</div>
+			<div class="overlayTitle">Delete <span id="taskName"></span></div>
 			<div class="overlayCloseEvent">
 				<a href="Javascript:;" onclick="modal.close();">
 					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />

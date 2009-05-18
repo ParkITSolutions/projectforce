@@ -3,6 +3,46 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Project2</description>
     <fields>
+        <fullName>Access__c</fullName>
+        <description>Project Access</description>
+        <inlineHelpText>Open - Anyone can join. Anyone can see the Project
+
+Close - Administrator must invite users to join. Anyone can see the Project
+
+Private -  This Project will not appear in search. Membership is by invitation only. Only members can see the Project.</inlineHelpText>
+        <label>Access</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Open</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Close</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Private</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>AllowCustomerUsers__c</fullName>
+        <defaultValue>false</defaultValue>
+        <inlineHelpText>Set cheked to allow customer portal users.</inlineHelpText>
+        <label>Allow customer portal users</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>AllowPartnerUsers__c</fullName>
+        <defaultValue>false</defaultValue>
+        <inlineHelpText>Set cheked to allow partner portal users</inlineHelpText>
+        <label>Allow partner portal users</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Description__c</fullName>
         <description>Description</description>
         <label>Description</label>
@@ -113,6 +153,21 @@
         <fullName>Test</fullName>
         <active>true</active>
         <label>Test</label>
+        <picklistValues>
+            <picklist>Access__c</picklist>
+            <values>
+                <fullName>Close</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Open</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Private</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Priority__c</picklist>
             <values>

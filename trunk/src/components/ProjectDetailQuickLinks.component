@@ -49,7 +49,7 @@
         </div>
         <!-- Widget Container -->          
         <div class="box_content">
-            <div class="thinBody" style = "padding:7px;">
+            <div class="thinBodyFixed" style = "padding:7px;">
 	            
 	            <apex:outputPanel rendered="{!userPermission.canCreate}">
 		            <div class="team_detail_commentedItemLeftProfile">					    

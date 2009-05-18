@@ -1,34 +1,44 @@
 trigger ProjectAfterInsert on Project2__c bulk (after insert) {	
     if (!ProjectUtil.currentlyExeTrigger) {
-    	ProjectUtil.currentlyExeTrigger = true;
-        try {
-            ProjectProfile__c defaultProfile = [select Id from ProjectProfile__c where Name = 'Project Administrator' limit 1];
-            //Organizatrion Group 
-            List<Group> go = [Select g.Type, g.Name from Group g where Type = 'Organization'];
 
-            //Customer Portal Group            
-            List<Group> portalGroup = new List<Group>();
-            if(ProjectCreateNewController.getAllowCustomerStatic()) 
-            	portalGroup = [Select g.Type, g.Name from Group g where Type = 'AllCustomerPortal'];
-	           
-            //Partner Portal Group
-            List<Group> partnerGroup = new List<Group>();
-            if(ProjectCreateNewController.getAllowPartnerStatic())
-            	partnerGroup = [Select g.Type, g.Name from Group g where Type = 'PRMOrganization'];
-            
-            
-            // build for bulk
+    	ProjectUtil.currentlyExeTrigger = true;
+
+        try {
+            //Projects
             Project2__c[] t = Trigger.new;
+	        Group organization = new Group();
+	        List<Group> portalGroup = new List<Group>();
+			List<Group> partnerGroup = new List<Group>();            
             
+            //Default project member profile
+            ProjectProfile__c defaultProfile = [select Id from ProjectProfile__c where Name = 'Project Administrator' limit 1];
+            
+            //Group names
+            List<String> groupNames = new List<String> {'Organization', 'AllCustomerPortal', 'PRMOrganization'};
+            
+            //Read Groups 
+            List<Group> groups = [Select g.Type, g.Name from Group g where Type in: groupNames];
+            for(Group grp : groups){
+	            
+	            //Organization group
+	            if(grp.Type.equals('Organization'))
+	           		organization = grp; 
+	            
+	            //Customer Portal Group            
+	            if(t[0].AllowCustomerUsers__c && grp.Type.equals('AllCustomerPortal')) 
+	            	portalGroup.add(grp);
+		           
+	            //Partner Portal Group
+	            if(t[0].AllowPartnerUsers__c && grp.Type.equals('PRMOrganization'))
+	            	partnerGroup.add(grp);          	
+            }
+
             for (Project2__c team : Trigger.new) {
-                /**
-                * Group List To Insert.
-                */
+
+                //Group List To Insert.
                 List<Group> newGroups = new List<Group>();
                 
-                /**
-                * Create Sharing Group for current Team.
-                */      
+                //Create Sharing Group for current Team.
                 Group g = new Group();
                 g.Name = 'ProjectSharing' + team.Id;
                 insert g;
@@ -38,7 +48,7 @@ trigger ProjectAfterInsert on Project2__c bulk (after insert) {
                     //Create GroupMember for everyone member
                     GroupMember gm = new GroupMember();
                     gm.GroupId = g.Id;
-                    gm.UserOrGroupId = go[0].Id;
+                    gm.UserOrGroupId = organization.Id;
                     insert gm;
                     
 					//If Customer Portal group exist add GroupMember
@@ -91,7 +101,6 @@ trigger ProjectAfterInsert on Project2__c bulk (after insert) {
 		        //Database.SaveResult[] lsr = Database.insert(sobjectsQueueAllowed);
 				upsert sobjectsQueueAllowed;                
                 
-                
                 Project2__c tempTeam = [select ownerId, Id, Name from Project2__c where Id =: team.Id limit 1];
                 tempTeam.ownerId = pQId;
                 // We set this to true becuase we dont want all the minifeed triggers and update 
@@ -120,8 +129,7 @@ trigger ProjectAfterInsert on Project2__c bulk (after insert) {
             ProjectUtil.currentlyExeTrigger = false;
         }
     	ProjectUtil.currentlyExeTrigger = false;
-    }
-    else {
+    }else {
         ProjectProfile__c defaultProfile = [select Id from ProjectProfile__c where Name = 'Project Administrator' limit 1];
         for (Project2__c team : Trigger.new) {
             ProjectMember__c firstTeamMember = new ProjectMember__c();

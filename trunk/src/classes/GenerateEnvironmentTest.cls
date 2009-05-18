@@ -76,7 +76,8 @@ public class GenerateEnvironmentTest {
 
         // Project2__c
         project.name = 'Project 1 name';
-        project.description__c = 'Description ...';
+        project.description__c = 'Open';
+        project.Access__c = 'Description ...';
         project.priority__c = 'High';
         project.Type__c = 'open';
         project.PublicProfile__c = profList[ 0 ].Id;
@@ -84,11 +85,13 @@ public class GenerateEnvironmentTest {
         
         project2.name = 'Project 2 name';
         project2.description__c = 'Description ...';
+        project2.Access__c = 'Close';
         project2.priority__c = 'Medium';
         project2.Type__c = 'close';
     
         project3.name = 'Project 2 name';
         project3.description__c = 'Description ...';
+        project3.Access__c = 'Private';
         project3.priority__c = 'Medium';
         project3.Type__c = 'private';
     

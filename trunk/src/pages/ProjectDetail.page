@@ -8,7 +8,7 @@
     
     <script type="text/javascript" src="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}" ></script>
     
-    <!-- Scriptaculous / Prototype -->
+    <!-- Script.aculo.us / Prototype -->
     <script type="text/javascript" src="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}" ></script>
     <script type="text/javascript" src="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}" ></script>
     
@@ -28,67 +28,12 @@
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamDetailMarkupTop.css')}" />
 
-    <script>
-		/**
-		* Move detail table to custom container
-		*/
-		function projectDetail(){
-	        $$('.centerCol')[0].style.marginRigth = '0px';
-	        var detailTable = $$('.detailList')[0];
-	        detailTable.style.width = '100%';
-	        $$('.sfdcDetailFormated')[0].insert(detailTable);
-			
-			var tds = detailTable.getElementsByTagName('td');
-			
-			for(var i=0; i < tds.length; i++){
-			    if(tds[i].innerHTML == 'Image'){
-			        var theTd = tds[i].nextSibling;
-			        var newAvatar = theTd.getElementsByTagName('a')[0];
-			    }
-			}
-
-			newAvatar.style.marginLeft = '7px';
-			newAvatar.removeAttribute('target');
-			newAvatar.onclick = function(){openAvatarUploader()}
-	        
-	        resizeSidebar();
-		}        
-        
-        /**
-        * On DOM ready functions
-        */
-        document.observe('dom:loaded', function(){projectDetail()});
-        
-        /**
-        * Open Uploader for Avatar
-        */
-        function openAvatarUploader(){
-        	createOverlay('', 'newAttachmentOverlay', 170);
-        	$('uploadIframe').src = $('uploadIframe').src + '&asAvatar=true';
-        	observeIframeUpload();
-        	newAttachmentToAvatar();
-        }
-		
-		/**
-		* Observe avatar uploader overlay  and rerender project detail
-		*/
-		function newAttachmentToAvatar(){
-			if(uploadEnd){
-				
-				//On success, close overlay and refrsh list
-				uploadClose = true;
-				modal.close();
-				reloadMainContent();
-								
-				//Reset upload status
-				uploadEnd = false;
-			
-			} else if (!uploadClose){
-				setTimeout('newAttachmentToAvatar();', 1000);
-			}
-		}			        
-     </script>
-    
+	<style>
+		div.helpText {
+			z-index: 5000 !important;
+		}
+	</style>
+	
 	<!-- Delete Project Overlay -->   
     <c:ProjectOverlayDeleteProject />
     
@@ -128,7 +73,8 @@
                     <apex:commandLink styleClass="blackbutton" action="{!joinProject}" 
                     	rendered="{!IF(AND(NOT(isMember), isPublic),true,false)}" 
 	                   	onclick="setClassWaiting('.blackbutton');" 
-                    	rerender="thisForm, mainContentForm, sidebarWidgets">
+                    	rerender="thisForm, mainContentForm, sidebarWidgets"
+                    	oncomplete="projectDetail();">
                         <span> Join </span>
                     </apex:commandLink>         
                     
@@ -136,7 +82,7 @@
                     <apex:commandLink styleClass="blackbutton" rendered="{!IF(isMember,true,false)}" 
                     	onclick="setClassWaiting('.blackbutton');"  
                     	rerender="thisForm, mainContentForm, sidebarWidgets" action="{!unjoinProject}" 
-                    	onComplete="showWarningIsLastAdmin();">
+                    	onComplete="projectDetail(); showWarningIsLastAdmin();">
                         <span> Unjoin </span>
                     </apex:commandLink>
                 </apex:form>    

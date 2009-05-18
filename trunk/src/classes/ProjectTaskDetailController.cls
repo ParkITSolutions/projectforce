@@ -100,11 +100,13 @@ public class ProjectTaskDetailController {
 				
 				if(((TD.ProjectsAssignees__r).size() != 0) && (TD.ProjectsAssignees__r != null)){
 					taskDetail.HasAsignee = true;
+					taskDetail.CantAssignees=(TD.ProjectsAssignees__r).size();
 					List<ProjectAssignee> assignees = new List<ProjectAssignee>();
 					
 					for (ProjectAssignee__c item: TD.ProjectsAssignees__r) {
 						ProjectAssignee assignUser = new ProjectAssignee();
 						assignUser.setId(item.User__r.id);
+						assignUser.setAssigneeId(item.id);						
 						assignUser.setName(item.User__r.Name);
 						if (item.PercentDedicated__c == null) {
 							assignUser.setPercent(0);
@@ -122,6 +124,7 @@ public class ProjectTaskDetailController {
 				} else {
 					taskDetail.HasAsignee = false;
 					taskDetail.IsTaskOwner = false;
+					taskDetail.CantAssignees=0;
 				}
 				taskDetail.Name = TD.Name;
 				userPermissions.setProject(TD.Project__c);
@@ -214,6 +217,7 @@ public class ProjectTaskDetailController {
 	*/
 	public class ProjectAssignee {
 		String id;
+		String AssigneeId;
 		String name;
 		Integer percent;	
 		
@@ -227,10 +231,22 @@ public class ProjectTaskDetailController {
         /**
         *@param String
         */
-        public void setId (String id) {
-        	this.id = id;
+        public void setAssigneeId (String AssigneeId) {
+        	this.AssigneeId = AssigneeId;
+        }
+		/**
+		*@return String
+		*/
+		public String getAssigneeId () {
+        	return AssigneeId;
         }
         
+        /**
+        *@param String
+        */
+        public void setId (String id) {
+        	this.id = id;
+        }        
         /**
 		*@return String
 		*/
@@ -328,6 +344,19 @@ public class ProjectTaskDetailController {
 		return taskDetail;
 	}
 	
+	
+	/**
+	* Delete Attachment
+	*@void
+	*/
+	public void deleteAttach (){
+		String attachId = System.currentPageReference().getParameters().get('idAttach');
+		if(attachId != null && attachId != ''){
+			Attachment attach = [select Id from Attachment where Id =: attachId];
+			delete attach;
+		}		
+	}
+	
 	/**
 	* Inner class for Task Details
 	*/
@@ -352,6 +381,12 @@ public class ProjectTaskDetailController {
 			*/
 			public boolean HasAsignee { 
 				get; set; 
+			}
+			/**
+			* Cant Asignee
+			*/			
+			public integer CantAssignees{
+				 get; set; 	
 			}
 			
 			/**

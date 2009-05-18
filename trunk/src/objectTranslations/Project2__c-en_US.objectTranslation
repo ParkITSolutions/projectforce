@@ -8,6 +8,25 @@
         <value>Projects</value>
     </caseValues>
     <fields>
+        <help><!-- Open - Anyone can join. Anyone can see the Project
+
+Close - Administrator must invite users to join. Anyone can see the Project
+
+Private -  This Project will not appear in search. Membership is by invitation only. Only members can see the Project. --></help>
+        <label><!-- Access --></label>
+        <name>Access__c</name>
+    </fields>
+    <fields>
+        <help><!-- Set cheked to allow customer portal users. --></help>
+        <label><!-- Allow customer portal users --></label>
+        <name>AllowCustomerUsers__c</name>
+    </fields>
+    <fields>
+        <help><!-- Set cheked to allow partner portal users --></help>
+        <label><!-- Allow partner portal users --></label>
+        <name>AllowPartnerUsers__c</name>
+    </fields>
+    <fields>
         <label><!-- Description --></label>
         <name>Description__c</name>
     </fields>
