@@ -97,7 +97,9 @@ public class ProjectDetailAttachmentController {
 	            String ContentType = item.ContentType;
 	            String image = '';
 	            
-	            if (ContentType == null || ContentType == '') {
+	            system.debug( '##>' + ContentType );
+	            if (ContentType == null ) {
+	            system.debug( '#2>' + ContentType );
 	            	
 	            	// Using extension
 	            	Integer extPos = item.Name.lastIndexOf('.') + 1;

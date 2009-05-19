@@ -356,7 +356,14 @@ public class ProjectTaskDetailController {
 			delete attach;
 		}		
 	}
-	
+	public boolean getMaxAssignees(){
+				List <ProjectMember__c> AuxList = new List<ProjectMember__c>();
+				AuxList = [ select Id from ProjectMember__c where Project__c =: taskDetail.ProjectId  and User__r.IsActive != false];
+				if (taskDetail.CantAssignees==AuxList.size()){
+					return true;
+				}else return false;
+			
+	}
 	/**
 	* Inner class for Task Details
 	*/
@@ -389,6 +396,9 @@ public class ProjectTaskDetailController {
 				 get; set; 	
 			}
 			
+			
+			
+
 			/**
 			* Current Viewer is the task owner
 			*/

@@ -14,7 +14,10 @@ public class ProjectDetailControllerTest {
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
     	System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.Id );
-    	ProjectDetailController pD = new ProjectDetailController();
+    	
+    	ApexPages.StandardController stdCtrl;
+    	ProjectDetailController pD = new ProjectDetailController( stdCtrl );
+    	ProjectDetailController pD2 = new ProjectDetailController();
     	
     	pD.setTeamIdParam( GenerateEnvironmentTest.project.Id );
     	pd.getTeamIdParam();

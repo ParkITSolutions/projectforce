@@ -29,7 +29,7 @@
     	po.setProjects(po.getProjects());
     	po.getProfileExist();
     	po.getPaginator();
-    	
+    	po.getLetterFilter();
     	
     	ProjectOverviewController.Letters ll = new ProjectOverviewController.Letters();
     	ll.setContainSites(1);
