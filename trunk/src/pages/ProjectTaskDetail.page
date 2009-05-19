@@ -32,13 +32,16 @@
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskList.js')}" />
  
      <script>
+             
          document.observe("dom:loaded", function(){
                 trunkAllTitles();
                 setTimeout( "readPortalCSSRules()", 300 );
-                setTimeout( "$$('.pbBottomButtons')[0].remove()", 150);
+                setTimeout( "$$('.pbBottomButtons')[0].remove()", 150);           
             }
-        )
-        
+
+        );
+
+
         var currentTeam = '{!Task.ProjectId}';
      </script>
 
@@ -193,30 +196,32 @@
                                       Assigned To
                                   </td>
                               <td class="dataCol">
-                                  <div class="DistincLink">
-                                        <a href="javascript:;" onclick="createOverlay('','addAssigneeOverlay','200','relocateOverlay()');" >
-                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add assignee" title="Add assignee" />
-                                            New assignee
-                                        </a>
-                                  </div>
-                                  <apex:outputpanel rendered="{!Task.HasAsignee}" id="assList">
-                                      <table class="assignedToTable">
-                                          <apex:repeat value="{!Task.Asignee}" var="item">
-                                              <tr>
-                                                <td><a href="/{!item.Id}">{!item.Name}</a></td>
-                                                <td class="percent">{!item.percent}%</td>
-                                                <td>
-                                                	<apex:outputpanel rendered="{!IF(Task.CantAssignees > 1, true, false)}">
-                                                		<a  class="notassigned" value="{!item.AssigneeId}" onclick="showDeleteAssigneeEvent('{!item.AssigneeId}')" href="javascript:;">Remove</a>
-													</apex:outputpanel>
-                                                </td>                                                 
-                                              </tr>                                      
-                                          </apex:repeat>
-                                      </table>
-                                  </apex:outputpanel>
-                                  <apex:outputpanel rendered="{!IF(!Task.HasAsignee,true,false)}" >
-                                      Nobody Asigned to this task.
-                                  </apex:outputpanel>
+                                  <apex:outputpanel rendered="{!NOT(MaxAssignees)}">
+	                                  <div class="DistincLink">
+	                                        <a href="javascript:;" onclick="createOverlay('','addAssigneeOverlay','200','relocateOverlay()');" >
+	                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add assignee" title="Add assignee" />
+	                                            New assignee
+	                                        </a>
+	                                  </div>
+	                               </apex:outputpanel>
+	                               <apex:outputpanel rendered="{!Task.HasAsignee}" id="assList">
+	                                      <table class="assignedToTable">
+	                                          <apex:repeat value="{!Task.Asignee}" var="item">
+	                                              <tr>
+	                                                <td><a href="/{!item.Id}">{!item.Name}</a></td>
+	                                                <td class="percent">{!item.percent}%</td>
+	                                                <td>
+	                                                	<apex:outputpanel rendered="{!IF(Task.CantAssignees > 1, true, false)}">
+	                                                		<a  class="notassigned" value="{!item.AssigneeId}" onclick="showDeleteAssigneeEvent('{!item.AssigneeId}')" href="javascript:;">Remove</a>
+														</apex:outputpanel>
+	                                                </td>                                                 
+	                                              </tr>                                      
+	                                          </apex:repeat>
+	                                      </table>
+	                                </apex:outputpanel>
+	                                <apex:outputpanel rendered="{!IF(!Task.HasAsignee,true,false)}" >
+	                                      Nobody Asigned to this task.
+	                                </apex:outputpanel>
                               </td>
                            </tr>
                         </tbody>                   

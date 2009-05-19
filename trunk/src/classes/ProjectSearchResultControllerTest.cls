@@ -1,6 +1,7 @@
 /**
 *@author Miguel Soares @ 04/14/2009
 */
+
 @isTest private class ProjectSearchResultControllerTest {
 	
 	/**
@@ -19,10 +20,11 @@
 	    fixedSearchResultsList.add(GenerateEnvironmentTest.project.Id); 
 	    Test.setFixedSearchResults(fixedSearchResultsList);
 
-            
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.Id );            
         ProjectSearchResultController team = new ProjectSearchResultController();
         
-        team.setCriteria('Foo');
+        team.setCriteria('ta');
+        team.setTeamId(  GenerateEnvironmentTest.project.Id );
         team.search();
         String criteria = team.getCriteria();
                         
@@ -35,6 +37,7 @@
         String matches = srch.getMatches();
         
         team.setTeamId(tm.Project__c);
+        team.getTeamId();
         team.genCntPagination();
         team.nextPage();
         team.prevPage();
@@ -54,6 +57,8 @@
         team.setJumpPage(1);
         team.JumpToPage();
 
+		team.getSearchResultList();
+		
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     }     	

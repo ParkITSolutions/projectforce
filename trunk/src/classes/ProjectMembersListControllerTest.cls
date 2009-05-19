@@ -41,14 +41,14 @@
             member.getMemberImg();
             member.getCompany();
             member.getTitle();
-            //member.getProfile();
-            //member.getRole();
+            member.setRole( 'Admin');
+            member.getRole();
             member.setUserId(GenerateEnvironmentTest.us.Id );
             member.setCompany('');
             member.setName('');
             member.setMemberImg(GenerateEnvironmentTest.us.Id );
-            //member.setProfile('');
-            //member.setRole('');
+            member.getProfile();
+            member.getProjectMemberId();
             member.setTitle('');
             member.setAdmin(true);
             member.getAdmin();
@@ -142,6 +142,15 @@
             System.currentPageReference().getParameters().put( 'sb', 'Profile__r.Name' );
             team.sortList(); // 1 SOQL
 
+            team.setSortBy('User__r.Name');
+            team.getSortBy();
+            team.setSortBy('User__r.CompanyName');
+            team.getSortBy();
+            team.setSortBy('User__r.Title');
+            team.getSortBy();
+            team.setSortBy('Profile__r.Name');
+            team.getSortBy();
+
             
             // Methods WITH SOQL queries
             team.getAdminCount(); // 1 SOQL
@@ -169,6 +178,17 @@
             
             team.removeMember(); // 1 SOQL
             
+			team.setError( true );
+			team.getFinish();
+			team.setFinish( true );
+			team.resetErrorAndFinish();
+			team.setProjectId( GenerateEnvironmentTest.project.id );
+			team.setIdProject( GenerateEnvironmentTest.project.id );
+			team.getProjectId();
+			team.joinProject();
+ 			team.unjoinProject();
+ 			team.isLastMemberAdmin();
+ 			team.getRemoveMemberId();
             //////////////////////////////
             //      92 SOQL AND 74%     //
             //////////////////////////////

@@ -75,7 +75,8 @@ public class ProjectDetailMilestoneController {
 	*@return UserPermissions
 	*/
 	public UserPermissions getUserPermissions () {
-		//Refresh user permissions
+		//Refresh user permissions 
+		// kjkkjk
 		genPermissions();
 		return userPermissions;
 	}

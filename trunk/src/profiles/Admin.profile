@@ -99,7 +99,15 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectOverlayDeleteAssigneeTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectOverlayNewAssigneeController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProjectOverlayNewAssigneeTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -232,6 +240,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>TaskQuickAccessController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TaskQuickAccessControllerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>

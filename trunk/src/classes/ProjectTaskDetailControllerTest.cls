@@ -13,8 +13,8 @@
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
-    	
-        ProjectTaskDetailController taskDetailController = new ProjectTaskDetailController();
+    	ApexPages.StandardController stdStrl;
+        ProjectTaskDetailController taskDetailController = new ProjectTaskDetailController( stdStrl );
         taskDetailController.setTaskId(GenerateEnvironmentTest.task.Id);
         ProjectTask__c newTask = [select id from ProjectTask__c limit 1];        
         taskDetailController.getTask(newTask.Id);

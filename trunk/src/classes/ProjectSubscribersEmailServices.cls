@@ -73,14 +73,15 @@ public class ProjectSubscribersEmailServices {
         List<String> lstUserId = new  List<String>();   
 
         List<ProjectAssignee__c> lstPA = new  List<ProjectAssignee__c>();    
-        lstPA = [ SELECT Id, Project__c, Project__r.Name, User__r.Name, User__c, 
-        ProjectTask__c, ProjectTask__r.Name, ProjectTask__r.Description__c, ProjectTask__r.EndDate__c, ProjectTask__r.StartDate__c, ProjectTask__r.Priority__c FROM ProjectAssignee__c WHERE Id in : lstPAId ];
+        lstPA = [ SELECT Id, Project__c, Project__r.Name, User__r.Name, User__c, ProjectTask__c, ProjectTask__r.Name, ProjectTask__r.Description__c, ProjectTask__r.EndDate__c, ProjectTask__r.StartDate__c, ProjectTask__r.Priority__c FROM ProjectAssignee__c WHERE Id in : lstPAId ];
      
         string pId='';
-        List<ProjectTask__c> ptL = [SELECT Project__c from ProjectTask__c where id=:lstPA[0].ProjectTask__c];
-       	if (ptL.size() > 0) {
-       		pId=ptL[0].Project__c;
-       	}
+        List<ProjectTask__c> ptL = new List<ProjectTask__c>();
+        if( lstPA.size() > 0 ){
+	        ptL = [SELECT Project__c from ProjectTask__c where id =: lstPA[0].ProjectTask__c];
+	       	if (ptL.size() > 0) 
+	       		pId=ptL[0].Project__c;
+        }
 
         for(ProjectAssignee__c proj : lstPA){
 	        //Sub:{Task Name} has been assigned to you

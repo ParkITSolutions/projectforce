@@ -23,7 +23,8 @@
             team.getIsAdministrator();
             team.getTeamspaceMembersIds();
             team.getAlready();
-
+			team.getInitAddMembers();
+			
             team.getNamespace();
             Project2__c t = GenerateEnvironmentTest.project;
             team.setIdTeam(t.Id);
@@ -37,6 +38,7 @@
             String teamId = team.getTeamId();
             team.getIsTeamAdmin();
             String typeList = team.getTypeList();
+            team.getUserPermissions();
             
             ProjectMember__c m = GenerateEnvironmentTest.member;
             ProjectMembersWidgetController.TeamMember teamMember= new ProjectMembersWidgetController.TeamMember(m, null);
@@ -45,10 +47,20 @@
             String yahoo = teamMember.getYahoo();
             String skype = teamMember.getSkype();
             String status = teamMember.getStatus();
-            String pic = teamMember.getImage(); 
+            String pic = teamMember.getImage();
+            teamMember.getId(); 
+            teamMember.getIsPrivate(); 
+            teamMember.getProfile(); 
             
             ProjectMembersWidgetController.Member member = new ProjectMembersWidgetController.Member();
             member = team.getNewMemberVars();
+            member.getColleagueNames();
+            member.getProfileId();
+            member.setProfileId('');
+            member.getMessage();
+            member.setMessage('');
+            member.getTeamRole();
+            member.setTeamRole('');
             /*            
             Profile p = [select id from profile where name='System Administrator'];
             User newUser1 = new User(alias = 'test1', email='test1@testorg.com', 

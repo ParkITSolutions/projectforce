@@ -89,8 +89,11 @@ public with sharing class ProjectSearchResultController {
 		
 		List<SearchResult> tempResultList = new List<SearchResult>();	
 		String namespace = (ProjectUtil.getNamespace() != '' ) ? ProjectUtil.getNamespace() + '__' : '';		
- 
+
+		System.debug( '#>' + teamId );
+
  		if(teamId != null){ //Searching project TASKS	
+		System.debug( '2#>' + teamId );
 
 			String sosl = 'FIND \'' + criteria + '*\' IN ALL FIELDS RETURNING ' + namespace + 'ProjectTask__c (Id, Name, Description__c, Project__c where Project__c = \'' + teamId + '\')';
 			List<List<SObject>> resultList = search.query(sosl);
