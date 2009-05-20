@@ -21,8 +21,8 @@ trigger ProjectTaskAfterInsert on ProjectTask__c (after insert) {
 			    p.AccessLevel = 'Read';
 			    p.RowCause = 'Manual';
 			    tasks.add(p);
+
 			}
-			
 			insert tasks;
 			
 		}

@@ -605,12 +605,14 @@ public with sharing class ProjectTaskListController {
             
             if(resultTaskList[i].ProjectsAssignees__r.size() > 0)
             	TaskDetail.canEditAndDelete = (resultTaskList[i].ProjectsAssignees__r[0].User__c == USERID ) ? true : false;
-
+			
+			System.debug( '[1>' + resultTaskList[i].PercentCompleted__c );
             if(resultTaskList[i].PercentCompleted__c!=null){
                 TaskDetail.Percent_Completed= (resultTaskList[i].PercentCompleted__c).intValue();
             }else{
                 TaskDetail.Percent_Completed= 0;
             }
+			System.debug( '[2>' + resultTaskList[i].PercentCompleted__c );
             
             if(resultTaskList[i].EndDate__c < System.today()){
                 TaskDetail.comparoFecha=true;
@@ -687,10 +689,11 @@ public with sharing class ProjectTaskListController {
     *Set task to complete
     *@param String idTaskToComplete
     */
-    public void setIdTaskToComplete (String idTaskToComplete) {
-        this.idTaskToComplete = idTaskToComplete;   
-    }
-    
+    public void setIdTaskToComplete (String i) {
+    	System.debug( '[1]' + this.idTaskToComplete );
+        this.idTaskToComplete = i;   
+    	System.debug( '[2]' + this.idTaskToComplete );
+    }    
     
     /**
     * Mark Complete
@@ -698,16 +701,30 @@ public with sharing class ProjectTaskListController {
     public void markComplete () {
         List<String> idsUpdate = new List<String>();
         
+            System.debug( 'Jojo' + idTaskToComplete );
+            
         if (idTaskToComplete != '' && idTaskToComplete != null) {
-            idsUpdate = idTaskToComplete.split(':'); 
+            idsUpdate = getIdTaskToComplete().split(':'); 
+            System.debug( 'JajAja' );
         }
         
+        String po = 'a0730000003cslZAAQ:a0730000003cskcAAA:a0730000003cscOAAQ';
+
+        			System.debug( '[2*]   ' + idsUpdate.size()); 
+        			System.debug( '[2**]  ' + (String)getIdTaskToComplete());
+        			String popo =  this.IdTaskToComplete; 
+        			System.debug( '[2***] ' + popo); 
+        			System.debug( '[2****]' +getIdTaskToComplete().split(':').size()); 
+        			System.debug( '[2*****]' + po.split(':').size()); 
+        			
         if(idsUpdate.size()>0){
             List<ProjectTask__c> tasksUpdate = [select (Select User__c from ProjectsAssignees__r ), id from ProjectTask__c where id in: idsUpdate];
-            
+             
+        			System.debug( '[3]' + tasksUpdate.size());
             if (tasksUpdate.size() > 0) {
                 for (ProjectTask__c iterTask : tasksUpdate) {
-                    Boolean cantEditAndDelete = false;
+        			System.debug( '[4]' );
+                    Boolean cantEditAndDelete = false; 
                     Integer countAssignee = 0;
                     while (!cantEditAndDelete && countAssignee < iterTask.ProjectsAssignees__r.size()) {
                         if(iterTask.ProjectsAssignees__r[countAssignee].User__c != USERID) {
@@ -716,15 +733,15 @@ public with sharing class ProjectTaskListController {
                             countAssignee++;
                         }
                     }
-                    
+        			System.debug( '[5]' +( !cantEditAndDelete || editDeletePer || iterTask.createdById == USERID)  );                    
                     if(!cantEditAndDelete || editDeletePer || iterTask.createdById == USERID){
                         iterTask.PercentCompleted__c = 100;
                     }else {
                         throw new CustomException('Insufficient Privileges');   
-                    }
-                        
+                    }                        
                 }   
                 update tasksUpdate;
+
             }else{
                 throw new CustomException('Insufficient Privileges');
             }

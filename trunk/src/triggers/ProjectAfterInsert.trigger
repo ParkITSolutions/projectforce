@@ -71,12 +71,12 @@ trigger ProjectAfterInsert on Project2__c bulk (after insert) {
                 /* ### Create Queues ###*/
                     
                 // Create DiscussionForum Queue
-                Group gdqw = new Group();
-                gdqw.Type = 'Queue';
-                gdqw.Name = 'Project' + team.Id;
-                insert gdqw;
+                Group projectGroup = new Group();
+                projectGroup.Type = 'Queue';
+                projectGroup.Name = 'Project' + team.Id;
+                insert projectGroup;
                 
-                String pQId = gdqw.id;
+                String pQId = projectGroup.id;
                                 
 		        // ### Allow SObjects to be managed by recently created queues ###
 		        List<QueueSobject> sobjectsQueueAllowed = new List<QueueSobject>();
@@ -103,10 +103,12 @@ trigger ProjectAfterInsert on Project2__c bulk (after insert) {
                 
                 Project2__c tempTeam = [select ownerId, Id, Name from Project2__c where Id =: team.Id limit 1];
                 tempTeam.ownerId = pQId;
+                
                 // We set this to true becuase we dont want all the minifeed triggers and update 
                 // triggers firing off when all we want to do is update the owner id.
                 ProjectUtil.currentlyExeTrigger = true;
-                upsert tempTeam;                
+                upsert tempTeam;
+                                
                 ProjectUtil.currentlyExeTrigger = false;
                         
                 // Create __Shared object for team
@@ -128,7 +130,9 @@ trigger ProjectAfterInsert on Project2__c bulk (after insert) {
         } finally {
             ProjectUtil.currentlyExeTrigger = false;
         }
+        
     	ProjectUtil.currentlyExeTrigger = false;
+    
     }else {
         ProjectProfile__c defaultProfile = [select Id from ProjectProfile__c where Name = 'Project Administrator' limit 1];
         for (Project2__c team : Trigger.new) {

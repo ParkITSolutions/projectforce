@@ -428,7 +428,7 @@
                 <apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
                          <apex:commandLink action="{!markComplete}" oncomplete="fadeUpdating();" rerender="auxProjectTaskListPanel" styleclass="blackbutton" onclick="bulkTaskCompleted('{!$Component.auxInputTextBotton}');">
                             <span>Mark Complete</span>  
-                        </apex:commandLink>
+                        </apex:commandLink> 
                         <apex:inputText id="auxInputTextBotton" style="display:none;" value="{!idTaskToComplete}" />
                  </apex:outputpanel>
                 <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">

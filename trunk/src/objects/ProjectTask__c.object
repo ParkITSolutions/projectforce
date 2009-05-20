@@ -14,8 +14,8 @@
         <fullName>Duration__c</fullName>
         <description>Duration</description>
         <label>Duration</label>
-        <precision>18</precision>
-        <scale>6</scale>
+        <precision>13</precision>
+        <scale>1</scale>
         <type>Number</type>
     </fields>
     <fields>
@@ -64,8 +64,8 @@
         <fullName>PercentCompleted__c</fullName>
         <description>PercentCompleted</description>
         <label>Percent Completed</label>
-        <precision>18</precision>
-        <scale>2</scale>
+        <precision>17</precision>
+        <scale>1</scale>
         <type>Percent</type>
     </fields>
     <fields>

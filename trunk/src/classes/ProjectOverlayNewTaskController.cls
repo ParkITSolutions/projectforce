@@ -121,6 +121,10 @@ public class ProjectOverlayNewTaskController {
    	*@void
    	*/
    	public void insertTask (){ 
+   		
+   		//Read Permissions
+   		genPermissions();
+   		
    		if(!userPermissions.getCanCreate()){
         	throw new CustomException('Insufficient Privileges');
    		}else{	
@@ -140,5 +144,5 @@ public class ProjectOverlayNewTaskController {
 			Assign = new ProjectAssignee__c();
    		}
    	}
-   	class CustomException extends Exception{}
+
 }
