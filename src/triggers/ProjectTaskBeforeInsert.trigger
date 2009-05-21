@@ -17,7 +17,6 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 				String queueId = projectMap.get('Project' + nTask.Project__c);
 				if(queueId != null){
                     nTask.OwnerId = queueId;
-					System.debug('HERE: ' + queueId);
 				}			
 			}
 		}

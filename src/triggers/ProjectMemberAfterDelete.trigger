@@ -7,6 +7,11 @@ trigger ProjectMemberAfterDelete on ProjectMember__c (after delete) {
 		projectSharingNames.add('ProjectSharing' + tm.Project__c);
 	}
 	
+
+	
+	
+	
+	
 	List<Group> groupProjectSharing = [select g.Id, g.Name from Group g where g.Name in:projectSharingNames];
 	
 	List<Project2__c> projectList = [select t.PublicProfile__c ,t.NewMemberProfile__c, t.Id, t.Name from Project2__c t where t.Id in: idsProject];
@@ -25,7 +30,23 @@ trigger ProjectMemberAfterDelete on ProjectMember__c (after delete) {
 		userIds.add(tm.User__c);
 	}
 	
+//Delete subscription
+	string pId=idsProject[0];
+	List<ProjectSubscription__c> unsubscribe=[select id,
+							ProjectTaskAssignedToMe__c,
+							ProjectTaskAssignToMeChanged__c,
+							ProjectTaskChanged__c,
+							ProjectTaskDeleted__c,
+							Project__c,
+							User__c
+						    from ProjectSubscription__c where User__c in :userIds and Project__c =: pId ];
+	if ( unsubscribe.size()>0)	{
+		delete  unsubscribe;
+	}
 	
+					    
+						    
+						    
 	List<Group> ManageQueueList = [ select Id, Name From Group where Name in: groupsNames and Type = 'Queue' order by Name];
 	List<GroupMember> gmList = [select Id, UserOrGroupId, GroupId from GroupMember where UserOrGroupId in:userIds and GroupId in: ManageQueueList];
 	List<GroupMember> gmAllList = [select gm.Id, UserOrGroupId, GroupId from GroupMember gm where gm.UserOrGroupId in: userIds];

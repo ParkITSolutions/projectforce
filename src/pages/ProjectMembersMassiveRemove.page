@@ -6,7 +6,7 @@
 	<div id="massiveRemoveMemberOverlay" style="display:none;" class="overlayForm">	
 		<!-- Overlay Title -->
 		<div class="overlayTitleContent">
-			<div class="overlayTitle">Confirmation</div>
+			<div class="overlayTitle">Confirmation-</div>
 			<div class="overlayCloseEvent">
 				<a href="Javascript:;" onclick="modal.close();">
 					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />

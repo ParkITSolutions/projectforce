@@ -142,6 +142,9 @@ public class ProjectOverlayNewMilestoneController {
         insert Assign;
         
         newTask = new ProjectTask__c();
+        
+        //To reset the selectList
+		projectMember.User__c=null;
     }
     
     

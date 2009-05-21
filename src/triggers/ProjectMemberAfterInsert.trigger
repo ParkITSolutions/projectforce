@@ -18,7 +18,6 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert)
             for (ProjectMember__c pm : Trigger.new) {
                 groupsNames.add('Project' + pm.Project__c);
                 groupsNames.add('ProjectSharing' + pm.Project__c);
-
                 idsTeam.add(pm.Project__c);
                 idsProfile.add(pm.Profile__c);    
             }
@@ -79,10 +78,12 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert)
                 
                 if (findProfile) {
         
-                    if(tp.ManageProjectTasks__c){
+                    if(tp.ManageProjectTasks__c || tp.CreateProjectTasks__c){
+                        
                         String queueName = 'Project' + tm.Project__c;
                         Boolean findGroup = false;
                         Integer countGroup = 0;
+                        
                         while (!findGroup && countGroup < ManageQueueList.size()) {
                             if (ManageQueueList[countGroup].Name == queueName) {
                                 findGroup = true;
@@ -111,7 +112,7 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert)
             }   
         } 
         finally{
+    		ProjectUtil.currentlyExeTrigger = false;
         }
-    	ProjectUtil.currentlyExeTrigger = false;
     }
 }

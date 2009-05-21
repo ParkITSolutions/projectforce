@@ -33,7 +33,6 @@
 		}
     </style>
     
-    
     <!-- ProjectTaskList JS -->
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskList.js')}"/>
     
@@ -61,6 +60,7 @@
         The selected tasks have been marked complete
     </div>
     <!-- Projects overlay new task (quick task)  -->
+    
     <!-- Header -->
     <apex:composition template="HeaderTemplate">
         <apex:define name="moduleId"><apex:variable var="moduleId" value="headerProject"/></apex:define>
@@ -70,6 +70,7 @@
             <c:Search module="project" label="Tasks" projectId="{!ProjectId}"/>
         </apex:define>
     </apex:composition>
+    
     <!-- Main Content Div -->
     <div class="main_content_projectList"> 
         <!-- BreadCrumb and buttons -->     
@@ -80,6 +81,7 @@
 
              <apex:messages id="taskMessages"/>
         </div>
+        
         <!-- Holder -->  
         <div class="informationPanel clear" id="infoToUser" style="display:none;"></div>
         <div id='holder' class="holder" style="position:relative;overflow:hidden;">
@@ -104,7 +106,7 @@
 
 				            <apex:outputpanel styleClass="buttons"  layout="block" style="width:450px;" >
 				                <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
-				                    <a class="blackbutton"  onclick="fixedModalNewTask.open();hideSelect();">
+				                    <a class="blackbutton"  onclick="fixedModalNewTask.open(); hideSelect();">
 				                        <span>New Task</span>
 				                    </a>
 				                </apex:outputpanel>
@@ -262,7 +264,7 @@
                                         <apex:outputpanel rendered="{!IF(sortBy == 'completed',true,false)}">
                                             <apex:outputpanel rendered="{!sortByDesc}">
                                                 <img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
-                                            </apex:outputpanel>
+                                            </apex:outputpanel> 
                                             <apex:outputpanel rendered="{!NOT(sortByDesc)}">
                                                 <img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
                                             </apex:outputpanel>
@@ -426,10 +428,9 @@
                     <a class="blackbutton"  onclick="fixedModalNewMilestone.open();hideSelect();"><span>New Milestone</span></a>
                 </apex:outputpanel>
                 <apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
-                         <apex:commandLink action="{!markComplete}" oncomplete="fadeUpdating();" rerender="auxProjectTaskListPanel" styleclass="blackbutton" onclick="bulkTaskCompleted('{!$Component.auxInputTextBotton}');">
+                         <apex:commandLink action="{!markComplete}" oncomplete="fadeUpdating();" rerender="auxProjectTaskListPanel" styleclass="blackbutton" onclick="bulkTaskCompleted('{!$Component.auxInputTextTop}');">
                             <span>Mark Complete</span>  
                         </apex:commandLink> 
-                        <apex:inputText id="auxInputTextBotton" style="display:none;" value="{!idTaskToComplete}" />
                  </apex:outputpanel>
                 <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
                     <a class="blackbutton" href="/apex/ProjectTimeLine?id={!ProjectId}">

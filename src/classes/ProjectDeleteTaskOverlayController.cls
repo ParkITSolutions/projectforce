@@ -64,7 +64,7 @@ public class ProjectDeleteTaskOverlayController {
         }
        
         if(myIds.size()>0){
-            List<ProjectTask__c> tasksToDelete = [select (Select User__c from ProjectsAssignees__r ), id, Project__r.Id from ProjectTask__c where id in: myIds];
+            List<ProjectTask__c> tasksToDelete = [select (Select User__c from ProjectsAssignees__r ), id, Project__r.Id,createdById from ProjectTask__c where id in: myIds];
       		projectId = tasksToDelete[0].Project__r.Id;
       		genPermissions();
             if (tasksToDelete.size() > 0){
