@@ -76,7 +76,7 @@
 	</style>
 	
 	<apex:form >
-		<apex:actionFunction name="reloadMemberList" action="{!refresh}" rerender="headerBtnContainer, membersList" oncomplete="$('paginationOverlay').hide();" />
+		<apex:actionFunction name="reloadMemberList" action="{!refresh}" rerender="headForm, membersList" oncomplete="$('paginationOverlay').hide();" />
 	</apex:form>
 	<apex:form >
 		<apex:actionFunction name="reloadButtons" action="{!refresh}" rerender="headForm" />
@@ -139,7 +139,7 @@
 					<td align="center">
 						<div id="btnsDiv">
 							<apex:form id="headForm"  >
-								<apex:outputpanel id="headerBtnContainer" rendered="{!IF(userPermissions.canManage,true,false)}" >
+								<apex:outputpanel id="headerBtnContainer" rendered="{!userPermissions.canManage}" >
 									<a onclick="createOverlay('','inviteTeam','','showSelects()','');relocateOverlay();"
 										href="javascript:;" class="blackbutton"><span>New</span></a>
 									<a href="javascript:;" class="blackbutton"
@@ -233,7 +233,7 @@
 					</apex:outputpanel>
 				</center>
 				<apex:form >
-				<table border="0" cellspacing="0" cellpadding="2px" class="pageList">
+				<table id="memberListTable" border="0" cellspacing="0" cellpadding="2px" class="pageList">
 					<thead>
 						<tr>
 							<td width="3%"><apex:outputpanel rendered="{!userPermissions.canManage}">
@@ -243,7 +243,10 @@
 							<td width="9%"><apex:outputpanel rendered="{!userPermissions.canManage}" style="font-weight:bold;">Action</apex:outputpanel>
 							</td>
 							<td width="29%" colspan="2"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
-								value="Name" rerender="membersList">
+								value="Name" 
+								onclick="$('paginationOverlay').show();setDims('holder', 'paginationOverlay');"
+								oncomplete="$('paginationOverlay').hide();"
+								rerender="membersList">
 								<apex:param name="sb" value="User__r.Name" />
 							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'name',true,false)}">
 								<apex:outputpanel rendered="{!sortByDesc}">
@@ -256,7 +259,10 @@
 								</apex:outputpanel>
 							</apex:outputpanel></td>
 							<td width="16%"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
-								value="Company" rerender="membersList">
+								value="Company" 
+								onclick="$('paginationOverlay').show();setDims('holder', 'paginationOverlay');"
+								oncomplete="$('paginationOverlay').hide();"								
+								rerender="membersList">
 								<apex:param name="sb" value="User__r.CompanyName" />
 							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'company',true,false)}">
 								<apex:outputpanel rendered="{!sortByDesc}">
@@ -269,7 +275,10 @@
 								</apex:outputpanel>
 							</apex:outputpanel></td>
 							<td width="15%"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
-								value="Title" rerender="membersList">
+								value="Title" 
+								onclick="$('paginationOverlay').show();setDims('holder', 'paginationOverlay');"
+								oncomplete="$('paginationOverlay').hide();"								
+								rerender="membersList">
 								<apex:param name="sb" value="User__r.Title" />
 							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'title',true,false)}">
 								<apex:outputpanel rendered="{!sortByDesc}">
@@ -283,6 +292,8 @@
 							</apex:outputpanel></td>
 							<td width="16%"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
 								value="{!$ObjectType.Project2__c.label} Profile"
+								onclick="$('paginationOverlay').show();setDims('holder', 'paginationOverlay');"
+								oncomplete="$('paginationOverlay').hide();"								
 								rerender="membersList">
 								<apex:param name="sb" value="Profile__r.Name" />
 							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'profile',true,false)}">

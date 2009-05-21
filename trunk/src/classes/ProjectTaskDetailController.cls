@@ -75,6 +75,8 @@ public class ProjectTaskDetailController {
 			throw e;
 		}
 	}
+	
+	
 	/*
 	public String getIdDeletes(){
 		return idDeletes;	

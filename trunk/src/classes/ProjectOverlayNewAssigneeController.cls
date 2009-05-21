@@ -130,6 +130,9 @@ public class ProjectOverlayNewAssigneeController {
 		newAss.User__c = (String)this.memberSelected;
 		newAss.PercentDedicated__c = this.PercentSelected;
 		insert newAss;
+		
+		//reset percent to 0
+		this.PercentSelected = 0;
 				
 	}
 	

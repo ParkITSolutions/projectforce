@@ -44,6 +44,7 @@ public with sharing class ProjectTaskListController {
     public ProjectTaskListController(){
         genPermissions();   
         editDeletePer = userPermissions.getCanManage();
+        
         if(filter != null) {
         	if(filter == 'all'){
         		option = 'all';
@@ -51,6 +52,7 @@ public with sharing class ProjectTaskListController {
         		option = 'allMilestones';
         	}
         }
+        
         sortBy = 'EndDate__c';
         loadProject();
 		refreshTaskList();
@@ -420,50 +422,49 @@ public with sharing class ProjectTaskListController {
         
         if (sortByDesc) {
             if (sortBy == 'Id__c') {
-                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID  order by Id__c desc];
+                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID  order by Id__c desc];
             }else if (sortBy == 'Milestone__c') {
-                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID  order by Milestone__c desc];
+                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID  order by Milestone__c desc];
             }else if (sortBy == 'Priority__c') {
-                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID];               
+                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID];               
             }else if (sortBy == 'Name') {
-                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c  From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID order by Name desc];               
+                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c  From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID order by Name desc];               
             }else if (sortBy == 'Status__c') {
-                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c  From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID order by Status__c desc];               
+                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c  From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID order by Status__c desc];               
             }else if (sortBy == 'User__c.Name') {// This one just does not work.  AssignTo cant be sorted on since it can be more then one
-                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID order by Name desc];               
+                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID order by Name desc];               
             }else if (sortBy == 'Percent_Completed__c') {
-                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c,  p.Status__c, p.Id__c, p.OwnerId, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c  From ProjectTask__c p where Project__c =: PROJECTID order by PercentCompleted__c desc];                                     
+                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById,  p.Status__c, p.Id__c, p.OwnerId, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c  From ProjectTask__c p where Project__c =: PROJECTID order by PercentCompleted__c desc];                                     
             }else if (sortBy == 'Duration__c') {
-                resultTaskList = [Select  p.Project__c, p.Priority__c, p.PercentCompleted__c, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c  From ProjectTask__c p where Project__c =: PROJECTID order by Duration__c desc];                  
+                resultTaskList = [Select  p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c  From ProjectTask__c p where Project__c =: PROJECTID order by Duration__c desc];                  
             }else if (sortBy == 'EndDate__c') {
-                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c  From ProjectTask__c p where Project__c =: PROJECTID order by EndDate__c desc];             
+                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c  From ProjectTask__c p where Project__c =: PROJECTID order by EndDate__c desc];             
            	}else if (sortBy == 'Sprint__c') {
-                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c  From ProjectTask__c p where Project__c =: PROJECTID order by Sprint__c desc];             
+                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c  From ProjectTask__c p where Project__c =: PROJECTID order by Sprint__c desc];             
            	}
-        }
-        else {
+        } else {
             if (sortBy == 'Id__c') {
-                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID  order by Id__c asc];
+                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID  order by Id__c asc];
             }else if (sortBy == 'Milestone__c') {
-                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c  From ProjectsAssignees__r),  p.Description__c From ProjectTask__c p where Project__c =: PROJECTID order by Milestone__c asc];                
+                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c  From ProjectsAssignees__r),  p.Description__c From ProjectTask__c p where Project__c =: PROJECTID order by Milestone__c asc];                
             }else if (sortBy == 'Priority__c') {
-                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name,  User__c From ProjectsAssignees__r), p.Description__c  From ProjectTask__c p where Project__c =: PROJECTID order by Name asc];
+                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name,  User__c From ProjectsAssignees__r), p.Description__c  From ProjectTask__c p where Project__c =: PROJECTID order by Name asc];
             }else if (sortBy == 'Name') {
-                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c  From ProjectTask__c p where Project__c =: PROJECTID order by Name asc];                
+                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c  From ProjectTask__c p where Project__c =: PROJECTID order by Name asc];                
             }else if (sortBy == 'Status__c') {
-                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c  From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID order by Status__c asc];               
+                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c  From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID order by Status__c asc];               
             }else if (sortBy == 'User__c.Name') {
-                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c  From ProjectTask__c p where Project__r.Id =: PROJECTID order by Name asc];                                                        
+                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c  From ProjectTask__c p where Project__r.Id =: PROJECTID order by Name asc];                                                        
             }else if (sortBy == 'Percent_Completed__c') {
-                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID order by PercentCompleted__c asc];                 
+                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID order by PercentCompleted__c asc];                 
             }else if (sortBy == 'Duration__c') {
-                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c  From ProjectTask__c p where Project__c =: PROJECTID order by Duration__c asc];               
+                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c  From ProjectTask__c p where Project__c =: PROJECTID order by Duration__c asc];               
             }else if (sortBy == 'EndDate__c') {
-                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID order by EndDate__c asc];              
+                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID order by EndDate__c asc];              
             }else if (sortBy == 'Sprint__c') {
-                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID order by Sprint__c asc];              
+                resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID order by Sprint__c asc];              
             }           
-        }                
+        }               
         
         // Sorting by priority or assignee name can't be implemented in the SOQL query
         // and require a bit of tricky
@@ -566,6 +567,7 @@ public with sharing class ProjectTaskListController {
     * Get sort list option
     */
     public void filterTaskList (List<ProjectTask__c> resultTaskList) {
+        
         List<TaskDetails> td = new List<TaskDetails>();
         List<TaskDetails> tdoTask = new List<TaskDetails>();
         List<TaskDetails> tdoMile = new List<TaskDetails>();
@@ -601,7 +603,8 @@ public with sharing class ProjectTaskListController {
             TaskDetail.status = resultTaskList[i].status__c;
             TaskDetail.autoId = resultTaskList[i].id__c;
             TaskDetail.sprint = resultTaskList[i].Sprint__c;
-            TaskDetail.isTaskOwner = resultTaskList[i].OwnerId == USERID;
+            
+            TaskDetail.isTaskOwner = resultTaskList[i].createdById == USERID;
             
             if(resultTaskList[i].ProjectsAssignees__r.size() > 0)
             	TaskDetail.canEditAndDelete = (resultTaskList[i].ProjectsAssignees__r[0].User__c == USERID ) ? true : false;
@@ -690,40 +693,24 @@ public with sharing class ProjectTaskListController {
     *@param String idTaskToComplete
     */
     public void setIdTaskToComplete (String i) {
-    	System.debug( '[1]' + this.idTaskToComplete );
-        this.idTaskToComplete = i;   
-    	System.debug( '[2]' + this.idTaskToComplete );
-    }    
-    
+         this.idTaskToComplete = i;   
+     }    
+
     /**
     * Mark Complete
     */
     public void markComplete () {
         List<String> idsUpdate = new List<String>();
-        
-            System.debug( 'Jojo' + idTaskToComplete );
-            
+                    
         if (idTaskToComplete != '' && idTaskToComplete != null) {
             idsUpdate = getIdTaskToComplete().split(':'); 
-            System.debug( 'JajAja' );
-        }
-        
-        String po = 'a0730000003cslZAAQ:a0730000003cskcAAA:a0730000003cscOAAQ';
-
-        			System.debug( '[2*]   ' + idsUpdate.size()); 
-        			System.debug( '[2**]  ' + (String)getIdTaskToComplete());
-        			String popo =  this.IdTaskToComplete; 
-        			System.debug( '[2***] ' + popo); 
-        			System.debug( '[2****]' +getIdTaskToComplete().split(':').size()); 
-        			System.debug( '[2*****]' + po.split(':').size()); 
+        } 
         			
         if(idsUpdate.size()>0){
             List<ProjectTask__c> tasksUpdate = [select (Select User__c from ProjectsAssignees__r ), id from ProjectTask__c where id in: idsUpdate];
              
-        			System.debug( '[3]' + tasksUpdate.size());
             if (tasksUpdate.size() > 0) {
                 for (ProjectTask__c iterTask : tasksUpdate) {
-        			System.debug( '[4]' );
                     Boolean cantEditAndDelete = false; 
                     Integer countAssignee = 0;
                     while (!cantEditAndDelete && countAssignee < iterTask.ProjectsAssignees__r.size()) {
@@ -733,7 +720,6 @@ public with sharing class ProjectTaskListController {
                             countAssignee++;
                         }
                     }
-        			System.debug( '[5]' +( !cantEditAndDelete || editDeletePer || iterTask.createdById == USERID)  );                    
                     if(!cantEditAndDelete || editDeletePer || iterTask.createdById == USERID){
                         iterTask.PercentCompleted__c = 100;
                     }else {

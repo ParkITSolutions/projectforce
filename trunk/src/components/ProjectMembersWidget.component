@@ -195,7 +195,7 @@
 			<div class="swirly_members" id="swirly_members" style="display: none;"></div>
 			<div class="thinBodyFixed thinBody" id="thinBody">
 				<div class="contentHolder">
-					<div class="linkAction">
+					<div class="linkAction" >
 						<apex:outputpanel rendered="{!userPermissions.canManage}">
 							<a onclick="createOverlay('','inviteTeam','280','selectFixIE6();startFunction();relocateOverlay()');" href="javascript:;">New</a> |
 						</apex:outputpanel>
