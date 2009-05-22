@@ -92,7 +92,7 @@
                 	<apex:actionFunction action="{!refreshTaskList}" oncomplete="showHideOverlay();" name="sortListEvent" rerender="ref" />
                     <div class="tableTopContainer" style="height: auto;">             
                         <div class="filterContainer" >  
-                            <apex:selectList id="chooseOption" value="{!option}" onchange="option();showHideOverlay();setDims('holder','paginationOverlay');" size="1">
+                            <apex:selectList id="chooseOption" value="{!option}" onchange="option();showHideOverlay();" size="1">
                                 <apex:selectOption itemValue="all" itemLabel="All Tasks"/>
                                 <apex:selectOption itemValue="my" itemLabel="My Tasks"/>
                                 <apex:selectOption itemValue="complete" itemLabel="100% Complete Tasks"/>
@@ -165,7 +165,7 @@
                                     </th>
                                     <th width="8%" style="padding:3px 0px;"> Action </th>                            
                                     <th width="8%" style="padding:3px 0px;">
-                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="ID" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Id__c';" oncomplete="showHideOverlay();">
+                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="ID" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'Id__c';" oncomplete="showHideOverlay();">
                                             <apex:param name="sortBy" value="Id__c" assignTo="{!sortBy}"/>
                                         </apex:commandLink>&nbsp;
                                         <apex:outputpanel rendered="{!IF(sortBy == 'autoId',true,false)}">
@@ -178,7 +178,7 @@
                                         </apex:outputpanel>
                                     </th>
 									<th width="8%" style="padding:3px 0px;">
-                                    	<apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Sprint" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Sprint__c';" oncomplete="showHideOverlay();">
+                                    	<apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Sprint" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'Sprint__c';" oncomplete="showHideOverlay();">
                                             <apex:param name="sortBy" value="Sprint__c" assignTo="{!sortBy}"/>
                                         </apex:commandLink>&nbsp;
                                         <apex:outputpanel rendered="{!IF(sortBy == 'Sprint',true,false)}">
@@ -191,7 +191,7 @@
                                         </apex:outputpanel>
                                     </th>  
                                     <th width="5%" style="text-align: center">
-                                           <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Type" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Milestone__c';" oncomplete="showHideOverlay();">
+                                           <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Type" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'Milestone__c';" oncomplete="showHideOverlay();">
                                             <apex:param name="sortBy" value="Milestone__c" assignTo="{!sortBy}"/> 
                                         </apex:commandLink>&nbsp;
                                         <apex:outputpanel rendered="{!IF(sortBy == 'type',true,false)}">
@@ -204,7 +204,7 @@
                                         </apex:outputpanel>
                                     </th>
                                     <th width="7%" style="text-align: center">
-                                           <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Priority" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Priority__c';" oncomplete="showHideOverlay();">
+                                           <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Priority" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'Priority__c';" oncomplete="showHideOverlay();">
                                             <apex:param name="sortBy" value="Priority__c" assignTo="{!sortBy}"/>
                                         </apex:commandLink>&nbsp;
                                         <apex:outputpanel rendered="{!IF(sortBy == 'priority',true,false)}">
@@ -217,7 +217,7 @@
                                         </apex:outputpanel>
                                     </th>
                                     <th width="15%" >
-                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Name" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Name';" oncomplete="showHideOverlay();">
+                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Name" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'Name';" oncomplete="showHideOverlay();">
                                             <apex:param name="sortBy" value="Name" assignTo="{!sortBy}"/>
                                         </apex:commandLink>&nbsp;
                                         <apex:outputpanel rendered="{!IF(sortBy == 'name',true,false)}">
@@ -231,7 +231,7 @@
                                     </th>
 
                                     <th width="10%" >
-                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Status" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Status';" oncomplete="showHideOverlay();">
+                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Status" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'Status';" oncomplete="showHideOverlay();">
                                             <apex:param name="sortBy" value="Status__c" assignTo="{!sortBy}"/>
                                         </apex:commandLink>&nbsp;
                                         <apex:outputpanel rendered="{!IF(sortBy == 'status',true,false)}">
@@ -245,7 +245,7 @@
                                     </th>
                                     
                                     <th width="20%" >
-                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Assigned to" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'User__c.Name';" oncomplete="showHideOverlay();">
+                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Assigned to" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'User__c.Name';" oncomplete="showHideOverlay();">
                                             <apex:param name="sortBy" value="User__c.Name" assignTo="{!sortBy}"/>
                                         </apex:commandLink>&nbsp;
                                         <apex:outputpanel rendered="{!IF(sortBy == 'assigned',true,false)}">
@@ -258,7 +258,7 @@
                                         </apex:outputpanel>
                                     </th>
                                     <th width="15%" >
-                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="% Completed" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Percent_Completed__c';" oncomplete="showHideOverlay();">
+                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="% Completed" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'Percent_Completed__c';" oncomplete="showHideOverlay();">
                                             <apex:param name="sortBy" value="Percent_Completed__c" assignTo="{!sortBy}"/>
                                         </apex:commandLink>&nbsp;
                                         <apex:outputpanel rendered="{!IF(sortBy == 'completed',true,false)}">
@@ -271,7 +271,7 @@
                                         </apex:outputpanel>
                                     </th> 
                                     <th width="5%" style="text-align: center">
-                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Est Hrs" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'Duration__c';" oncomplete="showHideOverlay();">
+                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Est Hrs" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'Duration__c';" oncomplete="showHideOverlay();">
                                             <apex:param name="sortBy" value="Duration__c" assignTo="{!sortBy}"/>
                                         </apex:commandLink>&nbsp;
                                         <apex:outputpanel rendered="{!IF(sortBy == 'est',true,false)}">
@@ -284,7 +284,7 @@
                                         </apex:outputpanel>
                                     </th> 
                                     <th width="10%" style="text-align: right">
-                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Due date" rerender="taskListPanel" onclick="showHideOverlay();currentSortCriteria = 'EndDate__c';" oncomplete="showHideOverlay();">
+                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Due date" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'EndDate__c';" oncomplete="showHideOverlay();">
                                             <apex:param name="sortBy" value="EndDate__c" assignTo="{!sortBy}"/>
                                         </apex:commandLink>&nbsp;
                                         <apex:outputpanel rendered="{!IF(sortBy == 'date',true,false)}">

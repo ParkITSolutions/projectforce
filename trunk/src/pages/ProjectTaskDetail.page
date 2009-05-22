@@ -31,21 +31,35 @@
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskDetail.js')}" />
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskList.js')}" />
  
-     <script>
-             
-         document.observe("dom:loaded", function(){
-                trunkAllTitles();
-                setTimeout( "readPortalCSSRules()", 300 );
-                setTimeout( "$$('.pbBottomButtons')[0].remove()", 150);           
-            }
-        );
+    <script>
+       document.observe("dom:loaded", function(){
+               trunkAllTitles();
+               setTimeout( "readPortalCSSRules()", 300 );
+               setTimeout( "$$('.pbBottomButtons')[0].remove()", 150);           
+           }
+       );
+       var currentTeam = '{!Task.ProjectId}';
+    </script>
+     
+    <style>
+	   	div.taskComment{
+	   		margin-top: 10px;
+	   	}
 
+	   	div.taskComment div{
+	   		margin-top: 5px;
+	   	}
+	   	
+		div.taskComment span.creator{
+	   		font-size: 11px;
+	   	}	   	
+	   	
+	   	td.dataCol textarea {
+	   		width: 340px;
+	   	}
+    </style>
 
-        var currentTeam = '{!Task.ProjectId}';
-     </script>
-
-    
-    <div class="confirmation" id="confirmation" style="display:none;">
+   	<div class="confirmation" id="confirmation" style="display:none;">
            This task has been marked complete
     </div>
    
@@ -98,11 +112,9 @@
                 </apex:form>                   
                 <apex:outputPanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner)}">
 			        <a class="blackbutton" href="Javascript:;" onclick="showDeleteEvent('{!Task.id}', 'Detail','{!Task.name}');">
-
                         <span>Delete</span>
                     </a>
                 </apex:outputPanel>  
-              
             </apex:outputpanel>
           </div>
         </div>      
@@ -149,85 +161,102 @@
                                         <script>var isCompleted = {!IF(Task.PercentCompleted == 100, true, false)};</script>
                                     </div>
                                 </td>
-                                <td class="labelCol">
-                                    Parent Task
-                                </td>
-                                <td class="dataCol">
-                                    <span class="textDisabled" >
-                                        {!IF((Task.ParentTaskName == ''),'none','')}
-                                    </span>
-                                        {!Task.ParentTaskName}
-                                </td>           
+                                <td class="labelCol"></td>
+                                <td class="dataCol"></td>           
                             </tr>             
                             <tr >
                                 <td class="labelCol vTop">Files</td>
                                 <td class="dataCol">
                                     <!-- Upload Attachment -->
                                     <c:ProjectOverlayNewAttachment parentId="{!Task.Id}" />
-                                    <div class="DistincLink">
-                                    <a href="Javascript:;" onclick="openAttachmentUploader();">
-                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add Attachment" title="Add Attachment" />
-                                        Add New Attachment
-                                    </a>
-                                    </div>
-                                    <apex:repeat value="{!Task.Files}" var="item" >
-                                        <div>
-                                        	<div id="AttachContent"> 
-	                                            <img style="vertical-align:bottom;" src="{!URLFOR($Resource.FileTypeIcons, item.attachImage)}"/> &nbsp;
-	                                            <a href="javascript:;" onclick="window.open('/servlet/servlet.FileDownload?file={!item.Id}')" >{!item.Name}</a>&nbsp;&nbsp;&nbsp;
-	                						</div>
-	                						<apex:form >
-	                						    <span class="notassigned" />
-												<apex:commandLink action="{!DeleteAttach}"
-													oncomplete="refreshDetail()"
-													onclick="if(confirm('Are you sure you want to delete this file?')){;}else{return false;}"
-									                 
-													value="Delete" >
-													<apex:param name="idAttach" value="{!item.Id}"/>
-												</apex:commandLink>												
-											</apex:form> 
-										
-                                        </div>
-                                    </apex:repeat>                           
+	                                <apex:outputPanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}">    
+	                                    <div class="DistincLink">
+		                                    <a href="Javascript:;" onclick="openAttachmentUploader();">
+		                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add Attachment" title="Add Attachment" />
+		                                        Add New Attachment
+		                                    </a>
+	                                    </div>
+	                                </apex:outputPanel>
+		                			<apex:form >
+	                                    <apex:repeat value="{!Task.Files}" var="item" >
+	                                        <div class="height20px">
+	                                        	<div id="AttachContent"> 
+		                                            <img style="vertical-align:bottom;" src="{!URLFOR($Resource.FileTypeIcons, item.attachImage)}"/> &nbsp;
+		                                            <a href="javascript:;" onclick="window.open('/servlet/servlet.FileDownload?file={!item.Id}')" >{!item.Name}</a>&nbsp;&nbsp;&nbsp;
+		                						</div>
+	                                        	<apex:outputPanel styleClass="height20px" rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}"> 
+		                						    <span class="notassigned" />
+													<apex:commandLink action="{!DeleteAttach}"
+														oncomplete="refreshDetail()"
+														onclick="if(confirm('Are you sure you want to delete this file?')){;}else{return false;}"
+														value="Delete" >
+														<apex:param name="idAttach" value="{!item.Id}"/>
+													</apex:commandLink>												
+												</apex:outputPanel>
+	                                        </div>
+	                                    </apex:repeat>
+									</apex:form>
                                 </td>       
                             </tr>
                             <tr>
                                 <td class="labelCol vTop">
-                                      Assigned To
-                                  </td>
-                              <td class="dataCol">
-                                  <apex:outputpanel rendered="{!NOT(MaxAssignees)}">
-	                                  <div class="DistincLink">
-	                                        <a href="javascript:;" onclick="createOverlay('','addAssigneeOverlay','200','relocateOverlay()');" >
-	                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add assignee" title="Add assignee" />
-	                                            New assignee
-	                                        </a>
-	                                  </div>
-	                               </apex:outputpanel>
-	                               <apex:outputpanel rendered="{!Task.HasAsignee}" id="assList">
-	                                      <table class="assignedToTable">
-	                                          <apex:repeat value="{!Task.Asignee}" var="item">
-	                                              <tr>
-	                                                <td><a href="/{!item.Id}">{!item.Name}</a></td>
-	                                                <td class="percent">{!item.percent}%</td>
-	                                                <td>
-	                                                	<apex:outputpanel rendered="{!IF(Task.CantAssignees > 1, true, false)}">
-	                                                		<a  class="notassigned" value="{!item.AssigneeId}" onclick="showDeleteAssigneeEvent('{!item.AssigneeId}')" href="javascript:;">Remove</a>
+                                	Assigned To
+                                </td>
+                              	<td class="dataCol">
+	                            	<apex:outputpanel rendered="{!AND(NOT(MaxAssignees), OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe))}">
+	                                	<div class="DistincLink">
+	                                      	<a href="javascript:;" onclick="createOverlay('','addAssigneeOverlay','200','relocateOverlay()');" >
+	                                      		<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add assignee" title="Add assignee" />
+	                                          	New assignee
+	                                      	</a>
+	                                	</div>
+	                             	</apex:outputpanel>
+		                            <apex:outputpanel rendered="{!Task.HasAsignee}" id="assList">
+	                                	<table class="assignedToTable">
+	                                    	<apex:repeat value="{!Task.Asignee}" var="item">
+	                                        	<tr>
+	                                              	<td>
+	                                              		<a href="/{!item.Id}">{!item.Name}</a>
+	                                              	</td>
+	                                              	<td class="percent">{!item.percent}%</td>
+	                                              	<td>
+	                                              		<apex:outputpanel rendered="{!AND(IF(Task.CantAssignees > 1, true, false), OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe))}">
+	                                              			<a class="notassigned" value="{!item.AssigneeId}" onclick="showDeleteAssigneeEvent('{!item.AssigneeId}')" href="javascript:;">Remove</a>
 														</apex:outputpanel>
-	                                                </td>                                                 
-	                                              </tr>                                      
-	                                          </apex:repeat>
-	                                      </table>
-	                                </apex:outputpanel>
-	                                <apex:outputpanel rendered="{!IF(!Task.HasAsignee,true,false)}" >
-	                                      Nobody Asigned to this task.
-	                                </apex:outputpanel>
-                              </td>
-                           </tr>
+	                                              	</td>                                                 
+	                                        	</tr>                                      
+	                                    	</apex:repeat>
+	                                  	</table>
+		                          	</apex:outputpanel>
+		                          	<apex:outputpanel rendered="{!IF(!Task.HasAsignee,true,false)}" >
+		                            	Nobody Asigned to this task.
+		                        	</apex:outputpanel>
+                           		</td>
+							</tr>
+							<tr>
+								<td class="labelCol vTop">Comments</td>
+								<td class="dataCol">
+									<apex:form id="taskComments">
+										<apex:inputField value="{!comment.Body__c}" required="true" />
+										<apex:commandLink action="{!saveComment}" rerender="taskComments">
+											<span>Save Comment</span>
+										</apex:commandLink>
+										<apex:repeat value="{!taskComments}" var="comment">
+											<div class="taskComment">
+												<span class="creator">
+													Created By <b>{!comment.createdBy.Name}</b>, {!comment.createdDate}
+												</span>
+												<div>{!comment.Body__c}</div>
+											</div>
+										</apex:repeat>							
+									</apex:form>
+								</td>								
+							</tr>
                         </tbody>                   
                     </table>
                 </div><br style="clear:both;" />               
-            </apex:outputpanel><br style="clear:both;" />
+            </apex:outputpanel>
+            <br style="clear:both;" />
         </div>
         <div align="center" class="breadCrumbAndButtons">
             <div class="buttons" style="{!IF(Task.IsTaskOwner,'width:262px;','')}">
@@ -253,10 +282,10 @@
                             </apex:facet>
                         </apex:actionStatus>
                     </apex:form>          
-                       <a class="blackbutton" href="Javascript:;" onclick="showDeleteEvent('{!Task.id}', 'Detail','{!Task.name}');"><span>Delete</span></a>            
+                    <a class="blackbutton" href="Javascript:;" onclick="showDeleteEvent('{!Task.id}', 'Detail','{!Task.name}');"><span>Delete</span></a>            
                 </apex:outputpanel>
             </div>
-        </div>             
+        </div>
     </div>  
     <script>
          clearTableDetail();

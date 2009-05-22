@@ -59,9 +59,13 @@
 		document.observe('dom:loaded', function(){
 				trunkTitle();
 				readPortalCSSRules();
+				$$('.sidebar')[0].style.height =$$('.main_cont')[0].getDimensions().height+85 + 'px';		
+				
 			}
 		)
 		var globalTeamId = "{!projectId}";
+		
+		
 	</script>
 	<style>
 	
@@ -70,9 +74,11 @@
 		}
 		@media screen and (-webkit-min-device-pixel-ratio:0) {
 			div#btnsDiv {
-				padding-right: 6%;
+				padding-right: 4.5%;
 			}
 		}
+		
+
 	</style>
 	
 	<apex:form >
@@ -237,7 +243,7 @@
 					<thead>
 						<tr>
 							<td width="3%"><apex:outputpanel rendered="{!userPermissions.canManage}">
-								<input class="actionCheckAll" onclick="checkUnCheck(this);"
+								<input class="actionCheckAll" onclick="checkUnCheck(this);reMemIds();"
 									type="checkbox" />
 							</apex:outputpanel></td>
 							<td width="9%"><apex:outputpanel rendered="{!userPermissions.canManage}" style="font-weight:bold;">Action</apex:outputpanel>
@@ -310,17 +316,18 @@
 					</thead>
 					<!-- Description  -->
 					<tbody>
-						<apex:repeat var="item" value="{!members}"
-							rows="{!numberOfItemsToShow}" first="{!firstRow}">
+						<apex:repeat var="item" value="{!members}" rows="{!numberOfItemsToShow}" first="{!firstRow}">
 							<tr>
-								<td><apex:outputpanel rendered="{!userPermissions.canManage}">
-									<input value="{!item.projectMemberId}" class="actionCheck"
-										type="checkbox" />
-								</apex:outputpanel></td>
+								<td>
+								<apex:outputpanel rendered="{!userPermissions.canManage}">
+									<input value="{!item.projectMemberId}" class="actionCheck" type="checkbox" onclick="reMemIds();" />
+								</apex:outputpanel>
+								</td>
 								<td>
 									<apex:outputpanel rendered="{!userPermissions.canManage}">
-									 <a href="Javascript:;" onclick="setHiddenMemberId('{!item.projectMemberId}'); createOverlay('','removeMemberOverlay','160','relocateOverlay()');">Delete</a>
-									</apex:outputpanel></td>
+									 	<a href="Javascript:;" onclick="setHiddenMemberId('{!item.projectMemberId}'); createOverlay('','removeMemberOverlay','160','relocateOverlay()');">Delete</a>
+									</apex:outputpanel>
+								</td>
 								<td class="memberImg">
 									<div class="photoWrapper_32px">
 										<img src="{!URLFOR($Resource.commonResources, 'images/placeholders/unknownperson32x32.jpg')}" width="32" />
@@ -389,6 +396,10 @@
 											href="javascript:;" class="blackbutton"><span>New</span></a>
 										<a href="javascript:;" class="blackbutton"
 											onclick="massiveRemoveOverlay();"><span>Remove</span></a>
+											
+									<apex:form >
+										<apex:inputHidden id="toToDelete" />
+									</apex:form>
 									</apex:outputpanel>
 								</div>
 								</td>
@@ -417,4 +428,19 @@
 	
 	<c:ProjectOverlayNewTask />
 	<c:ProjectOverlayNewMilestone />
+		<script>
+		 function reMemIds(){
+		    a = new Array();
+			$$('.actionCheck').each(function (e){
+		            
+		        if( e.checked )
+		        a.push( e.value );            
+		 
+		    }); 
+		    
+		    //alert( a.join( '::' )); 
+		    $$('.MemberIdToDel')[0].value = a.join( '::' );
+		}
+ 	</script>
+
 </apex:page>

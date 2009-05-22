@@ -2,13 +2,14 @@
 *@author Nicolas Gunther @ 03/30/2009
 */
 public class ProjectTaskDetailController {
-	TaskDetails taskDetail = null;
-	boolean detailsOk;
-	//private String idDeletes = '';
+	
 	private String USERID = UserInfo.getUserId();
 	private Boolean editDeletePer = false;
 	private String projectId = '';
 
+	public TaskDetails taskDetail = null;
+	public TaskComment__c comment = new TaskComment__c(); 
+	public boolean detailsOk;
 	public String param = ''; 
 	public UserPermissions userPermissions = new UserPermissions();
 	
@@ -48,6 +49,21 @@ public class ProjectTaskDetailController {
 	/* ---------------------------- */
 	
 	/**
+	*@return task comment
+	*/
+	public TaskComment__c getComment(){
+		return comment;
+	}
+	
+	/**
+	*@param c task comment
+	*/
+	public void setComment (TaskComment__c c){
+		comment = c;
+	}
+	
+	
+	/**
 	* Set the value of task id
 	*@param String
 	*/
@@ -64,6 +80,24 @@ public class ProjectTaskDetailController {
 	}
 	
 	/**
+	*@return list of task comments
+	*/
+	public List<TaskComment__c> getTaskComments(){
+		List<TaskComment__c> taskComments = new List<TaskComment__c>(); 
+		taskComments = [select Id, Body__c, createdDate, createdBy.Name from TaskComment__c where Task__c =: param];
+		return taskComments;	
+	}
+	
+	/**
+	* Save Task Comment
+	*/
+	public void saveComment(){
+		comment.Task__c = taskDetail.Id;
+		insert comment;
+		comment = new TaskComment__c();
+	}
+		
+	/**
 	* Update the task's percent to 100
 	*/
 	public void markComplete(){
@@ -76,15 +110,6 @@ public class ProjectTaskDetailController {
 		}
 	}
 	
-	
-	/*
-	public String getIdDeletes(){
-		return idDeletes;	
-	}
-	public void setIdDeletes(String idDeletes){
-		this.idDeletes = idDeletes;		
-	}
-	*/	
 	/**
 	* Get Project Task  
 	*@param String param

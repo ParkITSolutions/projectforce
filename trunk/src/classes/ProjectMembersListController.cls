@@ -7,6 +7,12 @@ public without sharing class ProjectMembersListController {
 	// Attributes \\
 	public String idProject = System.currentPageReference().getParameters().get('id');
 	public String removeMemberId = System.currentPageReference().getParameters().get('delId');
+	
+	public String   massiveRemoveMemIds;
+	public List<Id> massiveRemoveMemIds2 = new List<Id>();
+	public List<Id> adminMembersList    = new List<Id>();      
+	public Boolean  deletingAllAmdsErr = false;
+	
 	public String delName;
 	public String letter = System.currentPageReference().getParameters().get('ltr');
 	public Boolean sortByDesc = false;
@@ -48,6 +54,60 @@ public without sharing class ProjectMembersListController {
 		genPermissions();
 		genMembers();
 	}
+	
+	/**
+	*@param String
+	*/
+	public void setMassiveRemoveMemIds( String s ){
+		 System.debug( '[[Salimo...]]');
+		 this.MassiveRemoveMemIds = s;
+		 this.massiveRemoveMemIds2 = MassiveRemoveMemIds.split( '::' );
+		 massiveRemove();
+	}
+	/**
+	*@param String
+	*/
+	public String getMassiveRemoveMemIds(){
+		return 'asfsadf';
+	}
+	
+ 
+	public void  massiveRemove(){	 
+		 System.debug( '[[Salimo2...]]');
+		 if( this.massiveRemoveMemIds2.size() > 0 ) {
+		System.debug( '[[Entramo ...]]');
+			 this.deletingAllAmdsErr = this.noMoreAdmins();
+			 if( !this.deletingAllAmdsErr ){
+		System.debug( '[[Borring ...]]');
+			 	List<ProjectMember__c> idsToDel = new List<ProjectMember__c>();
+			 	idsToDel = [ select Id from ProjectMember__c where Id in: idsToDel ];
+			 	delete idsToDel;
+			 }
+		 }
+		System.debug( '[[Fini]]');
+	}
+	
+	/**
+	*@return Boolean
+	*/
+	public Boolean noMoreAdmins(){
+		
+		Boolean noMore;
+		Integer memListSize = this.adminMembersList.size();
+		
+		if( this.massiveRemoveMemIds2.size() == memListSize ){
+
+			this.massiveRemoveMemIds2.sort();	
+			this.adminMembersList.sort();
+
+			noMore = this.adminMembersList.get(0) == this.massiveRemoveMemIds2.get(0);
+		
+			for( Integer k = 1; k < memListSize && noMore; k++ )
+			noMore = this.adminMembersList.get(k) == this.massiveRemoveMemIds2.get(k);
+		
+		}
+   		return noMore;
+	}	
 	
 	/**
 	* Return list of members
@@ -900,6 +960,12 @@ public without sharing class ProjectMembersListController {
 				}
 			}			
 		}
+		System.debug('[>' + memberResultList.size());
+		String q;
+		q = 'SELECT Id, Profile__r.Name,Profile__r.Description__c, User__r.Name, User__r.Title,User__r.Id, User__r.CompanyName ' +
+		' from ProjectMember__c where project__c = \'' + idProject + '\' and User__r.IsActive != false order by ' + sortBy + ((sortBydesc) ? ' desc':' asc');
+		memberResultList = Database.query( q );
+		System.debug('[2>' + memberResultList.size());
 				 
 		for (ProjectMember__c item: memberResultList) {
 			Member memberItem = new Member();
@@ -910,6 +976,9 @@ public without sharing class ProjectMembersListController {
 			memberItem.setMemberImg(item.User__r.Id);
 			memberItem.setCompany(item.User__r.CompanyName);
 			membersList.add(memberItem);
+			
+			if( item.Profile__r.Name == 'Project Administrator')
+			adminMembersList.add( item.id );
 		}
 			
 		totalItemsNumber = membersList.size();

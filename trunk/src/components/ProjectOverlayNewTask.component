@@ -89,13 +89,13 @@
                                 </div>
                                 <div class="overlaySeparateLine" />
                                 <!-- Save and Cancel Buttons -->
-                                <div class="overlayFromButtons" align="center">
+                                <div class="overlayFromButtons" align="center"> 
                                     <apex:commandButton action="{!insertTask}" id="taskSaveBtn"                                                                              
                                         status="taskStatus" style="float: none;width: 70px !important;background: #21637D none repeat scroll 0 0 !important;"
-                                        onComplete="try{showSelect();}catch(e){}formValidate('{!$Component.name}', '{!$Component.taskEstimate}', '{!$Component.member}' ,'{!$Component.taskStartDate}' , '{!$Component.taskDueDate}');"
+                                        onclick="setTimeout('Effect.Fade(\'infoToUser\')', 10000);"
+                                        onComplete="try{showSelect();}catch(e){}formValidate('{!$Component.name}', '{!$Component.taskEstimate}', '{!$Component.member}' ,'{!$Component.taskStartDate}' , '{!$Component.taskDueDate}');showMessageToUser('Created new task', 'success')"
                                         value="Save" styleClass="btn allButtons" rerender="quickTaskForm"/>
                                     <input class="allButtons" type="button" style="float: none;width: 70px !important;background:#989999 none repeat scroll 0 0 !important;" value="Cancel"  onclick="try{showSelect();}catch(e){}resetFormNewTask();fixedModalNewTask.close();" />
-                                    <a href="javascript:;" onclick="sendTempTaskDetails('{!$Component.name}','{!$Component.taskStartDate}','{!$Component.taskDueDate}', '{!$Component.taskEstimate}','{!$Component.member}'); return false;">Edit task details</a>
                                 </div> 
                                 <div id="quickTaskFormId" style="display:none;">{!$Component.quickTaskForm}</div>          
                             </apex:outputPanel>
