@@ -59,40 +59,41 @@ public without sharing class ProjectMembersListController {
 	*@param String
 	*/
 	public void setMassiveRemoveMemIds( String s ){
-		 System.debug( '[[Salimo...]]');
-		 this.MassiveRemoveMemIds = s;
+ 		 this.MassiveRemoveMemIds = s;
 		 this.massiveRemoveMemIds2 = MassiveRemoveMemIds.split( '::' );
-		 massiveRemove();
+		 
 	}
 	/**
 	*@param String
 	*/
 	public String getMassiveRemoveMemIds(){
-		return 'asfsadf';
-	}
+ 		String po;
+		for( Id i : this.massiveRemoveMemIds2 )
+		po += i + '::';
+		
+		return po;
+ 	}
 	
- 
-	public void  massiveRemove(){	 
-		 System.debug( '[[Salimo2...]]');
-		 if( this.massiveRemoveMemIds2.size() > 0 ) {
-		System.debug( '[[Entramo ...]]');
-			 this.deletingAllAmdsErr = this.noMoreAdmins();
+	/**
+	*Delete members
+	*/ 
+	public void massiveRemove(){	 
+ 		 if( this.massiveRemoveMemIds2.size() > 0 ) {
+ 			 this.deletingAllAmdsErr = this.noMoreAdmins();
 			 if( !this.deletingAllAmdsErr ){
-		System.debug( '[[Borring ...]]');
-			 	List<ProjectMember__c> idsToDel = new List<ProjectMember__c>();
-			 	idsToDel = [ select Id from ProjectMember__c where Id in: idsToDel ];
+ 			 	List<ProjectMember__c> idsToDel = new List<ProjectMember__c>();
+			 	idsToDel = [ select Id from ProjectMember__c where Id in: massiveRemoveMemIds2 ];
 			 	delete idsToDel;
 			 }
 		 }
-		System.debug( '[[Fini]]');
-	}
+ 	}
 	
 	/**
 	*@return Boolean
 	*/
 	public Boolean noMoreAdmins(){
 		
-		Boolean noMore;
+		Boolean noMore = false;
 		Integer memListSize = this.adminMembersList.size();
 		
 		if( this.massiveRemoveMemIds2.size() == memListSize ){
@@ -336,8 +337,7 @@ public without sharing class ProjectMembersListController {
 	*@void
 	*/
 	public void refresh() {
-		System.debug('desde refresh()');
-		genPermissions();
+ 		genPermissions();
 		genMembers();
 	}
 	
@@ -350,10 +350,6 @@ public without sharing class ProjectMembersListController {
 		userPermissions.setProject(idProject);
 		userPermissions.setObjectType('Project');
 		userPermissions.setPermissions();		
-		
-		System.debug('aaaa' + userPermissions.getCanManage());
-
-		
 	}
 	
 	/**
@@ -363,8 +359,7 @@ public without sharing class ProjectMembersListController {
 	public void removeMember () {
 		error = false;
 		finish = false;
-		System.debug( 'segundo' );
-		List<ProjectMember__c> delMember = new List<ProjectMember__c>();
+ 		List<ProjectMember__c> delMember = new List<ProjectMember__c>();
 		delMember = [select User__r.Name  from ProjectMember__c where Id =: removeMemberId and project__c =: idProject];
 									  	
 		List<ProjectMember__c> admins = new List<ProjectMember__c>(); 
@@ -543,10 +538,7 @@ public without sharing class ProjectMembersListController {
 		}
 		members = membersList;
 		
-	}
-	
-
-	
+	}	
 	
 	/** Pagination */
 	
@@ -734,238 +726,11 @@ public without sharing class ProjectMembersListController {
 		
 		List<ProjectMember__c> memberResultList = new List<ProjectMember__c>();
 
-		if (sortByDesc) {
-			if (letter == null || letter == '' || letter== 'ALL') {
-				if (sortBy == 'User__r.Name') {
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where project__c =: idProject and User__r.IsActive != false
-										order by User__r.Name desc];
-				}
-				if (sortBy == 'User__r.CompanyName') {
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where project__c =: idProject and User__r.IsActive != false
-										order by User__r.CompanyName desc];						
-				}	
-				if (sortBy == 'User__r.Title') {
-					memberResultList = [select id, 
-											   Name, 											   
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where project__c =: idProject and User__r.IsActive != false
-										order by User__r.Title desc];							
-				}
-				if (sortBy == 'Profile__r.Name') {
-					memberResultList = [select id, 
-											   Name, 											   
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where project__c =: idProject and User__r.IsActive != false
-										order by Profile__r.Name desc];						
-				}		
-			}else {
-				if (sortBy == 'User__r.Name') {
-					memberResultList = [select id, 
-											   Name, 											   
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where User__r.Name like: (letter + '%') 
-										and project__c =: idProject and User__r.IsActive != false
-										order by User__r.Name desc];					
-				}
-				if (sortBy == 'User__r.CompanyName') {
-					memberResultList = [select id, 
-											   Name,											   
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where User__r.Name like: (letter + '%') 
-										and project__c =: idProject and User__r.IsActive != false
-										order by User__r.CompanyName desc];							
-				}	
-				if (sortBy == 'User__r.Title') {
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where User__r.Name like: (letter + '%') 
-										and project__c =: idProject and User__r.IsActive != false
-										order by User__r.Title desc];							
-				}
-				if (sortBy == 'Profile__r.Name') {
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where User__r.Name like: (letter + '%') 
-										and project__c =: idProject and User__r.IsActive != false
-										order by Profile__r.Name desc];						
-				}
-			}
-		}else {
-			if (letter == null || letter == '' || letter== 'ALL') {
-				if (sortBy == 'User__r.Name') {
-					memberResultList = [select id, 
-											   Name, 
-									
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where project__c =: idProject and User__r.IsActive != false
-										order by User__r.Name];
-				}
-				if (sortBy == 'User__r.CompanyName') {
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where project__c =: idProject and User__r.IsActive != false
-										order by User__r.CompanyName asc];						
-				}	
-				if (sortBy == 'User__r.Title') {
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where project__c =: idProject and User__r.IsActive != false
-										order by User__r.Title];							
-				}
-				if (sortBy == 'Profile__r.Name') {
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where project__c =: idProject and User__r.IsActive != false
-										order by Profile__r.Name];						
-				}
-			}else {
-				if (sortBy == 'User__r.Name') {
-					memberResultList = [select id, 
-											   Name,    
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where User__r.Name like: (letter + '%') 
-										and project__c =: idProject and User__r.IsActive != false
-										order by User__r.Name];					
-				}
-				if (sortBy == 'User__r.CompanyName') {
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where User__r.Name like: (letter + '%') 
-										and project__c =: idProject and User__r.IsActive != false
-										order by User__r.CompanyName];							
-				}	
-				if (sortBy == 'User__r.Title') {
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where User__r.Name like: (letter + '%') 
-										and project__c =: idProject and User__r.IsActive != false
-										order by User__r.Title];							
-				}
-				if (sortBy == 'Profile__r.Name') {
-					memberResultList = [select id, 
-											   Name, 
-											   Profile__r.Name, 
-											   Profile__r.Description__c, 
-											   User__r.Name, 
-											   User__r.Title, 
-											   User__r.Id, 
-											   User__r.CompanyName 
-										from ProjectMember__c 
-										where User__r.Name like: (letter + '%') 
-										and project__c =: idProject and User__r.IsActive != false
-										order by Profile__r.Name];						
-				}
-			}			
-		}
-		System.debug('[>' + memberResultList.size());
-		String q;
-		q = 'SELECT Id, Profile__r.Name,Profile__r.Description__c, User__r.Name, User__r.Title,User__r.Id, User__r.CompanyName ' +
-		' from ProjectMember__c where project__c = \'' + idProject + '\' and User__r.IsActive != false order by ' + sortBy + ((sortBydesc) ? ' desc':' asc');
-		memberResultList = Database.query( q );
-		System.debug('[2>' + memberResultList.size());
+		String dQuery;
+		dQuery = 'SELECT Id, Profile__r.Name,Profile__r.Description__c, User__r.Name, User__r.Title,User__r.Id, User__r.CompanyName ' +
+		' from ProjectMember__c ' + 
+		' where ' + ((letter == null || letter == '' || letter== 'ALL') ? '' : ' User__r.Name like \'' + letter + '%\' and ' ) + ' project__c = \'' + idProject + '\'  and User__r.IsActive != false order by ' + sortBy + ((sortBydesc) ? ' desc ' : ' asc');
+		memberResultList = Database.query( dQuery );
 				 
 		for (ProjectMember__c item: memberResultList) {
 			Member memberItem = new Member();

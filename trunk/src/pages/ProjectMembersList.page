@@ -43,8 +43,8 @@
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectCreateNewProject.js')}" />
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}" />
 	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupTop.js')}" />
-	
-	
+    <!-- CSS Includes -->
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />	
 	<!-- ProjectMemebersList CSS 	-->
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsMembersList.css')}" />
 
@@ -64,8 +64,9 @@
 			}
 		)
 		var globalTeamId = "{!projectId}";
-		
-		
+	    var globalInfoBig = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/infoBig.gif')}';
+        var globalCheckNew = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}';
+
 	</script>
 	<style>
 	
@@ -127,15 +128,13 @@
 			<div class="clear"></div>
 		</div>
 	</div>
+	          <div class="informationPanel clear" id="infoToUser" style="display:none"></div>
 	<!-- Main Content Div -->
 	<div class="main_cont">
+
 			<div class="main_cont">
-		<apex:form >
-			<apex:outputPanel layout="block" styleClass="okMessage" style="display:none;">
-				<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}" 
-					alt="OK" />Member has been added to this {!$ObjectType.Project2__c.label}
-			</apex:outputPanel>
-		</apex:form>
+
+		
 		
 		<div id="holder">
 			<div id="paginationOverlay" style="display: none;"  class="paginationOverlay"></div>
@@ -146,7 +145,7 @@
 						<div id="btnsDiv">
 							<apex:form id="headForm"  >
 								<apex:outputpanel id="headerBtnContainer" rendered="{!userPermissions.canManage}" >
-									<a onclick="createOverlay('','inviteTeam','','showSelects()','');relocateOverlay();"
+									<a onclick="createOverlay('','inviteTeam','280','showSelects()','');relocateOverlay();"
 										href="javascript:;" class="blackbutton"><span>New</span></a>
 									<a href="javascript:;" class="blackbutton"
 										onclick="massiveRemoveOverlay();"><span>Remove</span></a>
@@ -389,19 +388,15 @@
 						<table>
 							<tr>
 								<td>
-								<div>
-									<!-- BUTTONS -->
-									<apex:outputpanel rendered="{!userPermissions.canManage}">
-										<a onclick="createOverlay('','inviteTeam','','showSelects()');relocateOverlay();"
-											href="javascript:;" class="blackbutton"><span>New</span></a>
-										<a href="javascript:;" class="blackbutton"
-											onclick="massiveRemoveOverlay();"><span>Remove</span></a>
-											
-									<apex:form >
-										<apex:inputHidden id="toToDelete" />
-									</apex:form>
-									</apex:outputpanel>
-								</div>
+									<div>
+										<!-- BUTTONS -->
+										<apex:outputpanel rendered="{!userPermissions.canManage}">
+											<a onclick="createOverlay('','inviteTeam','280','showSelects()');relocateOverlay();"
+												href="javascript:;" class="blackbutton"><span>New</span></a>
+											<a href="javascript:;" class="blackbutton"
+												onclick="massiveRemoveOverlay();reMemIds();"><span>Remove</span></a>
+										</apex:outputpanel>
+									</div>
 								</td>
 							</tr>
 						</table>
@@ -412,8 +407,7 @@
 			</table>
 			
 			<br/>
-			
-			</apex:outputpanel> <!-- End outputPanel MembersList -->
+ 			</apex:outputpanel> <!-- End outputPanel MembersList -->
 			
 		</div> <!-- holder Div --> 
 	
@@ -437,9 +431,10 @@
 		        a.push( e.value );            
 		 
 		    }); 
+ 		    //alert( a.join( '::' )); 
 		    
-		    //alert( a.join( '::' )); 
 		    $$('.MemberIdToDel')[0].value = a.join( '::' );
+ 		    
 		}
  	</script>
 

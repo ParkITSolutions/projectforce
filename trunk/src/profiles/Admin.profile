@@ -1334,14 +1334,6 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
-        <field>TaskComment__c.Body__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>TaskComment__c.Task__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
         <field>TimelineState__c.Project__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
@@ -1432,9 +1424,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Task-Task Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>TaskComment__c-TaskComment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>TimelineState__c-TimelineState Layout</layout>
@@ -1602,15 +1591,6 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Solution</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>TaskComment__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>

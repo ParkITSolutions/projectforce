@@ -1,7 +1,6 @@
 <apex:page sidebar="false" tabStyle="Project2__c" controller="ProjectMembersListController">
 	
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsMembersMassiveDelete.css')}" />
-	
 	<!-- Content  -->
 	<div id="massiveRemoveMemberOverlay" style="display:none;" class="overlayForm">	
 		<!-- Overlay Title -->
@@ -15,7 +14,7 @@
 		</div>
 		<!-- Overlay Content -->
 		<div class="overlayMainContent">
-			<apex:form id="massiveMemberRemoveForm">
+			<apex:form id="massiveMemberRemoveForm"  >
 				<apex:inputText style="display: none;" styleClass="MemberIdToDel" value="{!MassiveRemoveMemIds}" />
 				<div class="overlayFormContent" style="padding-bottom: 10px;">
 					<table style="width:95%;"> 
@@ -30,7 +29,7 @@
 				<div class="overlaySeparateLine" />
 				<!-- Save and Cancel Buttons -->
 				<div class="overlayFromButtons" align="center">
-					<apex:commandButton action="{!massiveRemove}" styleclass="btn allButtons" onclick="fixCancelBtn(this);statusDeleting(this);$('paginationOverlay').show();setDims('holder', 'paginationOverlay');" style="float: none;background: #21637D none repeat scroll 0 0 !important;" value="Continue and delete members-" rerender="massiveMemberRemoveForm" oncomplete="modal.close();reloadMemberList();"/>  
+					<apex:commandButton action="{!massiveRemove}" styleclass="btn allButtons" onclick="fixCancelBtn(this);statusDeleting(this);$('paginationOverlay').show();setDims('holder', 'paginationOverlay');" style="float: none;background: #21637D none repeat scroll 0 0 !important;" value="Continue and delete members" rerender="massiveMemberRemoveForm" oncomplete="modal.close();reloadMemberList();"/>  
 					<input class="allButtons cancelButtons" type="button" value="Cancel" onclick="modal.close();"/>
 				</div>
 			</apex:form>

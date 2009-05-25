@@ -31,11 +31,13 @@
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskDetail.js')}" />
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskList.js')}" />
  
-    <script>
+ 	<script>
        document.observe("dom:loaded", function(){
                trunkAllTitles();
+               $$('.sidebar')[0].style.height =$$('.holder')[0].getDimensions().height + 15 + 'px';
                setTimeout( "readPortalCSSRules()", 300 );
-               setTimeout( "$$('.pbBottomButtons')[0].remove()", 150);           
+               setTimeout( "$$('.pbBottomButtons')[0].remove()", 150);
+			                                           
            }
        );
        var currentTeam = '{!Task.ProjectId}';
@@ -56,7 +58,8 @@
 	   	
 	   	td.dataCol textarea {
 	   		width: 340px;
-	   	}
+	   	}	
+	   	
     </style>
 
    	<div class="confirmation" id="confirmation" style="display:none;">
@@ -78,7 +81,7 @@
     </apex:composition>
    
     <!-- Main Content Div -->
-    <div class="main_content_projectList">
+    <div class="main_content_projectList" style="overflow:hidden">
         <!-- BreadCrumb and buttons -->    
         <div align="center" class="breadCrumbAndButtons">
         <div class="breadCrumbs" style="width: 350px !important;">
@@ -185,9 +188,10 @@
 		                                            <a href="javascript:;" onclick="window.open('/servlet/servlet.FileDownload?file={!item.Id}')" >{!item.Name}</a>&nbsp;&nbsp;&nbsp;
 		                						</div>
 	                                        	<apex:outputPanel styleClass="height20px" rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}"> 
-		                						    <span class="notassigned" />
+		                			
 													<apex:commandLink action="{!DeleteAttach}"
 														oncomplete="refreshDetail()"
+														styleclass="notassigned"
 														onclick="if(confirm('Are you sure you want to delete this file?')){;}else{return false;}"
 														value="Delete" >
 														<apex:param name="idAttach" value="{!item.Id}"/>
@@ -237,7 +241,7 @@
 								<td class="labelCol vTop">Comments</td>
 								<td class="dataCol">
 									<apex:form id="taskComments">
-										<apex:inputField value="{!comment.Body__c}" required="true" />
+										<apex:inputField value="{!comment.Body__c}" />
 										<apex:commandLink action="{!saveComment}" rerender="taskComments">
 											<span>Save Comment</span>
 										</apex:commandLink>
@@ -286,8 +290,8 @@
                 </apex:outputpanel>
             </div>
         </div>
-    </div>  
-    <script>
-         clearTableDetail();
+    </div>    
+    <script>    	
+         clearTableDetail();         
      </script>
 </apex:page>

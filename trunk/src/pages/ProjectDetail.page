@@ -4,6 +4,7 @@
     <script type="text/javascript" src="/soap/ajax/11.1/connection.js" ></script>
     <script>
         var API_SESSION_ID = '{!$Api.Session_ID}';
+        
     </script>
     
     <script type="text/javascript" src="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}" ></script>
@@ -22,12 +23,11 @@
 
     <script type="text/javascript" src="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupTop.js')}" ></script>
     <script type="text/javascript" src="{!URLFOR($Resource.ProjectResources, 'inc/js/projectDetail.js')}" ></script>
-    
+
     <!-- CSS Includes -->
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamDetailMarkupTop.css')}" />
-
+   
 	<style>
 		div.helpText {
 			z-index: 5000 !important;
@@ -40,7 +40,12 @@
     <!-- ### Initialize the overlay box for modal.js ### -->
     <a href="#modal_container" id="initializeModal" style="display:none;"></a>
     <div id="modal_container" ></div>
-    <script>createOverlay('initializeModal')</script>
+    <script>
+    	createOverlay('initializeModal')   
+        var globalInfoBig = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/infoBig.gif')}';
+        var globalCheckNew = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}';
+          
+    </script>
     
     <div id="all" style="overflow:hidden;">
         
@@ -104,29 +109,14 @@
 			</apex:outputPanel>
             <div class="clear"></div>
         </div>
-        
-        <!-- Join Team Message -->
-        <div style="width: ; position: relative; overflow: hidden;">
-            <apex:outputPanel id="okMessageContainer" layout="block" style="overflow:hidden;position:relative;">    
-                <!-- Task Created Information Panel -->
-                <div class="informationPanel clear" id="infoToUser" style="display:none;"></div>
-                <apex:form >
-                    <apex:outputPanel layout="block" styleClass="joinMessage informationPanel clear" style="display:none;">
-                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}" alt="ok" /><div>You are a member of this {!$ObjectType.Project2__c.label}&nbsp;<apex:commandLink action="{!unjoinProject}" value="Undo" rerender="thisForm, okMessageContainer" oncomplete="refreshLeaveButton();refreshJoinButton();rerenderMemberList();hideJoinMessageToUser();" onclick="disableAndShowProgress(this);" /></div>
-                    </apex:outputPanel> 
-                    <apex:outputPanel layout="block" styleClass="okMessage informationPanel clear" style="display:none;">
-                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}" alt="ok" /><div>Member has been added to this {!$ObjectType.Project2__c.label}</div>
-                    </apex:outputPanel>
-                </apex:form>
-            </apex:outputPanel>
-        </div>
-                
+   
     </div>
-
+                <div class="informationPanel clear" id="infoToUser" style="display:none">
+                </div>
 	<!-- Main Content -->
     <div class="main_content">
         <div class="centerCol">
-            <div class="holder">
+           <div class="holder">
                 <apex:form id="mainContentForm">
 	                
 	                <!-- sfdc detail -->

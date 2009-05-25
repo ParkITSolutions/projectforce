@@ -280,9 +280,7 @@ public class ProjectCreateNewController {
         ProjectUtil.setIsRunnig( true );
         
         if(theProject.Id == null){
-            
             insert theProject;      
-            
         }else{
             update theProject;  
         }
