@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <value>TimelineState</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>TimelineStates</value>
+    </caseValues>
+    <fields>
+        <label><!-- Project --></label>
+        <name>Project__c</name>
+        <relationshipLabel><!-- TimelineStates --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- User --></label>
+        <name>User__c</name>
+        <relationshipLabel><!-- TimelineStates --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- date --></label>
+        <name>date__c</name>
+    </fields>
+    <fields>
+        <label><!-- scale --></label>
+        <name>scale__c</name>
+    </fields>
+    <fields>
+        <label><!-- y --></label>
+        <name>y__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <value>Project Assignee</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Project Assignee</value>
+    </caseValues>
+    <fields>
+        <label><!-- Notify --></label>
+        <name>Notify__c</name>
+    </fields>
+    <fields>
+        <label><!-- PercentDedicated --></label>
+        <name>PercentDedicated__c</name>
+    </fields>
+    <fields>
+        <label><!-- ProjectTask --></label>
+        <name>ProjectTask__c</name>
+        <relationshipLabel><!-- Project Assignee --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Project --></label>
+        <name>Project__c</name>
+        <relationshipLabel><!-- Project Assignee --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- User --></label>
+        <name>User__c</name>
+        <relationshipLabel><!-- Project Assignee --></relationshipLabel>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

@@ -1,0 +1,338 @@
+<apex:page sidebar="false" tabStyle="Project2__c" id="ProjectCreateNew"  controller="ProjectCreateNewController">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    
+    <!-- CSS de TS -->
+    <link rel="stylesheet"  href="{!URLFOR($Resource.commonResources, '/inc/css/validator.css')}" />    
+    <link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />  
+    <link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/teamDetailEdit.css')}" />   
+    <link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/teamDetail.css')}" />   
+    <link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/teamCreateNew.css')}" />
+    <link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/projectCreateNew.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" /> 
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverview.css')}" />
+    
+    <!-- Prototype + Scriptaculous -->
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>
+    
+    <!-- Portal Support -->
+    <apex:includeScript value="{!$Resource.portalSupport}"/>
+     
+    <!-- Common Js for All Sections -->
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/validator.js')}"/>
+    
+    <!-- CSS styles for Portal Integration -->
+    <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
+    
+     
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsCreateNewTeam.css')}" />
+    
+    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectCreateNewProject.js')}" />
+        
+    <apex:includeScript value="/soap/ajax/12.0/connection.js"/>
+        <script>
+        	document.observe('dom:loaded', function (){ 
+        			
+			    	createLayout();
+			    	startMaxlengthCheck();
+			    	readPortalCSSRules();
+	            }
+	        );
+	        
+	        /**
+	        * Namespace Prefix Getter
+	        */
+	        var namespace = "{!namespace}";     
+	        
+	        /**
+	        * Initialize toolkit connection
+	        *@void
+	        */
+	        function init(){
+	            sforce.connection.sessionId = '{!$Api.Session_ID}';
+	            sforce.connection.defaultNamespace = namespace;
+	            
+	        }
+	        var projectId='{!Project.Id}';
+        </script>
+    
+    <div id="bubble" class="bubble">
+        <div class="top_border">&nbsp;</div>        
+        <div class="content">
+            <img class="arrowBubble" src="{!URLFOR($Resource.ProjectResources, 'images/bubbleNewTeam/bubble_arrow.gif')}" />               
+            <!-- Content here -->
+            <div class="innerContBubble" id="innerContBubble"></div>    
+        </div>
+        <div class="bottom_border">&nbsp;</div>             
+    </div>
+    
+    <!-- Header -->
+    <apex:composition template="HeaderTemplate">
+        <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
+        <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
+        <apex:define name="title">New {!$ObjectType.Project2__c.label}</apex:define>
+        <apex:define name="search">
+            <c:Search module="Project" />
+        </apex:define>
+    </apex:composition>
+    
+    <!-- Sidebar -->
+    <div class="sidebar">
+		<c:ProjectsWidgetMyTasks />
+		<c:ProjectsWidgetMyMilestones />  
+	</div>
+    
+    <!-- Main Content Div -->
+    <div class="main_content">
+        <div>
+        	<div class="holder">
+                <div class="teamTitle" style="{!IF(Project.Id == null, '', 'display:none')}" >Create New {!$ObjectType.Project2__c.label}</div>
+                <div class="teamTitle" style="{!IF(Project.Id == null, 'display:none', '')}" >Edit {!$ObjectType.Project2__c.label}</div>
+                <div style="margin-top:15px;">
+						&nbsp; &#171; &nbsp; <a href="{!IF (Project.Id != null, 'ProjectDetail?id='+Project.Id, 'ProjectOverview')}" style="font-weight:normal;"> Back </a>
+				</div>
+                <!-- <div class="ProjectTitle">{!IF(param == Project.Id,'Create New Project', 'Edit Project')}</div>  -->
+                <div style="margin-top:15px;"></div>
+                <div class="border_body_top" style="background: #FFFFFF;">&nbsp;</div>
+                <div class="body_center">
+                    <a id="anchorForError"></a>
+                    <div id="warning_to_user" class="message_to_user" style="display:none;" >
+                        <div class="f_left">
+                            <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/error_icon.gif')}" />
+                        </div>
+                        <div class="f_left">
+                            <strong>We had trouble unserstanding one or more of your entries or we need more information</strong><br />
+                            <span id="messageErrorText">Please see the field(s) highlighted</span>
+                        </div>
+                        <div class="clear"></div>
+                    </div>      
+                    <div align="right">
+                        <table border="0" style="margin: 5px 0px 5px 0px;">
+                            <tr>
+                                <td style="width: 4px;">
+                                    <span class="requiredLegend"></span>
+                                </td>
+                                <td>
+                                    <span class="infoText" style="font-size: 9px; font-family: Arial, Helvetica, sans-serif;">
+                                        =&nbsp;Required Information 
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <apex:outputPanel id="NewProjectFormContainer">
+						<div class="Formcontentfolder">                    	
+                    		<!-- Dynamic Layout Output don't remove -->
+							<div class="DynamicLayoutResponse">
+	<apex:form ><label>Project Name</label><apex:inputField value="{!project.Name}" required="true" /><br/><br/><label>Description</label><apex:inputField value="{!project.Description__c}" required="true" /><br/><br/><label>Priority</label><apex:inputField value="{!project.Priority__c}" required="true" /><br/><br/><div class="btnStandardForm"><apex:commandButton action="{!save}" value="Save" onclick="statusSaving(this);" rerender="NewProjectFormContainer" oncomplete="onCompleteCallBackFunction();"  /><input class="btn" onclick="onCancelEvent();" type="button" value="Cancel"/></div></apex:form></div>
+						</div>
+		           </apex:outputPanel>
+                    <div>
+	                    <apex:form id="secondForm" >
+	                   		<apex:inputHidden value="{!newProfile.projectOpenOrClosed}" id="openOrClosed" />
+	                      	<table cellpadding="0" cellspacing="0" class="newTeamForm">
+								<tr>
+									<td class="alignTop"><label>{!$ObjectType.Project2__c.label}
+									Logo</label></td>
+									<td></td>
+									<td align="center">
+										&nbsp; 
+										<img width="99" src="{!IF(Project.Picture__c == '', URLFOR($Resource.ProjectResources, '/images/layout/pic_upload.gif'), '/servlet/servlet.FileDownload?file='+Project.Picture__c)}" class="imgBorder" /> 
+										<br />
+										<span class="explain">
+											current picture
+											<br>
+											<apex:commandLink styleClass="fontSize10" action="{!removeAvatar}" rendered="{!IF(Project.Picture__c == '', false, true )}" value="Remove" />
+										</span>
+									</td>
+									<td valign="top">
+									<table cellpadding="0" cellspacing="0" width="400px">
+										<tr>
+											<td><span class="inputInfoDescription">Select the
+											image file</span></td>
+										</tr>
+										<tr>
+											<td><span class="inputInfoSubDescription"
+												style="padding-left: 10px;">Type the path of the file or
+											click the Browse button to find the file.</span></td>
+										</tr>
+										<tr>
+											<td></td>
+										</tr>
+										<tr>
+											<td class="paddingLeft" id="imageTeamContainer">
+												<apex:inputFile value="{!document.body}" id="teamImage" filename="{!document.name}" contentType="{!document.contentType}" fileSize="{!document.BodyLength}" accept="image/gif,image/jpeg,image/png" /> 
+												<br />
+												<apex:outputpanel rendered="{!NOT validTypePicture}">
+													<span id="fileExtensionError" class="errorText"> 
+														<b>Error:</b> You must enter a jpg, gif or png files only 
+													</span>
+												</apex:outputpanel> 
+												<apex:outputpanel rendered="{!NOT validSizePicture}">
+													<span id="fileSizeError" class="errorText"> 
+														<b>Error:</b> The images size must be less than 512 kb 
+													</span>
+												</apex:outputpanel>
+											</td>
+										</tr>
+										<tr>
+											<td></td>
+										</tr>
+										<tr>
+											<td class="paddingLeft">
+												<span class="explain">File size limit 512KB. If your upload does not work, try a smaller picture. </span>
+											</td>
+										</tr>
+										<tr>
+											<td class="paddingLeft">
+												<span class="explain">Ideal	size is 100 pixels high by 100 pixels wide.</span>
+											</td>
+										</tr>
+										<tr>
+											<td></td>
+										</tr>
+										<tr>
+											<td class="paddingLeft">
+												<div class="imageRightsHolder" id="imageRightsHolder">
+													<input id="imageRights" type="checkbox" />
+												</div>
+												<div class="messageRigthHolder">
+													<span class="inputInfoSubDescription">
+														I certify that I have the right to distribute this picture and that it does not violate the
+														<a>Terms of Use</a> 
+													</span> 
+													<br />
+													<span id="RightsErrorMessage" class="errorText" style="display: none;">
+														<b>Error:</b> You must agree to the 
+														<a>Terms of Use</a> 
+														to use images for this discussion forum. 
+													</span>
+												</div>
+												<div class="clear"></div>
+											</td>
+										</tr>
+										<tr>
+											<td></td>
+										</tr>
+									</table>
+									</td>
+								</tr>
+								<tr>
+									<td height="10px"></td>
+								</tr>
+								</table>
+	                      	<table cellpadding="0" cellspacing="0" class="newTeamForm" width="100%">			
+								<tr>
+									<td width="60px"></td>
+									<td>
+										<apex:outputPanel rendered="{!AllowCustomerActivated}">
+											<table class="PortalUs" style="display: {!IF(newProfile.projectOpenOrClosed == 'private', 'none;', 'block;' )}" cellpadding="0" cellspacing="0" width="100%">
+												<tr>
+												    <td width="80px">
+														<strong>Portal Users</strong>
+												    </td>
+												    <td>
+												    	&nbsp;
+												    	<apex:inputCheckbox value="{!AllowCustomer}" /> 
+														<span class="inputInfoDescription">Allow Customer Portal Users</span>
+												    </td>    
+												</tr>
+											</table>
+										</apex:outputPanel>
+									</td>
+								</tr>
+								<tr>
+									<td width="60px"></td>
+									<td>
+										<apex:outputPanel rendered="{!AllowPartnerActivated}" >
+											<table class="PortalUs"  style="display: {!IF(newProfile.projectOpenOrClosed == 'private', 'none;', 'block;' )}" cellpadding="0" cellspacing="0" width="100%">
+												<tr>
+												    <td width="80px">
+														<apex:outputPanel rendered="{!NOT( AllowCustomerActivated )}" styleClass="inputInfoTitle" >
+															<strong>Portal Users</strong> &nbsp;
+														</apex:outputPanel>
+												    </td>
+												    <td>
+												    	&nbsp;
+												    	<apex:inputCheckbox value="{!AllowPartner}"/>
+												    	<span class="inputInfoDescription">Allow Partner Portal Users</span>
+												    </td>    
+												</tr>								
+											</table>
+										</apex:outputPanel>
+									</td>
+								</tr>
+							</table>
+	                      	<table cellpadding="0" cellspacing="0" class="newTeamForm" width="100%">			
+							
+								<tr>
+									<td width="60px"></td>
+									<td width="80px">
+										<strong>Access</strong>
+									</td>
+
+									<td>
+										&nbsp;
+										<input type="radio" id="openTeam" checked="checked" name="access" onclick="setAccess(this);hideShowPortalUsBoxes('sh');" /> 
+										<span class="inputInfoDescription">Open</span>
+									</td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>
+										&nbsp; 
+										<span class="inputInfoList">&nbsp;</span>
+										<span class="inputInfoSubDescription">Anyone can join. Anyone can see the {!$ObjectType.Project2__c.label} information and content. </span>
+									</td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>
+										&nbsp; 
+										<input type="radio" id="closedTeam" name="access" onclick="setAccess(this);hideShowPortalUsBoxes('sh');" /> 
+										<span class="inputInfoDescription">Closed</span>
+									</td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>
+										<span class="inputInfoList">&nbsp;</span> 
+										<span class="inputInfoSubDescription">{!$ObjectType.Project2__c.label} Administrator must invite users to join. Anyone can see the {!$ObjectType.Project2__c.label} information and content.</span>
+									</td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>
+										&nbsp; 
+										<input type="radio" id="privateTeam" name="access" onclick="setAccess(this);hideShowPortalUsBoxes('hide');" /> 
+										<span class="inputInfoDescription">Private</span>
+									</td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>
+										<span class="inputInfoList">&nbsp;</span>
+										<span class="inputInfoSubDescription">This {!$ObjectType.Project2__c.label} will not appear in search results or in the profiles of its members.Membership is by invitation only,</span>
+										<span class="inputInfoSubDescription">and only members can see the {!$ObjectType.Project2__c.label}	information and content.</span>
+									</td>
+								</tr>
+							</table>
+							<apex:commandButton styleClass="secondFormAction" style="display:none;" action="{!saveAttachmentsAndAccess}" onclick="statusSaving();"/>
+						</apex:form>
+					</div>
+					<div class="title_line_btn" style="display:none;"></div>
+					<div id="btnContainer"></div>
+				</div>
+            </div>
+        </div>
+    </div>
+</apex:page>

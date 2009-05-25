@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <value>Project Task Predecessor</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Project Task Predecessors</value>
+    </caseValues>
+    <fields>
+        <label><!-- Lag Time --></label>
+        <name>Lag_Time__c</name>
+    </fields>
+    <fields>
+        <label><!-- Lag Type --></label>
+        <name>Lag_Type__c</name>
+    </fields>
+    <fields>
+        <label><!-- Lag Unit --></label>
+        <name>Lag_Unit__c</name>
+    </fields>
+    <fields>
+        <label><!-- Parent --></label>
+        <name>Parent__c</name>
+        <relationshipLabel><!-- Project Task Predecessors --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Predecessor --></label>
+        <name>Predecessor__c</name>
+        <relationshipLabel><!-- Project Task Predecessors (Predecessor) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Project --></label>
+        <name>Project__c</name>
+        <relationshipLabel><!-- Project Task Predecessors --></relationshipLabel>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>
