@@ -1,0 +1,91 @@
+<apex:component controller="ProjectOverlayNewAssigneeController" allowDML="true">
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/newAssigneeOverlay.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/newAssigneeOverlay.js')}" />
+    <script>
+        /**
+        * On DOM ready functions
+        */
+        document.observe('dom:loaded', function(){
+            $$('.btn').each( function(e){
+                e.removeClassName( 'btn' );
+            });  
+          
+        });
+
+     </script>
+
+    <!-- Content  -->
+    <div id="addAssigneeOverlay" style="display: none;" class="overlayForm">
+
+        <div class="swirly_overlay" id="sw_o" style="display: none; height: 100%; width: 100%;" ></div>
+
+        <!-- Overlay Title -->
+        <div class="overlayTitleContent">
+            <div class="overlayTitle">Add new assignee to {!TaskName}</div>
+            <div class="overlayCloseEvent">
+                <a href="Javascript:;" onclick="modal.close();">
+                    <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}"    alt="Close Window" title="Close Window" />
+                </a>
+            </div>
+        </div>
+
+        <div class="overlayMainContent">
+        <!-- Required Information -->
+
+            <span class="overlayRequiredInfo">= Required Information</span>
+                <apex:form id="newMemberForm" onSubmit="return validateFormNewAss();">
+                    <apex:actionFunction name="refreshMembers2" rerender="membersComBoxCont"  oncomplete="$('{!$Component.scaleComBox}').value=0;$('sw_o').hide();refreshDetail();" />
+                    <div class="overlayFormContent overlayFormContent2">
+
+                        <!-- Members list (combobox) -->
+                        <apex:outputPanel id="membersComBoxCont" layout="block">
+                        <table align="center">
+                            <tr>
+                                <td align="right">
+                                    Member
+                                </td>
+                                <td align="left">
+                                    <span class="overlayRequiredInfo">
+                                        <apex:selectList id="membersComBox" styleClass="membersComBox comboboxClass" value="{!memberSelected}" size="1" >
+                                            <apex:selectOptions value="{!MemberList}" />
+                                        </apex:selectList>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <span class="errroForm" id="membersComBoxError" style="display:none;">Error: choose a member.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">   
+                                    Percent dedicated
+                                </td>
+                                <td align="left">
+                                    <apex:selectList id="scaleComBox" value="{!PercentSelected}" size="1" styleClass="comboboxClass">
+                                        <apex:selectOptions value="{!scale}" />
+                                    </apex:selectList>
+                                </td>
+                            </tr>
+                        </table>
+                        </apex:outputPanel>
+                    </div>
+
+                    <div class="overlaySeparateLine"></div>
+                   
+                    <!-- Save and Cancel Buttons -->
+                    <div class="overlayFromButtons overlayFromButtons2">
+                            <apex:commandButton action="{!saveAssignee}" styleClass="allButtons" value="Save" onclick="$('sw_o').show();" oncomplete="refreshMembers2();modal.close();" />
+                            <apex:commandButton action="{!saveAssignee}" styleClass="allButtons" value="Save and new" onclick="$('sw_o').show();" oncomplete="refreshMembers2();" />
+                            <input id="cancelBtn" class="allButtons" type="button" value="Cancel" onclick="modal.close();stopFunction();" />
+                    </div>
+                </apex:form>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</apex:component>
