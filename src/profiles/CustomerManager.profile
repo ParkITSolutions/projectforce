@@ -1533,16 +1533,6 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>false</editable>
-        <field>TaskComment__c.Body__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>TaskComment__c.Task__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
         <field>TimelineState__c.Project__c</field>
         <hidden>true</hidden>
     </fieldLevelSecurities>
@@ -1640,9 +1630,6 @@
         <layout>Task-Task Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>TaskComment__c-TaskComment Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>TimelineState__c-TimelineState Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -1710,9 +1697,6 @@
     <objectPermissions>
         <allowRead>true</allowRead>
         <object>Solution</object>
-    </objectPermissions>
-    <objectPermissions>
-        <object>TaskComment__c</object>
     </objectPermissions>
     <objectPermissions>
         <object>TimelineState__c</object>

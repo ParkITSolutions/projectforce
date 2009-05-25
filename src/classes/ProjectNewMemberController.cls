@@ -20,7 +20,6 @@ public with sharing class ProjectNewMemberController {
     } 
 	
 	public String idProject = System.currentPageReference().getParameters().get('id');
-	
 	public String projectName = null;
 	
 	
