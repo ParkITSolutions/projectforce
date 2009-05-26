@@ -106,7 +106,7 @@
 			</apex:define>
 		</apex:composition>
 	
-		<div align="center"  class="breadCrumbAndButtons" style="height: 30px!important;">
+		<div align="center"  class="breadCrumbAndButtons">
 			<div class="breadCrumbs">
 				<a id="projectNameBreadcrumb"  href="/apex/ProjectDetail?id={!ProjectId}">{!projectName}</a> &gt;
 				<span class="breadCrumbsLast"><strong>Member List</strong></span>		

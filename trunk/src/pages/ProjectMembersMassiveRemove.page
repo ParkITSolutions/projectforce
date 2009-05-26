@@ -34,7 +34,7 @@
 						onclick="fixCancelBtn(this);statusDeleting(this);$('paginationOverlay').show();setDims('holder', 'paginationOverlay');" 
 						style="float: none;background: #21637D none repeat scroll 0 0 !important;" value="Continue and delete members" 
 						rerender="massiveMemberRemoveForm" 
-						oncomplete="modal.close();reloadMemberList();showMessageToUser('The Selected Members has been deleted to this project','success');setTimeout('Effect.Fade(\'infoToUser\')', 6500);"/> 
+						oncomplete="showMsgErrDellAllAdm();"/> 
 					 
 					<input class="allButtons cancelButtons" type="button" value="Cancel" onclick="modal.close();"/>
 				</div>
@@ -44,10 +44,17 @@
 	
 	<script>
 	var deletinghAllAdms = "{!deletingAllAmdsErr}";
-	function showMsgErrDellAllAdm( pError ){
-		alert( pError );
-		if( pError )
-		showMessageToUser('ERROR','success');
+	function showMsgErrDellAllAdm(){
+		modal.close();
+		reloadMemberList();
+		
+		if( deletinghAllAdms )
+			showMessageToUser('You can not delete all admin members.', 'info' );
+		else
+			showMessageToUser('The Selected Members has been deleted to this project','success');
+			
+		
+		setTimeout('Effect.Fade(\'infoToUser\')', 6500);		
 	}
 	</script>
 </apex:page>
