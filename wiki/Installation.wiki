@@ -70,18 +70,18 @@ http://discussionforce.googlecode.com/svn/wiki/images/installation/Install17.jpg
 *_18. Select "Visualforce Page" option._*
 
 
-*_21. Select "'ProjectOverview'['ProjectOverview']" option._*
+*_19. Select "'ProjectOverview'['ProjectOverview']" option._*
 
 
-*_22. Click on "Save" button._*
+*_20. Click on "Save" button._*
 
 http://discussionforce.googlecode.com/svn/wiki/images/installation/Install18.jpg
 
-*_23. Select "Projectforce" option._*
+*_21. Select "Projectforce" option._*
 
 http://discussionforce.googlecode.com/svn/wiki/images/installation/Install19.jpg
 
 
-*_24. This is the main page, enjoy!_*
+*_22. This is the main page, enjoy!_*
 
 http://discussionforce.googlecode.com/svn/wiki/images/installation/Install20.jpg
