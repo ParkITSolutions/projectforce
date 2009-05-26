@@ -43,11 +43,11 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install10.jpg
 
 *_12. Select "Grant access to all users" option, and click on "Next" button._*
 
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install11.jpg
-
-*_13. Check "Ignore Apex test..." and click on "Install" button._*
-
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install12.jpg
+
+*_13. Click on "Install" button._*
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/Install11.jpg
 
 *_14. Click on "Setup" link at the top of the page._*
 
@@ -82,4 +82,3 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install18.jpg
 *_23. This is the main page, enjoy!_*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install19.jpg
-
