@@ -25,50 +25,49 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install6.jpg
 
 *_7. Check "I have read and agree..." option._*
 
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install7.jpg
-
 *_8. Click on "Install" button._*
 
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install8.jpg
+http://projectforce.googlecode.com/svn/wiki/images/installation/Install7.jpg
 
 *_9. Enter your password, and click on "Submit" button._*
 
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install9.jpg
+http://projectforce.googlecode.com/svn/wiki/images/installation/Install8.jpg
 
 *_10. Click on "Continue" button._*
 
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install10.jpg
+http://projectforce.googlecode.com/svn/wiki/images/installation/Install9.jpg
 
 *_11. Click on "Next" button._*
 
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install11.jpg
+http://projectforce.googlecode.com/svn/wiki/images/installation/Install10.jpg
 
 *_12. Select "Grant Access to all Users" option, and click on "Next" button._*
 
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install12.jpg
+http://projectforce.googlecode.com/svn/wiki/images/installation/Install11.jpg
 
 *_13. Check "Ignore Apex test..." and click on "Install" button._*
 
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install13.jpg
+http://projectforce.googlecode.com/svn/wiki/images/installation/Install12.jpg
 
 *_14. Click on "Setup" link at the top of the page._*
 
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install14.jpg
+http://projectforce.googlecode.com/svn/wiki/images/installation/Install13.jpg
 
 *_15. In App Setup section, click on "Create" option._*
 
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install15.JPG
+http://projectforce.googlecode.com/svn/wiki/images/installation/Install14.jpg
 
 *_16. Click on "Objects" option._*
 
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install16.JPG
+http://projectforce.googlecode.com/svn/wiki/images/installation/Install15.JPG
 
 *_17. Click on the "Override" link which is next to "Projects Tab"_*
 
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install17.jpg
+http://projectforce.googlecode.com/svn/wiki/images/installation/Install16.JPG
 
 *_18. Select "Visualforce Page" option._*
 
+http://projectforce.googlecode.com/svn/wiki/images/installation/Install17.jpg
 
 *_19. Select "'ProjectOverview'['ProjectOverview']" option._*
 
