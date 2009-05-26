@@ -1,11 +1,11 @@
 #labels Featured
 *_1. Click on "Force.com Platform", and select "AppExchange" option._*
 
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install1.JPG
+http://projectforce.googlecode.com/svn/wiki/images/installation/install1.JPG
 
 *_2. On the "Finds Apps" section, write "Projectforce" and press the Enter key. _*
 
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install2.jpg
+http://projectforce.googlecode.com/svn/wiki/images/installation/install2.jpg
 
 *_3. Click on "ProjectForce Beta" link._*
 
