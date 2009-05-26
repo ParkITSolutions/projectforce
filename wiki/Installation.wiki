@@ -41,7 +41,7 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install9.jpg
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install10.jpg
 
-*_12. Select "Grant Access to all Users" option, and click on "Next" button._*
+*_12. Select "Grant access to all users" option, and click on "Next" button._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install11.jpg
 
