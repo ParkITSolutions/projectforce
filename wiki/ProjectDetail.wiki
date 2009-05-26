@@ -1,3 +1,4 @@
+#labels Featured
 From this page you can edit, delete, unjoin and add a image to the project.
 
 Also you can add a tasks or milestones and add attachments.
