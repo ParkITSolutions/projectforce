@@ -15,7 +15,7 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install3.jpg
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install4.jpg
 
-*_5. Choose "Production" option, and click on "OK" button._*
+*_5. Choose "Production" option, and click "OK"._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install5.jpg
 
