@@ -67,7 +67,7 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install22.jpg
 
 *_18. Click on "Deploy" button ._*
 
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install21.jpg
+http://projectforce.googlecode.com/svn/wiki/images/installation/Install23.jpg
 
 *_19. On App Setup section, click on "Create" option._*
 
