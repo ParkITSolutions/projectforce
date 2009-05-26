@@ -53,32 +53,48 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install11.jpg
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install13.jpg
 
-*_15. On App Setup section, click on "Create" option._*
+*_15. Click on "View Installed Packages" link ._*
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/Install20.jpg
+
+*_16. Click on "ProjectForceBeta" link ._*
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/Install21.jpg
+
+*_17. Click on "Deploy" button ._*
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/Install22.jpg
+
+*_18. Click on "Deploy" button ._*
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/Install21.jpg
+
+*_19. On App Setup section, click on "Create" option._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install14.jpg
 
-*_16. Click on "Objects" option._*
+*_20. Click on "Objects" option._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install15.jpg
 
-*_17. Scroll down the page._*
+*_21. Scroll down the page._*
 
-*_18. Click on the "Override" link which is next to "Projects Tab"_*
+*_22. Click on the "Override" link which is next to "Projects Tab"_*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install16.jpg
 
-*_19. Select "Visualforce Page" option._*
+*_23. Select "Visualforce Page" option._*
 
-*_20. Select "ProjectOverview'['ProjectOverview']'" option._*
+*_24. Select "ProjectOverview'['ProjectOverview']'" option._*
 
-*_21. Click on "Save" button._*
+*_25. Click on "Save" button._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install17.jpg
 
-*_22. Select "Projectforce" option._*
+*_26. Select "Projectforce" option._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install18.jpg
 
-*_23. This is the main page, enjoy!_*
+*_27. This is the main page, enjoy!_*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install19.jpg
