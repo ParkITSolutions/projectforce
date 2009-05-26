@@ -85,7 +85,7 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install16.jpg
 
 *_23. Select "Visualforce Page" option._*
 
-*_24. Select "ProjectOverview'['ProjectOverview']'" option._*
+*_24. Select "Project Overview'['ProjectOverview']'option._*
 
 *_25. Click on "Save" button._*
 
