@@ -96,7 +96,19 @@ public class ProjectTaskDetailController {
 		insert comment;
 		comment = new TaskComment__c();
 	}
+	
+	/*
+	* Delete Task Comment
+	*/
 		
+	public void deleteComment(){
+		String idComment = ApexPages.currentPage().getParameters().get('idComment');
+		List<TaskComment__c> comments = new List<TaskComment__c>();
+		comments = [select Id from TaskComment__c where Id =: idComment];
+		if(comments.size() > 0)
+			delete comments; 
+	}	
+	
 	/**
 	* Update the task's percent to 100
 	*/

@@ -59,10 +59,16 @@ public without sharing class ProjectMembersListController {
 	*@param String
 	*/
 	public void setMassiveRemoveMemIds( String s ){
+		System.debug('<<0>');	 
  		 this.MassiveRemoveMemIds = s;
 		 this.massiveRemoveMemIds2 = MassiveRemoveMemIds.split( '::' );
 		 
 	}
+	
+	public Boolean getDeletingAllAmdsErr(){
+		return deletingAllAmdsErr;
+	}
+	
 	/**
 	*@param String
 	*/
@@ -77,15 +83,19 @@ public without sharing class ProjectMembersListController {
 	/**
 	*Delete members
 	*/ 
-	public void massiveRemove(){	 
+	public void massiveRemove(){
+		System.debug('<<1>');	 
  		 if( this.massiveRemoveMemIds2.size() > 0 ) {
+		System.debug('<<2>');	 
  			 this.deletingAllAmdsErr = this.noMoreAdmins();
 			 if( !this.deletingAllAmdsErr ){
+		System.debug('<<3>');	 
  			 	List<ProjectMember__c> idsToDel = new List<ProjectMember__c>();
 			 	idsToDel = [ select Id from ProjectMember__c where Id in: massiveRemoveMemIds2 ];
 			 	delete idsToDel;
+		System.debug('<<4>');	 
 			 }
-		 }
+		 } 
  	}
 	
 	/**

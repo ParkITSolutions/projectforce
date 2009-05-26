@@ -54,7 +54,14 @@
 				<apex:outputPanel rendered="{!NOT(error)}" id="removeMemberFormButtons">
 					<!-- Save and Cancel Buttons -->
 					<div class="overlayFromButtons" align="center">
-						<apex:commandButton styleclass="btn allButtons" onclick="fixCancelBtn(this);statusDeleting(this);$('paginationOverlay').show();setDims('holder','paginationOverlay');" action="{!removeMember}" style="float: none;background: #21637D none repeat scroll 0 0 !important;" value="Continue and delete member" rerender="removeMemberForm"/> 
+						<apex:commandButton styleclass="btn allButtons" 
+							onclick="fixCancelBtn(this);statusDeleting(this);$('paginationOverlay').show();setDims('holder','paginationOverlay');" 
+							action="{!removeMember}" 
+							style="float: none;background: #21637D none repeat scroll 0 0 !important;" 
+							value="Continue and delete member" 
+							rerender="removeMemberForm"
+							oncomplete="showMessageToUser('Member has been deleted to this project','success');setTimeout('Effect.Fade(\'infoToUser\')', 10000);"/>
+							 
 						<input class="allButtons cancelButtons" style="float: none;" type="button" value="Cancel" onclick="modal.close();"/>
 					</div>
 				</apex:outputPanel>

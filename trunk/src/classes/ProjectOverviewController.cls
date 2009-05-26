@@ -125,34 +125,18 @@ public with sharing class ProjectOverviewController {
                     
         //@newProjects
         if(filter == 'newProjects'){
-            projects = [Select 
-                    (Select Id From ProjectsMembers__r), 
-                    (Select Id, Milestone__c From ProjectsTasks__r), 
-                    t.CreatedDate ,
-                    t.Name,
-                    t.Picture__c, 
-                    t.Id  
-                    From Project2__c t order by t.CreatedDate  desc limit :lim];
+            projects = [Select (Select Id From ProjectsMembers__r), (Select Id, Milestone__c From ProjectsTasks__r), t.CreatedDate , t.Name, t.Picture__c, t.Id From Project2__c t order by t.CreatedDate  desc limit :lim];
         //@allProjects
         }else if(filter == 'allProjects'){
-            projects = [Select 
-                    (Select Id From ProjectsMembers__r), 
-                    (Select Id, Milestone__c From ProjectsTasks__r), 
-                    t.Name,
-                    t.Picture__c, 
-                    t.Id  
-                    From Project2__c t order by t.Name asc limit :lim];
-            
+            projects = [Select (Select Id From ProjectsMembers__r), (Select Id, Milestone__c From ProjectsTasks__r), t.Name, t.Picture__c, t.Id From Project2__c t order by t.Name asc limit :lim];
+                        
             //Only allProjects show pagination and abc
             isAllProjects = true;
         //@Default My Projects
         }else {
            
             List<ProjectMember__c> tml = new List<ProjectMember__c>();
-            tml = [Select s.Project__c,s.Project__r.Id
-                    From ProjectMember__c s
-                    where s.User__c =: UserInfo.getUserId()
-                    order by s.CreatedDate desc limit :lim];
+            tml = [Select s.Project__c,s.Project__r.Id From ProjectMember__c s where s.User__c =: UserInfo.getUserId() order by s.CreatedDate desc limit :lim];
             
             List<Project2__c> projectsAux = new List<Project2__c>();
             for(ProjectMember__c tm : tml){
@@ -161,13 +145,7 @@ public with sharing class ProjectOverviewController {
                 }
             }
             
-            projects = [Select
-            		(Select Id,User__c From ProjectsMembers__r), 
-					(Select Id, Milestone__c From ProjectsTasks__r),  
-                    t.Name,
-                    t.Picture__c, 
-                    t.Id  
-                    From Project2__c t where t.Id in : projectsAux order by t.Name asc];
+            projects = [Select (Select Id,User__c From ProjectsMembers__r), (Select Id, Milestone__c From ProjectsTasks__r), t.Name, t.Picture__c, t.Id From Project2__c t where t.Id in : projectsAux order by t.Name asc];
                   
         }
         

@@ -134,7 +134,6 @@ public with sharing class ProjectDetailController
     public void getTeamDetail(){
         try {
             teamspace = [Select t.OwnerId, t.Name, t.LastModifiedDate, t.LastModifiedById, t.IsDeleted, t.Id, t.Description__c, t.CreatedDate, t.CreatedById, t.Type__c from Project2__c t where id =: teamIdParam];
-            
         } catch(Exception e ){
             throw e;
         }   

@@ -127,8 +127,7 @@
 					<!-- Save and Cancel Buttons -->
 					<div class="overlayFromButtons" align="center">
 						<apex:commandButton action="{!saveMembers}" 
-							oncomplete="showMessageToUser('Member has been added to this project','success');addMemberCallBackFunction();"
-                            onclick="setTimeout('Effect.Fade(\'infoToUser\')', 10000);"
+							oncomplete="showMessageToUser('Member has been added to this project','success');addMemberCallBackFunction();setTimeout('Effect.Fade(\'infoToUser\')', 6500);"
 							styleclass="btn allButtons" style="float: none;width: 70px !important;background: #21637D none repeat scroll 0 0 !important;" value="Send"
 							rerender="membersListContainer" /> 
 						<input id="cancelBtn" class="allButtons" type="button" value="Cancel" onclick="modal.close();stopFunction();" />

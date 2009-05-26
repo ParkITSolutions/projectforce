@@ -44,6 +44,8 @@
         var globalCheckNew = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}';
         
         document.observe("dom:loaded", documentLoad );
+        
+       
     </script>
 
     <apex:form >
@@ -151,9 +153,18 @@
 	                	</div>
                     </div> 
                     <!-- top pagination END -->            
-                    <!-- task list BEGIN -->
-                    <div class="teamProjectTasks">
-                        <!-- Overlay -->
+                    <!-- task list BEGIN -->                   
+                    
+                    <div class="teamProjectTasks">  
+                        <br>             		
+                   		<img src="{!URLFOR($Resource.ProjectResources, 'images/icons/csv.gif')}" width="15"/>
+                   		
+                   		<!-- Export to CSV File -->
+                   		<apex:commandLink action="{!generateTaskListCsv}" value="Export to CSV" rerender="AttachTempId" oncomplete="exportCSVFile();" status="exportStatus" title="Export to csv File"/>
+                   		<apex:actionStatus startText="(exporting...)" stopText="" id="exportStatus"/>
+                        <apex:outputPanel id="AttachTempId" styleClass="AttachTempId" style="display:none">{!csvFileId}</apex:outputPanel>
+                        <br style="clear:both;" />
+                        
                         <table class="pageList" >
                             <!-- Table Head -->
                             <thead>
