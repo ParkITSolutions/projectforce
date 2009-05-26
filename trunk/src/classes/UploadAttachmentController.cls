@@ -14,10 +14,15 @@ public class UploadAttachmentController {
 	
 	// max attachment size bytes
     public final Integer MAX_SIZE = 5240000;
+    
+    public Set<String> imagesTypes = new Set<String> {'image/jpeg', 'image/pjpeg', 'image/png', 'image/x-png', 'image/gif', 'image/bmp'};
   	
   	// New Attachment Object
 	public Attachment newAttach = new Attachment();
     public Boolean validAttSize = true;
+    
+    // Error message
+    public String errorMsg = '';
 	
 	/**
 	* Costructor
@@ -71,6 +76,14 @@ public class UploadAttachmentController {
 	}
 	
 	/**
+	*@return errorMsg
+	*/
+	public String getErrorMsg () {
+		return errorMsg;
+	}
+	
+	
+	/**
 	* Save Attachment
 	*@return PageReference
 	*/
@@ -84,7 +97,7 @@ public class UploadAttachmentController {
 			insert newAttach;
 			
 			//Update project with current avatar
-			if(asAvatar.equals('true')){
+			if(asAvatar.equals('true') && imagesTypes.contains(newAttach.ContentType)){
 				if(parentId != null){
 					//Read Project
 					Project2__c project = [select p.Id, p.Picture__c from Project2__c p where p.Id =: parentId];
@@ -100,6 +113,10 @@ public class UploadAttachmentController {
 					project.Picture__c = newAttach.Id;
 					update project;
 				}
+			}else if (asAvatar.equals('true')){
+				errorMsg = 'Please select an image file, such: jpg, gif or png';
+				validAttSize = false;
+				return null;				
 			}
 			
 			PageReference pageRef = Page.UploadAttachment;
@@ -107,8 +124,15 @@ public class UploadAttachmentController {
 			return pageRef;
 			
 		}else{
-			validAttSize = false;
-    		return null;
+			if(newAttach.BodyLength < 1 || newAttach.BodyLength == null){
+				errorMsg = 'Please select the file you want upload';
+				validAttSize = false;
+    			return null;
+			}else{
+				errorMsg = 'The attachment size must be less than 5 mb';
+				validAttSize = false;
+	    		return null;
+			}
 		}		
 	}
 	

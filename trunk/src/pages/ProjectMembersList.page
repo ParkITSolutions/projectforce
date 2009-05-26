@@ -57,7 +57,6 @@
 
 	<script>
 		document.observe('dom:loaded', function(){
-				trunkTitle();
 				readPortalCSSRules();
 				$$('.sidebar')[0].style.height =$$('.main_cont')[0].getDimensions().height+85 + 'px';		
 				
@@ -108,7 +107,7 @@
 	
 		<div align="center"  class="breadCrumbAndButtons">
 			<div class="breadCrumbs">
-				<a id="projectNameBreadcrumb"  href="/apex/ProjectDetail?id={!ProjectId}">{!projectName}</a> &gt;
+				<a id="projectNameBreadcrumb"  href="/apex/ProjectDetail?id={!ProjectId}"><script>trunkText('{!projectName}',24);</script></a> &gt;
 				<span class="breadCrumbsLast"><strong>Member List</strong></span>		
 			</div>
 		</div>
@@ -324,7 +323,7 @@
 								</td>
 								<td>
 									<apex:outputpanel rendered="{!userPermissions.canManage}">
-									 	<a href="Javascript:;" onclick="setHiddenMemberId('{!item.projectMemberId}'); createOverlay('','removeMemberOverlay','160','relocateOverlay()');">Delete</a>
+									 	<a href="Javascript:;" onclick="setHiddenMemberId('{!item.projectMemberId}'); createOverlay('','removeMemberOverlay','170','relocateOverlay()');">Delete</a>
 									</apex:outputpanel>
 								</td>
 								<td class="memberImg">
@@ -431,6 +430,8 @@
 		        a.push( e.value );            
 		 
 		    }); 
+ 		    
+ 		    
  		    //alert( a.join( '::' )); 
  		    
 		    $$('.MemberIdToDel')[0].value = a.join( '::' );
