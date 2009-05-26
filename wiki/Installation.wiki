@@ -69,7 +69,7 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install16.JPG
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install17.jpg
 
-*_19. Select "'ProjectOverview'['ProjectOverview']" option._*
+*_19. Select "ProjectOverview'['ProjectOverview']'" option._*
 
 
 *_20. Click on "Save" button._*
