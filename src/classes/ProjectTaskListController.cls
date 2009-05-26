@@ -125,6 +125,15 @@ public with sharing class ProjectTaskListController {
     }
 
     /**
+    *Returns the Task list size
+    *@return Integer
+    */
+    public Integer gettotalItemsNumber(){
+        return totalItemsNumber;
+    }
+
+
+    /**
     *Get user profile
     */
     public void getUserProfile(){
@@ -497,8 +506,7 @@ public with sharing class ProjectTaskListController {
                         	resultTaskList[j-1] = resultTaskList[j];
                         	resultTaskList[j] = tempProjectTask;
                         }   
-                    }
-                    else {
+                    } else {
                        if (mapAsignees.get(resultTaskList[j].ProjectsAssignees__r[0].User__c).name <=
                     		mapAsignees.get(resultTaskList[j-1].ProjectsAssignees__r[0].User__c).name) {
                         	ProjectTask__c tempProjectTask;
@@ -745,14 +753,14 @@ public with sharing class ProjectTaskListController {
         }
         idTaskToComplete = '';
     }   
-    
+       
     
     /**
     *Export the task list into a csv file
     */
  	public void generateTaskListCsv() {
     	
-	    String csvText = 'ID,Sprint,Type,Priority,Name,Status,AssignedTo,PercentCompleted,EstimateHrs,DueDate,DaysLate\n';		        
+	    String csvText = 'ID,Sprint,Type,Priority,Name,Description,Status,AssignedTo,PercentCompleted,EstimateHrs,DueDate,DaysLate\n';		        
               
 	    for (TaskDetails iterTask : taskList) {
 	    	
@@ -760,12 +768,20 @@ public with sharing class ProjectTaskListController {
 	    	csvText += iterTask.Sprint + ',';
 	    	
 	    	if (iterTask.Milestone)            
-	    		csvText += 'milestone ,';
+	    		csvText += 'Milestone,';
 	    	else            
-	    		csvText += 'task,';
+	    		csvText += 'Task,';
 	    		
 	    	csvText += iterTask.Priority + ',';            
-	    	csvText += iterTask.Name + ',';            
+	    	csvText += iterTask.Name + ',';   
+	    	
+	    	String description;
+	    	if(iterTask.Description != null){
+	    		description  = iterTask.Description.replaceAll('\r\n', ' ');
+	    		description  = description.replaceAll(',', ' ');
+	    	}
+	    	
+	    	csvText += description + ',';            
 	    	csvText += iterTask.Status + ',';            
 	    	csvText += iterTask.UserTask.name + ',';
 	    	csvText += iterTask.Percent_Completed + ',';

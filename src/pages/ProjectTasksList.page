@@ -43,18 +43,7 @@
         var globalInfoBig = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/infoBig.gif')}';
         var globalCheckNew = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}';
         
-        document.observe("dom:loaded", documentLoad );     
-        
-       /*
-		*Export the task list into a csv file
-		**/
-		function exportCSVFile(){
-			var attachId = $$('.AttachTempId')[0].innerHTML;			
-			alert('/servlet/servlet.FileDownload?file=' + attachId);
-			$('theIframeToDownload').src = '/servlet/servlet.FileDownload?file=' + attachId;
-			setTimeout("$('exportStatus').innerHtml=''", 3000);
-		}
-		       
+        document.observe("dom:loaded", documentLoad ); 	       
     </script>
 
     <apex:form >
@@ -63,8 +52,6 @@
             <apex:param name="sb" value="refresh" />
         </apex:actionFunction>      
     </apex:form>
-    
-    <iframe id="theIframeToDownload" src="" style="display:none;" /></iframe>
     
     <c:ProjectOverlayNewTask />
     <c:ProjectOverlayNewMilestone />
@@ -164,18 +151,25 @@
 	                	</div>
                     </div> 
                     <!-- top pagination END -->            
-                    <!-- task list BEGIN -->                   
-                    
+               
                     <div class="teamProjectTasks">  
-                        <br>             		
-                   		<img src="{!URLFOR($Resource.ProjectResources, 'images/icons/csv_icon3.gif')}"/>
-                   		
-                   		<!-- Export to CSV File -->
-                   		<apex:commandLink action="{!generateTaskListCsv}" value="Export to CSV" rerender="AttachTempId" onclick="$('exportStatus').innerHTML = 'exporting...'" oncomplete="exportCSVFile();" status="exportStatus" title="Export to csv File"/>
-                   		<span id="exportStatus"/></span>
-                        <apex:outputPanel id="AttachTempId" styleClass="AttachTempId" style="display:none">{!csvFileId}</apex:outputPanel>
-                        <br style="clear:both;" />
+                       	<br>
+	                   	
+	                   	<!-- Export to CSV File -->                       	
+                        <apex:outputPanel id="exportLinkPanel" rendered="{!IF(totalItemsNumber > 0,true, false)}">         		
+	                   		<img src="{!URLFOR($Resource.ProjectResources, 'images/icons/csv_icon3.gif')}"/>                   		
+	                   		<apex:commandLink action="{!generateTaskListCsv}" value="Export to CSV" 
+	                   			rerender="AttachTempId" onclick="$('exportStatus').innerHTML = 'exporting...'" 
+	                   			oncomplete="exportCSVFile();" status="exportStatus" 
+	                   			title="Export to csv File"/>
+                   			<span id="exportStatus"/></span>
+	                        <apex:outputPanel id="AttachTempId" styleClass="AttachTempId" 
+	                        	style="display:none">{!csvFileId}</apex:outputPanel>
+	                        <br style="clear:both;" />
+	                        <iframe id="theIframeToDownload" src="" style="display:none;" /></iframe>
+                       	</apex:outputPanel>
                         
+                        <!-- Task List Table -->
                         <table class="pageList" >
                             <!-- Table Head -->
                             <thead>

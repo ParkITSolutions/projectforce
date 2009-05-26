@@ -10,9 +10,9 @@ public without sharing class ProjectMembersListController {
 	
 	public String   massiveRemoveMemIds;
 	public List<Id> massiveRemoveMemIds2 = new List<Id>();
-	public List<Id> adminMembersList    = new List<Id>();      
 	public Boolean  deletingAllAmdsErr = false;
-	
+ 	List<ProjectMember__c> idsToDel = new List<ProjectMember__c>();
+ 	
 	public String delName;
 	public String letter = System.currentPageReference().getParameters().get('ltr');
 	public Boolean sortByDesc = false;
@@ -59,7 +59,7 @@ public without sharing class ProjectMembersListController {
 	*@param String
 	*/
 	public void setMassiveRemoveMemIds( String s ){
-		System.debug('<<0>');	 
+ 		 System.debug('>>>>>' + s);
  		 this.MassiveRemoveMemIds = s;
 		 this.massiveRemoveMemIds2 = MassiveRemoveMemIds.split( '::' );
 		 
@@ -84,17 +84,12 @@ public without sharing class ProjectMembersListController {
 	*Delete members
 	*/ 
 	public void massiveRemove(){
-		System.debug('<<1>');	 
  		 if( this.massiveRemoveMemIds2.size() > 0 ) {
-		System.debug('<<2>');	 
- 			 this.deletingAllAmdsErr = this.noMoreAdmins();
-			 if( !this.deletingAllAmdsErr ){
-		System.debug('<<3>');	 
- 			 	List<ProjectMember__c> idsToDel = new List<ProjectMember__c>();
-			 	idsToDel = [ select Id from ProjectMember__c where Id in: massiveRemoveMemIds2 ];
-			 	delete idsToDel;
-		System.debug('<<4>');	 
-			 }
+			this.idsToDel = [ select Id, Profile__r.Name from ProjectMember__c where Id in: massiveRemoveMemIds2 ];
+ 			this.deletingAllAmdsErr = this.noMoreAdmins();
+			if( !this.deletingAllAmdsErr ){
+			 	//delete this.idsToDel;
+			}
 		 } 
  	}
 	
@@ -104,19 +99,22 @@ public without sharing class ProjectMembersListController {
 	public Boolean noMoreAdmins(){
 		
 		Boolean noMore = false;
-		Integer memListSize = this.adminMembersList.size();
-		
-		if( this.massiveRemoveMemIds2.size() == memListSize ){
+		List<ProjectMember__c> adminMembersList = new List<ProjectMember__c>();      
+		List<Id> adminMembersListIds = new List<Id>();      
+		List<Id> adminMembersListIdsToDel = new List<Id>();      
 
-			this.massiveRemoveMemIds2.sort();	
-			this.adminMembersList.sort();
-
-			noMore = this.adminMembersList.get(0) == this.massiveRemoveMemIds2.get(0);
+		adminMembersList = [ select Id from ProjectMember__c where Profile__r.Name = 'Project Administrator' and Project__c =: idProject ];
+		if( adminMembersList.size() > 0 )
+			for( ProjectMember__c a : adminMembersList )
+			adminMembersListIds.add( a.Id );
+					
+		if( this.idsToDel.size() > 0 )
+			for( ProjectMember__c a : this.idsToDel )
+				if( a.Profile__r.Name == 'Project Administrator' )
+				adminMembersListIdsToDel.add( a.Id );
 		
-			for( Integer k = 1; k < memListSize && noMore; k++ )
-			noMore = this.adminMembersList.get(k) == this.massiveRemoveMemIds2.get(k);
-		
-		}
+		noMore = ( adminMembersListIds.size() == adminMembersListIdsToDel.size());
+		System.debug( '>>>' +adminMembersListIds.size() + '>>' + adminMembersListIdsToDel.size()+ '>>' + noMore +'>>'+ this.idsToDel.size() );
    		return noMore;
 	}	
 	
@@ -124,7 +122,7 @@ public without sharing class ProjectMembersListController {
 	* Return list of members
 	*@return List<Member>
 	*/
-	public List<Member> getMembers () {
+	public List<Member> getMembers(){
 		return members;
 	}	
 	
@@ -246,7 +244,7 @@ public without sharing class ProjectMembersListController {
 	*/	
 	public String getProjectName () {
 		Project2__c currentProject = [select Name from Project2__c where id=: idProject];
-		String pName = ( currentProject.Name.length() > 15 ) ? currentProject.Name.substring(0, 15) + '...' : currentProject.Name;
+		String pName = currentProject.Name;
 		return pName;	 
 	}
 	
@@ -265,10 +263,7 @@ public without sharing class ProjectMembersListController {
 	*@return Integer
 	*/	
 	public Integer getAdminCount () {
-		Integer countAdmin = [select count() 
-							  from ProjectMember__c 
-							  where project__c = :idProject
-							  	and Profile__r.ManageProjectTasks__c = true];
+		Integer countAdmin = [select count() from ProjectMember__c where project__c = :idProject and Profile__r.ManageProjectTasks__c = true];
 		return countAdmin;	
 	}
 	
@@ -278,10 +273,7 @@ public without sharing class ProjectMembersListController {
 	*/	
 	public String getUserMemberId () {
 		List<ProjectMember__c> userMember = new List<ProjectMember__c>();
-		userMember = [select id 
-					  from ProjectMember__c 
-					  where project__c =:idProject 
-					  	and User__c =:UserInfo.getUserId() limit 1];
+		userMember = [select id from ProjectMember__c where project__c =:idProject and User__c =:UserInfo.getUserId() limit 1];
 		String userMemberId = '';
 		if (userMember.size() > 0) {
 			userMemberId = userMember[0].Id;	
@@ -407,14 +399,9 @@ public without sharing class ProjectMembersListController {
 		}
 		editMember = [select id, User__r.name, Profile__c, User__r.companyName, User__r.Title  from ProjectMember__c  where User__c =: editMemberId and project__c =: idProject limit 1];
 		
-		Integer countAdmin = [select count() 
-							  from ProjectMember__c 
-							  where project__c = :idProject];
+		Integer countAdmin = [select count()  from ProjectMember__c where project__c = :idProject];
 							  
-		Boolean isAdmin = [select Profile__r.ManageProjectTasks__c 
-						   from ProjectMember__c 
-						   where Project__c =:idProject
-						       and User__c=:editMemberId limit 1 ].Profile__r.ManageProjectTasks__c;
+		Boolean isAdmin = [select Profile__r.ManageProjectTasks__c from ProjectMember__c where Project__c =:idProject and User__c=:editMemberId limit 1 ].Profile__r.ManageProjectTasks__c;
 		
 		isLastAdmin = (editMemberId == UserInfo.getUserId()) && isAdmin;
 		
@@ -497,12 +484,7 @@ public without sharing class ProjectMembersListController {
 			letter = System.currentPageReference().getParameters().get('ltr');
 				
 		if (letter == null || letter == '' || letter == 'ALL') {
-			for (ProjectMember__c item: 
-				[select id, Name, Profile__r.Name, Profile__r.ManageProjectTasks__c, 
-					Profile__r.Description__c, User__r.Name, User__r.Title, User__r.Id, User__r.CompanyName 
-				 from ProjectMember__c 
-				 where project__c =:idProject and User__r.IsActive != false 
-				 order by User__r.Name]) {
+			for (ProjectMember__c item: [select id, Name, Profile__r.Name, Profile__r.ManageProjectTasks__c, Profile__r.Description__c, User__r.Name, User__r.Title, User__r.Id, User__r.CompanyName from ProjectMember__c  where project__c =:idProject and User__r.IsActive != false order by User__r.Name]) {
 				 	
 				Member memberItem = new Member();
 				memberItem.setName(item.User__r.Name);
@@ -516,13 +498,7 @@ public without sharing class ProjectMembersListController {
 				membersList.add(memberItem);
 			}
 		}else {
-			for (ProjectMember__c item: 
-				[select id, Name, Profile__r.Name, Profile__r.ManageProjectTasks__c, 
-				Profile__r.Description__c, User__r.Name, User__r.Title, User__r.Id, User__r.CompanyName 
-				from ProjectMember__c 
-				where User__r.Name like :(letter + '%') and User__r.IsActive != false 
-					and project__c =:idProject
-				order by User__r.Name]) {
+			for (ProjectMember__c item: [select id, Name, Profile__r.Name, Profile__r.ManageProjectTasks__c, Profile__r.Description__c, User__r.Name, User__r.Title, User__r.Id, User__r.CompanyName from ProjectMember__c where User__r.Name like :(letter + '%') and User__r.IsActive != false and project__c =:idProject order by User__r.Name]) {
 					
 				Member memberItem = new Member();
 				memberItem.setName(item.User__r.Name);
@@ -752,8 +728,6 @@ public without sharing class ProjectMembersListController {
 			memberItem.setCompany(item.User__r.CompanyName);
 			membersList.add(memberItem);
 			
-			if( item.Profile__r.Name == 'Project Administrator')
-			adminMembersList.add( item.id );
 		}
 			
 		totalItemsNumber = membersList.size();
