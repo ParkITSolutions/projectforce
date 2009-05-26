@@ -1,90 +1,87 @@
 #labels Featured
 *_1. Click on "Force.com Platform", and select "AppExchange" option._*
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/install1.JPG
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install1.JPG
 
 *_2. On the "Finds Apps" section, write "Projectforce" and press the Enter key. _*
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/install2.jpg
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install2.jpg
 
 *_3. Click on "ProjectForce Beta" link._*
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/install3.jpg
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install3.jpg
 
 *_4. Click on "Get It Now"._*
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/install4.jpg
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install4.jpg
 
 *_5. Choose "Production" option, and click on "OK" button._*
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/install5.jpg
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install5.jpg
 
 *_6. Enter your UserName, Password and click on "Login" button._*
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/install6.jpg
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install6.jpg
 
 *_7. Check "I have read and agree..." option._*
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/step1.jpg
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install7.jpg
 
 *_8. Click on "Install" button._*
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/step2.jpg
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install8.jpg
 
 *_9. Enter your password, and click on "Submit" button._*
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/step3.jpg
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install9.jpg
 
 *_10. Click on "Continue" button._*
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/step3.jpg
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install10.jpg
 
 *_11. Click on "Next" button._*
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/step3.jpg
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install11.jpg
 
 *_12. Select "Grant Access to all Users" option, and click on "Next" button._*
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/step4.jpg
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install12.jpg
 
 *_13. Check "Ignore Apex test..." and click on "Install" button._*
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/step5.jpg
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install13.jpg
 
-*_14. Click on "Deploy"_*
+*_14. Click on "Setup" link at the top of the page._*
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/step6.jpg
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install14.jpg
 
-*_15. Click on "Create"_*
+*_15. In App Setup section, click on "Create" option._*
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/step7.JPG
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install15.JPG
 
-*_16. Click on "Objects"_*
+*_16. Click on "Objects" option._*
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/step8.JPG
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install16.JPG
 
-*_17. Click on "Discussion"_*
+*_17. Click on the "Override" link which is next to "Projects Tab"_*
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/step9.jpg
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install17.jpg
 
-*_18. Scroll down the page_*
+*_18. Select "Visualforce Page" option._*
 
-*_19. Click on the "Override" link which is next to "Discussions Tab"_*
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/step10.jpg
+*_21. Select "ProjectOverview[ProjectOverview]" option._*
 
-*_20. Click on "Visualforce Page"_*
 
-*_21. Select "Discussion Overview'['discussionforce _ Discussion Overview']'_*
+*_22. Click on "Save" button._*
 
-*_22. Click on "Save"_*
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install18.jpg
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/step11.jpg
+*_23. Select "Projectforce" option._*
 
-*_23. Select "Discussion"_*
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install19.jpg
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/step12.jpg
 
 *_24. This is the main page, enjoy!_*
 
-http://discussionforce.googlecode.com/svn/wiki/images/installation/step13.jpg
+http://discussionforce.googlecode.com/svn/wiki/images/installation/Install20.jpg
