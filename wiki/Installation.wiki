@@ -59,7 +59,7 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install14.jpg
 
 *_16. Click on "Objects" option._*
 
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install15.JPG
+http://projectforce.googlecode.com/svn/wiki/images/installation/Install15.jpg
 
 *_17. Click on the "Override" link which is next to "Projects Tab"_*
 
