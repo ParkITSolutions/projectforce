@@ -2,7 +2,7 @@
 
 	<!-- Content  -->
 	<div id="DeleteAssigneeOverlay" style="display: none;" class="overlayForm">
-		<div class="swirly_overlay" id="sw_o" style="display: none; height: 100%; width: 100%;" ></div>
+		<div class="swirly_overlay" id="sw_ov" style="display: none;"></div>
 
 		<!-- Overlay Title -->
 		<div class="overlayTitleContent">

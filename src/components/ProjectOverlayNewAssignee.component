@@ -17,7 +17,7 @@
     <!-- Content  -->
     <div id="addAssigneeOverlay" style="display: none;" class="overlayForm">
 
-        <div class="swirly_overlay" id="sw_o" style="display: none; height: 100%; width: 100%;" ></div>
+        <div class="swirly_overlay" id="sw_o" style="display: none;" ></div>
 
         <!-- Overlay Title -->
         <div class="overlayTitleContent">
@@ -76,8 +76,18 @@
                    
                     <!-- Save and Cancel Buttons -->
                     <div class="overlayFromButtons overlayFromButtons2">
-                            <apex:commandButton action="{!saveAssignee}" styleClass="allButtons" value="Save" onclick="$('sw_o').show();" oncomplete="refreshMembers2();modal.close();" />
-                            <apex:commandButton action="{!saveAssignee}" styleClass="allButtons" value="Save and new" onclick="$('sw_o').show();" oncomplete="refreshMembers2();" />
+                            <apex:commandButton action="{!saveAssignee}" 
+                            	styleClass="allButtons" 
+                            	value="Save" 
+                            	onClick="$('sw_o').show();" 
+                            	oncomplete="refreshMembers2();modal.close();" />
+                            	
+                            <apex:commandButton action="{!saveAssignee}" 
+                            	styleClass="allButtons" 
+                            	value="Save and new" 
+                            	onclick="$('sw_o').show();" 
+                            	oncomplete="refreshMembers2();" />
+                            	
                             <input id="cancelBtn" class="allButtons" type="button" value="Cancel" onclick="modal.close();stopFunction();" />
                     </div>
                 </apex:form>
