@@ -77,7 +77,22 @@
 				    	</span>
 				   	</span>
 				</div>
-				
+				<div class="team_detail_commentedItemLeftProfile">					    
+				    <img class="imgSmallLeft" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/star.gif')}"  />
+				    <span>
+				    	<span class="text_link_underlineColorPaddRight">
+				    	  	<a href="/apex/ProjectTasksList?id={!teamIdParam}#">Task List</a>
+				    	</span>
+				   	</span>
+				</div>
+				<div class="team_detail_commentedItemLeftProfile">					    
+				    <img class="imgSmallLeft" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/star.gif')}"  />
+				    <span>
+				    	<span class="text_link_underlineColorPaddRight">
+				    	  	<a href="/apex/ProjectMembersList?id={!teamIdParam}#">Member List</a>
+				    	</span>
+				   	</span>
+				</div>
             </div>               
         </div>
         <!-- Widget Holder Foot -->

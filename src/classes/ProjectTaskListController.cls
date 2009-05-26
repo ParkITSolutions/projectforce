@@ -9,6 +9,7 @@ public with sharing class ProjectTaskListController {
     public Boolean editDeletePer = false;
     public boolean isProjectMember = false;
     public String PROJECTID = System.currentPageReference().getParameters().get('id');
+    public String csvFileId = '';
     public String filter = System.currentPageReference().getParameters().get('filter');
     List<ProjectTask__c> ListTask = new List<ProjectTask__c>();
     public Map<String, User> mapAsignees = new Map<String, User>();
@@ -36,7 +37,6 @@ public with sharing class ProjectTaskListController {
     public boolean prevPageShow  = false;
     public boolean nextPageLinkShow  = false;
     public boolean nextPageShow  = false;
-    
     
     /**
     *Constructor
@@ -91,6 +91,13 @@ public with sharing class ProjectTaskListController {
     */
     public void setProjectId(String sPROJECTID) {
         PROJECTID = sPROJECTID;
+    }
+    
+    /**
+    *@return csv file id
+    */
+    public String getCsvFileId(){
+    	return csvFileId;
     }
     
     /**
@@ -465,7 +472,7 @@ public with sharing class ProjectTaskListController {
                 resultTaskList = [Select p.Project__c, p.Priority__c, p.PercentCompleted__c, p.createdById, p.OwnerId, p.Status__c, p.Id__c, p.Sprint__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.Duration__c, (Select Id, User__r.Name, User__r.Id, User__c From ProjectsAssignees__r), p.Description__c From ProjectTask__c p where Project__c =: PROJECTID order by Sprint__c asc];              
             }           
         }               
-        
+
         // Sorting by priority or assignee name can't be implemented in the SOQL query
         // and require a bit of tricky
         if (sortBy == 'Priority__c')
@@ -504,7 +511,11 @@ public with sharing class ProjectTaskListController {
                 }
             }
         }
-        		
+        else{
+			String myQuery = '';
+			myQuery = ' SELECT Project__c, Priority__c, PercentCompleted__c, createdById, OwnerId, Status__c, Id__c, Sprint__c, Name, Milestone__c, Id, EndDate__c, Duration__c, ( SELECT Id, User__r.Name, User__r.Id, User__c  FROM ProjectsAssignees__r), Description__c  FROM ProjectTask__c  WHERE Project__c = \'' + PROJECTID + '\' ORDER BY ' + sortBy + ' ' + ( sortByDesc ? ' DESC ' : ' ASC ' );
+			resultTaskList = Database.query( myQuery );
+        }        		
 		return resultTaskList;
     }
      
@@ -733,7 +744,56 @@ public with sharing class ProjectTaskListController {
             }
         }
         idTaskToComplete = '';
-    }
+    }   
+    
+    
+    /**
+    *Export the task list into a csv file
+    */
+ 	public void generateTaskListCsv() {
+    	
+	    String csvText = 'ID,Sprint,Type,Priority,Name,Status,AssignedTo,PercentCompleted,EstimateHrs,DueDate,DaysLate\n';		        
+              
+	    for (TaskDetails iterTask : taskList) {
+	    	
+	    	csvText += iterTask.autoId + ',';            
+	    	csvText += iterTask.Sprint + ',';
+	    	
+	    	if (iterTask.Milestone)            
+	    		csvText += 'milestone ,';
+	    	else            
+	    		csvText += 'task,';
+	    		
+	    	csvText += iterTask.Priority + ',';            
+	    	csvText += iterTask.Name + ',';            
+	    	csvText += iterTask.Status + ',';            
+	    	csvText += iterTask.UserTask.name + ',';
+	    	csvText += iterTask.Percent_Completed + ',';
+	    	csvText += iterTask.Estimate + ',';
+	    	csvText += iterTask.DueDate + ',';
+	    	csvText += iterTask.CantDias + '\n';           
+	              
+	    }
+	    
+	    List<Attachment> attachs =  new List<Attachment>();
+	    Attachment doc = null;
+	    
+	    attachs = [select Id, Name from Attachment where Name = 'pf__export.csv'];
+	    if(attachs.size() > 0)
+	    	doc = attachs[0];
+	    else{
+	    	doc = new Attachment();
+	    	doc.ParentId = UserInfo.getUserId();
+	    }
+	    doc.Name = 'pf__export.csv';
+	    
+	    doc.Body = Blob.valueOf(csvText);
+	    doc.ContentType = 'Text/csv';
+	    
+	    upsert doc;
+	    csvFileId = doc.Id;
+	}    
+ 	    
  	    
     /**
     *Class TaskDetails
@@ -835,8 +895,8 @@ public with sharing class ProjectTaskListController {
             
             public Boolean canEditAndDelete { 
                 get; set; 
-            } 
-                
+            }
+                        
     }
     
 }

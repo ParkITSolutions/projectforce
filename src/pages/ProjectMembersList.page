@@ -83,7 +83,7 @@
 	</style>
 	
 	<apex:form >
-		<apex:actionFunction name="reloadMemberList" action="{!refresh}" rerender="headForm, membersList" oncomplete="$('paginationOverlay').hide();" />
+		<apex:actionFunction name="reloadMemberList" action="{!refresh}" rerender="headForm, membersList, filterForm" oncomplete="$('paginationOverlay').hide();" />
 	</apex:form>
 	<apex:form >
 		<apex:actionFunction name="reloadButtons" action="{!refresh}" rerender="headForm" />
@@ -99,8 +99,8 @@
 			<apex:define name="moduleId">
 				<apex:variable var="moduleId" value="headerTeams" />
 			</apex:define>
-			<apex:define name="module">{!$ObjectType.Project2__c.label} Members List</apex:define>
-			<apex:define name="title">{!projectName}</apex:define>
+			<apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
+			<apex:define name="title">Members List</apex:define>
 			<apex:define name="search">
 				<c:Search module="project" projectId="{!projectId}" label="Tasks" />
 			</apex:define>
@@ -108,8 +108,8 @@
 	
 		<div align="center"  class="breadCrumbAndButtons" style="height: 30px!important;">
 			<div class="breadCrumbs">
-				<a id="projectNameBreadcrumb"  href="/apex/ProjectDetail?id={!ProjectId}">{!projectName} Home</a> &gt;
-				<span class="breadCrumbsLast">Member List</span>		
+				<a id="projectNameBreadcrumb"  href="/apex/ProjectDetail?id={!ProjectId}">{!projectName}</a> &gt;
+				<span class="breadCrumbsLast"><strong>Member List</strong></span>		
 			</div>
 		</div>
 		
@@ -148,7 +148,7 @@
 									<a onclick="createOverlay('','inviteTeam','280','showSelects()','');relocateOverlay();"
 										href="javascript:;" class="blackbutton"><span>New</span></a>
 									<a href="javascript:;" class="blackbutton"
-										onclick="massiveRemoveOverlay();"><span>Remove</span></a>
+										onclick="massiveRemoveOverlay();reMemIds();"><span>Remove</span></a>
 								</apex:outputpanel> 
 							</apex:form>
 						</div>
@@ -432,7 +432,7 @@
 		 
 		    }); 
  		    //alert( a.join( '::' )); 
-		    
+ 		    
 		    $$('.MemberIdToDel')[0].value = a.join( '::' );
  		    
 		}
