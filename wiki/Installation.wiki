@@ -63,7 +63,7 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install15.jpg
 
 *_17. Click on the "Override" link which is next to "Projects Tab"_*
 
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install16.JPG
+http://projectforce.googlecode.com/svn/wiki/images/installation/Install16.jpg
 
 *_18. Select "Visualforce Page" option._*
 
