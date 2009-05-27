@@ -10,7 +10,7 @@
 	
 	<script>
 		function openAttachmentOverlay(){
-			createOverlay('', 'newAttachmentOverlay', 170);
+			createOverlay('', 'newAttachmentOverlay', 180);
 			newAttachmentToProject();
 			observeIframeUpload();
 			//Hack for IE6

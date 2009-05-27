@@ -12,13 +12,10 @@
 				</a>
 			</div>
 		</div>
+		
 		<!-- Overlay Content -->
 		<div class="overlayMainContent">
-			<apex:form id="massiveMemberRemoveForm"  >
-				<script> 
-					
-					 
-				</script>
+			<apex:form id="massiveMemberRemoveForm">
 				<apex:inputText style="display: none;" styleClass="MemberIdToDel" value="{!MassiveRemoveMemIds}" />
 				<div class="overlayFormContent" style="padding-bottom: 10px;">
 					<table style="width:95%;"> 
@@ -37,35 +34,29 @@
 						styleclass="btn allButtons" 
 						onclick="fixCancelBtn(this);statusDeleting(this);$('paginationOverlay').show();setDims('holder', 'paginationOverlay');" 
 						style="float: none;background: #21637D none repeat scroll 0 0 !important;" value="Continue and delete members" 
-						rerender="massiveMemberRemoveForm, kjsdajfkjdsa" 
-						oncomplete="showMsgErrDellAllAdm();"
-						/> 
-					 
-		<script> var deletingAllAdms = {!deletingAllAmdsErr}; </script>
+						rerender="allAdminsRemove" oncomplete="showMsgErrDellAllAdm();" /> 
 					<input class="allButtons cancelButtons" type="button" value="Cancel" onclick="modal.close();"/>
 				</div>
+				<apex:outputPanel styleClass="allAdminsRemove" id="allAdminsRemove" style="display:none;">{!deletingAllAmdsErr}</apex:outputPanel>
 			</apex:form>
 		</div>
 	</div>
 	
-	<apex:outputPanel id="kjsdajfkjdsa">
-	</apex:outputPanel>
 	<script>
 	
 	function showMsgErrDellAllAdm(){
-		modal.close();
- 		alert(deletingAllAdms);
- 		// The Boolean "deletingAllAdms" is inside ProjectMembersMassiveRemove.page 
-		if( deletingAllAdms ){
-			showMessageToUser('You can not delete all admin members.', 'info' );
+
+ 		// The Boolean "deletingAllAdms" is inside the outputpanel style class allAdminRemove
+		if( $$('.allAdminsRemove')[0].innerHTML == 'true' ){
+			showMessageToUser('You can\'t delete all admin members', 'info');
 			$('paginationOverlay').hide();
-		}
-		else{
-			showMessageToUser('The Selected Members has been deleted to this project','success');
+		}else{
+			showMessageToUser('The selected members has been deleted to this project','success');
 			reloadMemberList();
 		}			
-		
+		modal.close();
 		setTimeout('Effect.Fade(\'infoToUser\')', 6500);		
+	
 	}
 	</script>
 </apex:page>

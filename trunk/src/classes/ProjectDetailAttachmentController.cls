@@ -85,7 +85,7 @@ public class ProjectDetailAttachmentController {
 		
 		for (Attachment item: attachs){	
 			
-			if( item.id != avatarId ){
+			if(item.id != avatarId  && item.Name != 'pf__export.csv'){
 	            
 	            AttachmentInfo info = new AttachmentInfo();
 	            
@@ -97,9 +97,7 @@ public class ProjectDetailAttachmentController {
 	            String ContentType = item.ContentType;
 	            String image = '';
 	            
-	            system.debug( '##>' + ContentType );
 	            if (ContentType == null ) {
-	            system.debug( '#2>' + ContentType );
 	            	
 	            	// Using extension
 	            	Integer extPos = item.Name.lastIndexOf('.') + 1;

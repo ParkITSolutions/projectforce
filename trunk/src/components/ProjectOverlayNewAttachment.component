@@ -68,7 +68,7 @@
 			</div>
 		</div>
 		<div class="overlayMainContent">
-			<iframe name="uploadIframe" id="uploadIframe" src="/apex/UploadAttachment?pId={!parentId}" height="150px"
+			<iframe name="uploadIframe" id="uploadIframe" src="/apex/UploadAttachment?pId={!parentId}" height="160px"
 					width="99%" style="border: 0px;" frameborder="0" marginheight="0"
 					marginwidth="0"></iframe>
 		</div>
