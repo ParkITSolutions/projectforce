@@ -799,12 +799,12 @@ public with sharing class ProjectTaskListController {
 	    	doc = attachs[0];
 	    else{
 	    	doc = new Attachment();
-	    	doc.ParentId = UserInfo.getUserId();
+	    	doc.ParentId = PROJECTID;
 	    }
 	    doc.Name = 'pf__export.csv';
 	    
 	    doc.Body = Blob.valueOf(csvText);
-	    doc.ContentType = 'Text/csv';
+	    doc.ContentType = 'text/csv';
 	    
 	    upsert doc;
 	    csvFileId = doc.Id;
