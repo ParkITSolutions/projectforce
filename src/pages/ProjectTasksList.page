@@ -38,15 +38,45 @@
 			border: 1px solid #5E99AA;
 			-moz-border-radius: 15px;
 			border-radius: 15px;
-			width: 700px ;
-			height: 100px ;		
+			width: 580px ;
+			height: 140px ;		
 			padding: 10px;
 			margin-top: 5px;	
+			margin-bottom: 15px;
+		}
+		.AdvancedFilterContainer2{
+			border: 1px solid #5E99AA;
+			-moz-border-radius: 15px;
+			border-radius: 15px;
+			width: 580px ;
+			padding: 10px;
+			margin-top: 5px;	
+			margin-bottom: 15px;
 		}
 		.elemFilter{
 			padding: 5px;
 			margin: 1px;
 			float: left;
+			text-align: left;
+			width: 180px;
+		}
+		.elemFilterSmall{
+			padding: 5px;
+			margin: 1px;
+			float: left;
+			text-align: left;
+			width: 84px;
+		}
+		.elemFormFilter{
+			width: 180px;
+		}
+		.elemFormFilterSmall{
+			width: 60px;
+		}
+		.advancedFilterTitle{
+			font: 13px;
+			font-weight: bolder;
+			font-family: 'Arial','Helvetica',sans-serif;
 		}
     </style>
     
@@ -65,7 +95,6 @@
 			
 			$( 'advFilterShow' ).style.display == 'none' ? $( 'advFilterShow' ).show() : $( 'advFilterShow' ).hide();
 			$( 'advFilterHide' ).style.display == 'none' ? $( 'advFilterHide' ).show() : $( 'advFilterHide' ).hide();
-        	
         	Effect.toggle('advancedFilterContainer', 'blind')
         }
     </script>
@@ -115,8 +144,72 @@
                 <apex:form id="ref">
                 	<apex:actionFunction action="{!refreshTaskList}" oncomplete="showHideOverlay();" name="sortListEvent" rerender="ref" />
                     <div class="tableTopContainer" style="height: auto;">             
-                        
-                        <!-- top pagination BEGIN -->
+                        <div class="filterContainer" >Quick filter: 
+                            <apex:selectList id="chooseOption" value="{!option}" onchange="option();showHideOverlay();" size="1">
+                                <apex:selectOption itemValue="all" itemLabel="All Tasks"/>
+                                <apex:selectOption itemValue="my" itemLabel="My Tasks"/>
+                                <apex:selectOption itemValue="complete" itemLabel="100% Complete Tasks"/>
+                                <apex:selectOption itemValue="oTask" itemLabel="Overdue Tasks"/>
+                                <apex:selectOption itemValue="oMiles" itemLabel="Overdue Milestones"/>
+                                <apex:selectOption itemValue="allMilestones" itemLabel="All Milestones"/>
+                            </apex:selectList>
+                        	<!-- top pagination BEGIN -->
+	                        <a href="javascript:;" id="advFilterShow" title="Click to view the advanced filter." onclick="advancedFilter();">Advanced filter</a>
+	                        <a href="javascript:;" id="advFilterHide" title="Click to hide the advanced filter." onclick="advancedFilter();" style="display: none;">Hide advanced filter</a>
+							<div>
+					            <div class="AdvancedFilterContainer" id="advancedFilterContainer" style="display: none;">				
+					            	<div class="advancedFilterTitle">
+					            		Advanced Filter
+					            	</div>
+					            	
+					             
+					            	<div class="elemFilter">
+			                            Assign to:<br />
+			                            <apex:selectList value="{!filter.assignee}"size="1" styleClass="elemFormFilter">
+			                                <apex:selectOptions value="{!filter.assignees}"     />
+			                            </apex:selectList>
+					            	</div>
+	 
+					            	<div class="elemFilterSmall">
+							           	Sprint:<br /> 
+							           	<apex:inputText value="{!filter.sprint}"  styleClass="elemFormFilterSmall"/>
+						            </div>				
+	
+					            	<div class="elemFilterSmall">
+			                            Estimate:<br />
+						            	<apex:inputText value="{!filter.estimate}"  styleClass="elemFormFilterSmall"/>
+					            	</div>				            	
+	
+					            	<div class="elemFilterSmall">
+						            	Rank:<br /> 
+						            	<apex:inputText value="{!filter.rank}"  styleClass="elemFormFilterSmall"/>
+					            	</div><br />
+	
+					            	<div class="elemFilter">
+						            	Name:<br /> 
+						            	<apex:inputText value="{!filter.name}"  styleClass="elemFormFilter"/>
+					            	</div>
+							                        	
+							       <div class="elemFilter">
+			                            Priority:<br />
+			                            <apex:selectList value="{!filter.priority}"size="1" styleClass="elemFormFilter">
+			                                <apex:selectOptions value="{!filter.priorities}"     />
+			                            </apex:selectList>
+					            	</div>
+	 
+					            	<div class="elemFilter">
+						            	Status:<br />
+			                            <apex:selectList value="{!filter.status}" size="1" styleClass="elemFormFilter">
+			                                <apex:selectOptions value="{!filter.statusValues}" />
+		    	                        </apex:selectList>
+					            	</div>
+	
+					            	<br />
+					            	<apex:commandLink action="{!refreshTaskList}"  rerender="taskListPanel" onclick="showHideOverlay();"  oncomplete="showHideOverlay();" styleclass="blackbutton" >
+					            		<span>Apply filter</span>
+					            	</apex:commandLink>
+					            </div>
+	                        </div>
                         
                         <center>
 
@@ -148,73 +241,7 @@
 				                        </a>
 				                </apex:outputpanel>
 				             </apex:outputpanel>
-				            <br />
-				            <!--  Advanced filter  -->
-	                        <div class="filterContainer" >Quick filter:  
-	                            <apex:selectList id="chooseOption" value="{!option}" onchange="option();showHideOverlay();" size="1">
-	                                <apex:selectOption itemValue="all" itemLabel="All Tasks"/>
-	                                <apex:selectOption itemValue="my" itemLabel="My Tasks"/>
-	                                <apex:selectOption itemValue="complete" itemLabel="100% Complete Tasks"/>
-	                                <apex:selectOption itemValue="oTask" itemLabel="Overdue Tasks"/>
-	                                <apex:selectOption itemValue="oMiles" itemLabel="Overdue Milestones"/>
-	                                <apex:selectOption itemValue="allMilestones" itemLabel="All Milestones"/>
-	                            </apex:selectList>
-		                        <a href="javascript:;" id="advFilterShow" title="Click to view the advanced filter." onclick="advancedFilter();">Advanced filter</a>
-		                        <a href="javascript:;" id="advFilterHide" title="Click to hide the advanced filter." onclick="advancedFilter();" style="display: none;">Hide advanced filter</a>
-	                        </div>
-				            <div class="AdvancedFilterContainer" id="advancedFilterContainer" style="display: none;">
-				            
-				            	<div class="elemFilter">
-					            	Sprint: 
-					            	<apex:inputText value="{!filter.sprint}"/>
-				            	</div>
-				            	<div class="elemFilter">
-					            	Priority:
-		                            <apex:selectList value="{!filter.priority}" size="1">
-		                                <apex:selectOption itemValue="all" itemLabel="All Tasks"/>
-		                            </apex:selectList>
-				            	</div>
-				            	<div class="elemFilter">
-					            	Name: 
-					            	<apex:inputText value="{!filter.name}" />
-				            	</div>
-				            	<div class="elemFilter">
-					            	Status:
-		                            <apex:selectList value="{!filter.status}" size="1">
-		                                <apex:selectOption itemValue="all" itemLabel="All Tasks"/>
-	    	                        </apex:selectList>
-				            	</div>
-				            	<div class="elemFilter">
-		                            Assign to:
-		                            <apex:selectList value="{!filter.assignee}"size="1">
-		                                <apex:selectOption value="{!filter.assignees}" itemValue="all" itemLabel="All Tasks"/>
-		                            </apex:selectList>
-				            	</div>
-				            	<div class="elemFilter">
-		                            Percent completed:
-					            	<apex:inputText />
-				            	</div>
-				            	<div class="elemFilter">
-		                            Estimated hrs:
-		                            <apex:selectList size="1">
-		                                <apex:selectOption itemValue="all" itemLabel="All Tasks"/>
-		                            </apex:selectList>
-				            	</div>
-				            	<div class="elemFilter">
-		                            Due date:
-		                            <apex:selectList size="1">
-		                                <apex:selectOption itemValue="all" itemLabel="All Tasks"/>
-		                            </apex:selectList>
-				            	</div>
-				            	
-				            	<br />
-				            	<center>
-				            		<apex:commandButton value="Apply" />
-				            	</center>
-				            	
-				            </div>
 				             
-				             <!-- Advanced filter end -->
 	                        <apex:outputpanel styleClass="pagination" layout="block" rendered="{!IF(AND(prevPageShow,nextPageShow),false,true)}">
 	                            <div class="pages"> 
 	                                <ul>
@@ -231,15 +258,17 @@
 	                            </div>
 	                        </apex:outputpanel>
 	                    </center>
+	                	</div>
                     </div> 
                     <!-- top pagination END -->            
-               
+                    <!-- task list BEGIN -->                   
+                    
                     <div class="teamProjectTasks">  
-                       	<br>
-	                   	
+                        <br>             		
+                   		
 	                   	<!-- Export to CSV File -->                       	
                         <apex:outputPanel id="exportLinkPanel" rendered="{!IF(totalItemsNumber > 0,true, false)}">         		
-	                   		<img src="{!URLFOR($Resource.ProjectResources, 'images/icons/csv_icon3.gif')}"/>                   		
+                   		<img src="{!URLFOR($Resource.ProjectResources, 'images/icons/csv.gif')}" width="13"/>
 	                   		<apex:commandLink action="{!generateTaskListCsv}" value="Export to CSV" 
 	                   			rerender="AttachTempId" onclick="$('exportStatus').innerHTML = 'exporting...'" 
 	                   			oncomplete="exportCSVFile();" status="exportStatus" 
@@ -251,7 +280,6 @@
 	                        <iframe id="theIframeToDownload" src="" style="display:none;" /></iframe>
                        	</apex:outputPanel>
                         
-                        <!-- Task List Table -->
                         <table class="pageList" >
                             <!-- Table Head -->
                             <thead>
@@ -289,10 +317,10 @@
                                         </apex:outputpanel>
                                     </th>  
                                     <th width="5%" style="text-align: center">
-                                           <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Type" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'Milestone__c';" oncomplete="showHideOverlay();">
-                                            <apex:param name="sortBy" value="Milestone__c" assignTo="{!sortBy}"/> 
+                                       	<apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Rank" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay'); showHideOverlay(); currentSortCriteria = 'Rank__c';" oncomplete="showHideOverlay();">
+                                        	<apex:param name="sortBy" value="Rank__c" assignTo="{!sortBy}"/> 
                                         </apex:commandLink>&nbsp;
-                                        <apex:outputpanel rendered="{!IF(sortBy == 'type',true,false)}">
+                                        <apex:outputpanel rendered="{!IF(sortBy == 'Rank',true,false)}">
                                             <apex:outputpanel rendered="{!sortByDesc}">
                                                 <img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
                                             </apex:outputpanel>
@@ -356,8 +384,8 @@
                                         </apex:outputpanel>
                                     </th>
                                     <th width="15%" >
-                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="% Completed" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'PercentCompleted__c';" oncomplete="showHideOverlay();">
-                                            <apex:param name="sortBy" value="PercentCompleted__c" assignTo="{!sortBy}"/>
+                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="% Completed" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'Percent_Completed__c';" oncomplete="showHideOverlay();">
+                                            <apex:param name="sortBy" value="Percent_Completed__c" assignTo="{!sortBy}"/>
                                         </apex:commandLink>&nbsp;
                                         <apex:outputpanel rendered="{!IF(sortBy == 'completed',true,false)}">
                                             <apex:outputpanel rendered="{!sortByDesc}">
@@ -432,14 +460,10 @@
                                         <td align="center">
                                             <div>{!task.Sprint}</div>
                                         </td>  
-                                        <td class="imgColumns"  align="center"> 
-                                            <apex:outputpanel rendered="{!IF(task.Milestone ,false,true)}" layout="block" styleClass="center">
-                                                <img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/task.gif')}" title="Task" />
-                                            </apex:outputpanel>
-                                            <apex:outputpanel rendered="{!IF(task.Milestone,true,false)}" layout="block" styleClass="center">                                     
-                                                <img  src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/flag_green.gif')}" title="Milestone" />
-                                            </apex:outputpanel>
-                                        </td>
+                                        <!-- Task Name -->                          
+                                        <td class="proj_task_title">
+                                            <div><a href="projecttaskdetail?id={!task.id}" class="">{!task.rank}</a></div>
+                                        </td> 
                                         <!-- Task Priority -->
                                         <td class="imgColumns" align="center">
                                             <apex:outputpanel rendered="{!IF(task.Priority == 'High',true,false)}" layout="block">

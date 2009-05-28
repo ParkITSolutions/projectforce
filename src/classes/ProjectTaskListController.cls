@@ -1,6 +1,6 @@
 /**
+* Project Task List
 *@author original Bruno Fagundez @ 06/23/2008
-* refactored class from team
 */
 public with sharing class ProjectTaskListController {
     
@@ -11,10 +11,11 @@ public with sharing class ProjectTaskListController {
     public String PROJECTID = System.currentPageReference().getParameters().get('id');
     public String csvFileId = '';
     public String filter = System.currentPageReference().getParameters().get('filter');
-    List<ProjectTask__c> ListTask = new List<ProjectTask__c>();
+    public Filter advanceFilter = new Filter(PROJECTID);
+    public List<ProjectTask__c> ListTask = new List<ProjectTask__c>();
     public Map<String, User> mapAsignees = new Map<String, User>();
-    List<TaskDetails> taskList = new List<TaskDetails>();
-    String option = 'all';
+    public List<TaskDetails> taskList = new List<TaskDetails>();
+    public String option = 'all';
     public UserPermissions userPermissions = new UserPermissions();
     public Boolean sortByDesc = false;
     public String sortBy;
@@ -39,12 +40,17 @@ public with sharing class ProjectTaskListController {
     public boolean nextPageShow  = false;
     
     /**
-    *Constructor
+    * Constructor
     */
     public ProjectTaskListController(){
+        
+        //Read permissions
         genPermissions();   
+        
+        //Set edit/delete permissions
         editDeletePer = userPermissions.getCanManage();
         
+        //Quick filter
         if(filter != null) {
         	if(filter == 'all'){
         		option = 'all';
@@ -53,11 +59,19 @@ public with sharing class ProjectTaskListController {
         	}
         }
         
+        //Set default order
         sortBy = 'EndDate__c';
+        
+        //Read Project
         loadProject();
+        
+        //Read Project Task
 		refreshTaskList();
 		
+		//Generate Pagination
         genCntPagination();
+        
+        //Read current user profile
         getUserProfile();    
     }    
 
@@ -101,6 +115,20 @@ public with sharing class ProjectTaskListController {
     }
     
     /**
+    *@return Filter Instance
+    */
+    public Filter getFilter(){
+    	return advanceFilter;
+    }
+    
+    /**
+    *@param advance filter
+    */
+    public void setFilter (Filter f){
+    	advanceFilter = f;
+    }
+    
+    /**
     *Set user id
     *@param String
     */
@@ -128,10 +156,9 @@ public with sharing class ProjectTaskListController {
     *Returns the Task list size
     *@return Integer
     */
-    public Integer gettotalItemsNumber(){
+    public Integer getTotalItemsNumber(){
         return totalItemsNumber;
     }
-
 
     /**
     *Get user profile
@@ -139,23 +166,15 @@ public with sharing class ProjectTaskListController {
     public void getUserProfile(){
         
         List<ProjectMember__c> members = new List<ProjectMember__c>();
-        
-        members = [select tm.Id, tm.Name, tm.Profile__c 
-                    from ProjectMember__c tm 
-                    where tm.Project__c =: PROJECTID and tm.User__c =: USERID];
+        members = [select tm.Id, tm.Name, tm.Profile__c from ProjectMember__c tm where tm.Project__c =: PROJECTID and tm.User__c =: USERID];
         
         if(members.size() > 0){
             isProjectMember = true;
             List<ProjectProfile__c> profile = new List<ProjectProfile__c>();
-            profile = [select p.Id, p.Name 
-                                        from ProjectProfile__c p
-                                        where p.Id =: members[0].Profile__c];       
+            profile = [select p.Id, p.Name from ProjectProfile__c p where p.Id =: members[0].Profile__c];       
         }       
-    }
-    
-    
-  
 
+    }
 
     /** This method recreates the task list, filtering and sorting it.
      */
@@ -164,10 +183,10 @@ public with sharing class ProjectTaskListController {
     }
     
     public void loadProject(){
-    	project = [Select p.Name From Project2__c p where p.id =: PROJECTID];	
+    	if(project == null)
+    		project = [Select p.Name From Project2__c p where p.id =: PROJECTID];	
     }
     
-
     /**
     *Clear the task list
     */
@@ -175,7 +194,6 @@ public with sharing class ProjectTaskListController {
         ListTask.clear();
     }
  
-    
     /**
     *Generates user permissions
     */
@@ -193,8 +211,6 @@ public with sharing class ProjectTaskListController {
     public UserPermissions getUserPermissions () {
         return userPermissions;
     }
-    /* ---------------------------- */  
-    
 
     /**
     *Get task list
@@ -217,7 +233,6 @@ public with sharing class ProjectTaskListController {
     *@param String
     */
       
-    
     /**
     *Set the map assignes Map<userID, User> 
     */
@@ -230,9 +245,6 @@ public with sharing class ProjectTaskListController {
         }
     }
 
-
-    
-    
     /**
     *Generates number of pages
     */
@@ -259,13 +271,11 @@ public with sharing class ProjectTaskListController {
         firstRow = firstRow - numberOfItemsToShow;  
     }
     
-    public void refreshPages () {
-        
-    }
+    public void refreshPages () {}
+
     /**
     * Pagination Integer Getters
     */
-    
     
     /**
     *Get the current page
@@ -399,7 +409,9 @@ public with sharing class ProjectTaskListController {
         if (sortBy == 'EndDate__c') 
             sbCol = 'date';
         if (sortBy == 'Sprint__c') 
-            sbCol = 'Sprint'; 
+            sbCol = 'Sprint';
+        if (sortBy == 'Rank__c') 
+            sbCol = 'Rank';              
         return sbCol;
     }
     
@@ -438,20 +450,18 @@ public with sharing class ProjectTaskListController {
 
         // Sorting by priority or assignee name can't be implemented in the SOQL query
         // and require a bit of tricky
-        if (sortBy == 'Priority__c')
+        if (sortBy == 'Priority__c'){
             insertionSort(resultTaskList,sortByDesc);
-		else if (sortBy.equals('User__c.Name')) {
-            
+		}else if (sortBy.equals('User__c.Name')){
+		
             Integer n;
             Integer i;
             Integer j;
             
             n = resultTaskList.size() - 1;
-              
             for (i = 1; i <= n; i++) {  
                 for (j = n; j >= i ; j--) {
                     if (sortByDesc) {
-                    	
                     	if (mapAsignees.get(resultTaskList[j].ProjectsAssignees__r[0].User__c).name >=
                     		mapAsignees.get(resultTaskList[j-1].ProjectsAssignees__r[0].User__c).name) {
                         	ProjectTask__c tempProjectTask;
@@ -461,22 +471,65 @@ public with sharing class ProjectTaskListController {
                         	resultTaskList[j] = tempProjectTask;
                         }   
                     } else {
-                       if (mapAsignees.get(resultTaskList[j].ProjectsAssignees__r[0].User__c).name <=
+                       	if (mapAsignees.get(resultTaskList[j].ProjectsAssignees__r[0].User__c).name <=
                     		mapAsignees.get(resultTaskList[j-1].ProjectsAssignees__r[0].User__c).name) {
                         	ProjectTask__c tempProjectTask;
                         	
                         	tempProjectTask = resultTaskList[j-1];
                         	resultTaskList[j-1] = resultTaskList[j];
                         	resultTaskList[j] = tempProjectTask;
-                        }   
+                    	}   
                     }
                 }
             }
-        }
-        else{
-			String myQuery = '';
-			myQuery = ' SELECT Project__c, Priority__c, PercentCompleted__c, createdById, OwnerId, Status__c, Id__c, Sprint__c, Name, Milestone__c, Id, EndDate__c, Duration__c, ( SELECT Id, User__r.Name, User__r.Id, User__c  FROM ProjectsAssignees__r), Description__c  FROM ProjectTask__c  WHERE Project__c = \'' + PROJECTID + '\' ORDER BY ' + sortBy + ' ' + ( sortByDesc ? ' DESC ' : ' ASC ' );
-			resultTaskList = Database.query( myQuery );
+        }else{
+
+			String query = '';
+			String filter = '';
+			
+			//Filter by Name
+			if(advanceFilter.name != null && !advanceFilter.name.equals(''))
+				filter += ' and Name like \'' + advanceFilter.name + '%\'';
+				
+			//Filter by Pririty
+			if(advanceFilter.priority != null && !advanceFilter.priority.equals(''))
+				filter += ' and Priority__c = \'' + advanceFilter.priority + '\'';				
+			
+			//Filter by Status
+			if(advanceFilter.status != null && !advanceFilter.status.equals(''))
+				filter += ' and Status__c = \'' + advanceFilter.status + '\'';
+				
+			//Filter by Rank
+			if(advanceFilter.rank != null && !advanceFilter.rank.equals(''))
+				filter += ' and Rank__c = \'' + advanceFilter.rank + '\'';
+
+			//Filter by Sprint
+			if(advanceFilter.sprint != null && !advanceFilter.sprint.equals(''))
+				filter += ' and Sprint__c = \'' + advanceFilter.sprint + '\'';
+
+			//Filter by Estimate
+			if(advanceFilter.estimate != null && !advanceFilter.estimate.equals(''))
+				filter += ' and Duration__c = ' + Double.valueOf(advanceFilter.estimate);				
+
+			query =		' SELECT Project__c, Priority__c, PercentCompleted__c, createdById, OwnerId, Status__c, Id__c, Sprint__c, Name,';
+			query +=	' Milestone__c, Id, EndDate__c, Duration__c, (SELECT Id, User__r.Name, User__r.Id, User__c  FROM ProjectsAssignees__r),';
+			query +=	' Description__c, Rank__c FROM ProjectTask__c WHERE Project__c = \'' + PROJECTID + '\'' + filter;
+			query +=	' ORDER BY ' + sortBy + ' ' + ( sortByDesc ? ' DESC ' : ' ASC ');
+			
+			//Execute query
+			resultTaskList = Database.query(query);
+			
+			//Filter by Assignee
+			if(advanceFilter.assignee != null && !advanceFilter.assignee.equals('')){
+				List<ProjectTask__c> teampTaskList = new List<ProjectTask__c>(); 
+				for(ProjectTask__c task : resultTaskList){
+					if(task.ProjectsAssignees__r[0].User__c == advanceFilter.assignee){
+						teampTaskList.add(task);
+					}
+				}
+				resultTaskList.clear();
+				resultTaskList = teampTaskList;
+			}
         }        		
 		return resultTaskList;
     }
@@ -531,7 +584,6 @@ public with sharing class ProjectTaskListController {
                 listToOrder.set(j,listToOrder.get(j-1));
                 j = j - 1;
             }
-            
             listToOrder.set(j,current);
         }
     }
@@ -583,7 +635,7 @@ public with sharing class ProjectTaskListController {
             	TaskDetail.canEditAndDelete = (resultTaskList[i].ProjectsAssignees__r[0].User__c == USERID ) ? true : false;
 			
 			System.debug( '[1>' + resultTaskList[i].PercentCompleted__c );
-            if(resultTaskList[i].PercentCompleted__c!=null){
+            if(resultTaskList[i].PercentCompleted__c != null){
                 TaskDetail.Percent_Completed= (resultTaskList[i].PercentCompleted__c).intValue();
             }else{
                 TaskDetail.Percent_Completed= 0;
@@ -595,12 +647,12 @@ public with sharing class ProjectTaskListController {
                 TaskDetail.cantDias = resultTaskList[i].EndDate__c.daysBetween(System.today());
                 
             }else{
-                TaskDetail.comparoFecha=false;  
+                TaskDetail.comparoFecha = false;  
             }
             
-            if(TaskDetail.comparoFecha==true && opciones.equals('oTask'))
+            if(TaskDetail.comparoFecha == true && opciones.equals('oTask'))
                 tdoTask.add(TaskDetail);
-            if(TaskDetail.comparoFecha==true && TaskDetail.Milestone==true && opciones.equals('oMiles'))
+            if(TaskDetail.comparoFecha == true && TaskDetail.Milestone==true && opciones.equals('oMiles'))
                 tdoMile.add(TaskDetail);
             if(opciones.equals('all'))
                 td.add(TaskDetail);
@@ -652,7 +704,6 @@ public with sharing class ProjectTaskListController {
         } 
     }
   
-           
     /**
     *Get task to complete
     *@return String task id
@@ -710,7 +761,7 @@ public with sharing class ProjectTaskListController {
        
     
     /**
-    *Export the task list into a csv file
+    * Export the task list into a csv file
     */
  	public void generateTaskListCsv() {
     	
@@ -754,9 +805,9 @@ public with sharing class ProjectTaskListController {
 	    else{
 	    	doc = new Attachment();
 	    	doc.ParentId = PROJECTID;
+			doc.Name = 'pf__export.csv';
 	    }
-	    doc.Name = 'pf__export.csv';
-	    
+
 	    doc.Body = Blob.valueOf(csvText);
 	    doc.ContentType = 'text/csv';
 	    
@@ -771,102 +822,169 @@ public with sharing class ProjectTaskListController {
     */
     public class TaskDetails {
 
-            // Task Id
-            public String id { get; set; }
-            
-            // Task Asignee
-            public String AsigneeName = null;         
-            
-            /**
-            *Assignes user to task
-            *@param User
-            */
-            public void setAsigneeName(User u){ 
-                this.userTask = u;
-            }            
-            
-            /**
-            *Get User assigned to task
-            *@return String
-            */
-            public String getAsigneeName (){
-                if(this.userTask != null){
-                    if(userTask.Project__r.size() <= 0){
-                        return '';
-                    }else {
-                        return userTask.Project__r[0].Picture__c;
-                    }
-                }else {
+	    // Task Id
+	    public String id { get; set; }
+	    
+	    // Task Asignee
+	    public String AsigneeName = null;         
+    
+	    /**
+	    *Assignes user to task
+	    *@param User
+	    */
+	    public void setAsigneeName(User u){ 
+	        this.userTask = u;
+	    }            
+    
+	    /**
+	    *Get User assigned to task
+	    *@return String
+	    */
+        public String getAsigneeName (){
+            if(this.userTask != null){
+                if(userTask.Project__r.size() <= 0){
                     return '';
+                }else {
+                    return userTask.Project__r[0].Picture__c;
                 }
-             
+            }else {
+                return '';
             }
+        }
 
-            // Is Task Owner
-            public boolean isTaskOwner {
-                get;
-                set ;
-            }
+        // Is Task Owner
+        public boolean isTaskOwner {
+            get;
+            set ;
+        }
+        
+        // Task Name
+        public String Name { get; set; }
+                    
+        // Project Name
+        public String ProjectName { get; set;}
+        
+        // Priority
+        public String Priority { get; set; }
+        
+        // Start Date
+        public String StartDate { get; set; }
+        
+        // Due Date
+        public String DueDate { get; set; } 
+        
+        // Estimated Time 
+        public Integer Estimate { get; set; }
             
-            // Task Name
-            public String Name { get; set; }
-                        
-            // Project Name
-            public String ProjectName { get; set; }
+        // Auto generate Id
+        public String autoId { get; set; }
             
-            // Priority
-            public String Priority { get; set; }
-            
-            // Start Date
-            public String StartDate { get; set; }
-            
-            // Due Date
-            public String DueDate { get; set; } 
-            
-            // Estimated Time 
-            public Integer Estimate { get; set; }
-            
-            // Auto generate Id
-            public String autoId { get; set; }
-            
- 			// Sprint generate Id
-            public String sprint { get; set; }            
+ 		// Sprint
+        public String sprint { get; set; }            
 
-			// Status
-            public String status { get; set; }
-            
-            // Description 
-            public String Description { get; set; } 
-            
-            public boolean Milestone { 
-                get { 
-                    return Milestone; 
-                }
-                set {
-                    Milestone = value;
-                }
+ 		// Rank
+        public String rank { get; set; }            
+
+		// Status
+        public String status { get; set; }
+        
+        // Description 
+        public String Description { get; set; } 
+        
+        public boolean Milestone { 
+            get { 
+                return Milestone; 
             }
-            
-            public Integer Percent_Completed { 
-                get; set; 
-            }  
-            
-            public boolean comparoFecha { 
-                get; set; 
+            set {
+                Milestone = value;
             }
+        }
             
-            public Integer cantDias { 
-                get; set; 
-            }  
-            
-            public User userTask { 
-                get; set; 
-            }  
-            
-            public Boolean canEditAndDelete { 
-                get; set; 
-            }
-                        
+        public Integer Percent_Completed { 
+            get; set; 
+        }  
+        
+        public boolean comparoFecha { 
+            get; set; 
+        }
+        
+        public Integer cantDias { 
+            get; set; 
+        }  
+        
+        public User userTask { 
+            get; set; 
+        }  
+        
+        public Boolean canEditAndDelete { 
+            get; set; 
+        }
     }
+    
+    /**
+    *@author Nicolas Gunther - May 27, 2009
+    */
+    public class Filter {
+
+		public String project; 
+
+    	public String sprint {get; set;}
+    	public String name {get; set;}
+    	public String priority {get; set;}
+    	public String estimate {get; set;}
+    	public String status {get; set;}
+    	public String assignee {get; set;}
+    	public String rank {get; set;}
+    	
+    	public Filter(String id){
+    		project = id;
+    	}
+    	
+    	/**
+    	*@return members asoc. to project options 
+    	*/
+    	public List<SelectOption> getAssignees(){
+    		List<ProjectMember__c> members = new List<ProjectMember__c>();
+    		List<SelectOption> options = new List<SelectOption>();
+    		members = [select m.Id, m.Name, User__r.Id from ProjectMember__c m where m.Project__c =: project order by m.Name asc];
+    		options.add(new SelectOption('', '--'));
+    		for (ProjectMember__c member : members){
+    			options.add(new SelectOption(member.User__r.Id, member.Name));		
+    		}	
+    		return options;
+    	}
+    	
+    	/**
+    	*@return priority picklist options
+    	*/
+    	public List<SelectOption> getPriorities(){
+    		List<SelectOption> priorityOptions = new List<SelectOption>();
+    		
+    		Schema.DescribeFieldResult describe = ProjectTask__c.Priority__c.getDescribe();
+    		List<Schema.PicklistEntry> priorityValues = describe.getPicklistValues();
+    		priorityOptions.add(new SelectOption('', '--'));
+    		for(PicklistEntry value : priorityValues){
+    			priorityOptions.add(new SelectOption(value.getValue(), value.getValue()));	
+    		}
+    		return priorityOptions;
+    	}
+    	
+    	/**
+    	*@return task status picklist options
+    	*/
+    	public List<SelectOption> getStatusValues(){
+    		List<SelectOption> statusOptions = new List<SelectOption>();
+    		
+    		Schema.DescribeFieldResult describe = ProjectTask__c.Status__c.getDescribe();
+    		List<Schema.PicklistEntry> statusValues = describe.getPicklistValues();
+    		statusOptions.add(new SelectOption('', '--'));
+    		for(PicklistEntry value : statusValues){
+    			statusOptions.add(new SelectOption(value.getValue(), value.getValue()));	
+    		}
+    		return statusOptions;
+    	}
+    
+    }
+    
     
 }
