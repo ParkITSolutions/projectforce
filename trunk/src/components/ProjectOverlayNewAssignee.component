@@ -9,10 +9,9 @@
             $$('.btn').each( function(e){
                 e.removeClassName( 'btn' );
             });  
-          
         });
-
      </script>
+
 
     <!-- Content  -->
     <div id="addAssigneeOverlay" style="display: none;" class="overlayForm">
@@ -76,17 +75,16 @@
                    
                     <!-- Save and Cancel Buttons -->
                     <div class="overlayFromButtons overlayFromButtons2">
-                            <apex:commandButton action="{!saveAssignee}" 
-                            	styleClass="allButtons" 
-                            	value="Save" 
-                            	onClick="$('sw_o').show();" 
-                            	oncomplete="refreshMembers2();modal.close();" />
+                            <apex:commandButton action="{!saveAssignee}" styleClass="allButtons" 
+                            	value="Save" oncomplete="refreshMembers2();modal.close()" 
+                            	onClick="$('sw_o').show()" 
+                            	/>
                             	
                             <apex:commandButton action="{!saveAssignee}" 
                             	styleClass="allButtons" 
                             	value="Save and new" 
-                            	onclick="$('sw_o').show();" 
-                            	oncomplete="refreshMembers2();" />
+                            	onclick="$('sw_o').show()" 
+                            	oncomplete="refreshMembers2()" />
                             	
                             <input id="cancelBtn" class="allButtons" type="button" value="Cancel" onclick="modal.close();stopFunction();" />
                     </div>
