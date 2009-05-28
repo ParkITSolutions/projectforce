@@ -59,8 +59,7 @@ public without sharing class ProjectMembersListController {
 	*@param String
 	*/
 	public void setMassiveRemoveMemIds( String s ){
- 		 System.debug('>>>>>' + s);
- 		 this.MassiveRemoveMemIds = s;
+  		 this.MassiveRemoveMemIds = s;
 		 this.massiveRemoveMemIds2 = MassiveRemoveMemIds.split( '::' );
 		 
 	}
@@ -87,9 +86,8 @@ public without sharing class ProjectMembersListController {
  		 if( this.massiveRemoveMemIds2.size() > 0 ) {
 			this.idsToDel = [ select Id, Profile__r.Name from ProjectMember__c where Id in: massiveRemoveMemIds2 ];
  			this.deletingAllAmdsErr = this.noMoreAdmins();
-			if( !this.deletingAllAmdsErr ){
-			 	//delete this.idsToDel;
-			}
+			if( !this.deletingAllAmdsErr )
+			delete this.idsToDel;
 		 } 
  	}
 	
@@ -114,7 +112,6 @@ public without sharing class ProjectMembersListController {
 				adminMembersListIdsToDel.add( a.Id );
 		
 		noMore = ( adminMembersListIds.size() == adminMembersListIdsToDel.size());
-		System.debug( '>>>' +adminMembersListIds.size() + '>>' + adminMembersListIdsToDel.size()+ '>>' + noMore +'>>'+ this.idsToDel.size() );
    		return noMore;
 	}	
 	
