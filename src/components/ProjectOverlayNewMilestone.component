@@ -18,6 +18,17 @@
 		var globalUserLocale = "{!UserLocale}";		
 		var globalCountry = "{!$Organization.Country}";
 		document.observe('dom:loaded',newMilestoneLoad);
+		
+		function CheckNameLengthM(val){
+	    	if(val.length >= 80){
+	    		$('instantM').setStyle({opacity : 1.0 ,'width' : '350px'});
+	    		$('newMilestone').setStyle({'height' : '205px' });
+	    		$('instantM').show();
+	    	}else{
+	    		$('instantM').hide();
+	    		$('newMilestone').setStyle({'height' : '190px' });
+	    	}
+	    }
 	</script>
 	 
 	<!-- Overlay Styles --> 
@@ -49,8 +60,9 @@
 			                <apex:outputPanel id="MilestonePanel" layout="block">
 				                <div class="overlayFormContent">
 									<label>Milestone Name</label><span class="required"></span>
-									<apex:inputField id="nameMilestone" value="{!Task.name}" required="true" style="*margin-left: -10px;" styleClass="medium"/>
+									<apex:inputField id="nameMilestone" value="{!Task.name}" required="true" style="*margin-left: -10px;" styleClass="medium" onKeyUp="CheckNameLengthM(this.value)"/>
 									<div id="milestoneNameError" class="red" style="display: none;"><strong>Error:</strong> You must enter a value</div>
+									<div class="red" style="display: none;margin-left:120px;_margin-left:60px;" id="instantM"><strong>Warning:</strong> Max length reached (80).</div>
 									<br/> 
 									<label>Due Date</label><span class="required"></span>
 									<apex:inputField id="dueDateMilestone" styleClass="medium" required="true" value="{!Task.EndDate__c}" />

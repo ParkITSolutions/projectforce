@@ -23,6 +23,16 @@
 		* Temp source move to static
 		*/
 		
+    function CheckNameLength(val){
+    	if(val.length >= 80){
+    		$('instant').setStyle({opacity : 1.0 ,'width' : '350px'});
+    		$('newTask').setStyle({'height' : '285px' });
+    		$('instant').show();
+    	}else{
+    		$('instant').hide();
+    		$('newTask').setStyle({'height' : '270px' });
+    	}
+    }
     </script>
     
     <!-- ### Initialize fixed Overlay ### -->
@@ -58,8 +68,9 @@
                             <apex:outputPanel id="taskPanel" layout="block">   
                                 <div class="overlayFormContent">
                                     <label>Task Name</label><span class="required"></span>
-                                    <apex:inputField id="name" value="{!Task.name}" styleClass="medium" style="_margin-left: -10px;" required="true"/>
+                                    <apex:inputField id="name" value="{!Task.name}" styleClass="medium" style="_margin-left: -10px;" required="true" onKeyUp="CheckNameLength(this.value)"/>
                                     <div class="red" style="display: none; width: 170px;" id="taskNameError"><strong>Error:</strong> You must enter a value</div>
+                                    <div class="red" style="display: none;margin-left:120px;_margin-left:60px;" id="instant"><strong>Warning:</strong> Max length reached (80).</div>
                                     <br/>
                                     <label>Start Date</label><span class="required"></span>
                                     <apex:inputField id="taskStartDate" value="{!Task.StartDate__c}" styleClass="medium" required="true" />
