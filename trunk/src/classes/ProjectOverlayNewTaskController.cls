@@ -9,6 +9,7 @@ public class ProjectOverlayNewTaskController {
    	public Project2__c currentProject = null;   
     public ProjectMember__c projectMember = new ProjectMember__c();    
    	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
+   	public String  taskPrefix = Schema.SObjectType.Projecttask__c.getKeyPrefix();
    	 
     /**
     * Constructor
@@ -61,7 +62,12 @@ public class ProjectOverlayNewTaskController {
    	public String getCurrentProjectId(){
    		return PROJECTID;
    	}
-   	
+   	/**
+   	*@return taskPrefix
+   	*/
+   	public String getTaskPrefix(){
+   		return taskPrefix;
+   	}
     
     /**
     * Return members select options
@@ -143,6 +149,8 @@ public class ProjectOverlayNewTaskController {
 			newTask = new ProjectTask__c();
 			Assign = new ProjectAssignee__c();
    		}
+   		 //To reset the selectList
+		projectMember.User__c=null;
    	}
 
 }

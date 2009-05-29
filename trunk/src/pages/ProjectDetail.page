@@ -65,7 +65,7 @@
          <div align="center" class="breadCrumbAndButtons">
          
             <div class="breadCrumbs">
-                <a id="projectNameBreadcrumb"  href="#">{!Teamspace.Name}</a> &gt;
+                <a id="projectNameBreadcrumb"  href="#"><script>trunkText(" {!Teamspace.Name}",24);</script></a> &gt;
                 <span class="breadCrumbsLast"><strong>Detail</strong></span>     
             </div>
             
