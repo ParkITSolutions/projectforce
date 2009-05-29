@@ -628,6 +628,7 @@ public with sharing class ProjectTaskListController {
             TaskDetail.status = resultTaskList[i].status__c;
             TaskDetail.autoId = resultTaskList[i].id__c;
             TaskDetail.sprint = resultTaskList[i].Sprint__c;
+            TaskDetail.rank = resultTaskList[i].Rank__c;
             
             TaskDetail.isTaskOwner = resultTaskList[i].createdById == USERID;
             
