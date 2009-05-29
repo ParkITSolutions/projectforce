@@ -10,6 +10,7 @@ public class ProjectOverlayNewMilestoneController {
     public ProjectMember__c projectMember = new ProjectMember__c();
     public Project2__c currentProject = null;
     public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
+    public String  taskPrefix = Schema.SObjectType.Projecttask__c.getKeyPrefix();
      
     /**
     * Constructor
@@ -73,7 +74,12 @@ public class ProjectOverlayNewMilestoneController {
         projectMember = tm;
     }
 
-    
+    /**
+   	*@return taskPrefix
+   	*/
+   	public String getTaskPrefix(){
+   		return taskPrefix;
+   	}
     //For rerender use
     public void dummyRefresh (){}
     
