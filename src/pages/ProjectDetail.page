@@ -35,6 +35,18 @@
         div.team_detail_commentedItemLeftProfile{
             margin:3px 0 0;
         }
+        .swirlyDetail{ 
+        	background: red;
+			left:0;
+			margin:0 1px;
+			opacity:0.6;
+			overflow:hidden;
+			position:absolute;
+			top:0;
+			width:99%;
+			height: 100%;
+			z-index:9999;
+		}
     </style>
     
     <!-- Delete Project Overlay -->   
@@ -126,9 +138,11 @@
     <div class="main_content">
         <div class="centerCol">
            <div class="holder">
+           		<div class="swirlyDetail" style="display: none;" />
                 <apex:form id="mainContentForm">
                     
                     <!-- sfdc detail -->
+                    
                     <div style="display:none;" class="sfdcDetail">
                         <apex:detail subject="{!teamIdParam}" relatedList="false" title="false" />
                     </div>
@@ -159,5 +173,11 @@
  
     <script>
         readPortalCSSRules();
+        function insertSwirly(){
+        
+        	$$( '.sfdcDetailFormated' )[0].insert('<div class="swirlyDetail" style="display: none;" />', 'top'); 
+        	$$( '.swirlyDetail' )[0].show();
+        	
+        }
     </script>
 </apex:page>
