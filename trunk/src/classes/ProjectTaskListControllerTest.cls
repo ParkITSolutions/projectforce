@@ -1,6 +1,6 @@
 /**
 *@author Miguel Soares @ 04/14/2009
-*/
+*/ 
 @isTest private class ProjectTaskListControllerTest {
 	
 	/**
@@ -135,7 +135,7 @@
         taskList.createSortedTaskList();
         
          // getTaskList()        
-        taskList.setSORTBYPARAM('Percent_Completed__c');
+        taskList.setSORTBYPARAM('PercentCompleted__c');
         List<ProjectTaskListController.TaskDetails> listTaskDetails3 = taskList.getTaskList();        
         taskList.createSortedTaskList();        
         taskList.genCntPagination();
@@ -145,7 +145,7 @@
         taskList.createSortedTaskList();
         taskList.genCntPagination();
         
-        taskList.setSORTBYPARAM('Percent_Completed__c');
+        taskList.setSORTBYPARAM('PercentCompleted__c');
         List<ProjectTaskListController.TaskDetails> listTaskDetails5 = taskList.getTaskList(); 
         taskList.reConstruct();       
         taskList.createSortedTaskList();
@@ -159,7 +159,7 @@
         // getTaskList()        
         List<ProjectTaskListController.TaskDetails> listTaskDetails2 = taskList.getTaskList();
         
-        taskList.setSORTBYPARAM('Percent_Completed__c');
+        taskList.setSORTBYPARAM('PercentCompleted__c');
         List<ProjectTaskListController.TaskDetails> listTaskDetails7 = taskList.getTaskList(); 
         taskList.reConstruct();       
         taskList.createSortedTaskList();
@@ -194,7 +194,7 @@
         taskList.getSortBy();
         taskList.setSortBy('User__c.Name');
         taskList.getSortBy();
-        taskList.setSortBy('Percent_Completed__c');
+        taskList.setSortBy('PercentCompleted__c');
         taskList.getSortBy();
         taskList.setSortBy('Duration__c');
         taskList.getSortBy();
@@ -226,11 +226,11 @@
         
 
         
-		taskList.setSortBy('Percent_Completed__c');
+		taskList.setSortBy('PercentCompleted__c');
         taskList.createSortedTaskList();
-		taskList.setSortBy('Percent_Completed__c');
+		taskList.setSortBy('PercentCompleted__c');
         taskList.createSortedTaskList();
-		taskList.setSortBy('Percent_Completed__c');
+		taskList.setSortBy('PercentCompleted__c');
         taskList.createSortedTaskList();
         
 		taskList.setSortBy('Duration__c');
@@ -248,7 +248,12 @@
         taskList.createSortedTaskList();
 
         
+        taskList.getCsvFileId();
+        taskList.getFilter();
         
+        ProjectTaskListController.Filter fil = new ProjectTaskListController.Filter( GenerateEnvironmentTest.project.Id );
+        
+        fil.setNewFilter( fil.getNewFilter());   
 
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );

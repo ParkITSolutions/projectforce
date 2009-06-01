@@ -218,7 +218,7 @@ public class ProjectTaskDetailController {
 			            String ContentType = item.ContentType;
 			            String image = '';
 			            if (ContentType == null || ContentType == '') {
-			            	// LO HAGO POR LA EXTENSION
+			            	// I do it for the extension
 			            	Integer extPos = item.Name.lastIndexOf('.') + 1;
 			            	String extension = item.Name.substring(extPos);	
 			           		Map<String, String> typesExt = new Map<String, String>{'rar' => 'rar.gif', 'xls' => 'xls.gif', 'ppt' => 'ppt.gif', 'avi' => 'video.gif', 'mpeg' => 'video.gif', 'flv' => 'video.gif','mpg' => 'video.gif', 'mp3' => 'audio.gif' , 'wav' => 'audio.gif'};	
@@ -228,7 +228,7 @@ public class ProjectTaskDetailController {
 			           			image = 'generic.gif';
 			           		}
 			            }else {
-			           		// LO HAGO POR EL MIME TYPE
+			           		// I do it for the mime type
 			           		Map<String, String> typesMime = new Map<String, String>{'image/jpeg' => 'images.gif', 'image/png' => 'images.gif', 'image/gif' => 'images.gif', 'image/bmp' => 'images.gif', 'application/pdf' => 'pdf.gif', 'text/plain' => 'txt.gif','application/msword' => 'doc.gif', 'application/x-zip-compressed' => 'zip.gif'};	
 			           		if(typesMime.containsKey(ContentType)) {
 			           			image = typesMime.get(ContentType);

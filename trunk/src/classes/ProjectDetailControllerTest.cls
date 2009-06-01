@@ -1,7 +1,7 @@
 /**
 *@author Miguel Soares @ 04/08/2009
 */
-public class ProjectDetailControllerTest {
+@isTest private class ProjectDetailControllerTest {
 	
 	/**
 	* Test ProjectDetailController

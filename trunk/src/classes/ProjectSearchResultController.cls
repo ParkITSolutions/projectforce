@@ -93,12 +93,11 @@ public with sharing class ProjectSearchResultController {
 		System.debug( '#>' + teamId );
 
  		if(teamId != null){ //Searching project TASKS	
-		System.debug( '2#>' + teamId );
 
 			String sosl = 'FIND \'' + criteria + '*\' IN ALL FIELDS RETURNING ' + namespace + 'ProjectTask__c (Id, Name, Description__c, Project__c where Project__c = \'' + teamId + '\')';
 			List<List<SObject>> resultList = search.query(sosl);
 			resultsProjectTask = (List<ProjectTask__c>) resultList[0];
-			
+
 			// PARSE THE PROJECT TASK RESULT LIST
 			for(ProjectTask__c iter: resultsProjectTask){
 				SearchResult currentResult = new SearchResult();

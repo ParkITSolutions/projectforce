@@ -56,12 +56,15 @@
 								</li>
 							</ul>
 							<div class="clear"></div>
-						</div>
+						</div>bnmbnmbmnbmnb
 						<apex:dataTable value="{!taskResults}" var="task" styleClass="pageList">
-							<apex:column width="16px" styleClass="icon">
+							<apex:column width="36px" styleClass="icon">
+								<apex:facet name="headw" >Name</apex:facet>oooiu
 								<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/task.png')}"/>
+								<apex:outputText value="chachara" />
 							</apex:column>
 							<apex:column styleClass="first" style="width: 38%">
+							<apex:facet name="heaqwed" >Name</apex:facet>
 								<div style="{!IF(task.Priority == 'High', '', 'display:none')};" class="prior" >
 									<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/highPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}" />
 								</div>
@@ -77,22 +80,19 @@
 								</div>
 							</apex:column>
 							<apex:column >
-								<apex:outputpanel rendered="{!IF(task.Picture == 'nopicture',false,true)}">	
-									<div class="photoWrapper_32px">
-										<a href="/{!task.UserId}"><img alt="{!task.UserName}" src="/servlet/servlet.FileDownload?file={!task.Picture}" ="32" /></a>
-									</div>
-								</apex:outputpanel>
-								<apex:outputpanel rendered="{!IF(task.Picture == 'nopicture',true,false)}">	
-									<div class="photoWrapper_32px">
-										<a href="/{!task.UserId}"><img  src="{!URLFOR($Resource.ProjectResources, 'images/placeholders/unknownperson32x32.jpg')}"  width="32" /></a>
-									</div>
-								</apex:outputpanel>						
+							<apex:facet name="hea2d" >Name</apex:facet>
 								<a href="/{!task.UserId}"  class="name_margin">{!task.UserName}</a>	
 							</apex:column>
 							<apex:column >
+							<apex:facet name="hea3d" >Name</apex:facet>
+								 {!task.Priority}
+							</apex:column>
+							<apex:column >
+							<apex:facet name="he123ad" >Name</apex:facet>
 								{!task.status}
 							</apex:column>							
 							<apex:column >
+							<apex:facet name="heaf3d" >Name</apex:facet>
 								<span class="percent">{!task.Percent} %</span>
 								<div class="proj_percent_complete_outline">
 		                        	<div class="proj_percent_complete_value" style="width: {!task.Percent}%;"></div>

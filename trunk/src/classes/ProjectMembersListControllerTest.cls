@@ -77,22 +77,15 @@
             
             // Methods without SOQL queries
             team.setRemoveMemberId(GenerateEnvironmentTest.member.User__c);
-            //team.getTeamId();
-            //team.getCurrentUser();
+ 
             team.getRemoveMessage();
             team.getDelName();
-            //team.getItsLastAdmin();
-            //team.setEditMemberId(GenerateEnvironmentTest.member.User__c);
-            //team.getEditMemberRole();
-            //team.setEditMemberRole('Foo Role');
-            //team.getEditMemberProfile();
-            //team.setEditMemberProfile('Foo Profile');
             team.getEditMember();
-            //team.getImgEditMember();
             team.getUserPermissions();
             List<ProjectMembersListController.Member> mem = team.getMembers();
             team.getFirstItem();
             team.getCntPagination();
+            
              
             // Sort Methods
             team.getSortByDesc();
@@ -107,10 +100,10 @@
             team.sortList(); // 1 SOQL
             System.currentPageReference().getParameters().put( 'sb', 'User__r.Name' );
             team.sortList(); // 1 SOQL
-            
-			team.setLetter( 'All' );
+ 			team.setLetter( 'All' );
             System.currentPageReference().getParameters().put( 'sb', 'User__r.CompanyName' );
             team.sortList(); // 1 SOQL
+ 
             System.currentPageReference().getParameters().put( 'sb', 'User__r.CompanyName' );
             team.sortList(); // 1 SOQL
 			team.setLetter( 'A' );
@@ -119,7 +112,7 @@
             System.currentPageReference().getParameters().put( 'sb', 'User__r.CompanyName' );
             team.sortList(); // 1 SOQL
 
-
+			
 			team.setLetter( 'All' );
             System.currentPageReference().getParameters().put( 'sb', 'User__r.Title' );
             team.sortList(); // 1 SOQL
@@ -141,7 +134,8 @@
             team.sortList(); // 1 SOQL
             System.currentPageReference().getParameters().put( 'sb', 'Profile__r.Name' );
             team.sortList(); // 1 SOQL
-
+			
+			
             team.setSortBy('User__r.Name');
             team.getSortBy();
             team.setSortBy('User__r.CompanyName');
@@ -154,17 +148,14 @@
             
             // Methods WITH SOQL queries
             team.getAdminCount(); // 1 SOQL
-            //team.getTeamName(); // 1 SOQL
             team.getUserMemberId(); // 1 SOQL 
             System.currentPageReference().getParameters().put('delId',GenerateEnvironmentTest.member.User__c);
             team.assignRemoveId();// 1 SOQL 
             team.getProfilesOptions(); // 1 SOQL
             team.getProfilesOptionsFilter(); // 1 SOQL
-            //team.getTeamEditProfiles(); // 1 SOQL
             team.genMembers(); // 1 SOQL
-            //team.getIsTeamAdmin(); // 1 SOQL
            
-           	System.currentPageReference().getParameters().put('ltr','true');
+           	System.currentPageReference().getParameters().put('ltr', UserInfo.getName().substring( 0, 1 ));
            	team.genMembers(); // 1 SOQL
             team.getLetterFilter();
 
@@ -199,5 +190,33 @@
             throw e;
         }
     }
-   
+
+    /**
+	* Test ProjectMembersListController
+	*@void
+    *@static
+	*/
+    public static testMethod void testTeam2() {
+        try{
+            GenerateEnvironmentTest.gen();
+            Test.startTest();
+			System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+            ProjectMembersListController team = new ProjectMembersListController();
+            
+            team.getDeletingAllAmdsErr();
+            
+			String memToDel = GenerateEnvironmentTest.member.Id;
+			team.setMassiveRemoveMemIds( memToDel );
+			team.getMassiveRemoveMemIds();
+			team.massiveRemove();
+			
+			team.getError();
+            
+            
+            Test.stopTest();
+        }
+        catch(Exception e){
+            throw e;
+        }
+    }   
 }

@@ -534,16 +534,23 @@ public with sharing class ProjectTaskListController {
 			query +=	' Description__c, Rank__c FROM ProjectTask__c WHERE Project__c = \'' + PROJECTID + '\'' + filter;
 			query +=	' ORDER BY ' + sortBy + ' ' + ( sortByDesc ? ' DESC ' : ' ASC ');
 			
+			
+			System.debug('QUERY: ' + query);
+			
 			//Execute query
 			resultTaskList = Database.query(query);
 			
-			//Filter by Assignee
+			//Filter by Assignee - Ninja Way 
 			if(advanceFilter.assignee != null && !advanceFilter.assignee.equals('')){
 				filterApplyed = true;
 				List<ProjectTask__c> teampTaskList = new List<ProjectTask__c>(); 
+				//Iterate Task
 				for(ProjectTask__c task : resultTaskList){
-					if(task.ProjectsAssignees__r[0].User__c == advanceFilter.assignee){
-						teampTaskList.add(task);
+					//Iterate Assignees
+					for(ProjectAssignee__c taskAssignee : task.ProjectsAssignees__r){
+						if(taskAssignee.User__c == advanceFilter.assignee){
+							teampTaskList.add(task);
+						}
 					}
 				}
 				resultTaskList.clear();
@@ -620,19 +627,29 @@ public with sharing class ProjectTaskListController {
         String opciones = this.getOption();
 
         for(Integer i=0; i < resultTaskList.size();i++){
+            
             TaskDetails TaskDetail = new TaskDetails();
             TaskDetail.id = resultTaskList[i].Id;
             
+            //Task Assignees
             if(resultTaskList[i].ProjectsAssignees__r.size() > 0) {
-                if(resultTaskList[i].ProjectsAssignees__r[0]!=null )
+                if(resultTaskList[i].ProjectsAssignees__r[0] != null )
                     TaskDetail.setAsigneeName(mapAsignees.get(resultTaskList[i].ProjectsAssignees__r[0].User__c));
+            	//All assignees names for tooltip
+            	String allAssigneesNames = 'All Assignees: ';
+            	for(ProjectAssignee__c taskAssignee : resultTaskList[i].ProjectsAssignees__r){
+            		allAssigneesNames += mapAsignees.get(taskAssignee.User__c).Name + ', '; 	
+            	}
+            	TaskDetail.setAllAssingneesNames(allAssigneesNames.substring(0, (allAssigneesNames.length() - 2)));
             } 
 
             TaskDetail.Name = resultTaskList[i].Name;
             String picture = TaskDetail.getAsigneeName();
             
+            //Pririty
             TaskDetail.Priority = resultTaskList[i].Priority__c;
             
+            //End Date
             if(resultTaskList[i].EndDate__c != null) {
                 // TODO cambiar a formato de mm/dd/yyyy
                 TaskDetail.DueDate = ((resultTaskList[i].EndDate__c).format());
@@ -845,7 +862,8 @@ public with sharing class ProjectTaskListController {
 	    public String id { get; set; }
 	    
 	    // Task Asignee
-	    public String AsigneeName = null;         
+	    public String AsigneeName = null;  
+	    public String allAssignees = null;       
     
 	    /**
 	    *Assignes user to task
@@ -855,6 +873,20 @@ public with sharing class ProjectTaskListController {
 	        this.userTask = u;
 	    }            
     
+	    /**
+	    *@return all assignees name for title attr.
+	    */
+	    public String getAllAssingneesNames (){
+	    	return allAssignees;
+	    }
+	    
+	    /**
+	    *@param assignees names
+	    */
+	    public void setAllAssingneesNames(String names){
+	    	allAssignees = names;	
+	    }
+	    
 	    /**
 	    *Get User assigned to task
 	    *@return String
@@ -1098,7 +1130,7 @@ public with sharing class ProjectTaskListController {
     	*/
     	public void readFilterContent(){
 			ProjectFilter__c filter = [select Id, Filter__c from ProjectFilter__c where Id =: applyFilter];
-			List<String> test = filter.Filter__c.split('|');
+			List<String> test = filter.Filter__c.split('[|]');
 			List<String> value = new List<String>();
 			for(String values : test){
 				value = values.split(':');
@@ -1118,7 +1150,19 @@ public with sharing class ProjectTaskListController {
 
 					//By Status
 					if(value[0].equals('Status'))
-						status = value[1]; 
+						status = value[1];
+
+					//By Rank
+					if(value[0].equals('Rank'))
+						rank = value[1];
+
+					//By Sprint
+					if(value[0].equals('Sprint'))
+						sprint = value[1];
+						
+					//By Priority
+					if(value[0].equals('Priority'))
+						priority = value[1]; 						 
 				}
 			}
     	}    

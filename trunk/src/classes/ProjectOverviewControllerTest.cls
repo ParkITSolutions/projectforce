@@ -23,6 +23,10 @@
     	System.currentPageReference().getParameters().put( 'ltr', 'M' );
     	po.setLetterFilter();
     	po.filterProjects();
+
+    	System.currentPageReference().getParameters().put( 'ltr', null );
+    	po.setLetterFilter();
+
  
     	po.getProjectsForTabsSize();
     	po.getProjectsForTabs();

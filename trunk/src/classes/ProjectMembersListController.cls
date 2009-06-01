@@ -495,6 +495,7 @@ public without sharing class ProjectMembersListController {
 				membersList.add(memberItem);
 			}
 		}else {
+			System.debug( '|>>>' + letter );
 			for (ProjectMember__c item: [select id, Name, Profile__r.Name, Profile__r.ManageProjectTasks__c, Profile__r.Description__c, User__r.Name, User__r.Title, User__r.Id, User__r.CompanyName from ProjectMember__c where User__r.Name like :(letter + '%') and User__r.IsActive != false and project__c =:idProject order by User__r.Name]) {
 					
 				Member memberItem = new Member();
