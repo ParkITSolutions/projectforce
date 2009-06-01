@@ -18,7 +18,9 @@
         taskDetailController.setTaskId(GenerateEnvironmentTest.task.Id);
         ProjectTask__c newTask = [select id from ProjectTask__c limit 1];        
         taskDetailController.getTask(newTask.Id);
-        taskDetailController.markComplete();                   
+        taskDetailController.markComplete();   
+        
+        taskDetailController.getMaxAssignees();               
         
         ProjectTaskDetailController.TaskDetails a = taskDetailController.getTask();
          
@@ -30,7 +32,7 @@
         ProjectTaskDetailController.ProjectAssignee projectAss = new ProjectTaskDetailController.ProjectAssignee();
         
         if(projectAss.getId() == null) 
-            System.assert(true, 'Project Assignee Class null var');     
+            System.assert(true, 'Project Assignee Class null var');    
         if(projectAss.getName() == null) 
             System.assert(true, 'Project Assignee Class null var');     
         if(projectAss.getPercent() == null) 
@@ -44,6 +46,10 @@
             System.assert(true, 'Attachment Info Class null var');  
         if(attchInfo.getAttachImage() == null) 
             System.assert(true, 'Attachment Info Class null var');     	
+    	
+    	
+    	
+    	
     	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );

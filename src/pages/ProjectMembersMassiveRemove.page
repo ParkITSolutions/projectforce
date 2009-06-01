@@ -20,7 +20,7 @@
 				<div class="overlayFormContent" style="padding-bottom: 10px;">
 					<table style="width:95%;"> 
 						<tr>
-							<td><span class="inputInfoDark">Are you sure you want to remove these members from {!projectName}?</span></td>
+							<td><span class="inputInfoDark">Are you sure you want to remove these members from <script>trunkText('{!projectName}',20)</script>?</span></td>
 						</tr>
 						<tr>
 							<td><span class="inputInfo">Once a member is removed there is no way to undo this action.</span></td>

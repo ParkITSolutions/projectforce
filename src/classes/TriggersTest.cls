@@ -40,7 +40,6 @@
         delete GenerateEnvironmentTest.assi;
  		delete GenerateEnvironmentTest.pred;
 		delete GenerateEnvironmentTest.task;
-		delete GenerateEnvironmentTest.member;
 		
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
@@ -52,6 +51,23 @@
     *@static
 	*/
     static testMethod void myUnitTest3(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+    	
+		delete GenerateEnvironmentTest.member;
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );
+    }   
+
+  	/**
+	* Test4
+	*@void
+    *@static
+	*/
+    static testMethod void myUnitTest4(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );

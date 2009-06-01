@@ -58,7 +58,7 @@
 		<div class="swirly_overlay" style="display: none;"></div>
 		<!-- Overlay Title -->
 		<div class="overlayTitleContent">
-		<div class="overlayTitle">Add new member to {!teamName}</div>
+		<div class="overlayTitle">Add new member to <script>trunkText('{!teamName}',24);</script></div>
 		<div class="overlayCloseEvent"><a href="Javascript:;"
 			onclick="modal.close();"> <img
 			src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}"
@@ -210,6 +210,7 @@
 							var remaingToSave = '{!initAddMembers}';
 							if (remaingToSave == 'false' && !firstExecuteTime){
 								reloadMemberList();
+								refreshSwirly();
 							}
 							
 							//Flag for don't execute on load default value is true
@@ -222,7 +223,7 @@
 						<apex:actionPoller action="{!syncSaveMembers}"
 							enabled="{!initAddMembers}"
 							rerender="auxPanel, membersListContainer, thisForm" interval="5"
-							onComplete="refreshCount(); refreshSwirly();" />
+							onComplete="refreshCount();" />
 						
 						<!-- Action Function for Refresh Member List -->
 						<apex:actionFunction name="rerenderMemberList"

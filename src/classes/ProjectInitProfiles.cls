@@ -6,34 +6,36 @@ public class ProjectInitProfiles {
     public ProjectProfile__c projectProfile =  new ProjectProfile__c(); 
     public Boolean showOverlay = false;
 
-	
-
 	/**
 	*@ Contructor
 	*/
 	public ProjectInitProfiles (){
-		
+		InitializeProfiles();
+	}
+	
+	public void InitializeProfiles(){
+	
         profiles = [select Id, Name from ProjectProfile__c where Name in : profilesNames];
         
-       	if(!existProfile('Member Profile')){
+       	if(!existProfile(profilesNames.get(0))){
             projectProfile = new ProjectProfile__c();
-            projectProfile.Name = 'Member Profile';
+            projectProfile.Name = profilesNames.get(0);
             projectProfile.ManageProjectTasks__c = false;
             projectProfile.CreateProjectTasks__c = true;
             profilesToInsert.add( projectProfile );
         }
         
-        if(!existProfile('Public Profile')){
+        if(!existProfile(profilesNames.get(1))){
             projectProfile = new ProjectProfile__c();
-            projectProfile.Name = 'Public Profile';
+            projectProfile.Name = profilesNames.get(1);
             projectProfile.ManageProjectTasks__c = false;
             projectProfile.CreateProjectTasks__c = false;
             profilesToInsert.add( projectProfile );
         }
         
-        if(!existProfile('Project Administrator')){
+        if(!existProfile(profilesNames.get(2))){
             projectProfile = new ProjectProfile__c();
-            projectProfile.Name = 'Project Administrator';
+            projectProfile.Name = profilesNames.get(2);
             projectProfile.ManageProjectTasks__c = true;
             projectProfile.CreateProjectTasks__c = true;
             profilesToInsert.add( projectProfile);
@@ -41,7 +43,6 @@ public class ProjectInitProfiles {
         
         if(profilesToInsert.size() > 0)
         	showOverlay = true;
-
 	}
 	
 	/**
@@ -57,14 +58,22 @@ public class ProjectInitProfiles {
 	public Boolean existProfile(String name){
         for(ProjectProfile__c profile : profiles){
         	if (profile.Name == name){        	
-        		return true;
-        		break;	
+        		return true;	
         	}
         }
         return false;	
 	}
 	public Boolean getShowOverlay(){
 		return showOverlay;
+	}
+	
+	
+	/**
+	* @Set profilesNames for Code Coverage Enviroment
+	**/
+	
+	public void setProfilesNames(List<String> testProfilesNames){
+		profilesNames = testProfilesNames;
 	}
 
 }

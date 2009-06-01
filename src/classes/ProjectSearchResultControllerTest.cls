@@ -14,6 +14,7 @@
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
+    	//asas
     	            
 	    Id[] fixedSearchResultsList = new Id[1];
 	
@@ -23,8 +24,8 @@
 		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.Id );            
         ProjectSearchResultController team = new ProjectSearchResultController();
         
-        team.setCriteria('ta');
         team.setTeamId(  GenerateEnvironmentTest.project.Id );
+        team.setCriteria('ta');
         team.search();
         String criteria = team.getCriteria();
                         

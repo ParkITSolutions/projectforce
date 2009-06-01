@@ -1,11 +1,16 @@
 <apex:page sidebar="false" showHeader="false" controller="UploadAttachmentController">
 	<script type="text/javascript">
-	function validateFile(ele){
-		if(ele != null || ele != '')
-		{
-			document.getElementById('errorText').style.display = 'none';
+		function validateFile(ele){
+			if(ele != null || ele != '')
+			{
+				document.getElementById('errorText').style.display = 'none';
+			}
 		}
-	}
+		
+		function setUploadingStatus(){
+			$$('.inputFileDiv')[0].style.display = 'none';
+			$$('.uploadingStatus')[0].innerHTML = 'Uploading File, please wait...';
+		}
 	</script>
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/uploadAttachment.css')}" />
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/uploadAttachment.js')}" />
@@ -42,11 +47,13 @@
 					<div class="overlaySeparateLine"></div>
 					<!-- Saven and Cancel Buttons -->
 					<div class="overlayFromButtons" align="center">
-						<apex:commandButton styleclass="btn allButtons" action="{!saveNewAttach}" value="Done" style="float: none;width: 70px !important;background: #21637D none repeat scroll 0 0 !important;"/>
+						<apex:commandButton styleclass="btn allButtons" 
+							action="{!saveNewAttach}" value="Done" onclick="setUploadingStatus();" 
+							style="float: none;width: 70px !important;background: #21637D none repeat scroll 0 0 !important;"/>
 						<apex:commandButton styleClass="btn allButtons" value="Cancel" style="float: none;width: 70px !important;background: #989999 none repeat scroll 0 0 !important;" onclick="cancelAction(); return false;"  />
 					</div>
 				</div>
-				
+				<div class="uploadingStatus"></div>
 				<input type="hidden" id="asAvatar" name="asAvatar" />
 			</apex:form>
 		</div>
