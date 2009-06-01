@@ -40,7 +40,7 @@
 			background-color:#FFF!important;
 		}	
 	</style>
-		
+	
 	<!-- Header -->
 	<apex:composition template="HeaderTemplate">
 		<apex:define name="moduleId">
@@ -53,7 +53,7 @@
 	    </apex:define>
     </apex:composition>
     
-	<div class="sidebar" style='height:220px;'>
+	<div class="sidebar" style="height: 265px;">
 		
 		<!-- Project Quick Links -->
 		<c:ProjectDetailQuickLinks />
@@ -83,7 +83,7 @@
 			</div>
 		</div>
 		<!-- Main Content Div -->
-		<div class="main_content">		
+		<div class="main_content" id="main_content">		
 			<div class="holder">
 			<!-- Start Main Content -->
 				<!-- Section Title -->
@@ -136,7 +136,7 @@
 		</div>
 	
 	</apex:form>
-	<script>	
+	<script type="text/javascript">
 		readPortalCSSRules();
 	</script>	
 </apex:page>

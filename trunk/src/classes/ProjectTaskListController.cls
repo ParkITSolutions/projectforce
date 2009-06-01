@@ -10,18 +10,23 @@ public with sharing class ProjectTaskListController {
     public boolean isProjectMember = false;
     public String PROJECTID = System.currentPageReference().getParameters().get('id');
     public String csvFileId = '';
+    
     public String filter = System.currentPageReference().getParameters().get('filter');
     public Filter advanceFilter = new Filter(PROJECTID);
+    public Boolean filterApplyed = false;
+    
     public List<ProjectTask__c> ListTask = new List<ProjectTask__c>();
     public Map<String, User> mapAsignees = new Map<String, User>();
     public List<TaskDetails> taskList = new List<TaskDetails>();
-    public String option = 'all';
+
     public UserPermissions userPermissions = new UserPermissions();
+    
+    public String option = 'all';    
     public Boolean sortByDesc = false;
     public String sortBy;
     public String oldSortBy;
     public String idTaskToComplete = '';
-    
+
     /**
     * Set of Integers to control pagination
     */
@@ -126,6 +131,13 @@ public with sharing class ProjectTaskListController {
     */
     public void setFilter (Filter f){
     	advanceFilter = f;
+    }
+    
+    /**
+    *@return filter is applyed
+    */
+    public Boolean getFilterApplyed (){
+    	return filterApplyed;
     }
     
     /**
@@ -486,7 +498,7 @@ public with sharing class ProjectTaskListController {
 
 			String query = '';
 			String filter = '';
-			
+       		
 			//Filter by Name
 			if(advanceFilter.name != null && !advanceFilter.name.equals(''))
 				filter += ' and Name like \'' + advanceFilter.name + '%\'';
@@ -511,6 +523,12 @@ public with sharing class ProjectTaskListController {
 			if(advanceFilter.estimate != null && !advanceFilter.estimate.equals(''))
 				filter += ' and Duration__c = ' + Double.valueOf(advanceFilter.estimate);				
 
+			//Set flag true if filter is applyed
+			if(!filter.equals(''))
+				filterApplyed = true;
+			else
+				filterApplyed = false;      			
+
 			query =		' SELECT Project__c, Priority__c, PercentCompleted__c, createdById, OwnerId, Status__c, Id__c, Sprint__c, Name,';
 			query +=	' Milestone__c, Id, EndDate__c, Duration__c, (SELECT Id, User__r.Name, User__r.Id, User__c  FROM ProjectsAssignees__r),';
 			query +=	' Description__c, Rank__c FROM ProjectTask__c WHERE Project__c = \'' + PROJECTID + '\'' + filter;
@@ -521,6 +539,7 @@ public with sharing class ProjectTaskListController {
 			
 			//Filter by Assignee
 			if(advanceFilter.assignee != null && !advanceFilter.assignee.equals('')){
+				filterApplyed = true;
 				List<ProjectTask__c> teampTaskList = new List<ProjectTask__c>(); 
 				for(ProjectTask__c task : resultTaskList){
 					if(task.ProjectsAssignees__r[0].User__c == advanceFilter.assignee){
@@ -530,10 +549,9 @@ public with sharing class ProjectTaskListController {
 				resultTaskList.clear();
 				resultTaskList = teampTaskList;
 			}
-        }        		
+        }
 		return resultTaskList;
     }
-     
     
     /**
     *Set map piority
@@ -936,9 +954,29 @@ public with sharing class ProjectTaskListController {
     	public String status {get; set;}
     	public String assignee {get; set;}
     	public String rank {get; set;}
+    	public String applyFilter {get; set;}
     	
+    	public ProjectFilter__c newFilter = new ProjectFilter__c(); 
+    	
+    	/**
+    	* Constructor
+    	*/
     	public Filter(String id){
     		project = id;
+    	}
+    	
+    	/**
+    	*@param  project filter
+    	*/
+    	public void setNewFilter(ProjectFilter__c f){
+    		newFilter = f;
+    	}
+    	
+    	/**
+    	*@return project filter 
+    	*/
+    	public ProjectFilter__c getNewFilter(){
+    		return newFilter;
     	}
     	
     	/**
@@ -947,8 +985,9 @@ public with sharing class ProjectTaskListController {
     	public List<SelectOption> getAssignees(){
     		List<ProjectMember__c> members = new List<ProjectMember__c>();
     		List<SelectOption> options = new List<SelectOption>();
+    		
     		members = [select m.Id, m.Name, User__r.Id from ProjectMember__c m where m.Project__c =: project order by m.Name asc];
-    		options.add(new SelectOption('', '--'));
+    		options.add(new SelectOption('', '-- Any --'));
     		for (ProjectMember__c member : members){
     			options.add(new SelectOption(member.User__r.Id, member.Name));		
     		}	
@@ -963,7 +1002,7 @@ public with sharing class ProjectTaskListController {
     		
     		Schema.DescribeFieldResult describe = ProjectTask__c.Priority__c.getDescribe();
     		List<Schema.PicklistEntry> priorityValues = describe.getPicklistValues();
-    		priorityOptions.add(new SelectOption('', '--'));
+    		priorityOptions.add(new SelectOption('', '-- Any --'));
     		for(PicklistEntry value : priorityValues){
     			priorityOptions.add(new SelectOption(value.getValue(), value.getValue()));	
     		}
@@ -978,14 +1017,112 @@ public with sharing class ProjectTaskListController {
     		
     		Schema.DescribeFieldResult describe = ProjectTask__c.Status__c.getDescribe();
     		List<Schema.PicklistEntry> statusValues = describe.getPicklistValues();
-    		statusOptions.add(new SelectOption('', '--'));
+    		statusOptions.add(new SelectOption('', '-- Any --'));
     		for(PicklistEntry value : statusValues){
     			statusOptions.add(new SelectOption(value.getValue(), value.getValue()));	
     		}
     		return statusOptions;
     	}
+    	
+    	/**
+    	*@return saved filters options
+    	*/
+    	public List<SelectOption> getSavedFilters(){
+    		List<ProjectFilter__c> filters = new List<ProjectFilter__c>();
+    		List<SelectOption> filterOptions = new List<SelectOption>();
+    		
+    		filters = [select Id, Filter__c, Name from ProjectFilter__c where Project__c =: project];
+    		filterOptions.add(new SelectOption('', '-- Select Filter --'));
+    		for(ProjectFilter__c filter : filters){
+    			filterOptions.add(new SelectOption(filter.Id, filter.Name));	
+    		}
+    		return filterOptions;	
+    	}
+    	
+    	/**
+    	* Save new Filter
+    	*/
+    	public void saveFilter(){
+    		newFilter.Project__c = project;
+    		newFilter.Filter__c = generateFilterContent();
+    		insert newFilter;
+    		newFilter = new ProjectFilter__c();
+    	}
+    	
+    	/**
+    	* Delete Filter
+    	*/
+    	public void deleteFilter(){
+    		ProjectFilter__c filter = [select Id from ProjectFilter__c where Id =: applyFilter];
+    		delete filter;
+    	}
+    	
+    	/**
+    	* Parse filter option to save it
+    	*/
+    	public String generateFilterContent(){
+			String filterContent = '';
+			
+			//Filter by Name
+			if(name != null && !name.equals(''))
+				filterContent += 'Name:' + name + '|';
+				
+			//Filter by Pririty
+			if(priority != null && !priority.equals(''))
+				filterContent += 'Priority:' + priority + '|';				
+			
+			//Filter by Status
+			if(status != null && !status.equals(''))
+				filterContent += 'Status:' + status + '|';
+				
+			//Filter by Rank
+			if(rank != null && !rank.equals(''))
+				filterContent += 'Rank:' + rank + '|';
+
+			//Filter by Sprint
+			if(sprint != null && !sprint.equals(''))
+				filterContent += 'Sprint:' + sprint + '|';
+
+			//Filter by Estimate
+			if(estimate != null && !estimate.equals(''))
+				filterContent += 'Duration:' + estimate + '|';
+			
+			if(assignee != null && !assignee.equals(''))
+				filterContent += 'Assignee:' + assignee + '|';			
+	
+    		return filterContent;
+    	}
+    
+    	/**
+    	* Read and Set Filter
+    	*/
+    	public void readFilterContent(){
+			ProjectFilter__c filter = [select Id, Filter__c from ProjectFilter__c where Id =: applyFilter];
+			List<String> test = filter.Filter__c.split('|');
+			List<String> value = new List<String>();
+			for(String values : test){
+				value = values.split(':');
+				
+				if(value.size() > 0){
+					//By Name
+					if(value[0].equals('Name'))
+						name = value[1]; 
+					
+					//By Assingnee
+					if(value[0].equals('Assignee'))
+						assignee = value[1]; 
+					
+					//By Duration
+					if(value[0].equals('Duration'))
+						estimate = value[1]; 
+
+					//By Status
+					if(value[0].equals('Status'))
+						status = value[1]; 
+				}
+			}
+    	}    
     
     }
-    
     
 }

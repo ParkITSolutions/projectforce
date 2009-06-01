@@ -57,14 +57,17 @@
 
 	<script>
 		document.observe('dom:loaded', function(){
-				readPortalCSSRules();
-				$$('.sidebar')[0].style.height =$$('.main_cont')[0].getDimensions().height+85 + 'px';		
-				
-			}
-		)
+			readPortalCSSRules();						
+			resizeMLSidebar()
+		});
+		function resizeMLSidebar(){
+			var mc = $$('.main_cont')[0].getDimensions();
+			var footer = $$('.bPageFooter')[0].getDimensions();
+			$$('.sidebar')[0].style.height = mc.height + 10 + 'px';
+		};
 		var globalTeamId = "{!projectId}";
-	    var globalInfoBig = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/infoBig.gif')}';
-        var globalCheckNew = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}';
+	    var globalInfoBig = "{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/infoBig.gif')}";
+        var globalCheckNew = "{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}";
 
 	</script>
 	<style>
@@ -82,7 +85,7 @@
 	</style>
 	
 	<apex:form >
-		<apex:actionFunction name="reloadMemberList" action="{!refresh}" rerender="headForm, membersList, filterForm" oncomplete="$('paginationOverlay').hide();" />
+		<apex:actionFunction name="reloadMemberList" action="{!refresh}" rerender="headForm, membersList, filterForm" oncomplete="$('paginationOverlay').hide();resizeMLSidebar()" />
 	</apex:form>
 	<apex:form >
 		<apex:actionFunction name="reloadButtons" action="{!refresh}" rerender="headForm" />
@@ -91,8 +94,7 @@
 	<a href="#modal_container" id="initializeModal" style="display:none;"></a>     
 	<div id="modal_container"></div>
 	<script>createOverlay('initializeModal');</script> 
-
-	<div>	
+	
 		<!-- Header -->
 		<apex:composition template="HeaderTemplate"> 
 			<apex:define name="moduleId">
@@ -126,15 +128,10 @@
 			 
 			<div class="clear"></div>
 		</div>
-	</div>
-	          <div class="informationPanel clear" id="infoToUser" style="display:none"></div>
+	<div class="informationPanel clear" id="infoToUser" style="display:none"></div>
+
 	<!-- Main Content Div -->
-	<div class="main_cont">
-
-			<div class="main_cont">
-
-		
-		
+	<div class="main_cont" style = "margin-left:205px!important;" >
 		<div id="holder">
 			<div id="paginationOverlay" style="display: none;"  class="paginationOverlay"></div>
 			<table width="100%" align='center'>
@@ -154,7 +151,7 @@
 					</td>
 				</tr>
 			</table>
-
+	
 			<div class="border_body_top"></div>
 			
 			<!-- LETTER FILTER	-->
@@ -180,7 +177,7 @@
 							 	styleclass="AllBtn" 
 							 	rerender="membersList"
 							 	onclick="$('paginationOverlay').show();setDims('holder', 'paginationOverlay')" 
-							 	oncomplete="$('paginationOverlay').hide()">
+							 	oncomplete="$('paginationOverlay').hide();resizeMLSidebar()">
 								<apex:param name="ltr" value="ALL" />
 							</apex:commandLink>
 						</li>
@@ -188,7 +185,8 @@
 							<li>
 								<apex:outputpanel rendered="{!NOT(item.containMembers)}">
 									<apex:commandLink styleclass="contains" action="{!genMembers}" value="{!item.letter}" 
-										onclick="$('paginationOverlay').show();setDims('holder', 'paginationOverlay')" oncomplete="$('paginationOverlay').hide()"
+										onclick="$('paginationOverlay').show();setDims('holder', 'paginationOverlay')" 
+										oncomplete="$('paginationOverlay').hide();resizeMLSidebar()"
 										rerender="membersList">
 										<apex:param name="ltr" value="{!item.letter}" />
 									</apex:commandLink>
@@ -216,7 +214,7 @@
 									<li class="prev {!IF(prevPageShow,'prev_disabled','')}">
 										<apex:commandLink action="{!prevPage}" value="Previous Page"
 											onclick="$('paginationOverlay').show();setDims('holder','paginationOverlay');"
-											oncomplete="$('paginationOverlay').hide();" 
+											oncomplete="$('paginationOverlay').hide();resizeMLSidebar()" 
 											rerender="membersList"
 											rendered="{!prevPageLinkShow}" /> 
 										<apex:outputText value="Previous Page" rendered="{!prevPageShow}" />
@@ -226,7 +224,7 @@
 									</li>
 									<li class="next {!IF(nextPageShow,'next_disabled','')}">
 										<apex:commandLink action="{!nextPage}" value="Next Page" onclick="$('paginationOverlay').show();setDims('holder','paginationOverlay');"
-											oncomplete="$('paginationOverlay').hide();"
+											oncomplete="$('paginationOverlay').hide();resizeMLSidebar()"
 											rerender="membersList"
 											rendered="{!nextPageLinkShow}" /> 
 										<apex:outputText value="Next Page" rendered="{!nextPageShow}" />
@@ -249,7 +247,7 @@
 							<td width="29%" colspan="2"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
 								value="Name" 
 								onclick="$('paginationOverlay').show();setDims('holder', 'paginationOverlay');"
-								oncomplete="$('paginationOverlay').hide();"
+								oncomplete="$('paginationOverlay').hide(); "
 								rerender="membersList">
 								<apex:param name="sb" value="User__r.Name" />
 							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'name',true,false)}">
@@ -265,7 +263,7 @@
 							<td width="16%"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
 								value="Company" 
 								onclick="$('paginationOverlay').show();setDims('holder', 'paginationOverlay');"
-								oncomplete="$('paginationOverlay').hide();"								
+								oncomplete="$('paginationOverlay').hide(); "								
 								rerender="membersList">
 								<apex:param name="sb" value="User__r.CompanyName" />
 							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'company',true,false)}">
@@ -281,7 +279,7 @@
 							<td width="15%"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
 								value="Title" 
 								onclick="$('paginationOverlay').show();setDims('holder', 'paginationOverlay');"
-								oncomplete="$('paginationOverlay').hide();"								
+								oncomplete="$('paginationOverlay').hide(); "								
 								rerender="membersList">
 								<apex:param name="sb" value="User__r.Title" />
 							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'title',true,false)}">
@@ -297,7 +295,7 @@
 							<td width="16%"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
 								value="{!$ObjectType.Project2__c.label} Profile"
 								onclick="$('paginationOverlay').show();setDims('holder', 'paginationOverlay');"
-								oncomplete="$('paginationOverlay').hide();"								
+								oncomplete="$('paginationOverlay').hide(); "								
 								rerender="membersList">
 								<apex:param name="sb" value="Profile__r.Name" />
 							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'profile',true,false)}">
@@ -323,7 +321,8 @@
 								</td>
 								<td>
 									<apex:outputpanel rendered="{!userPermissions.canManage}">
-									 	<a href="Javascript:;" onclick="setHiddenMemberId('{!item.projectMemberId}'); createOverlay('','removeMemberOverlay','170','relocateOverlay()');">Delete</a>
+									 	<a href="Javascript:;" 
+									 	onclick="setHiddenMemberId('{!item.projectMemberId}'); createOverlay('','removeMemberOverlay','170','relocateOverlay()');">Delete</a>
 									</apex:outputpanel>
 								</td>
 								<td class="memberImg">
@@ -353,7 +352,7 @@
 							<li class="prev {!IF(prevPageShow,'prev_disabled','')}">
 								<apex:commandLink action="{!prevPage}" value="Previous Page" rerender="membersList"
 								onclick="$('paginationOverlay').show();setDims('holder','paginationOverlay');"
-								oncomplete="$('paginationOverlay').hide();"
+								oncomplete="$('paginationOverlay').hide();resizeMLSidebar()"
 								rendered="{!prevPageLinkShow}" /> 
 								<apex:outputText value="Previous Page" rendered="{!prevPageShow}" />
 							</li>
@@ -363,7 +362,7 @@
 							<li class="next {!IF(nextPageShow,'next_disabled','')}">
 								<apex:commandLink action="{!nextPage}" value="Next Page" rerender="membersList"
 								onclick="$('paginationOverlay').show();setDims('holder','paginationOverlay');"
-								oncomplete="$('paginationOverlay').hide();"
+								oncomplete="$('paginationOverlay').hide();resizeMLSidebar()"
 								rendered="{!nextPageLinkShow}" /> 
 								<apex:outputText value="Next Page" rendered="{!nextPageShow}" />
 							</li>
@@ -406,13 +405,11 @@
 			</table>
 			
 			<br/>
- 			</apex:outputpanel> <!-- End outputPanel MembersList -->
-			
-		</div> <!-- holder Div --> 
-	
-	</div> <!-- Main Content Div -->
-		</div>
+				</apex:outputpanel> <!-- End outputPanel MembersList --></div> <!-- holder Div --> 
 	</div>
+	
+	
+	
 	
 	<apex:outputpanel id="overlaysPanel">
 		<apex:include id="includeMemRem" pageName="ProjectMembersRemove" />
@@ -435,7 +432,6 @@
  		    //alert( a.join( '::' )); 
  		    
 		    $$('.MemberIdToDel')[0].value = a.join( '::' );
- 		    
 		}
  	</script>
 
