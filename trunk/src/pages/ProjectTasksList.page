@@ -551,7 +551,7 @@
 	                                            <apex:outputpanel rendered="{!IF(OR(OR(editDeletePer,task.canEditAndDelete), task.isTaskOwner) ,true,false)}" layout="block">
 	                                                <div>
 	                                                	<!-- /apex/projectRedirect?sO=ProjectTask__c&attr=task&page=ProjectCreateNewTask&rR=NewProjectFormContainer&oC=true&eid={!ProjectId}&task={!task.id} -->
-	                                                	<a href="/{!task.id}/e">Edit</a> 
+	                                                	<a href="/{!task.id}/e?retURL=/apex/ProjectTasksList?id={!task.id}">Edit</a> 
 	                                                	<apex:outputpanel rendered="{!OR(editDeletePer, task.isTaskOwner)}">
 		                                                	|<a href="javascript:;" onclick="showDeleteEvent('{!task.Id}','', '{!task.name}');" >Del</a>
 		                                                </apex:outputpanel>

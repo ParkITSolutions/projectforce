@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Store project filters</description>
+    <fields>
+        <fullName>Filter__c</fullName>
+        <label>Filter</label>
+        <length>32000</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Project__c</fullName>
+        <label>Project</label>
+        <referenceTo>Project2__c</referenceTo>
+        <relationshipLabel>Project Filters</relationshipLabel>
+        <relationshipName>Project_Filters</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <label>Project Filter</label>
+    <nameField>
+        <label>ProjectFilter Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Project Filters</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

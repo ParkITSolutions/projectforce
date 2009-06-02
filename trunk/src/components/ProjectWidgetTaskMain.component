@@ -56,49 +56,56 @@
 								</li>
 							</ul>
 							<div class="clear"></div>
-						</div>bnmbnmbmnbmnb
-						<apex:dataTable value="{!taskResults}" var="task" styleClass="pageList">
-							<apex:column width="36px" styleClass="icon">
-								<apex:facet name="headw" >Name</apex:facet>oooiu
-								<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/task.png')}"/>
-								<apex:outputText value="chachara" />
-							</apex:column>
-							<apex:column styleClass="first" style="width: 38%">
-							<apex:facet name="heaqwed" >Name</apex:facet>
-								<div style="{!IF(task.Priority == 'High', '', 'display:none')};" class="prior" >
-									<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/highPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}" />
-								</div>
-								<div style="{!IF(task.Priority == 'Low', '', 'display:none')};" class="prior" >
-									<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/lowPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}" />
-								</div>
-								<div style="{!IF(task.Priority == 'Medium', '', 'display:none')};" class="prior" >
-									<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/normalPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}" />
-								</div>								
-								<div class="{!task.isToLate} f_left">
-									<a href="projecttaskdetail?id={!task.TaskId}">{!task.TaskName}</a><br/>
-									<span class="gray"> {!task.EndDate}</span>
-								</div>
-							</apex:column>
-							<apex:column >
-							<apex:facet name="hea2d" >Name</apex:facet>
-								<a href="/{!task.UserId}"  class="name_margin">{!task.UserName}</a>	
-							</apex:column>
-							<apex:column >
-							<apex:facet name="hea3d" >Name</apex:facet>
-								 {!task.Priority}
-							</apex:column>
-							<apex:column >
-							<apex:facet name="he123ad" >Name</apex:facet>
-								{!task.status}
-							</apex:column>							
-							<apex:column >
-							<apex:facet name="heaf3d" >Name</apex:facet>
-								<span class="percent">{!task.Percent} %</span>
-								<div class="proj_percent_complete_outline">
-		                        	<div class="proj_percent_complete_value" style="width: {!task.Percent}%;"></div>
-		                       	</div>
-							</apex:column>
-						</apex:dataTable>
+						</div>
+						<table width="100%">
+							<tr>
+								<td colspan="2">Task Information</td>
+								<td>Assignee</td>
+								<td>Priority</td>
+								<td>Status</td>
+								<td>Percent Complete</td>
+							</tr>
+							<tbody>
+							<apex:repeat value="{!taskResults}"  var="task">
+								<tr>
+									<td width="16px">
+		 								<div style="{!IF(task.Priority == 'High', '', 'display:none')};" class="prior" >
+											<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/highPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}" />
+										</div>
+										<div style="{!IF(task.Priority == 'Low', '', 'display:none')};" class="prior" >
+											<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/lowPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}" />
+										</div>
+										<div style="{!IF(task.Priority == 'Medium', '', 'display:none')};" class="prior" >
+											<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/normalPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}" />
+										</div>
+									</td>
+									<td>								
+										<div class="{!task.isToLate} f_left">
+											<a href="projecttaskdetail?id={!task.TaskId}">{!task.TaskName}</a><br/>
+											<span class="gray"> {!task.EndDate}</span>
+										</div>
+									</td>
+									
+									<td>
+										<a href="/{!task.UserId}"  class="name_margin">{!task.UserName}</a>	
+									</td>
+									<td>
+										{!task.Priority}
+									</td>
+									<td>
+	 									{!task.status}
+									</td>		
+									<td>				
+	 									<span class="percent">{!task.Percent} %</span>
+										<div class="proj_percent_complete_outline">
+				                        	<div class="proj_percent_complete_value" style="width: {!task.Percent}%;"></div>
+				                       	</div>
+									</td>						
+								</tr>
+							</apex:repeat>
+							</tbody>
+						</table>
+
 					</apex:outputpanel>			
 				</div>
 			</div>
