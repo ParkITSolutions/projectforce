@@ -127,12 +127,12 @@
 					<!-- Save and Cancel Buttons -->
 					<div class="overlayFromButtons" align="center">
 						<apex:commandButton action="{!saveMembers}" 
-							oncomplete="showMessageToUser('Member has been added to this project','success');addMemberCallBackFunction();setTimeout('Effect.Fade(\'infoToUser\')', 6500);"
+							oncomplete="showMessageToUser('Member has been added to this project','success'); addMemberCallBackFunction(); setTimeout('Effect.Fade(\'infoToUser\')', 6500);"
 							styleclass="btn allButtons" 
 							style="float: none;width: 70px !important;background: #21637D none repeat scroll 0 0 !important;" 
 							value="Send"
 							rerender="membersListContainer" /> 
-						<input id="cancelBtn" class="allButtons" type="button" value="Cancel" onclick="modal.close();stopFunction();" />
+						<input id="cancelBtn" class="allButtons" type="button" value="Cancel" onclick="modal.close(); stopFunction();" />
 					</div>
 				</apex:form>
 			</div>
@@ -207,14 +207,18 @@
 					<!-- AuxPanel - When 'add member' poller finish reload member list. -->
 					<apex:outputpanel id="auxPanel">
 						<script>
-							var remaingToSave = '{!initAddMembers}';
-							if (remaingToSave == 'false' && !firstExecuteTime){
-								reloadMemberList();
-								refreshSwirly();
-							}
 							
 							//Flag for don't execute on load default value is true
 							firstExecuteTime = false;
+							function hSwirly () {
+								hideSwirly('swirly_members');
+								reloadMemberList();
+							}
+							function sSwirly () {
+								$('swirly_members').setStyle({height : '100%'});
+							}
+							
+							
 						</script>
 					</apex:outputpanel>					
 					
@@ -223,7 +227,7 @@
 						<apex:actionPoller action="{!syncSaveMembers}"
 							enabled="{!initAddMembers}"
 							rerender="auxPanel, membersListContainer, thisForm" interval="5"
-							onComplete="refreshCount();" />
+							onComplete="refreshCount(); {!IF(initAddMembers, 'sSwirly();', 'hSwirly();')}" />
 						
 						<!-- Action Function for Refresh Member List -->
 						<apex:actionFunction name="rerenderMemberList"

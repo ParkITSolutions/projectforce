@@ -16,7 +16,7 @@
         <members>*</members>
         <name>ApexTrigger</name>
     </types>
-	<types>
+    <types>
         <members>*</members>
         <name>CustomApplication</name>
     </types>
@@ -24,26 +24,26 @@
         <members>*</members>
         <name>CustomLabels</name>
     </types>
-	<types>
-		<members>*</members>
-		<members>Account</members>
-		<members>Activity</members>
-		<members>Asset</members>
-		<members>Campaign</members>
-		<members>Case</members>
-		<members>Contact</members>
-		<members>Contract</members>
-		<members>Event</members>
-		<members>Idea</members>
-		<members>Lead</members>
-		<members>Opportunity</members>
-		<members>OpportunityLineItem</members>
-		<members>Product2</members>
-		<members>Solution</members>
-		<members>Task</members>
-		<members>User</members>
-		<name>CustomObject</name>
-	</types>
+    <types>
+        <members>*</members>
+        <members>Account</members>
+        <members>Activity</members>
+        <members>Asset</members>
+        <members>Campaign</members>
+        <members>Case</members>
+        <members>Contact</members>
+        <members>Contract</members>
+        <members>Event</members>
+        <members>Idea</members>
+        <members>Lead</members>
+        <members>Opportunity</members>
+        <members>OpportunityLineItem</members>
+        <members>Product2</members>
+        <members>Solution</members>
+        <members>Task</members>
+        <members>User</members>
+        <name>CustomObject</name>
+    </types>
     <types>
         <members>*</members>
         <name>CustomObjectTranslation</name>
@@ -74,10 +74,6 @@
     </types>
     <types>
         <members>*</members>
-        <name>Portal</name>
-    </types>
-    <types>
-        <members>*</members>
         <name>Profile</name>
     </types>
     <types>
@@ -96,5 +92,5 @@
         <members>*</members>
         <name>Workflow</name>
     </types>
-    <version>15.0</version>
+    <version>14.0</version>
 </Package>

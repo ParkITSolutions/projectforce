@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <value>Project Filter</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Project Filters</value>
+    </caseValues>
+    <fields>
+        <label><!-- Filter --></label>
+        <name>Filter__c</name>
+    </fields>
+    <fields>
+        <label><!-- Project --></label>
+        <name>Project__c</name>
+        <relationshipLabel><!-- Project Filters --></relationshipLabel>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

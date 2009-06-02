@@ -113,7 +113,7 @@ public class ProjectWidgetTasksMainController {
 	 					p.Milestone__c,
 	 					p.Description__c, 
 	 					(Select User__c, User__r.Name From ProjectsAssignees__r) 
-	 					From ProjectTask__c  p where  p.Milestone__c = false and p.Project__c =: teamId order by p.EndDate__c asc limit 5
+	 					From ProjectTask__c  p where  p.Milestone__c = false and p.Project__c =: teamId order by p.EndDate__c asc limit 10
 	 					];
 		listSize = 0;
 		getProjectTaskbuild();				

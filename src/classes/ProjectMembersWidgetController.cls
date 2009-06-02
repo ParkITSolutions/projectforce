@@ -399,7 +399,9 @@ public with sharing class ProjectMembersWidgetController {
 		}else{
 			countSaved += 3;
 		}
+				System.debug('\n\n\n\n\n\n\n\n ------------' + membersToInsert + '---------------\n\n\n\n\n\n\n\n');
 		return null;
+		
 	}
 	
 	/**
@@ -409,7 +411,7 @@ public with sharing class ProjectMembersWidgetController {
 	public Boolean getInitAddMembers (){
 		return membersToInsert.size() > 0;
 	} 
-	
+
 	/**
 	* Send mail to new mambers
 	*@void
