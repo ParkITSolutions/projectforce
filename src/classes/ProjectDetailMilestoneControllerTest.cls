@@ -15,9 +15,9 @@
     	Test.startTest();
     	    	
     	ProjectDetailMilestoneController mile = new ProjectDetailMilestoneController();
-       	mile.setTeamId( GenerateEnvironmentTest.project.Id );
+       	//mile.setTeamId( GenerateEnvironmentTest.project.Id );
     	mile.setSidebar( false );
-    	mile.setTeamId( GenerateEnvironmentTest.project.Id );
+    	//mile.setTeamId( GenerateEnvironmentTest.project.Id );
     	mile.genAllProjectTasks();
     	mile.getAllProjectTasks();
     	mile.getUserPermissions();

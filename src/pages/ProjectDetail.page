@@ -28,26 +28,7 @@
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
    
-    <style>
-        div.helpText {
-            z-index: 5000 !important;
-        }
-        div.team_detail_commentedItemLeftProfile{
-            margin:3px 0 0;
-        }
-        .swirlyDetail{ 
-        	background: red;
-			left:0;
-			margin:0 1px;
-			opacity:0.6;
-			overflow:hidden;
-			position:absolute;
-			top:0;
-			width:99%;
-			height: 100%;
-			z-index:9999;
-		}
-    </style>
+
     
     <!-- Delete Project Overlay -->   
     <c:ProjectOverlayDeleteProject />
@@ -59,9 +40,12 @@
         createOverlay('initializeModal')   
         var globalInfoBig = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/infoBig.gif')}';
         var globalCheckNew = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}';
-          
     </script>
-    
+    <style>
+    	.labelCol{
+    		vertical-align: top;
+    	}
+    </style>
     <div id="all" style="overflow:hidden;">
         
         <!-- Header -->
@@ -148,7 +132,7 @@
                     </div>
                     <div class="sfdcDetailFormated"></div>
                     
-                    <apex:actionFunction name="reloadMainContent" rerender="mainContentForm" oncomplete="projectDetail()"/>
+                    <apex:actionFunction name="reloadMainContent" rerender="mainContentForm" oncomplete="projectDetail();swirlyDetail();"/>
                     
                     <!-- Project Tasks -->
                     <c:ProjectWidgetTaskMain team="{!teamIdParam}"/>             

@@ -458,43 +458,6 @@ public with sharing class ProjectTaskListController {
     	
         List<ProjectTask__c> resultTaskList = new List<ProjectTask__c>();
         
-        setAllUsers();
-
-        // Sorting by priority or assignee name can't be implemented in the SOQL query
-        // and require a bit of tricky
-        if (sortBy == 'Priority__c'){
-            insertionSort(resultTaskList,sortByDesc);
-		}else if (sortBy.equals('User__c.Name')){
-		
-            Integer n;
-            Integer i;
-            Integer j;
-            
-            n = resultTaskList.size() - 1;
-            for (i = 1; i <= n; i++) {  
-                for (j = n; j >= i ; j--) {
-                    if (sortByDesc) {
-                    	if (mapAsignees.get(resultTaskList[j].ProjectsAssignees__r[0].User__c).name >=
-                    		mapAsignees.get(resultTaskList[j-1].ProjectsAssignees__r[0].User__c).name) {
-                        	ProjectTask__c tempProjectTask;
-                        	
-                        	tempProjectTask = resultTaskList[j-1];
-                        	resultTaskList[j-1] = resultTaskList[j];
-                        	resultTaskList[j] = tempProjectTask;
-                        }   
-                    } else {
-                       	if (mapAsignees.get(resultTaskList[j].ProjectsAssignees__r[0].User__c).name <=
-                    		mapAsignees.get(resultTaskList[j-1].ProjectsAssignees__r[0].User__c).name) {
-                        	ProjectTask__c tempProjectTask;
-                        	
-                        	tempProjectTask = resultTaskList[j-1];
-                        	resultTaskList[j-1] = resultTaskList[j];
-                        	resultTaskList[j] = tempProjectTask;
-                    	}   
-                    }
-                }
-            }
-        }else{
 
 			String query = '';
 			String filter = '';
@@ -532,13 +495,73 @@ public with sharing class ProjectTaskListController {
 			query =		' SELECT Project__c, Priority__c, PercentCompleted__c, createdById, OwnerId, Status__c, Id__c, Sprint__c, Name,';
 			query +=	' Milestone__c, Id, EndDate__c, Duration__c, (SELECT Id, User__r.Name, User__r.Id, User__c  FROM ProjectsAssignees__r),';
 			query +=	' Description__c, Rank__c FROM ProjectTask__c WHERE Project__c = \'' + PROJECTID + '\'' + filter;
+			
+			if( sortBy != 'Priority__c' && !sortBy.equals('User__c.Name'))
 			query +=	' ORDER BY ' + sortBy + ' ' + ( sortByDesc ? ' DESC ' : ' ASC ');
+						
 			
-			
-			System.debug('QUERY: ' + query);
+			System.debug('QUERY: ' + query + '>' + sortBy );
 			
 			//Execute query
 			resultTaskList = Database.query(query);
+			
+	        // Sorting by priority or assignee name can't be implemented in the SOQL query
+	        // and require a bit of tricky
+	        
+	        setAllUsers();
+	        
+	        if (sortBy == 'Priority__c'){
+	            insertionSort(resultTaskList,sortByDesc);
+			}else if (sortBy.equals('User__c.Name')){
+				/**
+				List<String> assName = new List<String>();
+				Map<String,ProjectTask__c> tempResultTaskList = new Map<String,ProjectTask__c>();
+				for( ProjectTask__c p : resultTaskList ){
+					assName.add( p.ProjectsAssignees__r[0].User__r.Name);
+					tempResultTaskList.put( p.ProjectsAssignees__r[0].User__r.Name, p);
+				}
+				assName.sort();
+				resultTaskList.clear();			
+                if (sortByDesc){
+                	for( Integer k = 0; k <  ){
+                		
+                		
+                	}
+                }
+                else{}
+				**/
+				
+	   			/** 
+	            Integer n;
+	            Integer i;
+	            Integer j;
+	            
+	            n = resultTaskList.size() - 1;
+	            for (i = 1; i <= n; i++) {  
+	                for (j = n; j >= i ; j--) {
+	                    if (sortByDesc) {
+	                    	if (mapAsignees.get(resultTaskList[j].ProjectsAssignees__r[0].User__c).name >=
+	                    		mapAsignees.get(resultTaskList[j-1].ProjectsAssignees__r[0].User__c).name) {
+	                        	ProjectTask__c tempProjectTask;
+	                        	
+	                        	tempProjectTask = resultTaskList[j-1];
+	                        	resultTaskList[j-1] = resultTaskList[j];
+	                        	resultTaskList[j] = tempProjectTask;
+	                        }   
+	                    } else {
+	                       	if (mapAsignees.get(resultTaskList[j].ProjectsAssignees__r[0].User__c).name <=
+	                    		mapAsignees.get(resultTaskList[j-1].ProjectsAssignees__r[0].User__c).name) {
+	                        	ProjectTask__c tempProjectTask;
+	                        	
+	                        	tempProjectTask = resultTaskList[j-1];
+	                        	resultTaskList[j-1] = resultTaskList[j];
+	                        	resultTaskList[j] = tempProjectTask;
+	                    	}   
+	                    }
+	                }
+	            }
+	            */
+	        }
 			
 			//Filter by Assignee - Ninja Way 
 			if(advanceFilter.assignee != null && !advanceFilter.assignee.equals('')){
@@ -556,7 +579,7 @@ public with sharing class ProjectTaskListController {
 				resultTaskList.clear();
 				resultTaskList = teampTaskList;
 			}
-        }
+     
 		return resultTaskList;
     }
     
@@ -593,7 +616,7 @@ public with sharing class ProjectTaskListController {
     *@param Boolean search criteria is Description
     */
     private void insertionSort(List<ProjectTask__c> listToOrder, Boolean sortByDesc) {
-    	
+    	System.debug( '>>' + listToOrder.size());
         Integer i, j, current_prio;
         ProjectTask__c current;
         Integer list_size = listToOrder.size();
@@ -611,6 +634,7 @@ public with sharing class ProjectTaskListController {
             }
             listToOrder.set(j,current);
         }
+    	System.debug( '>*>' + listToOrder.size());
     }
     
     /**
@@ -672,9 +696,9 @@ public with sharing class ProjectTaskListController {
 			
 			System.debug( '[1>' + resultTaskList[i].PercentCompleted__c );
             if(resultTaskList[i].PercentCompleted__c != null){
-                TaskDetail.Percent_Completed= (resultTaskList[i].PercentCompleted__c).intValue();
+                TaskDetail.PercentCompleted= (resultTaskList[i].PercentCompleted__c).intValue();
             }else{
-                TaskDetail.Percent_Completed= 0;
+                TaskDetail.PercentCompleted= 0;
             }
 			System.debug( '[2>' + resultTaskList[i].PercentCompleted__c );
             
@@ -694,7 +718,7 @@ public with sharing class ProjectTaskListController {
                 td.add(TaskDetail);
             if(TaskDetail.Milestone && opciones.equals('allMilestones'))
                 listAllMilestones.add(TaskDetail);
-            if(TaskDetail.Percent_Completed==100 && opciones.equals('complete'))
+            if(TaskDetail.PercentCompleted==100 && opciones.equals('complete'))
                 tdoComplete.add(TaskDetail);
                 
             if(TaskDetail.userTask != null){   
@@ -825,7 +849,7 @@ public with sharing class ProjectTaskListController {
 	    	csvText += description + ',';            
 	    	csvText += iterTask.Status + ',';            
 	    	csvText += iterTask.UserTask.name + ',';
-	    	csvText += iterTask.Percent_Completed + ',';
+	    	csvText += iterTask.PercentCompleted + ',';
 	    	csvText += iterTask.Estimate + ',';
 	    	csvText += iterTask.DueDate + ',';
 	    	csvText += iterTask.CantDias + '\n';           
@@ -951,7 +975,7 @@ public with sharing class ProjectTaskListController {
             }
         }
             
-        public Integer Percent_Completed { 
+        public Integer PercentCompleted { 
             get; set; 
         }  
         

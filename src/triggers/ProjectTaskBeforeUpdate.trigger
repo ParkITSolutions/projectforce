@@ -6,6 +6,18 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 
 	for( ProjectTask__c pTN : Trigger.new){
  		tasksInTrrNewIds.add( pTN.ParentTask__c );
+ 		if(pTn.Milestone__c){
+ 			
+ 			if(pTn.EndDate__c != null)
+ 			{
+ 				pTn.EndDate__c.addError('The Milestones can not have End Date.');
+ 			}
+ 			if(pTn.ParentTask__c != null)
+ 			{
+ 				pTn.ParentTask__c.addError('The Milestones can not have Parent Task.');
+ 			}
+ 			
+ 		}
 	}
 	parentTasks = [ select id, Project__c from ProjectTask__c where id in: tasksInTrrNewIds ];
 	
