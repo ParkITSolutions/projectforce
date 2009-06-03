@@ -254,6 +254,16 @@
         ProjectTaskListController.Filter fil = new ProjectTaskListController.Filter( GenerateEnvironmentTest.project.Id );
         
         fil.setNewFilter( fil.getNewFilter());   
+        fil.getAssignees();
+        fil.getPriorities();
+        fil.getStatusValues();
+        fil.getSavedFilters();
+        fil.saveFilter();
+        fil.generateFilterContent();
+        //fil.readFilterContent();
+        
+        taskList.setFilter( fil );
+		//fil.deleteFilter();
 
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );

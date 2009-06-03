@@ -46,6 +46,10 @@
        		alert('');
        });*/
        var currentTeam = '{!Task.ProjectId}';
+       
+       	function refreshPercentList(){
+	    	var defaultOption = $('ProjectTaskDetail:j_id137:j_id138:newMemberForm:scaleComBox')[0].selected = true;
+		}
     </script>
     <style type = "text/css">
      div.swirly_overlay{
@@ -55,7 +59,7 @@
      	height : auto !important;
      }
     </style>
-
+                       
    	<div class="confirmation" id="confirmation" style="display:none;">
            This task has been marked complete
     </div>
@@ -207,13 +211,13 @@
                               	<td class="dataCol">
 	                            	<apex:outputpanel rendered="{!AND(NOT(MaxAssignees), OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe))}">
 	                                	<div class="DistincLink">
-	                                      	<a href="javascript:;" onclick="createOverlay('','addAssigneeOverlay','200','relocateOverlay()');" >
+	                                      	<a href="javascript:;" onclick="createOverlay('','addAssigneeOverlay','200','relocateOverlay()');refreshPercentList();" >
 	                                      		<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add assignee" title="Add assignee" />
 	                                          	New assignee
 	                                      	</a>
 	                                	</div>
 	                             	</apex:outputpanel>
-		                            <apex:outputpanel rendered="{!Task.HasAsignee}" id="assList">
+	                                <apex:outputpanel rendered="{!Task.HasAsignee}" id="assList">
 	                                	<table class="assignedToTable">
 	                                    	<apex:repeat value="{!Task.Asignee}" var="item">
 	                                        	<tr>

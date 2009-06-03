@@ -87,7 +87,9 @@
 			font-family: 'Arial','Helvetica',sans-serif;
 		}
 		
-		.f_right{ float: right; }
+		.f_right{ 
+			float: right;
+		}
 		
 		.linksFilterContent{
 			clear: both;
@@ -269,7 +271,7 @@
 		                        </apex:outputpanel>
 		                   </center>		                        
                         	<!-- Quick Filter -->
-                        	<div class="f_right" style="margin-bottom: -12px;"> 
+                        	<div class="f_right" style="margin-bottom: -12px; position: relative;"> 
 	                        	<span>Quick filter:</span> 
 	                            <apex:selectList id="chooseOption" value="{!option}" onchange="resetFilters(); option(); showHideOverlay();" size="1">
 	                                <apex:selectOption itemValue="all" itemLabel="All Tasks"/>
@@ -496,8 +498,8 @@
 	                                        </apex:outputpanel>
 	                                    </th>
 	                                    <th width="15%" >
-	                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="% Completed" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'Percent_Completed__c';" oncomplete="showHideOverlay();">
-	                                            <apex:param name="sortBy" value="Percent_Completed__c" assignTo="{!sortBy}"/>
+	                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="% Completed" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'PercentCompleted__c';" oncomplete="showHideOverlay();">
+	                                            <apex:param name="sortBy" value="PercentCompleted__c" assignTo="{!sortBy}"/>
 	                                        </apex:commandLink>&nbsp;
 	                                        <apex:outputpanel rendered="{!IF(sortBy == 'completed',true,false)}">
 	                                            <apex:outputpanel rendered="{!sortByDesc}">
@@ -605,11 +607,11 @@
 	                                            </div>
 	                                        </td>
 	                                        <td class="proj_percent_complete">
-	                                            <div class="percent" id="percentNumber-{!task.id}">{!task.Percent_Completed}%</div>
-	                                            <div class="proj_percent_complete_outline {!IF((task.Percent_Completed == 0),'zero','')}" id="track-{!task.id}">
-	                                                <div class="proj_percent_complete_value" style="width:{!task.percent_Completed}%;" id="percentBar-{!task.id}"></div>
+	                                            <div class="percent" id="percentNumber-{!task.id}">{!task.PercentCompleted}%</div>
+	                                            <div class="proj_percent_complete_outline {!IF((task.PercentCompleted == 0),'zero','')}" id="track-{!task.id}">
+	                                                <div class="proj_percent_complete_value" style="width:{!task.percentCompleted}%;" id="percentBar-{!task.id}"></div>
 	                                            </div> 
-	                                            <div id="actualPercent-{!task.id}" style="display:none;">{!task.Percent_Completed}</div>                                      
+	                                            <div id="actualPercent-{!task.id}" style="display:none;">{!task.PercentCompleted}</div>                                      
 	                                        </td>
 	                                        <td class="imgColumns" align="center">
 	                                            {!task.Estimate}

@@ -84,7 +84,7 @@ public class ProjectTaskDetailController {
 	*/
 	public List<TaskComment__c> getTaskComments(){
 		List<TaskComment__c> taskComments = new List<TaskComment__c>(); 
-		taskComments = [select Id, Body__c, createdDate, createdBy.Name from TaskComment__c where Task__c =: param];
+		taskComments = [select Id, Body__c, createdDate, createdBy.Name from TaskComment__c where Task__c =: param order by createdDate DESC];
 		return taskComments;	
 	}
 	

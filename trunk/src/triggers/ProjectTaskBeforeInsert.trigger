@@ -15,6 +15,18 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 
 			for(ProjectTask__c nTask : Trigger.new) {
 				String queueId = projectMap.get('Project' + nTask.Project__c);
+				if(nTask.Milestone__c){
+		 			
+		 			if(nTask.EndDate__c != null)
+		 			{
+		 				nTask.EndDate__c.addError( 'The Milestones can not have End Date.');
+		 			}
+		 			if(nTask.ParentTask__c != null)
+		 			{
+		 				nTask.ParentTask__c.addError( 'The Milestones can not have Parent Task.');
+		 			}
+		 			
+		 		} 
 				if(queueId != null){
                     nTask.OwnerId = queueId;
 				}			

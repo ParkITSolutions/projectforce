@@ -53,7 +53,7 @@
 	    </apex:define>
     </apex:composition>
     
-	<div class="sidebar" style="height: 265px;">
+	<div class="sidebar" style="height: 250px;_height: 265px;">
 		
 		<!-- Project Quick Links -->
 		<c:ProjectDetailQuickLinks />

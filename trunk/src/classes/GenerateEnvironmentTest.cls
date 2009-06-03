@@ -131,7 +131,6 @@ public class GenerateEnvironmentTest {
         mile.Name = 'milestone';
         mile.Project__c = project.id;
         mile.StartDate__c = Date.today();
-        mile.EndDate__c = Date.today();
         mile.Duration__c = 2;
         mile.PercentCompleted__c = 55;
         mile.Milestone__c = true;

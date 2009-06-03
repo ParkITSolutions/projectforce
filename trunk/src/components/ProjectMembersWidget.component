@@ -215,7 +215,8 @@
 								reloadMemberList();
 							}
 							function sSwirly () {
-								$('swirly_members').setStyle({height : '100%'});
+								var newH = $('thinBody').getStyle('height')
+								$('swirly_members').setStyle({height : newH});
 							}
 							
 							
