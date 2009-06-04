@@ -14,11 +14,20 @@
 	<a href="#modal_container" id="initializeModalOverlay" style="display:none;"></a>
 	<div id="modal_container" style="display:none;"></div>
 	<script>
+		
+		function Trunk(text, len){
+			text.replace( "'", "&quot;" );
+			if(text.length > len){
+				text = text.substring(0, len) + '...';
+			}
+			return text;
+		}
+
 		createOverlay('initializeModalOverlay');
 		function setTaskNameHeader() {
 			var taskNameHeader = document.getElementById('taskName');
 			if (nameToDelete != null && nameToDelete != '') {
-				taskNameHeader.innerHTML = nameToDelete;
+				taskNameHeader.innerHTML = Trunk(nameToDelete,24);
 			}
 			else {
 				taskNameHeader.innerHTML = 'Tasks';
