@@ -16,6 +16,7 @@ public with sharing class ProjectOverviewController {
     public List<Letters> letterFilter = new List<Letters>();
     //Letters list
     public List<String> lettersList = new List<String>{'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};    
+    public String objectPrefix = Schema.SObjectType.Project2__c.getKeyPrefix();
     
     /**
     * Construct
@@ -94,6 +95,10 @@ public with sharing class ProjectOverviewController {
     */
     public void setProjects(List<ProjectMember__c> tms){
         projects = tms;
+    }
+    
+    public String getObjectPrefix(){
+    	return objectPrefix;
     }
      
     /**
