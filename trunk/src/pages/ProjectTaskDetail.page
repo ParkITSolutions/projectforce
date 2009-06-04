@@ -48,7 +48,7 @@
        var currentTeam = '{!Task.ProjectId}';
        
        	function refreshPercentList(){
-	    	var defaultOption = $('ProjectTaskDetail:j_id137:j_id138:newMemberForm:scaleComBox')[0].selected = true;
+	    	($$('.percentListComboBox')[0])[0].selected = true;
 		}
     </script>
     <style type = "text/css">

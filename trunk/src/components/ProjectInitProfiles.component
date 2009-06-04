@@ -1,4 +1,4 @@
-<apex:component controller="ProjectInitProfiles">
+<apex:component controller="ProjectInitProfiles" allowDML="true">
 
 
 <apex:outputPanel rendered="{!showOverlay}">

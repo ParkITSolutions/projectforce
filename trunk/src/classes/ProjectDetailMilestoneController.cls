@@ -140,13 +140,13 @@ public class ProjectDetailMilestoneController {
 				if(milestone.ProjectsAssignees__r.size() > 0){
 					miMilestones.setUser(userMap.get(milestone.ProjectsAssignees__r[0].User__c));					
 				}
-				miMilestones.setDaysCount(milestone.EndDate__c, milestone.Duration__c);
-				miMilestones.setDayPercent(milestone.EndDate__c, milestone.Duration__c);
-				miMilestones.setDayPercentRight(milestone.EndDate__c, milestone.Duration__c);
+				//miMilestones.setDaysCount(milestone.EndDate__c, milestone.Duration__c);
+				//miMilestones.setDayPercent(milestone.EndDate__c, milestone.Duration__c);
+				//miMilestones.setDayPercentRight(milestone.EndDate__c, milestone.Duration__c);
 				miMilestones.setPriority(milestone.Priority__c);
-				miMilestones.setEndDate(milestone.EndDate__c, milestone.Duration__c);
-				miMilestones.setEndDateRight(milestone.EndDate__c, milestone.Duration__c);				
-				miMilestones.setIsToLate(milestone.EndDate__c);  
+				//miMilestones.setEndDate(milestone.EndDate__c, milestone.Duration__c);
+				//miMilestones.setEndDateRight(milestone.EndDate__c, milestone.Duration__c);				
+				//miMilestones.setIsToLate(milestone.EndDate__c);  
 				result.add(miMilestones);
 			}
 			

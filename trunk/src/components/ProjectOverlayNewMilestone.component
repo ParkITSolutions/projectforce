@@ -64,8 +64,8 @@
 									<div id="milestoneNameError" class="red" style="display: none;"><strong>Error:</strong> You must enter a value</div>
 									<div class="red" style="display: none;margin-left:120px;_margin-left:60px;" id="instantM"><strong>Warning:</strong> Max length reached (80).</div>
 									<br/> 
-									<label>Due Date</label><span class="required"></span>
-									<apex:inputField id="dueDateMilestone" styleClass="medium" required="true" value="{!Task.EndDate__c}" />
+									<label>Start Date</label><span class="required"></span>
+									<apex:inputField id="dueDateMilestone" styleClass="medium" required="true" value="{!Task.StartDate__c}" />
 									<div id="milestoneDueDate-comp-milestone" style="display:none;">{!$Component.milestoneDueDate}</div>
                                     <div id="milestoneDateError" class="red" style="display: none;"><strong>Error:</strong> You must enter a value</div>
                                     <div id="milestoneDateInvalid" class="red" style="display: none;"><strong>Error:</strong> You must enter a valid value</div>

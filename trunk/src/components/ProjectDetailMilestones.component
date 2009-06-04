@@ -84,7 +84,7 @@
 													</div>
 												</td>
 												<td>
-													<a href="PeopleProfileDisplay?id={!task.UserId}"  class="name_margin">{!task.UserName}</a>
+													<a href="/{!task.UserId}"  class="name_margin">{!task.UserName}</a>
 												</td>
 											</tr>
 										</apex:repeat>

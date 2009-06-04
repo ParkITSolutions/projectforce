@@ -13,6 +13,7 @@ trigger ProjectTaskAfterInsert on ProjectTask__c (after insert) {
 			}
 			
 			List<ProjectTask__Share> tasks = new List<ProjectTask__Share>();
+			List<ProjectAssignee__c> assigns = new List<ProjectAssignee__c>();
 			for(ProjectTask__c m : Trigger.new) {
 				
 				ProjectTask__Share p = new ProjectTask__Share();
@@ -21,9 +22,24 @@ trigger ProjectTaskAfterInsert on ProjectTask__c (after insert) {
 			    p.AccessLevel = 'Read';
 			    p.RowCause = 'Manual';
 			    tasks.add(p);
-
+				/**
+				* @If Task or Milestone havent assignee
+				**/
+			
+				List<ProjectAssignee__c> assigned = [select Id from ProjectAssignee__c where ProjectTask__c =: m.Id];
+				if(assigned.isEmpty()){
+					ProjectAssignee__c Assign = new ProjectAssignee__c();
+					Assign.User__c = UserInfo.getUserId();
+					Assign.ProjectTask__c = m.Id;
+					Assign.Project__c = m.Project__c;
+					assigns.add(Assign);
+					
+				}
+				
 			}
 			insert tasks;
+			insert assigns;
+			
 			
 		}
 		finally{

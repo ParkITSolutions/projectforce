@@ -62,7 +62,7 @@
                                     Percent dedicated
                                 </td>
                                 <td align="left">
-                                    <apex:selectList id="scaleComBox" value="{!PercentSelected}" size="1" styleClass="comboboxClass">
+                                    <apex:selectList id="scaleComBox" value="{!PercentSelected}" size="1" styleClass="comboboxClass percentListComboBox" >
                                         <apex:selectOptions value="{!scale}" id="scaleComboBoxOptions"/>
                                     </apex:selectList>
                                 </td>
