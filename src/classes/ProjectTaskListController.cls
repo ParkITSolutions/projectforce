@@ -1,10 +1,10 @@
-/**
+/** 
 * Project Task List
 *@author original Bruno Fagundez @ 06/23/2008
 */
 public with sharing class ProjectTaskListController {
     
-    public Project2__c project = null;
+    public Project2__c project = null ;
     public Id USERID = UserInfo.getUserId(); 
     public Boolean editDeletePer = false;
     public boolean isProjectMember = false;
@@ -48,7 +48,7 @@ public with sharing class ProjectTaskListController {
     * Constructor
     */
     public ProjectTaskListController(){
-        
+    	        
         //Read permissions
         genPermissions();   
         
@@ -139,7 +139,7 @@ public with sharing class ProjectTaskListController {
     public Boolean getFilterApplyed (){
     	return filterApplyed;
     }
-    
+
     /**
     *Set user id
     *@param String
@@ -195,8 +195,12 @@ public with sharing class ProjectTaskListController {
     }
     
     public void loadProject(){
+    	Project2__c prTemp = new Project2__c();
+
+    	
     	if(project == null)
-    		project = [Select p.Name From Project2__c p where p.id =: PROJECTID];	
+    		prTemp = [ select p.Name from Project2__c p where p.id =: PROJECTID limit 1 ];
+    		project = prTemp;	
     }
     
     /**
@@ -487,8 +491,9 @@ public with sharing class ProjectTaskListController {
 				filter += ' and Duration__c = ' + Double.valueOf(advanceFilter.estimate);				
 
 			//Set flag true if filter is applyed
-			if(!filter.equals(''))
+			if(!filter.equals('')){
 				filterApplyed = true;
+			}
 			else
 				filterApplyed = false;      			
 
@@ -513,23 +518,23 @@ public with sharing class ProjectTaskListController {
 	        if (sortBy == 'Priority__c'){
 	            insertionSort(resultTaskList,sortByDesc);
 			}else if (sortBy.equals('User__c.Name')){
-				/**
+				
 				List<String> assName = new List<String>();
 				Map<String,ProjectTask__c> tempResultTaskList = new Map<String,ProjectTask__c>();
 				for( ProjectTask__c p : resultTaskList ){
 					assName.add( p.ProjectsAssignees__r[0].User__r.Name);
 					tempResultTaskList.put( p.ProjectsAssignees__r[0].User__r.Name, p);
 				}
+				
 				assName.sort();
 				resultTaskList.clear();			
-                if (sortByDesc){
-                	for( Integer k = 0; k <  ){
-                		
-                		
-                	}
-                }
-                else{}
-				**/
+				
+                if (sortByDesc)
+					for( Integer k = assName.size() -1; k > -1; k-- )
+                	resultTaskList.add( tempResultTaskList.get( assName.get( k )));	
+                else
+					for( String j : assName )
+                	resultTaskList.add( tempResultTaskList.get( j ));	
 				
 	   			/** 
 	            Integer n;
@@ -1011,6 +1016,7 @@ public with sharing class ProjectTaskListController {
     	public String assignee {get; set;}
     	public String rank {get; set;}
     	public String applyFilter {get; set;}
+    	public Boolean svFilter;
     	
     	public ProjectFilter__c newFilter = new ProjectFilter__c(); 
     	
@@ -1109,7 +1115,9 @@ public with sharing class ProjectTaskListController {
     	* Delete Filter
     	*/
     	public void deleteFilter(){
-    		ProjectFilter__c filter = [select Id from ProjectFilter__c where Id =: applyFilter];
+    		List<ProjectFilter__c> filter = new List<ProjectFilter__c>();  
+    		filter = [select Id from ProjectFilter__c where Id =: applyFilter];
+    		if( filter.size() > 0 )
     		delete filter;
     	}
     	
@@ -1136,6 +1144,7 @@ public with sharing class ProjectTaskListController {
 				filterContent += 'Rank:' + rank + '|';
 
 			//Filter by Sprint
+			System.debug( '$>>' + sprint );
 			if(sprint != null && !sprint.equals(''))
 				filterContent += 'Sprint:' + sprint + '|';
 
@@ -1153,8 +1162,11 @@ public with sharing class ProjectTaskListController {
     	* Read and Set Filter
     	*/
     	public void readFilterContent(){
-			ProjectFilter__c filter = [select Id, Filter__c from ProjectFilter__c where Id =: applyFilter];
-			List<String> test = filter.Filter__c.split('[|]');
+			List<ProjectFilter__c> filter = new List<ProjectFilter__c>();
+			filter = [select Id, Filter__c from ProjectFilter__c where Id =: applyFilter];
+			List<String> test = new List<String>();
+			if( filter.size() > 0 )
+			test = filter[0].Filter__c.split('[|]');
 			List<String> value = new List<String>();
 			for(String values : test){
 				value = values.split(':');
@@ -1191,6 +1203,12 @@ public with sharing class ProjectTaskListController {
 			}
     	}    
     
+    	public void setSvFilter( Boolean pa){ 
+    		svFilter = pa;
+    	}
+    	public Boolean getSvFilter(){ 
+    		return svFilter;
+    	}
     }
     
 }

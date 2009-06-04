@@ -88,6 +88,7 @@ public without sharing class ProjectMembersListController {
  			this.deletingAllAmdsErr = this.noMoreAdmins();
 			if( !this.deletingAllAmdsErr )
 			delete this.idsToDel;
+			letter = 'All';
 		 } 
  	}
 	
@@ -512,7 +513,7 @@ public without sharing class ProjectMembersListController {
 		}	
 		totalItemsNumber = membersList.size();
 		if (totalItemsNumber == 0 ) {
-			cntPagination = 0;	
+			cntPagination = 0;				
 			firstRow = 0;
 			currentPagination = 1;
 		}else {

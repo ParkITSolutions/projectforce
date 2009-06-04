@@ -87,9 +87,7 @@
 			font-family: 'Arial','Helvetica',sans-serif;
 		}
 		
-		.f_right{ 
-			float: right;
-		}
+		.f_right{ float: right; }
 		
 		.linksFilterContent{
 			clear: both;
@@ -102,6 +100,13 @@
 		
 		.ColorGray{
 			color: #ADADAD;
+		}
+		.percent{
+			margin-left:5px;
+			margin-top:-2px;
+		}
+		.bPageFooter{
+			margin:0!important;
 		}
     </style>
     
@@ -156,10 +161,11 @@
         	}else{
        			setTimeout('modal.close();', 1000);
 				showHideOverlay();
+				$$('.SaveFilterBtn')[0].hide();
     	    	return true;
         	}
         }
-        
+         
         /**
         * Reset Task filters
         */
@@ -271,7 +277,7 @@
 		                        </apex:outputpanel>
 		                   </center>		                        
                         	<!-- Quick Filter -->
-                        	<div class="f_right" style="margin-bottom: -12px; position: relative;"> 
+                        	<div class="f_right" style="margin-bottom: -12px;"> 
 	                        	<span>Quick filter:</span> 
 	                            <apex:selectList id="chooseOption" value="{!option}" onchange="resetFilters(); option(); showHideOverlay();" size="1">
 	                                <apex:selectOption itemValue="all" itemLabel="All Tasks"/>
@@ -338,8 +344,9 @@
 						            	<br />
 						            	<apex:commandLink action="{!refreshTaskList}"  rerender="taskListPanel" onclick="showHideOverlay();"  oncomplete="showHideOverlay();advFilterAfterRerender();" styleclass="blackbutton" >
 						            		<span>Apply Filter</span>
+				                             <apex:param name="svFil0" value="false" assignTo="{!filter.svFilter}"/>
 						           		</apex:commandLink>
-						            	<apex:commandLink styleClass="blackbutton" onclick="createOverlay('', 'saveNewFlter', '160')" rendered="{!filterApplyed}">
+						            	<apex:commandLink styleClass="blackbutton SaveFilterBtn" onclick="createOverlay('', 'saveNewFlter', '160')" rendered="{!AND(filterApplyed, NOT(filter.svFilter))}">
 						            		<span>Save Filter</span>
 						           		</apex:commandLink>							           		
 						            	<a onclick="resetFilters();" class="blackbutton" >
@@ -354,7 +361,7 @@
 						            	</div>
 						            	<div class="elemFilter">
 						            		Filter Name<br/>
-						        			<apex:selectList value="{!filter.applyFilter}" size="1" styleClass="elemFormFilter">
+						        			<apex:selectList value="{!filter.applyFilter}" size="1" styleClass="elemFormFilter fgf">
 				                                <apex:selectOptions value="{!filter.savedFilters}"     />
 				                            </apex:selectList>
 						            	</div>
@@ -553,14 +560,14 @@
 	                                            <apex:outputpanel rendered="{!IF(OR(OR(editDeletePer,task.canEditAndDelete), task.isTaskOwner) ,true,false)}" layout="block">
 	                                                <div>
 	                                                	<!-- /apex/projectRedirect?sO=ProjectTask__c&attr=task&page=ProjectCreateNewTask&rR=NewProjectFormContainer&oC=true&eid={!ProjectId}&task={!task.id} -->
-	                                                	<a href="/{!task.id}/e?retURL=/apex/ProjectTasksList?id={!task.id}">Edit</a> 
+	                                                	<a href="/{!task.id}/e?retURL=/apex/ProjectTasksList?id={!ProjectId}">Edit</a> 
 	                                                	<apex:outputpanel rendered="{!OR(editDeletePer, task.isTaskOwner)}">
 		                                                	|<a href="javascript:;" onclick="showDeleteEvent('{!task.Id}','', '{!task.name}');" >Del</a>
 		                                                </apex:outputpanel>
 	                                                </div>     
 	                                            </apex:outputpanel> 
 	                                        </td> 
-	                                        <!-- Auto ID -->
+	                                        <!-- Auto ID --> 
 	                                        <td>
 	                                        	<div>
 	                                        		<a href="projecttaskdetail?id={!task.id}" class="">{!task.autoId}</a>
@@ -607,10 +614,11 @@
 	                                            </div>
 	                                        </td>
 	                                        <td class="proj_percent_complete">
-	                                            <div class="percent" id="percentNumber-{!task.id}">{!task.PercentCompleted}%</div>
+	                                            
 	                                            <div class="proj_percent_complete_outline {!IF((task.PercentCompleted == 0),'zero','')}" id="track-{!task.id}">
 	                                                <div class="proj_percent_complete_value" style="width:{!task.percentCompleted}%;" id="percentBar-{!task.id}"></div>
-	                                            </div> 
+	                                            </div>
+	                                            <div class="percent" id="percentNumber-{!task.id}">{!task.PercentCompleted}%</div>
 	                                            <div id="actualPercent-{!task.id}" style="display:none;">{!task.PercentCompleted}</div>                                      
 	                                        </td>
 	                                        <td class="imgColumns" align="center">
@@ -719,7 +727,9 @@
 					<apex:commandButton id="DeleteAssigneeBtn" styleClass="btn allButtons" 
 						style="background:#21637D none repeat scroll 0 0 !important; !important;" 
 						action="{!Filter.saveFilter}" value="Save Filter" onclick="" 
-						rerender="AdvancedFilterContainer" oncomplete="showHideOverlay();" />
+						rerender="AdvancedFilterContainer" oncomplete="showHideOverlay();" >
+					<apex:param name="svFil1" value="true" assignTo="{!filter.SvFilter}"/>
+					</apex:commandButton>						
 			        <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="modal.close();" value="Cancel"/>
 				</div>
 			</apex:form>
