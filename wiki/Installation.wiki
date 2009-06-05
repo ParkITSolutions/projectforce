@@ -119,8 +119,10 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install17.jpg
 
 *_39. Click on "Save" button._*
 
+*_40. Click on "Project" option._*
+
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install18.jpg
 
-*_40. This is the main page, enjoy!_*
+*_41. This is the main page, enjoy!_*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install19.jpg
