@@ -37,9 +37,10 @@
     <a href="#modal_container" id="initializeModal" style="display:none;"></a>
     <div id="modal_container" ></div>
     <script>
-        createOverlay('initializeModal')   
+        createOverlay('initializeModal');
         var globalInfoBig = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/infoBig.gif')}';
         var globalCheckNew = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}';
+        var userIsManager = '{!isManager}';
     </script>
     <style>
     	.labelCol{
@@ -158,10 +159,9 @@
     <script>
         readPortalCSSRules();
         function insertSwirly(){
-        
         	$$( '.sfdcDetailFormated' )[0].insert('<div class="swirlyDetail" style="display: none;" />', 'top'); 
-        	$$( '.swirlyDetail' )[0].show();
-        	
+        	$$( '.swirlyDetail' )[0].show();        	
         }
+        var userIsManager = '{!isManager}';
     </script>
 </apex:page>

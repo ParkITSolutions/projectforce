@@ -84,6 +84,7 @@
 										styleClass="colleaguesNames" style="width:310px; height:63px;"
 										value="{!newMemberVars.colleagueNames}"
 										onFocus="var options = {script: function (input) {return ('SuggestDispatcher?input='+input+'&class=colleagueNames&teamId={!teamId}');}};xml = new AutoComplete('{!$Component.colleaguesNames}',options);return true" 
+										
 										onBlur="javascript: hideSuggest();" />
 							</td>
 						</tr>
@@ -239,7 +240,6 @@
 					<apex:repeat value="{!TeamspaceMembers}" var="tm" id="repMembers">
 						<div id="memberRow-{!tm.Id}" style="clear: both;">
 							<apex:outputPanel layout="block"
-								onmouseover="showBubbleMatrixPreload('member',this,'{!tm.Id}');"
 								style="clear:both;position:relative;display:block;">
 								<apex:outputPanel layout="block" styleClass="membersImageHolder"
 									rendered="{!IF(LEN(tm.image) == 0, true, false)}">
