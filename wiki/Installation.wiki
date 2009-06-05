@@ -119,7 +119,7 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install17.jpg
 
 *_39. Click on "Save" button._*
 
-*_40. Click on "Project" option._*
+*_40. Click on "ProjectForce" option._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install18.jpg
 
