@@ -460,7 +460,8 @@ public with sharing class ProjectTaskListController {
      */
     public List<ProjectTask__c> createSortedTaskList () {
     	
-        List<ProjectTask__c> resultTaskList = new List<ProjectTask__c>();
+        	 setAllUsers();
+        	List<ProjectTask__c> resultTaskList = new List<ProjectTask__c>();
         
 
 			String query = '';
@@ -502,7 +503,7 @@ public with sharing class ProjectTaskListController {
 			query +=	' Description__c, Rank__c FROM ProjectTask__c WHERE Project__c = \'' + PROJECTID + '\'' + filter;
 			
 			if( sortBy != 'Priority__c' && !sortBy.equals('User__c.Name'))
-			query +=	' ORDER BY ' + sortBy + ' ' + ( sortByDesc ? ' DESC ' : ' ASC ');
+				query +=	' ORDER BY ' + sortBy + ' ' + ( sortByDesc ? ' DESC ' : ' ASC ');
 						
 			
 			System.debug('QUERY: ' + query + '>' + sortBy );
@@ -513,30 +514,31 @@ public with sharing class ProjectTaskListController {
 	        // Sorting by priority or assignee name can't be implemented in the SOQL query
 	        // and require a bit of tricky
 	        
-	        setAllUsers();
+	       
 	        
 	        if (sortBy == 'Priority__c'){
 	            insertionSort(resultTaskList,sortByDesc);
 			}else if (sortBy.equals('User__c.Name')){
-				
-				List<String> assName = new List<String>();
+				/**
+				List<String> assigneeName = new List<String>();
 				Map<String,ProjectTask__c> tempResultTaskList = new Map<String,ProjectTask__c>();
 				for( ProjectTask__c p : resultTaskList ){
-					assName.add( p.ProjectsAssignees__r[0].User__r.Name);
+					assigneeName.add( p.ProjectsAssignees__r[0].User__r.Name);
 					tempResultTaskList.put( p.ProjectsAssignees__r[0].User__r.Name, p);
 				}
 				
-				assName.sort();
-				resultTaskList.clear();			
+				assigneeName.sort();
+				resultTaskList = new List<ProjectTask__c>();
 				
                 if (sortByDesc)
-					for( Integer k = assName.size() -1; k > -1; k-- )
-                	resultTaskList.add( tempResultTaskList.get( assName.get( k )));	
+					for( Integer k = assigneeName.size() -1; k > -1; k-- )
+                	resultTaskList.add( tempResultTaskList.get( assigneeName.get( k )));	
                 else
 					for( String j : assName )
                 	resultTaskList.add( tempResultTaskList.get( j ));	
+				**/
 				
-	   			/** 
+	   			 
 	            Integer n;
 	            Integer i;
 	            Integer j;
@@ -565,7 +567,7 @@ public with sharing class ProjectTaskListController {
 	                    }
 	                }
 	            }
-	            */
+	            
 	        }
 			
 			//Filter by Assignee - Ninja Way 
@@ -1162,43 +1164,61 @@ public with sharing class ProjectTaskListController {
     	* Read and Set Filter
     	*/
     	public void readFilterContent(){
+			
 			List<ProjectFilter__c> filter = new List<ProjectFilter__c>();
 			filter = [select Id, Filter__c from ProjectFilter__c where Id =: applyFilter];
 			List<String> test = new List<String>();
+			
 			if( filter.size() > 0 )
-			test = filter[0].Filter__c.split('[|]');
+				test = filter[0].Filter__c.split('[|]');
+			
 			List<String> value = new List<String>();
 			for(String values : test){
 				value = values.split(':');
 				
+				//Set Saved Filter attributes.
 				if(value.size() > 0){
 					//By Name
 					if(value[0].equals('Name'))
 						name = value[1]; 
+					else
+						name = '';
 					
 					//By Assingnee
 					if(value[0].equals('Assignee'))
-						assignee = value[1]; 
+						assignee = value[1];
+					else
+						assignee = '';
 					
 					//By Duration
 					if(value[0].equals('Duration'))
 						estimate = value[1]; 
+					else
+						estimate = '';
 
 					//By Status
 					if(value[0].equals('Status'))
 						status = value[1];
+					else
+						status = '';
 
 					//By Rank
 					if(value[0].equals('Rank'))
 						rank = value[1];
+					else
+						rank = '';
 
 					//By Sprint
 					if(value[0].equals('Sprint'))
 						sprint = value[1];
+					else
+						sprint = '';
 						
 					//By Priority
 					if(value[0].equals('Priority'))
-						priority = value[1]; 						 
+						priority = value[1];
+					else
+						priority = ''; 						 
 				}
 			}
     	}    

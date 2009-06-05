@@ -57,55 +57,56 @@
 							</ul>
 							<div class="clear"></div>
 						</div>
-						<table width="100%">
-							<tr>
-								<td colspan="2">Task Information</td>
-								<td>Assignee</td>
-								<td>Priority</td>
-								<td>Status</td>
-								<td>Percent Complete</td>
-							</tr>
-							<tbody>
-							<apex:repeat value="{!taskResults}"  var="task">
+						<apex:outputPanel rendered="{!IF(listSize > 0, true, false)}" >
+							<table width="100%">
 								<tr>
-									<td width="16px">
-		 								<div style="{!IF(task.Priority == 'High', '', 'display:none')};" class="prior" >
-											<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/highPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}" />
-										</div>
-										<div style="{!IF(task.Priority == 'Low', '', 'display:none')};" class="prior" >
-											<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/lowPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}" />
-										</div>
-										<div style="{!IF(task.Priority == 'Medium', '', 'display:none')};" class="prior" >
-											<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/normalPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}" />
-										</div>
-									</td>
-									<td>								
-										<div class="{!task.isToLate} f_left">
-											<a href="projecttaskdetail?id={!task.TaskId}">{!task.TaskName}</a><br/>
-											<span class="gray"> {!task.EndDate}</span>
-										</div>
-									</td>
-									
-									<td>
-										<a href="/{!task.UserId}"  class="name_margin">{!task.UserName}</a>	
-									</td>
-									<td>
-										{!task.Priority}
-									</td>
-									<td>
-	 									{!task.status}
-									</td>		
-									<td>				
-	 									<span class="percent">{!task.Percent} %</span>
-										<div class="proj_percent_complete_outline">
-				                        	<div class="proj_percent_complete_value" style="width: {!task.Percent}%;"></div>
-				                       	</div>
-									</td>						
+									<td colspan="2">Task Information</td>
+									<td>Assignee</td>
+									<td>Priority</td>
+									<td>Status</td>
+									<td>Percent Complete</td>
 								</tr>
-							</apex:repeat>
-							</tbody>
-						</table>
-
+								<tbody>
+								<apex:repeat value="{!taskResults}"  var="task">
+									<tr>
+										<td width="16px">
+			 								<div style="{!IF(task.Priority == 'High', '', 'display:none')};" class="prior" >
+												<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/highPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}" />
+											</div>
+											<div style="{!IF(task.Priority == 'Low', '', 'display:none')};" class="prior" >
+												<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/lowPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}" />
+											</div>
+											<div style="{!IF(task.Priority == 'Medium', '', 'display:none')};" class="prior" >
+												<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/normalPriority.gif')}" title="{!task.Priority}" alt="{!task.Priority}" />
+											</div>
+										</td>
+										<td>								
+											<div class="{!task.isToLate} f_left">
+												<a href="projecttaskdetail?id={!task.TaskId}">{!task.TaskName}</a><br/>
+												<span class="gray"> {!task.EndDate}</span>
+											</div>
+										</td>
+										
+										<td>
+											<a href="/{!task.UserId}"  class="name_margin">{!task.UserName}</a>	
+										</td>
+										<td>
+											{!task.Priority}
+										</td>
+										<td>
+		 									{!task.status}
+										</td>		
+										<td>				
+		 									<span class="percent">{!task.Percent} %</span>
+											<div class="proj_percent_complete_outline">
+					                        	<div class="proj_percent_complete_value" style="width: {!task.Percent}%;"></div>
+					                       	</div>
+										</td>						
+									</tr>
+								</apex:repeat>
+								</tbody>
+							</table>
+						</apex:outputPanel>
 					</apex:outputpanel>			
 				</div>
 			</div>

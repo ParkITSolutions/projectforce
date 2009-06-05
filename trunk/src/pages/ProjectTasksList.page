@@ -216,7 +216,6 @@
           	<div class="breadCrumbs">
             	<a  href="/apex/ProjectDetail?id={!ProjectId}" title="{!NameProject}"><script>trunkText("{!NameProject}",24);</script> </a> > <strong>Tasks and Milestones</strong>
           	</div>
-        	<apex:messages id="taskMessages"/>
         </div>
         
         <!-- Holder -->  
@@ -346,9 +345,11 @@
 						            		<span>Apply Filter</span>
 				                             <apex:param name="svFil0" value="false" assignTo="{!filter.svFilter}"/>
 						           		</apex:commandLink>
-						            	<apex:commandLink styleClass="blackbutton SaveFilterBtn" onclick="createOverlay('', 'saveNewFlter', '160')" rendered="{!AND(filterApplyed, NOT(filter.svFilter))}">
-						            		<span>Save Filter</span>
-						           		</apex:commandLink>							           		
+							            <apex:outputPanel rendered="{!AND(filterApplyed, NOT(filter.svFilter))}">	
+							            	<a class="blackbutton SaveFilterBtn" onclick="createOverlay('', 'saveNewFlter', '160');">
+							            		<span>Save Filter</span>
+							           		</a>						
+							           	</apex:outputPanel>	           		
 						            	<a onclick="resetFilters();" class="blackbutton" >
 						            		<span>Reset Filter</span>
 						           		</a>
@@ -361,8 +362,8 @@
 						            	</div>
 						            	<div class="elemFilter">
 						            		Filter Name<br/>
-						        			<apex:selectList value="{!filter.applyFilter}" size="1" styleClass="elemFormFilter fgf">
-				                                <apex:selectOptions value="{!filter.savedFilters}"     />
+						        			<apex:selectList value="{!filter.applyFilter}" size="1" styleClass="elemFormFilter">
+				                                <apex:selectOptions value="{!filter.savedFilters}" />
 				                            </apex:selectList>
 						            	</div>
 				                        <br />
@@ -706,7 +707,7 @@
 		
 		<!-- Overlay Title -->
 		<div class="overlayTitleContent">
-			<div class="overlayTitle">Delete Assignee</div> 
+			<div class="overlayTitle">Save Filter</div> 
 			<div class="overlayCloseEvent">
 				<a href="Javascript:;" onclick="modal.close();"> 
 					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}"	alt="Close Window" title="Close Window" /> 

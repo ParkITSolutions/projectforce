@@ -1,7 +1,7 @@
 /**
 *@author Ignacio Toledo @ 3/17/2008
 */
-
+ 
 public without sharing class ProjectMembersListController {
 	
 	// Attributes \\
@@ -88,7 +88,6 @@ public without sharing class ProjectMembersListController {
  			this.deletingAllAmdsErr = this.noMoreAdmins();
 			if( !this.deletingAllAmdsErr )
 			delete this.idsToDel;
-			letter = 'All';
 		 } 
  	}
 	
