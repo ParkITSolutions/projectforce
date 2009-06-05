@@ -91,10 +91,36 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install16.jpg
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install17.jpg
 
-*_26. Select "Projectforce" option._*
+*_26. Repeat the previous steps 19, 20 and 21._*
+
+*_27. Click on "Project" link._*
+
+*_28. Scroll down the page._*
+
+*_29. Click on the "Override" link which is next to "View"._*
+
+*_30. Select "Visualforce Page" option._*
+
+*_31. Select "Project Detail'['ProjectDetail']'option._*
+
+*_32. Click on "Save" button._*
+
+*_33. Repeat the previous steps 19, 20 and 21._*
+
+*_34. Click on "Project Task" link._*
+
+*_35. Scroll down the page._*
+
+*_36. Click on the "Override" link which is next to "View"._*
+
+*_37. Select "Visualforce Page" option._*
+
+*_38. Select "Project Task Detail'['ProjectTaskDetail']'option._*
+
+*_39. Click on "Save" button._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install18.jpg
 
-*_27. This is the main page, enjoy!_*
+*_40. This is the main page, enjoy!_*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install19.jpg
