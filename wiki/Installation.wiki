@@ -109,7 +109,7 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install25.png
 
 *_32. Click on "Save" button._*
 
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install26.png
+http://projectforce.googlecode.com/svn/wiki/images/installation/Insall26.png
 
 *_33. Repeat the previous steps 19, 20 and 21._*
 
