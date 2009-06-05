@@ -34,12 +34,12 @@ To enter a comment for the task make the following steps.
 
 1. Write your comment in the text field next to "Comments" field.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailAssegneeOverlay.png" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailComments.png.png" />
 
 2.Click on "Save Comment" link. Your comment will be displayed below the text box.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailAssegneeOverlay.png" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailCommentsSave.png.png" />
 
 For delete your comment click on "Delete Comment" link next to the comment you want to remove.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailAssegneeOverlay.png" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailCommentDelete.png.png" />
