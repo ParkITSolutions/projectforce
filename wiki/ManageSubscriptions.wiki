@@ -1,8 +1,8 @@
-_*From this page you can select an option , and you will be notified via email.*_
+_*From this page you can select an option , and  when the selected option happen within the project, you will receive a email notification.*_
 
 _*You can choose more than one option at the time.*_
 
-_*To go to this page, you have to go to the project detail page, and in this page click on "Manage Subscriptions" link.*_
+_*To go to this page, you have to go to the project detail or members list pages, and click on "Manage Subscriptions" link.*_
 
 <img  src="http://projectforce.googlecode.com/svn/wiki/images/ManageSubscriptionsLink.png"/>
 
