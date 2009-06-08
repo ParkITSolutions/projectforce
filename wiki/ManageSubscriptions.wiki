@@ -10,4 +10,4 @@ _*This page will be displayed.*_
 
 <img  src="http://projectforce.googlecode.com/svn/wiki/images/ManageSubscriptionsSave.png"/>
 
-*"When a task has been (un)assigned to me": When any user assign a task to you, or you are unassigned of a task, if you check this option, you will receive a notification email.*
+*"When a task has been (un)assigned to me":*_* When any user assign a task to you, or you are unassigned of a task, if you check this option, you will receive a notification email.*_
