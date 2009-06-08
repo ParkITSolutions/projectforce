@@ -19,3 +19,7 @@ _* If you check this option, when any user assign a task to you, or you are unas
 *"When a task assigned to me has been changed by another":*
 
 _*If you check this option, when any user change a task assigned to you, you will receive a email notification. *_
+
+*"All task status or percent complete changes within a Project":*
+
+_*If you check this option, when any user change the status or percent complete of any task within the project, you will receive a email notification *_
