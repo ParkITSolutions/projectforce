@@ -1,6 +1,6 @@
 _*From this page you can select an option , and  when the selected option happen within the project, you will receive a email notification.*_
 
-_*You can choose more than one option at the time.*_
+_*You can choose more than one option.*_
 
 _*To go to this page, you have to go to the project detail or members list pages, and click on "Manage Subscriptions" link.*_
 
