@@ -1,0 +1,13 @@
+-*From this page you can select an option and depending on this, you will be notified via email.*-
+
+-*You can choose more than one option at the time.*-
+
+-*To go to this page, you have to go to the project detail page, and in this page click on "Manage Subscriptions" link.*-
+
+<img  src="http://projectforce.googlecode.com/svn/wiki/images/ManageSubscriptionsLink.png"/>
+
+-*This page will be displayed.*-
+
+<img  src="http://projectforce.googlecode.com/svn/wiki/images/ManageSubscriptionsSave.png"/>
+
+-*"When a task has been (un)assigned to me":*- *When any user assign a task to you, or you are unassigned of a task, if you check this option, you will receive a notification email.*
