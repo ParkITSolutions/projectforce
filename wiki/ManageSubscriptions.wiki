@@ -23,3 +23,7 @@ _*If you check this option, when any user change a task assigned to you, you wil
 *"All task status or percent complete changes within a Project":*
 
 _*If you check this option, when any user change the status or percent complete of any task within the project, you will receive a email notification *_
+
+*"When a task has been deleted ":*
+
+_*If you check this option, when any user delete a task within the project, you will receive a email notification.*_
