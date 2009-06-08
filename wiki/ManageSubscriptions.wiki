@@ -14,4 +14,8 @@ _*Select any option and click on "Save" button.*_
 
 *"When a task has been (un)assigned to me":*
 
-_* If you check this option, when any user assign a task to you, or you are unassigned of a task, you will receive a notification email.*_
+_* If you check this option, when any user assign a task to you, or you are unassigned of a task, you will receive a email notification.*_
+
+*"When a task assigned to me has been changed by another":*
+
+_*If you check this option, when any user change a task assigned to you, you will receive a email notification. *_
