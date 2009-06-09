@@ -22,12 +22,12 @@ http://projectforce.googlecode.com/svn/wiki/images/FindResultsProjectReal.png
 
 ===  Task and Milestones List ===
 
-http://projectforce.googlecode.com/svn/wiki/images/TopicListReal.png
+http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesListReal.png
 
-=== Topic Details ===
+=== Task and Milestones Detail ===
 
-http://projectforce.googlecode.com/svn/wiki/images/TopicDetailsReal.png
+http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailReal.png
 
-=== Add Members ===
+=== Manage Subscriptions ===
 
-http://projectforce.googlecode.com/svn/wiki/images/AddMemberDiscussionReal.png
+http://projectforce.googlecode.com/svn/wiki/images/ManageSubscriptionsReal.png
