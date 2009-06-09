@@ -28,6 +28,16 @@ http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesListReal.png
 
 http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailReal.png
 
+=== Task and Milestones Search ===
+
+*Searching*
+
+http://projectforce.googlecode.com/svn/wiki/images/FindTaskReal.png
+
+*Search results*
+
+http://projectforce.googlecode.com/svn/wiki/images/FindResultsTaskReal.png
+
 === Manage Subscriptions ===
 
 http://projectforce.googlecode.com/svn/wiki/images/ManageSubscriptionsReal.png
