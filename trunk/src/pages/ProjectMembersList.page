@@ -80,8 +80,6 @@
 				padding-right: 4.5%;
 			}
 		}
-		
-
 	</style>
 	
 	<apex:form >
@@ -107,12 +105,18 @@
 			</apex:define>
 		</apex:composition>
 	
-		<div align="center"  class="breadCrumbAndButtons">
-			<div class="breadCrumbs">
-				<a id="projectNameBreadcrumb"  href="/apex/ProjectDetail?id={!ProjectId}"><script>trunkText('{!projectName}',24);</script></a> &gt;
+		<apex:outputpanel layout="block" styleclass="breadCrumbAndButtons">
+			<apex:outputpanel layout="block" styleclass="breadCrumbs">
+				<div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
+				<a id="projectNameBreadcrumb"  href="/apex/ProjectDetail?id={!ProjectId}"><script>trunkText('{!projectName}',24);</script></a> &gt;										
+					<apex:outputpanel layout="block" rendered="{!IF(LEN(projectName) > 24,true,false)}" 
+					style="display: none;z-index:9999;" styleClass="mouseOverInfo">
+						<div class="body">{!projectName}</div>
+					</apex:outputpanel>
+				</div>	
 				<span class="breadCrumbsLast"><strong>Member List</strong></span>		
-			</div>
-		</div>
+			</apex:outputpanel>
+		</apex:outputpanel>
 		
 		<!-- Sidebar -->
 		<div class="sidebar">

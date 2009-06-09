@@ -134,15 +134,13 @@ public class ProjectOverlayNewTaskController {
    		if(!userPermissions.getCanCreate()){
         	throw new CustomException('Insufficient Privileges');
    		}else{	
+   			
+   			ProjectUtil.setFlagAssignee( false );
    			newTask.Milestone__c = false;
 			newTask.Project__c = PROJECTID;
 			newTask.PercentCompleted__c = 0.0;
 			newTask.Priority__c = 'Medium';
 			insert newTask; 
-			
-			List<ProjectAssignee__c> oldAsign = new List<ProjectAssignee__c>();
-			oldAsign = [select Id from ProjectAssignee__c where ProjectTask__c =:newTask.Id];
-			delete oldAsign;
 
 	  		ProjectAssignee__c Assign = new ProjectAssignee__c();
 			Assign.User__c = projectMember.User__c;

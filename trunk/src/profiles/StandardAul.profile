@@ -1417,10 +1417,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Project2__c-Project2 Layout</layout>
-        <recordType>Project2__c.Test</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Project2__c-Project2 Layout</layout>
+        <recordType>Project2__c.Test</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ProjectAssignee__c-ProjectAssignee Layout</layout>

@@ -213,9 +213,16 @@
         
         <!-- BreadCrumb and buttons -->     
         <div align="center" class="breadCrumbAndButtons">
-          	<div class="breadCrumbs">
-            	<a  href="/apex/ProjectDetail?id={!ProjectId}" title="{!NameProject}"><script>trunkText("{!NameProject}",24);</script> </a> > <strong>Tasks and Milestones</strong>
-          	</div>
+          	 <apex:outputpanel layout="block" styleclass="breadCrumbs">
+             	<div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
+					<a  href="/apex/ProjectDetail?id={!ProjectId}" title="{!NameProject}"><script>trunkText("{!NameProject}",24);</script> </a> > 									
+					<apex:outputpanel layout="block" rendered="{!IF(LEN(NameProject) > 24,true,false)}" 
+					style="display: none;z-index:9999;" styleClass="mouseOverInfo">
+						<div class="body">{!NameProject}</div>
+					</apex:outputpanel>
+				</div>	
+            	<strong>Tasks and Milestones</strong>
+          	</apex:outputpanel>
         </div>
         
         <!-- Holder -->  
@@ -291,10 +298,10 @@
 							<!-- Advanced Filter Toggle -->
 							<div class="linksFilterContent">
 		                        <a href="javascript:;" id="advFilterShow" title="Click to view the advanced filter." onclick="advancedFilter();">
-		                        	Show Advanced filter <span class="ColorGray">▼</span>		                        	
+		                        	Show Advanced filter <span class="ColorGray">?</span>		                        	
 		                        </a>
 		                        <a href="javascript:;" id="advFilterHide" title="Click to hide the advanced filter." onclick="advancedFilter();" style="display: none;">
-		                        	Hide Advanced filter <span class="ColorGray">▲</span>		                        
+		                        	Hide Advanced filter <span class="ColorGray">?</span>		                        
 								</a>
 					        </div>
 					        
