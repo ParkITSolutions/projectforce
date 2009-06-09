@@ -11,6 +11,7 @@
 			$$('.inputFileDiv')[0].style.display = 'none';
 			$$('.uploadingStatus')[0].innerHTML = 'Uploading File, please wait...';
 		}
+		
 	</script>
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/uploadAttachment.css')}" />
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/uploadAttachment.js')}" />

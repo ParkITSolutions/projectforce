@@ -26,6 +26,8 @@ public with sharing class ProjectTaskListController {
     public String sortBy;
     public String oldSortBy;
     public String idTaskToComplete = '';
+    
+    public String domain = ProjectUtil.getDomain();
 
     /**
     * Set of Integers to control pagination
@@ -77,7 +79,8 @@ public with sharing class ProjectTaskListController {
         genCntPagination();
         
         //Read current user profile
-        getUserProfile();    
+        getUserProfile();
+
     }    
 
     /**
@@ -453,7 +456,12 @@ public with sharing class ProjectTaskListController {
         sortByExt = s;
     }
     
-    
+    /**
+    *@return String
+    */
+    public String getDomain(){
+    	return this.domain;
+    }
     /**
      * This is a temporary method to cover us until dynamic apex is back.  This will use hard coded
      * SOQL statements in place of the dynamic statements
@@ -519,55 +527,108 @@ public with sharing class ProjectTaskListController {
 	        if (sortBy == 'Priority__c'){
 	            insertionSort(resultTaskList,sortByDesc);
 			}else if (sortBy.equals('User__c.Name')){
-				/**
+				/*
 				List<String> assigneeName = new List<String>();
 				Map<String,ProjectTask__c> tempResultTaskList = new Map<String,ProjectTask__c>();
 				for( ProjectTask__c p : resultTaskList ){
-					assigneeName.add( p.ProjectsAssignees__r[0].User__r.Name);
-					tempResultTaskList.put( p.ProjectsAssignees__r[0].User__r.Name, p);
+					if( p.ProjectsAssignees__r.size() > 0 ){
+						assigneeName.add( p.ProjectsAssignees__r[0].User__r.Name);
+						tempResultTaskList.put( p.ProjectsAssignees__r[0].User__r.Name, p);
+					}
+					else{
+						assigneeName.add( '' );
+						tempResultTaskList.put( '' , p);
+					}
 				}
 				
 				assigneeName.sort();
-				resultTaskList = new List<ProjectTask__c>();
+				resultTaskList.clear();
 				
                 if (sortByDesc)
-					for( Integer k = assigneeName.size() -1; k > -1; k-- )
-                	resultTaskList.add( tempResultTaskList.get( assigneeName.get( k )));	
+					for( Integer k = assigneeName.size() -1; k > -1; k-- ){
+                		resultTaskList.add( tempResultTaskList.get( assigneeName.get( k )));
+                		tempResultTaskList.remove( assigneeName.get( k ));
+					}	
                 else
-					for( String j : assName )
-                	resultTaskList.add( tempResultTaskList.get( j ));	
-				**/
+					for( String j : assigneeName ){
+                		resultTaskList.add( tempResultTaskList.get( j ));
+                		tempResultTaskList.remove( j );
+					}	
 				
-	   			 
+				*/
+				
+				
+	   			
 	            Integer n;
 	            Integer i;
 	            Integer j;
+	            Integer k;
+	            String tempName = '';
 	            
 	            n = resultTaskList.size() - 1;
 	            for (i = 1; i <= n; i++) {  
 	                for (j = n; j >= i ; j--) {
 	                    if (sortByDesc) {
-	                    	if (mapAsignees.get(resultTaskList[j].ProjectsAssignees__r[0].User__c).name >=
-	                    		mapAsignees.get(resultTaskList[j-1].ProjectsAssignees__r[0].User__c).name) {
-	                        	ProjectTask__c tempProjectTask;
-	                        	
-	                        	tempProjectTask = resultTaskList[j-1];
-	                        	resultTaskList[j-1] = resultTaskList[j];
-	                        	resultTaskList[j] = tempProjectTask;
-	                        }   
+	                    	if( resultTaskList[j-1].ProjectsAssignees__r.size() > 0 && resultTaskList[j].ProjectsAssignees__r.size() > 0 ){
+		                    	if (mapAsignees.get(resultTaskList[j].ProjectsAssignees__r[0].User__c).name >=
+		                    		mapAsignees.get(resultTaskList[j-1].ProjectsAssignees__r[0].User__c).name) {
+		                        	ProjectTask__c tempProjectTask;
+		                        	
+		                        	tempProjectTask = resultTaskList[j-1];
+		                        	resultTaskList[j-1] = resultTaskList[j];
+		                        	resultTaskList[j] = tempProjectTask;
+		                        }
+	                    	}else{
+	                    		k = 1;
+	                    		for( Integer l = j-1; l > 0; l--){
+	                    			if( resultTaskList[ j-k ].ProjectsAssignees__r.size() > 0 ){
+		                    			tempName = mapAsignees.get(resultTaskList[j-k].ProjectsAssignees__r[0].User__c).name;
+		                    			break;
+		                    		}else{
+		                    			tempName = '';
+		                    		}
+									k++;					
+	                    		}
+								if (tempName >= '') {
+		                        	ProjectTask__c tempProjectTask;
+		                        	
+		                        	tempProjectTask = resultTaskList[j-k];
+		                        	resultTaskList[j-k] = resultTaskList[j];
+		                        	resultTaskList[j] = tempProjectTask;
+		                        }	                    	
+	                    	}
 	                    } else {
-	                       	if (mapAsignees.get(resultTaskList[j].ProjectsAssignees__r[0].User__c).name <=
-	                    		mapAsignees.get(resultTaskList[j-1].ProjectsAssignees__r[0].User__c).name) {
-	                        	ProjectTask__c tempProjectTask;
-	                        	
-	                        	tempProjectTask = resultTaskList[j-1];
-	                        	resultTaskList[j-1] = resultTaskList[j];
-	                        	resultTaskList[j] = tempProjectTask;
-	                    	}   
+	                    	if( resultTaskList[j-1].ProjectsAssignees__r.size() > 0 && resultTaskList[j].ProjectsAssignees__r.size() > 0 ){
+		                       	if (mapAsignees.get(resultTaskList[j].ProjectsAssignees__r[0].User__c).name <=
+		                    		mapAsignees.get(resultTaskList[j-1].ProjectsAssignees__r[0].User__c).name) {
+		                        	ProjectTask__c tempProjectTask;
+		                        	
+		                        	tempProjectTask = resultTaskList[j-1];
+		                        	resultTaskList[j-1] = resultTaskList[j];
+		                        	resultTaskList[j] = tempProjectTask;
+		                    	}
+	                    	}else{
+	                    		k = 1;
+	                    		for( Integer l = j-1; l > 0; l--){
+	                    			if( resultTaskList[ j-k ].ProjectsAssignees__r.size() > 0 ){
+		                    			tempName = mapAsignees.get(resultTaskList[j-k].ProjectsAssignees__r[0].User__c).name;
+		                    			break;
+		                    		}else{
+		                    			tempName = '';
+		                    		}
+									k++;					
+	                    		}
+								if (tempName <= '') {
+		                        	ProjectTask__c tempProjectTask;
+		                        	
+		                        	tempProjectTask = resultTaskList[j-k];
+		                        	resultTaskList[j-k] = resultTaskList[j];
+		                        	resultTaskList[j] = tempProjectTask;
+		                        }	                    	
+	                    	}  
 	                    }
 	                }
 	            }
-	            
 	        }
 			
 			//Filter by Assignee - Ninja Way 
@@ -688,7 +749,7 @@ public with sharing class ProjectTaskListController {
                 TaskDetail.DueDate = '';
             }
             
-            TaskDetail.Estimate = (resultTaskList[i].Duration__c).intValue();
+            TaskDetail.Estimate = resultTaskList[i].Duration__c;
             TaskDetail.Description = resultTaskList[i].Description__c;
             TaskDetail.Milestone = resultTaskList[i].Milestone__c;
             TaskDetail.status = resultTaskList[i].status__c;
@@ -956,7 +1017,7 @@ public with sharing class ProjectTaskListController {
         public String DueDate { get; set; } 
         
         // Estimated Time 
-        public Integer Estimate { get; set; }
+        public Double Estimate { get; set; }
             
         // Auto generate Id
         public String autoId { get; set; }

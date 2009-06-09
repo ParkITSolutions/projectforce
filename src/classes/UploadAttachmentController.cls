@@ -125,7 +125,7 @@ public class UploadAttachmentController {
 			
 		}else{
 			if(newAttach.BodyLength < 1 || newAttach.BodyLength == null){
-				errorMsg = 'Please select the file you want upload.<br/>Attachment size must be less than 5Mb.';
+				errorMsg = 'Please select the file you want upload. Attachment size must be less than 5Mb.';
 				validAttSize = false;
 			}
 			return null;

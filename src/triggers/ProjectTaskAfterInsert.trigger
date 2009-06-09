@@ -25,22 +25,21 @@ trigger ProjectTaskAfterInsert on ProjectTask__c (after insert) {
 				/**
 				* @If Task or Milestone havent assignee
 				**/
-			
-				List<ProjectAssignee__c> assigned = [select Id from ProjectAssignee__c where ProjectTask__c =: m.Id];
-				if(assigned.isEmpty()){
-					ProjectAssignee__c Assign = new ProjectAssignee__c();
-					Assign.User__c = UserInfo.getUserId();
-					Assign.ProjectTask__c = m.Id;
-					Assign.Project__c = m.Project__c;
-					assigns.add(Assign);
-					
+				/**
+				if( ProjectUtil.getFlagAssignee()){
+					List<ProjectAssignee__c> assigned = [select Id from ProjectAssignee__c where ProjectTask__c =: m.Id];
+					if(assigned.isEmpty()){
+						ProjectAssignee__c Assign = new ProjectAssignee__c();
+						Assign.User__c = UserInfo.getUserId();
+						Assign.ProjectTask__c = m.Id;
+						Assign.Project__c = m.Project__c;
+						assigns.add(Assign);
+					}
 				}
-				
+				*/
 			}
 			insert tasks;
 			insert assigns;
-			
-			
 		}
 		finally{
 		}

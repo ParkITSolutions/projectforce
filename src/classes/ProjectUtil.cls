@@ -16,6 +16,22 @@ public class ProjectUtil {
 	public static Integer MAX_SIZE = 4194304;
 	public static Map<String,ProjectTask__c> BaseMap = new Map<String,ProjectTask__c>();
     public static Boolean DeleteTaskMailSent = false;
+    public static Boolean flagAssignee = true;
+    
+    /**
+    *@param Boolean
+    */
+    public static void setFlagAssignee( Boolean b){
+    	ProjectUtil.flagAssignee = b;
+    }
+    
+    /**
+    *@return Boolean
+    */
+    public static Boolean getFlagAssignee(){
+    	return ProjectUtil.flagAssignee;
+    }
+    
 	/**
 	*@param boolean
 	*/
@@ -96,4 +112,30 @@ public class ProjectUtil {
 		return errorList;
 	}
 	
+	/**
+    *
+    * Get the organization Domain
+    */   
+    public static String getDomain () {
+        String domain = '';
+        PageReference PR =  ApexPages.currentPage();
+       
+        String props = '';
+        if(PR.getHeaders() != null){
+            props = (PR.getHeaders()).get('Host');
+        }
+        if (props == '' || props == null) {
+            domain = '';   
+        }else {
+            String [] path = props.split('</?[a-z][a-z0-9]*[^<>]*>');
+            if(path.size() == 0){
+                domain = path[0];
+            }else{
+                for(Integer i = 0; i < path.size(); i++){   
+                    domain += path[i];
+                }
+            }
+        }
+        return domain;   
+    }	
 }
