@@ -1,0 +1,21 @@
+<apex:component controller="TaskQuickAccessController">
+    
+    <apex:styleSheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/TaskQuickAccess.css')}" />
+	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/TaskQuickAccess.js')}" />
+	
+	<div class="quickAccessTask">
+        <apex:form id="quickAccessForm" onsubmit="return verif();" >
+            <span>Task ID:</span>
+            <span id="taskIdInputSpan">
+            	 <apex:inputText value="{!taskId}" onkeyup="handleKeyPress(event)" />
+            </span>
+        	<apex:actionFunction name="quickAccessToTask" action="{!go}" rerender="quickAccessForm" />
+            <span class="taskIdInputWrapper">
+            	<a href="Javascript:;" class="actionQuickAccess" onclick="quickAccessEnter = true;hideQuickAccessError(); quickAccessToTask(this);">Go</a>
+            </span>
+            <apex:outputPanel styleClass="quickAccessError" rendered="{!error}">
+            	<br/>Error: Task does not exist
+            </apex:outputPanel>
+        </apex:form>
+    </div>  
+</apex:component>

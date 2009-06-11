@@ -1,0 +1,227 @@
+<apex:page controller="ProjectRedirectController" sidebar="false" showHeader="false" action="{!isAdmin}">
+    
+    <!-- Apex Toolkit Include -->
+    <script src="/soap/ajax/13.0/connection.js" />
+    
+    <!-- Add scrip.aculo.us includes -->
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>
+     
+    <!-- Include stylesheet -->    
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectRedirect.css')}" />
+  
+    
+    <script>
+        var _API_SESSION_ID = '{!$Api.Session_ID}';
+        var _NAMESPACE  	= '{!namespace}';
+        
+        sforce.connection.sessionId 		= _API_SESSION_ID;
+        sforce.connection.defaultNamespace	= _NAMESPACE
+        
+        /**
+        * Get URL param
+        *@return string param
+        *@param string param
+        */
+        function getURLParam(strParamName){
+          var strReturn = "";
+          var strHref = decodeURIComponent(window.location.href);
+          if ( strHref.indexOf("?") > -1 ){
+            var strQueryString = strHref.substr(strHref.indexOf("?"));
+            var aQueryString = strQueryString.split("&");
+            for ( var iParam = 0; iParam < aQueryString.length; iParam++ ){
+              if (aQueryString[iParam].indexOf(strParamName + "=") > -1 ){
+                var aParam = aQueryString[iParam].split("=");
+                strReturn = aParam[1];
+                break;
+              }
+            }
+          }
+          return unescape(strReturn);
+        }       
+        
+        
+        /**
+        * Describe Layout
+        */
+        var ObjectLayout = {
+        
+            layoutFields: new Array(),
+            sObjectType: null,
+            tagPrefix: '<' + 'apex',
+           
+            /**
+            * Read sObject Layout
+            *@param sObject name
+            */
+            describeLayout: function (sObjectType){
+                try{
+	                this.sObjectType = sObjectType;
+	                var result = sforce.connection.describeLayout(sObjectType);
+	                var layouts = result.getArray("layouts");
+	                for (var it = 0; it < layouts.length; it++) {
+	                    var layout = layouts[0];
+	                    this.layoutRows(layout.editLayoutSections.getArray('layoutRows'));
+	                }
+				}catch(e){
+					this.error('Error: Unable to read layout for: <em>' + sObjectType + '</em>');
+				}	           
+            },          
+        
+            /**
+            * Read Section Rows
+            *@param mixed rows
+            */
+            layoutRows: function (rows) {
+                for (var it = 0; it < rows.length; it++) {
+                    var row = rows[it];
+                    this.layoutItems(row.getArray("layoutItems"));
+                }
+            },
+        
+            /**
+            * Read Layout Item
+            *@param mixed items
+            */
+            layoutItems: function (items) {
+                for (var it = 0; it < items.length; it++) {
+                    var item = items[it];
+                    if(item.label != ''){       
+                        this.layoutFields.push(item);
+                    }
+                }
+            },
+        
+            /**
+            * Find field on current Layout
+            *@param sObject field name
+            */
+            contains: function (sObjectField){
+                var fieldExist = false;
+                for(var it = 0; it < this.layoutFields.length; it++){
+                    if(this.layoutFields[it].layoutComponents.value == sObjectField)
+                        fieldExist = true;
+                }
+                return fieldExist;
+            },
+            
+            /**
+            * Save New/Edit Page
+            *@param page to add form
+            *@param attribute associated
+            */
+            save: function (page, attribute, rerender, oncomplete, editId, taskId){
+                if(this.layoutFields.length > 0){
+                    
+                    //Read Page
+                    result = sforce.connection.query("Select Id, Name, Markup from ApexPage where Name = '" + page + "'");
+                    pages = result.getArray("records");         
+                    
+                    if(pages.length > 0){
+	                    var apexPage = pages[0];
+					}else{
+						this.error('Error: Page does not exist');
+						return
+					}
+                    
+                    //Get Markup Sections
+                    var markupAct = apexPage.Markup.split('DynamicLayoutResponse">');
+
+                    //Create New Markup for current sObject Layout
+                    var markup = 'DynamicLayoutResponse">\n\t';
+                    markup += this.tagPrefix + ':form>';
+
+                    //Set Fields
+                    for(var it=0; it < this.layoutFields.length; it++){
+                        markup += '<label>' + this.layoutFields[it].label + '</label>';
+                        markup += this.tagPrefix + ':inputField value="{';
+                        markup += '!' + attribute + '.' + this.layoutFields[it].layoutComponents.value + '}" ';
+                        markup += 'required="' + this.layoutFields[it].required + '" ';
+                        markup += '/><br /><br />';   
+                    }
+					
+					//Add Save Button
+					markup += '<div class="btnStandardForm">' + this.tagPrefix + ':commandButton action="{'
+					markup += '!save}" value="Save" onclick="statusSaving(this);" ';
+                    
+                    //Set rerender attribute
+                    markup += (rerender) ? 'rerender="' + rerender + '" ' : '';
+                    
+                    //Set oncomplete attribute as a boolean
+                    markup += (oncomplete) ? 'oncomplete="onCompleteCallBackFunction();" ' : ''; 					
+					markup += ' />';
+
+					//Add Cancel Button
+					markup += '<input class="btn" onclick="onCancelEvent();" type="button" value="Cancel"/></div>';
+                    
+                    markup += '</';
+                    markup += 'apex:form>';                                     
+                    
+					//Set bottom markup
+                    pattern = 'value="Cancel"/></div>' + '</' + 'apex:form>';
+                    var markupBottom = (markupAct[1].split(pattern).length > 1) ? markupAct[1].split(pattern)[1] : markupAct[1].split(pattern)[0];
+                    apexPage.Markup = markupAct[0] + markup + markupBottom;
+                    
+                    try{
+	                    //Save Page and Redirect
+	                    update = sforce.connection.update([apexPage]);
+						
+						//Set action status and redirect
+	                    if(update[0].getBoolean("success")){
+	                       	//Success status
+	                        $$('.redirect')[0].innerHTML = 'Redirecting...';
+	                        $$('.redirect')[0].style.borderRight = 'solid green 5px';
+	                       
+	                        //Set Edit Id
+	                        var redirectLocation = (!editId) ? apexPage.Name : apexPage.Name + '?id=' + editId;
+	                        redirectLocation += (!taskId) ? '' : '&task=' + taskId;
+	                        location.href = "/apex/" + redirectLocation;
+	                    }else{
+							this.error('Error: Unable to Save');		                    	
+	                    }
+	                 }catch(e){
+	                 	this.error('Error: Unable to Save');
+	                 	throw e;
+	                 }
+                }
+            },
+            
+            /**
+            * Add error message to status label
+            *@param message
+            */
+            error: function(message){
+            	$$('.redirect')[0].innerHTML = message;	
+            },
+            
+            markupBottom: function (markup){
+            	var markupBottom = '';
+            	for(var it=1; it < markup.length; it++){
+            		markupBottom += (markup[it] + '</div>');
+            	}
+            	return markupBottom;
+            }
+            
+        }   
+        
+        /**
+        * ### Execute onload event ###
+        */
+        document.observe('dom:loaded', function (){ 
+				ObjectLayout.describeLayout(getURLParam('sO'));
+            	ObjectLayout.save(
+                	getURLParam('page'), 
+                	getURLParam('attr'), 
+                	getURLParam('rR'), 
+                	getURLParam('oC'), 
+                	getURLParam('eid'),
+                	getURLParam('task')
+              	);        
+        	}
+        );
+        
+    </script>
+    
+    <div class="redirect">Building Form...</div>
+</apex:page>

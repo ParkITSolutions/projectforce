@@ -1,0 +1,438 @@
+<apex:page sidebar="false" id="ProjectMembersList" tabStyle="Project2__c" controller="ProjectMembersListController">
+	<apex:includeScript value="/soap/ajax/12.0/connection.js" />
+	<script>
+	
+		var API_SESSION_ID = '{!$Api.Session_ID}';
+		
+		var namespace = "{!namespace}";
+		sforce.connection.defaultNamespace = namespace;	 
+	
+	</script>
+
+	<!-- Prototype + Scriptaculous -->
+	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}" />
+
+	<!-- Portal Support -->
+	<apex:includeScript value="{!$Resource.portalSupport}" />
+
+	<!-- Common Js for All Sections -->
+	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/TeamMemberList.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/validator.js')}"/>
+
+	<!-- Common css for modal -->
+	<link rel="stylesheet" media="screen" href="{!URLFOR($Resource.commonResources, 'inc/css/modal.css')}" />
+
+	<!-- CSS de TS -->
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/teamDetailEdit.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/teamOverlyManage.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/teamMemberList.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/teamOverlyInviteNewMember.css')}" />
+
+	<!-- CSS styles for Portal Integration -->
+	<apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgets/TeamMemberWidget.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />
+
+	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectCreateNewProject.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupTop.js')}" />
+    <!-- CSS Includes -->
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />	
+	<!-- ProjectMemebersList CSS 	-->
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsMembersList.css')}" />
+
+	<!-- ProjectMemebersList JS  -->
+	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/teamsMembersList.js')}" />
+
+	<!-- Modal JS -->
+	<script src="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" />
+
+
+	<script>
+		document.observe('dom:loaded', function(){
+			readPortalCSSRules();						
+			resizeMLSidebar()
+		});
+		function resizeMLSidebar(){
+			var mc = $$('.main_cont')[0].getDimensions();
+			var footer = $$('.bPageFooter')[0].getDimensions();
+			$$('.sidebar')[0].style.height = mc.height + 10 + 'px';
+		};
+		var globalTeamId = "{!projectId}";
+	    var globalInfoBig = "{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/infoBig.gif')}";
+        var globalCheckNew = "{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}";
+
+	</script>
+	<style>
+	
+		div#quickLinksContainer{
+			display: none;
+		}
+		@media screen and (-webkit-min-device-pixel-ratio:0) {
+			div#btnsDiv {
+				padding-right: 4.5%;
+			}
+		}
+		
+
+	</style>
+	
+	<apex:form >
+		<apex:actionFunction name="reloadMemberList" action="{!refresh}" rerender="headForm, membersList, filterForm" oncomplete="$('paginationOverlay').hide();resizeMLSidebar()" />
+	</apex:form>
+	<apex:form >
+		<apex:actionFunction name="reloadButtons" action="{!refresh}" rerender="headForm" />
+	</apex:form>
+	<!-- Initialize the overlay box for modal.js -->
+	<a href="#modal_container" id="initializeModal" style="display:none;"></a>     
+	<div id="modal_container"></div>
+	<script>createOverlay('initializeModal');</script> 
+	
+		<!-- Header -->
+		<apex:composition template="HeaderTemplate"> 
+			<apex:define name="moduleId">
+				<apex:variable var="moduleId" value="headerTeams" />
+			</apex:define>
+			<apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
+			<apex:define name="title">Members List</apex:define>
+			<apex:define name="search">
+				<c:Search module="project" projectId="{!projectId}" label="Tasks" />
+			</apex:define>
+		</apex:composition>
+	
+		<div align="center"  class="breadCrumbAndButtons">
+			<div class="breadCrumbs">
+				<a id="projectNameBreadcrumb"  href="/apex/ProjectDetail?id={!ProjectId}"><script>trunkText('{!projectName}',24);</script></a> &gt;
+				<span class="breadCrumbsLast"><strong>Member List</strong></span>		
+			</div>
+		</div>
+		
+		<!-- Sidebar -->
+		<div class="sidebar">
+	
+			<!-- Project Quick Links -->
+			<c:ProjectDetailQuickLinks />
+	
+			<!-- Team Suscribe -->
+			<c:ProjectSubscribe />
+			
+			<!-- Team members -->
+			<c:ProjectMembersWidget projectId="{!projectId}" />	
+			 
+			<div class="clear"></div>
+		</div>
+	<div class="informationPanel clear" id="infoToUser" style="display:none"></div>
+
+	<!-- Main Content Div -->
+	<div class="main_cont" style = "margin-left:205px!important;" >
+		<div id="holder">
+			<div id="paginationOverlay" style="display: none;"  class="paginationOverlay"></div>
+			<table width="100%" align='center'>
+				<tr>
+					<td class="teamTitleButton titleTd">Members</td>
+					<td align="center">
+						<div id="btnsDiv">
+							<apex:form id="headForm"  >
+								<apex:outputpanel id="headerBtnContainer" rendered="{!userPermissions.canManage}" >
+									<a onclick="createOverlay('','inviteTeam','280','showSelects()','');relocateOverlay();"
+										href="javascript:;" class="blackbutton"><span>New</span></a>
+									<a href="javascript:;" class="blackbutton"
+										onclick="massiveRemoveOverlay();reMemIds();"><span>Remove</span></a>
+								</apex:outputpanel> 
+							</apex:form>
+						</div>
+					</td>
+				</tr>
+			</table>
+	
+			<div class="border_body_top"></div>
+			
+			<!-- LETTER FILTER	-->
+			<br/>
+			
+			<div style="position: relative; overflow: hidden">
+				<img id="twistImage" style="vertical-align: middle;" 
+					class="twistImg"
+					onclick="showHideElement(document.getElementById('filterDiv'),this);"
+					src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}"
+					title="Hide Section" alt="Hide Section" /> &nbsp; 
+					<a href="javascript:;"
+					onclick="showHideElement(document.getElementById('filterDiv'),document.getElementById('twistImage'));"
+					class="filterLink">Filter</a>
+			</div>
+			
+			<div class="filter" id="filterDiv">
+				<div align="center"><apex:form id="filterForm">
+					<ul class="letterFilter">
+						<li>
+						 	<apex:commandLink action="{!genMembers}" 
+							 	value="ALL" 
+							 	styleclass="AllBtn" 
+							 	rerender="membersList"
+							 	onclick="$('paginationOverlay').show();setDims('holder', 'paginationOverlay')" 
+							 	oncomplete="$('paginationOverlay').hide();resizeMLSidebar()">
+								<apex:param name="ltr" value="ALL" />
+							</apex:commandLink>
+						</li>
+						<apex:repeat id="letterFilterRepeat" value="{!letterFilter}" var="item">
+							<li>
+								<apex:outputpanel rendered="{!NOT(item.containMembers)}">
+									<apex:commandLink styleclass="contains" action="{!genMembers}" value="{!item.letter}" 
+										onclick="$('paginationOverlay').show();setDims('holder', 'paginationOverlay')" 
+										oncomplete="$('paginationOverlay').hide();resizeMLSidebar()"
+										rerender="membersList">
+										<apex:param name="ltr" value="{!item.letter}" />
+									</apex:commandLink>
+								</apex:outputpanel> 
+								<apex:outputpanel rendered="{!(item.containMembers)}">{!item.letter}</apex:outputpanel>
+							</li>
+						</apex:repeat>
+					</ul>
+					
+					<br style="clear: both; font-size: 3px;" />
+					</apex:form> 
+				</div>
+			</div>
+			
+			<apex:outputpanel rendered="{!IF(AND(prevPageShow,nextPageShow),false,true)}">
+				<hr class="filterHR">
+			</apex:outputpanel>
+			
+			<apex:outputpanel id="membersList">
+				<center>
+					<apex:outputpanel styleClass="pagination" layout="block" rendered="{!IF(AND(prevPageShow,nextPageShow),false,true)}">
+						<div class="pages">
+							<apex:form >
+								<ul>
+									<li class="prev {!IF(prevPageShow,'prev_disabled','')}">
+										<apex:commandLink action="{!prevPage}" value="Previous Page"
+											onclick="$('paginationOverlay').show();setDims('holder','paginationOverlay');"
+											oncomplete="$('paginationOverlay').hide();resizeMLSidebar()" 
+											rerender="membersList"
+											rendered="{!prevPageLinkShow}" /> 
+										<apex:outputText value="Previous Page" rendered="{!prevPageShow}" />
+									</li>
+									<li>
+										({!currentPagination} - {!cntPagination})
+									</li>
+									<li class="next {!IF(nextPageShow,'next_disabled','')}">
+										<apex:commandLink action="{!nextPage}" value="Next Page" onclick="$('paginationOverlay').show();setDims('holder','paginationOverlay');"
+											oncomplete="$('paginationOverlay').hide();resizeMLSidebar()"
+											rerender="membersList"
+											rendered="{!nextPageLinkShow}" /> 
+										<apex:outputText value="Next Page" rendered="{!nextPageShow}" />
+									</li>
+								</ul>
+							</apex:form>
+						</div>
+					</apex:outputpanel>
+				</center>
+				<apex:form >
+				<table id="memberListTable" border="0" cellspacing="0" cellpadding="2px" class="pageList">
+					<thead>
+						<tr>
+							<td width="3%"><apex:outputpanel rendered="{!userPermissions.canManage}">
+								<input class="actionCheckAll" onclick="checkUnCheck(this);reMemIds();"
+									type="checkbox" />
+							</apex:outputpanel></td>
+							<td width="9%"><apex:outputpanel rendered="{!userPermissions.canManage}" style="font-weight:bold;">Action</apex:outputpanel>
+							</td>
+							<td width="29%" colspan="2"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
+								value="Name" 
+								onclick="$('paginationOverlay').show();setDims('holder', 'paginationOverlay');"
+								oncomplete="$('paginationOverlay').hide(); "
+								rerender="membersList">
+								<apex:param name="sb" value="User__r.Name" />
+							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'name',true,false)}">
+								<apex:outputpanel rendered="{!sortByDesc}">
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
+								</apex:outputpanel>
+								<apex:outputpanel rendered="{!NOT(sortByDesc)}">
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
+								</apex:outputpanel>
+							</apex:outputpanel></td>
+							<td width="16%"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
+								value="Company" 
+								onclick="$('paginationOverlay').show();setDims('holder', 'paginationOverlay');"
+								oncomplete="$('paginationOverlay').hide(); "								
+								rerender="membersList">
+								<apex:param name="sb" value="User__r.CompanyName" />
+							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'company',true,false)}">
+								<apex:outputpanel rendered="{!sortByDesc}">
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
+								</apex:outputpanel>
+								<apex:outputpanel rendered="{!NOT(sortByDesc)}">
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
+								</apex:outputpanel>
+							</apex:outputpanel></td>
+							<td width="15%"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
+								value="Title" 
+								onclick="$('paginationOverlay').show();setDims('holder', 'paginationOverlay');"
+								oncomplete="$('paginationOverlay').hide(); "								
+								rerender="membersList">
+								<apex:param name="sb" value="User__r.Title" />
+							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'title',true,false)}">
+								<apex:outputpanel rendered="{!sortByDesc}">
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
+								</apex:outputpanel>
+								<apex:outputpanel rendered="{!NOT(sortByDesc)}">
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
+								</apex:outputpanel>
+							</apex:outputpanel></td>
+							<td width="16%"><apex:commandLink styleclass="member_title_description" action="{!sortList}"
+								value="{!$ObjectType.Project2__c.label} Profile"
+								onclick="$('paginationOverlay').show();setDims('holder', 'paginationOverlay');"
+								oncomplete="$('paginationOverlay').hide(); "								
+								rerender="membersList">
+								<apex:param name="sb" value="Profile__r.Name" />
+							</apex:commandLink>&nbsp; <apex:outputpanel rendered="{!IF(sortBy == 'profile',true,false)}">
+								<apex:outputpanel rendered="{!sortByDesc}">
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
+								</apex:outputpanel>
+								<apex:outputpanel rendered="{!NOT(sortByDesc)}">
+									<img
+										src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
+								</apex:outputpanel>
+							</apex:outputpanel></td>
+						</tr>
+					</thead>
+					<!-- Description  -->
+					<tbody>
+						<apex:repeat var="item" value="{!members}" rows="{!numberOfItemsToShow}" first="{!firstRow}">
+							<tr>
+								<td>
+								<apex:outputpanel rendered="{!userPermissions.canManage}">
+									<input value="{!item.projectMemberId}" class="actionCheck" type="checkbox" onclick="reMemIds();" />
+								</apex:outputpanel>
+								</td>
+								<td>
+									<apex:outputpanel rendered="{!userPermissions.canManage}">
+									 	<a href="Javascript:;" 
+									 	onclick="setHiddenMemberId('{!item.projectMemberId}'); createOverlay('','removeMemberOverlay','170','relocateOverlay()');">Delete</a>
+									</apex:outputpanel>
+								</td>
+								<td class="memberImg">
+									<div class="photoWrapper_32px">
+										<img src="{!URLFOR($Resource.commonResources, 'images/placeholders/unknownperson32x32.jpg')}" width="32" />
+									</div>
+								</td>
+								<td class="member_detail_description">
+									<a href="/{!item.userId}" class="member_detail_description_underline">{!item.Name}</a> 
+								</td>
+								<td class="member_detail_description">{!item.company}</td>
+								<td class="member_detail_description">{!item.title}</td>
+								<td class="member_detail_description">{!item.profile}</td>
+							</tr>
+						</apex:repeat>
+					</tbody>
+				</table>
+			</apex:form>
+			
+			<hr class="filterHR" />
+			<center>
+			<apex:outputpanel styleClass="pagination" layout="block"
+				rendered="{!IF(AND(prevPageShow,nextPageShow),false,true)}">
+				<div class="pages">
+					<apex:form >
+						<ul>
+							<li class="prev {!IF(prevPageShow,'prev_disabled','')}">
+								<apex:commandLink action="{!prevPage}" value="Previous Page" rerender="membersList"
+								onclick="$('paginationOverlay').show();setDims('holder','paginationOverlay');"
+								oncomplete="$('paginationOverlay').hide();resizeMLSidebar()"
+								rendered="{!prevPageLinkShow}" /> 
+								<apex:outputText value="Previous Page" rendered="{!prevPageShow}" />
+							</li>
+							<li>
+							({!currentPagination} - {!cntPagination})
+							</li>
+							<li class="next {!IF(nextPageShow,'next_disabled','')}">
+								<apex:commandLink action="{!nextPage}" value="Next Page" rerender="membersList"
+								onclick="$('paginationOverlay').show();setDims('holder','paginationOverlay');"
+								oncomplete="$('paginationOverlay').hide();resizeMLSidebar()"
+								rendered="{!nextPageLinkShow}" /> 
+								<apex:outputText value="Next Page" rendered="{!nextPageShow}" />
+							</li>
+						</ul>
+					</apex:form>
+				</div>
+			</apex:outputpanel> 
+			</center>
+			<!-- pagination -->
+			
+			<apex:outputpanel rendered="{!IF(AND(prevPageShow,nextPageShow),false,true)}">
+				<hr class="filterHR" />
+			</apex:outputpanel>
+			
+			<table width="100%">
+				<tr>
+					<td class="teamTitleButton titleTd">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					</td>
+					<td align='center'>
+						<table>
+							<tr>
+								<td>
+									<div>
+										<!-- BUTTONS -->
+										<apex:outputpanel rendered="{!userPermissions.canManage}">
+											<a onclick="createOverlay('','inviteTeam','280','showSelects()');relocateOverlay();"
+												href="javascript:;" class="blackbutton"><span>New</span></a>
+											<a href="javascript:;" class="blackbutton"
+												onclick="massiveRemoveOverlay();reMemIds();"><span>Remove</span></a>
+										</apex:outputpanel>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td class="teamTitleButton titleTd">
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				</tr>
+			</table>
+			
+			<br/>
+				</apex:outputpanel> <!-- End outputPanel MembersList --></div> <!-- holder Div --> 
+	</div>
+	
+	
+	
+	
+	<apex:outputpanel id="overlaysPanel">
+		<apex:include id="includeMemRem" pageName="ProjectMembersRemove" />
+		<apex:include pageName="ProjectMembersMassiveRemove" />
+	</apex:outputpanel>
+	
+	<c:ProjectOverlayNewTask />
+	<c:ProjectOverlayNewMilestone />
+		<script>
+		 function reMemIds(){
+		    a = new Array();
+			$$('.actionCheck').each(function (e){
+		            
+		        if( e.checked )
+		        a.push( e.value );            
+		 
+		    }); 
+ 		    
+ 		    
+ 		    //alert( a.join( '::' )); 
+ 		    
+		    $$('.MemberIdToDel')[0].value = a.join( '::' );
+		}
+ 	</script>
+
+</apex:page>

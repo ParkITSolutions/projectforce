@@ -1,0 +1,50 @@
+<apex:component controller="ProjectOverlayDeleteAssigneeController" allowDML="true">
+
+	<!-- Content  -->
+	<div id="DeleteAssigneeOverlay" style="display: none;" class="overlayForm">
+		<div class="swirly_overlay" id="sw_ov" style="display: none;"></div>
+
+		<!-- Overlay Title -->
+		<div class="overlayTitleContent">
+			<div class="overlayTitle">Delete Assignee</div> 
+			<div class="overlayCloseEvent">
+				<a href="Javascript:;" onclick="modal.close();"> 
+					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}"	alt="Close Window" title="Close Window" /> 
+				</a> 
+			</div>
+		</div>
+
+		<div id="overlayMain" class="overlayMainContent">
+			<!-- Action Status -->
+			<div id="overlayFormStatus" class="overlayFormStatus" style="display:none;">
+				{Status...}
+			</div>
+			<!-- Overlay Form -->
+			
+			<apex:form id="overlayForm2" onsubmit="blockSaveBtn()"> 
+				<script>
+					var inputIdToDelete2 = '{!$Component.inputIdToDelete2}';
+				</script>
+				   
+			<apex:inputHidden value="{!idDeletes}" id="inputIdToDelete2"/> 
+				<!-- Overlay Form Content -->
+				<div class="overlayFormContent">
+					<strong>Are you sure you want to continue?</strong><br />
+					<span>Once Assignee is deleted, it is not recoverable</span>
+				</div>
+				<div class="overlaySeparateLine" />
+				<!-- Saven and Cancel Buttons -->
+				<div class="overlayFromButtons" align="center">
+
+					<apex:commandButton id="DeleteAssigneeBtn" styleClass="btn allButtons" style="background:#21637D none repeat scroll 0 0 !important; !important;" action="{!deleteAssignee}" value="Continue and delete assignee" onclick="modal.close()" rerender="membersComBoxCont" oncomplete="refreshDetail()"  />
+						
+			        <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="modal.close();" value="Cancel"/>
+				</div>
+			</apex:form>
+		</div>
+
+	</div>
+
+
+
+</apex:component>
