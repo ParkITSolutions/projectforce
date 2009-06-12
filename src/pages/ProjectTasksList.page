@@ -298,10 +298,10 @@
 							<!-- Advanced Filter Toggle -->
 							<div class="linksFilterContent">
 		                        <a href="javascript:;" id="advFilterShow" title="Click to view the advanced filter." onclick="advancedFilter();">
-		                        	Show Advanced filter <span class="ColorGray">?</span>		                        	
+		                        	Show Advanced filter <span class="ColorGray"><img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" /></span>		                        	
 		                        </a>
 		                        <a href="javascript:;" id="advFilterHide" title="Click to hide the advanced filter." onclick="advancedFilter();" style="display: none;">
-		                        	Hide Advanced filter <span class="ColorGray">?</span>		                        
+		                        	Hide Advanced filter <span class="ColorGray"><img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" /></span>		                        
 								</a>
 					        </div>
 					        
