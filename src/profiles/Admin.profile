@@ -6,7 +6,7 @@
         <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
-        <application>Projectforce</application>
+        <application>Project</application>
         <default>true</default>
         <visible>true</visible>
     </applicationVisibilities>
