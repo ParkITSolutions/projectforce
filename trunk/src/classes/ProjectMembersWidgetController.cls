@@ -22,6 +22,11 @@ public with sharing class ProjectMembersWidgetController {
 	//New save
 	public Integer countSaved = 0;
 	public Boolean reset = false;
+	public Boolean errorMembersFlag = false;
+	public Boolean memberAdd = false;
+	public String  invalidMembers = '';
+	public List<String> errorMembers = new List<String>(); 
+
 	
 	/**
 	* Constructor
@@ -72,6 +77,27 @@ public with sharing class ProjectMembersWidgetController {
 	public String getNamespace () {
         return ProjectUtil.getNamespace();
     } 
+
+	/**
+	*@return Boolean
+	*/
+	public Boolean getErrorMembersFlag(){
+		return this.errorMembersFlag;
+	}
+	
+	/**
+	*@return Boolean
+	*/
+	public Boolean getMemberAdd(){
+		return this.memberAdd;
+	}
+	
+	/**
+	*@return String 
+	*/
+	public String  getInvalidMembers(){
+		return this.invalidMembers;
+	}
 	
 	/**
 	* Setter method for Team Id variable
@@ -144,6 +170,11 @@ public with sharing class ProjectMembersWidgetController {
 		return (typeList != 'adminList');
 	}
 	
+	public void setingErrors(){
+		if( errorMembers.size() > 0){
+			this.errorMembersFlag = true;
+		}
+	}
 	/**
 	* Get Team Members
 	*@return List<TeamMember>
@@ -304,6 +335,16 @@ public with sharing class ProjectMembersWidgetController {
 		for (User iterUser :[select id, Name, IsActive, Email from User where Name in:newMembers]) {
 			usersMap.put(iterUser.Name, iterUser);
 		}
+		
+		errorMembers.clear();
+		for( String n : newMembers )
+			if( usersMap.get( n ) == null)
+			errorMembers.add( n );
+		
+		this.errorMembersFlag = errorMembers.size() > 0;
+		
+		this.memberAdd = (errorMembers.size() != newMembers.size()) ? true : false ;
+
 		for(String item: newMembers) {
 			if (usersMap.get(item) != null) {
 				already = false;
@@ -399,7 +440,6 @@ public with sharing class ProjectMembersWidgetController {
 		}else{
 			countSaved += 3;
 		}
-				System.debug('\n\n\n\n\n\n\n\n ------------' + membersToInsert + '---------------\n\n\n\n\n\n\n\n');
 		return null;
 		
 	}

@@ -97,18 +97,6 @@
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Rank__c</fullName>
-        <label>Rank</label>
-        <length>255</length>
-        <type>Text</type>
-    </fields>
-    <fields>
-        <fullName>Sprint__c</fullName>
-        <label>Sprint</label>
-        <length>255</length>
-        <type>Text</type>
-    </fields>
-    <fields>
         <fullName>StartDate__c</fullName>
         <description>StartDate</description>
         <label>Start Date</label>
