@@ -51,23 +51,24 @@
 	</style>
 
 	<!-- NEW MEMBER OVERLAY -->
-	<apex:outputpanel rendered="{!IF(isManager, true, false)}" >
-
+	<apex:outputpanel rendered="{!IF(isManager, true, false)}">
 		<!-- Content  -->
 		<div id="inviteTeam" style="display: none;" class="overlayForm">
 		<div class="swirly_overlay" style="display: none;"></div>
 		<!-- Overlay Title -->
 		<div class="overlayTitleContent">
 		<div class="overlayTitle">Add new member to <script>trunkText('{!teamName}',24);</script></div>
-		<div class="overlayCloseEvent"><a href="Javascript:;"
-			onclick="modal.close();"> <img
-			src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}"
-			alt="Close Window" title="Close Window" /> </a></div>
+		<div class="overlayCloseEvent">
+			<a href="Javascript:;" 	onclick="modal.close();"> 
+				<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" /> 
+			</a>
 		</div>
-		<div class="overlayMainContent"><!-- Required Information --> 
-			<span class="overlayRequiredInfo">= Required Information</span> 
-				<apex:form id="newMemberForm"
-					onSubmit="if(validateColleguesInput()){showSwirly('swirly_overlay'); Form.disable(this.id);} else return false;">
+		</div>
+		<div class="overlayMainContent" id="overlayMainContent">
+			<!-- Required Information --> 
+			<apex:form id="newMemberForm" onSubmit="if(validateColleguesInput()){showSwirly('swirly_overlay'); Form.disable(this.id);} else return false;">
+				<apex:outputPanel style="display: {!if(errorMembersFlag, 'none', 'block')};" styleClass="memberMesagges" id="auxP1">
+					<span class="overlayRequiredInfo">= Required Information</span>&nbsp;
 					<div class="overlayFormContent">
 					<table cellpadding="0" cellspacing="0"
 						style="margin: 0px; padding: 0px; width: 100%;">
@@ -128,17 +129,30 @@
 					<!-- Save and Cancel Buttons -->
 					<div class="overlayFromButtons" align="center">
 						<apex:commandButton action="{!saveMembers}" 
-							oncomplete="showMessageToUser('Member has been added to this project','success'); addMemberCallBackFunction(); setTimeout('Effect.Fade(\'infoToUser\')', 6500);"
+							oncomplete="ifError();"
 							styleclass="btn allButtons" 
 							style="float: none;width: 70px !important;background: #21637D none repeat scroll 0 0 !important;" 
-							value="Send"
+							value="Send" 
 							rerender="membersListContainer" /> 
 						<input id="cancelBtn" class="allButtons" type="button" value="Cancel" onclick="modal.close(); stopFunction();" />
 					</div>
+					</apex:outputPanel>
+
+					<apex:outputPanel styleClass="memberMesagges" id="auxP2" style="display:  {!IF(errorMembersFlag, 'block', 'none')};" layout="block">
+						<strong>One or more of the selected users do not exist</strong>
+						<!-- Save and Cancel Buttons -->
+						<div class="overlaySeparateLine"></div>
+						<div class="overlayFromButtons" align="center">
+							<input id="cancelBtn" class="allButtons" type="button" value="Ok" onclick="clickOnCancelBtn();" />
+						</div>
+					</apex:outputPanel>
+					
+					<apex:actionFunction name="chch" rerender="auxP1, auxP2" oncomplete="$$('.swirly_overlay')[0].hide();$( 'modal_container' ).style.height = 120 + 'px';"/>				
 				</apex:form>
 			</div>
 		</div>
 	</apex:outputpanel>
+
 	<!-- On Hover Bubble team member -->
 	<div id="bubble" class="bubble" style="display: none">
 		<div class="top_border">&nbsp;</div>
@@ -208,6 +222,7 @@
 					<!-- AuxPanel - When 'add member' poller finish reload member list. -->
 					<apex:outputpanel id="auxPanel">
 						<script>
+							errorInUsers = {!errorMembersFlag};
 							
 							//Flag for don't execute on load default value is true
 							firstExecuteTime = false;
@@ -285,5 +300,27 @@
 			setDims( 'thinBody', $$( '.swirly_members' )[ 0 ].id );
 		}
 		
+		function ifError(){
+			if( !errorInUsers ){
+				showMessageToUser('Member has been added to this project','success'); 
+				addMemberCallBackFunction(); 
+				setTimeout('Effect.Fade(\'infoToUser\')', 6500);		
+			}
+			else{
+				if( '{!memberAdd}' == 'true'){
+					setTimeout('modal.close(); hideSwirly(\'swirly_overlay\')', 5000);
+					$('membersListSwirly').show(); 			
+					setDims('holder','membersListSwirly');
+				}
+				chch();
+				
+			}
+		}
+		function clickOnCancelBtn(){
+			 $$('.memberMesagges')[0].show();	
+			 $$('.memberMesagges')[1].hide();	
+			 $$('.colleaguesNames')[0].innerHTML = '';	
+			 $( 'modal_container' ).style.height = 280 + 'px';
+		}	
 	</script>
 </apex:component>

@@ -427,10 +427,6 @@ public with sharing class ProjectTaskListController {
             sbCol = 'est';  
         if (sortBy == 'EndDate__c') 
             sbCol = 'date';
-        if (sortBy == 'Sprint__c') 
-            sbCol = 'Sprint';
-        if (sortBy == 'Rank__c') 
-            sbCol = 'Rank';              
         return sbCol;
     }
     
@@ -487,14 +483,6 @@ public with sharing class ProjectTaskListController {
 			if(advanceFilter.status != null && !advanceFilter.status.equals(''))
 				filter += ' and Status__c = \'' + advanceFilter.status + '\'';
 				
-			//Filter by Rank
-			if(advanceFilter.rank != null && !advanceFilter.rank.equals(''))
-				filter += ' and Rank__c = \'' + advanceFilter.rank + '\'';
-
-			//Filter by Sprint
-			if(advanceFilter.sprint != null && !advanceFilter.sprint.equals(''))
-				filter += ' and Sprint__c = \'' + advanceFilter.sprint + '\'';
-
 			//Filter by Estimate
 			if(advanceFilter.estimate != null && !advanceFilter.estimate.equals(''))
 				filter += ' and Duration__c = ' + Double.valueOf(advanceFilter.estimate);				
@@ -506,9 +494,9 @@ public with sharing class ProjectTaskListController {
 			else
 				filterApplyed = false;      			
 
-			query =		' SELECT Project__c, Priority__c, PercentCompleted__c, createdById, OwnerId, Status__c, Id__c, Sprint__c, Name,';
+			query =		' SELECT Project__c, Priority__c, PercentCompleted__c, createdById, OwnerId, Status__c, Id__c, Name,';
 			query +=	' Milestone__c, Id, EndDate__c, Duration__c, (SELECT Id, User__r.Name, User__r.Id, User__c  FROM ProjectsAssignees__r),';
-			query +=	' Description__c, Rank__c FROM ProjectTask__c WHERE Project__c = \'' + PROJECTID + '\'' + filter;
+			query +=	' Description__c FROM ProjectTask__c WHERE Project__c = \'' + PROJECTID + '\'' + filter;
 			
 			if( sortBy != 'Priority__c' && !sortBy.equals('User__c.Name'))
 				query +=	' ORDER BY ' + sortBy + ' ' + ( sortByDesc ? ' DESC ' : ' ASC ');
@@ -754,8 +742,6 @@ public with sharing class ProjectTaskListController {
             TaskDetail.Milestone = resultTaskList[i].Milestone__c;
             TaskDetail.status = resultTaskList[i].status__c;
             TaskDetail.autoId = resultTaskList[i].id__c;
-            TaskDetail.sprint = resultTaskList[i].Sprint__c;
-            TaskDetail.rank = resultTaskList[i].Rank__c;
             
             TaskDetail.isTaskOwner = resultTaskList[i].createdById == USERID;
             
@@ -893,12 +879,11 @@ public with sharing class ProjectTaskListController {
     */
  	public void generateTaskListCsv() {
     	
-	    String csvText = 'ID,Sprint,Type,Priority,Name,Description,Status,AssignedTo,PercentCompleted,EstimateHrs,DueDate,DaysLate\n';		        
+	    String csvText = 'ID,Type,Priority,Name,Description,Status,AssignedTo,PercentCompleted,Duration,DueDate,DaysLate\n';		        
               
 	    for (TaskDetails iterTask : taskList) {
 	    	
 	    	csvText += iterTask.autoId + ',';            
-	    	csvText += iterTask.Sprint + ',';
 	    	
 	    	if (iterTask.Milestone)            
 	    		csvText += 'Milestone,';
@@ -1024,9 +1009,6 @@ public with sharing class ProjectTaskListController {
             
  		// Sprint
         public String sprint { get; set; }            
-
- 		// Rank
-        public String rank { get; set; }            
 
 		// Status
         public String status { get; set; }
@@ -1202,10 +1184,6 @@ public with sharing class ProjectTaskListController {
 			if(status != null && !status.equals(''))
 				filterContent += 'Status:' + status + '|';
 				
-			//Filter by Rank
-			if(rank != null && !rank.equals(''))
-				filterContent += 'Rank:' + rank + '|';
-
 			//Filter by Sprint
 			System.debug( '$>>' + sprint );
 			if(sprint != null && !sprint.equals(''))
@@ -1263,18 +1241,6 @@ public with sharing class ProjectTaskListController {
 					else
 						status = '';
 
-					//By Rank
-					if(value[0].equals('Rank'))
-						rank = value[1];
-					else
-						rank = '';
-
-					//By Sprint
-					if(value[0].equals('Sprint'))
-						sprint = value[1];
-					else
-						sprint = '';
-						
 					//By Priority
 					if(value[0].equals('Priority'))
 						priority = value[1];

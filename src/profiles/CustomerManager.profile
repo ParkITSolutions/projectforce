@@ -1472,16 +1472,6 @@
         <hidden>true</hidden>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectTask__c.Rank__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectTask__c.Sprint__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
         <editable>true</editable>
         <field>ProjectTask__c.StartDate__c</field>
     </fieldLevelSecurities>

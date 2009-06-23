@@ -320,21 +320,14 @@
 				                            </apex:selectList>
 						            	</div>
 						            	<div class="elemFilterSmall">
-								           	Sprint:<br /> 
-								           	<apex:inputText value="{!filter.sprint}"  styleClass="elemFormFilterSmall"/>
-							            </div>				
-						            	<div class="elemFilterSmall">
-				                            Estimate:<br />
+				                            Duration:<br />
 							            	<apex:inputText value="{!filter.estimate}"  styleClass="elemFormFilterSmall"/>
 						            	</div>				            	
-						            	<div class="elemFilterSmall">
-							            	Rank:<br /> 
-							            	<apex:inputText value="{!filter.rank}"  styleClass="elemFormFilterSmall"/>
-						            	</div><br />
 						            	<div class="elemFilter">
 							            	Task Name:<br /> 
 							            	<apex:inputText value="{!filter.name}"  styleClass="elemFormFilter"/>
 						            	</div>
+										<br / >
 							        	<div class="elemFilter">
 				                            Priority:<br />
 				                            <apex:selectList value="{!filter.priority}"size="1" styleClass="elemFormFilter">
@@ -432,32 +425,6 @@
 	                                            </apex:outputpanel>
 	                                        </apex:outputpanel>
 	                                    </th>
-										<th width="5%" style="text-align: center">
-	                                    	<apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Sprint" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'Sprint__c';" oncomplete="showHideOverlay();">
-	                                            <apex:param name="sortBy" value="Sprint__c" assignTo="{!sortBy}"/>
-	                                        </apex:commandLink>&nbsp;
-	                                        <apex:outputpanel rendered="{!IF(sortBy == 'Sprint',true,false)}">
-	                                            <apex:outputpanel rendered="{!sortByDesc}">
-	                                                <img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
-	                                            </apex:outputpanel>
-	                                            <apex:outputpanel rendered="{!NOT(sortByDesc)}">
-	                                                <img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
-	                                            </apex:outputpanel>
-	                                        </apex:outputpanel>
-	                                    </th>  
-	                                    <th width="5%" style="text-align: center">
-	                                       	<apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Rank" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay'); showHideOverlay(); currentSortCriteria = 'Rank__c';" oncomplete="showHideOverlay();">
-	                                        	<apex:param name="sortBy" value="Rank__c" assignTo="{!sortBy}"/> 
-	                                        </apex:commandLink>&nbsp;
-	                                        <apex:outputpanel rendered="{!IF(sortBy == 'Rank',true,false)}">
-	                                            <apex:outputpanel rendered="{!sortByDesc}">
-	                                                <img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
-	                                            </apex:outputpanel>
-	                                            <apex:outputpanel rendered="{!NOT(sortByDesc)}">
-	                                                <img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
-	                                            </apex:outputpanel>
-	                                        </apex:outputpanel>
-	                                    </th>
 	                                    <th width="7%" style="text-align: center">
 	                                           <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Priority" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'Priority__c';" oncomplete="showHideOverlay();">
 	                                            <apex:param name="sortBy" value="Priority__c" assignTo="{!sortBy}"/>
@@ -484,21 +451,7 @@
 	                                            </apex:outputpanel>
 	                                        </apex:outputpanel>
 	                                    </th>
-	
-	                                    <th width="10%" >
-	                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Status" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'Status';" oncomplete="showHideOverlay();">
-	                                            <apex:param name="sortBy" value="Status__c" assignTo="{!sortBy}"/>
-	                                        </apex:commandLink>&nbsp;
-	                                        <apex:outputpanel rendered="{!IF(sortBy == 'status',true,false)}">
-	                                            <apex:outputpanel rendered="{!sortByDesc}">
-	                                                <img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" />
-	                                            </apex:outputpanel>
-	                                            <apex:outputpanel rendered="{!NOT(sortByDesc)}">
-	                                                <img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_top.gif')}" />
-	                                            </apex:outputpanel>
-	                                        </apex:outputpanel>
-	                                    </th>
-	                                    
+                                    
 	                                    <th width="20%" >
 	                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Assigned to" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'User__c.Name';" oncomplete="showHideOverlay();">
 	                                            <apex:param name="sortBy" value="User__c.Name" assignTo="{!sortBy}"/>
@@ -526,7 +479,7 @@
 	                                        </apex:outputpanel>
 	                                    </th> 
 	                                    <th width="5%" style="text-align: center">
-	                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Est Hrs" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'Duration__c';" oncomplete="showHideOverlay();">
+	                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Duration" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'Duration__c';" oncomplete="showHideOverlay();">
 	                                            <apex:param name="sortBy" value="Duration__c" assignTo="{!sortBy}"/>
 	                                        </apex:commandLink>&nbsp;
 	                                        <apex:outputpanel rendered="{!IF(sortBy == 'est',true,false)}">
@@ -581,14 +534,6 @@
 	                                        		<a href="projecttaskdetail?id={!task.id}" class="">{!task.autoId}</a>
 	                                        	</div>	
 	                                        </td>
-	                                        <!-- Sprint Name -->                          
-	                                        <td align="center" class="imgColumns">
-	                                            {!task.Sprint}
-	                                        </td>  
-	                                        <!-- Task Ranks -->                          
-	                                        <td align="center" class="imgColumns">
-	                                            {!task.rank}
-	                                        </td> 
 	                                        <!-- Task Priority -->
 	                                        <td class="imgColumns" align="center">
 	                                            <apex:outputpanel rendered="{!IF(task.Priority == 'High',true,false)}" layout="block">
@@ -610,10 +555,6 @@
 	                                        <!-- Task Name -->                          
 	                                        <td class="proj_task_title">
 	                                            <div><a href="projecttaskdetail?id={!task.id}" class="">{!task.Name}</a></div>
-	                                        </td> 
-	                                        <!-- Task Status -->                          
-	                                        <td class="proj_task_title">
-	                                            <div>{!task.status}</div>
 	                                        </td> 
 	                                        <!-- Task Asignee -->
 	                                        <td class="proj_task_assigned"> 
