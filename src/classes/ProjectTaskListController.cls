@@ -458,184 +458,163 @@ public with sharing class ProjectTaskListController {
     public String getDomain(){
     	return this.domain;
     }
+    
     /**
      * This is a temporary method to cover us until dynamic apex is back.  This will use hard coded
      * SOQL statements in place of the dynamic statements
      */
     public List<ProjectTask__c> createSortedTaskList () {
     	
-        	 setAllUsers();
-        	List<ProjectTask__c> resultTaskList = new List<ProjectTask__c>();
-        
-
-			String query = '';
-			String filter = '';
+    	setAllUsers();
+        List<ProjectTask__c> resultTaskList = new List<ProjectTask__c>();
+			
+		/* ### Apply filter ### */
+			
+		String filter = '';
        		
-			//Filter by Name
-			if(advanceFilter.name != null && !advanceFilter.name.equals(''))
-				filter += ' and Name like \'' + advanceFilter.name + '%\'';
+		//Filter by Name
+		if(advanceFilter.name != null && !advanceFilter.name.equals(''))
+			filter += ' and Name like \'' + advanceFilter.name + '%\'';
 				
-			//Filter by Pririty
-			if(advanceFilter.priority != null && !advanceFilter.priority.equals(''))
-				filter += ' and Priority__c = \'' + advanceFilter.priority + '\'';				
-			
-			//Filter by Status
-			if(advanceFilter.status != null && !advanceFilter.status.equals(''))
-				filter += ' and Status__c = \'' + advanceFilter.status + '\'';
+		//Filter by Pririty
+		if(advanceFilter.priority != null && !advanceFilter.priority.equals(''))
+			filter += ' and Priority__c = \'' + advanceFilter.priority + '\'';				
+		
+		//Filter by Status
+		if(advanceFilter.status != null && !advanceFilter.status.equals(''))
+			filter += ' and Status__c = \'' + advanceFilter.status + '\'';
 				
-			//Filter by Estimate
-			if(advanceFilter.estimate != null && !advanceFilter.estimate.equals(''))
-				filter += ' and Duration__c = ' + Double.valueOf(advanceFilter.estimate);				
+		//Filter by Estimate
+		if(advanceFilter.estimate != null && !advanceFilter.estimate.equals(''))
+			filter += ' and Duration__c = ' + Double.valueOf(advanceFilter.estimate);				
 
-			//Set flag true if filter is applyed
-			if(!filter.equals('')){
-				filterApplyed = true;
-			}
-			else
-				filterApplyed = false;      			
-
-			query =		' SELECT Project__c, Priority__c, PercentCompleted__c, createdById, OwnerId, Status__c, Id__c, Name,';
-			query +=	' Milestone__c, Id, EndDate__c, Duration__c, (SELECT Id, User__r.Name, User__r.Id, User__c  FROM ProjectsAssignees__r),';
-			query +=	' Description__c FROM ProjectTask__c WHERE Project__c = \'' + PROJECTID + '\'' + filter;
+		//Set flag true if filter is applyed
+		if(!filter.equals('')){
+			filterApplyed = true;
+		}
+		else
+			filterApplyed = false;
 			
-			if( sortBy != 'Priority__c' && !sortBy.equals('User__c.Name'))
-				query +=	' ORDER BY ' + sortBy + ' ' + ( sortByDesc ? ' DESC ' : ' ASC ');
-						
+	    /* ### Build dynamic query ### */
+		    
+	    Map<String, Schema.SObjectField> projectFields = Schema.SObjectType.ProjectTask__c.fields.getMap();
+	    String fields = '';
+	    String query = '';
+	    
+	    //Set object fields
+	    for(Schema.SObjectField field : projectFields.values()){
+	    	if(field != null)
+	    		fields += (field + ', ');
+	    }				
 			
-			System.debug('QUERY: ' + query + '>' + sortBy );
-			
-			//Execute query
-			resultTaskList = Database.query(query);
-			
-	        // Sorting by priority or assignee name can't be implemented in the SOQL query
-	        // and require a bit of tricky
-	        
-	       
-	        
-	        if (sortBy == 'Priority__c'){
-	            insertionSort(resultTaskList,sortByDesc);
-			}else if (sortBy.equals('User__c.Name')){
-				/*
-				List<String> assigneeName = new List<String>();
-				Map<String,ProjectTask__c> tempResultTaskList = new Map<String,ProjectTask__c>();
-				for( ProjectTask__c p : resultTaskList ){
-					if( p.ProjectsAssignees__r.size() > 0 ){
-						assigneeName.add( p.ProjectsAssignees__r[0].User__r.Name);
-						tempResultTaskList.put( p.ProjectsAssignees__r[0].User__r.Name, p);
-					}
-					else{
-						assigneeName.add( '' );
-						tempResultTaskList.put( '' , p);
-					}
-				}
-				
-				assigneeName.sort();
-				resultTaskList.clear();
-				
-                if (sortByDesc)
-					for( Integer k = assigneeName.size() -1; k > -1; k-- ){
-                		resultTaskList.add( tempResultTaskList.get( assigneeName.get( k )));
-                		tempResultTaskList.remove( assigneeName.get( k ));
-					}	
-                else
-					for( String j : assigneeName ){
-                		resultTaskList.add( tempResultTaskList.get( j ));
-                		tempResultTaskList.remove( j );
-					}	
-				
-				*/
-				
-				
-	   			
-	            Integer n;
-	            Integer i;
-	            Integer j;
-	            Integer k;
-	            String tempName = '';
-	            
-	            n = resultTaskList.size() - 1;
-	            for (i = 1; i <= n; i++) {  
-	                for (j = n; j >= i ; j--) {
-	                    if (sortByDesc) {
-	                    	if( resultTaskList[j-1].ProjectsAssignees__r.size() > 0 && resultTaskList[j].ProjectsAssignees__r.size() > 0 ){
-		                    	if (mapAsignees.get(resultTaskList[j].ProjectsAssignees__r[0].User__c).name >=
-		                    		mapAsignees.get(resultTaskList[j-1].ProjectsAssignees__r[0].User__c).name) {
-		                        	ProjectTask__c tempProjectTask;
-		                        	
-		                        	tempProjectTask = resultTaskList[j-1];
-		                        	resultTaskList[j-1] = resultTaskList[j];
-		                        	resultTaskList[j] = tempProjectTask;
-		                        }
-	                    	}else{
-	                    		k = 1;
-	                    		for( Integer l = j-1; l > 0; l--){
-	                    			if( resultTaskList[ j-k ].ProjectsAssignees__r.size() > 0 ){
-		                    			tempName = mapAsignees.get(resultTaskList[j-k].ProjectsAssignees__r[0].User__c).name;
-		                    			break;
-		                    		}else{
-		                    			tempName = '';
-		                    		}
-									k++;					
+		//Build query statement
+		query += 'select ' + fields + '(SELECT Id, User__r.Name, User__r.Id, User__c FROM ProjectsAssignees__r)';
+		query += ' from ProjectTask__c where Project__c = \'' + PROJECTID + '\'' + filter;
+		
+		//Set order clause
+		if( sortBy != 'Priority__c' && !sortBy.equals('User__c.Name'))
+			query +=	' order by ' + sortBy + ' ' + ( sortByDesc ? ' desc ' : ' asc ');
+					
+		//Execute query
+		resultTaskList = Database.query(query);
+		
+        /* ### Apply Sort ### */
+        
+        // Sorting by priority or assignee name can't be implemented in the SOQL query
+        // and require a bit of tricky
+        if (sortBy == 'Priority__c'){
+            insertionSort(resultTaskList,sortByDesc);
+		}else if (sortBy.equals('User__c.Name')){
+   			
+            Integer n;
+            Integer i;
+            Integer j;
+            Integer k;
+            String tempName = '';
+            
+            n = resultTaskList.size() - 1;
+            for (i = 1; i <= n; i++) {  
+                for (j = n; j >= i ; j--) {
+                    if (sortByDesc) {
+                    	if( resultTaskList[j-1].ProjectsAssignees__r.size() > 0 && resultTaskList[j].ProjectsAssignees__r.size() > 0 ){
+	                    	if (mapAsignees.get(resultTaskList[j].ProjectsAssignees__r[0].User__c).name >=
+	                    		mapAsignees.get(resultTaskList[j-1].ProjectsAssignees__r[0].User__c).name) {
+	                        	ProjectTask__c tempProjectTask;
+	                        	
+	                        	tempProjectTask = resultTaskList[j-1];
+	                        	resultTaskList[j-1] = resultTaskList[j];
+	                        	resultTaskList[j] = tempProjectTask;
+	                        }
+                    	}else{
+                    		k = 1;
+                    		for( Integer l = j-1; l > 0; l--){
+                    			if( resultTaskList[ j-k ].ProjectsAssignees__r.size() > 0 ){
+	                    			tempName = mapAsignees.get(resultTaskList[j-k].ProjectsAssignees__r[0].User__c).name;
+	                    			break;
+	                    		}else{
+	                    			tempName = '';
 	                    		}
-								if (tempName >= '') {
-		                        	ProjectTask__c tempProjectTask;
-		                        	
-		                        	tempProjectTask = resultTaskList[j-k];
-		                        	resultTaskList[j-k] = resultTaskList[j];
-		                        	resultTaskList[j] = tempProjectTask;
-		                        }	                    	
+								k++;					
+                    		}
+							if (tempName >= '') {
+	                        	ProjectTask__c tempProjectTask;
+	                        	
+	                        	tempProjectTask = resultTaskList[j-k];
+	                        	resultTaskList[j-k] = resultTaskList[j];
+	                        	resultTaskList[j] = tempProjectTask;
+	                        }	                    	
+                    	}
+                    } else {
+                    	if( resultTaskList[j-1].ProjectsAssignees__r.size() > 0 && resultTaskList[j].ProjectsAssignees__r.size() > 0 ){
+	                       	if (mapAsignees.get(resultTaskList[j].ProjectsAssignees__r[0].User__c).name <=
+	                    		mapAsignees.get(resultTaskList[j-1].ProjectsAssignees__r[0].User__c).name) {
+	                        	ProjectTask__c tempProjectTask;
+	                        	
+	                        	tempProjectTask = resultTaskList[j-1];
+	                        	resultTaskList[j-1] = resultTaskList[j];
+	                        	resultTaskList[j] = tempProjectTask;
 	                    	}
-	                    } else {
-	                    	if( resultTaskList[j-1].ProjectsAssignees__r.size() > 0 && resultTaskList[j].ProjectsAssignees__r.size() > 0 ){
-		                       	if (mapAsignees.get(resultTaskList[j].ProjectsAssignees__r[0].User__c).name <=
-		                    		mapAsignees.get(resultTaskList[j-1].ProjectsAssignees__r[0].User__c).name) {
-		                        	ProjectTask__c tempProjectTask;
-		                        	
-		                        	tempProjectTask = resultTaskList[j-1];
-		                        	resultTaskList[j-1] = resultTaskList[j];
-		                        	resultTaskList[j] = tempProjectTask;
-		                    	}
-	                    	}else{
-	                    		k = 1;
-	                    		for( Integer l = j-1; l > 0; l--){
-	                    			if( resultTaskList[ j-k ].ProjectsAssignees__r.size() > 0 ){
-		                    			tempName = mapAsignees.get(resultTaskList[j-k].ProjectsAssignees__r[0].User__c).name;
-		                    			break;
-		                    		}else{
-		                    			tempName = '';
-		                    		}
-									k++;					
+                    	}else{
+                    		k = 1;
+                    		for( Integer l = j-1; l > 0; l--){
+                    			if( resultTaskList[ j-k ].ProjectsAssignees__r.size() > 0 ){
+	                    			tempName = mapAsignees.get(resultTaskList[j-k].ProjectsAssignees__r[0].User__c).name;
+	                    			break;
+	                    		}else{
+	                    			tempName = '';
 	                    		}
-								if (tempName <= '') {
-		                        	ProjectTask__c tempProjectTask;
-		                        	
-		                        	tempProjectTask = resultTaskList[j-k];
-		                        	resultTaskList[j-k] = resultTaskList[j];
-		                        	resultTaskList[j] = tempProjectTask;
-		                        }	                    	
-	                    	}  
-	                    }
-	                }
-	            }
-	        }
+								k++;					
+                    		}
+							if (tempName <= '') {
+	                        	ProjectTask__c tempProjectTask;
+	                        	
+	                        	tempProjectTask = resultTaskList[j-k];
+	                        	resultTaskList[j-k] = resultTaskList[j];
+	                        	resultTaskList[j] = tempProjectTask;
+	                        }	                    	
+                    	}  
+                    }
+                }
+            }
+        }
 			
-			//Filter by Assignee - Ninja Way 
-			if(advanceFilter.assignee != null && !advanceFilter.assignee.equals('')){
-				filterApplyed = true;
-				List<ProjectTask__c> teampTaskList = new List<ProjectTask__c>(); 
-				//Iterate Task
-				for(ProjectTask__c task : resultTaskList){
-					//Iterate Assignees
-					for(ProjectAssignee__c taskAssignee : task.ProjectsAssignees__r){
-						if(taskAssignee.User__c == advanceFilter.assignee){
-							teampTaskList.add(task);
-						}
+		//Filter by Assignee - Ninja Way 
+		if(advanceFilter.assignee != null && !advanceFilter.assignee.equals('')){
+			filterApplyed = true;
+			List<ProjectTask__c> teampTaskList = new List<ProjectTask__c>(); 
+			//Iterate Task
+			for(ProjectTask__c task : resultTaskList){
+				//Iterate Assignees
+				for(ProjectAssignee__c taskAssignee : task.ProjectsAssignees__r){
+					if(taskAssignee.User__c == advanceFilter.assignee){
+						teampTaskList.add(task);
 					}
 				}
-				resultTaskList.clear();
-				resultTaskList = teampTaskList;
 			}
-     
+			resultTaskList.clear();
+			resultTaskList = teampTaskList;
+		}
+		
 		return resultTaskList;
     }
     
@@ -683,7 +662,6 @@ public with sharing class ProjectTaskListController {
             current_prio = mapPriority(listToOrder.get(i).Priority__c,sortByDesc);
             
             j = i; // index of the end of sorted region
-            
             while ((j > 0) && (mapPriority(listToOrder.get(j-1).Priority__c,sortByDesc) > current_prio)){
                 listToOrder.set(j,listToOrder.get(j-1));
                 j = j - 1;
@@ -706,7 +684,15 @@ public with sharing class ProjectTaskListController {
         List<TaskDetails> listAllMilestones = new List<TaskDetails>();
         String opciones = this.getOption();
 
+       	//Test for dynamic columns
+		List<String> selectedFields = new List<String> {'Name', 'Priority__c', 'EndDate__c'};
+        
         for(Integer i=0; i < resultTaskList.size();i++){
+            
+            //Test for dynamic columns
+            for(String field : selectedFields){
+            	System.debug('HERE: ' + field + ' value: ' + resultTaskList[i].get(field));
+            }
             
             TaskDetails TaskDetail = new TaskDetails();
             TaskDetail.id = resultTaskList[i].Id;

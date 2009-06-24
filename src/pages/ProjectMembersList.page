@@ -71,10 +71,6 @@
 
 	</script>
 	<style>
-	
-		div#quickLinksContainer{
-			display: block;
-		}
 		@media screen and (-webkit-min-device-pixel-ratio:0) {
 			div#btnsDiv {
 				padding-right: 4.5%;
