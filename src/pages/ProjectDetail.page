@@ -4,7 +4,6 @@
     <script type="text/javascript" src="/soap/ajax/11.1/connection.js" ></script>
     <script>
         var API_SESSION_ID = '{!$Api.Session_ID}';
-        
     </script>
     
     <script type="text/javascript" src="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}" ></script>
@@ -41,7 +40,8 @@
         var globalInfoBig = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/infoBig.gif')}';
         var globalCheckNew = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}';
         var userIsManager = '{!isManager}';
-    </script>
+
+	</script>
     <style>
     	.labelCol{
     		vertical-align: top;
@@ -63,7 +63,7 @@
          
             <apex:outputpanel layout="block" styleclass="breadCrumbs">
                 <div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
-				<a id="projectNameBreadcrumb"  href="#"><script>trunkText('{!Teamspace.Name}',24);</script></a> &gt;										
+				<a id="projectNameBreadcrumb"  href="#"><script>trunkText('{!projectName}',24);</script></a> &gt;										
 					<apex:outputpanel layout="block" rendered="{!IF(LEN(Teamspace.Name) > 24,true,false)}" 
 					style="display: none;z-index:9999;" styleClass="mouseOverInfo">
 						<div class="body">{!Teamspace.Name}</div>
@@ -169,5 +169,6 @@
         	$$( '.swirlyDetail' )[0].show();        	
         }
         var userIsManager = '{!isManager}';
+
     </script>
 </apex:page>

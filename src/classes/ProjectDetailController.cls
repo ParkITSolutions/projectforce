@@ -53,6 +53,19 @@ public with sharing class ProjectDetailController
     public static UserPermissions getUserPermissions () {
         return userPermission;
     }
+
+    /**
+    *@return String
+    */
+    public String getProjectName(){
+		String pName;
+		pName = [Select Id, Name from Project2__c where id =: teamIdParam].Name;    	
+		
+		if( pName.length() > 24 )
+		pName = pName.substring( 0, 23 );
+				
+		return pName.replaceAll( '\'', '&#39;' );
+    }
      
 	/**
     *@return boolean IsManager
@@ -133,7 +146,7 @@ public with sharing class ProjectDetailController
     */
     public void getTeamDetail(){
         try {
-            teamspace = [Select t.OwnerId, t.Name, t.LastModifiedDate, t.LastModifiedById, t.IsDeleted, t.Id, t.Description__c, t.CreatedDate, t.CreatedById, t.Type__c from Project2__c t where id =: teamIdParam];
+           		teamspace = [Select t.OwnerId, t.Name, t.LastModifiedDate, t.LastModifiedById, t.IsDeleted, t.Id, t.Description__c, t.CreatedDate, t.CreatedById, t.Type__c from Project2__c t where id =: teamIdParam];
         } catch(Exception e ){
             throw e;
         }   
