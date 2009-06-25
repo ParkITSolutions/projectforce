@@ -67,7 +67,7 @@
 		<div align="center"  class="breadCrumbAndButtons" style="height: 30px!important;">
 			<div class="breadcrumbs"  align="center">
 	          <div class="breadCrumbs">
-	            <a  href="/apex/ProjectDetail?id={!IdProject}" title="{!NameProject}"><script>trunkText("{!NameProject}",24);</script> </a> > <span class="breadCrumbsLast">Subscriptions</span>
+	            <a  href="/apex/ProjectDetail?id={!IdProject}" title="{!NameProject}"><apex:outputText escape="true" value="{!NameProject}" /> </a> > <span class="breadCrumbsLast">Subscriptions</span>
 	          </div>
 	
 				<apex:outputpanel rendered="{!IF(subscriptionCount == 0, true, false)}">

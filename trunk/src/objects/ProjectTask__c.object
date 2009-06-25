@@ -159,6 +159,13 @@
     <searchLayouts/>
     <sharingModel>Private</sharingModel>
     <validationRules>
+        <fullName>Lower_than_100</fullName>
+        <active>true</active>
+        <errorConditionFormula>Duration__c  &gt; 99</errorConditionFormula>
+        <errorDisplayField>Duration__c</errorDisplayField>
+        <errorMessage>The max value is 99</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>PercentNotNegative</fullName>
         <active>true</active>
         <errorConditionFormula>PercentCompleted__c  &lt; 0</errorConditionFormula>

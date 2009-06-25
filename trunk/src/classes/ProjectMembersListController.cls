@@ -242,7 +242,11 @@ public without sharing class ProjectMembersListController {
 	public String getProjectName () {
 		Project2__c currentProject = [select Name from Project2__c where id=: idProject];
 		String pName = currentProject.Name;
+
+		if( pName.length() > 24 )
+		pName = pName.substring( 0, 23 );
 		return pName;	 
+		
 	}
 	
 	/**
