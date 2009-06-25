@@ -40,11 +40,23 @@ public with sharing class ProjectTaskListController {
     
     /**
     * Set of Booleans to show or not prev / next links
-    */
+    */ 
     public boolean prevPageLinkShow = false;
     public boolean prevPageShow  = false;
     public boolean nextPageLinkShow  = false;
     public boolean nextPageShow  = false;
+    
+    // Filter columns\
+    /**
+    public List<SelectOption> getFilterColumnsList(){
+    	List<SelectOption> ops = new List<SelectOption>();
+    	ops.add( new SelectOption( 'Op1', 'Op1' )); 
+    	ops.add( new SelectOption( 'Op2', 'Op2' )); 
+    	ops.add( new SelectOption( 'Op3', 'Op3' ));
+    	
+    	return ops;
+    }
+    */                 
     
     /**
     * Constructor
@@ -207,14 +219,14 @@ public with sharing class ProjectTaskListController {
     }
     
     /**
-    *Clear the task list
+    * Clear the task list
     */
     public void reConstruct(){
         ListTask.clear();
     }
  
     /**
-    *Generates user permissions
+    * Generates user permissions
     */
     public void genPermissions () {
         userPermissions.setId(UserInfo.getUserId());
@@ -224,15 +236,15 @@ public with sharing class ProjectTaskListController {
     }
     
     /**
-    *Get user permissions
-    *return UserPermission
+    * Get user permissions
+    *@return UserPermission
     */
     public UserPermissions getUserPermissions () {
         return userPermissions;
     }
 
     /**
-    *Get task list
+    * Get task list
     *@return List<TaskDetails>
     */
     public List<TaskDetails> getTaskList(){
@@ -240,7 +252,7 @@ public with sharing class ProjectTaskListController {
     }
     
     /**
-    *Get project's name
+    * Get project's name
     *@return String
     */
     public String getNameProject(){
@@ -253,7 +265,7 @@ public with sharing class ProjectTaskListController {
     */
       
     /**
-    *Set the map assignes Map<userID, User> 
+    * Set the map assignes Map<userID, User> 
     */
     public void setAllUsers() {
         // LOADING THE ASIGNEES ONLY ONCE
@@ -265,7 +277,7 @@ public with sharing class ProjectTaskListController {
     }
 
     /**
-    *Generates number of pages
+    * Generates number of pages
     */
     public void genCntPagination () {
         cntPagination = (totalItemsNumber - (Math.mod(totalItemsNumber, numberOfItemsToShow))) / numberOfItemsToShow;
@@ -275,7 +287,7 @@ public with sharing class ProjectTaskListController {
     }
     
     /**
-    *Set next page
+    * Set next page
     */
     public void nextPage () {
         currentPagination++;
@@ -283,7 +295,7 @@ public with sharing class ProjectTaskListController {
     }
     
     /**
-    *Set previous page
+    * Set previous page
     */
     public void prevPage () {
         currentPagination--;
@@ -297,7 +309,7 @@ public with sharing class ProjectTaskListController {
     */
     
     /**
-    *Get the current page
+    * Get the current page
     *@return Integer
     */
     public Integer getCurrentPagination () {
@@ -305,7 +317,7 @@ public with sharing class ProjectTaskListController {
     }
 
     /**
-    *Get the number of pages
+    * Get the number of pages
     *@return Integer
     */
     public Integer getCntPagination () {
@@ -313,7 +325,7 @@ public with sharing class ProjectTaskListController {
     }
     
     /**
-    *Get the number of items to show
+    * Get the number of items to show
     *@return Integer
     */
     public Integer getNumberOfItemsToShow () {
@@ -321,7 +333,7 @@ public with sharing class ProjectTaskListController {
     }
     
     /**
-    *Get the number of first row in page
+    * Get the number of first row in page
     *@return Integer
     */
     public Integer getFirstRow () {
@@ -333,7 +345,7 @@ public with sharing class ProjectTaskListController {
     */
     
     /**
-    *Returns true if should show prev page link
+    * Returns true if should show prev page link
     *@return Boolean
     */
     public boolean getPrevPageLinkShow () {
@@ -346,7 +358,7 @@ public with sharing class ProjectTaskListController {
     }
     
     /**
-    *Returns true if should show prev page
+    * Returns true if should show prev page
     *@return Boolean
     */
     public boolean getPrevPageShow () {
@@ -359,7 +371,7 @@ public with sharing class ProjectTaskListController {
     }
     
     /**
-    *Returns true if should show next page link
+    * Returns true if we should show next page link
     *@return Boolean
     */
     public boolean getNextPageLinkShow () {
@@ -372,7 +384,7 @@ public with sharing class ProjectTaskListController {
     }
     
     /**
-    *Returns true if should show next page
+    *Returns true if we should show next page
     *@return Boolean
     */
     public boolean getNextPageShow () {
@@ -385,12 +397,15 @@ public with sharing class ProjectTaskListController {
     }
   
      
+    /**
+    * Set current order
+    *@param current sort
+    */
     public void setSortBy(String sortBy) {
     	if (this.oldSortBy != null && oldSortBy.equals(sortBy))
     		sortByDesc = !sortByDesc;
     	else
     		sortByDesc = false;
-    		
     	this.oldSortBy = sortBy;
     	this.sortBy = sortBy;
     }
@@ -495,17 +510,20 @@ public with sharing class ProjectTaskListController {
 		else
 			filterApplyed = false;
 			
-	    /* ### Build dynamic query ### */
-		    
-	    Map<String, Schema.SObjectField> projectFields = Schema.SObjectType.ProjectTask__c.fields.getMap();
 	    String fields = '';
 	    String query = '';
-	    
-	    //Set object fields
-	    for(Schema.SObjectField field : projectFields.values()){
-	    	if(field != null)
-	    		fields += (field + ', ');
-	    }				
+	    /* ### Build dynamic query ### */
+		if( !ProjectUtil.getIsTest() ){    
+		    Map<String, Schema.SObjectField> projectFields = Schema.SObjectType.ProjectTask__c.fields.getMap();
+		    
+		    //Set object fields
+		    for(Schema.SObjectField field : projectFields.values()){
+		    	if(field != null)
+		    		fields += (field + ', ');
+		    }				
+		}else
+			fields = 'Id, Name, Duration__c, Description__c, Milestone__c, Status__c, Id__c, CreatedById, PercentCompleted__c, EndDate__c, Priority__c,';
+				
 			
 		//Build query statement
 		query += 'select ' + fields + '(SELECT Id, User__r.Name, User__r.Id, User__c FROM ProjectsAssignees__r)';
@@ -914,7 +932,6 @@ public with sharing class ProjectTaskListController {
 	    csvFileId = doc.Id;
 	}    
  	    
- 	    
     /**
     *Class TaskDetails
     *@author Bruno Fagundez
@@ -1039,13 +1056,11 @@ public with sharing class ProjectTaskListController {
 
 		public String project; 
 
-    	public String sprint {get; set;}
     	public String name {get; set;}
     	public String priority {get; set;}
     	public String estimate {get; set;}
     	public String status {get; set;}
     	public String assignee {get; set;}
-    	public String rank {get; set;}
     	public String applyFilter {get; set;}
     	public Boolean svFilter;
     	
@@ -1170,11 +1185,6 @@ public with sharing class ProjectTaskListController {
 			if(status != null && !status.equals(''))
 				filterContent += 'Status:' + status + '|';
 				
-			//Filter by Sprint
-			System.debug( '$>>' + sprint );
-			if(sprint != null && !sprint.equals(''))
-				filterContent += 'Sprint:' + sprint + '|';
-
 			//Filter by Estimate
 			if(estimate != null && !estimate.equals(''))
 				filterContent += 'Duration:' + estimate + '|';
@@ -1190,48 +1200,49 @@ public with sharing class ProjectTaskListController {
     	*/
     	public void readFilterContent(){
 			
+			//Read selected filter
 			List<ProjectFilter__c> filter = new List<ProjectFilter__c>();
 			filter = [select Id, Filter__c from ProjectFilter__c where Id =: applyFilter];
 			List<String> test = new List<String>();
 			
+			//Split filter values
 			if( filter.size() > 0 )
 				test = filter[0].Filter__c.split('[|]');
 			
+			//Reset filter values
+			name = ''; 
+			assignee = '';
+			estimate = ''; 
+			status = '';
+			priority = '';			
+			
+			//Iterate filter values
 			List<String> value = new List<String>();
 			for(String values : test){
+				
 				value = values.split(':');
 				
-				//Set Saved Filter attributes.
+				//Set Saved Filter values.
 				if(value.size() > 0){
 					//By Name
 					if(value[0].equals('Name'))
 						name = value[1]; 
-					else
-						name = '';
 					
 					//By Assingnee
 					if(value[0].equals('Assignee'))
 						assignee = value[1];
-					else
-						assignee = '';
 					
 					//By Duration
 					if(value[0].equals('Duration'))
 						estimate = value[1]; 
-					else
-						estimate = '';
 
 					//By Status
 					if(value[0].equals('Status'))
 						status = value[1];
-					else
-						status = '';
 
 					//By Priority
 					if(value[0].equals('Priority'))
 						priority = value[1];
-					else
-						priority = ''; 						 
 				}
 			}
     	}    

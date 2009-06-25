@@ -685,6 +685,45 @@
 		</div>
 	</div>
 
+    <!-- ### Filter columns Overlay ### -->					           		
+	<div id="filteColumns" style="display: none;" class="overlayForm">
+		
+		<!-- Overlay Title -->
+		<div class="overlayTitleContent">
+			<div class="overlayTitle">Filter Columns</div> 
+			<div class="overlayCloseEvent">
+				<a href="Javascript:;" onclick="modal.close();"> 
+					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}"	alt="Close Window" title="Close Window" /> 
+				</a> 
+			</div>
+		</div>
+
+		<div id="overlayMain" class="overlayMainContent">
+			<apex:form onsubmit="return validateFilterName();">
+				<!-- Overlay Form Content -->
+				<div class="overlayFormContent">
+					<div id="multiSelLeft" style="float: left;">
+					</div>
+					<div id="multiSelCenter" style="float: left;">
+						<input type="button" value="&gt;&gt;" />
+						<br />
+						<input type="button" value="&lt;&lt;" />
+					</div>
+					<div id="multiSelRight">
+					</div>
+				</div>
+				<div class="overlaySeparateLine"></div>
+				<!-- Saven and Cancel Buttons -->
+				<div class="overlayFromButtons" align="center">
+					<apex:commandButton id="DeleteAssigneeBtn" styleClass="btn allButtons" style="background:#21637D none repeat scroll 0 0 !important; !important;" action="{!Filter.saveFilter}" value="Save Filter" onclick="" rerender="AdvancedFilterContainer" oncomplete="showHideOverlay();" >
+					<apex:param name="svFil1" value="true" assignTo="{!filter.SvFilter}"/>
+					</apex:commandButton>						
+			        <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="modal.close();" value="Cancel"/>
+				</div>
+			</apex:form>
+		</div>
+	</div>
+
     <script>
         showActionSuccess();
         readPortalCSSRules();
