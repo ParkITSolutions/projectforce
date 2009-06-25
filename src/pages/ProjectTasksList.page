@@ -215,7 +215,7 @@
         <div align="center" class="breadCrumbAndButtons">
           	 <apex:outputpanel layout="block" styleclass="breadCrumbs">
              	<div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
-					<a  href="/apex/ProjectDetail?id={!ProjectId}" title="{!NameProject}"><script>trunkText("{!NameProject}",24);</script> </a> > 									
+					<a  href="/apex/ProjectDetail?id={!ProjectId}" title="{!NameProject}"><apex:outputText escape="true" value="{!NameProject}" /></a> > 									
 					<apex:outputpanel layout="block" rendered="{!IF(LEN(NameProject) > 24,true,false)}" 
 					style="display: none;z-index:9999;" styleClass="mouseOverInfo">
 						<div class="body">{!NameProject}</div>
@@ -236,33 +236,47 @@
                     <div class="tableTopContainer" style="height: auto;">             
                         <div class="filterContainer" >
                         	<center>
-					            <apex:outputpanel styleClass="buttons"  layout="block" style="width:450px;" >
-					                <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
-					                    <a class="blackbutton"  onclick="fixedModalNewTask.open(); hideSelect();">
-					                        <span>New Task</span>
-					                    </a>
-					                </apex:outputpanel>
-					                <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
-					                    <a class="blackbutton"  onclick="fixedModalNewMilestone.open();hideSelect();">
-					                        <span>New Milestone</span>
-					                    </a>
-					                </apex:outputpanel>
-					                <apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
-					                        <apex:commandLink action="{!markComplete}" oncomplete="fadeUpdating();" rerender="auxProjectTaskListPanel" styleclass="blackbutton" onclick="bulkTaskCompleted('{!$Component.auxInputTextTop}');">
-					                            <span>Mark Complete</span>  
-					                        </apex:commandLink>
-					                        <apex:inputText id="auxInputTextTop" style="display:none;" value="{!idTaskToComplete}" />
-					                </apex:outputpanel>
-					                <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
-					                    <a class="blackbutton" href="/apex/ProjectTimeLine?id={!ProjectId}">
-					                        <span>Timeline</span>
-					                    </a>
-					                </apex:outputpanel>
-					                <apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
-					                        <a class="blackbutton" onclick="bulkTaskDelete();">
-					                            <span>Delete</span>
-					                        </a>
-					                </apex:outputpanel>
+					            <apex:outputpanel styleClass="buttons"  layout="block">
+					            	<table align="center" cellpadding="0" cellspacing="0">
+					            		<tr>
+					            			<td>
+								                <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
+								                    <a class="blackbutton"  onclick="fixedModalNewTask.open(); hideSelect();">
+								                        <span>New Task</span>
+								                    </a>
+								                </apex:outputpanel>
+								            </td>
+								            <td>
+								                <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
+								                    <a class="blackbutton"  onclick="fixedModalNewMilestone.open();hideSelect();">
+								                        <span>New Milestone</span>
+								                    </a>
+								                </apex:outputpanel>
+								            </td>
+								            <td>
+								                <apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
+								                        <apex:commandLink action="{!markComplete}" oncomplete="fadeUpdating();" rerender="auxProjectTaskListPanel" styleclass="blackbutton" onclick="bulkTaskCompleted('{!$Component.auxInputTextTop}');">
+								                            <span>Mark Complete</span>  
+								                        </apex:commandLink>
+								                        <apex:inputText id="auxInputTextTop" style="display:none;" value="{!idTaskToComplete}" />
+								                </apex:outputpanel>
+								            </td>
+								            <td>
+								                <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
+								                    <a class="blackbutton" href="/apex/ProjectTimeLine?id={!ProjectId}">
+								                        <span>Timeline</span>
+								                    </a>
+								                </apex:outputpanel>
+								            </td>
+								            <td>
+								                <apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
+								                        <a class="blackbutton" onclick="bulkTaskDelete();">
+								                            <span>Delete</span>
+								                        </a>
+								                </apex:outputpanel>
+								            </td>
+										</tr>
+									</table>
 								</apex:outputpanel>
 					             
 	                       		<!-- Pagination -->
@@ -608,30 +622,44 @@
 	                                </ul>                                
 	                            </div>
 	                        </apex:outputpanel>
-			             	<apex:outputpanel styleClass="buttons"  layout="block" style="width:450px;" >
-			                	<apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
-			                    	<a class="blackbutton"  onclick="fixedModalNewTask.open();hideSelect();">
-			                       		<span>New Task</span>
-			                    	</a>
-			                	</apex:outputpanel>
-			                	<apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
-			                    	<a class="blackbutton"  onclick="fixedModalNewMilestone.open();hideSelect();"><span>New Milestone</span></a>
-			                	</apex:outputpanel>
-			                	<apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
-			                         <apex:commandLink action="{!markComplete}" oncomplete="fadeUpdating();" rerender="auxProjectTaskListPanel" styleclass="blackbutton" onclick="bulkTaskCompleted('{!$Component.auxInputTextTop}');">
-			                            <span>Mark Complete</span>  
-			                        </apex:commandLink> 
-			                 	</apex:outputpanel>
-			                	<apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
-			                    	<a class="blackbutton" href="/apex/ProjectTimeLine?id={!ProjectId}">
-			                        	<span>Timeline</span>
-			                    	</a>
-			                	</apex:outputpanel>
-			                	<apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
-			                    	<a class="blackbutton" onclick="bulkTaskDelete();">
-			                        	<span>Delete</span>
-			                    	</a>
-			                	</apex:outputpanel>
+			             	<apex:outputpanel styleClass="buttons"  layout="block" >
+			             		<table align="center" cellpadding="0" cellspacing="0">
+			             			<tr>
+			             				<td>
+						                	<apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
+						                    	<a class="blackbutton"  onclick="fixedModalNewTask.open();hideSelect();">
+						                       		<span>New Task</span>
+						                    	</a>
+						                	</apex:outputpanel>
+						                </td>
+						                <td>
+						                	<apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
+						                    	<a class="blackbutton"  onclick="fixedModalNewMilestone.open();hideSelect();"><span>New Milestone</span></a>
+						                	</apex:outputpanel>
+						                </td>
+						                <td>
+						                	<apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
+						                         <apex:commandLink action="{!markComplete}" oncomplete="fadeUpdating();" rerender="auxProjectTaskListPanel" styleclass="blackbutton" onclick="bulkTaskCompleted('{!$Component.auxInputTextTop}');">
+						                            <span>Mark Complete</span>  
+						                        </apex:commandLink> 
+						                 	</apex:outputpanel>
+						                 </td>
+						                 <td>
+						                	<apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
+						                    	<a class="blackbutton" href="/apex/ProjectTimeLine?id={!ProjectId}">
+						                        	<span>Timeline</span>
+						                    	</a>
+						                	</apex:outputpanel>
+						                </td>
+						                <td>
+						                	<apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
+						                    	<a class="blackbutton" onclick="bulkTaskDelete();">
+						                        	<span>Delete</span>
+						                    	</a>
+						                	</apex:outputpanel>
+						                </td>
+						           </tr>
+						    	</table>
 			            	</apex:outputpanel>
 			          	</center>              
                     </div>

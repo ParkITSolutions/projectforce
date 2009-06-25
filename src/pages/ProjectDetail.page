@@ -63,7 +63,7 @@
          
             <apex:outputpanel layout="block" styleclass="breadCrumbs">
                 <div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
-				<a id="projectNameBreadcrumb"  href="#"><script>trunkText('{!projectName}',24);</script></a> &gt;										
+				<a id="projectNameBreadcrumb"  href="#"><apex:outputText escape="true" value="{!projectName}" /></a> &gt;										
 					<apex:outputpanel layout="block" rendered="{!IF(LEN(Teamspace.Name) > 24,true,false)}" 
 					style="display: none;z-index:9999;" styleClass="mouseOverInfo">
 						<div class="body">{!Teamspace.Name}</div>

@@ -19,6 +19,8 @@ public class ProjectSubscriptionController {
 	*/
 	public String getNameProject(){
 		String pName = [ select Id, Name from Project2__c where Id =: idProject limit 1 ].Name;
+		if( pName.length() > 24 )
+		pName = pName.substring( 0, 23 );
 		return pName;	
 	}
 	

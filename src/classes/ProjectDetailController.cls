@@ -64,7 +64,7 @@ public with sharing class ProjectDetailController
 		if( pName.length() > 24 )
 		pName = pName.substring( 0, 23 );
 				
-		return pName.replaceAll( '\'', '&#39;' );
+		return pName;//  .replaceAll( '\'', '&#39;' );
     }
      
 	/**

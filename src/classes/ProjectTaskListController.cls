@@ -256,7 +256,11 @@ public with sharing class ProjectTaskListController {
     *@return String
     */
     public String getNameProject(){
-        return project.Name;
+		String pName = project.Name;
+		if( pName.length() > 24 )
+		pName = pName.substring( 0, 23 );
+				
+		return pName;
     }
     
     /**
