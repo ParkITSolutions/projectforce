@@ -1788,7 +1788,6 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
-        <personAccountDefault>true</personAccountDefault>
         <recordType>Project2__c.Test</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>

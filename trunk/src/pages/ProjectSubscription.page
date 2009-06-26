@@ -39,6 +39,21 @@
 		.bPageHeader, .bPageHeader td.left {
 			background-color:#FFF!important;
 		}	
+		
+	    .blackbutton {
+			background:transparent url({!URLFOR($Resource.ProjectResources,'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right top;
+			color:#FFFFFF !important;
+			display:block;
+			font-family:Verdana,Arial;
+			font-size:10px;
+			font-weight:bold;
+			line-height:10px;
+			margin-left:3px;
+			padding:5px 10px 8px 5px;
+			white-space:nowrap;
+			border: 0px none;
+		}		
+		
 	</style>
 	
 	<!-- Header -->
@@ -66,20 +81,40 @@
 	<apex:form id="form_content" onsubmit="getInputValue(); if(!isCloneAction){if(validator('{!$Component.form_content}', 'warning_to_user'))return false;};">
 		<div align="center"  class="breadCrumbAndButtons" style="height: 30px!important;">
 			<div class="breadcrumbs"  align="center">
-	          <div class="breadCrumbs">
-	            <a  href="/apex/ProjectDetail?id={!IdProject}" title="{!NameProject}"><apex:outputText escape="true" value="{!NameProject}" /> </a> > <span class="breadCrumbsLast">Subscriptions</span>
-	          </div>
-	
-				<apex:outputpanel rendered="{!IF(subscriptionCount == 0, true, false)}">
-					<apex:commandButton value="Save" action="{!saveSubscription}"/>
-				</apex:outputpanel>
-				<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}">
-					<apex:commandButton value="Update" action="{!saveSubscription}"/>
-				</apex:outputpanel>
-				<apex:commandButton value="Cancel" action="{!cancelSubscription}"/>
-				<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}">
-					<apex:commandButton value="Unsubscribe" action="{!deleteSubscription}"/>
-				</apex:outputpanel>
+	        	<div class="breadCrumbs" style="float: left;">
+	            	<a  href="/apex/ProjectDetail?id={!IdProject}" title="{!NameProject}"><apex:outputText escape="true" value="{!NameProject}" /> </a> > <span class="breadCrumbsLast">Subscriptions</span>
+	            </div>
+	            
+	            <table align="center" cellpadding="0" cellspacing="0">
+	            	<tr>
+	            		<td>
+							<apex:outputpanel rendered="{!IF(subscriptionCount == 0, true, false)}">
+								<apex:commandLink action="{!saveSubscription}" styleClass="blackbutton" >
+									<span>Save</span>
+								</apex:commandLink>
+							</apex:outputpanel>
+						</td>
+						<td>
+							<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}" >
+								<apex:commandLink action="{!saveSubscription}"  styleClass="blackbutton" >
+									<span>Update</span>
+								</apex:commandLink>
+							</apex:outputpanel>
+						</td>
+						<td>
+							<apex:commandLink action="{!cancelSubscription}" styleClass="blackbutton">
+								<span>Cancel</span>
+							</apex:commandLink>
+						</td>
+						<td>
+							<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}">
+								<apex:commandLink action="{!deleteSubscription}"  styleClass="blackbutton" >
+									<span>Unsubscribe</span>
+								</apex:commandLink>
+							</apex:outputpanel>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 		<!-- Main Content Div -->
@@ -123,16 +158,36 @@
 		<!-- BreadCrumbs -->
 		<div class="breadcrumbs" style="padding-bottom: 10px;" align="center">
 			<br>
-			<apex:outputpanel rendered="{!IF(subscriptionCount == 0, true, false)}">
-				<apex:commandButton value="Save" action="{!saveSubscription}"/>
-			</apex:outputpanel>
-			<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}">
-				<apex:commandButton value="Update" action="{!saveSubscription}"/>
-			</apex:outputpanel>
-			<apex:commandButton value="Cancel" action="{!cancelSubscription}"/>
-			<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}">
-				<apex:commandButton value="Unsubscribe" action="{!deleteSubscription}"/>
-			</apex:outputpanel>
+            <table align="center" cellpadding="0" cellspacing="0">
+            	<tr>
+            		<td>
+						<apex:outputpanel rendered="{!IF(subscriptionCount == 0, true, false)}">
+							<apex:commandLink action="{!saveSubscription}" styleClass="blackbutton" >
+								<span>Save</span>
+							</apex:commandLink>
+						</apex:outputpanel>
+					</td>
+					<td>
+						<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}" >
+							<apex:commandLink action="{!saveSubscription}"  styleClass="blackbutton" >
+								<span>Update</span>
+							</apex:commandLink>
+						</apex:outputpanel>
+					</td>
+					<td>
+						<apex:commandLink action="{!cancelSubscription}" styleClass="blackbutton">
+							<span>Cancel</span>
+						</apex:commandLink>
+					</td>
+					<td>
+						<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}">
+							<apex:commandLink action="{!deleteSubscription}"  styleClass="blackbutton" >
+								<span>Unsubscribe</span>
+							</apex:commandLink>
+						</apex:outputpanel>
+					</td>
+				</tr>
+			</table>
 		</div>
 	
 	</apex:form>
