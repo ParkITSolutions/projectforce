@@ -73,10 +73,10 @@ public class ProjectUtil {
 	* Used at DiscussionForumAfterUpdate.trigger to avoid an Error
 	* MIXED_DML_OPERATION, DML operation on setup object is not permitted after you have updated a non-setup object
 	*/
-	@future
+	//@future
 	public static void deleteGroupMembers(List<String> gmToDelete){
 	  	if( !ProjectUtil.getIsTest() ){
-		    List<GroupMember> gm = [select UserOrGroupId, GroupId, id from GroupMember where id in : gmToDelete];
+		    List<GroupMember> gm = [select UserOrGroupId, GroupId, id from GroupMember where GroupId in : gmToDelete];
 			delete gm;
 	  	}
 	}
@@ -87,10 +87,10 @@ public class ProjectUtil {
 	* Used at DiscussionForumAfterUpdate.trigger to avoid an Error
 	* MIXED_DML_OPERATION, DML operation on setup object is not permitted after you have updated a non-setup object
 	*/
-	@future
+	//@future
 	public static void deleteGroup(List<String> grToDelete){
 	  	if( !ProjectUtil.getIsTest() ){
-		    List<Group> gr = [select id from Group where id in : grToDelete];
+		    List<Group> gr = [select id from Group where name in : grToDelete];
 			delete gr;
 		}
 	}

@@ -47,7 +47,7 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 						Boolean findGM = false;
 						Integer countGM = 0;
 						GroupMember gm;
-						
+												
 						while (!findGM && countGM < groupMemberList.size()) {
 
 							if (groupMemberList[countGM].UserOrGroupId == go[0].id && groupMemberList[countGM].GroupId == projectGroup.Id) {
@@ -81,7 +81,7 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 								}	
 							}
 						}
-
+						
 						//Create GroupMember for all Project Members
 						List<GroupMember> groupMembers = new List<GroupMember>();
 						for (ProjectMember__c iterMember : projectMemberList) {
@@ -104,15 +104,15 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 							gm2 = [ SELECT Id FROM GroupMember WHERE GroupId =: instance.Id AND UserOrGroupId =: portalGroup[0].Id ];
 							
 							if(newProj.AllowCustomerUsers__c){
-								if( gm2.size() == 0 ){					
+								if( gm2.size() == 0 ){				
 				                    gmPortal.GroupId = instance.Id;
 				                    gmPortal.UserOrGroupId = portalGroup[0].Id;
-				                    insert gmPortal;
+				                    insert gmPortal; 
 								} 
 							}else if( gm2.size() > 0){
 								List<String> groupMembersIds = new List<String>();
 								groupMembersIds.add(gm2[0].id);
-								ProjectUtil.deleteGroupMembers(groupMembersIds);												
+								ProjectUtil.deleteGroupMembers(groupMembersIds);
 							}
 						}                
 	
@@ -135,9 +135,7 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 								groupMembersIds.add(gm2[0].id);
 								ProjectUtil.deleteGroupMembers(groupMembersIds);
 							}											
-						}else{
-							
-						}					
+						}else{}
 					}
 				}else{
 
