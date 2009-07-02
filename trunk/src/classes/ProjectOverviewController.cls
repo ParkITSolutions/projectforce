@@ -136,7 +136,7 @@ public with sharing class ProjectOverviewController {
             projects = [Select (Select Id From ProjectsMembers__r), (Select Id, Milestone__c From ProjectsTasks__r), t.Name, t.Picture__c, t.Id From Project2__c t order by t.Name asc limit :lim];
                         
             //Only allProjects show pagination and abc
-            isAllProjects = true;
+            isAllProjects = false;
         //@Default My Projects
         }else {
            

@@ -43,10 +43,63 @@ Private -  This Project will not appear in search. Membership is by invitation o
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>DaysInWorkWeek__c</fullName>
+        <label>Days in a work week</label>
+        <picklist>
+            <picklistValues>
+                <fullName>1</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>3</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>4</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>5</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>6</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>7</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
         <fullName>Description__c</fullName>
         <description>Description</description>
         <label>Description</label>
         <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>DisplayDuration__c</fullName>
+        <inlineHelpText>Set how you want see the Duration field, in hours or days.</inlineHelpText>
+        <label>Display Duration</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Hours</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Days</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
     </fields>
     <fields>
         <fullName>Image__c</fullName>
@@ -125,6 +178,13 @@ Private -  This Project will not appear in search. Membership is by invitation o
         <length>50</length>
         <type>Text</type>
     </fields>
+    <fields>
+        <fullName>WorkingHours__c</fullName>
+        <label>Working hours</label>
+        <precision>2</precision>
+        <scale>0</scale>
+        <type>Number</type>
+    </fields>
     <label>Project</label>
     <listViews>
         <fullName>All_View</fullName>
@@ -165,6 +225,48 @@ Private -  This Project will not appear in search. Membership is by invitation o
             </values>
             <values>
                 <fullName>Private</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>DaysInWorkWeek__c</picklist>
+            <values>
+                <fullName>1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>4</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>5</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>6</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>7</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>DisplayDuration__c</picklist>
+            <values>
+                <fullName>Days</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hours</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

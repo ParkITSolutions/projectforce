@@ -1097,7 +1097,15 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
+        <field>Project2__c.DaysInWorkWeek__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
         <field>Project2__c.Description__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>Project2__c.DisplayDuration__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>false</editable>
@@ -1134,6 +1142,10 @@
     <fieldLevelSecurities>
         <editable>true</editable>
         <field>Project2__c.Type__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>Project2__c.WorkingHours__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>

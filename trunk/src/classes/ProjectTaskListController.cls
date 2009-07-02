@@ -128,6 +128,14 @@ public with sharing class ProjectTaskListController {
     }
     
     /**
+    * Returns project instance
+    *@return current project
+    */
+	public Project2__c getProject(){
+		return project;
+	}
+    
+    /**
     *@return csv file id
     */
     public String getCsvFileId(){
@@ -183,7 +191,7 @@ public with sharing class ProjectTaskListController {
     *Returns the Task list size
     *@return Integer
     */
-    public Integer getTotalItemsNumber(){
+    public Integer getTotalItemsNumber(){	
         return totalItemsNumber;
     }
 
@@ -211,11 +219,10 @@ public with sharing class ProjectTaskListController {
     
     public void loadProject(){
     	Project2__c prTemp = new Project2__c();
-
-    	
     	if(project == null)
-    		prTemp = [ select p.Name from Project2__c p where p.id =: PROJECTID limit 1 ];
-    		project = prTemp;	
+    		prTemp = [select p.Id, p.Name, p.DisplayDuration__c from Project2__c p where p.id =: PROJECTID limit 1 ];
+    	
+    	project = prTemp;	
     }
     
     /**
@@ -887,7 +894,7 @@ public with sharing class ProjectTaskListController {
     */
  	public void generateTaskListCsv() {
     	
-	    String csvText = 'ID,Type,Priority,Name,Description,Status,AssignedTo,PercentCompleted,Duration,DueDate,DaysLate\n';		        
+	    String csvText = 'ID ,Type,Priority,Name,Description,Status,AssignedTo,PercentCompleted,Duration (' + project.DisplayDuration__c + '),DueDate,DaysLate\n';		        
               
 	    for (TaskDetails iterTask : taskList) {
 	    	

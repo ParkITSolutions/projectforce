@@ -101,9 +101,10 @@
                                     <div class="red" style="display: none;" id="dueDateError"><strong>Error:</strong> You must enter a greater value</div>
                                     <div class="red" style="display: none;" id="dueDateInvalid"><strong>Error:</strong> You must enter a valid value</div>
                                     <br/> 
-                                    <label>Estimate</label><span class="required"></span>
-                                    <apex:inputText value="{!Task.Duration__c}" required="true" maxLength="2"  styleClass="small" style="_margin-left: -10px;" id="taskEstimate" onkeypress="return isDecimalKey(event, this.value)"/><span class="desc">Hours</span>
-                                    <div class="red" style="display: none;" id="estimateError"><strong>Error:</strong> You must enter an estimate in hours</div>
+                                    <label>Duration</label><span class="required"></span>
+                                    <apex:inputText value="{!Task.Duration__c}" required="true" maxLength="2"  styleClass="small" style="_margin-left: -10px;" id="taskEstimate" onkeypress="return isDecimalKey(event, this.value)"/>
+                                    <span class="desc">{!project.DisplayDuration__c}</span>
+                                    <div class="red" style="display: none;" id="estimateError"><strong>Error:</strong> You must enter an estimate in {!project.DisplayDuration__c}</div>
                                     <br/>
                                     <label>Assign to</label><span class="required"></span>
                                     <apex:outputpanel id="assignToTask" layout="block"> 
