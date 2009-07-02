@@ -493,7 +493,7 @@
 	                                        </apex:outputpanel>
 	                                    </th> 
 	                                    <th width="5%" style="text-align: center">
-	                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Duration" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'Duration__c';" oncomplete="showHideOverlay();">
+	                                        <apex:commandLink styleclass="member_title_description" action="{!refreshTaskList}" value="Duration ({!project.DisplayDuration__c})" rerender="taskListPanel" onclick="setDims('holder','paginationOverlay');showHideOverlay();currentSortCriteria = 'Duration__c';" oncomplete="showHideOverlay();">
 	                                            <apex:param name="sortBy" value="Duration__c" assignTo="{!sortBy}"/>
 	                                        </apex:commandLink>&nbsp;
 	                                        <apex:outputpanel rendered="{!IF(sortBy == 'est',true,false)}">

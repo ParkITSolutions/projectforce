@@ -124,13 +124,7 @@
 									<div class="letterFilterContainer">
 										<ul class="letterFilter">
 											<li>
-												<apex:commandLink id="ALL" 
-													  action="{!filterProjects}" 
-													  value="ALL" 
-													  onclick="showLoaderForTabs(); setFilterLetter(this);"
-													  oncomplete="markSelectedLetter();"
-													  rerender="content_teams" 
-													  styleClass="AllBtnSet">
+												<apex:commandLink id="ALL" action="{!filterProjects}" value="ALL" onclick="showLoaderForTabs(); setFilterLetter(this);" oncomplete="markSelectedLetter();" rerender="content_teams" styleClass="AllBtnSet">
 													<apex:param name="ltr" value="ALL" />
 												</apex:commandLink>
 											</li>

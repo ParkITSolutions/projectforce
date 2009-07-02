@@ -27,6 +27,14 @@ public class ProjectOverlayNewTaskController {
    	}
    	
    	/**
+   	* Get current project instance
+   	*@return project
+   	*/
+   	public Project2__c getProject (){
+   		return currentProject;
+   	}
+   	
+   	/**
     *@return ProjectTask__c
     */
     public ProjectTask__c getTask(){
@@ -91,7 +99,7 @@ public class ProjectOverlayNewTaskController {
 	*/
 	public void getCurrentProject(){   
 		if(PROJECTID != null)
-			currentProject = [select Id from Project2__c where Id =: PROJECTID limit 1];
+			currentProject = [select p.Id, p.Name, p.DisplayDuration__c from Project2__c p where p.Id =: PROJECTID limit 1];
 	}
 	
 	/**
