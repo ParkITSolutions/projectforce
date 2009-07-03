@@ -159,6 +159,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectSetupController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectSubscribeController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1200,6 +1204,10 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
+        <field>ProjectSetup__c.CanViewButtonNew__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
         <field>ProjectSubscription__c.ProjectMemberJoinLeave__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
@@ -1438,6 +1446,9 @@
         <layout>ProjectProfile__c-ProjectProfile Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>ProjectSetup__c-ProjectSetup Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>ProjectSubscription__c-ProjectSubscription Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -1571,6 +1582,13 @@
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
+        <object>ProjectSetup__c</object>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
         <object>ProjectSubscription__c</object>
     </objectPermissions>
     <objectPermissions>
@@ -1630,6 +1648,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectSearchResult</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>ProjectSetup</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>

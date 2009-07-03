@@ -159,6 +159,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectSetupController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectSubscribeController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1369,6 +1373,11 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>false</editable>
+        <field>ProjectSetup__c.CanViewButtonNew__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
         <field>ProjectSubscription__c.ProjectMemberJoinLeave__c</field>
         <hidden>true</hidden>
     </fieldLevelSecurities>
@@ -1645,6 +1654,9 @@
         <layout>ProjectProfile__c-ProjectProfile Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>ProjectSetup__c-ProjectSetup Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>ProjectSubscription__c-ProjectSubscription Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -1726,6 +1738,9 @@
         <object>ProjectProfile__c</object>
     </objectPermissions>
     <objectPermissions>
+        <object>ProjectSetup__c</object>
+    </objectPermissions>
+    <objectPermissions>
         <object>ProjectSubscription__c</object>
     </objectPermissions>
     <objectPermissions>
@@ -1766,6 +1781,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectSearchResult</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>ProjectSetup</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
