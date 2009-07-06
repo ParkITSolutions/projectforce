@@ -109,6 +109,16 @@ public with sharing class ProjectOverviewController {
         return retProjects;
     }  
 
+	/**
+	*Determines who can view the Create New Project button
+	*@return Boolean
+	*/
+	
+	public Boolean getCanViewCreateNewProject(){
+		ProjectSetupController canV = new ProjectSetupController();
+		return canV.canView();
+	}
+    
     /**
     *@projectsForTabs()
     * This method completes the list of Projects: "retProjects"
