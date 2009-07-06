@@ -46,7 +46,7 @@ public class ProjectSetupController {
 	/**
 	*
 	*/	
-	public void saveAdmSettings(){
+	public PageReference saveAdmSettings(){
 		
 		if( this.savedProfilesStr.size() > 0 ){
 			this.savedProfilesStr[0].CanViewButtonNew__c =  selectedProfsStr;
@@ -58,13 +58,17 @@ public class ProjectSetupController {
 		}
 
 		this.setingAllProfiles();
+		
+		PageReference pr = new PageReference( '/apex/ProjectOverview');
+		pr.setRedirect( true );
+		return pr;
 	}
 	
 	/**
 	*
 	*/
 	public void setSelectedProfsStr( String s ){
-		this.selectedProfsStr = s;
+		this.selectedProfsStr = s; 
 	}
 
 	/**
@@ -80,6 +84,10 @@ public class ProjectSetupController {
 	*
 	*/
 	private void setingAllProfiles(){
+
+		this.allProfiles.clear();
+		this.savedProfiles.clear();
+		this.selectedProfsList.clear();
 		
 		this.stringProfiles();
 		

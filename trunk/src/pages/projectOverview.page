@@ -62,7 +62,8 @@
 	<!-- Sidebar -->
 	<div class="sidebar">
 		<c:ProjectsWidgetMyTasks />
-		<c:ProjectsWidgetMyMilestones />  
+		<c:ProjectsWidgetMyMilestones />
+		<c:ProjectSetupWidget />  
 	</div>
 	<!-- Main Content Div --> 
 	<div class="main_content" >
@@ -96,6 +97,7 @@
 							<b>&nbsp;</b>
 						</li>
 						<li id="CreateNewProjectContainer">
+							<apex:outputPanel rendered="{!CanViewCreateNewProject}">
 								<!-- /apex/projectRedirect?sO=Project2__c&attr=project&page=ProjectCreateNew&rR=NewProjectFormContainer&oC=true -->
 								<a href="https://na1.salesforce.com/{!objectPrefix}/e">
 									<div id="left">
@@ -106,6 +108,7 @@
 									<div id="right">
 									</div>
 								</a>
+							</apex:outputPanel>
 						</li>
 					</ul>
 				</apex:form>
