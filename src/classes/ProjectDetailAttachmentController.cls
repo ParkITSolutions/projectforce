@@ -10,6 +10,7 @@ public class ProjectDetailAttachmentController {
 
 	/**
 	*@param project id
+	*@return void
 	*/
 	public void setProject(String id){
 		project = id;
@@ -29,7 +30,9 @@ public class ProjectDetailAttachmentController {
 	public List<AttachmentInfo> getAttachments(){
 		return attachments;
 	}
-	
+	/*
+	*@return Boolean
+	*/
 	public Boolean getAttachmentCount(){
 		return attachments.size() > 0;
 	}
@@ -38,7 +41,7 @@ public class ProjectDetailAttachmentController {
 	
 	/**
 	* Read user permissions
-	*@void
+	*@return void
 	*/
 	public void genPermissions() {
 		userPermissions.setId(UserInfo.getUserId());
@@ -58,6 +61,7 @@ public class ProjectDetailAttachmentController {
 
 	/**
 	*@param project id
+	*@return void
 	*/
 	public void readAttachments(){
 		List<Attachment> attachmentsList = new List<Attachment>();
@@ -75,6 +79,7 @@ public class ProjectDetailAttachmentController {
 	/**
 	* Load attachment list
 	*@param attachment list
+	*@return void
 	*/
 	public void loadAttachmentList(List<Attachment> attachs){
 		List<AttachmentInfo> attachList = new List<AttachmentInfo>();
@@ -163,7 +168,7 @@ public class ProjectDetailAttachmentController {
 
 	/**
 	* Delete Attachment
-	*@void
+	*@return void
 	*/
 	public void deleteAttach (){
 		String attachId = System.currentPageReference().getParameters().get('idAttach');
@@ -177,7 +182,6 @@ public class ProjectDetailAttachmentController {
 	
 	/**
 	* Class AttachmentInfo
-	*@void
 	*/ 
 	public class AttachmentInfo {
         
@@ -196,6 +200,7 @@ public class ProjectDetailAttachmentController {
         
         /**
         *@param String Attach id
+        *@return void
         */
         public void setId (String id) {
         	this.id = id;
@@ -210,6 +215,7 @@ public class ProjectDetailAttachmentController {
 
         /**
         *@param String Attach name
+        *@return void
         */
         public void setName(String name) {
                 this.name = name;
@@ -224,6 +230,7 @@ public class ProjectDetailAttachmentController {
 
         /**
         *@param String attach type icon
+        *@return void
         */
         public void setAttachImage (String attachImage) {
                 this.attachImage = attachImage;
@@ -231,6 +238,7 @@ public class ProjectDetailAttachmentController {
 
         /**
         *@param Attachment
+        *@return void
         */
         public void setAttachment (Attachment attach) {
                 this.attach = attach;
@@ -245,6 +253,7 @@ public class ProjectDetailAttachmentController {
         
         /**
         *@param b is owner
+        *@return void
         */
         public void setIsOwner(Boolean b){
         	isOwner = b;
@@ -255,7 +264,6 @@ public class ProjectDetailAttachmentController {
         */
         public Boolean getIsOwner(){
         	return isOwner;
-        }
-                                     
+        }                       
 	}
 }

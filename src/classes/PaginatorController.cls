@@ -150,9 +150,6 @@ public class PaginatorController {
         return nextPageShow;
     }   
     
-
-    
-    
 	/**
 	* Jump to page
 	*@return Integer jumpPage
@@ -184,8 +181,6 @@ public class PaginatorController {
     public void setCntPagination (Integer i){
         cntPagination = i;
     }
-    
-    
 
     /**
     * Set next page to show
@@ -273,7 +268,6 @@ public class PaginatorController {
     public void refreshPages () {}
     
 
-    
     /**
     * Set jumpo to page
     *@param Integer jumpPage
