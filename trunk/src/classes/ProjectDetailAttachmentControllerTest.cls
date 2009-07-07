@@ -26,7 +26,7 @@
     	attList.add( att3 );
     	attList.add( att4 );
     	for( Attachment a : attList )
-    	a.ParentId = GenerateEnvironmentTest.project.Id;
+    		a.ParentId = GenerateEnvironmentTest.project.Id;
     	insert attList;
     	
     	d.setProject( GenerateEnvironmentTest.project.Id );

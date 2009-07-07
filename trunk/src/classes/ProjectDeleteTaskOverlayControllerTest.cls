@@ -20,10 +20,6 @@
     	t.getIdDeletes();
     	t.deleteTaskFromList();
     	t.deleteTaskFromDetail();
-
-    	
-    	
-    	
     	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );

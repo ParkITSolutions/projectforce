@@ -71,7 +71,7 @@ public class GenerateEnvironmentTest {
         insert profList;
 
         
-        // Persiting onjects
+        // Persiting objects
         
 
         // Project2__c
