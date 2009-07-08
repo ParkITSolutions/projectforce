@@ -25,6 +25,7 @@ public class ProjectTaskDetailController {
 	
 	/**
 	* Do refresh
+	*@return void
 	*/	
 	public void doRefresh (){
 		this.getTask(param);
@@ -32,6 +33,7 @@ public class ProjectTaskDetailController {
 	
 	/**
 	* Generate permissions for an especific user
+	*@return void
 	*/
 	public void genPermissions() {
 		userPermissions.setId(UserInfo.getUserId());
@@ -46,7 +48,6 @@ public class ProjectTaskDetailController {
 	public UserPermissions getUserPermissions () {
 		return userPermissions;
 	}
-	/* ---------------------------- */
 	
 	/**
 	*@return task comment
@@ -57,6 +58,7 @@ public class ProjectTaskDetailController {
 	
 	/**
 	*@param c task comment
+	*@return void
 	*/
 	public void setComment (TaskComment__c c){
 		comment = c;
@@ -65,7 +67,8 @@ public class ProjectTaskDetailController {
 	
 	/**
 	* Set the value of task id
-	*@param String
+	*@param String s
+	*@return void
 	*/
 	public void setTaskId(String s) {
 		param = s;
@@ -84,12 +87,16 @@ public class ProjectTaskDetailController {
 	*/
 	public List<TaskComment__c> getTaskComments(){
 		List<TaskComment__c> taskComments = new List<TaskComment__c>(); 
-		taskComments = [select Id, Body__c, createdDate, createdBy.Name from TaskComment__c where Task__c =: param order by createdDate DESC];
+		taskComments = [select Id, Body__c, createdDate, createdBy.Name 
+							from TaskComment__c 
+							where Task__c =: param 
+							order by createdDate DESC];
 		return taskComments;	
 	}
 	
 	/**
 	* Save Task Comment
+	*@return void
 	*/
 	public void saveComment(){
 		comment.Task__c = taskDetail.Id;
@@ -99,8 +106,8 @@ public class ProjectTaskDetailController {
 	
 	/*
 	* Delete Task Comment
+	*@return void
 	*/
-		
 	public void deleteComment(){
 		String idComment = ApexPages.currentPage().getParameters().get('idComment');
 		List<TaskComment__c> comments = new List<TaskComment__c>();
@@ -111,10 +118,13 @@ public class ProjectTaskDetailController {
 	
 	/**
 	* Update the task's percent to 100
+	*@return void
 	*/
 	public void markComplete(){
 		try{
-			ProjectTask__c myTask = [Select PercentCompleted__c, Project__c, Id From ProjectTask__c where Id =: param];
+			ProjectTask__c myTask = [Select PercentCompleted__c, Project__c, Id 
+										From ProjectTask__c 
+										where Id =: param];
 			myTask.PercentCompleted__c = 100;
 			update myTask;
 		}catch(Exception e){
@@ -125,12 +135,21 @@ public class ProjectTaskDetailController {
 	/**
 	* Get Project Task  
 	*@param String param
-	*@void
+	*@return void
 	*/
 	public void getTask (String param){
 		if((param != null) && (param != '')){
 			detailsOk = true;
-			ProjectTask__c TD = [Select p.Id,p.Project__c,p.Project__r.Name,p.StartDate__c,p.Priority__c,p.PercentCompleted__c, p.Name, p.Milestone__c,p.LastModifiedById,p.LastModifiedBy.Name,p.LastModifiedDate,	p.EndDate__c, p.Duration__c, p.Description__c,p.ParentTask__c,p.ParentTask__r.Name,p.ParentTask__r.Id,p.CreatedById, p.CreatedBy.Name,p.CreatedDate,	(Select Id, Name, ContentType, BodyLength From Attachments), (Select Id, User__c, User__r.Name, User__r.Id,PercentDedicated__c From ProjectsAssignees__r order by User__r.Name) From ProjectTask__c p where p.Id =: param ];
+			ProjectTask__c TD = [Select p.Id,p.Project__c,p.Project__r.Name,p.StartDate__c,
+									p.Priority__c,p.PercentCompleted__c, p.Name, p.Milestone__c,
+									p.LastModifiedById,p.LastModifiedBy.Name,p.LastModifiedDate,
+									p.EndDate__c, p.Duration__c, p.Description__c,p.ParentTask__c,
+									p.ParentTask__r.Name,p.ParentTask__r.Id,p.CreatedById, 
+									p.CreatedBy.Name,p.CreatedDate,	
+									(Select Id, Name, ContentType, BodyLength From Attachments), 
+									(Select Id, User__c, User__r.Name, User__r.Id,PercentDedicated__c From ProjectsAssignees__r order by User__r.Name) 
+									From ProjectTask__c p 
+									where p.Id =: param ];
 			
 			if(TD != null ){
 				taskDetail = new TaskDetails();
@@ -249,8 +268,6 @@ public class ProjectTaskDetailController {
 		}	
 	}
 	
-	
-	
 	/**
 	* Inner class for Proyect Assignee
 	*/
@@ -268,7 +285,8 @@ public class ProjectTaskDetailController {
         }
         
         /**
-        *@param String
+        *@param String AssigneeId
+        *@return void
         */
         public void setAssigneeId (String AssigneeId) {
         	this.AssigneeId = AssigneeId;
@@ -281,7 +299,8 @@ public class ProjectTaskDetailController {
         }
         
         /**
-        *@param String
+        *@param String id
+        *@return void
         */
         public void setId (String id) {
         	this.id = id;
@@ -294,7 +313,8 @@ public class ProjectTaskDetailController {
         }
 		
 		/**
-        *@param String
+        *@param String name
+        *@return void
         */
         public void setName(String name) {
        		this.name = name;
@@ -308,7 +328,8 @@ public class ProjectTaskDetailController {
         }
         
         /**
-		*@param Integer
+		*@param Integer percent
+		*@return void
 		*/
         public void setPercent (Integer percent) {
         	this.percent = percent;
@@ -332,7 +353,8 @@ public class ProjectTaskDetailController {
         }
         
         /**
-        *@param String
+        *@param String id
+        *@return void
         */
         public void setId (String id) {
         	this.id = id;
@@ -346,7 +368,8 @@ public class ProjectTaskDetailController {
         }
 		
         /**
-        *@param String
+        *@param String name
+        *@return void
         */
         public void setName(String name) {
         	this.name = name;
@@ -360,7 +383,8 @@ public class ProjectTaskDetailController {
         }
 
         /**
-        *@param String
+        *@param String attachImage
+        *@return void
         */
         public void setAttachImage (String attachImage) {
         	this.attachImage = attachImage;
@@ -386,7 +410,7 @@ public class ProjectTaskDetailController {
 	
 	/**
 	* Delete Attachment
-	*@void
+	*@return void
 	*/
 	public void deleteAttach (){
 		String attachId = System.currentPageReference().getParameters().get('idAttach');
@@ -395,14 +419,24 @@ public class ProjectTaskDetailController {
 			delete attach;
 		}		
 	}
+	
+	/**
+	* Gets Max Assignees
+	*@return void
+	*/
 	public boolean getMaxAssignees(){
 				List <ProjectMember__c> AuxList = new List<ProjectMember__c>();
-				AuxList = [ select Id from ProjectMember__c where Project__c =: taskDetail.ProjectId  and User__r.IsActive != false];
+				AuxList = [ select Id 
+								from ProjectMember__c 
+								where Project__c =: taskDetail.ProjectId  and User__r.IsActive != false];
 				if (taskDetail.CantAssignees==AuxList.size()){
 					return true;
 				}else return false;
 			
 	}
+	
+	
+	
 	/**
 	* Inner class for Task Details
 	*/
@@ -591,6 +625,5 @@ public class ProjectTaskDetailController {
 			public List<AttachmentInfo> Files { 
 				get; set; 
 			}	
-			
 	}
 }

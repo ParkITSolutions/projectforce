@@ -15,6 +15,7 @@ public class ProjectOverlayNewAttachmentController {
 	
 	/**
 	*@param parent id
+	*@return void
 	*/
 	public void setParentId(String id){
 		parentId = id;

@@ -3,7 +3,7 @@
 */
 public class PaginatorController {
 		 
-    public Integer totalItemsNumber= 0;
+    public Integer totalItemsNumber = 0;
     
     /**
     * Set of Integers to control pagination
@@ -17,10 +17,10 @@ public class PaginatorController {
     * Set of Booleans to show or not prev / next links
     */
     public boolean prevPageLinkShow = false;
-    public boolean prevPageShow  = false;
-    public boolean nextPageLinkShow  = false;
-    public boolean nextPageShow  = false;
-    public boolean disabledInput  = false;
+    public boolean prevPageShow  	= false;
+    public boolean nextPageLinkShow = false;
+    public boolean nextPageShow  	= false;
+    public boolean disabledInput  	= false;
     
     public Integer jumpPage = 1;
     
@@ -54,7 +54,9 @@ public class PaginatorController {
     */
     public Integer getLastItem () {
         Integer lastItem;
-        if ((currentPagination == cntPagination) || (currentPagination == 1 && (totalItemsNumber < numberOfItemsToShow))) {
+        if ((currentPagination == cntPagination) 
+        	|| (currentPagination == 1 && (totalItemsNumber < numberOfItemsToShow))){
+        		
             lastItem = firstRow + Math.mod(totalItemsNumber, numberOfItemsToShow);
         }else {
             lastItem = firstRow + 10;
@@ -129,7 +131,7 @@ public class PaginatorController {
     *@return Boolean prevPageShow
     */
     public boolean getNextPageLinkShow () {
-        if((currentPagination == cntPagination) || (cntPagination == 0)){   
+        if(( currentPagination == cntPagination) || (cntPagination == 0 )){   
         	nextPageLinkShow = false; 
         } else { 
         	nextPageLinkShow = true;
@@ -161,6 +163,7 @@ public class PaginatorController {
     /**
     * Set total items to show
     *@param Integer noits
+    *@return void
     */
     public void setNumberOfItemsToShow (Integer noits) {
     	numberOfItemsToShow = noits;	
@@ -169,6 +172,7 @@ public class PaginatorController {
     /**
     * Set current page num
     *@param Integer cp
+    *@return void
     */
     public void setCurrentPagination (Integer cp) {
     	currentPagination = cp;
@@ -177,6 +181,7 @@ public class PaginatorController {
     /**
     * Set total num of pages
     *@param Integer i
+    *@return void
     */
     public void setCntPagination (Integer i){
         cntPagination = i;
@@ -185,6 +190,7 @@ public class PaginatorController {
     /**
     * Set next page to show
     *@param Boolean nps
+    *@return void
     */
     public void setNextPageShow (Boolean nps) {
     	nextPageShow = nps;
@@ -193,6 +199,7 @@ public class PaginatorController {
     /**
     * Set previus page to show
     *@param Boolean pps
+    *@return void
     */
     public void setPrevPageShow (Boolean pps) {
     	prevPageShow = pps; 
@@ -215,7 +222,7 @@ public class PaginatorController {
     * Set total num of pages
     */
     public void genCntPagination() {
-        cntPagination = (totalItemsNumber - (Math.mod(totalItemsNumber, numberOfItemsToShow)))/ numberOfItemsToShow;    
+        cntPagination = (totalItemsNumber - (Math.mod(totalItemsNumber, numberOfItemsToShow))) / numberOfItemsToShow;    
         if (Math.mod(totalItemsNumber, numberOfItemsToShow) != 0 ) {
             cntPagination++;
         }   
@@ -223,6 +230,7 @@ public class PaginatorController {
     
     /**
     * Clear pagination for re-use instance
+    *@return void
     */
     public void clearPagination(){
         firstRow = 0;
@@ -231,6 +239,7 @@ public class PaginatorController {
     
     /**
     * Move to next page
+    *@return void
     */
     public void nextPage () {
         currentPagination++;
@@ -240,6 +249,7 @@ public class PaginatorController {
     
     /**
     * Move to previus page
+    *@return void
     */
     public void prevPage () {
         currentPagination--;
@@ -249,6 +259,7 @@ public class PaginatorController {
 
     /**
     * Move to last page
+    *@return void
     */
     public void lastPage () {
         currentPagination = cntPagination;
@@ -258,6 +269,7 @@ public class PaginatorController {
     
     /**
     * Move to first page
+    *@return void
     */
     public void firstPage () {
         currentPagination = 1;
@@ -271,6 +283,7 @@ public class PaginatorController {
     /**
     * Set jumpo to page
     *@param Integer jumpPage
+    *@return void
     */
     public void setJumpPage (Integer jumpPage) {
         this.jumpPage = jumpPage;
@@ -278,6 +291,7 @@ public class PaginatorController {
     
     /**
     * Jump to page
+    *@return void
     */
     public void JumpToPage () {
         if (jumpPage > cntPagination) {
@@ -293,5 +307,4 @@ public class PaginatorController {
         }
         firstRow = (jumpPage - 1)* numberOfItemsToShow;
     }
-        
 }

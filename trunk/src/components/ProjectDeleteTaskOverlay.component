@@ -61,7 +61,7 @@
 					<span>Once task(s) are deleted, it is not recoverable</span>
 				</div>
 				<div class="overlaySeparateLine" />
-				<!-- Saven and Cancel Buttons -->
+				<!-- Save and Cancel Buttons -->
 				<div class="overlayFromButtons" align="center">
 					<span id="deleteEventContainer">
 						<apex:commandButton id="SaveBtn1"  styleClass="btn allButtons" style="background:#21637D none repeat scroll 0 0 !important;display: none !important;" action="{!deleteTaskFromList}" value="Continue and delete task" onclick="modal.close();showSwirley();setDims('holder','paginationOverlay');setTimeout('Effect.Fade(\'infoToUser\')', 10000);" oncomplete="redirect(); showMessageToUser('Deleted item(s)','success');" rerender="taskListPanel" />

@@ -3,9 +3,6 @@
 */
 public with sharing class ProjectOverviewController {
 
-	/* 
-	* Attributes
-	*/
     public List<ProjectMember__c> projects = new List<ProjectMember__c>();
     public List<Project> auxProjectsList = new List<Project>();
     public String parentId = null;
@@ -27,6 +24,7 @@ public with sharing class ProjectOverviewController {
     
     /**
     *@param Boolean
+    *@return void
     */
     public void setIsTest(Boolean b){
         isTest = b;
@@ -41,6 +39,7 @@ public with sharing class ProjectOverviewController {
     
     /**
     *@param String id
+    *@return void
     */
     public void setParentId (String id){
         parentId = id;  
@@ -48,6 +47,7 @@ public with sharing class ProjectOverviewController {
     
     /**
     *@param String f
+    *@return void
     */
     public void setFilter(String f){
         filter = f;
@@ -55,9 +55,8 @@ public with sharing class ProjectOverviewController {
 
     /**
     * Check if project profile exist for current user
-    * @return PageReference
+    * @return PageReference null
     */
-    
     public PageReference getProfileExist(){
         PageReference pr = null;
         List<ProjectProfile__c> profiles = new List<ProjectProfile__c>();
@@ -72,8 +71,9 @@ public with sharing class ProjectOverviewController {
     
     /**
     * Get project profile for current user
-    *@return List<ProjectProfile__c>
+    *@return List<ProjectProfile__c
     */
+    
     /*
     public List<ProjectProfile__c> getProjectProfile(){
         List<ProjectProfile__c> profiles = new List<ProjectProfile__c>();           
@@ -92,6 +92,7 @@ public with sharing class ProjectOverviewController {
     
     /**
     *@param List<ProjectMember__c>
+    *@return void
     */
     public void setProjects(List<ProjectMember__c> tms){
         projects = tms;
@@ -113,7 +114,6 @@ public with sharing class ProjectOverviewController {
 	*Determines who can view the Create New Project button
 	*@return Boolean
 	*/
-	
 	public Boolean getCanViewCreateNewProject(){
 		ProjectSetupController canV = new ProjectSetupController();
 		return canV.canView();
@@ -122,6 +122,7 @@ public with sharing class ProjectOverviewController {
     /**
     *@projectsForTabs()
     * This method completes the list of Projects: "retProjects"
+    *@return void
     */
     public void projectsForTabs(){
         //filter for query
@@ -140,10 +141,17 @@ public with sharing class ProjectOverviewController {
                     
         //@newProjects
         if(filter == 'newProjects'){
-            projects = [Select (Select Id From ProjectsMembers__r), (Select Id, Milestone__c From ProjectsTasks__r), t.CreatedDate , t.Name, t.Picture__c, t.Id From Project2__c t order by t.CreatedDate  desc limit :lim];
+            projects = [Select (Select Id From ProjectsMembers__r), 
+            			(Select Id, Milestone__c 
+            				From ProjectsTasks__r), t.CreatedDate , t.Name, t.Picture__c, t.Id 
+            				From Project2__c t 
+            				order by t.CreatedDate  desc 
+            				limit :lim];
         //@allProjects
         }else if(filter == 'allProjects'){
-            projects = [Select (Select Id From ProjectsMembers__r), (Select Id, Milestone__c From ProjectsTasks__r), t.Name, t.Picture__c, t.Id From Project2__c t order by t.Name asc limit :lim];
+            projects = [Select (Select Id From ProjectsMembers__r), (Select Id, Milestone__c From ProjectsTasks__r), t.Name, t.Picture__c, t.Id 
+            				From Project2__c t 
+            				order by t.Name asc limit :lim];
                         
             //Only allProjects show pagination and abc
             isAllProjects = false;
@@ -151,7 +159,11 @@ public with sharing class ProjectOverviewController {
         }else {
            
             List<ProjectMember__c> tml = new List<ProjectMember__c>();
-            tml = [Select s.Project__c,s.Project__r.Id From ProjectMember__c s where s.User__c =: UserInfo.getUserId() order by s.CreatedDate desc limit :lim];
+            tml = [Select s.Project__c,s.Project__r.Id 
+            		From ProjectMember__c s 
+            		where s.User__c =: UserInfo.getUserId() 
+            		order by s.CreatedDate desc 
+            		limit :lim];
             
             List<Project2__c> projectsAux = new List<Project2__c>();
             for(ProjectMember__c tm : tml){
@@ -160,7 +172,11 @@ public with sharing class ProjectOverviewController {
                 }
             }
             
-            projects = [Select (Select Id,User__c From ProjectsMembers__r), (Select Id, Milestone__c From ProjectsTasks__r), t.Name, t.Picture__c, t.Id From Project2__c t where t.Id in : projectsAux order by t.Name asc];
+            projects = [Select (Select Id,User__c From ProjectsMembers__r), (Select Id, Milestone__c From ProjectsTasks__r), 
+            				t.Name, t.Picture__c, t.Id 
+            				From Project2__c t 
+            				where t.Id in : projectsAux 
+            				 order by t.Name asc];
                   
         }
         
@@ -214,10 +230,10 @@ public with sharing class ProjectOverviewController {
     public Integer getProjectsForTabsSize(){
         return retProjects.size();
     }
-    
+    /*
+    *@return boolean
+    */
     public Boolean isAllProjects { get; set; }
-
-    
   
     /**
     * Get Letter Filter
@@ -230,6 +246,7 @@ public with sharing class ProjectOverviewController {
     
     /**
     * Set Letter Filter
+    *@return void
     */
     public void setLetterFilter () {    
         if(System.currentPageReference().getParameters().get('ltr') != null)
@@ -253,6 +270,7 @@ public with sharing class ProjectOverviewController {
     
     /**
     * Filter for Projects
+    *@return void
     */
     public void filterProjects (){
         String letter = System.currentPageReference().getParameters().get('ltr');
@@ -268,10 +286,13 @@ public with sharing class ProjectOverviewController {
                 retProjects.add(t);
             }
         }
+        
         paginator.clearPagination();
         paginator.setTotalItemsNumber(retProjects.size());
         paginator.genCntPagination();           
     }
+    
+    
     /**
     * Class Letters
     */
@@ -284,6 +305,7 @@ public with sharing class ProjectOverviewController {
         /**
         * Set num of ocurs.
         *@param Integer
+        *@return void
         */
         public void setContainSites (Integer cntSites){
             if (cntSites == 0){
@@ -307,15 +329,17 @@ public with sharing class ProjectOverviewController {
     */
     public class Project {
         
-        //Atributes, getters and setters
         public String name { get; set; }
+        
         public String createDate{ 
             get; 
             set{
                 createDate = value;
             } 
         }
+        
         public String id { get; set; }
+        
         /**
         *@return String
         */
@@ -328,8 +352,11 @@ public with sharing class ProjectOverviewController {
             }
             get; 
         }
+        
         public Integer members { get; set; }
+        
         public Integer tasks { get; set; }
+        
         public Integer milestones { get; set; }        
     }
 }

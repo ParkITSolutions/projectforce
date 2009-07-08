@@ -56,8 +56,25 @@ public with sharing class ProjectTaskListController {
     	
     	return ops;
     }
-    */                 
+    */  
     
+    public void sendRequest () {
+    	this.l.setFieldList(theList);
+    	//System.debug('\n\n=========================\n sendrequest: ' + this.l.getFieldList() + '\n=================\n\n');
+    }
+    
+    ProjectDynamicFilter l = new ProjectDynamicFilter();   
+    List<ProjectDynamicFilter.SFField> theList = new List<ProjectDynamicFilter.SFField>();            
+    public void setL( List<ProjectDynamicFilter.SFField> li ){
+    	theList = li;
+    }
+
+    public List<ProjectDynamicFilter.SFField> getL(){
+    	return theList;
+    }    
+    public String getSQL(){
+    	return this.l.genStrWithFieldsName();
+    }
     /**
     * Constructor
     */
@@ -92,7 +109,10 @@ public with sharing class ProjectTaskListController {
         
         //Read current user profile
         getUserProfile();
-
+		
+		
+		theList = this.l.getFieldList();
+		
     }    
 
     /**

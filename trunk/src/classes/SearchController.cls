@@ -13,10 +13,15 @@ public class SearchController {
 	private String labelName = null;
 	// Default input field text value
 	private String defText = '';
-		
+	
+	// Map with action=>PageReference
+	private Map<String, PageReference> searchIn = new Map<String, PageReference>{
+		'project' => Page.ProjectSearchResult
+	};
 	
 	/**
 	*@param String action
+	*@return void
 	*/
 	public void setModule(String mod){
 		this.module = mod;
@@ -37,7 +42,7 @@ public class SearchController {
 	}
 	
 	/**
-	*@param String
+	*@param String k
 	*/
 	public void setKey(String k){
 		this.key = k;
@@ -51,7 +56,7 @@ public class SearchController {
 	}
 	
 	/**
-	*@param String
+	*@param String id
 	*/
 	public void setTeamId(String id){
 		this.teamId = id;
@@ -61,7 +66,6 @@ public class SearchController {
 	* Get value of label
 	*@return String label
 	*/ 
-	
 	public String getLabelName(){
 		if(System.currentPageReference().getParameters().get('id') == null){
 			return 'Projects';
@@ -73,7 +77,8 @@ public class SearchController {
 	
 	/**
 	* Set value of label
-	* @param String
+	* @param String s
+	*@return void
 	*/
 	public void setLabelName(String s){
 		this.labelName = s;
@@ -93,11 +98,6 @@ public class SearchController {
 			return this.defText;
 		}
 	}
-	
-	// Map with action=>PageReference
-	private Map<String, PageReference> searchIn = new Map<String, PageReference>{
-		'project' => Page.ProjectSearchResult
-	};
 		
 	/**
 	* Redirect to the specific result
@@ -117,5 +117,4 @@ public class SearchController {
 			return null;
 		}
 	}
-	
 }

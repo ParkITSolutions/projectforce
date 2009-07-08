@@ -8,7 +8,6 @@ public class UserPermissions {
 	String project;
 	String objectType;
 	String ownerId;
-
 	
 	User projectAdmin = null;
 	List<ProjectMember__c> members = null;
@@ -23,14 +22,10 @@ public class UserPermissions {
 	public static Boolean canManageStatic = false;
 
 	/**
-	* Costructor
+	* Constructor
 	*/
 	public UserPermissions (){
 		
-	}
-	
-	public static Boolean getCanManageStatic () {
-		return canManageStatic;
 	}
 	
 	/**
@@ -45,21 +40,21 @@ public class UserPermissions {
 	*@return String
 	*/
 	public String getProject () {
-		return project;
+		return this.project;
 	}
 	
 	/**
 	*@return String
 	*/
 	public String getObjectType () {
-		return objectType;
+		return this.objectType;
 	}
 	
 	/**
 	*@return Boolean
 	*/
 	public Boolean getCanCreate () {
-		return canCreate;
+		return this.canCreate;
 	}
 	
 	
@@ -67,25 +62,26 @@ public class UserPermissions {
 	*@return Boolean
 	*/
 	public Boolean getCanManage () {
-		return canManage;
+		return this.canManage;
 	}
 	
 	/**
 	*@return Boolean
 	*/
 	public Boolean getCanComment () {
-		return canComment;
+		return this.canComment;
 	}
 	
 	/**
 	*@return Boolean
 	*/
 	public Boolean getCanView () {
-		return canView;
+		return this.canView;
 	}
 	
 	/**
-	*@param String
+	*@param String id
+	*@return void
 	*/
 	public void setId (String id) {
 		this.id = id;
@@ -93,6 +89,7 @@ public class UserPermissions {
 	
 	/**
 	*@param String
+	*@return void
 	*/ 	
  	public void setOwnerId (String ownerId) {
 		this.ownerId = ownerId;
@@ -100,6 +97,7 @@ public class UserPermissions {
 	
 	/**
 	*@param String
+	*@return void
 	*/	
 	public void setProject (String project) {
 		this.project = project;
@@ -107,6 +105,7 @@ public class UserPermissions {
 	
 	/**
 	*@param String
+	*@return void
 	*/	
 	public void setObjectType (String objectType) {
 		this.objectType = objectType;
@@ -115,6 +114,7 @@ public class UserPermissions {
 	/**
 	* Get permissions for current user
 	*@throws Exception
+	*@return void
 	*/
 	public void setPermissions () {
 		try{
@@ -124,7 +124,10 @@ public class UserPermissions {
 			Boolean isAdmin = false;			
 			
 			if(projectAdmin == null || projectAdmin.Id != UserInfo.getUserId())
-				projectAdmin = [Select id, Profile.PermissionsModifyAllData, ProfileId, Name From User where id =: id limit 1];
+				projectAdmin = [Select id, Profile.PermissionsModifyAllData, ProfileId, Name 
+									From User 
+									where id =: id 
+									limit 1];
 			
 			if(projectAdmin.Profile.PermissionsModifyAllData){
 				canManage = true;
@@ -185,7 +188,6 @@ public class UserPermissions {
 			}
 			
 			String canManageStr = (canManage) ? 'true' : 'false';
-			System.debug('\n\n User Permissions Results: \n\tObject: ' + objectType + '\n\tCan Manage: ' + canManage + '\n\tCan Create: ' + canCreate+ '\n\tCan Comment: ' + canComment + '\n\tCan View: ' + canView + '\n\n');
 			
 			if(ownerId == id) 
 				canManage = true;  // Shouldnt this be called user UserId?
@@ -194,5 +196,11 @@ public class UserPermissions {
 		}catch(Exception e){
 			throw e;
 		}
+	}
+	/*
+	*@return boolean
+	*/
+	public static Boolean getCanManageStatic () {
+		return canManageStatic;
 	}
 }

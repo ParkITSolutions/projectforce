@@ -751,7 +751,29 @@
 			</apex:form>
 		</div>
 	</div>
+<!-- 
+	<apex:form id="theForm">
+	<apex:repeat value="{!L}" var="o" id="dynFil">
+	
+		<apex:outputPanel rendered="{!IF( o.fieldType == 'PICKLIST', true, false) }" layout="block">
+			<span class="DynFIlLabel">{!o.label}</span>
+			<apex:SelectList >
+				<apex:selectOptions value="{!o.options}" />
+			</apex:SelectList>
+			{!o.name}::{!o.FieldType}
+		</apex:outputPanel>	
 
+		<apex:outputPanel rendered="{!IF( o.fieldType != 'PICKLIST', true, false) }" layout="block">
+			<span class="DynFIlLabel">{!o.label}</span>
+			<apex:inputText value="{!o.value}" />
+			{!o.name}::{!o.FieldType}
+		</apex:outputPanel>	
+	</apex:repeat>
+	->->->{!SQL}
+	<apex:commandButton value="Send" action="{!sendRequest}" rerender="theForm"/>
+	--------
+	</apex:form>
+ -->
     <script>
         showActionSuccess();
         readPortalCSSRules();

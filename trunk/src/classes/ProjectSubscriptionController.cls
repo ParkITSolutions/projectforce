@@ -5,7 +5,9 @@ public class ProjectSubscriptionController {
 	
 	public String idProject = System.currentPageReference().getParameters().get('id');
 	public Integer subscriptionCount; 
-
+	public ProjectSubscription__c subscription = new ProjectSubscription__c();
+	
+	
 	/**
 	* Constructor
 	*/
@@ -31,8 +33,6 @@ public class ProjectSubscriptionController {
 		return subscriptionCount;
 	}
 	
-	public ProjectSubscription__c subscription = new ProjectSubscription__c();
-	
 	/**
 	*@return ProjectSubscription__c
 	*/
@@ -41,7 +41,8 @@ public class ProjectSubscriptionController {
 	}
 	
 	/**
-	*@param String
+	*@param String idProject
+	*@return void
 	*/
 	public void setIdProject (String idProject) {
 		this.idProject = idProject; 
@@ -56,6 +57,7 @@ public class ProjectSubscriptionController {
 
 	/**
 	* Execute on Construct
+	*@return void
 	*/
 	public void constructMethods () {
 		if (idProject != null) {
@@ -67,7 +69,10 @@ public class ProjectSubscriptionController {
 							ProjectTaskDeleted__c,
 							Project__c,
 							User__c
-						from ProjectSubscription__c where User__c =:UserInfo.getUserId() and Project__c =: idProject limit 1];
+						from ProjectSubscription__c 
+						where User__c =:UserInfo.getUserId() and Project__c =: idProject 
+						limit 1];
+						
 			if (teamSubList.size() > 0 ) {
 				subscription = teamSubList[0];
 			}	
@@ -117,5 +122,4 @@ public class ProjectSubscriptionController {
 		pageRef.setRedirect(true);
 		return pageRef;
 	}
-	
 }

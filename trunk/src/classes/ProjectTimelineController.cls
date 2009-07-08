@@ -18,7 +18,7 @@ public class ProjectTimelineController {
     *@return Project2__c
     */
     public Project2__c getProject(){
-		return project;
+		return this.project;
     }
     
     
@@ -32,13 +32,12 @@ public class ProjectTimelineController {
     
     /**
     * Get Team and Project for current team id
-    *@void
     *@param String param
+    *@return void
     */
     public void getTeamAndProject(String param){
         if(param != null){
             project = [select Id, Name from Project2__c p where p.Id =: param];
         }
     }
-
 }

@@ -26,7 +26,7 @@ public with sharing class ProjectSearchResultController {
    	
 	/**
 	* Load 'key' parameter
-	*@Constructor
+	* Constructor
 	*/
 	public ProjectSearchResultController(){
 		criteria = System.currentPageReference().getParameters().get('key');
@@ -42,6 +42,7 @@ public with sharing class ProjectSearchResultController {
 	
 	/**
 	*@param String
+	*@return void
 	*/
 	public void setCriteria (String criteria) {
 		this.criteria = criteria;
@@ -62,6 +63,7 @@ public with sharing class ProjectSearchResultController {
 	}	
 	/**
 	*@param String teamId
+	*@return void
 	*/
 	public void setTeamId (String team){
 		teamId = team;
@@ -83,18 +85,19 @@ public with sharing class ProjectSearchResultController {
 	
 	/**
 	* Makes the search
-	*@void
+	*@return void
 	*/
 	public void search() {
 		
 		List<SearchResult> tempResultList = new List<SearchResult>();	
 		String namespace = (ProjectUtil.getNamespace() != '' ) ? ProjectUtil.getNamespace() + '__' : '';		
 
-		System.debug( '#>' + teamId );
-
  		if(teamId != null){ //Searching project TASKS	
 
-			String sosl = 'FIND \'' + criteria + '*\' IN ALL FIELDS RETURNING ' + namespace + 'ProjectTask__c (Id, Name, Description__c, Project__c where Project__c = \'' + teamId + '\')';
+			String sosl = 'FIND \'' + criteria + '*\' IN ALL FIELDS RETURNING ' + namespace 
+						+ 'ProjectTask__c (Id, Name, Description__c, Project__c where Project__c = \'' 
+						+ teamId + '\')';
+						
 			List<List<SObject>> resultList = search.query(sosl);
 			resultsProjectTask = (List<ProjectTask__c>) resultList[0];
 
@@ -111,7 +114,8 @@ public with sharing class ProjectSearchResultController {
 				tempResultList.add(currentResult);
 			}
 		}else{
-			List<List<SObject>> resultList = search.query('FIND \'' + criteria + '*\' IN ALL FIELDS RETURNING ' + namespace + 'Project2__c (Id, Name, Description__c)');
+			List<List<SObject>> resultList = search.query('FIND \'' + criteria + '*\' IN ALL FIELDS RETURNING ' 
+											+ namespace + 'Project2__c (Id, Name, Description__c)');
 			resultsProjectSearch = (List<Project2__c>) resultList[0];
 			
 			// PARSE THE Projects RESULT LIST
@@ -163,11 +167,10 @@ public with sharing class ProjectSearchResultController {
 		}
 		
 	}
-	
 
    	/**
    	* Count number of result pages
-   	*@void
+   	*@return void
    	*/
    	public void genCntPagination () {
    		cntPagination = (totalItemsNumber - (Math.mod(totalItemsNumber, numberOfItemsToShow))) / numberOfItemsToShow;	
@@ -178,6 +181,7 @@ public with sharing class ProjectSearchResultController {
    	
    	/**
    	* Go next result page
+   	*@return void
    	*/
    	public void nextPage () {
    		currentPagination++;
@@ -187,6 +191,7 @@ public with sharing class ProjectSearchResultController {
    	
    	/**
    	* Go previus result page
+   	*@return void
    	*/
    	public void prevPage () {
    		currentPagination--;
@@ -196,6 +201,7 @@ public with sharing class ProjectSearchResultController {
 
 	/**
    	* Go last result page
+   	*@return void
    	*/
    	public void lastPage () {
    		currentPagination = cntPagination;
@@ -205,6 +211,7 @@ public with sharing class ProjectSearchResultController {
    	
    	/**
    	* Go first result page
+   	*@return void
    	*/
    	public void firstPage () {
    		currentPagination = 1;
@@ -214,6 +221,7 @@ public with sharing class ProjectSearchResultController {
 	
 	/**
 	* Empty function for refresh result list
+	*@return void
 	*/
    	public void refreshPages () {
    		
@@ -233,7 +241,9 @@ public with sharing class ProjectSearchResultController {
 	*/
 	public Integer getLastItem () {
 		Integer lastItem;
-		if ((currentPagination == cntPagination) || (currentPagination == 1 && (totalItemsNumber < numberOfItemsToShow))) {
+		if ((currentPagination == cntPagination) 
+			|| (currentPagination == 1 && (totalItemsNumber < numberOfItemsToShow))) {
+				
 			lastItem = firstRow + Math.mod(totalItemsNumber, numberOfItemsToShow);
 		}else {
 			lastItem = firstRow + 10;
@@ -322,9 +332,7 @@ public with sharing class ProjectSearchResultController {
 		} 
    		return nextPageShow;
    	}	
-   	
-	
-	
+
 	
 	/**
 	* Jump to page
@@ -337,6 +345,7 @@ public with sharing class ProjectSearchResultController {
     /**
     * Set jumpo to page
     *@param Integer jumpPage
+    *@return void
     */
 	public void setJumpPage (Integer jumpPage) {
 		this.jumpPage = jumpPage;
@@ -344,6 +353,7 @@ public with sharing class ProjectSearchResultController {
 	
     /**
     * Jump to page
+    *@return void
     */
 	public void JumpToPage () {
 		if (jumpPage > cntPagination) {
@@ -369,7 +379,7 @@ public with sharing class ProjectSearchResultController {
 	
 	/**
 	* Inner class for SearchResult type
-	*@class
+	*@ Inner class
 	*/
 	public class SearchResult {
 		String name;
@@ -380,6 +390,7 @@ public with sharing class ProjectSearchResultController {
 		
 		/**
 		*@param Id id
+		*@return void
 		*/
 		public void setId (Id id) {
 			this.id = id;
@@ -389,6 +400,7 @@ public with sharing class ProjectSearchResultController {
 		* Apply hightlight class to searched string
 		*@param String name
 		*@param String criteria
+		*@return void
 		*/
 		public void setName (String name, String criteria) {
 			String highlight = '';
@@ -410,19 +422,23 @@ public with sharing class ProjectSearchResultController {
 		* Make a result's string, highlight the matches and show the context of resultant string
 		*@param String matches
 		*@param String criteria
+		*@return void
 		*/
 		public void setMatches (String matches, String criteria) {
 			String highlight = '';
 			Integer maxLength = 50;
+			
 			if (matches != null) {
 				String matchesLow = matches.toLowerCase();
 				String criteriaLow = criteria.toLowerCase();
 				matches = matches.replaceAll('(?i)<[^>]*>', '');
+				
 				if (criteria != null && criteria != '' && matchesLow.indexOf(criteriaLow) != -1) {
 					Integer msjLength = matches.length();
 					Integer iniHighLight = matchesLow.indexOf(criteriaLow) - 50;
 					Integer criteriaLength = criteria.length();
 					Integer endHighLight = matchesLow.indexOf(criteriaLow) + criteriaLength + 50;
+					
 					if (iniHighLight < 0) {
 						if (endHighLight > msjLength) {
 							highlight = matches.substring(0,msjLength);	
@@ -452,6 +468,7 @@ public with sharing class ProjectSearchResultController {
 		
 		/**
 		*@param String Type
+		*@return void
 		*/
 		public void setResultType (String resultType) {
 			this.resultType = resultType;	
@@ -459,6 +476,7 @@ public with sharing class ProjectSearchResultController {
 		
 		/**
 		*@param String Name
+		*@return void
 		*/
 		public void setRealName (String realName) {
 			this.realName = realName;
@@ -498,6 +516,5 @@ public with sharing class ProjectSearchResultController {
 		public String getRealName () {
 			return realName;
 		}	
-			
 	}
 }

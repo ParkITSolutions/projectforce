@@ -79,6 +79,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectDynamicFilter</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectInitProfiles</apexClass>
         <enabled>false</enabled>
     </classAccesses>

@@ -13,24 +13,30 @@ public class ProjectSetupController {
 		this.setingAllProfiles();
 	}
 	
+	/**
+	*@return void
+	*/
 	public void setSelectedProfilesList( String[] s){
 		String p = s[0];
 	}
 	
+	/**
+	*@return String[]
+	*/
 	public String[] getSelectedProfilesList(){
 		String[] p = new String[]{};
 		return p;
 	}
 	
 	/**
-	*
+	*@return List<SelectOption>
 	*/
 	public List<SelectOption> getAllProfiles(){
 		return this.allProfiles;
 	}
 
 	/**
-	*
+	*@return List<SelectOption>
 	*/
 	public List<SelectOption> getSavedProfiles(){
 		this.setingAllProfiles();
@@ -44,7 +50,7 @@ public class ProjectSetupController {
 	}
 
 	/**
-	*
+	*@return PageReference
 	*/	
 	public PageReference saveAdmSettings(){
 		
@@ -65,23 +71,21 @@ public class ProjectSetupController {
 	}
 	
 	/**
-	*
+	*@return void
 	*/
 	public void setSelectedProfsStr( String s ){
 		this.selectedProfsStr = s; 
 	}
 
 	/**
-	*
+	*@return string selectedProfsStr
 	*/
 	public String getSelectedProfsStr(){
 		return this.selectedProfsStr;
 	}
-	
-	// Private methods
 
 	/**
-	*
+	*@return void 
 	*/
 	private void setingAllProfiles(){
 
@@ -93,7 +97,9 @@ public class ProjectSetupController {
 		
 		// Profiles can't view
 		List<Profile> allProfilesTemp = new List<Profile>(); 
-		allProfilesTemp = [ select id, name from Profile where id not in: this.selectedProfsList and name != 'System Administrator'];
+		allProfilesTemp = [ select id, name 
+								from Profile 
+								where id not in: this.selectedProfsList and name != 'System Administrator'];
 		
 		if( allProfilesTemp.size() > 0 ){
 			this.allProfiles.clear();
@@ -117,7 +123,7 @@ public class ProjectSetupController {
 	}
 	
 	/**
-	*
+	*@return void 
 	*/
 	public void stringProfiles(){
 		this.savedProfilesStr = [ select Id, CanViewButtonNew__c from ProjectSetup__c limit 1 ];
@@ -128,17 +134,19 @@ public class ProjectSetupController {
 	}
 	
 	/**
-	*
+	*@return boolean 
 	*/
 	public Boolean canView(){		
 		return  this.getIfCanModifyAllData() || savedProfilesStr[0].CanViewButtonNew__c.contains( UserInfo.getProfileId());
 	}	
 
 	/**
-	*
+	*@return boolean 
 	*/
 	public Boolean getIfCanModifyAllData(){
-		return [Select id, Profile.PermissionsModifyAllData From User where id =: UserInfo.getUserId() limit 1].Profile.PermissionsModifyAllData; 		
+		return [Select id, Profile.PermissionsModifyAllData 
+				From User 
+				where id =: UserInfo.getUserId() 
+				limit 1].Profile.PermissionsModifyAllData; 		
 	}	
-
 }

@@ -15,9 +15,10 @@ public with sharing class ProjectDetailController
     private String projectType = '';	
     String teamIdParam = System.currentPageReference().getParameters().get('id');
     public boolean isManager = false;
+    public String USERID =  UserInfo.getUserId();
+    
     public static ProjectTask__c taskT;
     public static UserPermissions userPermission = new UserPermissions();
-    public String USERID =  UserInfo.getUserId();
     
     /**
     * Constructor
@@ -26,16 +27,22 @@ public with sharing class ProjectDetailController
        genPermissions();   	   
    	   getTeamDetail();
        genTeamData();
-       isManager = userPermission.getCanManage();
+       this.isManager = userPermission.getCanManage();
        this.projectType = getTeamspace().Type__c;
     }   
     
+    /**
+    * Empty Constructor
+    */
     public ProjectDetailController (){
     
     }
     
+    /**
+    *@return isLastMemberAdmin
+    */
     public Boolean getIsLastMemberAdmin(){
-    	return isLastMemberAdmin;
+    	return this.isLastMemberAdmin;
    	}
    	
    	 /**
@@ -47,14 +54,6 @@ public with sharing class ProjectDetailController
     }
 
     /**
-    * Static function for widgets controllers use
-    *@return UserPermissions instance
-    */
-    public static UserPermissions getUserPermissions () {
-        return userPermission;
-    }
-
-    /**
     *@return String
     */
     public String getProjectName(){
@@ -62,7 +61,7 @@ public with sharing class ProjectDetailController
 		pName = [Select Id, Name from Project2__c where id =: teamIdParam].Name;    	
 		
 		if( pName.length() > 24 )
-		pName = pName.substring( 0, 23 );
+			pName = pName.substring( 0, 23 );
 				
 		return pName;//  .replaceAll( '\'', '&#39;' );
     }
@@ -71,25 +70,26 @@ public with sharing class ProjectDetailController
     *@return boolean IsManager
     */
     public boolean getIsManager(){
-    	return isManager;
+    	return this.isManager;
     }  
 
     /**
     *@param String team id
     */
     public void setTeamIdParam (String idTeam){ 
-        teamIdParam = idTeam;
+        this.teamIdParam = idTeam;
     }
     
     /**
     * @return String teamIdParam The Id of the team
     */
     public String getTeamIdParam(){
-        return teamIdParam;
+        return this.teamIdParam;
     } 
     
     /**
     *@param Boolean isp
+    * @return void
     */	
 	public void setIsPublic(Boolean isp){
 		this.isPublic = isp;
@@ -97,6 +97,7 @@ public with sharing class ProjectDetailController
 	
 	/**
     *@param Boolean ism
+    * @return void
     */	
 	public void setIsMember(Boolean ism){
 		this.isMember = ism;
@@ -118,7 +119,6 @@ public with sharing class ProjectDetailController
 		return this.isMember;	
 	}
        
-    
     /**
     * Check if is TeamsSuscription page
     *@return Boolean 
@@ -130,7 +130,7 @@ public with sharing class ProjectDetailController
     
     /**
     * Load permission for current user
-    *@void
+    *@return void
     */
  	public void genPermissions () {
         userPermission.setId(UserInfo.getUserId());
@@ -146,7 +146,11 @@ public with sharing class ProjectDetailController
     */
     public void getTeamDetail(){
         try {
-           		teamspace = [Select t.OwnerId, t.Name, t.LastModifiedDate, t.LastModifiedById, t.IsDeleted, t.Id, t.Description__c, t.CreatedDate, t.CreatedById, t.Type__c from Project2__c t where id =: teamIdParam];
+           	teamspace = [Select t.OwnerId, t.Name, t.LastModifiedDate, t.LastModifiedById, 
+           					t.IsDeleted, t.Id, t.Description__c, t.CreatedDate, t.CreatedById, t.Type__c 
+           					from Project2__c t 
+           					where id =: teamIdParam];
+           					
         } catch(Exception e ){
             throw e;
         }   
@@ -157,8 +161,11 @@ public with sharing class ProjectDetailController
     *@return Boolean
     */
   	public void genTeamData(){
-		if(teamIdParam != null){
-			this.teamspace = [select Id, Name, PublicProfile__c from Project2__c where id =: teamIdParam limit 1];
+		if(this.teamIdParam != null){
+			this.teamspace = [select Id, Name, PublicProfile__c 
+								from Project2__c 
+								where id =: teamIdParam 
+								limit 1];
 			if(teamspace.PublicProfile__c != null){
 				this.setIsPublic(true);
 			}else if (userPermission.getCanManage()){
@@ -167,7 +174,10 @@ public with sharing class ProjectDetailController
 				this.setIsPublic(false);
    			}
    			
-			List<ProjectMember__c> member = [select Id, User__c from ProjectMember__c where Project__c =: teamIdParam and User__c =: UserInfo.getUserId() limit 1];
+			List<ProjectMember__c> member = [select Id, User__c 
+												from ProjectMember__c 
+												where Project__c =: teamIdParam and User__c =: UserInfo.getUserId() 
+												limit 1];
 			if(member.size() > 0){
 				this.setIsMember(true);
 			}else {
@@ -178,7 +188,7 @@ public with sharing class ProjectDetailController
 
     /**
     * Join Project
-    *@void
+    *@return void
     */
     public void joinProject(){
 		pmc.setProjectId(System.currentPageReference().getParameters().get('id'));
@@ -189,24 +199,24 @@ public with sharing class ProjectDetailController
 	
 	/**
 	* Unjoin Project
-	*@void
+	*@return PageReference
 	*/
 	public PageReference unjoinProject(){
 		pmc.setProjectId(System.currentPageReference().getParameters().get('id'));
 		if(!pmc.isLastMemberAdmin()){
 			
 			pmc.unjoinProject();
-			isMember = false;
+			this.isMember = false;
 			
 			genPermissions();
-			isLastMemberAdmin = false;			
+			this.isLastMemberAdmin = false;			
 
 			if( this.projectType == 'private'  )
 				return this.projectRedirect();
 
 		}else{
 			genPermissions();
-			isLastMemberAdmin = true;
+			this.isLastMemberAdmin = true;
 		}
 	
 		return null;
@@ -227,8 +237,10 @@ public with sharing class ProjectDetailController
     */
     public Project2__c getTeamspace() {
     	
-         teamspace = [select name, description__c, Type__c from Project2__c
-                     where id=: teamIdParam];
+         teamspace = [select name, description__c, Type__c 
+         				from Project2__c
+                     	where id=: teamIdParam];
+                     	
          if(teamspace == null) {
             return null;
          }else {
@@ -243,10 +255,18 @@ public with sharing class ProjectDetailController
     public String getTeamspaceImage() {
     
         List<Project2__c> teamAvatar = [select Picture__c
-                                        from Project2__c
-                                        where Id =:System.currentPageReference().getParameters().get('id')];
+                                        	from Project2__c
+                                        	where Id =:System.currentPageReference().getParameters().get('id')];
         if(teamAvatar.size() == 0) 
             return '';
         return '/servlet/servlet.FileDownload?file=' + teamAvatar[0].Picture__c;
     }  
+    
+    /**
+    * Static function for widgets controllers use
+    *@return UserPermissions instance
+    */
+    public static UserPermissions getUserPermissions () {
+        return userPermission;
+    }
 }

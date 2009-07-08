@@ -6,12 +6,14 @@ public class ProjectOverlayDeleteAssigneeController {
 	private String projectId = '';
 	private String taskName='';
 	
-		
+	/*
+	* Constructor
+	*/	
 	public ProjectOverlayDeleteAssigneeController(){} 
 	 
 	/**
     * Generate User Permissions
-    *@void
+    *@return void
     */ 
     public void genPermissions () {
         userPermissions.setId(UserInfo.getUserId());
@@ -30,14 +32,16 @@ public class ProjectOverlayDeleteAssigneeController {
     
     /** 
     *@param sidDeletes
+    *@return void
     */
     public void setIdDeletes (String sidDeletes) {
         idDeletes = sidDeletes; 
     }
      
 
-    /** deleteAssignee
-    *@void
+    /*
+    * deleteAssignee
+    *@reutrn void
     */
     public void deleteAssignee(){
 
@@ -47,6 +51,4 @@ public class ProjectOverlayDeleteAssigneeController {
         }
         idDeletes = '';
     }
-    
-
 }

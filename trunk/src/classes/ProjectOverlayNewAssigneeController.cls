@@ -1,6 +1,5 @@
 public class ProjectOverlayNewAssigneeController {
 
-	// Proprties
 	private Id projectId;
 	
 	private Id taskId;
@@ -12,15 +11,17 @@ public class ProjectOverlayNewAssigneeController {
 	private List<SelectOption> scale = new List<SelectOption>();
 	private Integer PercentSelected = 0; 
 	
-	// Constructor
+	/* 
+	* Constructor
+	*/
 	public ProjectOverlayNewAssigneeController(){
 		taskId = System.currentPageReference().getParameters().get('id');
 	}	
 	
-	// Methods setters and getters	
 	/**
 	*Set project Id.
-	*@param Id
+	*@param Id pId
+	*@return void
 	*/
 	public void setProjectId( Id pId ){
 		this.projectId = pId;
@@ -37,13 +38,14 @@ public class ProjectOverlayNewAssigneeController {
 	/**
 	*Set task Id.
 	*@param Id
+	*@return void
 	*/
 	public void setTaskId( Id tId ){
 		this.taskId = tId;
 	}
 
 	/**
-	*Return task Id.
+	* Returns task Id.
 	*@return Id
 	*/
 	public Id getTaskId(){
@@ -70,6 +72,7 @@ public class ProjectOverlayNewAssigneeController {
 	/**
 	*Set member selected id.
 	*@param Id
+	*@return void
 	*/
 	public void setMemberSelected( Id mS ){
 		this.memberSelected = mS;
@@ -84,8 +87,8 @@ public class ProjectOverlayNewAssigneeController {
 	}
 	
 	/**
-	*Set the percent selected.
-	*@param Integer
+	* Set the percent selected.
+	*@return Integer
 	*/
 	public Integer getPercentSelected(){
 		return this.PercentSelected;
@@ -93,22 +96,22 @@ public class ProjectOverlayNewAssigneeController {
 	
 	/**
 	*Set the percent selected.
-	*@param Integer
+	*@param Integer pS
+	*@return void
 	*/
 	public void setPercentSelected( Integer pS ){
 		this.PercentSelected = pS;
 	}
 
 	/**
-	*Return project name.
+	* Returns project name.
 	*@return String
 	*/
 	public String getTaskName(){
 		this.extTaskName();
 		return this.TaskName;
 	}
-	
-	 
+
     /**
 	*Return if memberlist has size==0.
 	*@return boolean
@@ -118,8 +121,6 @@ public class ProjectOverlayNewAssigneeController {
 			return true;		
 		}else return false;
 	}
-	
-	// Public Methods
 	
 	public void saveAssignee(){
 		
@@ -136,10 +137,6 @@ public class ProjectOverlayNewAssigneeController {
 				
 	}
 	
-	
-	
-	// Private methods
-
 	/**
 	*Construc the percent scale.
 	*/
@@ -154,7 +151,8 @@ public class ProjectOverlayNewAssigneeController {
 	}
 
 	/**
-	*Get project name from D.B.
+	* Get project name from D.B.
+	*@return void
 	*/
 	private void extTaskName(){
 	
@@ -164,7 +162,6 @@ public class ProjectOverlayNewAssigneeController {
 			this.projectId = pT.Project__c; 
 			this.taskName = pT.Name;
 		}
-
 	}	
 		
 	/**
@@ -187,7 +184,10 @@ public class ProjectOverlayNewAssigneeController {
 		if( this.projectId == null )
 		this.extTaskName();
 		
-		memList = [ select Id, User__c, User__r.Name from ProjectMember__c where Project__c =: projectId and User__r.IsActive != false and User__c not in: idsAssi ];
+		memList = [ select Id, User__c, User__r.Name 
+						from ProjectMember__c 
+						where Project__c =: projectId and User__r.IsActive != false and User__c not in: idsAssi ];
+ 		
  		if( memList.size() > 0 ){
  			this.memberList = new List<SelectOption>();
 			SelectOption aMember = new SelectOption( 'Choose a member', 'Choose a member' );
@@ -196,7 +196,6 @@ public class ProjectOverlayNewAssigneeController {
 				aMember = new SelectOption( m.User__c, m.User__r.Name );
 				this.memberList.add( aMember );			
 			}
-		}
-				
+		}		
 	}
 }

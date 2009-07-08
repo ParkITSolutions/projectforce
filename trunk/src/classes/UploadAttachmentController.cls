@@ -33,7 +33,8 @@ public class UploadAttachmentController {
 	
 	/**
 	* Set parent id for Attachment instance
-	*@param String
+	*@param String parentId
+	*@return void
 	*/
 	public void setParentId (String parentId) {
 		this.parentId = parentId;
@@ -62,7 +63,8 @@ public class UploadAttachmentController {
 	}	
 	
 	/**
-	*@param Attachment
+	*@param Attachment newAttach
+	*@return void
 	*/
 	public void setNewAttach (Attachment newAttach) {
 		this.newAttach = newAttach;	
@@ -82,7 +84,6 @@ public class UploadAttachmentController {
 		return errorMsg;
 	}
 	
-	
 	/**
 	* Save Attachment
 	*@return PageReference
@@ -100,7 +101,9 @@ public class UploadAttachmentController {
 			if(asAvatar.equals('true') && imagesTypes.contains(newAttach.ContentType)){
 				if(parentId != null){
 					//Read Project
-					Project2__c project = [select p.Id, p.Picture__c from Project2__c p where p.Id =: parentId];
+					Project2__c project = [select p.Id, p.Picture__c 
+											from Project2__c p 
+											where p.Id =: parentId];
 					
 					//Read old avatar and delete it.
 					if(project.Picture__c != null){
@@ -141,5 +144,4 @@ public class UploadAttachmentController {
 		pageRef.setRedirect(true);
 		return pageRef;
 	} 
-	
 }
