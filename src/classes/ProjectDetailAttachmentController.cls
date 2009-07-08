@@ -67,10 +67,10 @@ public class ProjectDetailAttachmentController {
 		List<Attachment> attachmentsList = new List<Attachment>();
 		if(project != null){
 			attachmentsList = [select name, id, parentid, ContentType, BodyLength, 
-							LastModifiedDate, LastModifiedBy.Name, CreatedById
-							from attachment 
-							where parentid =: project
-							order by name];
+								LastModifiedDate, LastModifiedBy.Name, CreatedById
+								from attachment 
+								where parentid =: project
+								order by name];
 		}
 		loadAttachmentList(attachmentsList);
 	}
@@ -256,7 +256,7 @@ public class ProjectDetailAttachmentController {
         *@return void
         */
         public void setIsOwner(Boolean b){
-        	isOwner = b;
+        	this.isOwner = b;
         }
         
         /**

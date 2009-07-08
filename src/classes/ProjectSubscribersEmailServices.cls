@@ -8,15 +8,17 @@ public class ProjectSubscribersEmailServices {
     private List<ProjectSubscription__c> subscriptions = new List<ProjectSubscription__c>();
     public Boolean isTaskEdit = false;  
     public Boolean isTest = false;
+    
 	public static Boolean alreadySent = false;
 	 
     /**
-    * Constructor (def)
+    * Constructor
     */
     public ProjectSubscribersEmailServices(){}
 
     /**
     *@param Boolean isTest
+    *@return void
     */
     public void setIsTest ( Boolean isTest ) 
     {
@@ -25,6 +27,7 @@ public class ProjectSubscribersEmailServices {
     
     /**
     *@param Boolean
+    *@return void
     */
     public void setIsTaskEdit ( Boolean isTaskEdit ){
         this.isTaskEdit = isTaskEdit;
@@ -32,6 +35,7 @@ public class ProjectSubscribersEmailServices {
 
     /**
     *@Send meail to subscribers
+    *@return void
     */
     public void sendMemberJoinLeave( List<String> lstPMId, String acction )
     {
@@ -41,19 +45,31 @@ public class ProjectSubscribersEmailServices {
         if ( acction == 'join' || acction == 'leave' ) 
         {   
             List<ProjectMember__c> lstPM = new  List<ProjectMember__c>();    
-            lstPM = [ SELECT Id, Project__c, User__c, Project__r.Name, User__r.Name FROM ProjectMember__c WHERE Id in : lstPMId ];
+            lstPM = [ SELECT Id, Project__c, User__c, Project__r.Name, User__r.Name 
+            			FROM ProjectMember__c 
+            			WHERE Id in : lstPMId ];
             if (!isTest)
-            subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, ProjectTaskChanged__c, ProjectTaskDeleted__c FROM ProjectSubscription__c WHERE Project__c =: lstPM[0].Project__c and ProjectMemberJoinLeave__c = true ];
+            subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, 
+            					Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, 
+            					ProjectTaskChanged__c, ProjectTaskDeleted__c 
+            					FROM ProjectSubscription__c 
+            					WHERE Project__c =: lstPM[0].Project__c and ProjectMemberJoinLeave__c = true ];
+            					
             for(ProjectMember__c proj : lstPM ){
 	            if ( acction == 'leave') 
 	            {
 	                String oldMemberName = proj.User__r.Name;
-	                emailMsj = oldMemberName + ' has left project  <a href="' + Label.sfdcHostName+'apex/ProjectDetail?id='+ proj.Project__c + + '">' +  proj.Project__r.Name + '</a>.';
+	                emailMsj = oldMemberName + ' has left project  <a href="' 
+	                			+ Label.sfdcHostName+'apex/ProjectDetail?id='+ proj.Project__c + + '">' 
+	                			+  proj.Project__r.Name + '</a>.';
 	                emailSub = 'Project Member has Left the project ';
 	            }
 	            else 
 	            {
-	                emailMsj = 'A new project member has joined project <a href="' + Label.sfdcHostName+'apex/ProjectDetail?id='+ proj.Project__c +'">' +  proj.Project__r.Name + '</a>. Please welcome ' + proj.User__r.Name + ' to the project.';
+	                emailMsj = 'A new project member has joined project <a href="' 
+	                			+ Label.sfdcHostName+'apex/ProjectDetail?id='+ proj.Project__c +'">' 
+	                			+  proj.Project__r.Name + '</a>. Please welcome ' + proj.User__r.Name 
+	                			+ ' to the project.';
 	                emailSub = 'New Project Member';
 	            }
 	            
@@ -65,6 +81,7 @@ public class ProjectSubscribersEmailServices {
 
     /**
     *@Send mail to subscribers
+    *@return void
     */
     public void sendMailForTaskAssigned( List<String> lstPAId )
     {
@@ -73,7 +90,11 @@ public class ProjectSubscribersEmailServices {
         List<String> lstUserId = new  List<String>();   
 
         List<ProjectAssignee__c> lstPA = new  List<ProjectAssignee__c>();    
-        lstPA = [ SELECT Id, Project__c, Project__r.Name, User__r.Name, User__c, ProjectTask__c, ProjectTask__r.Name, ProjectTask__r.Description__c, ProjectTask__r.EndDate__c, ProjectTask__r.StartDate__c, ProjectTask__r.Priority__c FROM ProjectAssignee__c WHERE Id in : lstPAId ];
+        lstPA = [ SELECT Id, Project__c, Project__r.Name, User__r.Name, User__c, ProjectTask__c, 
+        			ProjectTask__r.Name, ProjectTask__r.Description__c, ProjectTask__r.EndDate__c, 
+        			ProjectTask__r.StartDate__c, ProjectTask__r.Priority__c 
+        			FROM ProjectAssignee__c 
+        			WHERE Id in : lstPAId ];
      
         string pId='';
         List<ProjectTask__c> ptL = new List<ProjectTask__c>();
@@ -86,7 +107,14 @@ public class ProjectSubscribersEmailServices {
         for(ProjectAssignee__c proj : lstPA){
 	        //Sub:{Task Name} has been assigned to you
 	        //Body: {Task Details such as name and description and start and end date}      
-	        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='+ proj.Project__c + '">' + proj.Project__r.Name + '</a><br />Task Name: <a href="' + Label.sfdcHostName+'apex/projecttaskdetail?id='+proj.ProjectTask__c + '">' + proj.ProjectTask__r.Name + '</a><br />Priority: ' + proj.ProjectTask__r.Priority__c + '<br />Start date: ' + proj.ProjectTask__r.StartDate__c + '<br />End date: ' + proj.ProjectTask__r.EndDate__c + '<br />Description: ' + (( proj.ProjectTask__r.Description__c == null ) ? '' : proj.ProjectTask__r.Description__c);
+	        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='
+	        			+ proj.Project__c + '">' + proj.Project__r.Name + '</a><br />Task Name: <a href="' 
+	        			+ Label.sfdcHostName+'apex/projecttaskdetail?id='+proj.ProjectTask__c + '">' 
+	        			+ proj.ProjectTask__r.Name + '</a><br />Priority: ' 
+	        			+ proj.ProjectTask__r.Priority__c + '<br />Start date: ' 
+	        			+ proj.ProjectTask__r.StartDate__c + '<br />End date: ' 
+	        			+ proj.ProjectTask__r.EndDate__c + '<br />Description: ' 
+	        			+ (( proj.ProjectTask__r.Description__c == null ) ? '' : proj.ProjectTask__r.Description__c);
 	        emailSub = proj.ProjectTask__r.Name + ' has been assigned to you';
 	
 	        lstUserId.add(proj.user__c);
@@ -94,7 +122,11 @@ public class ProjectSubscribersEmailServices {
         }
            
         if (!isTest){
-          	 subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, ProjectTaskChanged__c, ProjectTaskDeleted__c FROM ProjectSubscription__c WHERE  Project__c =: lstPA[0].Project__c and ProjectTaskAssignedToMe__c = true and User__c in : lstUserId ];
+          	 subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, 
+          	 					Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, 
+          	 					ProjectTaskChanged__c, ProjectTaskDeleted__c 
+          	 					FROM ProjectSubscription__c 
+          	 					WHERE  Project__c =: lstPA[0].Project__c and ProjectTaskAssignedToMe__c = true and User__c in : lstUserId ];
          }
     	if( subscriptions.size() > 0){	
     	        genAddress( subscriptions, emailMsj, emailSub );
@@ -104,6 +136,7 @@ public class ProjectSubscribersEmailServices {
 
     /**
     *@Send mail to subscribers
+    *@return voids
     */
    public void sendMailForTaskChanged( List<String> lstPTId )
     {
@@ -113,20 +146,34 @@ public class ProjectSubscribersEmailServices {
         List<String> lstUserId = new  List<String>();  
         
         List<ProjectTask__c> lstPT = new  List<ProjectTask__c>();    
-        lstPT = [ SELECT Id, Project__c, Project__r.Name, Name, Description__c, EndDate__c, StartDate__c, Priority__c FROM ProjectTask__c WHERE Id in : lstPTId ];
+        lstPT = [ SELECT Id, Project__c, Project__r.Name, Name, Description__c, EndDate__c, 
+        			StartDate__c, Priority__c 
+        			FROM ProjectTask__c 
+        			WHERE Id in : lstPTId ];
         
         List<String> SubAssignees = new List<String>();
         if (lstPT.size()>0){
-            for (ProjectAssignee__c a :[select id, user__c from ProjectAssignee__c where ProjectTask__c =: lstPT[0].id]){
+            for (ProjectAssignee__c a :[select id, user__c 
+            								from ProjectAssignee__c 
+            								where ProjectTask__c =: lstPT[0].id]){
         		SubAssignees.add(a.user__c);
             }
   	        //Sub:{Task Name} has been updated
 	        //Body: {Task Details such as name and description and start and end date}      
-	        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a><br />Task Name: <a href="' + Label.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">' + lstPT[0].Name + '</a><br />Priority: ' + lstPT[0].Priority__c + '<br />Start date: ' + lstPT[0].StartDate__c + '<br />End date: ' + lstPT[0].EndDate__c + '<br />Description: ' + lstPT[0].Description__c;
+	        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='
+	        			+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a><br />Task Name: <a href="' 
+	        			+ Label.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">' + lstPT[0].Name 
+	        			+ '</a><br />Priority: ' + lstPT[0].Priority__c + '<br />Start date: ' 
+	        			+ lstPT[0].StartDate__c + '<br />End date: ' + lstPT[0].EndDate__c 
+	        			+ '<br />Description: ' + lstPT[0].Description__c;
 	        emailSub = lstPT[0].Name + ' has been updated';
 
 	        if (!isTest){
-	            subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, ProjectTaskChanged__c, ProjectTaskDeleted__c FROM ProjectSubscription__c WHERE  Project__c =: lstPT[0].Project__c  and User__r.Id!=:UserInfo.getUserId() and ProjectTaskAssignToMeChanged__c = true and user__c in :SubAssignees];
+	            subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, 
+	            					Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, 
+	            					ProjectTaskChanged__c, ProjectTaskDeleted__c 
+	            					FROM ProjectSubscription__c 
+	            					WHERE  Project__c =: lstPT[0].Project__c  and User__r.Id!=:UserInfo.getUserId() and ProjectTaskAssignToMeChanged__c = true and user__c in :SubAssignees];
 	        }
 	    	if( subscriptions.size() > 0){	
 	    	     genAddress( subscriptions, emailMsj, emailSub );
@@ -137,6 +184,7 @@ public class ProjectSubscribersEmailServices {
 
     /**
     *@Send mail to subscribers
+    *@return void
     */
    public void sendMailForTaskPercentChanged( List<String> lstPTId ){   
    	
@@ -151,23 +199,37 @@ public class ProjectSubscribersEmailServices {
         List<String> lstUserId = new  List<String>();  
         
         List<ProjectTask__c> lstPT = new  List<ProjectTask__c>();    
-        lstPT = [ SELECT Id, Project__c, Project__r.Name, Name, Description__c, EndDate__c, StartDate__c, Priority__c,PercentCompleted__c,Status__c FROM ProjectTask__c WHERE Id in : lstPTId ];
+        lstPT = [ SELECT Id, Project__c, Project__r.Name, Name, Description__c, EndDate__c, StartDate__c, 
+        			Priority__c,PercentCompleted__c,Status__c 
+        			FROM ProjectTask__c 
+        			WHERE Id in : lstPTId ];
         
         List<String> SubAssignees = new List<String>();
 
           
         if ((lstPT.size()>0)&&(oldPercent!=lstPT[0].PercentCompleted__c)){
-            for (ProjectAssignee__c a :[select id, user__c from ProjectAssignee__c where ProjectTask__c =: lstPT[0].id]){
+            for (ProjectAssignee__c a :[select id, user__c from ProjectAssignee__c 
+            								where ProjectTask__c =: lstPT[0].id]){
         		SubAssignees.add(a.user__c);
             }
   	        //Sub:{Task Name} percent completed changed
 	        //Body: {Task Details such as name and description and start and end date}      
-	        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a><br />Task Name: <a href="' + Label.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">' + lstPT[0].Name + '</a><br />Priority: ' + lstPT[0].Priority__c + '<br />Start date: ' + lstPT[0].StartDate__c + '<br />End date: ' + lstPT[0].EndDate__c + '<br />Description: ' + lstPT[0].Description__c+'<br /><br />The percent completed has changed from '+oldPercent+' to '+lstPT[0].PercentCompleted__c;
+	        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='
+	        			+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a><br />Task Name: <a href="' 
+	        			+ Label.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">' 
+	        			+ lstPT[0].Name + '</a><br />Priority: ' + lstPT[0].Priority__c + '<br />Start date: ' 
+	        			+ lstPT[0].StartDate__c + '<br />End date: ' + lstPT[0].EndDate__c + '<br />Description: ' 
+	        			+ lstPT[0].Description__c+'<br /><br />The percent completed has changed from '+oldPercent
+	        			+' to '+lstPT[0].PercentCompleted__c;
         	emailSub = lstPT[0].Name + ' percent completed changed';
 
 
 	        if (!isTest){
-	            subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, ProjectTaskChanged__c, ProjectTaskDeleted__c FROM ProjectSubscription__c WHERE  Project__c =: lstPT[0].Project__c   and ProjectTaskChanged__c = true and user__c in :SubAssignees];
+	            subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, 
+	            					Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, 
+	            					ProjectTaskChanged__c, ProjectTaskDeleted__c 
+	            					FROM ProjectSubscription__c 
+	            					WHERE  Project__c =: lstPT[0].Project__c   and ProjectTaskChanged__c = true and user__c in :SubAssignees];
 	        }
 	    	if( subscriptions.size() > 0){	
 	    	     genAddress( subscriptions, emailMsj, emailSub );
@@ -176,27 +238,44 @@ public class ProjectSubscribersEmailServices {
     }
 
     /**
-    *@Send mail to subscribers
+    *Send mail to subscribers
+    *@param List<String> lstTaskId
+    *@return void
     */
     public void sendMailForTaskDeleted( List<String> lstTasksId )
     {
         String emailMsj = '';
         String emailSub = '';
         List<ProjectTask__c> lstTask = new  List<ProjectTask__c>();    
-        lstTask = [ SELECT Id, Project__c, Project__r.Name, Name, Description__c, EndDate__c, StartDate__c, Priority__c FROM ProjectTask__c WHERE Id  in : lstTasksId ];
+        lstTask = [ SELECT Id, Project__c, Project__r.Name, Name, Description__c, EndDate__c, 
+        				StartDate__c, Priority__c 
+        				FROM ProjectTask__c 
+        				WHERE Id  in : lstTasksId ];
         if (!isTest){
-	        subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, ProjectTaskChanged__c, ProjectTaskDeleted__c FROM ProjectSubscription__c WHERE Project__c =: lstTask[0].Project__c and ProjectTaskDeleted__c = true ];
+	        subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, 
+	        					Project__c, Project__r.Name, ProjectMemberJoinLeave__c, 
+	        					ProjectTaskAssignedToMe__c, ProjectTaskChanged__c, ProjectTaskDeleted__c 
+	        					FROM ProjectSubscription__c 
+	        					WHERE Project__c =: lstTask[0].Project__c and ProjectTaskDeleted__c = true ];
         }
         for(ProjectTask__c proj : lstTask){
 	        //Sub:{Task Name} has been deleted from {Project Name}
 	        //Body: {Task Details such as name and description and start and end date}      
-	        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='+ proj.Project__r.id + '">' + proj.Project__r.Name + '</a><br />Priority: ' + proj.Priority__c + '<br />Start date: ' + proj.StartDate__c + '<br />End date: ' + proj.EndDate__c + '<br />Description: ' + proj.Description__c;
+	        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='
+	        			+ proj.Project__r.id + '">' + proj.Project__r.Name + '</a><br />Priority: ' 
+	        			+ proj.Priority__c + '<br />Start date: ' + proj.StartDate__c + '<br />End date: ' 
+	        			+ proj.EndDate__c + '<br />Description: ' + proj.Description__c;
 	        emailSub = proj.Name + ' has been deleted from '+proj.Project__r.Name;
 	
 			if( subscriptions.size() > 0)	
 	        genAddress( subscriptions, emailMsj, emailSub );
         }
     }
+    
+    /**
+    *@param List<String> lstAssId
+    *@return void
+    */
 	public void sendMailForAssDeleted( List<String> lstAssId ){
         String emailMsj = '';
         String emailSub = '';
@@ -204,8 +283,11 @@ public class ProjectSubscribersEmailServices {
 		
         List<String> lstUserId = new  List<String>();   		
 		
-		pAs = [ SELECT Id,User__c,ProjectTask__r.Project__c, ProjectTask__c, Project__c, Project__r.Name, ProjectTask__r.Name, ProjectTask__r.Description__c, 
-		ProjectTask__r.EndDate__c, ProjectTask__r.StartDate__c, ProjectTask__r.Priority__c FROM ProjectAssignee__c WHERE Id in: lstAssId ];
+		pAs = [ SELECT Id,User__c,ProjectTask__r.Project__c, ProjectTask__c, Project__c, Project__r.Name, 
+				ProjectTask__r.Name, ProjectTask__r.Description__c, ProjectTask__r.EndDate__c, 
+				ProjectTask__r.StartDate__c, ProjectTask__r.Priority__c 
+				FROM ProjectAssignee__c 
+				WHERE Id in: lstAssId ];
 
         string pId='';
         List<ProjectTask__c> ptL = [SELECT Project__c from ProjectTask__c where id=:pas[0].ProjectTask__c];
@@ -217,12 +299,21 @@ public class ProjectSubscribersEmailServices {
         
         if ((pAs.size()>0) && !(ProjectUtil.DeleteTaskMailSent)){
 				for( ProjectAssignee__c pA : pAs ){
-			        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='+ pA.Project__c + '">' + pA.Project__r.Name + '</a><br />Task Name: <a href="' + Label.sfdcHostName+'apex/projecttaskdetail?id='+pA.ProjectTask__c + '">' + pA.ProjectTask__r.Name + '</a><br />Priority: ' + pA.ProjectTask__r.Priority__c + '<br />Start date: ' + pA.ProjectTask__r.StartDate__c + '<br />End date: ' + pA.ProjectTask__r.EndDate__c + '<br />Description:' + pA.ProjectTask__r.Description__c;
+			        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='
+			        		+ pA.Project__c + '">' + pA.Project__r.Name + '</a><br />Task Name: <a href="' 
+			        		+ Label.sfdcHostName+'apex/projecttaskdetail?id='+pA.ProjectTask__c + '">' 
+			        		+ pA.ProjectTask__r.Name + '</a><br />Priority: ' + pA.ProjectTask__r.Priority__c 
+			        		+ '<br />Start date: ' + pA.ProjectTask__r.StartDate__c + '<br />End date: ' 
+			        		+ pA.ProjectTask__r.EndDate__c + '<br />Description:' + pA.ProjectTask__r.Description__c;
+			        
 			        emailSub = 'You were unassigned from the task ' + pA.ProjectTask__r.Name + '.';			    
 				    lstUserId.add(pA.user__c);
 				}
 				if(!isTest){
-			    	subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, Project__r.Name, ProjectTaskAssignToMeChanged__c FROM ProjectSubscription__c WHERE Project__c =: pId and ProjectTaskAssignedToMe__c = true and User__c in : lstUserId ];
+			    	subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, 
+			    						Project__r.Name, ProjectTaskAssignToMeChanged__c 
+			    						FROM ProjectSubscription__c 
+			    						WHERE Project__c =: pId and ProjectTaskAssignedToMe__c = true and User__c in : lstUserId ];
 		        }	
 				if( subscriptions.size() > 0){
 		    	    genAddress( subscriptions, emailMsj, emailSub );
@@ -231,6 +322,12 @@ public class ProjectSubscribersEmailServices {
         ProjectUtil.DeleteTaskMailSent=false;
 	}
 
+   /**
+    *@param List<ProjectSubscription__c> subscriptions
+    *@param String emailMsj
+    *@param String emailSub
+    *@return void
+    */
     public void genAddress( List<ProjectSubscription__c> subscriptions, String emailMsj, String emailSub )
     {
         //Array address
@@ -265,8 +362,8 @@ public class ProjectSubscribersEmailServices {
     *@param Team__c team
     *@param String message
     *@param String subject
+    *@return void
     */
-   
     public void SendMail(String[] toAddresses , Project2__c team,  String Message, String subject) {
         // Assign thsetReplyToe addresses for the To and CC lists to the mail object.
         mail.setToAddresses(toAddresses);

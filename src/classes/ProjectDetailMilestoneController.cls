@@ -12,7 +12,7 @@ public class ProjectDetailMilestoneController {
 		
 	/**
 	*@param String
-	*@void
+	*@return void
 	*/
 	public void setTeamId(String id) {
 		if (teamId == null || teamId != id) {
@@ -26,15 +26,16 @@ public class ProjectDetailMilestoneController {
 	*@return String 
 	*/
 	public String getTeamId(){
-		return teamId;
+		return this.teamId;
 	} 
 		
 	/**
 	* Set Sidebar
 	*@param Boolean
+	*@return void
 	*/
 	public void setSidebar (Boolean b){
-		sidebar = b;
+		this.sidebar = b;
 	}
 	
 	/**
@@ -42,25 +43,25 @@ public class ProjectDetailMilestoneController {
 	*@return Boolean
 	*/
 	public Boolean getSidebar(){
-		return sidebar;
+		return this.sidebar;
 	}	
 		
 	/**
 	*@return Integer
 	*/
 	public Integer getListSize (){
-		return listSize;
+		return this.listSize;
 	}
 	
 	/**
 	* For rerender use
-	*@void
+	*@return void
 	*/
 	public void refresh(){}
 
 	/**
 	* Read user permissions
-	*@void
+	*@return void
 	*/
 	
 	public void genPermissions () {
@@ -76,7 +77,6 @@ public class ProjectDetailMilestoneController {
 	*/
 	public UserPermissions getUserPermissions () {
 		//Refresh user permissions 
-		// kjkkjk
 		genPermissions();
 		return userPermissions;
 	}
@@ -86,12 +86,12 @@ public class ProjectDetailMilestoneController {
 	*@return List<ProjectTasks>
 	*/
 	public List<ProjectTasks> getAllProjectTasks() {
-		return result;
+		return this.result;
 	}
 	
 	/**
 	* Read List of milestones
-	*@void
+	*@return void
 	*/
 	public void genAllProjectTasks() {
 		List<ProjectTask__c> milestones = new List<ProjectTask__c>();
@@ -157,9 +157,6 @@ public class ProjectDetailMilestoneController {
 		 userMap.clear();
 	 }
 		
-					
-	
-	
 	 /**
 	 * Inner Class ProjectTasks
 	 *@class
@@ -191,13 +188,14 @@ public class ProjectDetailMilestoneController {
 		*@return Integer
 		*/
 		public Integer getDayPercent() {
-      		return DayPercent;
+      		return this.DayPercent;
         }
         
         /**
         * For progress bar use (wide widget use)
         *@param Datetime end date
         *@param Double duration
+        *@return void
         */
         public void setDayPercent(Date endD, Double dur){
 			Date miToday = Date.today();
@@ -228,6 +226,7 @@ public class ProjectDetailMilestoneController {
         /**
         *@param Datetime end date (thin widget use)
         *@param Double duration
+        *@return void
         */
         public void setDayPercentRight( Date endD, Double dur){
 			Date miToday = Date.today();
@@ -265,6 +264,7 @@ public class ProjectDetailMilestoneController {
         /**
         *@param Datetime end time
         *@param Double dif
+        *@return void
         */
         public void setEndDate(Date endD, Double dif){			
 			if(dif > 0){
@@ -283,6 +283,7 @@ public class ProjectDetailMilestoneController {
         /**
         *@param Datetime end date
         *@param Double dif
+        *@return void
         */
         public void setEndDateRight(Date endD, Double dif){	
 			if(dif > 0){
@@ -300,6 +301,7 @@ public class ProjectDetailMilestoneController {
         
         /**
         *@param Datetime end date
+        *@return void
         */
         public void setIsToLate(Date endD){	
         	Date miToday = Date.today();
@@ -323,6 +325,7 @@ public class ProjectDetailMilestoneController {
         /**
         *@param Datetime end date
         *@param Double duration
+        *@return void
         */
         public void setDaysCount(Date endD, Double dur){
         	Date miToday = Date.today();
@@ -346,6 +349,7 @@ public class ProjectDetailMilestoneController {
         
         /**
         *@param User
+        *@return void
         */
         public void setUser(User user){
         	if(user != null){
@@ -387,6 +391,7 @@ public class ProjectDetailMilestoneController {
         
         /**
         *@param String
+        *@return void
         */
         public void setTaskId(String idTask){
             TaskId = idTask;
@@ -401,6 +406,7 @@ public class ProjectDetailMilestoneController {
         
         /**
         *@param String
+        *@return void
         */
         public void setPriority(String pr){
             Priority = pr;
@@ -415,6 +421,7 @@ public class ProjectDetailMilestoneController {
         
         /**
         *@param String
+        *@return void
         */
         public void setTaskName(String sName){
             TaskName = sName;

@@ -7,12 +7,16 @@ public class ProjectInitProfiles {
     public Boolean showOverlay = false;
 
 	/**
-	*@ Contructor
+	* Constructor
 	*/
 	public ProjectInitProfiles (){
 		InitializeProfiles();
 	}
 	
+	/**
+	* Initializes Profiles
+	*@return void
+	*/
 	public void InitializeProfiles(){
 	
         profiles = [select Id, Name from ProjectProfile__c where Name in : profilesNames];
@@ -46,14 +50,17 @@ public class ProjectInitProfiles {
 	}
 	
 	/**
-	*@ Save Profiles
+	* Save Profiles
+	*@return void
 	*/
 	public void saveProfiles(){
 		insert profilesToInsert;
 	}
 	
 	/**
-	*@Check from list if Name Profile exist an set boolean
+	*Check from list if Name Profile exist an set boolean
+	*@param String name
+	*@return Boolean 
 	*/
 	public Boolean existProfile(String name){
         for(ProjectProfile__c profile : profiles){
@@ -67,13 +74,12 @@ public class ProjectInitProfiles {
 		return showOverlay;
 	}
 	
-	
 	/**
-	* @Set profilesNames for Code Coverage Enviroment
+	* Set profilesNames for Code Coverage Enviroment
+	*@param List<String> testProfilesNames
+	*@return void
 	**/
-	
 	public void setProfilesNames(List<String> testProfilesNames){
 		profilesNames = testProfilesNames;
 	}
-
 }

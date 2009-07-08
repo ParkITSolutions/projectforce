@@ -39,25 +39,30 @@ public with sharing class ProjectMembersWidgetController {
 		
 	/**
 	*@param b send email notifys
+	*@return void 
 	*/
 	public void setEmailNotifications(Boolean b)
 	{
 		emailNotifications = b;
 	}
 	
+	/**
+	*@return boolean 
+	*/
 	public Boolean getIsManager(){
 		return isManager;	
 	}
 	
 	/**
-	*@return send email notifys
+	*@return boolean send email notifys
 	*/
 	public Boolean getEmailNotifications(){
 		return emailNotifications;
 	}
 	
-			/**
+	/**
 	*@param Boolean admnistrator profile condition
+	*@return void 
 	*/
 	public void setIsAdministrator( Boolean op ){
 		isAdministrator = op;
@@ -95,13 +100,14 @@ public with sharing class ProjectMembersWidgetController {
 	/**
 	*@return String 
 	*/
-	public String  getInvalidMembers(){
+	public String getInvalidMembers(){
 		return this.invalidMembers;
 	}
 	
 	/**
 	* Setter method for Team Id variable
 	*@param String idTeam
+	*@void return void
 	*/
 	public void setTeam(String tID) {
 		
@@ -129,8 +135,6 @@ public with sharing class ProjectMembersWidgetController {
 	public String getTeam(){
 		return team;
 	}
-
-	
 	
 	/**
 	* Setter method for Team Id variable
@@ -139,8 +143,7 @@ public with sharing class ProjectMembersWidgetController {
 	public void setTypeList(String typeL) {
 		typeList = typeL;		
 	}
-	
-	
+
 	public void getIsTeamAdmin(){}	
 	
 	/**
@@ -170,11 +173,16 @@ public with sharing class ProjectMembersWidgetController {
 		return (typeList != 'adminList');
 	}
 	
+	/**
+	* 
+	*@return void
+	*/
 	public void setingErrors(){
 		if( errorMembers.size() > 0){
 			this.errorMembersFlag = true;
 		}
 	}
+	
 	/**
 	* Get Team Members
 	*@return List<TeamMember>
@@ -183,10 +191,19 @@ public with sharing class ProjectMembersWidgetController {
 		List<ProjectMember__c> temp = new List<ProjectMember__c>();
       	
         if(typeList == 'adminList') {
-        		temp = [select User__r.Id, User__r.Name from ProjectMember__c where Project__c =: team and User__r.IsActive != false and Profile__r.ManageProjectTasks__c = true order by createdDate desc limit 10];
+        		temp = [select User__r.Id, User__r.Name 
+        					from ProjectMember__c 
+        					where Project__c =: team and User__r.IsActive != false and Profile__r.ManageProjectTasks__c = true 
+        					order by createdDate desc 
+        					limit 10];
         }else{
-        		temp = [select User__r.Id, User__r.Name from ProjectMember__c where Project__c =: team and User__r.IsActive != false order by createdDate desc limit 10];
+        		temp = [select User__r.Id, User__r.Name 
+        		from ProjectMember__c 
+        		where Project__c =: team and User__r.IsActive != false 
+        		order by createdDate desc 
+        		limit 10];
         }
+        
         Set<Id> users = new Set<Id>();
         for(ProjectMember__c t: temp) {
         	users.add(t.User__c);
@@ -236,6 +253,7 @@ public with sharing class ProjectMembersWidgetController {
     		
 	/**
 	*@param String ID
+	*@return void 
 	*/
 	public void setIdTeam(String s){
 		idTeam = s;
@@ -247,7 +265,9 @@ public with sharing class ProjectMembersWidgetController {
 	*/
 	public String getTeamName () {
 		if(teamName == null)
-			teamName = ( team == '' ) ? [select Name from Project2__c where id =: idTeam].Name : [select Name from Project2__c where id =: team].Name;
+			teamName = ( team == '' ) ? [select Name from Project2__c 
+											where id =: idTeam].Name : 
+											[select Name from Project2__c where id =: team].Name;
 		return teamName;	
 	}
 	
@@ -274,7 +294,7 @@ public with sharing class ProjectMembersWidgetController {
 	
 	/**
 	* Assign new Member vars to new Profile
-	*@void
+	*@return void
 	*/
 	public void assignNewMemberVarsNewProfile () {
 		List<Project2__c> currentTeam = [select NewMemberProfile__c from Project2__c where id=:idTeam];
@@ -292,6 +312,7 @@ public with sharing class ProjectMembersWidgetController {
 	
 	/**
 	*@param Member vars
+	*@retur void 
 	*/
 	public void setNewMemberVars (Member vars) {
 		this.newMemberVars = vars;
@@ -303,20 +324,16 @@ public with sharing class ProjectMembersWidgetController {
 	public List<ProjectMember__c> getMemberListToolkit () {
 		return memberListToolkit;
 	}
-	
-	
-	
+
 	/**
 	*@return Integer
 	*/
 	public Integer getMemberListToolkitCount () {
 		return memberListToolkitCount;
 	}
-		
-	
 	
 	/**
-	*@return already exist
+	*@return boolean already exist
 	*/
 	public Boolean getAlready(){
 		return already;
@@ -324,7 +341,7 @@ public with sharing class ProjectMembersWidgetController {
 			
 	/**
 	* Save Members
-	*@void
+	*@return void
 	*/
 	public void saveMembers () {
 		List<ProjectMember__c> newMemberList = new List<ProjectMember__c>();
@@ -364,7 +381,9 @@ public with sharing class ProjectMembersWidgetController {
 		}
 		
 		Map<Id, ProjectMember__c> teamMemberMap = new Map<Id, ProjectMember__c>();
-		for (ProjectMember__c iterMember : [select id, User__c  from ProjectMember__c where Project__c =:idTeam]) {
+		for (ProjectMember__c iterMember : [select id, User__c  
+												from ProjectMember__c 
+												where Project__c =:idTeam]) {
 			teamMemberMap.put(iterMember.User__c,iterMember);
 		}
 
@@ -377,7 +396,10 @@ public with sharing class ProjectMembersWidgetController {
 				
 				Id idProfile = null;
 				if( isAdministrator )
-					idProfile = [SELECT Id FROM ProjectProfile__c WHERE Name = 'Project Administrator' limit 1].id;
+					idProfile = [SELECT Id 
+									FROM ProjectProfile__c 
+									WHERE Name = 'Project Administrator' 
+									limit 1].id;
 				else{
 					List<ProjectProfile__c> profileIdList = new List<ProjectProfile__c>();
 					profileIdList = [ SELECT id FROM ProjectProfile__c WHERE Name =: 'Member Profile' ]; 
@@ -454,7 +476,9 @@ public with sharing class ProjectMembersWidgetController {
 
 	/**
 	* Send mail to new mambers
-	*@void
+	*@param User user
+	*@param String message
+	*@return void
 	*/
 	public void SendMail(User user, String message) {
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
@@ -485,6 +509,7 @@ public with sharing class ProjectMembersWidgetController {
 	
 	/**
 	* Generate user permissions
+	*@return void
 	*/
 	public void genPermissions() {
 		userPermissions.setId(UserInfo.getUserId());
@@ -505,6 +530,7 @@ public with sharing class ProjectMembersWidgetController {
 	
 	/**
 	* Rerender use only
+	*@returns void 
 	*/
 	public void refreshMethod(){
 		
@@ -612,9 +638,11 @@ public with sharing class ProjectMembersWidgetController {
     }//End Class TeamMember
 	
 	/**
+	*Inner class for Member
 	*@class Member
 	*/
 	public class Member {
+		
 		String profileId;
 		String message;
 		String teamRole;
@@ -629,6 +657,7 @@ public with sharing class ProjectMembersWidgetController {
 		
 		/**
         *@param String names
+        *@return void
         */
 		public void setColleagueNames (String names) {
 			this.colleagueNames = names;
@@ -643,6 +672,7 @@ public with sharing class ProjectMembersWidgetController {
 		
 		/**
         *@param String ID
+        *@return void
         */
 		public void setProfileId (String profile) {
 			this.profileId = profile;
@@ -657,6 +687,7 @@ public with sharing class ProjectMembersWidgetController {
 		
 		/**
         *@param String Message
+        *@return void
         */
 		public void setMessage (String msj) {
 			this.message = msj;
@@ -671,11 +702,10 @@ public with sharing class ProjectMembersWidgetController {
 		
 		/**
         *@param String Role
+        *@return void
         */
 		public void setTeamRole (String tRole) {
 			this.teamRole = tRole;
 		}	
-		
 	}
-	
 }

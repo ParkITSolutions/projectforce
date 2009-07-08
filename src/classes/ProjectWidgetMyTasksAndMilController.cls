@@ -40,8 +40,8 @@ public class ProjectWidgetMyTasksAndMilController {
         //Populate allProjects  
         
         allProjectsTasks = [Select  p.Id, 
-                            (Select User__c From ProjectsAssignees__r) 
-                            From ProjectTask__c  p];
+                            	(Select User__c From ProjectsAssignees__r) 
+                            	From ProjectTask__c  p];
                         
         // Set id of Project assign to me
         Set<Id> projToMe = new Set<Id>();
@@ -57,8 +57,11 @@ public class ProjectWidgetMyTasksAndMilController {
         }
         
         //Populate myProjectsTasks
-        myProjectsTasks = [ Select p.Priority__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.PercentCompleted__c, p.Duration__c From ProjectTask__c  p where p.Id in : projToMe and  p.EndDate__c != null  order by p.EndDate__c asc ];
-        System.debug( 'lolololo: ' +  myProjectsTasks.size());
+        myProjectsTasks = [ Select p.Priority__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, 
+        						p.PercentCompleted__c, p.Duration__c 
+        						From ProjectTask__c  p 
+        						where p.Id in : projToMe and  p.EndDate__c != null  order by p.EndDate__c asc ];
+        						
         for( ProjectTask__c pro : myProjectsTasks) {
             if(pro.PercentCompleted__c < 100 || pro.PercentCompleted__c == null){
                     ProjectTasks myTask = new ProjectTasks();
@@ -94,7 +97,7 @@ public class ProjectWidgetMyTasksAndMilController {
                     myTask.setIsToLate(pro.EndDate__c);  
                     myTask.isMilestone  = pro.Milestone__c; 
                     if ((countTask+countMilestones) < myProjectsTasks.size() ){
-                    	System.debug( 'chuchua : ' );
+                    	
                         if (!myTask.isMilestone){
                             if(countTask < 5){
                                 tasksList.add(myTask);
@@ -115,7 +118,7 @@ public class ProjectWidgetMyTasksAndMilController {
   }
     
     /**
-    * Class ProjectTasks
+    * Inner Class ProjectTasks
     */
     public class ProjectTasks {
 
@@ -178,6 +181,7 @@ public class ProjectWidgetMyTasksAndMilController {
         
         /**
         *@param Datetime end time
+        *@return void
         */
         public void setEndDate(Date endD){
             EndDate =  endD.format();
@@ -192,6 +196,7 @@ public class ProjectWidgetMyTasksAndMilController {
                 
         /**
         *@param Datetime end time
+        *@return void
         */
         public void setIsToLate(Date endD){  
             Date miToday = Date.today();
@@ -212,8 +217,9 @@ public class ProjectWidgetMyTasksAndMilController {
         }
        
         /**
-        *@param Datetime end date
-        *@param Double duration
+        *@param Datetime endD  date
+        *@param Double dur duration
+        *@return void
         */
         public void setDaysCount( Date endD, Double dur ){  
             Date miToday = Date.today();

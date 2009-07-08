@@ -21,6 +21,7 @@ public class ProjectOverlayNewTaskController {
 
    	/**
    	*@param String project id
+   	*@return void
    	*/
    	public void setProject (String projectId) {
    		this.PROJECTID = projectID;
@@ -31,21 +32,22 @@ public class ProjectOverlayNewTaskController {
    	*@return project
    	*/
    	public Project2__c getProject (){
-   		return currentProject;
+   		return this.currentProject;
    	}
    	
    	/**
     *@return ProjectTask__c
     */
     public ProjectTask__c getTask(){
-    	return newTask;
+    	return this.newTask;
     }
     
 	/**
 	*@param ProjectTask__c
+	*@return void
 	*/    
     public void setTask(ProjectTask__c value){
-    	newTask = value;
+    	this.newTask = value;
     }
     
 
@@ -54,27 +56,28 @@ public class ProjectOverlayNewTaskController {
     *@return ProjectMember__c
     */
     public ProjectMember__c getProjectMember(){
-    	return projectMember;
+    	return this.projectMember;
     }
     
     /**
     *@param ProjectMember__c
+    *@return void
     */
     public void setProjectMember(ProjectMember__c value){
-    	projectMember = value;
+    	this.projectMember = value;
     }
     
    	/**
    	*@return String
    	*/
    	public String getCurrentProjectId(){
-   		return PROJECTID;
+   		return this.PROJECTID;
    	}
    	/**
    	*@return taskPrefix
    	*/
    	public String getTaskPrefix(){
-   		return taskPrefix;
+   		return this.taskPrefix;
    	}
     
     /**
@@ -85,7 +88,9 @@ public class ProjectOverlayNewTaskController {
     	List<ProjectMember__c> projectMembers = new List<ProjectMember__c>();  
   	 	List<SelectOption> options = new List<SelectOption>();
   	 	if(PROJECTID != null){
-	  	 	projectMembers = [Select t.Project__c, t.User__r.Name, t.User__r.IsActive, t.Name, t.User__c, t.Id from ProjectMember__c t where t.Project__c =: PROJECTID and t.User__r.IsActive != false];  
+	  	 	projectMembers = [Select t.Project__c, t.User__r.Name, t.User__r.IsActive, t.Name, t.User__c, t.Id 
+	  	 						from ProjectMember__c t 
+	  	 						where t.Project__c =: PROJECTID and t.User__r.IsActive != false];  
 	  	 	options.add(new SelectOption('-1', 'Choose a project Member'));
 	  	 	for(ProjectMember__c c: projectMembers) {
     			options.add(new SelectOption(c.User__c, c.User__r.Name)); 
@@ -96,10 +101,14 @@ public class ProjectOverlayNewTaskController {
 
 	/**
 	* Read Project for current project
+	*@return void
 	*/
 	public void getCurrentProject(){   
 		if(PROJECTID != null)
-			currentProject = [select p.Id, p.Name, p.DisplayDuration__c from Project2__c p where p.Id =: PROJECTID limit 1];
+			currentProject = [select p.Id, p.Name, p.DisplayDuration__c 
+								from Project2__c p 
+								where p.Id =: PROJECTID 
+								limit 1];
 	}
 	
 	/**
@@ -114,14 +123,15 @@ public class ProjectOverlayNewTaskController {
 	
 	/**
 	* For rerender use
+	*@return void
 	*/
 	public void dummyRefresh (){}   
 	
 	
 	/**
 	* Read user permissions
+	*@return void
 	*/
-	
 	public void genPermissions () {
 		userPermissions.setId(UserInfo.getUserId());
 		userPermissions.setProject(PROJECTID);
@@ -132,7 +142,7 @@ public class ProjectOverlayNewTaskController {
    	/**
    	* Create new task
    	*@throws CustomException message Insufficient Privileges
-   	*@void
+	*@return void
    	*/
    	public void insertTask (){ 
    		
@@ -162,5 +172,4 @@ public class ProjectOverlayNewTaskController {
    		 //To reset the selectList
 		projectMember.User__c=null;
    	}
-
 }

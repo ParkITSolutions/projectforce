@@ -13,7 +13,7 @@ public class ProjectDeleteTaskOverlayController {
 	 
 	/**
     * Generate User Permissions
-    *@void
+    *@return void
     */
     public void genPermissions () {
         userPermissions.setId(UserInfo.getUserId());
@@ -32,19 +32,22 @@ public class ProjectDeleteTaskOverlayController {
     
     /**
     *@param sidDeletes
+    *@return void
     */
     public void setIdDeletes (String sidDeletes) {
         idDeletes = sidDeletes; 
     }
     
-    /** deleteTask
-    *@void
+    /** 
+    * deleteTask
+    *@return void
     */
     public void deleteTaskFromList(){
     	deleteTask();	
     }
     
-    /** deleteTask
+    /** 
+    * deleteTask
     *@return PageReference
     */
     public PageReference deleteTaskFromDetail(){
@@ -55,7 +58,7 @@ public class ProjectDeleteTaskOverlayController {
     }
     
     /** deleteTask
-    *@void
+    *@return void
     */
     public void deleteTask(){
         List<String> myIds = new List<String>();
@@ -64,7 +67,9 @@ public class ProjectDeleteTaskOverlayController {
         }
        
         if(myIds.size()>0){
-            List<ProjectTask__c> tasksToDelete = [select (Select User__c from ProjectsAssignees__r ), id, Project__r.Id,createdById from ProjectTask__c where id in: myIds];
+            List<ProjectTask__c> tasksToDelete = [select (Select User__c from ProjectsAssignees__r ), id, Project__r.Id, createdById 
+            										from ProjectTask__c 
+            										where id in: myIds];
       		projectId = tasksToDelete[0].Project__r.Id;
       		genPermissions();
             if (tasksToDelete.size() > 0){

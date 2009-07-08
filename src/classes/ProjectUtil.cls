@@ -20,6 +20,7 @@ public class ProjectUtil {
     
     /**
     *@param Boolean
+    *@return void 
     */
     public static void setFlagAssignee( Boolean b){
     	ProjectUtil.flagAssignee = b;
@@ -33,7 +34,8 @@ public class ProjectUtil {
     }
     
 	/**
-	*@param boolean
+	*@param boolean value
+	*@return void 
 	*/
 	public static void setisRunnig( Boolean value ){
 		ProjectUtil.isRunnig = value;
@@ -46,6 +48,10 @@ public class ProjectUtil {
 		return ProjectUtil.isRunnig;
 	}
 	
+	/*
+	*@param boolean value
+	*@return void 
+	*/
 	public static void setIsTest( Boolean value ){
 		ProjectUtil.isTest = value;
 	}
@@ -67,16 +73,20 @@ public class ProjectUtil {
         }
         return namespace;	
 	}
+	
 	/**
 	* Deletes a GroupMember record 
 	*@param gmToDelete String that represents the id of the groupMember record to delete
 	* Used at DiscussionForumAfterUpdate.trigger to avoid an Error
 	* MIXED_DML_OPERATION, DML operation on setup object is not permitted after you have updated a non-setup object
+	*@return void 
 	*/
 	//@future
 	public static void deleteGroupMembers(List<String> gmToDelete){
 	  	if( !ProjectUtil.getIsTest() ){
-		    List<GroupMember> gm = [select UserOrGroupId, GroupId, id from GroupMember where GroupId in : gmToDelete];
+		    List<GroupMember> gm = [select UserOrGroupId, GroupId, id 
+		    							from GroupMember 
+		    							where GroupId in : gmToDelete];
 			delete gm;
 	  	}
 	}
@@ -86,6 +96,7 @@ public class ProjectUtil {
 	*@param grToDelete String that represents the id of the groupMember record to delete
 	* Used at DiscussionForumAfterUpdate.trigger to avoid an Error
 	* MIXED_DML_OPERATION, DML operation on setup object is not permitted after you have updated a non-setup object
+	*@return void 
 	*/
 	//@future
 	public static void deleteGroup(List<String> grToDelete){
@@ -113,8 +124,8 @@ public class ProjectUtil {
 	}
 	
 	/**
-    *
     * Get the organization Domain
+    *@return String 
     */   
     public static String getDomain () {
         String domain = '';

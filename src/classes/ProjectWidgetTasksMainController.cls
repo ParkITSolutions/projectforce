@@ -5,6 +5,11 @@ public class ProjectWidgetTasksMainController {
 
 	
 	String teamId;
+	public Boolean sidebar = false;
+	Integer listSize = 0;
+	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
+	List<ProjectTask__c> tasks = new List<ProjectTask__c>();
+	List<ProjectTask> taskResults = new List<ProjectTask>();
 	
 	/**
 	* Constructor
@@ -16,7 +21,8 @@ public class ProjectWidgetTasksMainController {
 	}
 		
 	/**
-	*@param String
+	*@param String id
+	*@return void
 	*/
 	public void setTeamId(String id) {
 		if(teamId == null || teamId != id){
@@ -31,11 +37,10 @@ public class ProjectWidgetTasksMainController {
 		return teamId;
 	}
 	
-	public Boolean sidebar = false;
-	
 	/**
 	* Set Sidebar
-	*@param String
+	*@param Boolean
+	*@return void
 	*/
 	public void setSidebar (Boolean b){
 		sidebar = b;
@@ -51,20 +56,20 @@ public class ProjectWidgetTasksMainController {
 	 
 	
 	/**
-	*@return List<ProjectTask>
+	*@return List<ProjectTask> taskResults
 	*/
 	public List<ProjectTask> getTaskResults(){
 		return taskResults;
 	}
 	
 	/**
-	*@param List<ProjectTask>
+	*@param List<ProjectTask> pt
+	*@return void
 	*/
 	public void setTaskResults(List<ProjectTask> pt){
 		taskResults = pt;
 	}
 	
-	Integer listSize = 0;
 	/**
 	* Get task list size
 	*@return Integer
@@ -73,10 +78,9 @@ public class ProjectWidgetTasksMainController {
 		return listSize;
 	}
 	
-	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
-	
 	/**
 	* Read user permissions
+	*@return void
 	*/
 	public void genPermissions () {
 		userPermissions.setId(UserInfo.getUserId());
@@ -93,12 +97,10 @@ public class ProjectWidgetTasksMainController {
 		genPermissions();
 		return userPermissions;
 	}
-
-	List<ProjectTask__c> tasks = new List<ProjectTask__c>();
-	List<ProjectTask> taskResults = new List<ProjectTask>();
 	
 	/**
 	* Load all project task
+	*@return void
 	*/
 	public void getAllProjectTasks() {
 		tasks.clear(); 
@@ -113,14 +115,17 @@ public class ProjectWidgetTasksMainController {
 	 					p.Milestone__c,
 	 					p.Description__c, 
 	 					(Select User__c, User__r.Name From ProjectsAssignees__r) 
-	 					From ProjectTask__c  p where  p.Milestone__c = false and p.Project__c =: teamId order by p.EndDate__c asc limit 10
-	 					];
+	 					From ProjectTask__c  p where  p.Milestone__c = false and p.Project__c =: teamId 
+	 					order by p.EndDate__c asc 
+	 					limit 10];
+	 					
 		listSize = 0;
 		getProjectTaskbuild();				
 	} 
 	
 	/**
 	* Load my project task
+	*@return void
 	*/
 	public void getMyProjectTasks() {
 		tasks.clear();
@@ -131,6 +136,7 @@ public class ProjectWidgetTasksMainController {
 								   Where ProjectTask__r.Milestone__c = false 
 								   AND User__c =: UserInfo.getUserId() and  Project__c =: teamId
 								   Order By ProjectTask__r.EndDate__c asc Limit 5]) {
+								   	
 			assignedTasks.add(p.ProjectTask__c);						   	
 		}
 		tasks = [Select p.Priority__c, 
@@ -151,6 +157,7 @@ public class ProjectWidgetTasksMainController {
 	
 	/**
 	* Build task list
+	*@return void
 	*/
 	public void getProjectTaskbuild(){
 		// Retrieve Users Image info
@@ -198,8 +205,9 @@ public class ProjectWidgetTasksMainController {
 	 	userMap.clear();
 	 }
 	 
+	 
 	 /**
-	 * Class ProjectTask
+	 * Inner Class ProjectTask
 	 */
 	 public class ProjectTask {
 		
@@ -217,14 +225,15 @@ public class ProjectWidgetTasksMainController {
       	DateTime now = System.now();
 	
       	/**
-      	* Costructor
+      	* Constructor
       	*/
       	public ProjectTask(){
       		
       	}
       	
       	/**
-      	*@param User
+      	*@param User user
+      	*@return void
       	*/
       	public void setUser(User user){
         	if(user != null){
@@ -250,14 +259,15 @@ public class ProjectWidgetTasksMainController {
         }
         
         /**
-        *@return task status
+        *@return String task status
         */
         public String getStatus(){
         	return status;
         }
         
         /**
-        *@param s task status
+        *@param String task status
+        *@retur void
         */
         public void setStatus(String s){
         	status = s;
@@ -271,7 +281,8 @@ public class ProjectWidgetTasksMainController {
         }
         
         /**
-        *@param Datetime end date
+        *@param Datetime endD
+        *@return void
         */
         public void setEndDate(Date endD){
         	Date miToday = Date.today();
@@ -298,7 +309,8 @@ public class ProjectWidgetTasksMainController {
         }
         
         /**
-        *@param Datetime
+        *@param Datetime endD
+        *@return void
         */
         public void setIsToLate(Date endD){
         	Date miToday = Date.today();
@@ -334,7 +346,8 @@ public class ProjectWidgetTasksMainController {
         }
         
         /**
-        *@param String
+        *@param String idTask
+        *@return void
         */
         public void setTaskId(String idTask){
             TaskId = idTask;
@@ -348,21 +361,23 @@ public class ProjectWidgetTasksMainController {
         }
         
         /**
-        *@param String
+        *@param String pr
+        *@return void
         */
         public void setPriority(String pr){
             Priority = pr;
         }
         
         /**
-        *@return percent complete
+        *@return Integer percent complete
         */
         public Integer getPercent(){
             return Percent;
         }
         
         /**
-        *@param Double
+        *@param Double per
+        *@return void
         */
         public void setPercent(Double per){
         	if(per == null){
@@ -380,7 +395,8 @@ public class ProjectWidgetTasksMainController {
         }
         
         /**
-        *@param String
+        *@param String sName
+        *@return void
         */
         public void setTaskName(String sName){
             TaskName = sName;

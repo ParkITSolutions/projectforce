@@ -8,7 +8,8 @@ global class FlexWebService {
     /**
     * Load permissions for one user for some project
     *@param String project id
-    *@param Stirng user id
+    *@param String user id
+    *@return void
     */
     public void genPermissions (String projectId, String userId) {
         userPermissions.setId(userId);
@@ -21,7 +22,8 @@ global class FlexWebService {
     * Generate permissions for one user for some project
     *@static
     *@param String project id
-    *@param Stirng user id
+    *@param String user id
+    *@return String userPermissions
     */
     webservice static String generatePermissions (String user, String project) {
         UserPermissions userPermissions = new UserPermissions();

@@ -27,10 +27,10 @@ public class ProjectOverlayNewMilestoneController {
     public String getCurrentProjectId(){
         return PROJECTID;
     }
-    
-      
+          
     /**
     *@param String project Id
+    *@return void
     */
     public void setCurrentProjectId(String s) { 
         PROJECTID = s;
@@ -45,12 +45,12 @@ public class ProjectOverlayNewMilestoneController {
     
     /**
     *@param ProjectTask__c 
+    *@return void
     */
     public void setNewProyect(ProjectTask__c pT) {
         newTask = pT;
     }
-    
-       
+  
     /**
     * Returns user location
     *@return String
@@ -69,6 +69,7 @@ public class ProjectOverlayNewMilestoneController {
     
     /**
     *@param ProjectMember__c
+    *@return void
     */
     public void setProjectMember(ProjectMember__c tm){
         projectMember = tm;
@@ -80,6 +81,7 @@ public class ProjectOverlayNewMilestoneController {
    	public String getTaskPrefix(){
    		return taskPrefix;
    	}
+   	
     //For rerender use
     public void dummyRefresh (){}
     
@@ -87,13 +89,16 @@ public class ProjectOverlayNewMilestoneController {
     * Create members select options
     *@return List<SelectOption>
     */
-    
     public List<SelectOption> getProjectMembers() {
 
         List<SelectOption> options = new List<SelectOption>();
         List<ProjectMember__c> projectMembers = new List<ProjectMember__c>();  
         if(PROJECTID != null){
-            projectMembers = [Select t.Project__c, t.User__r.Name, t.User__r.IsActive, t.Name, t.User__c, t.Id From ProjectMember__c t where t.Project__c =: PROJECTID and t.User__r.IsActive != false];  
+            projectMembers = [Select t.Project__c, t.User__r.Name, t.User__r.IsActive,
+            					 t.Name, t.User__c, t.Id 
+            					 From ProjectMember__c t 
+            					 where t.Project__c =: PROJECTID and t.User__r.IsActive != false];  
+            					 
             options.add(new SelectOption('-1', 'Choose a project Member'));
             for(ProjectMember__c c: projectMembers) {
                 options.add(new SelectOption(c.User__c, c.User__r.Name)); 
@@ -105,6 +110,7 @@ public class ProjectOverlayNewMilestoneController {
 
     /**
     * Returns Project for current project
+    *@return void
     */
     public void getCurrentProject(){
         if(PROJECTID != null)
@@ -114,6 +120,7 @@ public class ProjectOverlayNewMilestoneController {
    
     /**
     * Read User permissions
+    *@return void
     */
     public void genPermissions () {
         userPermissions.setId(UserInfo.getUserId());
@@ -126,6 +133,7 @@ public class ProjectOverlayNewMilestoneController {
     /**
     * Create new Milestone
     *@throws CustomExceptions, message Insufficient Privileges
+    *@return void
     */
     public void insertMilestone (){ 
         if(!userPermissions.getCanCreate()){
@@ -155,7 +163,5 @@ public class ProjectOverlayNewMilestoneController {
         
         //To reset the selectList
 		projectMember.User__c=null;
-    }
-    
-    
+    } 
 }

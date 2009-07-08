@@ -6,7 +6,7 @@ public class TaskQuickAccessControllerTest {
     	Test.startTest();
 
 		TaskQuickAccessController taq = new TaskQuickAccessController();
-		System.debug( '$>' + GenerateEnvironmentTest.task.Id__c );
+
 		/*
 		taq.setTaskId(  GenerateEnvironmentTest.task.Id__c );
 		taq.getTaskId();

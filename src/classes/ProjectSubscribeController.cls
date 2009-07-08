@@ -16,11 +16,12 @@ public class ProjectSubscribeController {
 	*@return Integer
 	*/
 	public Integer getSubscriptionCount () {
-		return subscriptionCount;
+		return this.subscriptionCount;
 	}
 	
 	/**
 	*@param String
+	*@return void
 	*/
 	public void setIdProject(String idProject) {
 		this.idProject = idProject; 
@@ -30,6 +31,6 @@ public class ProjectSubscribeController {
 	*@return String
 	*/
 	public String getIdProject() {
-		return idProject;
+		return this.idProject;
 	}
 }

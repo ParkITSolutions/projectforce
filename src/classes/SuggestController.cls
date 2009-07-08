@@ -24,7 +24,9 @@ public class SuggestController {
 		// Add Suggestion objects to bind as an if there
 		// Suggestion for competency object
 		if (paramClass == 'Competency'){
-			List<ProjectMember__c> s = [select User__r.Name, Id from ProjectMember__c where Name like: paramInput];
+			List<ProjectMember__c> s = [select User__r.Name, Id 
+											from ProjectMember__c 
+											where Name like: paramInput];
 			
 			for(ProjectMember__c c:s){
 				Suggestions suggest = new Suggestions();
@@ -38,7 +40,9 @@ public class SuggestController {
 		if (paramClass == 'colleagueNames'){
 			
 			Map<Id, ProjectMember__c> teamMemberMap = new Map<Id, ProjectMember__c>();
-			for (ProjectMember__c iterMember : [select Id, User__c from ProjectMember__c where Project__c =:paramTeamId]) {
+			for (ProjectMember__c iterMember : [select Id, User__c 
+													from ProjectMember__c 
+													where Project__c =:paramTeamId]) {
 				teamMemberMap.put(iterMember.User__c, iterMember);
 			} 
 			
@@ -71,7 +75,8 @@ public class SuggestController {
 		
 		/**
 		* Set text to the suggerence
-		*@param String
+		*@param String sName
+		*@return void
 		*/
 		public void setName(String sName){
 			Name = sName;
@@ -87,7 +92,8 @@ public class SuggestController {
 		
 		/**
 		* Set id value of the suggerence
-		*@param String
+		*@param String sId
+		*@return void
 		*/
 		public void setId(String sId){
 			Id = sId;
@@ -100,7 +106,5 @@ public class SuggestController {
 		public String getId(){
 			return Id;
 		}
-	
 	}	    
-
 }
