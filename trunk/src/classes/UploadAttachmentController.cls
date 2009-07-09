@@ -25,7 +25,7 @@ public class UploadAttachmentController {
     public String errorMsg = '';
 	
 	/**
-	* Costructor
+	* Constructor
 	*/
 	public UploadAttachmentController () {
 			
@@ -78,7 +78,8 @@ public class UploadAttachmentController {
 	}
 	
 	/**
-	*@return errorMsg
+	* returns error message
+	*@return String
 	*/
 	public String getErrorMsg () {
 		return errorMsg;

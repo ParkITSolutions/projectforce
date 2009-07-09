@@ -24,14 +24,14 @@ public class ProjectDeleteTaskOverlayController {
     }
     
     /**
-    *@return idDeletes
+    *@return String idDeletes
     */
     public String getIdDeletes () {
         return idDeletes;   
     }
     
     /**
-    *@param sidDeletes
+    *@param String sidDeletes
     *@return void
     */
     public void setIdDeletes (String sidDeletes) {
@@ -98,5 +98,4 @@ public class ProjectDeleteTaskOverlayController {
         }
         idDeletes = '';
     }
-    
 }

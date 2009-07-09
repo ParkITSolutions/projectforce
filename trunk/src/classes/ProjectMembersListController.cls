@@ -54,7 +54,7 @@ public without sharing class ProjectMembersListController {
 	
 	/**
 	*
-	*@param String
+	*@param String s
 	*@return void
 	*/
 	public void setMassiveRemoveMemIds( String s ){
@@ -158,7 +158,8 @@ public without sharing class ProjectMembersListController {
 	}
 	
 	/**
-	*@param s sort by field
+	* sort by field
+	*@param String s 
 	*@return void
 	*/
 	public void setSortBy (String s){
@@ -167,7 +168,7 @@ public without sharing class ProjectMembersListController {
 	
 	/**
 	* Returns error
-	*@return error
+	*@return boolean error
 	*/
 	public Boolean getError(){
 		return error;	
@@ -183,19 +184,23 @@ public without sharing class ProjectMembersListController {
 	
 	/**
 	* Return error
-	*@return error
+	*@return boolean
 	*/
 	public Boolean getFinish(){
 		return finish;	
 	}
 	
 	/**
-	*@param Boolean e
+	*@param Boolean f
+	*@return void
 	*/
 	public void setFinish(Boolean f){
 		finish = f;
 	}
 	
+	/**
+	*@return void
+	*/
 	public void resetErrorAndFinish(){
 		error = false;	
 		finish = false;
@@ -228,7 +233,7 @@ public without sharing class ProjectMembersListController {
 	
 	/**
 	* Set idProfile to edit member
-	*@param String
+	*@param String profile
 	*@return void
 	*/
 	public void setEditMemberProfile (String profile) {
@@ -244,7 +249,8 @@ public without sharing class ProjectMembersListController {
 	
 	/**
 	* Sets the id of the member to edit
-	*@param s member id
+	*@param String s member id
+	*@return void
 	*/
 	public void setEditMemberId (String s){
 		editMemberId = s;	
@@ -271,7 +277,8 @@ public without sharing class ProjectMembersListController {
 	}
 	
 	/**
-	*@param String Project ID
+	*@param String idProject
+	*@return void
 	*/	
 	public void setProjectId(String idProject){
 		this.idProject = idProject;	
@@ -414,11 +421,6 @@ public without sharing class ProjectMembersListController {
 		}
 		
 		genPermissions(); 
-		//PageReference pageRef = Page.ProjectMembersList;
-		//pageRef.getParameters().put('remMsg', 'true');
-		//pageRef.getParameters().put('id', idProject);
-		//pageRef.setRedirect(true);
-		//return pageRef;	
 	}
 	
 
@@ -446,11 +448,13 @@ public without sharing class ProjectMembersListController {
 		
 		isLastAdmin = (editMemberId == UserInfo.getUserId()) && isAdmin;
 		
-		//editMemberRole = editmember.TeamRole__c;
 		editMemberProfile = editMember.Profile__c;
 	}
 
-	
+	/**
+	* 
+	*@return boolean
+	*/
 	public Boolean isLastMemberAdmin (){
 		List<ProjectMember__c> members = new List<ProjectMember__c>();
 		members = [Select d.Name, User__c 
@@ -462,6 +466,7 @@ public without sharing class ProjectMembersListController {
 		else
 			return false;		
 	}
+	
 	/**
 	* Redirect after edit a member
 	*@return PageReference
@@ -476,7 +481,7 @@ public without sharing class ProjectMembersListController {
 	}
 	
 	/**
-	*@return profiles select option list
+	*@return List<SelectOption> profiles select option list
 	*/
 	public List<SelectOption> getProfilesOptions () {
 		List<SelectOption> options = new List<SelectOption>();
@@ -487,7 +492,7 @@ public without sharing class ProjectMembersListController {
 	}
 	
 	/**
-	*@return profile list option filter
+	*@return List<SelectOption> profile list option filter
 	*/
 	public List<SelectOption> getProfilesOptionsFilter () {
 		List<SelectOption> options = new List<SelectOption>();
@@ -508,10 +513,9 @@ public without sharing class ProjectMembersListController {
 		return [select Name, id from ProjectProfile__c order by Name];
 	}
 
-	
 	/**
-	* Set letter value
-	*@param String
+	* Sets letter value
+	*@param String s
 	*return void
 	*/
 	public void setLetter(String s){
@@ -599,7 +603,7 @@ public without sharing class ProjectMembersListController {
    	
    	/**
    	* Go next result page
-   	*@rturn void
+   	*@return void
    	*/
    	public void nextPage () {
    		currentPagination++;
@@ -738,7 +742,7 @@ public without sharing class ProjectMembersListController {
     } 
     
     /**
-	*@param String idProject
+	*@param String proj
 	*@return void
 	*/
 	public void setIdProject(String proj){
@@ -756,7 +760,7 @@ public without sharing class ProjectMembersListController {
 	
 	/**
 	* 
-	*@return void
+	*@return string
 	*/
 	public String getRemoveMemberId(){
 		return removeMemberId;	
@@ -823,7 +827,8 @@ public without sharing class ProjectMembersListController {
 	
    	
    	/**
-	* Inner class for Letters type
+	* Inner Class for Letters type
+	*@class
 	*/
 	public class Letters {
 		
@@ -831,7 +836,7 @@ public without sharing class ProjectMembersListController {
 		Boolean containMembers = false;
 		
 		/**
-		*@param String
+		*@param String letter
 		*@return void
 		*/
 		public void setLetter (String letter) {
@@ -859,13 +864,11 @@ public without sharing class ProjectMembersListController {
 		public Boolean getContainMembers () {
 			return containMembers;
 		}
-		 
-		
-	} //End class Letters
+	} 
 
 		
 	/**
-	* Inner class for Member class
+	* Inner Class for Member class
 	*@class
 	*/
 	public class Member {
@@ -896,21 +899,21 @@ public without sharing class ProjectMembersListController {
 		}
 		
 		/**
-		*@return String ID
+		*@return String 
 		*/
 		public String getUserId (){
 			return userId;
 		}
 		
 		/**
-		*@return String ID
+		*@return String 
 		*/
 		public String getProjectMemberId (){
 			return projectMemberId;
 		}
 		
 		/**
-		*@param String ID
+		*@param String projectMemberId
 		*@return void
 		*/
 		public void setProjectMemberId (String projectMemberId){
@@ -960,7 +963,7 @@ public without sharing class ProjectMembersListController {
 		}
 		
 		/**
-		*@param String ID
+		*@param String userId
 		*@return void
 		*/
 		public void setUserId (String userId) {
@@ -984,43 +987,15 @@ public without sharing class ProjectMembersListController {
 		}
 		
 		/**
-		*@param String idMember
+		*@param String memberId
 		*@return void
 		*/
 		public void setMemberImg (String memberId) {
-			/*
-			List<ProjectProfile__c> imgs = new List<ProjectProfile__c>();
-			try {
-				imgs = [SELECT Id, YahooIM__c, Skype__c, Picture__c from ProjectProfile__c WHERE User__c =: memberId LIMIT 1];
-			} catch(Exception e){
-				throw e;
-			}
-			ProjectProfile__c img = new ProjectProfile__c();
-			if(imgs.size() > 0){
-				img = imgs[0];
-			} 
 			
-			if (img == null) {
-				this.memberImg = '';
-				this.yahoo = '';
-				this.skype = '';
-			}else {
-				this.memberImg = img.Picture__c;
-				if(img.YahooIM__c != null){
-	            	this.yahoo = img.YahooIM__c;
-	            }else {
-	            	this.yahoo = '';
-	            }
-	            if(img.Skype__c != null){
-	            	this.skype = img.Skype__c;
-	            }else {
-	            	this.skype = '';
-	            }
-			}*/
 		}
 		
 		/**
-		*@param String
+		*@param String profile
 		*@return void
 		*/
 		public void setProfile (String profile) {
@@ -1028,7 +1003,7 @@ public without sharing class ProjectMembersListController {
 		}
 		
 		/**
-		*@param String
+		*@param String role
 		*@return void
 		*/
 		public void setRole (String role) {
@@ -1036,7 +1011,7 @@ public without sharing class ProjectMembersListController {
 		}
 		
 		/**
-		*@param String
+		*@param String title
 		*@return void
 		*/
 		public void setTitle (String title) {
@@ -1057,5 +1032,5 @@ public without sharing class ProjectMembersListController {
 		public Boolean getAdmin () {
 			return admin;
 		}
-	}//End class Member
+	}
 }

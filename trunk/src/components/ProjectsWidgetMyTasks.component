@@ -1,13 +1,6 @@
 <apex:component Controller="ProjectWidgetMyTasksAndMilController" >
     
     <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsWidgetMyTasksAndMilestones.css')}" />
-	<style>
-	
-	.margin-left{
-		margin-left:5px;
-	}
-	
-	</style>
 
     <div class="teamWidget mySmallWidget" >
         <!-- Widget Title -->       

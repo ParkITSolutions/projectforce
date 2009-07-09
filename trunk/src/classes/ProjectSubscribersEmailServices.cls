@@ -26,7 +26,7 @@ public class ProjectSubscribersEmailServices {
     }
     
     /**
-    *@param Boolean
+    *@param Boolean isTaskEdit
     *@return void
     */
     public void setIsTaskEdit ( Boolean isTaskEdit ){
@@ -34,7 +34,9 @@ public class ProjectSubscribersEmailServices {
     }
 
     /**
-    *@Send meail to subscribers
+    * Sends email to subscribers
+    *@param List<String> lstPMId
+    *@param String action
     *@return void
     */
     public void sendMemberJoinLeave( List<String> lstPMId, String acction )
@@ -80,7 +82,8 @@ public class ProjectSubscribersEmailServices {
     }
 
     /**
-    *@Send mail to subscribers
+    * Send mail to subscribers
+    *@param List<String> lstPAId
     *@return void
     */
     public void sendMailForTaskAssigned( List<String> lstPAId )
@@ -135,8 +138,9 @@ public class ProjectSubscribersEmailServices {
     
 
     /**
-    *@Send mail to subscribers
-    *@return voids
+    * Send mail to subscribers
+    *@param List<String> lstPTId
+    *@return void
     */
    public void sendMailForTaskChanged( List<String> lstPTId )
     {
@@ -183,7 +187,8 @@ public class ProjectSubscribersEmailServices {
 
 
     /**
-    *@Send mail to subscribers
+    * Send mail to subscribers
+    *@aram List<String> lstPTId
     *@return void
     */
    public void sendMailForTaskPercentChanged( List<String> lstPTId ){   
@@ -238,7 +243,7 @@ public class ProjectSubscribersEmailServices {
     }
 
     /**
-    *Send mail to subscribers
+    * Send mail to subscribers
     *@param List<String> lstTaskId
     *@return void
     */
@@ -273,6 +278,7 @@ public class ProjectSubscribersEmailServices {
     }
     
     /**
+    *
     *@param List<String> lstAssId
     *@return void
     */
@@ -295,7 +301,6 @@ public class ProjectSubscribersEmailServices {
        		pId=ptL[0].Project__c;
        	}
 
-        
         
         if ((pAs.size()>0) && !(ProjectUtil.DeleteTaskMailSent)){
 				for( ProjectAssignee__c pA : pAs ){

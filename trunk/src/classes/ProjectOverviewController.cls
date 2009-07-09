@@ -14,7 +14,8 @@ public with sharing class ProjectOverviewController {
     //Letters list
     public List<String> lettersList = new List<String>{'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};    
     public String objectPrefix = Schema.SObjectType.Project2__c.getKeyPrefix();
-    
+    //Items to list per page 
+    static final Integer itemsToList = 10;
     /**
     * Construct
     */
@@ -23,7 +24,7 @@ public with sharing class ProjectOverviewController {
     }   
     
     /**
-    *@param Boolean
+    *@param Boolean b
     *@return void
     */
     public void setIsTest(Boolean b){
@@ -55,12 +56,11 @@ public with sharing class ProjectOverviewController {
 
     /**
     * Check if project profile exist for current user
-    * @return PageReference null
+    * @return PageReference
     */
     public PageReference getProfileExist(){
         PageReference pr = null;
         List<ProjectProfile__c> profiles = new List<ProjectProfile__c>();
-        //profiles = getProjectProfile();
         if(profiles.size() == 0){
             ProjectProfile__c profile = new ProjectProfile__c();
             profile.Name = UserInfo.getName();
@@ -70,20 +70,6 @@ public with sharing class ProjectOverviewController {
     }
     
     /**
-    * Get project profile for current user
-    *@return List<ProjectProfile__c
-    */
-    
-    /*
-    public List<ProjectProfile__c> getProjectProfile(){
-        List<ProjectProfile__c> profiles = new List<ProjectProfile__c>();           
-        profiles = [SELECT Id
-                    FROM ProjectProfile__c
-                    WHERE User__c =: UserInfo.getUserId()];
-        return profiles;    
-    }
-    */
-    /**
     *@return List<ProjectMember__c>
     */
     public List<ProjectMember__c> getProjects(){
@@ -91,20 +77,24 @@ public with sharing class ProjectOverviewController {
     }
     
     /**
-    *@param List<ProjectMember__c>
+    *@param List<ProjectMember__c> tms
     *@return void
     */
     public void setProjects(List<ProjectMember__c> tms){
         projects = tms;
     }
     
+    /**
+    *
+    *@return string
+    */
     public String getObjectPrefix(){
     	return objectPrefix;
     }
      
     /**
     * This method completes the list of Project: "retProject"
-    *@return list of projects
+    *@return List<Project>
     */
     public List<Project> getProjectsForTabs(){
         return retProjects;
@@ -179,15 +169,24 @@ public with sharing class ProjectOverviewController {
             				 order by t.Name asc];
                   
         }
-        
+        /* AM commented
         if(filter == 'allProjects'){
-            paginator.setNumberOfItemsToShow(10);   
+            paginator.setNumberOfItemsToShow(itemsToList);//(10);
         }else{
             paginator.setNumberOfItemsToShow(projects.size()); 
         }
+        */
+        if (projects.size()>itemsToList){
+        	//set ON flag that displays letter filter and pages navigation
+        	isAllProjects = true;
+        	paginator.setNumberOfItemsToShow(itemsToList);//(10);
+        }else{
+        	paginator.setNumberOfItemsToShow(projects.size()); 
+        }
+              
         //Populate Inner class with project List
+        
         if(projects.size() > 0){
-            
             for(Integer i=0; i<projects.size(); i++){
                 
                 Project t = new Project();
@@ -204,7 +203,6 @@ public with sharing class ProjectOverviewController {
 						t.milestones++;
                 } 
                 
-                //t.discussions = projects[i].DiscussionTopics__r.size();
                 if(filter == 'newProjects'){
                     if(projects[i].CreatedDate != null){
                         String format = projects[i].CreatedDate.format('MM/dd/yyyy');
@@ -230,6 +228,7 @@ public with sharing class ProjectOverviewController {
     public Integer getProjectsForTabsSize(){
         return retProjects.size();
     }
+    
     /*
     *@return boolean
     */
@@ -294,7 +293,8 @@ public with sharing class ProjectOverviewController {
     
     
     /**
-    * Class Letters
+    * Inner Class Letters
+    *@class
     */
     public class Letters{
         
@@ -304,7 +304,7 @@ public with sharing class ProjectOverviewController {
 
         /**
         * Set num of ocurs.
-        *@param Integer
+        *@param Integer cntSites
         *@return void
         */
         public void setContainSites (Integer cntSites){
@@ -325,7 +325,8 @@ public with sharing class ProjectOverviewController {
     }  
         
     /*
-    * Class project
+    * Inner Class project
+    *@class
     */
     public class Project {
         

@@ -434,10 +434,7 @@
 		        a.push( e.value );            
 		 
 		    }); 
- 		    
- 		    
- 		    //alert( a.join( '::' )); 
- 		    
+ 
 		    $$('.MemberIdToDel')[0].value = a.join( '::' );
 		}
  	</script>

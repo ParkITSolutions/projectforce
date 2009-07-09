@@ -29,7 +29,8 @@ public class ProjectOverlayNewMilestoneController {
     }
           
     /**
-    *@param String project Id
+    * sets project Id
+    *@param String s
     *@return void
     */
     public void setCurrentProjectId(String s) { 
@@ -44,8 +45,8 @@ public class ProjectOverlayNewMilestoneController {
     }
     
     /**
-    *@param ProjectTask__c 
-    *@return void
+    *@param ProjectTask__c  pT
+    *@return void 
     */
     public void setNewProyect(ProjectTask__c pT) {
         newTask = pT;
@@ -68,7 +69,7 @@ public class ProjectOverlayNewMilestoneController {
 
     
     /**
-    *@param ProjectMember__c
+    *@param ProjectMember__c tm
     *@return void
     */
     public void setProjectMember(ProjectMember__c tm){
@@ -106,7 +107,6 @@ public class ProjectOverlayNewMilestoneController {
         }
         return options;
     }
-    
 
     /**
     * Returns Project for current project
@@ -142,7 +142,6 @@ public class ProjectOverlayNewMilestoneController {
         
         newTask.Milestone__c = true; 
         newTask.Project__c = PROJECTID;
-        //newTask.StartDate__c  = newTask.EndDate__c;
         newTask.PercentCompleted__c = 0.0;
         newTask.Priority__c = 'Medium';
         newTask.Project__c = currentProject.Id;

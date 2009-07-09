@@ -40,7 +40,6 @@ global class FlexWebService {
         if(userPermissions.getCanManage())
             canManage = 'true';
             
-        //String to return
         String userPermissionsString = canCreate+'|'+canManage;
         return userPermissionsString; 
     }

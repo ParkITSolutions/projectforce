@@ -28,7 +28,6 @@
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
    
 
-    
     <!-- Delete Project Overlay -->   
     <c:ProjectOverlayDeleteProject />
     
@@ -42,11 +41,7 @@
         var userIsManager = '{!isManager}';
 
 	</script>
-    <style>
-    	.labelCol{
-    		vertical-align: top;
-    	}
-    </style>
+    
     <div id="all" style="overflow:hidden;">
         
         <!-- Header -->

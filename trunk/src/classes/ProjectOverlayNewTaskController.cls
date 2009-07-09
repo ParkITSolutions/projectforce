@@ -20,7 +20,7 @@ public class ProjectOverlayNewTaskController {
 	}
 
    	/**
-   	*@param String project id
+   	*@param String projectId
    	*@return void
    	*/
    	public void setProject (String projectId) {
@@ -29,7 +29,7 @@ public class ProjectOverlayNewTaskController {
    	
    	/**
    	* Get current project instance
-   	*@return project
+   	*@return Project2__c
    	*/
    	public Project2__c getProject (){
    		return this.currentProject;
@@ -43,7 +43,7 @@ public class ProjectOverlayNewTaskController {
     }
     
 	/**
-	*@param ProjectTask__c
+	*@param ProjectTask__c value
 	*@return void
 	*/    
     public void setTask(ProjectTask__c value){
@@ -60,7 +60,7 @@ public class ProjectOverlayNewTaskController {
     }
     
     /**
-    *@param ProjectMember__c
+    *@param ProjectMember__c value
     *@return void
     */
     public void setProjectMember(ProjectMember__c value){
@@ -111,15 +111,6 @@ public class ProjectOverlayNewTaskController {
 								limit 1];
 	}
 	
-	/**
-	* Refresh method
-	*/
-	/*
-	public void refreshMethod(){
-		TeamsWidgetTasksMainController twtmc = new TeamsWidgetTasksMainController();
-		twtmc.getAllProjectTasks();
-	}
-	*/
 	
 	/**
 	* For rerender use

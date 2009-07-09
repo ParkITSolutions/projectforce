@@ -22,10 +22,20 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert)
                 idsProfile.add(pm.Profile__c);    
             }
             
-            List<Project2__c> teamList = [select id, name, PublicProfile__c, NewMemberProfile__c from Project2__c where id in: idsTeam];
-            List<Group> ManageQueueList = [select Id, Name From Group where Name in: groupsNames];
+            List<Project2__c> teamList = [select id, name, PublicProfile__c, NewMemberProfile__c 
+            								from Project2__c 
+            								where id in: idsTeam
+            								limit 1000];
+            								
+            List<Group> ManageQueueList = [select Id, Name 
+            								From Group 
+            								where Name in: groupsNames
+            								limit 1000];
             
-            List<ProjectProfile__c> tpList = [select t.Id, t.Name, t.CreateProjectTasks__c, t.ManageProjectTasks__c from ProjectProfile__c t  where t.Id in:idsProfile];
+            List<ProjectProfile__c> tpList = [select t.Id, t.Name, t.CreateProjectTasks__c, t.ManageProjectTasks__c 
+            									from ProjectProfile__c t  
+            									where t.Id in:idsProfile
+            									limit 1000];
             
             for(ProjectMember__c tm : Trigger.new) {
                 //Get Team Sharing Group

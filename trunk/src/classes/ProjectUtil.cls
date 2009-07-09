@@ -19,7 +19,7 @@ public class ProjectUtil {
     public static Boolean flagAssignee = true;
     
     /**
-    *@param Boolean
+    *@param Boolean b
     *@return void 
     */
     public static void setFlagAssignee( Boolean b){
@@ -108,7 +108,7 @@ public class ProjectUtil {
 	
 	/**
 	* Validate file size for attachment list
-	*@param List<Attachment> 
+	*@param List<Attachment> attachList
 	*@return List<Integer> Indexes list with errors
 	*/
 	public static List<Integer> validateFileSize(List<Attachment> attachList){

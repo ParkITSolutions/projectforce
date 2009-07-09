@@ -20,7 +20,7 @@ public class ProjectSubscribeController {
 	}
 	
 	/**
-	*@param String
+	*@param String idProject
 	*@return void
 	*/
 	public void setIdProject(String idProject) {

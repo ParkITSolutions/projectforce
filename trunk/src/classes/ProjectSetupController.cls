@@ -14,6 +14,8 @@ public class ProjectSetupController {
 	}
 	
 	/**
+	*
+	*@param String[] s
 	*@return void
 	*/
 	public void setSelectedProfilesList( String[] s){
@@ -40,12 +42,6 @@ public class ProjectSetupController {
 	*/
 	public List<SelectOption> getSavedProfiles(){
 		this.setingAllProfiles();
-		/**
-		if( this.savedProfiles.size() == 0 ){
-			Profile admProfile = [ select id, name from Profile where name = 'System Administrator'];			
-			this.savedProfiles.add( new SelectOption( admProfile.id, admProfile.name ));
-		}
-		*/
 		return this.savedProfiles;
 	}
 
@@ -71,6 +67,7 @@ public class ProjectSetupController {
 	}
 	
 	/**
+	*@param String s
 	*@return void
 	*/
 	public void setSelectedProfsStr( String s ){
@@ -95,7 +92,7 @@ public class ProjectSetupController {
 		
 		this.stringProfiles();
 		
-		// Profiles can't view
+		//Profiles can't view
 		List<Profile> allProfilesTemp = new List<Profile>(); 
 		allProfilesTemp = [ select id, name 
 								from Profile 

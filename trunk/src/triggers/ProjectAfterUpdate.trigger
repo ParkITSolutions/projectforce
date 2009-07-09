@@ -6,18 +6,29 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 				groupsNames.add('ProjectSharing' + iterProj.Id);
 				idsProject.add(iterProj.Id);
 			}
-			List<Group> groupList = [select id, name from Group where name in:groupsNames];
-			List<GroupMember> groupMemberList = [select UserOrGroupId, GroupId, id from GroupMember where GroupId in:groupList];
-			List<Group> go = [Select g.Type, g.Name from Group g where Type = 'Organization'];
-			List<ProjectMember__c> projectMemberList = [select project__c, id, User__c from ProjectMember__c where project__c in:idsProject];
+			
+			List<Group> groupList = [select id, name from Group where name in:groupsNames limit 1000];
+			List<GroupMember> groupMemberList = [select UserOrGroupId, GroupId, id 
+													from GroupMember 
+													where GroupId in:groupList 
+													limit 1000];
+			
+			List<Group> go = [Select g.Type, g.Name 
+								from Group g 
+								where Type = 'Organization'];
+			
+			List<ProjectMember__c> projectMemberList = [select project__c, id, User__c 
+															from ProjectMember__c 
+															where project__c in:idsProject 
+															limit 1000];
 			
             //Customer Portal Group            
             List<Group> portalGroup = new List<Group>();
-           	portalGroup = [Select g.Type, g.Name from Group g where Type = 'AllCustomerPortal'];
+           	portalGroup = [Select g.Type, g.Name from Group g where Type = 'AllCustomerPortal' limit 1000];
 
             //Partner Portal Group
             List<Group> partnerGroup = new List<Group>();
-           	partnerGroup = [Select g.Type, g.Name from Group g where Type = 'PRMOrganization'];	
+           	partnerGroup = [Select g.Type, g.Name from Group g where Type = 'PRMOrganization' limit 1000];	
             			
 			for (Integer it = 0; it < Trigger.new.size(); it++) {
 				
@@ -100,8 +111,10 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 						if(portalGroup.size() > 0 ){
 							GroupMember gmPortal = new GroupMember();
 							// Get GroupMember if exists
-							instance = [ SELECT Id FROM Group WHERE Name =: groupsNames[ it ] LIMIT 1 ];
-							gm2 = [ SELECT Id FROM GroupMember WHERE GroupId =: instance.Id AND UserOrGroupId =: portalGroup[0].Id ];
+							instance = [ SELECT Id FROM Group WHERE Name =: groupsNames[ it ] limit 1 ];
+							gm2 = [ SELECT Id 
+										FROM GroupMember 
+										WHERE GroupId =: instance.Id AND UserOrGroupId =: portalGroup[0].Id limit 1000];
 							
 							if(newProj.AllowCustomerUsers__c){
 								if( gm2.size() == 0 ){				
@@ -122,7 +135,9 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 							GroupMember gmPortal = new GroupMember();
 							// Get GroupMember if exists
 							instance = [ SELECT Id FROM Group WHERE Name =: groupsNames[ it ] LIMIT 1 ];
-							gm2 = [ SELECT Id FROM GroupMember WHERE GroupId =: instance.Id AND UserOrGroupId =: partnerGroup[0].Id ];
+							gm2 = [ SELECT Id 
+										FROM GroupMember 
+										WHERE GroupId =: instance.Id AND UserOrGroupId =: partnerGroup[0].Id limit 1000];
 							
 							if(newProj.AllowPartnerUsers__c){
 								if( gm2.size() == 0 ){					
@@ -194,5 +209,4 @@ trigger ProjectAfterUpdate on Project2__c (after update) {
 					}
 				}
 			}
-			
 }

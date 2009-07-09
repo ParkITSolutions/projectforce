@@ -4,7 +4,9 @@ public class TaskQuickAccessController {
 	public Boolean error = false;
 	
 	/**
-	*@param s task auto id
+	* sets task auto ID
+	*@param String s
+	*@return void
 	*/
 	public void setTaskId(String s){
 		taskId = '';
@@ -15,7 +17,8 @@ public class TaskQuickAccessController {
 	}
 	
 	/**
-	*@return String task auto id 
+	* gets task auto id
+	*@return String
 	*/
 	public String getTaskId(){
 		return taskId;
@@ -29,7 +32,7 @@ public class TaskQuickAccessController {
 	}
 	
 	/**
-	*@param bolean b error
+	*@param bolean b 
 	*@return void
 	*/
 	public void setError(Boolean b){
@@ -37,7 +40,8 @@ public class TaskQuickAccessController {
 	}
 	
 	/**
-	*@return PageReference to task detail
+	* returns page Reference to task detail
+	*@return PageReference 
 	*/
 	public PageReference go(){
 		List<ProjectTask__c> tasks = new List<ProjectTask__c>();

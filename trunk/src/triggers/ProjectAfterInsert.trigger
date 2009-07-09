@@ -8,16 +8,17 @@ trigger ProjectAfterInsert on Project2__c bulk (after insert) {
             Project2__c[] t = Trigger.new;
 	        Group organization = new Group();
 	        List<Group> portalGroup = new List<Group>();
-			List<Group> partnerGroup = new List<Group>();            
+			List<Group> partnerGroup = new List<Group>();
+			ProjectProfile__c defaultProfile = new ProjectProfile__c();     
             
             //Default project member profile
-            ProjectProfile__c defaultProfile = [select Id from ProjectProfile__c where Name = 'Project Administrator' limit 1];
+            defaultProfile = [select Id from ProjectProfile__c where Name = 'Project Administrator' limit 1];
             
             //Group names
             List<String> groupNames = new List<String> {'Organization', 'AllCustomerPortal', 'PRMOrganization'};
             
             //Read Groups 
-            List<Group> groups = [Select g.Type, g.Name from Group g where Type in: groupNames];
+            List<Group> groups = [Select g.Type, g.Name from Group g where Type in: groupNames limit 1000];
             for(Group grp : groups){
 	            
 	            //Organization group
@@ -134,7 +135,8 @@ trigger ProjectAfterInsert on Project2__c bulk (after insert) {
     	ProjectUtil.currentlyExeTrigger = false;
     
     }else {
-        ProjectProfile__c defaultProfile = [select Id from ProjectProfile__c where Name = 'Project Administrator' limit 1];
+    	ProjectProfile__c defaultProfile = new ProjectProfile__c();  
+        defaultProfile = [select Id from ProjectProfile__c where Name = 'Project Administrator' limit 1];
         for (Project2__c team : Trigger.new) {
             ProjectMember__c firstTeamMember = new ProjectMember__c();
             firstTeamMember.User__c = Userinfo.getUserId();

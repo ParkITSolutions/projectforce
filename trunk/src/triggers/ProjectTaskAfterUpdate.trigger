@@ -12,8 +12,5 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
    	ProjectSubscribersEmailServices pEmail2 = new ProjectSubscribersEmailServices();
     
     pEmail2.sendMailForTaskPercentChanged( lstPTId );
-
-
-   
     
 }

@@ -1,6 +1,6 @@
 <apex:component controller="ProjectDetailController">
     
-   <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}"/> 
+   	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}"/> 
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
     
     <!-- Prototype / Scriptaculous Framework -->   
@@ -25,15 +25,7 @@
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />        
     
     <!-- ProjectTaskList CSS -->
-
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/adminMainSetup.css')}" />
-    
-    <style>
-    .breadCrumbs a{
-        font-weight: normal;
-    }
-    </style>
-    
     
     <!-- ProjectTaskList JS -->
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskList.js')}"/>

@@ -1,78 +1,54 @@
 <apex:page id="ProjectSubscription" sidebar="false" tabStyle="Project2__c" controller="ProjectSetupController">
 	<apex:includeScript value="/soap/ajax/11.1/connection.js"/>
+	
 	<script>
 		var API_SESSION_ID = '{!$Api.Session_ID}';
 		//Common Resource URL  
 		var globalCommonResourcesPath = '{!URLFOR($Resource.commonResources)}';
 	</script>
+	
 	<!-- Prototype + Scriptaculous -->
 	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
 	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
 	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>
+	
 	<!-- Portal Support -->
-	<apex:includeScript value="{!$Resource.portalSupport}"/>	
+	<apex:includeScript value="{!$Resource.portalSupport}" />	
+	
 	<!-- Common Js for All Sections -->
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/admin.js')}"/>
 	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}"/>
+	
 	<!-- CSS de TS -->
-	<link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />	
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />	
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />
-	<link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/profileEdition.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/profileEdition.css')}" />
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetail.css')}" />
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgets/TeamMemberWidget.css')}" />	
+    
     <!-- CSS styles for Portal Integration -->
-    <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
 	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />   
 	
-	
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsSubscription.css')}" />
 	
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectSetup.css')}" />
+	
 	<style>
-		body{
-			background:#FFF!important;
-		}
 		.inputButton{
 			background:transparent url({!URLFOR($Resource.ProjectResources, 'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right bottom;
-		}
-		.bPageHeader, .bPageHeader td.left {
-			background-color:#FFF!important;
 		}	
-		
 	    .blackbutton {
 			background:transparent url({!URLFOR($Resource.ProjectResources,'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right top;
-			color:#FFFFFF !important;
-			display:block;
-			font-family:Verdana,Arial;
-			font-size:10px;
-			font-weight:bold;
-			line-height:10px;
-			margin-left:3px;
-			padding:5px 10px 8px 5px;
-			white-space:nowrap;
-			border: 0px none;
-		}		
-	    .AllProfiles, .SelectedProfiles{
-	        height: 250px;
-	    }
-	    .Titles, .AllProfiles, .SelectedProfiles{
-	        width: 200px;
-	    }
-		.Titles{
-			float: left;
-			font: bolder;
-		}
-		.Sep{
-			float: left;
-			width: 65px;
-		}
+		}	
 		.ToLeftToRightBts{
-			float: left;
-			padding: 100px 20px 15px 15px ;
-			width: 30px;
-			height: 150px;
-		}
+		    float: left;
+		    padding: 100px 20px 15px 15px ;
+		    .padding: 0px;
+		    .width: 0px;
+		    height: 150px;
+		}	
 	</style>
 	
 	<!-- Header -->
@@ -213,7 +189,6 @@
             toSend.push( mSelRight[ p ].value );
             
             hiddenField.value = toSend.join( '#' );
-            //alert( hiddenField.value );
             
         } 		
 	</script>	

@@ -24,14 +24,14 @@ public class ProjectOverlayDeleteAssigneeController {
     }
      
     /**
-    *@return idDeletes
+    *@return String
     */
     public String getIdDeletes () {
         return idDeletes;   
     }
     
     /** 
-    *@param sidDeletes
+    *@param String sidDeletes
     *@return void
     */
     public void setIdDeletes (String sidDeletes) {

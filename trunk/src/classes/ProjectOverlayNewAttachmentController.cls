@@ -4,17 +4,19 @@
 public class ProjectOverlayNewAttachmentController {
 	
 	private String parentId = ''; 
+	
 	public ProjectOverlayNewAttachmentController(){}
 	
 	/**
-	*@return attach parent id
+	* attach parent id
+	*@return String 
 	*/
 	public String getParentId(){
 		return parentId;
 	}
 	
 	/**
-	*@param parent id
+	*@param String id
 	*@return void
 	*/
 	public void setParentId(String id){

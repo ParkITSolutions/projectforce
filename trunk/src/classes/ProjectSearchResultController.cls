@@ -41,7 +41,7 @@ public with sharing class ProjectSearchResultController {
 	}
 	
 	/**
-	*@param String
+	*@param String criteria
 	*@return void
 	*/
 	public void setCriteria (String criteria) {
@@ -61,8 +61,9 @@ public with sharing class ProjectSearchResultController {
 	public Boolean getNoMatches () {
 		return noMatches;	
 	}	
+	
 	/**
-	*@param String teamId
+	*@param String team
 	*@return void
 	*/
 	public void setTeamId (String team){
@@ -333,10 +334,9 @@ public with sharing class ProjectSearchResultController {
    		return nextPageShow;
    	}	
 
-	
 	/**
 	* Jump to page
-	*@return Integer jumpPage
+	*@return Integer
 	*/   
 	public Integer getJumpPage () {
 		return jumpPage;
@@ -379,7 +379,7 @@ public with sharing class ProjectSearchResultController {
 	
 	/**
 	* Inner class for SearchResult type
-	*@ Inner class
+	*@class
 	*/
 	public class SearchResult {
 		String name;
@@ -467,7 +467,7 @@ public with sharing class ProjectSearchResultController {
 		}
 		
 		/**
-		*@param String Type
+		*@param String resultType
 		*@return void
 		*/
 		public void setResultType (String resultType) {
@@ -475,7 +475,7 @@ public with sharing class ProjectSearchResultController {
 		}
 		
 		/**
-		*@param String Name
+		*@param String realName
 		*@return void
 		*/
 		public void setRealName (String realName) {

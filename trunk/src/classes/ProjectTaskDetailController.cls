@@ -57,7 +57,8 @@ public class ProjectTaskDetailController {
 	}
 	
 	/**
-	*@param c task comment
+	* sets task comment
+	*@param TaskComment__c c
 	*@return void
 	*/
 	public void setComment (TaskComment__c c){
@@ -270,6 +271,7 @@ public class ProjectTaskDetailController {
 	
 	/**
 	* Inner class for Proyect Assignee
+	*@class
 	*/
 	public class ProjectAssignee {
 		String id;
@@ -338,6 +340,7 @@ public class ProjectTaskDetailController {
 	
 	/**
 	* Inner class for Attachment Info
+	*@class
 	*/
 	public class AttachmentInfo {
         
@@ -439,6 +442,7 @@ public class ProjectTaskDetailController {
 	
 	/**
 	* Inner class for Task Details
+	*@class
 	*/
 	public class TaskDetails {
 			
@@ -468,9 +472,6 @@ public class ProjectTaskDetailController {
 			public integer CantAssignees{
 				 get; set; 	
 			}
-			
-			
-			
 
 			/**
 			* Current Viewer is the task owner
