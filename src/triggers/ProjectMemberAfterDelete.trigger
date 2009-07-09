@@ -6,22 +6,21 @@ trigger ProjectMemberAfterDelete on ProjectMember__c (after delete) {
 		idsProject.add(tm.Project__c);
 		projectSharingNames.add('ProjectSharing' + tm.Project__c);
 	}
-	
 
+	List<Group> groupProjectSharing = [select g.Id, g.Name from Group g where g.Name in:projectSharingNames limit 1000];
 	
-	
-	
-	
-	List<Group> groupProjectSharing = [select g.Id, g.Name from Group g where g.Name in:projectSharingNames];
-	
-	List<Project2__c> projectList = [select t.PublicProfile__c ,t.NewMemberProfile__c, t.Id, t.Name from Project2__c t where t.Id in: idsProject];
+	List<Project2__c> projectList = [select t.PublicProfile__c ,t.NewMemberProfile__c, t.Id, t.Name 
+										from Project2__c t 
+										where t.Id in: idsProject
+										limit 1000];
 	
 	List<ProjectProfile__c> lstTp = [Select
 										t.Id, 
 										t.Name,
 										t.CreateProjectTasks__c, 
 										t.ManageProjectTasks__c 
-										from ProjectProfile__c t];
+										from ProjectProfile__c t
+										limit 1000];
 	
 	List<String> groupsNames = new List<String>();
 	List<String> userIds = new List<String>();
@@ -33,13 +32,15 @@ trigger ProjectMemberAfterDelete on ProjectMember__c (after delete) {
 //Delete subscription
 	string pId=idsProject[0];
 	List<ProjectSubscription__c> unsubscribe=[select id,
-							ProjectTaskAssignedToMe__c,
-							ProjectTaskAssignToMeChanged__c,
-							ProjectTaskChanged__c,
-							ProjectTaskDeleted__c,
-							Project__c,
-							User__c
-						    from ProjectSubscription__c where User__c in :userIds and Project__c =: pId ];
+												ProjectTaskAssignedToMe__c,
+												ProjectTaskAssignToMeChanged__c,
+												ProjectTaskChanged__c,
+												ProjectTaskDeleted__c,
+												Project__c,
+												User__c
+											    from ProjectSubscription__c 
+											    where User__c in :userIds and Project__c =: pId 
+											    limit 1000];
 	if ( unsubscribe.size()>0)	{
 		delete  unsubscribe;
 	}
@@ -47,9 +48,21 @@ trigger ProjectMemberAfterDelete on ProjectMember__c (after delete) {
 					    
 						    
 						    
-	List<Group> ManageQueueList = [ select Id, Name From Group where Name in: groupsNames and Type = 'Queue' order by Name];
-	List<GroupMember> gmList = [select Id, UserOrGroupId, GroupId from GroupMember where UserOrGroupId in:userIds and GroupId in: ManageQueueList];
-	List<GroupMember> gmAllList = [select gm.Id, UserOrGroupId, GroupId from GroupMember gm where gm.UserOrGroupId in: userIds];
+	List<Group> ManageQueueList = [ select Id, Name 
+										From Group 
+										where Name in: groupsNames and Type = 'Queue' 
+										order by Name
+										limit 1000];
+										
+	List<GroupMember> gmList = [select Id, UserOrGroupId, GroupId 
+									from GroupMember 
+									where UserOrGroupId in:userIds and GroupId in: ManageQueueList
+									limit 1000];
+									
+	List<GroupMember> gmAllList = [select gm.Id, UserOrGroupId, GroupId 
+									from GroupMember gm 
+									where gm.UserOrGroupId in: userIds
+									limit 1000];
 	
 	List<String> gm = new List<String>();
 	

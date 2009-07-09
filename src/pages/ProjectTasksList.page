@@ -751,33 +751,44 @@
 			</apex:form>
 		</div>
 	</div>
-<!-- 
-	<apex:form id="theForm">
-	<apex:repeat value="{!L}" var="o" id="dynFil">
-	
-		<apex:outputPanel rendered="{!IF( o.fieldType == 'PICKLIST', true, false) }" layout="block">
-			<span class="DynFIlLabel">{!o.label}</span>
-			<apex:SelectList >
-				<apex:selectOptions value="{!o.options}" />
-			</apex:SelectList>
-			{!o.name}::{!o.FieldType}
-		</apex:outputPanel>	
-
-		<apex:outputPanel rendered="{!IF( o.fieldType != 'PICKLIST', true, false) }" layout="block">
-			<span class="DynFIlLabel">{!o.label}</span>
-			<apex:inputText value="{!o.value}" />
-			{!o.name}::{!o.FieldType}
-		</apex:outputPanel>	
-	</apex:repeat>
-	->->->{!SQL}
-	<apex:commandButton value="Send" action="{!sendRequest}" rerender="theForm"/>
-	--------
-	</apex:form>
- -->
+	<div style="width: 850px;">
+		<apex:form id="theForm">
+			<apex:repeat value="{!L}" var="o" id="dynFil">
+				
+				<apex:outputPanel rendered="{!IF( o.fieldType == 'PICKLIST', true, false) }" layout="block" styleClass="DymFilElem">
+					<span class="DynFIlLabel">{!o.label}</span><br />
+					<apex:selectList value="{!o.value}">
+						<apex:selectOptions value="{!o.options}" />
+					</apex:selectList>
+				</apex:outputPanel>	
+		
+				<apex:outputPanel rendered="{!IF( o.fieldType == 'BOOLEAN', true, false) }" layout="block" styleClass="DymFilElem">
+					<span class="DynFIlLabel">{!o.label}</span><br />
+					<apex:inputCheckbox value="{!o.value}" />
+				</apex:outputPanel>	
+		
+				<apex:outputPanel rendered="{!IF( o.fieldType != 'PICKLIST' && o.fieldType != 'BOOLEAN', true, false) }" layout="block" styleClass="DymFilElem">
+					<span class="DynFIlLabel">{!o.label}</span><br />
+					<apex:inputText value="{!o.value}" />
+				</apex:outputPanel>
+					
+			</apex:repeat> 
+			<br /><br />
+			<apex:commandButton value="Send" action="{!sendRequest}" rerender="theForm"/>
+			{!SQL}
+		</apex:form>
+	</div>
+	<style>
+	.DymFilElem{
+		height:45px;
+		width: 210px;
+		float: left;
+	}
+	</style>
     <script>
         showActionSuccess();
         readPortalCSSRules();
-    </script>
+    </script> 
 
     <apex:outputpanel id="auxProjectTaskListPanel" />
 </apex:page>

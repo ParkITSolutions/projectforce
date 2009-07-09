@@ -20,7 +20,7 @@ public class SearchController {
 	};
 	
 	/**
-	*@param String action
+	*@param String mod
 	*@return void
 	*/
 	public void setModule(String mod){
@@ -43,6 +43,7 @@ public class SearchController {
 	
 	/**
 	*@param String k
+	*@return void
 	*/
 	public void setKey(String k){
 		this.key = k;
@@ -57,6 +58,7 @@ public class SearchController {
 	
 	/**
 	*@param String id
+	*@return void
 	*/
 	public void setTeamId(String id){
 		this.teamId = id;
@@ -64,7 +66,7 @@ public class SearchController {
 	
 	/**
 	* Get value of label
-	*@return String label
+	*@return String
 	*/ 
 	public String getLabelName(){
 		if(System.currentPageReference().getParameters().get('id') == null){
@@ -77,7 +79,7 @@ public class SearchController {
 	
 	/**
 	* Set value of label
-	* @param String s
+	*@param String s
 	*@return void
 	*/
 	public void setLabelName(String s){
@@ -86,7 +88,7 @@ public class SearchController {
 	
 	/**
 	* Get value of default input field value
-	* @return String text
+	* @return String 
 	*/
 	public String getDefaultText(){
 		if(this.getLabelName() == 'Projects'){

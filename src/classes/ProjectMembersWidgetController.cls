@@ -27,6 +27,8 @@ public with sharing class ProjectMembersWidgetController {
 	public String  invalidMembers = '';
 	public List<String> errorMembers = new List<String>(); 
 
+	// Sharing rules
+	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
 	
 	/**
 	* Constructor
@@ -38,7 +40,8 @@ public with sharing class ProjectMembersWidgetController {
 	
 		
 	/**
-	*@param b send email notifys
+	* send email notifications
+	*@param Boolean b 
 	*@return void 
 	*/
 	public void setEmailNotifications(Boolean b)
@@ -61,7 +64,8 @@ public with sharing class ProjectMembersWidgetController {
 	}
 	
 	/**
-	*@param Boolean admnistrator profile condition
+	* admnistrator profile condition 
+	*@param Boolean op
 	*@return void 
 	*/
 	public void setIsAdministrator( Boolean op ){
@@ -106,7 +110,7 @@ public with sharing class ProjectMembersWidgetController {
 	
 	/**
 	* Setter method for Team Id variable
-	*@param String idTeam
+	*@param String tID
 	*@void return void
 	*/
 	public void setTeam(String tID) {
@@ -138,7 +142,7 @@ public with sharing class ProjectMembersWidgetController {
 	
 	/**
 	* Setter method for Team Id variable
-	*@param String typeList
+	*@param String typeL
 	*/
 	public void setTypeList(String typeL) {
 		typeList = typeL;		
@@ -252,7 +256,7 @@ public with sharing class ProjectMembersWidgetController {
     } 
     		
 	/**
-	*@param String ID
+	*@param String s
 	*@return void 
 	*/
 	public void setIdTeam(String s){
@@ -288,9 +292,7 @@ public with sharing class ProjectMembersWidgetController {
 		}
 		return options;
 	}
-	
 
-	
 	
 	/**
 	* Assign new Member vars to new Profile
@@ -503,9 +505,6 @@ public with sharing class ProjectMembersWidgetController {
 		// Send the email you have created.
         Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
     }	
-    
-    // Sharing rules
-	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
 	
 	/**
 	* Generate user permissions
@@ -552,9 +551,9 @@ public with sharing class ProjectMembersWidgetController {
         Boolean isPrivate = false;
         
 		/**
-		* Costructor
-		*@param ProjectMember__c
-		*@param PeopleProfile__c
+		* Constructor
+		*@param ProjectMember__c m
+		*@param PeopleProfile__c u 
 		*/
         public TeamMember(ProjectMember__c m, User u) {
             member = m; 
@@ -562,7 +561,8 @@ public with sharing class ProjectMembersWidgetController {
         }       
         
         /**
-        *@return String idTeamMember
+        * returns Team member ID
+        *@return String 
         */
         public String getId(){
         	return Id;
@@ -619,7 +619,7 @@ public with sharing class ProjectMembersWidgetController {
         }
         
         /**
-        *@return PeopleProfile__c
+        *@return User
         */
         public User getProfile(){         
 			return profile;
@@ -635,7 +635,7 @@ public with sharing class ProjectMembersWidgetController {
          		return '';
          	}
         }
-    }//End Class TeamMember
+    }
 	
 	/**
 	*Inner class for Member
@@ -664,14 +664,14 @@ public with sharing class ProjectMembersWidgetController {
 		}
 		
 		/**
-        *@return String ID
+        *@return String
         */
 		public String getProfileId () {
 			return profileId;
 		}
 		
 		/**
-        *@param String ID
+        *@param String profile
         *@return void
         */
 		public void setProfileId (String profile) {
@@ -686,7 +686,7 @@ public with sharing class ProjectMembersWidgetController {
 		}
 		
 		/**
-        *@param String Message
+        *@param String msj
         *@return void
         */
 		public void setMessage (String msj) {
@@ -701,7 +701,7 @@ public with sharing class ProjectMembersWidgetController {
 		}
 		
 		/**
-        *@param String Role
+        *@param String tRole
         *@return void
         */
 		public void setTeamRole (String tRole) {

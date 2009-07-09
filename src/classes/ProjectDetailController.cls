@@ -39,7 +39,7 @@ public with sharing class ProjectDetailController
     }
     
     /**
-    *@return isLastMemberAdmin
+    *@return boolean isLastMemberAdmin
     */
     public Boolean getIsLastMemberAdmin(){
     	return this.isLastMemberAdmin;
@@ -54,6 +54,7 @@ public with sharing class ProjectDetailController
     }
 
     /**
+    * Get project Name
     *@return String
     */
     public String getProjectName(){
@@ -89,7 +90,7 @@ public with sharing class ProjectDetailController
     
     /**
     *@param Boolean isp
-    * @return void
+    *@return void
     */	
 	public void setIsPublic(Boolean isp){
 		this.isPublic = isp;
@@ -97,7 +98,7 @@ public with sharing class ProjectDetailController
 	
 	/**
     *@param Boolean ism
-    * @return void
+    *@return void
     */	
 	public void setIsMember(Boolean ism){
 		this.isMember = ism;
@@ -143,6 +144,7 @@ public with sharing class ProjectDetailController
     /**
     * Read Team
     *@throws Exception
+    *@return void
     */
     public void getTeamDetail(){
         try {
@@ -159,6 +161,7 @@ public with sharing class ProjectDetailController
      /**
     * Show join event
     *@return Boolean
+    *@return void
     */
   	public void genTeamData(){
 		if(this.teamIdParam != null){

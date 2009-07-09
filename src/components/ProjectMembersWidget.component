@@ -43,12 +43,6 @@
 			refreshAssignToTask();
 		}
 	</script>
-	
-	<style>
-		.name_error {
-			color: #FF0000;
-		}
-	</style>
 
 	<!-- NEW MEMBER OVERLAY -->
 	<apex:outputpanel rendered="{!IF(isManager, true, false)}">

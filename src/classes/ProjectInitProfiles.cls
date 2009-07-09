@@ -70,6 +70,11 @@ public class ProjectInitProfiles {
         }
         return false;	
 	}
+	
+	/**
+	*
+	*@return Boolean 
+	*/
 	public Boolean getShowOverlay(){
 		return showOverlay;
 	}

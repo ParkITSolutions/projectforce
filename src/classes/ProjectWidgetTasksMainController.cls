@@ -39,7 +39,7 @@ public class ProjectWidgetTasksMainController {
 	
 	/**
 	* Set Sidebar
-	*@param Boolean
+	*@param Boolean b
 	*@return void
 	*/
 	public void setSidebar (Boolean b){
@@ -56,7 +56,7 @@ public class ProjectWidgetTasksMainController {
 	 
 	
 	/**
-	*@return List<ProjectTask> taskResults
+	*@return List<ProjectTask>
 	*/
 	public List<ProjectTask> getTaskResults(){
 		return taskResults;
@@ -208,6 +208,7 @@ public class ProjectWidgetTasksMainController {
 	 
 	 /**
 	 * Inner Class ProjectTask
+	 *@class
 	 */
 	 public class ProjectTask {
 		
@@ -259,14 +260,16 @@ public class ProjectWidgetTasksMainController {
         }
         
         /**
-        *@return String task status
+        * returns task status
+        *@return String
         */
         public String getStatus(){
         	return status;
         }
         
         /**
-        *@param String task status
+        * sets task status
+        *@param String s
         *@retur void
         */
         public void setStatus(String s){

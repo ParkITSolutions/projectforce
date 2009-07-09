@@ -4,8 +4,6 @@ trigger ProjectAssigneeAfterInsert on ProjectAssignee__c (after insert)
 	ProjectSubscribersEmailServices emailServices = new ProjectSubscribersEmailServices();
 	List<String> assignees = new List<String>();
 
-
-   	
 	try {
         
   		List<String> teamSharingGroupNames = new List<String>();		

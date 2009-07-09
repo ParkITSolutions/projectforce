@@ -1,5 +1,5 @@
 <apex:component controller="ProjectDetailAttachmentController" allowDML="true">
-	<!-- Set Attribure for project id. -->
+	<!-- Set Attribute for project id. -->
 	<apex:attribute name="project" description="Project Id" type="String" required="true" assignTo="{!project}" />	
 	
 	<style>

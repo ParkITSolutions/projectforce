@@ -30,7 +30,8 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 				if(queueId != null)
                     nTask.OwnerId = queueId;
 			}
-			parentTasks = [ select id, Project__c from ProjectTask__c where id in: tasksInTrrNewIds ];
+			
+			parentTasks = [ select id, Project__c from ProjectTask__c where id in: tasksInTrrNewIds limit 1000];
 			
 		    ProjectTask__c tempPTOld = new ProjectTask__c();
 		    ProjectTask__c tempPTNew = new ProjectTask__c();

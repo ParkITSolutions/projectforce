@@ -11,14 +11,20 @@ trigger ProjectTaskBeforeDelete on ProjectTask__c (before delete)
     
     ProjectUtil.DeleteTaskMailSent=true;
     
-	List<ProjectAssignee__c> projectAssigneeList = [Select Id from ProjectAssignee__c where ProjectTask__c in :Trigger.old  ];    	
+	List<ProjectAssignee__c> projectAssigneeList = [Select Id 
+														from ProjectAssignee__c 
+														where ProjectTask__c in :Trigger.old  
+														limit 1000];    	
 	delete projectAssigneeList;
 	
-	List<ProjectTaskPred__c> projectTaskPredList = [select Id from ProjectTaskPred__c where Parent__c in : Trigger.old or Predecessor__c in : Trigger.old]; 
+	List<ProjectTaskPred__c> projectTaskPredList = [select Id 
+														from ProjectTaskPred__c 
+														where Parent__c in : Trigger.old or Predecessor__c in : Trigger.old
+														limit 1000]; 
 	delete projectTaskPredList;
 
 	//Delete Attachments
-	List<Attachment> attachs = [select Id from Attachment where parentId in : Trigger.old];
+	List<Attachment> attachs = [select Id from Attachment where parentId in : Trigger.old limit 1000];
 	delete attachs;
 
 }

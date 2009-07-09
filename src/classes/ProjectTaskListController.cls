@@ -947,13 +947,13 @@ public with sharing class ProjectTaskListController {
 	    List<Attachment> attachs =  new List<Attachment>();
 	    Attachment doc = null;
 	    
-	    attachs = [select Id, Name from Attachment where Name = 'pf__export.csv'];
-	    if(attachs.size() > 0)
-	    	doc = attachs[0];
-	    else{
+	    attachs = [select Id, Name from Attachment where Name =: (PROJECTID + 'pf__export.csv')];
+	    if(attachs.size() > 0){
+	    	doc = attachs[0]; 
+	    }else{
 	    	doc = new Attachment();
 	    	doc.ParentId = PROJECTID;
-			doc.Name = 'pf__export.csv';
+			doc.Name = PROJECTID + 'pf__export.csv';
 	    }
 
 	    doc.Body = Blob.valueOf(csvText);

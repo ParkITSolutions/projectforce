@@ -20,17 +20,30 @@ public class ProjectWidgetMyTasksAndMilController {
         loadAllProjectTasksAndMilestones();
     }
     
+    /**
+    *@return List<ProjectTasks>
+    */
     public List<ProjectTasks> getTasksList(){
         return tasksList; 
     }
+    
+    /**
+    *@return List<ProjectTasks>
+    */
     public List<ProjectTasks> getMilestonesList(){
         return milestonesList;
     }
    
+   /**
+    *@return Integer
+    */
     public Integer getOverdueAlreadyShow(){
         return overdueAlreadyShow;
     }
- 
+ 	
+ 	/**
+    *@return void 
+    */
     public void loadAllProjectTasksAndMilestones(){
         //All Project task
         List<ProjectTask__c> allProjectsTasks = new List<ProjectTask__c>();
@@ -119,6 +132,7 @@ public class ProjectWidgetMyTasksAndMilController {
     
     /**
     * Inner Class ProjectTasks
+    *@class
     */
     public class ProjectTasks {
 

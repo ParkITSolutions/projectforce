@@ -88,7 +88,7 @@ public class UserPermissions {
 	}
 	
 	/**
-	*@param String
+	*@param String ownerId
 	*@return void
 	*/ 	
  	public void setOwnerId (String ownerId) {
@@ -96,7 +96,7 @@ public class UserPermissions {
 	}
 	
 	/**
-	*@param String
+	*@param String project
 	*@return void
 	*/	
 	public void setProject (String project) {
@@ -104,7 +104,7 @@ public class UserPermissions {
 	}
 	
 	/**
-	*@param String
+	*@param String objectType
 	*@return void
 	*/	
 	public void setObjectType (String objectType) {

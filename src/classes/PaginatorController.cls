@@ -35,6 +35,7 @@ public class PaginatorController {
     /**
     * Set total num of items
     *@param Integer num
+    *@return void
     */
     public void setTotalItemsNumber(Integer num) {
         totalItemsNumber = num;

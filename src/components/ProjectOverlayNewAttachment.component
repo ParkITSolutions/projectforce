@@ -1,7 +1,6 @@
 <apex:component controller="ProjectOverlayNewAttachmentController">
 	<!-- Set Attribure for project id. -->
 	<apex:attribute name="parentId" description="Parent Id" type="String" required="true" assignTo="{!parentId}" />		
-	<!--<script src="{!URLFOR($Resource.ProjectResources, 'inc/js/ProjectOverlayNewAttachment.js')}" />-->
 	
 	<script>
 		var uploadEnd = false;
@@ -52,11 +51,6 @@
 		}			
 	</script>
 	
-	<style>
-		div.overlayMainContent iframe{
-			border: none;
-		}
-	</style>
 	<div id="newAttachmentOverlay" style="display:none;height:180px;" class="overlayForm">	
 		<!-- Overlay Title -->
 		<div class="overlayTitleContent">

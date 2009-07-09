@@ -9,7 +9,7 @@ public class ProjectDetailAttachmentController {
 	public ProjectDetailAttachmentController (){}
 
 	/**
-	*@param project id
+	*@param String project id
 	*@return void
 	*/
 	public void setProject(String id){
@@ -18,14 +18,14 @@ public class ProjectDetailAttachmentController {
 	}
 	
 	/**
-	*@return project id
+	*@return String project id
 	*/
 	public String getProject(){
 		return project;
 	}
 	
 	/**
-	*@return formated attachment list
+	*@return List<AttachmentInfo> formated attachment list
 	*/
 	public List<AttachmentInfo> getAttachments(){
 		return attachments;
@@ -60,7 +60,7 @@ public class ProjectDetailAttachmentController {
 	}	
 
 	/**
-	*@param project id
+	*
 	*@return void
 	*/
 	public void readAttachments(){
@@ -78,7 +78,7 @@ public class ProjectDetailAttachmentController {
 	
 	/**
 	* Load attachment list
-	*@param attachment list
+	*@param List<Attachment> attachment list
 	*@return void
 	*/
 	public void loadAttachmentList(List<Attachment> attachs){
@@ -181,7 +181,7 @@ public class ProjectDetailAttachmentController {
 	
 	
 	/**
-	* Class AttachmentInfo
+	* Inner Class AttachmentInfo
 	*/ 
 	public class AttachmentInfo {
         
@@ -237,7 +237,7 @@ public class ProjectDetailAttachmentController {
         }          
 
         /**
-        *@param Attachment
+        *@param Attachment attach
         *@return void
         */
         public void setAttachment (Attachment attach) {
@@ -252,7 +252,7 @@ public class ProjectDetailAttachmentController {
         }
         
         /**
-        *@param b is owner
+        *@param boolean b is owner
         *@return void
         */
         public void setIsOwner(Boolean b){
@@ -260,7 +260,7 @@ public class ProjectDetailAttachmentController {
         }
         
         /**
-        *@retrun is owner
+        *@retrun boolean is owner
         */
         public Boolean getIsOwner(){
         	return isOwner;

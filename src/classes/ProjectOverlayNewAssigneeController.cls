@@ -37,7 +37,7 @@ public class ProjectOverlayNewAssigneeController {
 
 	/**
 	*Set task Id.
-	*@param Id
+	*@param Id tId
 	*@return void
 	*/
 	public void setTaskId( Id tId ){
@@ -53,8 +53,8 @@ public class ProjectOverlayNewAssigneeController {
 	}
 	
 	/**
-	*Return members list.
-	*@return List<Member>
+	*Return select options
+	*@return List<SelectOption>
 	*/
 	public List<SelectOption> getMemberList(){
 		this.createMemList();
@@ -71,7 +71,7 @@ public class ProjectOverlayNewAssigneeController {
 
 	/**
 	*Set member selected id.
-	*@param Id
+	*@param Id ms
 	*@return void
 	*/
 	public void setMemberSelected( Id mS ){
@@ -122,6 +122,10 @@ public class ProjectOverlayNewAssigneeController {
 		}else return false;
 	}
 	
+	/**
+	*
+	*@return void
+	*/
 	public void saveAssignee(){
 		
 		ProjectAssignee__c newAss = new ProjectAssignee__c();
@@ -138,7 +142,8 @@ public class ProjectOverlayNewAssigneeController {
 	}
 	
 	/**
-	*Construc the percent scale.
+	*Constructs the percent scale.
+	*@return void
 	*/
 	private void construcPercentScale(){
 	

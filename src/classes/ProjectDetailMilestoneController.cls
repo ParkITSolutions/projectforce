@@ -11,7 +11,7 @@ public class ProjectDetailMilestoneController {
 	List<ProjectTasks> result = new List<ProjectTasks>();
 		
 	/**
-	*@param String
+	*@param String id
 	*@return void
 	*/
 	public void setTeamId(String id) {
@@ -63,7 +63,6 @@ public class ProjectDetailMilestoneController {
 	* Read user permissions
 	*@return void
 	*/
-	
 	public void genPermissions () {
 		userPermissions.setId(UserInfo.getUserId());
 		userPermissions.setProject(teamId);
@@ -80,7 +79,6 @@ public class ProjectDetailMilestoneController {
 		genPermissions();
 		return userPermissions;
 	}
-	
 	
 	/**
 	*@return List<ProjectTasks>
@@ -140,13 +138,9 @@ public class ProjectDetailMilestoneController {
 				if(milestone.ProjectsAssignees__r.size() > 0){
 					miMilestones.setUser(userMap.get(milestone.ProjectsAssignees__r[0].User__c));					
 				}
-				//miMilestones.setDaysCount(milestone.EndDate__c, milestone.Duration__c);
-				//miMilestones.setDayPercent(milestone.EndDate__c, milestone.Duration__c);
-				//miMilestones.setDayPercentRight(milestone.EndDate__c, milestone.Duration__c);
+				
 				miMilestones.setPriority(milestone.Priority__c);
-				//miMilestones.setEndDate(milestone.EndDate__c, milestone.Duration__c);
-				//miMilestones.setEndDateRight(milestone.EndDate__c, milestone.Duration__c);				
-				//miMilestones.setIsToLate(milestone.EndDate__c);  
+				
 				result.add(miMilestones);
 			}
 			
@@ -348,23 +342,13 @@ public class ProjectDetailMilestoneController {
         }
         
         /**
-        *@param User
+        *@param User user
         *@return void
         */
         public void setUser(User user){
         	if(user != null){
 	            UserName = user.name;
 	            UserId = user.Id;
-	        	
-	        	/*
-	            if(user.People__r.size() > 0 &&
-	               user.People__r[0].Picture__c != null &&
-	               user.People__r[0].Picture__c != '') {
-	           		Picture = user.People__r[0].Picture__c;
-	            } else {
-	            	Picture = ' ';
-	            }
-	            */
         	}
         }
         
@@ -390,7 +374,7 @@ public class ProjectDetailMilestoneController {
         }
         
         /**
-        *@param String
+        *@param String idTask
         *@return void
         */
         public void setTaskId(String idTask){
@@ -405,7 +389,7 @@ public class ProjectDetailMilestoneController {
         }
         
         /**
-        *@param String
+        *@param String pr
         *@return void
         */
         public void setPriority(String pr){
@@ -420,7 +404,7 @@ public class ProjectDetailMilestoneController {
         }
         
         /**
-        *@param String
+        *@param String sName
         *@return void
         */
         public void setTaskName(String sName){
