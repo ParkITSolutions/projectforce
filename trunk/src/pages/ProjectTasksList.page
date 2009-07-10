@@ -29,84 +29,6 @@
     <style>
         #paginationOverlay{
 			background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat center;
-	
-		}
-		
-		.filterContainer{
-			margin-top: 10px;
-		}
-		
-		.AdvancedFilterContainer{
- 			padding: 10px;
-			height: 150;
-			margin-top: 5px;
-		}
-		
-		div.savedFilters {
-			border-left: 1px dotted #ccc;
-			margin-left: 10px;
-			float: left;
-			padding-left: 15px;
-			height: 135px;
-		}
-		
-		.AdvancedFilterContainer2{
-			border-bottom: 1px solid #ADADAD;
-			width: 100% ;
-			margin-right: 1px;
-			height: 160px;
-		}
-		
-		.elemFilter{
-			padding: 5px;
-			margin: 1px;
-			float: left;
-			text-align: left;
-			width: 180px;
-		}
-		
-		.elemFilterSmall{
-			padding: 5px;
-			margin: 1px;
-			float: left;
-			text-align: left;
-			width: 84px;
-		}
-		
-		.elemFormFilter{
-			width: 180px;
-		}
-		
-		.elemFormFilterSmall{
-			width: 60px;
-		}
-		
-		.advancedFilterTitle{
-			font: 13px;
-			font-weight: bolder;
-			font-family: 'Arial','Helvetica',sans-serif;
-		}
-		
-		.f_right{ float: right; }
-		
-		.linksFilterContent{
-			clear: both;
-			border-bottom: 1px solid #ADADAD;
-		}
-		
-		.linksFilterContent a{
-			text-decoration: none;
-		}
-		
-		.ColorGray{
-			color: #ADADAD;
-		}
-		.percent{
-			margin-left:5px;
-			margin-top:-2px;
-		}
-		.bPageFooter{
-			margin:0!important;
 		}
     </style>
     
@@ -327,33 +249,33 @@
 						            	<div class="advancedFilterTitle">
 						            		Advanced Filter
 						            	</div>
-		 				            	<div class="elemFilter">
-				                            Assign to:<br />
-				                            <apex:selectList value="{!filter.assignee}"size="1" styleClass="elemFormFilter">
-				                                <apex:selectOptions value="{!filter.assignees}"     />
-				                            </apex:selectList>
-						            	</div>
-						            	<div class="elemFilterSmall">
-				                            Duration:<br />
-							            	<apex:inputText value="{!filter.estimate}"  styleClass="elemFormFilterSmall"/>
-						            	</div>				            	
-						            	<div class="elemFilter">
-							            	Task Name:<br /> 
-							            	<apex:inputText value="{!filter.name}"  styleClass="elemFormFilter"/>
-						            	</div>
-										<br / >
-							        	<div class="elemFilter">
-				                            Priority:<br />
-				                            <apex:selectList value="{!filter.priority}"size="1" styleClass="elemFormFilter">
-				                                <apex:selectOptions value="{!filter.priorities}" />
-				                            </apex:selectList>
-						            	</div>
-						            	<div class="elemFilter">
-							            	Status:<br />
-				                            <apex:selectList value="{!filter.status}" size="1" styleClass="elemFormFilter">
-				                                <apex:selectOptions value="{!filter.statusValues}" />
-			    	                        </apex:selectList>
-						            	</div>
+
+											<div style="width: 850px;">
+												<apex:repeat value="{!dynFilterList}" var="o" id="dynFil">
+													<apex:outputPanel rendered="{!IF( o.fieldType == 'PICKLIST', true, false) }" layout="block" styleClass="DymFilElem">
+														<span class="DynFIlLabel">{!o.label}</span><br />
+														<apex:selectList size="1" value="{!o.value}">
+															<apex:selectOptions value="{!o.options}" />
+														</apex:selectList>
+														<!-- {!o.name}::{!o.FieldType} --> 
+													</apex:outputPanel>	
+											
+													<apex:outputPanel rendered="{!IF( o.fieldType == 'BOOLEAN', true, false) }" layout="block" styleClass="DymFilElem">
+														<span class="DynFIlLabel">{!o.label}</span><br />
+														<apex:inputCheckbox value="{!o.value}" />
+														<!-- {!o.name}::{!o.FieldType} -->
+													</apex:outputPanel>	
+											
+													<apex:outputPanel rendered="{!IF( o.fieldType != 'PICKLIST' && o.fieldType != 'BOOLEAN', true, false) }" layout="block" styleClass="DymFilElem">
+														<span class="DynFIlLabel">{!o.label}</span><br />
+														<apex:inputText value="{!o.value}" />
+														<!-- {!o.name}::{!o.FieldType} -->
+													</apex:outputPanel>	
+											
+												</apex:repeat> 
+												<br /><br />
+											</div>
+
 						            	<br />
 						            	<apex:commandLink action="{!refreshTaskList}"  rerender="taskListPanel" onclick="showHideOverlay();"  oncomplete="showHideOverlay();advFilterAfterRerender();" styleclass="blackbutton" >
 						            		<span>Apply Filter</span>
@@ -376,12 +298,12 @@
 						            	</div>
 						            	<div class="elemFilter">
 						            		Filter Name<br/>
-						        			<apex:selectList value="{!filter.applyFilter}" size="1" styleClass="elemFormFilter">
-				                                <apex:selectOptions value="{!filter.savedFilters}" />
+						        			<apex:selectList value="{!dynFilter.filterName}" size="1" styleClass="elemFormFilter">
+				                                <apex:selectOptions value="{!dynFilter.savedFilters}" />
 				                            </apex:selectList>
 						            	</div>
 				                        <br />
-						            	<apex:commandLink action="{!Filter.readFilterContent}" rerender="AdvancedFilterContainer" 
+						            	<apex:commandLink action="{!dynFilter.loadFilter}" rerender="AdvancedFilterContainer" 
 						            		onclick="showHideOverlay();" oncomplete="sortListEvent();" styleclass="blackbutton" >
 						            		<span>Apply Filter</span>
 						           		</apex:commandLink>
@@ -696,16 +618,16 @@
 				<!-- Overlay Form Content -->
 				<div class="overlayFormContent">
 					Entrer Filter Name:
-					<apex:inputText styleClass="savedFilterName" value="{!Filter.newFilter.Name}" />
+					<apex:inputText styleClass="savedFilterName" value="{!dynFilter.FilterName}" />
 				</div>
 				<div class="overlaySeparateLine"></div>
 				<!-- Saven and Cancel Buttons -->
 				<div class="overlayFromButtons" align="center">
 					<apex:commandButton id="DeleteAssigneeBtn" styleClass="btn allButtons" 
 						style="background:#21637D none repeat scroll 0 0 !important; !important;" 
-						action="{!Filter.saveFilter}" value="Save Filter" onclick="" 
+						action="{!saveFilter}" value="Save Filter" onclick="" 
 						rerender="AdvancedFilterContainer" oncomplete="showHideOverlay();" >
-					<apex:param name="svFil1" value="true" assignTo="{!filter.SvFilter}"/>
+					<apex:param name="svFil1" value="true" assignTo="{!Filter.SvFilter}"/>
 					</apex:commandButton>						
 			        <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="modal.close();" value="Cancel"/>
 				</div>
@@ -750,33 +672,6 @@
 				</div>
 			</apex:form>
 		</div>
-	</div>
-	<div style="width: 850px;">
-		<apex:form id="theForm">
-			<apex:repeat value="{!L}" var="o" id="dynFil">
-				
-				<apex:outputPanel rendered="{!IF( o.fieldType == 'PICKLIST', true, false) }" layout="block" styleClass="DymFilElem">
-					<span class="DynFIlLabel">{!o.label}</span><br />
-					<apex:selectList value="{!o.value}">
-						<apex:selectOptions value="{!o.options}" />
-					</apex:selectList>
-				</apex:outputPanel>	
-		
-				<apex:outputPanel rendered="{!IF( o.fieldType == 'BOOLEAN', true, false) }" layout="block" styleClass="DymFilElem">
-					<span class="DynFIlLabel">{!o.label}</span><br />
-					<apex:inputCheckbox value="{!o.value}" />
-				</apex:outputPanel>	
-		
-				<apex:outputPanel rendered="{!IF( o.fieldType != 'PICKLIST' && o.fieldType != 'BOOLEAN', true, false) }" layout="block" styleClass="DymFilElem">
-					<span class="DynFIlLabel">{!o.label}</span><br />
-					<apex:inputText value="{!o.value}" />
-				</apex:outputPanel>
-					
-			</apex:repeat> 
-			<br /><br />
-			<apex:commandButton value="Send" action="{!sendRequest}" rerender="theForm"/>
-			{!SQL}
-		</apex:form>
 	</div>
 	<style>
 	.DymFilElem{

@@ -1,5 +1,8 @@
 public class ProjectDynamicFilter {
 
+	private Boolean loadingFilter = false;
+	private Id projectId = System.currentPageReference().getParameters().get('id');
+	private String filterName;
 	public List<SFField> fieldList = new List<SFField>();
 
 
@@ -7,6 +10,8 @@ public class ProjectDynamicFilter {
 	* Constructor
 	*/
 	public ProjectDynamicFilter(){}
+	
+	
 	
 	/*
 	*  
@@ -17,7 +22,45 @@ public class ProjectDynamicFilter {
 		if( this.fieldList == null || this.fieldList.size() == 0)
 			this.genSalesforceFields();
 		
+		if( this.loadingFilter )
+			this.loadFilter();
+				
 		return this.fieldList;
+	}
+	
+	/**
+	*
+	*/
+	public Boolean getLoadingFilter(){
+		return this.loadingFilter;
+	}
+
+	/**
+	*
+	*/
+	public void setFilterName( String fName ){
+		this.filterName = fName;
+	}
+	
+	/**
+	*
+	*/
+	public String getFilterName(){
+		return this.filterName;
+	}
+	
+	/**
+	*
+	*/
+	public Id getProjectId(){
+		return this.projectId;
+	}
+
+	/**
+	*
+	*/
+	public void setLoadingFilter( Boolean v ){
+		this.loadingFilter = v;
 	}
 	
 	/*
@@ -32,8 +75,9 @@ public class ProjectDynamicFilter {
 	*@param Schema.DescribeFieldResult pickListField
 	*@return List<SelectOption>
 	*/
-	private List<SelectOption> genRelationshipOptions(Schema.DescribeFieldResult pickListField){
+	private List<SelectOption> genPicklistValues(Schema.DescribeFieldResult pickListField){
 		List<SelectOption> relationshipOptions = new List<SelectOption>();
+       	relationshipOptions.add(new SelectOption('', '-- Any --'));
        	for (Schema.PicklistEntry iter : pickListField.getPicklistValues()) 
       		relationshipOptions.add(new SelectOption(iter.getValue(), iter.getLabel()));
        	
@@ -69,7 +113,7 @@ public class ProjectDynamicFilter {
 	    	newField.label = fldDescRes.getLabel(); 
 	    	
 	    	if (newField.fieldType.toLowerCase() == 'picklist'){
-	    		newField.options = genRelationshipOptions(fldDescRes);
+	    		newField.options = genPicklistValues(fldDescRes);
 	    		picklists.add( newField );
 	    	}	
 	    	else if (  newField.fieldType.toLowerCase() == 'boolean' ){
@@ -79,6 +123,12 @@ public class ProjectDynamicFilter {
 	    		others.add( newField );
 	    	}
 		}
+
+		// Add assignees
+    	SFField newField = new SFField();
+    	newField.options = getAssignees();
+    	newField.name = 'assignee';
+
 
 		Integer count = 0;
 		for( SFField ssf: picklists){
@@ -110,19 +160,117 @@ public class ProjectDynamicFilter {
 	*/
 	public String genStrWithFieldsName(){
 		String fieldsName = '';
-		for( SFField f : this.fieldList )
-			
-			if( f.fieldType.toLowerCase() == 'picklist'){
-				if( f.opSelected.size() > 0 )
-				fieldsName += ' AND ' + f.name + ' = ' + f.opSelected[0] + ' ';
-			}else if( f.fieldType.toLowerCase() == 'bolean')
-				fieldsName += ' AND ' + f.name + ' = ' + true + ' ';
-			else
-				fieldsName += ' AND ' + f.name + ' = ' + f.value + ' ';
-					
+		for( SFField f : this.fieldList ){
+			if( f.name != 'assignee' )
+				if( f.fieldType == 'BOOLEAN')
+					fieldsName += ' AND ' + f.name + ' = ' + f.value + ' ';
+				else if( f.value != null && f.value != '' )
+					fieldsName += ' AND ' + f.name + ' = \'' + f.value + '\' ';
+		}
 		return fieldsName;
-	
 	}
+	/**
+	* Save the current filter values
+	*/
+	public void saveFilter(){
+		String fieldToSave  = '';
+		String filterToSave = '';
+		for( SFField f : this.fieldList ){
+			if( f.value != null && f.value != ''){
+				fieldToSave = f.name + '::' + f.fieldType + '::' + f.value;
+				filterToSave += fieldToSave + '|';
+			}
+		}
+		System.debug( '[[1]]' );
+		List<ProjectFilter__c> filter = new List<ProjectFilter__c>();
+		filter = [ select id, filter__c from ProjectFilter__c where Project__c =: this.projectId and Name =: this.getFilterName() ];
+		if( filter.size() > 0 ){
+			filter[0].filter__c = filterToSave;
+			update filter;
+		}else{
+		System.debug( '[[2]]' );
+			ProjectFilter__c newFilter = new ProjectFilter__c();
+			newFilter.filter__c = filterToSave;
+			newFilter.name = this.getFilterName();
+			newFilter.project__c = this.projectId;
+			insert newFilter;
+		}
+	}
+	/**
+	*Load filter values for a filter
+	*@param Id projectId, Id filterId
+	*/
+	public void loadFilter(){
+		System.debug( '<Loading filter ...>');
+		List<ProjectFilter__c> filter = new List<ProjectFilter__c>();
+		//String filterId = [ select Id from ProjectFilter__c where name =: this.getFilterName() ].Id;
+		filter = [ select id, filter__c from ProjectFilter__c where Project__c =: projectId and Id =: getFilterName()  ];
+		this.loadingFilter = true;
+		
+		if( filter.size() > 0 ){
+		System.debug( '<Loading filter ...2>');
+			
+			// Parser
+			List<String> fields = new List<String>();
+			fields  = filter[0].filter__c.split( '|' );
+			List<String> tempVals = new List<String>();
+			Map<String, String> valuesOfAField = new Map<String, String>();
+			Map<String, Map<String, String>> valuesOfFields = new Map<String, Map<String, String>>();
+			
+			for( String fv : fields){
+		System.debug( '<Loading filter ...*>');
+			
+				tempVals = fv.split( '::' );
+				
+				valuesOfAField.put( 'filedType', tempVals.get( 1 ));
+				valuesOfAField.put( 'value', tempVals.get( 2 ));
+				
+				valuesOfFields.put( tempVals.get( 0 ), valuesOfAField );
+				
+				tempVals.clear();
+				valuesOfAField.clear();
+			}
+			
+			for( SFField f : this.fieldList ){
+		System.debug( '<Loading filter ...#>');
+				if( valuesOfFields.get( f.name ) != null ){
+					f.value = valuesOfFields.get( f.name ).get( f.fieldType );
+				}
+			}
+		}
+		
+	}
+
+	/**
+	*@return saved filters options
+	*/
+	public List<SelectOption> getSavedFilters(){
+		List<ProjectFilter__c> filters = new List<ProjectFilter__c>();
+		List<SelectOption> filterOptions = new List<SelectOption>();
+		
+		filters = [select Id, Filter__c, Name from ProjectFilter__c where Project__c =: this.projectId ];
+		filterOptions.add(new SelectOption('', '-- Select Filter --'));
+		for(ProjectFilter__c filter : filters){
+			filterOptions.add(new SelectOption(filter.Id, filter.Name));	
+		}
+		return filterOptions;	
+	}
+
+	/**
+	*@return members asoc. to project options 
+	*/
+	public List<SelectOption> getAssignees(){
+		List<ProjectMember__c> members = new List<ProjectMember__c>();
+		List<SelectOption> options = new List<SelectOption>();
+		
+		members = [select m.Id, m.Name, User__r.Id from ProjectMember__c m where m.Project__c =: projectId order by m.Name asc];
+		options.add(new SelectOption('', '-- Any --'));
+		for (ProjectMember__c member : members){
+			options.add(new SelectOption(member.User__r.Id, member.Name));		
+		}	
+		return options;
+	}
+
 	
 	/*
 	* Inner Class

@@ -2,7 +2,7 @@
 	<!-- Attribute Definitions -->
 	<apex:attribute name="projectId" description="The project ID" type="String" required="true" assignTo="{!team}" />
 	<apex:attribute name="type" description="The list type" type="String" required="false" assignTo="{!typeList}" />
-
+ 
 	<!-- ### JavaScript ### -->
 	<script src="{!URLFOR($Resource.ProjectResources, 'inc/js/autocomplete.js')}" />
 	
@@ -38,14 +38,13 @@
 		var firstExecuteTime = true;
 		
 		function ifInPrjDetail(){
-		
 			if( location.href.include( 'projectDetail' ))
 			refreshAssignToTask();
 		}
 	</script>
 
 	<!-- NEW MEMBER OVERLAY -->
-	<apex:outputpanel rendered="{!IF(isManager, true, false)}">
+	<apex:outputpanel rendered="{!IF(userPermissions.canManage, true, false)}">
 		<!-- Content  -->
 		<div id="inviteTeam" style="display: none;" class="overlayForm">
 		<div class="swirly_overlay" style="display: none;"></div>
@@ -281,40 +280,5 @@
 		</div>
 	</div>
 	<div class="clear"></div>
-	<script>
-		function addMemberCallBackFunction(){
-			setTimeout('modal.close(); hideSwirly(\'swirly_overlay\')', 5000);
-
-			if( window.location.href.include('MembersList')){
-				$('paginationOverlay').show(); 
-				setDims('holder','paginationOverlay');
-			}
-			
-			$$( '.swirly_members' )[ 0 ].show();
-			setDims( 'thinBody', $$( '.swirly_members' )[ 0 ].id );
-		}
 		
-		function ifError(){
-			if( !errorInUsers ){
-				showMessageToUser('Member has been added to this project','success'); 
-				addMemberCallBackFunction(); 
-				setTimeout('Effect.Fade(\'infoToUser\')', 6500);		
-			}
-			else{
-				if( '{!memberAdd}' == 'true'){
-					setTimeout('modal.close(); hideSwirly(\'swirly_overlay\')', 5000);
-					$('membersListSwirly').show(); 			
-					setDims('holder','membersListSwirly');
-				}
-				chch();
-				
-			}
-		}
-		function clickOnCancelBtn(){
-			 $$('.memberMesagges')[0].show();	
-			 $$('.memberMesagges')[1].hide();	
-			 $$('.colleaguesNames')[0].innerHTML = '';	
-			 $( 'modal_container' ).style.height = 280 + 'px';
-		}	
-	</script>
 </apex:component>

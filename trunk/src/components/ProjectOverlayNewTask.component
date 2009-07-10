@@ -18,38 +18,6 @@
     <script>
         var org_country = '{!$Organization.Country}';   
         document.observe('dom:loaded',newTaskLoad);
-        
-		/**
-		* Temp source move to static
-		*/
-		
-    function CheckNameLength(val){
-    	if(val.length >= 80){
-    		$('instant').setStyle({opacity : 1.0 ,'width' : '350px'});
-    		$('newTask').setStyle({'height' : '285px' });
-    		$('instant').show();
-    	}else{
-    		$('instant').hide();
-    		$('newTask').setStyle({'height' : '270px' });
-    	}
-    }
-    
-    function isDecimalKey(evt, txt){ 
-	    var key = evt.which || evt.keyCode; 
-	    if ((key == 13 || key == 46 || key == 8) || (key >= 48 && key <=57)){
-	        if (key == 46 && txt.indexOf('.')!=-1){
-	            $('estimateError').show(); 
-	            return false;
-	        } 
-	        $('estimateError').hide();	        
-	        return true;
-	    } 
-	    $('estimateError').show();
-	    return false;
-	}
-	
-	
-	
     </script>
     
     <!-- ### Initialize fixed Overlay ### -->

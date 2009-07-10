@@ -1,7 +1,7 @@
 <apex:page id="ProjectTaskDetail" standardController="ProjectTask__c" extensions="ProjectTaskDetailController" sidebar="false" tabStyle="Project2__c">
     <!-- Ajax Toolkit SDFC -->
     <apex:includeScript value="/soap/ajax/11.1/connection.js"/>
-     
+      
     <!-- Prototype + Scriptaculous -->
     <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
@@ -42,24 +42,6 @@
        );
        
        var currentTeam = '{!Task.ProjectId}';
-       
-       	function refreshPercentList(){
-	    	($$('.percentListComboBox')[0])[0].selected = true;
-		}
-		
-		/**
-		* Validate Comment body
-		*/
-		function validateComment (){ 
-			var commentArea = $$('.commentBody')[0];
-			if(commentArea.value.replace(/^\s+/g,'').replace(/\s+$/g,'') == ''){
-				alert('Please add your comment for this task');
-				return false;
-			}else{
-				showSwirl();
-				return true;
-			}
-		}
     </script>
     
     <style type = "text/css">

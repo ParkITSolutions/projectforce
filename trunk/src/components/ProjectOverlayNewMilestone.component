@@ -19,16 +19,6 @@
 		var globalCountry = "{!$Organization.Country}";
 		document.observe('dom:loaded',newMilestoneLoad);
 		
-		function CheckNameLengthM(val){
-	    	if(val.length >= 80){
-	    		$('instantM').setStyle({opacity : 1.0 ,'width' : '350px'});
-	    		$('newMilestone').setStyle({'height' : '205px' });
-	    		$('instantM').show();
-	    	}else{
-	    		$('instantM').hide();
-	    		$('newMilestone').setStyle({'height' : '190px' });
-	    	}
-	    }
 	</script>
 	 
 	<!-- Overlay Styles --> 

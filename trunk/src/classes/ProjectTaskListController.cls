@@ -59,22 +59,32 @@ public with sharing class ProjectTaskListController {
     */  
     
     public void sendRequest () {
-    	this.l.setFieldList(theList);
-    	//System.debug('\n\n=========================\n sendrequest: ' + this.l.getFieldList() + '\n=================\n\n');
+    	this.dynFilter.setFieldList(dynFilterList);
     }
     
-    ProjectDynamicFilter l = new ProjectDynamicFilter();   
-    List<ProjectDynamicFilter.SFField> theList = new List<ProjectDynamicFilter.SFField>();            
+    ProjectDynamicFilter dynFilter = new ProjectDynamicFilter();   
+    public ProjectDynamicFilter getDynFilter(){
+    	return this.dynFilter;
+    }
+    public void saveFilter(){
+    	System.debug( 'ACA ACA ACA');
+    	this.dynFilter.saveFilter();
+    }
+    public void setDynFilter(ProjectDynamicFilter pdf){
+    	this.dynFilter = pdf;
+    }
+    List<ProjectDynamicFilter.SFField> dynFilterList = new List<ProjectDynamicFilter.SFField>();            
     public void setL( List<ProjectDynamicFilter.SFField> li ){
-    	theList = li;
+    	dynFilterList = li;
     }
 
-    public List<ProjectDynamicFilter.SFField> getL(){
-    	return theList;
+    public List<ProjectDynamicFilter.SFField> getDynFilterList(){
+    	return dynFilterList;
     }    
-    public String getSQL(){
-    	return this.l.genStrWithFieldsName();
+    public String getFilterValues(){
+    	return this.dynFilter.genStrWithFieldsName();
     }
+    
     /**
     * Constructor
     */
@@ -111,7 +121,7 @@ public with sharing class ProjectTaskListController {
         getUserProfile();
 		
 		
-		theList = this.l.getFieldList();
+		dynFilterList = this.dynFilter.getFieldList();
 		
     }    
 
@@ -535,7 +545,7 @@ public with sharing class ProjectTaskListController {
 			filter += ' and Duration__c = ' + Double.valueOf(advanceFilter.estimate);				
 
 		//Set flag true if filter is applyed
-		if(!filter.equals('')){
+		if(!this.getFilterValues().equals('')){
 			filterApplyed = true;
 		}
 		else
@@ -558,7 +568,7 @@ public with sharing class ProjectTaskListController {
 			
 		//Build query statement
 		query += 'select ' + fields + '(SELECT Id, User__r.Name, User__r.Id, User__c FROM ProjectsAssignees__r)';
-		query += ' from ProjectTask__c where Project__c = \'' + PROJECTID + '\'' + filter;
+		query += ' from ProjectTask__c where Project__c = \'' + PROJECTID + '\' ' + this.getFilterValues();
 		
 		//Set order clause
 		if( sortBy != 'Priority__c' && !sortBy.equals('User__c.Name'))
@@ -947,13 +957,13 @@ public with sharing class ProjectTaskListController {
 	    List<Attachment> attachs =  new List<Attachment>();
 	    Attachment doc = null;
 	    
-	    attachs = [select Id, Name from Attachment where Name =: (PROJECTID + 'pf__export.csv')];
-	    if(attachs.size() > 0){
-	    	doc = attachs[0]; 
-	    }else{
+	    attachs = [select Id, Name from Attachment where Name = 'pf__export.csv'];
+	    if(attachs.size() > 0)
+	    	doc = attachs[0];
+	    else{
 	    	doc = new Attachment();
 	    	doc.ParentId = PROJECTID;
-			doc.Name = PROJECTID + 'pf__export.csv';
+			doc.Name = 'pf__export.csv';
 	    }
 
 	    doc.Body = Blob.valueOf(csvText);
@@ -1118,20 +1128,6 @@ public with sharing class ProjectTaskListController {
     		return newFilter;
     	}
     	
-    	/**
-    	*@return members asoc. to project options 
-    	*/
-    	public List<SelectOption> getAssignees(){
-    		List<ProjectMember__c> members = new List<ProjectMember__c>();
-    		List<SelectOption> options = new List<SelectOption>();
-    		
-    		members = [select m.Id, m.Name, User__r.Id from ProjectMember__c m where m.Project__c =: project order by m.Name asc];
-    		options.add(new SelectOption('', '-- Any --'));
-    		for (ProjectMember__c member : members){
-    			options.add(new SelectOption(member.User__r.Id, member.Name));		
-    		}	
-    		return options;
-    	}
     	
     	/**
     	*@return priority picklist options

@@ -33,22 +33,15 @@
 	
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsSubscription.css')}" />
 	
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectSetup.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectSetup.css')}" /> 
 	
 	<style>
 		.inputButton{
 			background:transparent url({!URLFOR($Resource.ProjectResources, 'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right bottom;
-		}	
+		}
 	    .blackbutton {
 			background:transparent url({!URLFOR($Resource.ProjectResources,'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right top;
-		}	
-		.ToLeftToRightBts{
-		    float: left;
-		    padding: 100px 20px 15px 15px ;
-		    .padding: 0px;
-		    .width: 0px;
-		    height: 150px;
-		}	
+		}		
 	</style>
 	
 	<!-- Header -->
@@ -100,12 +93,13 @@
 				<div class="teamsTitleBlue" id="titleSection">
                         Show "Create New Project" button to Profiles
 				</div>
+				
 					<!-- Form Begin -->
 					<div class="formContainer"> 
-	                    <div>
+						<div>
 	                        <span class="Titles">All Profiles</span>
 	                        <span class="Sep">&nbsp;</span>
-	                        <span class="Titles">Selected profiles</span>
+	                        <span class="Titles" style=".margin-left: 3px;">Selected profiles</span>
 	                    </div>
 	                    <br />
 	                    <div>
@@ -114,18 +108,20 @@
 	                                <apex:selectOptions value="{!allProfiles}" />
 	                            </apex:selectList>
 	                        </span>
-	                        <span class="ToLeftToRightBts" >
-	                            <input type="button" value="&gt;&gt;" onclick="setSelProfs( $$('.AllProfiles')[0], $$('.SelectedProfiles')[0], 'toRight',$('ProjectSubscription:fToSend:profileToSend'));" />
-	                            <br />
-	                            <input type="button" value="&lt;&lt;" onclick="setSelProfs( $$('.AllProfiles')[0], $$('.SelectedProfiles')[0], 'toLeft', $('ProjectSubscription:fToSend:profileToSend'));" />
-	                        </span>
+	                        <div class="sep">
+	                        	<span class="ToLeftToRightBts">
+		                            <input type="button" value="&gt;&gt;" style=".width:35px;" onclick="setSelProfs( $$('.AllProfiles')[0], $$('.SelectedProfiles')[0], 'toRight',$('ProjectSubscription:fToSend:profileToSend'));" />
+		                            <br />
+		                            <input type="button" value="&lt;&lt;" style=".width:35px;" onclick="setSelProfs( $$('.AllProfiles')[0], $$('.SelectedProfiles')[0], 'toLeft', $('ProjectSubscription:fToSend:profileToSend'));" />
+								</span>	                        
+	                        </div>
 	                        <span>
 	                            <apex:selectList id="aqwa" multiselect="true" styleClass="SelectedProfiles" style="float:left;">
 	                                <apex:selectOptions value="{!savedProfiles}" />
 	                            </apex:selectList>                          
 	                        </span>
 	                    </div>
-					</div>
+					</div>					
 					<!-- End Form container --> 
 			</div>
 			<!-- End Main Content -->

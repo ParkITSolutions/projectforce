@@ -1,6 +1,7 @@
 <apex:page sidebar="false" tabStyle="Project2__c" controller="ProjectMembersListController">
 	
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsMembersMassiveDelete.css')}" />
+	
 	<!-- Content  -->
 	<div id="massiveRemoveMemberOverlay" style="display:none;" class="overlayForm">	
 		<!-- Overlay Title -->

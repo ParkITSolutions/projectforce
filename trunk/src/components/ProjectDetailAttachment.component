@@ -2,22 +2,15 @@
 	<!-- Set Attribute for project id. -->
 	<apex:attribute name="project" description="Project Id" type="String" required="true" assignTo="{!project}" />	
 	
+	<!-- ProjectDetailAttachmentOverlay Common JS -->
+	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectDetailAttachment.js')}"/>
+	
 	<style>
 		div.wideBody div.swirlyAttachment{
 			height:100% !important;
 		}
 	</style>	
-	
-	<script>
-		function openAttachmentOverlay(){
-			createOverlay('', 'newAttachmentOverlay', 180);
-			newAttachmentToProject();
-			observeIframeUpload();
-			//Hack for IE6
-			$('uploadIframe').src = $('uploadIframe').src;
-		}
-	</script>
-	
+
 	<!-- Generic Refresh Attachment Method -->
 	<apex:actionFunction name="refreshAttachmentList" action="{!readAttachments}" rerender="projectAttachmentWidget" oncomplete="hideSwirly('swirlyAttachment');" />
 	

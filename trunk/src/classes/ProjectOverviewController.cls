@@ -15,7 +15,7 @@ public with sharing class ProjectOverviewController {
     public List<String> lettersList = new List<String>{'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};    
     public String objectPrefix = Schema.SObjectType.Project2__c.getKeyPrefix();
     //Items to list per page 
-    static final Integer itemsToList = 10;
+    static final Integer itemsToList = 2;
     /**
     * Construct
     */
@@ -176,9 +176,10 @@ public with sharing class ProjectOverviewController {
             paginator.setNumberOfItemsToShow(projects.size()); 
         }
         */
-        if (projects.size()>itemsToList){
-        	//set ON flag that displays letter filter and pages navigation
+        if(projects.size() >= 1){
         	isAllProjects = true;
+        }
+        if (projects.size()>itemsToList){
         	paginator.setNumberOfItemsToShow(itemsToList);//(10);
         }else{
         	paginator.setNumberOfItemsToShow(projects.size()); 
