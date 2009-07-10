@@ -2,54 +2,8 @@
 	<!-- Set Attribure for project id. -->
 	<apex:attribute name="parentId" description="Parent Id" type="String" required="true" assignTo="{!parentId}" />		
 	
-	<script>
-		var uploadEnd = false;
-		var uploadClose = false;
-		
-		function observeIframeUpload(){
-			if($('uploadIframe')){
-				
-				if($('uploadIframe').contentWindow.document.getElementById('uploadCancel') &&
-					$('uploadIframe').contentWindow.document.getElementById('uploadCancel').style.display != 'none'){
-					//On cancel, close overlay
-					uploadClose = true;
-					modal.close();
-					return false;
-				}
-				
-				if ($('uploadIframe').contentWindow.document.getElementById('uploadFinished')){
-					uploadEnd = true;
-					return;
-				}
-				
-				uploadClose = false;					
-				setTimeout('observeIframeUpload();', 1000);					
-			
-			}else{
-				//Iframe not found? try again...
-				setTimeout('observeIframeUpload();', 1000);			
-			}
-		}
-		
-		function newAttachmentToProject(){
-			if(uploadEnd){
-				
-				//On success, close overlay and refrsh list
-				uploadClose = true;
-				modal.close();
-				
-				//Generic refresh method
-				showSwirly('swirlyAttachment')
-				refreshAttachmentList();
-				
-				//Reset upload status
-				uploadEnd = false;
-			
-			} else if (!uploadClose){
-				setTimeout('newAttachmentToProject();', 1000);
-			}
-		}			
-	</script>
+	<!-- ProjectOverlayNewAttachment Common JS -->
+	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/ProjectOverlayNewAttachment.js')}"/>
 	
 	<div id="newAttachmentOverlay" style="display:none;height:180px;" class="overlayForm">	
 		<!-- Overlay Title -->
