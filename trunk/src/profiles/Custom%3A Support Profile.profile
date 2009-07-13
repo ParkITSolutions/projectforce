@@ -199,6 +199,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectTaskDuration</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectTaskListController</apexClass>
         <enabled>false</enabled>
     </classAccesses>

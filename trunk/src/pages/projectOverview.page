@@ -44,7 +44,6 @@
 		#holderNew div.loader {
 			background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat scroll center 200px;
 		}
-
 	</style>	
 	<!-- Initialize the overlay box for modal.js -->
 	<a href="#modal_container" id="initializeModal" style="display:none;"></a>
@@ -153,9 +152,9 @@
 								</apex:form>
 							</div>
 						</div>
-						<hr class="filterHR" />
+						<hr class="filterHR" style="color: #E1E1E2;"/>
 					</apex:outputPanel>
-					<!-- PAGINATION -->
+					<!-- PAGINATION    -->
 					<apex:outputPanel layout="block" id="pagination" rendered="{!isAllProjects}" styleClass="navigatorContainer">				
 						<div class="navigation">
 							<apex:form >
@@ -189,10 +188,11 @@
 										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_last_disabled.gif')}" alt="<<"/>
 									</apex:outputPanel>	
 								</li>								</ul>
-							</apex:form>						
-						</div>
+							</apex:form>				
+						</div> 
+						<hr class="filterHR" style="color: #E1E1E2;"/>	
 					</apex:outputPanel>		
-					<!-- /PAGINATION -->											
+					<!-- /PAGINATION -->	    										
 					<!-- TEAMS LIST -->
 					<div class="content_teams">
 						<div style="{!IF(projectsForTabsSize > 0, 'display:none', '')}; ">
@@ -224,12 +224,10 @@
 								</div>
 							</apex:repeat>
 						</div> 
-					</div>
-				</apex:outputPanel> 
-			</div>
-			
-					<!-- PAGINATION -->
-					<apex:outputPanel layout="block" id="paginationBottom" rendered="{!isAllProjects}" styleClass="navigatorContainer">				
+					</div>	
+					
+												<!-- PAGINATION    -->
+					<apex:outputPanel layout="block" id="paginationBottom" rendered="{!isAllProjects}" styleClass="navigatorContainerBottom">				
 						<div class="navigation">
 							<apex:form >
 								<ul align="center">
@@ -263,9 +261,16 @@
 									</apex:outputPanel>	
 								</li>								</ul>
 							</apex:form>						
-						</div>
+						</div> 
 					</apex:outputPanel>		
-					<!-- /PAGINATION -->			
+					<!-- /PAGINATION -->  
+					
+					
+										
+				</apex:outputPanel> 
+			</div>
+			
+  	
 			
 			
 			<!-- Widget Col -->

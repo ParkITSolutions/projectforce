@@ -3,6 +3,9 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 	Map<String,ProjectTask__c> AuxMap = new Map<String,ProjectTask__c>();
  	List<Id> tasksInTrrNewIds = new List<Id>();
 	List<ProjectTask__c> parentTasks = new List<ProjectTask__c>();
+	
+	//Task duration util class
+	ProjectTaskDuration duration = new ProjectTaskDuration();
 
 	for( ProjectTask__c task : Trigger.new){
  		
@@ -26,7 +29,11 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
     	tempPTOld = Trigger.old.get( k );
     	tempPTNew = Trigger.new.get( k );		
     	
-    	if( tempPTOld.Project__c != tempPTNew.Project__c){
+     	//Recalculate EndDate when Duration is changed
+    	if(tempPTOld.Duration__c != tempPTNew.Duration__c)
+ 			tempPTNew = duration.doCalculateEndDate(tempPTNew);
+    		
+	   	if( tempPTOld.Project__c != tempPTNew.Project__c){
     		tempPTNew.addError( 'You can not modify project.');
 		}
 		
