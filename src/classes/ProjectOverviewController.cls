@@ -15,7 +15,7 @@ public with sharing class ProjectOverviewController {
     public List<String> lettersList = new List<String>{'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};    
     public String objectPrefix = Schema.SObjectType.Project2__c.getKeyPrefix();
     //Items to list per page 
-    static final Integer itemsToList = 2;
+    static final Integer itemsToList = 10;
     /**
     * Construct
     */

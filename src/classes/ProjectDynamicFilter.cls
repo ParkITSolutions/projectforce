@@ -160,12 +160,17 @@ public class ProjectDynamicFilter {
 	*/
 	public String genStrWithFieldsName(){
 		String fieldsName = '';
+		
 		for( SFField f : this.fieldList ){
-			if( f.name != 'assignee' )
-				if( f.fieldType == 'BOOLEAN')
+			if( f.name != 'assignee' && f.value != null && f.value != '' && f.value != 'false' ){
+				System.debug( '*_*' + f.value + f.name);
+				if( f.fieldType.toLowercase() == 'date')
+					fieldsName += ' AND ' + f.name + ' = ' +  f.value;
+				else if( f.fieldType == 'BOOLEAN' )
 					fieldsName += ' AND ' + f.name + ' = ' + f.value + ' ';
-				else if( f.value != null && f.value != '' )
+				else 
 					fieldsName += ' AND ' + f.name + ' = \'' + f.value + '\' ';
+			}
 		}
 		return fieldsName;
 	}
@@ -178,17 +183,15 @@ public class ProjectDynamicFilter {
 		for( SFField f : this.fieldList ){
 			if( f.value != null && f.value != ''){
 				fieldToSave = f.name + '::' + f.fieldType + '::' + f.value;
-				filterToSave += fieldToSave + '|';
+				filterToSave += fieldToSave + '#';
 			}
 		}
-		System.debug( '[[1]]' );
 		List<ProjectFilter__c> filter = new List<ProjectFilter__c>();
 		filter = [ select id, filter__c from ProjectFilter__c where Project__c =: this.projectId and Name =: this.getFilterName() ];
 		if( filter.size() > 0 ){
 			filter[0].filter__c = filterToSave;
 			update filter;
 		}else{
-		System.debug( '[[2]]' );
 			ProjectFilter__c newFilter = new ProjectFilter__c();
 			newFilter.filter__c = filterToSave;
 			newFilter.name = this.getFilterName();
@@ -201,41 +204,32 @@ public class ProjectDynamicFilter {
 	*@param Id projectId, Id filterId
 	*/
 	public void loadFilter(){
-		System.debug( '<Loading filter ...>');
 		List<ProjectFilter__c> filter = new List<ProjectFilter__c>();
-		//String filterId = [ select Id from ProjectFilter__c where name =: this.getFilterName() ].Id;
 		filter = [ select id, filter__c from ProjectFilter__c where Project__c =: projectId and Id =: getFilterName()  ];
-		this.loadingFilter = true;
+		this.loadingFilter = true;		
 		
 		if( filter.size() > 0 ){
-		System.debug( '<Loading filter ...2>');
 			
 			// Parser
 			List<String> fields = new List<String>();
-			fields  = filter[0].filter__c.split( '|' );
+			fields  = filter[0].filter__c.split( '#' );
 			List<String> tempVals = new List<String>();
-			Map<String, String> valuesOfAField = new Map<String, String>();
-			Map<String, Map<String, String>> valuesOfFields = new Map<String, Map<String, String>>();
+			Map<String, String> valuesOfFields = new Map<String,String>();
 			
 			for( String fv : fields){
-		System.debug( '<Loading filter ...*>');
 			
 				tempVals = fv.split( '::' );
 				
-				valuesOfAField.put( 'filedType', tempVals.get( 1 ));
-				valuesOfAField.put( 'value', tempVals.get( 2 ));
-				
-				valuesOfFields.put( tempVals.get( 0 ), valuesOfAField );
+				valuesOfFields.put( tempVals.get( 0 ), tempVals.get( 2 ) );
 				
 				tempVals.clear();
-				valuesOfAField.clear();
+			
 			}
 			
 			for( SFField f : this.fieldList ){
-		System.debug( '<Loading filter ...#>');
-				if( valuesOfFields.get( f.name ) != null ){
-					f.value = valuesOfFields.get( f.name ).get( f.fieldType );
-				}
+				if( valuesOfFields.get( f.name ) != null )
+					f.value = valuesOfFields.get( f.name );
+				
 			}
 		}
 		
@@ -271,6 +265,16 @@ public class ProjectDynamicFilter {
 		return options;
 	}
 
+	/**
+	* Delete Filter
+	*/
+	public void deleteFilter(){
+		List<ProjectFilter__c> filter = new List<ProjectFilter__c>();  
+		filter = [select Id from ProjectFilter__c where Id =: getFilterName()];
+		if( filter.size() > 0 )
+		delete filter;
+	}
+
 	
 	/*
 	* Inner Class
@@ -279,7 +283,7 @@ public class ProjectDynamicFilter {
 		
 		List<SelectOption> options = new List<SelectOption>();
 		public List<SelectOption> getOptions() {return options;}
-		
+		public Date		valueDate;
 		public String[]	opSelected 	= new String[]{};
 		public String[] getOpSelected(){return opSelected;}
 		public void     setOpSelected( String[] opS ){ opSelected = opS;}
@@ -289,6 +293,13 @@ public class ProjectDynamicFilter {
 		public String 	value 		{get; set;}
 		public String 	label 		{get; set;}
 		public Integer 	index		{get; set;}
+		
+		public Date getValueDate(){
+			return valueDate;
+		}
+		public void setValuieDate( Date d ){
+			valueDate = d;
+		}
 	
 	}
 }

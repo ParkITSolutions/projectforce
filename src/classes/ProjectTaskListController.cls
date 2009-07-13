@@ -575,8 +575,9 @@ public with sharing class ProjectTaskListController {
 			query +=	' order by ' + sortBy + ' ' + ( sortByDesc ? ' desc ' : ' asc ');
 					
 		//Execute query
-		resultTaskList = Database.query(query);
-		
+		resultTaskList = Database.query( query );
+		System.debug( '>>>' + query );
+		System.debug( '\n/n>>>' + this.getFilterValues() );
         /* ### Apply Sort ### */
         
         // Sorting by priority or assignee name can't be implemented in the SOQL query
@@ -1184,15 +1185,6 @@ public with sharing class ProjectTaskListController {
     		newFilter = new ProjectFilter__c();
     	}
     	
-    	/**
-    	* Delete Filter
-    	*/
-    	public void deleteFilter(){
-    		List<ProjectFilter__c> filter = new List<ProjectFilter__c>();  
-    		filter = [select Id from ProjectFilter__c where Id =: applyFilter];
-    		if( filter.size() > 0 )
-    		delete filter;
-    	}
     	
     	/**
     	* Parse filter option to save it
