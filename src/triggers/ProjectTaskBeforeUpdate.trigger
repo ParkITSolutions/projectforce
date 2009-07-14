@@ -29,10 +29,15 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
     	tempPTOld = Trigger.old.get( k );
     	tempPTNew = Trigger.new.get( k );		
     	
-     	//Recalculate EndDate when Duration is changed
+     	//Recalculate EndDate when Duration was changed
     	if(tempPTOld.Duration__c != tempPTNew.Duration__c)
  			tempPTNew = duration.doCalculateEndDate(tempPTNew);
-    		
+ 			
+    	//Recalculate Duration when EndDate or StartDate was changed
+    	if(tempPTOld.EndDate__c != tempPTNew.EndDate__c || tempPTOld.StartDate__c != tempPTNew.StartDate__c)
+ 			tempPTNew = duration.doCalculateDuration(tempPTNew);
+ 		
+	   	
 	   	if( tempPTOld.Project__c != tempPTNew.Project__c){
     		tempPTNew.addError( 'You can not modify project.');
 		}
