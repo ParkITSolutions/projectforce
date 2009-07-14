@@ -160,13 +160,15 @@ public class ProjectDynamicFilter {
 	*/
 	public String genStrWithFieldsName(){
 		String fieldsName = '';
+		List<String> auxDateStr = new List<String>();
 		
 		for( SFField f : this.fieldList ){
 			if( f.name != 'assignee' && f.value != null && f.value != '' && f.value != 'false' ){
 				System.debug( '*_*' + f.value + f.name);
-				if( f.fieldType.toLowercase() == 'date')
-					fieldsName += ' AND ' + f.name + ' = ' +  f.value;
-				else if( f.fieldType == 'BOOLEAN' )
+				if( f.fieldType.toLowercase() == 'date'){
+					auxDateStr = f.value.split( '/', 0 );
+					fieldsName += ' AND ' + f.name + ' = ' + auxDateStr[2] + '-' + auxDateStr[0] + '-' + auxDateStr[1];
+				}else if( f.fieldType == 'BOOLEAN' )
 					fieldsName += ' AND ' + f.name + ' = ' + f.value + ' ';
 				else 
 					fieldsName += ' AND ' + f.name + ' = \'' + f.value + '\' ';
