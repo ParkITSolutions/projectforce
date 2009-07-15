@@ -132,7 +132,7 @@
             <c:Search module="project" label="Tasks" projectId="{!ProjectId}"/>
         </apex:define>
     </apex:composition>
-    
+  
     <!-- Main Content Div -->
     <div class="main_content_projectList" id="main_content_projectList"> 
         
@@ -149,12 +149,13 @@
             	<strong>Tasks and Milestones</strong>
           	</apex:outputpanel>
         </div>
-        
+
         <!-- Holder -->  
         <div class="informationPanel clear" id="infoToUser" style="display:none;"></div>
-        <div id='holder' class="holder" style="position:relative;overflow:hidden;">
+        <div id='holder' class="holder" >
             <!-- Overlay -->
             <div id="paginationOverlay" style="display:none;"></div>  
+                         	
             <apex:outputpanel id="taskListPanel" layout="block" >
                 <apex:form id="ref">
                 	<apex:actionFunction action="{!refreshTaskList}" oncomplete="showHideOverlay(); advFilterAfterRerender();" name="sortListEvent" rerender="ref" />
@@ -233,7 +234,6 @@
 	                                <apex:selectOption itemValue="allMilestones" itemLabel="All Milestones"/>
 	                            </apex:selectList>
 	                        </div>
-                        	
 							<!-- Advanced Filter Toggle -->
 							<div class="linksFilterContent">
 		                        <a href="javascript:;" id="advFilterShow" title="Click to view the advanced filter." onclick="advancedFilter();">
@@ -247,44 +247,45 @@
 					        <!-- Filters -->
 					        <div class="AdvancedFilterContainer2" id="advancedFilterContainer2" style="display: none;"> 				          
 					            <apex:outputPanel styleClass="AdvancedFilterContainer" layout="block" id="AdvancedFilterContainer"> 				          
+					            	
 					            	<!-- Advance Filter -->
 					            	<div style="float:left;">
+						            	
 						            	<div class="advancedFilterTitle">
 						            		Advanced Filter
 						            	</div>
 
-											<div style="width: 850px;">
-												<input type="hidden" id="dateHidden" value="" onchange="setValsAndCloseCalendar();" />
-												<apex:repeat value="{!dynFilterList}" var="o" id="dynFil">
-													<apex:outputPanel rendered="{!IF( o.fieldType == 'PICKLIST', true, false) }" layout="block" styleClass="DymFilElem">
-														<span class="DynFIlLabel">{!o.label}</span><br />
-														<apex:selectList size="1" value="{!o.value}">
-															<apex:selectOptions value="{!o.options}" />
-														</apex:selectList>
-														<!-- {!o.name}::{!o.FieldType} --> 
-													</apex:outputPanel>	
-											
-													<apex:outputPanel rendered="{!IF( o.fieldType == 'BOOLEAN', true, false) }" layout="block" styleClass="DymFilElem">
-														<span class="DynFIlLabel">{!o.label}</span><br />
-														<apex:inputCheckbox value="{!o.value}" />
-														<!-- {!o.name}::{!o.FieldType} -->
-													</apex:outputPanel>	
+										<div style="width: 850px;">
+											<apex:repeat value="{!dynFilterList}" var="o" id="dynFil">
+												<apex:outputPanel rendered="{!IF( o.fieldType == 'PICKLIST', true, false) }" layout="block" styleClass="DymFilElem" >
+													<span id="fufu" class="DynFIlLabel" style="z-index:9999;">{!o.label}</span><br />
+													<apex:selectList size="1" value="{!o.value}">
+														<apex:selectOptions value="{!o.options}" />
+													</apex:selectList>
+												</apex:outputPanel>	
+										
+												<apex:outputPanel rendered="{!IF( o.fieldType == 'BOOLEAN', true, false) }" layout="block" styleClass="DymFilElem">
+													<span class="DynFIlLabel">{!o.label}</span><br />
+													<apex:inputCheckbox value="{!o.value}" />
+													<!-- {!o.name}::{!o.FieldType} -->
+												</apex:outputPanel>	
 
-													<apex:outputPanel rendered="{!IF( o.fieldType == 'DATE', true, false) }" layout="block" styleClass="DymFilElem">
-														<span class="DynFIlLabel">{!o.label}</span><br />
-														<apex:inputText value="{!o.value}" styleClass="DynFilDateField" onClick="setActualFieldId(this);" title="MM/DD/YYYY" size="10" />
-														<!-- {!o.name}::{!o.FieldType} -->
-													</apex:outputPanel>	
-											
-													<apex:outputPanel rendered="{!IF( o.fieldType != 'PICKLIST' && o.fieldType != 'BOOLEAN'&& o.fieldType != 'DATE', true, false) }" layout="block" styleClass="DymFilElem">
-														<span class="DynFIlLabel">{!o.label}</span><br />
-														<apex:inputText value="{!o.value}" />
-														<!-- {!o.name}::{!o.FieldType} -->
-													</apex:outputPanel>	
-											
-												</apex:repeat> 
-												<br /><br />
-											</div>
+												<apex:outputPanel rendered="{!IF( o.fieldType == 'DATE', true, false) }" layout="block" styleClass="DymFilElem">
+													<span class="DynFIlLabel">{!o.label}</span><br />
+													<apex:inputText value="{!o.value}" styleClass="DynFilDateField" onClick="setActualFieldId(this);" title="MM/DD/YYYY" size="10" onchange="closeCalendar();"/>
+													<!-- {!o.name}::{!o.FieldType} -->
+												</apex:outputPanel>	
+										
+												<apex:outputPanel rendered="{!IF( o.fieldType != 'PICKLIST' && o.fieldType != 'BOOLEAN'&& o.fieldType != 'DATE', true, false) }" layout="block" styleClass="DymFilElem">
+													<span class="DynFIlLabel">{!o.label}</span><br />
+													<apex:inputText value="{!o.value}" />
+													<!-- {!o.name}::{!o.FieldType} -->
+												</apex:outputPanel>	
+										
+											</apex:repeat>
+
+											<br /><br />
+										</div>
 
 						            	<br />
 						            	<apex:commandLink action="{!refreshTaskList}"  rerender="taskListPanel" onclick="showHideOverlay();"  oncomplete="showHideOverlay();advFilterAfterRerender();" styleclass="blackbutton" >
@@ -302,7 +303,7 @@
 						           	</div>
 					            	
 					            	<!-- Saved Filters -->
-					            	<div class="savedFilters">
+					            	<div class="savedFilters" style="width: 220px;">
 						            	<div class="advancedFilterTitle">
 						            		Saved Filters
 						            	</div>
@@ -609,7 +610,6 @@
             </apex:outputpanel>    
         </div>   
     </div>   
-
     <!-- ### Save New Filter Overlay ### -->					           		
 	<div id="saveNewFlter" style="display: none;" class="overlayForm">
 		
@@ -692,30 +692,19 @@
 	</style>
     <script>
         showActionSuccess();
+        gCal = false;
         readPortalCSSRules();
-        
-        var actualFieldId;
-        function setActualFieldId( obj ){
-		  Calendar.setup({
+		 window.onload = function(){ Calendar.setup({
 	         dateField     : 'dateHidden',
-	         parentElement : 'body',
-	         closeHandler  : closeCalendar
+			 triggerElement: 'dateHidden'
 	      });
-			cal = $$( '.calendar' )[0];
-           // cal.innerHTML = '';
-			inputOffset = obj.cumulativeOffset();
-			
-			cal.style.top  = inputOffset[ 'top' ] + 'px'; 
-			cal.style.left = inputOffset[ 'left' ] + 'px';
-	      
-            actualFieldId = obj;
-        }
+	      gCal = true;
+	      }
+
+		  genCal();
         
-        function setValsAndCloseCalendar(){
-        	actualFieldId.value = $( 'dateHidden' ).value;
-        	$('calendar2').innerHTML = '';
-        }
-        function closeCalendar(){$$( '.calendar' )[0].innerHTML = '';}
+
     </script> 
+	<input type="text" id="dateHidden" value="" onchange="setValsAndCloseCalendar();" style="display: none;"/>
     <apex:outputpanel id="auxProjectTaskListPanel" />
 </apex:page>
