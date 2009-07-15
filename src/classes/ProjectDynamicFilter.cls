@@ -166,8 +166,8 @@ public class ProjectDynamicFilter {
 			if( f.name != 'assignee' && f.value != null && f.value != '' && f.value != 'false' ){
 				System.debug( '*_*' + f.value + f.name);
 				if( f.fieldType.toLowercase() == 'date'){
-					auxDateStr = f.value.split( '/', 0 );
-					fieldsName += ' AND ' + f.name + ' = ' + auxDateStr[2] + '-' + auxDateStr[0] + '-' + auxDateStr[1];
+					//auxDateStr = f.value.split( '/', 0 );
+					fieldsName += ' AND ' + f.name + ' = ' + f.value;//+ auxDateStr[2] + '-' + auxDateStr[0] + '-' + auxDateStr[1];
 				}else if( f.fieldType == 'BOOLEAN' )
 					fieldsName += ' AND ' + f.name + ' = ' + f.value + ' ';
 				else 
@@ -180,9 +180,9 @@ public class ProjectDynamicFilter {
 	* Save the current filter values
 	*/
 	public void saveFilter(){
-		String fieldToSave  = '';
+		String fieldToSave  = ''; 
 		String filterToSave = '';
-		for( SFField f : this.fieldList ){
+		for( SFField f : this.fieldList ){ 
 			if( f.value != null && f.value != ''){
 				fieldToSave = f.name + '::' + f.fieldType + '::' + f.value;
 				filterToSave += fieldToSave + '#';
