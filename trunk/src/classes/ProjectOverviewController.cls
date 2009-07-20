@@ -122,7 +122,7 @@ public with sharing class ProjectOverviewController {
         isAllProjects = false;
         
         //For Code Coverage Use
-        Integer lim = (isTest) ? 1 : 100;       
+        Integer lim = (isTest) ? 1 : 1000;       
         
         //Types of filter
         if(System.currentPageReference().getParameters().get('filter') != null)
