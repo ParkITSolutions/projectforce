@@ -770,7 +770,8 @@ public with sharing class ProjectTaskListController {
             } 
 
             TaskDetail.Name = resultTaskList[i].Name;
-            String picture = TaskDetail.getAsigneeName();
+            /*Under consideration - 07/22/2009
+              String picture = TaskDetail.getAsigneeName();*/
             
             //Pririty
             TaskDetail.Priority = resultTaskList[i].Priority__c;
