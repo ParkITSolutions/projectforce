@@ -223,7 +223,7 @@
                               	<td class="dataCol">
 	                            	<apex:outputpanel rendered="{!AND(NOT(MaxAssignees), OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe))}">
 	                                	<div class="DistincLink">
-	                                      	<a href="javascript:;" onclick="createOverlay('','addAssigneeOverlay','200','relocateOverlay()');refreshPercentList();" >
+	                                      	<a id="lnkAddAssignee" href="javascript:;" onclick="createOverlay('','addAssigneeOverlay','200','relocateOverlay()');refreshPercentList();" >
 	                                      		<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add assignee" title="Add assignee" />
 	                                          	New assignee
 	                                      	</a>
