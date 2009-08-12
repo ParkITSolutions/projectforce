@@ -163,6 +163,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Project Task</pluralLabel>
+    <searchLayouts/>
     <sharingModel>Private</sharingModel>
     <validationRules>
         <fullName>Lower_than_100</fullName>

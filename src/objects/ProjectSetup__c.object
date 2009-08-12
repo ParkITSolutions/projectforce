@@ -14,5 +14,6 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>ProjectSetup</pluralLabel>
+    <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
 </CustomObject>
