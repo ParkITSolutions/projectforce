@@ -41,6 +41,5 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>TimelineStates</pluralLabel>
-    <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
 </CustomObject>

@@ -255,13 +255,15 @@
 								<td class="labelCol vTop">Comments</td>
 								<td class="dataCol">
 									<apex:form id="taskComments">
-										<apex:inputField styleClass="commentBody" value="{!comment.Body__c}" /><br/>
-										<apex:commandLink onclick="if(!validateComment()){return false;}"
-											oncomplete="Effect.Fade('sw_all')"
-											action="{!saveComment}" 									
-											rerender="taskComments">
-											<span>Save Comment</span>
-										</apex:commandLink>
+										<apex:outputPanel rendered="{!allowComments}">
+											<apex:inputField styleClass="commentBody" value="{!comment.Body__c}" /><br/>
+											<apex:commandLink onclick="if(!validateComment()){return false;}"
+												oncomplete="Effect.Fade('sw_all')"
+												action="{!saveComment}" 									
+												rerender="taskComments">
+												<span>Save Comment</span>
+											</apex:commandLink>
+										</apex:outputPanel>
 										<apex:repeat value="{!taskComments}" var="comment">
 											<div class="taskComment">
 												<span class="creator">

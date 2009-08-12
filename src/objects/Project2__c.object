@@ -186,24 +186,6 @@ Private -  This Project will not appear in search. Membership is by invitation o
         <type>Number</type>
     </fields>
     <label>Project</label>
-    <listViews>
-        <fullName>All_View</fullName>
-        <columns>NAME</columns>
-        <filterScope>Everything</filterScope>
-        <label>All View</label>
-    </listViews>
-    <listViews>
-        <fullName>Marcs_View</fullName>
-        <columns>NAME</columns>
-        <columns>OWNER.ALIAS</columns>
-        <filterScope>Everything</filterScope>
-        <filters>
-            <field>NAME</field>
-            <operation>equals</operation>
-            <value>Marc</value>
-        </filters>
-        <label>Marcs View</label>
-    </listViews>
     <nameField>
         <label>Project Name</label>
         <type>Text</type>
@@ -212,7 +194,6 @@ Private -  This Project will not appear in search. Membership is by invitation o
     <recordTypes>
         <fullName>Test</fullName>
         <active>true</active>
-        <label>Test</label>
         <picklistValues>
             <picklist>Access__c</picklist>
             <values>
@@ -286,10 +267,6 @@ Private -  This Project will not appear in search. Membership is by invitation o
             </values>
         </picklistValues>
     </recordTypes>
-    <searchLayouts>
-        <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
-        <excludedStandardButtons>Accept</excludedStandardButtons>
-    </searchLayouts>
     <sharingModel>Private</sharingModel>
     <webLinks>
         <fullName>ProjectTimeline</fullName>
@@ -298,7 +275,6 @@ Private -  This Project will not appear in search. Membership is by invitation o
         <linkType>url</linkType>
         <masterLabel>Timeline</masterLabel>
         <openType>replace</openType>
-        <protected>false</protected>
         <url>&quot;/apex/ProjectTimeline?id={!Project2__c.Id}&quot;</url>
     </webLinks>
 </CustomObject>

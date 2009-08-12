@@ -55,6 +55,7 @@ public class ProjectTaskDuration {
  
 			System.debug('ROCK> ' + duration);
 			task.Duration__c = duration;
+			task.DurationUI__c = String.valueOf(duration);
 		
 		}	
 		return task;
@@ -70,6 +71,7 @@ public class ProjectTaskDuration {
 	public Date doCalculateEndDateInDays (ProjectTask__c task, Integer wdays){
 	
 		Integer days = task.Duration__c.intValue();
+		System.debug('!!!------- days in doCalculateEndDateInDays ' + days);
 		return this.doExcludeNonWorkingDays(task.StartDate__c, wdays, days);
 	
 	}
@@ -123,6 +125,10 @@ public class ProjectTaskDuration {
 				days++;
 			myDate = myDate.addDays(1);
 		}
+		
+		if(days == 0){
+			return Date.newInstance(myDate.year(), myDate.month(), (myDate.day()));	
+		}
 		return Date.newInstance(myDate.year(), myDate.month(), (myDate.day() - 1));	
 	}
 	
@@ -150,4 +156,90 @@ public class ProjectTaskDuration {
 	
 	}
 	
+	/**
+	*
+	*/
+	public ProjectTask__c parseDuration(ProjectTask__c task){
+		String input;
+		if(task.DurationUI__c != null){
+			input = task.DurationUI__c; 
+		}
+		else{
+			input = String.valueOf(task.Duration__c); 
+		}
+		
+		Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
+								from Project2__c 
+								where Id =: task.Project__c];
+			
+		boolean isDays  = false;
+		boolean isHours = false;
+		
+		isDays = input.contains('d') || input.contains('D');
+		isHours = input.contains('h') || input.contains('H');
+		
+		if(isDays && isHours){
+			//error msg
+		}
+		
+		if(!isDays && !isHours){
+			//no se ingreso D o H
+		}
+		
+		if(isDays){
+			if(input.contains('d')){
+				input = input.replace('d', '');
+			}
+			else{
+				input = input.replace('D', '');
+			}
+			input = input.trim();
+			if(project.DisplayDuration__c.equals('Days')){
+				//do nothing Project already in Days
+			}
+			else{
+				Double days = Double.valueOf(input);
+				Double hours = days * project.WorkingHours__c;
+				input = String.valueOf(hours);
+			}
+		}
+		
+		if(isHours){
+			if(input.contains('h')){
+				input = input.replace('h', '');
+			}
+			else{
+				input = input.replace('H', '');
+			}
+			input = input.trim();
+			if(project.DisplayDuration__c.equals('Days')){
+				Double input1 = Double.valueOf(input); 
+				Integer workHours = project.WorkingHours__c.intValue();
+				Double CompleteValue = (input1 / workHours);
+				Integer days = Math.round(Math.floor(CompleteValue));
+				
+				Double remAux = (CompleteValue - days) * 10;
+				Integer remainder = remAux.intValue();
+				if(remainder > 5){
+					input = String.valueOf(days + 1);
+				}
+				if(remainder < 5){
+					input = String.valueOf(days);
+				}
+				if(remainder == 5){
+					input = String.valueOf(days + 0.5);
+				}
+			}
+			else{
+				//do nothing Project already in Hours
+			}
+		}
+		
+		task.Duration__c = Double.valueOf(input);
+		System.debug('-----------duration  :'+ task.Duration__c);
+		task.DurationUI__c = input;
+		System.debug('-----------duration UI :'+ task.DurationUI__c);
+		
+    	return task;
+	}
 }

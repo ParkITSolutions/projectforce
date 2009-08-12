@@ -27,17 +27,29 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
     for( Integer k = 0; k < Trigger.old.size(); k++ ){
 
     	tempPTOld = Trigger.old.get( k );
-    	tempPTNew = Trigger.new.get( k );		
-    	
-     	//Recalculate EndDate when Duration was changed
-    	if(tempPTOld.Duration__c != tempPTNew.Duration__c)
- 			tempPTNew = duration.doCalculateEndDate(tempPTNew);
- 			
+    	tempPTNew = Trigger.new.get( k );	
+		
+		Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
+								from Project2__c 
+								where Id =: tempPTNew.Project__c];
+								
     	//Recalculate Duration when EndDate or StartDate was changed
-    	if(tempPTOld.EndDate__c != tempPTNew.EndDate__c || tempPTOld.StartDate__c != tempPTNew.StartDate__c)
+    	if(tempPTOld.EndDate__c != tempPTNew.EndDate__c || tempPTOld.StartDate__c != tempPTNew.StartDate__c){
  			tempPTNew = duration.doCalculateDuration(tempPTNew);
- 		
-	   	
+    	}
+    	
+	   	//Recalculate EndDate when Duration was changed
+    	if(tempPTOld.DurationUI__c != tempPTNew.DurationUI__c){
+ 			//tempPTNew = duration.doCalculateEndDate(tempPTNew);
+ 			tempPTNew = duration.parseDuration(tempPTNew);
+ 			if(project.DisplayDuration__c.equals('Days')){
+				tempPTNew.EndDate__c = duration.doCalculateEndDateInDays(tempPTNew, Integer.valueOf(project.DaysInWorkWeek__c));
+			}
+			else{
+				tempPTNew.EndDate__c = duration.doCalculateEndDateInHours(tempPTNew, project);
+			}	
+    	}
+    	
 	   	if( tempPTOld.Project__c != tempPTNew.Project__c){
     		tempPTNew.addError( 'You can not modify project.');
 		}

@@ -23,6 +23,5 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>TaskComments</pluralLabel>
-    <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
 </CustomObject>

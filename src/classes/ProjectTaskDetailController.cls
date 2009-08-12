@@ -3,15 +3,17 @@
 */
 public class ProjectTaskDetailController {
 	
-	private String USERID = UserInfo.getUserId();
+	private String USERID = UserInfo.getUserId(); 
 	private Boolean editDeletePer = false;
 	private String projectId = '';
-
+	private Boolean canComment;
 	public TaskDetails taskDetail = null;
 	public TaskComment__c comment = new TaskComment__c(); 
 	public boolean detailsOk;
 	public String param = ''; 
 	public UserPermissions userPermissions = new UserPermissions();
+	public String taskId;
+
 	
 	/**
 	* Constructor
@@ -21,6 +23,12 @@ public class ProjectTaskDetailController {
 		getTask(param);
 		genPermissions();
 		editDeletePer = userPermissions.getCanManage();		
+		canComment = userPermissions.getCanComment();
+		taskId = System.currentPageReference().getParameters().get('id');
+		List<ProjectTask__c> task = new List<ProjectTask__c>();
+		task = [select project__c from ProjectTask__c where Id =:taskId];
+		
+		projectId = task[0].project__c;
 	}
 	
 	/**
@@ -267,6 +275,31 @@ public class ProjectTaskDetailController {
 		} else {
 			detailsOk = false;		
 		}	
+	}
+	
+	//returns false if the project is closed and the user is not a member
+	public boolean getAllowComments(){
+		
+		List<Project2__c> project = new List<Project2__c>();		
+		project = [select Id, Access__c from Project2__c where Id =:projectId];
+		
+		if(project.size() > 0){
+			if(project[0].Access__c.equals('Close')){
+			
+				List<ProjectMember__c> userMember = new List<ProjectMember__c>();
+				userMember = [select id 
+							from ProjectMember__c 
+							where project__c =:projectId and User__c =:UserInfo.getUserId() 
+							limit 1];
+
+				if (userMember.size() == 0) {
+					return false;
+				}
+				
+			}
+		}
+		
+		return true;
 	}
 	
 	/**
