@@ -40,7 +40,6 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
     	
 	   	//Recalculate EndDate when Duration was changed
     	if(tempPTOld.DurationUI__c != tempPTNew.DurationUI__c){
- 			//tempPTNew = duration.doCalculateEndDate(tempPTNew);
  			tempPTNew = duration.parseDuration(tempPTNew);
  			if(project.DisplayDuration__c.equals('Days')){
 				tempPTNew.EndDate__c = duration.doCalculateEndDateInDays(tempPTNew, Integer.valueOf(project.DaysInWorkWeek__c));

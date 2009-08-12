@@ -53,7 +53,6 @@ public class ProjectTaskDuration {
 				duration = (Decimal.valueOf(days * project.WorkingHours__c).round(System.Roundingmode.CEILING).intValue());
 			}			
  
-			System.debug('ROCK> ' + duration);
 			task.Duration__c = duration;
 			task.DurationUI__c = String.valueOf(duration);
 		
@@ -69,9 +68,9 @@ public class ProjectTaskDuration {
 	*@retrun task end date
 	*/
 	public Date doCalculateEndDateInDays (ProjectTask__c task, Integer wdays){
-	
-		Integer days = task.Duration__c.intValue();
-		System.debug('!!!------- days in doCalculateEndDateInDays ' + days);
+		
+		Double aux = math.ceil( task.Duration__c );		
+		Integer days = aux.intValue();
 		return this.doExcludeNonWorkingDays(task.StartDate__c, wdays, days);
 	
 	}
@@ -158,14 +157,24 @@ public class ProjectTaskDuration {
 	
 	/**
 	*
+	*
+	public ProjectTask__c verifyStartDate(){
+		
+		
+	}*/
+	
+	/**
+	*
 	*/
 	public ProjectTask__c parseDuration(ProjectTask__c task){
 		String input;
 		if(task.DurationUI__c != null){
 			input = task.DurationUI__c; 
+			System.debug('ESSSSSSSSSSSSSSSSSS Is vacio');
 		}
 		else{
 			input = String.valueOf(task.Duration__c); 
+			System.debug('ESSSSSSSSSSSSSSSSSS Is no vacio  '+task.Duration__c);
 		}
 		
 		Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
@@ -180,13 +189,16 @@ public class ProjectTaskDuration {
 		
 		if(isDays && isHours){
 			//error msg
+			System.debug('ESSSSSSSSSSSSSSSSSS Error');
 		}
 		
 		if(!isDays && !isHours){
 			//no se ingreso D o H
+			System.debug('ESSSSSSSSSSSSSSSSSS [probandio]');
 		}
 		
 		if(isDays){
+			System.debug('ESSSSSSSSSSSSSSSSSS Is days');
 			if(input.contains('d')){
 				input = input.replace('d', '');
 			}
@@ -201,6 +213,7 @@ public class ProjectTaskDuration {
 				Double days = Double.valueOf(input);
 				Double hours = days * project.WorkingHours__c;
 				input = String.valueOf(hours);
+				System.debug('ESSSSSSSSSSSSSSSSSS '+ input);
 			}
 		}
 		
