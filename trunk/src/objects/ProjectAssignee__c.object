@@ -46,6 +46,5 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Project Assignee</pluralLabel>
-    <searchLayouts/>
     <sharingModel>Private</sharingModel>
 </CustomObject>

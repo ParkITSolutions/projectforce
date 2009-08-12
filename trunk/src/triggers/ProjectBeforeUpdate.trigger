@@ -1,5 +1,12 @@
 trigger ProjectBeforeUpdate on Project2__c (before update) {
-	for (Project2__c project : Trigger.new) {
+	//for (Project2__c project : Trigger.new) {
+	Project2__c projectOld = new Project2__c();
+	Project2__c project = new Project2__c();
+	for( Integer k = 0; k < Trigger.new.size(); k++ ){
+		
+		project = Trigger.new.get( k );
+		projectOld = Trigger.old.get( k );
+		
         //Set Profile according Project Access
         if(project.Access__c != null){
 	        if(project.Access__c.equals('Open')){
@@ -23,5 +30,14 @@ trigger ProjectBeforeUpdate on Project2__c (before update) {
 	            project.NewMemberProfile__c = null;
 	        }
 		}  	
+		
+		if( projectOld.DaysInWorkWeek__c != project.DaysInWorkWeek__c )
+			project.DaysInWorkWeek__c.addError('This vlaue can not br changed.');
+		
+		if( projectOld.DisplayDuration__c != project.DisplayDuration__c )
+			project.DisplayDuration__c.addError('This vlaue can not br changed.');
+		
+		if( projectOld.WorkingHours__c != project.WorkingHours__c )
+			project.WorkingHours__c.addError('This vlaue can not br changed.');
 	}
 }

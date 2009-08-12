@@ -42,7 +42,30 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 			    	if( tempPTNew.Project__c != parentTasks.get( k ).Project__c )
 			    		tempPTNew.addError( 'Invalid parent task value.-');
 
-		    } 			
+		    } 	
+		    
+		    //TODO testing
+			ProjectTaskDuration duration = new ProjectTaskDuration();
+		    for( Integer j = 0; j < Trigger.new.size(); j++ ){
+		
+		    	tempPTNew = Trigger.new.get( j );		
+		 		tempPTNew = duration.parseDuration(tempPTNew);
+		 		System.debug('!!!----- valores : ' + tempPTNew.Duration__c);
+		 		if(tempPTNew.Project__c != null){
+		 			Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
+								from Project2__c 
+								where Id =: tempPTNew.Project__c];
+								
+					if(project.DisplayDuration__c.equals('Days')){
+						tempPTNew.EndDate__c = duration.doCalculateEndDateInDays(tempPTNew, Integer.valueOf(project.DaysInWorkWeek__c));
+					}
+					else{
+						tempPTNew.EndDate__c = duration.doCalculateEndDateInHours(tempPTNew, project);
+					}	
+    			}
+		    } 
+		    //TODO finish testing	
+		    
 		}
 		finally{
 			ProjectUtil.currentlyExeTrigger = false;

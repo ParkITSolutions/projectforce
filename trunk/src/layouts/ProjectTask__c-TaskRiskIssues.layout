@@ -17,6 +17,10 @@
                 <behavior>Readonly</behavior>
                 <field>Id__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>DurationUI__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsLeftToRight</style>

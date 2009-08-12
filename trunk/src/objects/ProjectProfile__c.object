@@ -28,6 +28,5 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Project Profile</pluralLabel>
-    <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
 </CustomObject>

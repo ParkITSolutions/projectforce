@@ -11,6 +11,13 @@
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
+        <fullName>DurationUI__c</fullName>
+        <label>Duration</label>
+        <length>10</length>
+        <required>true</required>
+        <type>Text</type>
+    </fields>
+    <fields>
         <fullName>Duration__c</fullName>
         <description>Duration</description>
         <label>Duration</label>
@@ -156,7 +163,6 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Project Task</pluralLabel>
-    <searchLayouts/>
     <sharingModel>Private</sharingModel>
     <validationRules>
         <fullName>Lower_than_100</fullName>

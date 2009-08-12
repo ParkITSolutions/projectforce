@@ -89,7 +89,7 @@ public with sharing class ProjectOverviewController {
     *@return string
     */
     public String getObjectPrefix(){
-    	return objectPrefix;
+        return objectPrefix;
     }
      
     /**
@@ -100,14 +100,14 @@ public with sharing class ProjectOverviewController {
         return retProjects;
     }  
 
-	/**
-	*Determines who can view the Create New Project button
-	*@return Boolean
-	*/
-	public Boolean getCanViewCreateNewProject(){
-		ProjectSetupController canV = new ProjectSetupController();
-		return canV.canView();
-	}
+    /**
+    *Determines who can view the Create New Project button
+    *@return Boolean
+    */
+    public Boolean getCanViewCreateNewProject(){
+        ProjectSetupController canV = new ProjectSetupController();
+        return canV.canView();
+    }
     
     /**
     *@projectsForTabs()
@@ -132,38 +132,38 @@ public with sharing class ProjectOverviewController {
         //@newProjects
         if(filter == 'newProjects'){
             /*projects = [Select (Select Id From ProjectsMembers__r), 
-            			(Select Id, Milestone__c 
-            				From ProjectsTasks__r), t.CreatedDate , t.Name, t.Picture__c, t.Id 
-            				From Project2__c t 
-            				order by t.CreatedDate  desc 
-            				limit :lim];*/
-			for(Project2__c project : [Select
-											  (Select Id 
-											   From ProjectsMembers__r), 
-            								  (Select Id, 
-            								          Milestone__c 
-            								   From ProjectsTasks__r),
-            								  t.CreatedDate, 
-            								  t.Name, 
-            								  t.Picture__c, t.Id 
-            						   From Project2__c t 
-            						   order by t.CreatedDate  desc 
-            						   limit :lim]){
-            	projects.add(project);
-           	}	            				
+                        (Select Id, Milestone__c 
+                            From ProjectsTasks__r), t.CreatedDate , t.Name, t.Picture__c, t.Id 
+                            From Project2__c t 
+                            order by t.CreatedDate  desc 
+                            limit :lim];*/
+            for(Project2__c project : [Select
+                                              (Select Id 
+                                               From ProjectsMembers__r), 
+                                              (Select Id, 
+                                                      Milestone__c 
+                                               From ProjectsTasks__r),
+                                              t.CreatedDate, 
+                                              t.Name, 
+                                              t.Picture__c, t.Id 
+                                       From Project2__c t 
+                                       order by t.CreatedDate  desc 
+                                       limit :lim]){
+                projects.add(project);
+            }                               
         //@allProjects
         }else if(filter == 'allProjects'){
             /*projects = [Select (Select Id From ProjectsMembers__r), (Select Id, Milestone__c From ProjectsTasks__r), t.Name, t.Picture__c, t.Id 
-            				From Project2__c t 
-            				order by t.Name asc limit :lim]; */
+                            From Project2__c t 
+                            order by t.Name asc limit :lim]; */
             for(Project2__c project : [Select (Select Id From ProjectsMembers__r), 
-            							(Select Id, Milestone__c From ProjectsTasks__r), 
-            							t.Name, t.Picture__c, t.Id 
-            							From Project2__c t 
-            							order by t.Name asc limit :lim]){
-            	projects.add(project);
-           	}	      
-           	            
+                                        (Select Id, Milestone__c From ProjectsTasks__r), 
+                                        t.Name, t.Picture__c, t.Id 
+                                        From Project2__c t 
+                                        order by t.Name asc limit :lim]){
+                projects.add(project);
+            }         
+                        
             //Only allProjects show pagination and abc
             isAllProjects = false;
         //@Default My Projects
@@ -171,10 +171,10 @@ public with sharing class ProjectOverviewController {
            
             List<ProjectMember__c> tml = new List<ProjectMember__c>();
             tml = [Select s.Project__c,s.Project__r.Id 
-            		From ProjectMember__c s 
-            		where s.User__c =: UserInfo.getUserId() 
-            		order by s.CreatedDate desc 
-            		limit :lim];
+                    From ProjectMember__c s 
+                    where s.User__c =: UserInfo.getUserId() 
+                    order by s.CreatedDate desc 
+                    limit :lim];
             
             List<Project2__c> projectsAux = new List<Project2__c>();
             for(ProjectMember__c tm : tml){
@@ -183,11 +183,8 @@ public with sharing class ProjectOverviewController {
                 }
             }
             
-            projects = [Select (Select Id,User__c From ProjectsMembers__r), (Select Id, Milestone__c From ProjectsTasks__r), 
-            				t.Name, t.Picture__c, t.Id 
-            				From Project2__c t 
-            				where t.Id in : projectsAux 
-            				 order by t.Name asc];
+            for( Project2__c pc2:[Select (Select Id,User__c From ProjectsMembers__r), (Select Id, Milestone__c From ProjectsTasks__r), t.Name, t.Picture__c, t.Id From Project2__c t where t.Id in : projectsAux order by t.Name asc])
+                projects.add( pc2 ) ;
                   
         }
         /* AM commented
@@ -198,12 +195,12 @@ public with sharing class ProjectOverviewController {
         }
         */
         if(projects.size() >= 1){
-        	isAllProjects = true;
+            isAllProjects = true;
         }
         if (projects.size()>itemsToList){
-        	paginator.setNumberOfItemsToShow(itemsToList);//(10);
+            paginator.setNumberOfItemsToShow(itemsToList);//(10);
         }else{
-        	paginator.setNumberOfItemsToShow(projects.size()); 
+            paginator.setNumberOfItemsToShow(projects.size()); 
         }
               
         //Populate Inner class with project List
@@ -221,8 +218,8 @@ public with sharing class ProjectOverviewController {
                 //Looking for milestone in tasks
                 t.milestones = 0;
                 for(ProjectTask__c task : projects[i].ProjectsTasks__r){
-                	if(task.Milestone__c)
-						t.milestones++;
+                    if(task.Milestone__c)
+                        t.milestones++;
                 } 
                 
                 if(filter == 'newProjects'){
