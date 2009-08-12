@@ -70,7 +70,7 @@
                                     <div class="red" style="display: none;" id="dueDateInvalid"><strong>Error:</strong> You must enter a valid value</div>
                                     <br/> 
                                     <label>Duration</label><span class="required"></span>
-                                    <apex:inputText value="{!Task.Duration__c}" required="true" maxLength="2"  styleClass="small" style="_margin-left: -10px;" id="taskEstimate" onkeypress="return isDecimalKey(event, this.value)"/>
+                                    <apex:inputText value="{!Task.DurationUI__c}" required="true" maxLength="4"  styleClass="small" style="_margin-left: -10px;" id="taskEstimate" onkeypress="return isDecimalKey(event, this.value)"/>
                                     <span class="desc">{!project.DisplayDuration__c}</span>
                                     <div class="red" style="display: none;" id="estimateError"><strong>Error:</strong> You must enter an estimate in {!project.DisplayDuration__c}</div>
                                     <br/>

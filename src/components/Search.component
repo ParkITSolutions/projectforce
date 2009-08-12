@@ -4,11 +4,21 @@
     <apex:attribute name="module" description="Type of search" type="String" required="true" assignTo="{!module}" />    
     <apex:attribute name="projectId" description="Id for project detail search" type="String" required="false" assignTo="{!teamId}" />
     <apex:attribute name="label" description="Label to show on the search box" type="String" required="false" assignTo="{!labelName}" />
+	<script type="text/javascript">
+		function encode(){
+			var criteria = document.getElementsByClassName('key_imput')[0].value
+			criteria = criteria.replace(/&/g,"11")
+			document.getElementsByClassName('key_imput')[0].value = criteria
+			alert(criteria)
+			return true
+		}
+	</script>   
+   
     <div class="searchBox">
         <div>
             <div>
                 <div class="center_gray">
-                    <apex:form onsubmit="if(!validateSearchLenght()) return false;">
+                    <apex:form onsubmit="encode()">
                         <div class="search_box_input f_left">
                             <div class="legend_portal">
                                 <span><img class="f_left" alt="" src="{!URLFOR($Resource.ProjectResources, 'images/layout/magnifier.gif')}" />Find {!labelName}</span>

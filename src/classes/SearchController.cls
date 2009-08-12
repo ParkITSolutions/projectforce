@@ -106,8 +106,10 @@ public class SearchController {
 	*@return PageReference
 	*/
 	public PageReference searchKey(){
+		System.debug('##### search key: '+this.key);
 		if(this.module != null && this.module != ''){
 			PageReference pageRef = searchIn.get(module);
+				System.debug('##### key: '+this.key);
 			pageRef.getParameters().put('key', this.key);
 			if(this.teamId != null || this.teamId != ''){
 				pageRef.getParameters().put('id', this.teamId);

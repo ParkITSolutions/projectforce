@@ -30,6 +30,7 @@ public with sharing class ProjectSearchResultController {
 	*/
 	public ProjectSearchResultController(){
 		criteria = System.currentPageReference().getParameters().get('key');
+		System.debug('##### criteria constructor: '+criteria);
 		teamId = System.currentPageReference().getParameters().get('id');
 	}	
 	
@@ -115,6 +116,8 @@ public with sharing class ProjectSearchResultController {
 				tempResultList.add(currentResult);
 			}
 		}else{
+			//criteria = '&&&';
+			System.debug('####### criteria: '+criteria);
 			List<List<SObject>> resultList = search.query('FIND \'' + criteria + '*\' IN ALL FIELDS RETURNING ' 
 											+ namespace + 'Project2__c (Id, Name, Description__c)');
 			resultsProjectSearch = (List<Project2__c>) resultList[0];
@@ -404,6 +407,7 @@ public with sharing class ProjectSearchResultController {
 		*/
 		public void setName (String name, String criteria) {
 			String highlight = '';
+			System.debug('##### criteria setName: '+criteria);
 			if (name != null) {
 			
 				String nameLow = name.toLowerCase();
@@ -416,6 +420,7 @@ public with sharing class ProjectSearchResultController {
 				}
 			}
 			this.name = highlight;	
+				System.debug('##### this.name setName: '+this.name);
 		}	
 		
 		/**
@@ -427,7 +432,7 @@ public with sharing class ProjectSearchResultController {
 		public void setMatches (String matches, String criteria) {
 			String highlight = '';
 			Integer maxLength = 50;
-			
+			System.debug('##### criteria setMatches: '+criteria);
 			if (matches != null) {
 				String matchesLow = matches.toLowerCase();
 				String criteriaLow = criteria.toLowerCase();
