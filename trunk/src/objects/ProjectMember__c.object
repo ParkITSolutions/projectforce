@@ -32,5 +32,6 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Project Member</pluralLabel>
+    <searchLayouts/>
     <sharingModel>Private</sharingModel>
 </CustomObject>

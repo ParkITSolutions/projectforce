@@ -47,7 +47,9 @@
                 <behavior>Edit</behavior>
                 <field>ProjectCreatedDate__c</field>
             </layoutItems>
-            <layoutItems/>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>OwnerId</field>

@@ -23,5 +23,6 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Project Filters</pluralLabel>
+    <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
 </CustomObject>

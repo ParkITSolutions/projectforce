@@ -57,5 +57,6 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Project Subscription</pluralLabel>
+    <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
 </CustomObject>

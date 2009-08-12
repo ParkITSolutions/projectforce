@@ -13,6 +13,10 @@
     </fields>
     <fields>
         <label><!-- Duration --></label>
+        <name>DurationUI__c</name>
+    </fields>
+    <fields>
+        <label><!-- Duration --></label>
         <name>Duration__c</name>
     </fields>
     <fields>
