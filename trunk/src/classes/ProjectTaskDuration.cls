@@ -233,7 +233,7 @@ public class ProjectTaskDuration {
 		System.debug('-------------- working  '+ workingHours );
 		System.debug('-------------- param  '+ param );
 		Integer value;
-		Integer durValue = Integer.valueOf(duration);
+		Double durValue = Double.valueOf(duration);
 		
 		if(param == 'none'){
 			if( displayType.equals('Days') ){
@@ -241,7 +241,7 @@ public class ProjectTaskDuration {
 				value = hours.intValue();
 			}
 			else{
-				value = durValue;
+				value = durValue.intValue();
 			}
 		}
 		
@@ -251,7 +251,16 @@ public class ProjectTaskDuration {
 		}
 		
 		if(param == 'hours'){
-			value = durValue;
+			if( displayType.equals('Days') ){
+				//String auxDays = this.calculateDurationDays(duration, workingHours);
+				//System.debug('-------------- audays  '+ auxDays );
+				//Double hours = Double.valueOf( auxDays ) * workingHours;
+				//value = hours.intValue();
+				value = durValue.intValue();
+			}
+			else{
+				value = durValue.intValue();
+			}
 		}
 		
 		task.RawDuration__c = value;

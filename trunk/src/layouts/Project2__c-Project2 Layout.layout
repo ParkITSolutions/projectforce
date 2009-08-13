@@ -33,7 +33,7 @@
                 <field>DaysInWorkWeek__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>WorkingHours__c</field>
             </layoutItems>
         </layoutColumns>
