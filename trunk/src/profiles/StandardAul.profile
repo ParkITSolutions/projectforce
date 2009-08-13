@@ -1318,6 +1318,10 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
+        <field>ProjectTask__c.RawDuration__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
         <field>ProjectTask__c.StartDate__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>

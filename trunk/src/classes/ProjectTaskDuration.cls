@@ -170,11 +170,9 @@ public class ProjectTaskDuration {
 		String input;
 		if(task.DurationUI__c != null){
 			input = task.DurationUI__c; 
-			System.debug('ESSSSSSSSSSSSSSSSSS Is vacio');
 		}
 		else{
 			input = String.valueOf(task.Duration__c); 
-			System.debug('ESSSSSSSSSSSSSSSSSS Is no vacio  '+task.Duration__c);
 		}
 		
 		Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
@@ -189,59 +187,31 @@ public class ProjectTaskDuration {
 		
 		if(isDays && isHours){
 			//error msg
-			System.debug('ESSSSSSSSSSSSSSSSSS Error');
 		}
 		
 		if(!isDays && !isHours){
-			//no se ingreso D o H
-			System.debug('ESSSSSSSSSSSSSSSSSS [probandio]');
+			//no Hour / Days conevention used
+			this.insertRawDuration(task, project.DisplayDuration__c, input, project.WorkingHours__c, 'none');
 		}
 		
 		if(isDays){
-			System.debug('ESSSSSSSSSSSSSSSSSS Is days');
-			if(input.contains('d')){
-				input = input.replace('d', '');
-			}
-			else{
-				input = input.replace('D', '');
-			}
-			input = input.trim();
+			input = this.replaceDays(input);
+			this.insertRawDuration(task, project.DisplayDuration__c, input, project.WorkingHours__c, 'days');
+			
 			if(project.DisplayDuration__c.equals('Days')){
 				//do nothing Project already in Days
 			}
 			else{
-				Double days = Double.valueOf(input);
-				Double hours = days * project.WorkingHours__c;
-				input = String.valueOf(hours);
-				System.debug('ESSSSSSSSSSSSSSSSSS '+ input);
+				input = this.calculateDurationHours(input, project.WorkingHours__c);
 			}
 		}
 		
 		if(isHours){
-			if(input.contains('h')){
-				input = input.replace('h', '');
-			}
-			else{
-				input = input.replace('H', '');
-			}
-			input = input.trim();
+			input = this.replaceHours(input);
+			this.insertRawDuration(task, project.DisplayDuration__c, input, project.WorkingHours__c, 'hours');
+			
 			if(project.DisplayDuration__c.equals('Days')){
-				Double input1 = Double.valueOf(input); 
-				Integer workHours = project.WorkingHours__c.intValue();
-				Double CompleteValue = (input1 / workHours);
-				Integer days = Math.round(Math.floor(CompleteValue));
-				
-				Double remAux = (CompleteValue - days) * 10;
-				Integer remainder = remAux.intValue();
-				if(remainder > 5){
-					input = String.valueOf(days + 1);
-				}
-				if(remainder < 5){
-					input = String.valueOf(days);
-				}
-				if(remainder == 5){
-					input = String.valueOf(days + 0.5);
-				}
+				input = this.calculateDurationDays(input, project.WorkingHours__c);
 			}
 			else{
 				//do nothing Project already in Hours
@@ -249,10 +219,108 @@ public class ProjectTaskDuration {
 		}
 		
 		task.Duration__c = Double.valueOf(input);
-		System.debug('-----------duration  :'+ task.Duration__c);
 		task.DurationUI__c = input;
-		System.debug('-----------duration UI :'+ task.DurationUI__c);
 		
     	return task;
 	}
+	
+	/**
+	*
+	*/
+	public void insertRawDuration(ProjectTask__c task, String displayType, String duration, Double workingHours, String param){
+		Integer value;
+		Integer durValue = Integer.valueOf(duration);
+		
+		if(param == 'none'){
+			if( displayType.equals('Days') ){
+				Double hours = Double.valueOf( durValue ) * workingHours;
+				value = Integer.valueOf(hours);
+			}
+			else{
+				value = durValue;
+			}
+		}
+		
+		if(param == 'days'){
+			Double hours = Double.valueOf( durValue ) * workingHours;
+			value = Integer.valueOf(hours);
+		}
+		
+		if(param == 'hours'){
+			value = durValue;
+		}
+		
+		task.RawDuration__c = value;
+	}
+	
+	/**
+	*
+	*/
+	public String replaceHours(String value){
+		
+		if(value.contains('d')){
+			value = value.replace('d', '');
+		}
+		else{
+			value = value.replace('D', '');
+		}
+		value = value.trim();	
+		
+		return value;
+	}
+	
+	/**
+	*
+	*/
+	public String replaceDays(String value){
+		
+		if(value.contains('h')){
+			value = value.replace('h', '');
+		}
+		else{
+			value = value.replace('H', '');
+		}
+		value = value.trim();
+		
+		return value;
+	}
+	
+	/**
+	*
+	*/
+	public String calculateDurationDays(String value, Double workingHours){
+		
+		Double input1 = Double.valueOf(value); 
+		Integer workHours = workingHours.intValue();
+		Double CompleteValue = (input1 / workHours);
+		Integer days = Math.round(Math.floor(CompleteValue));
+				
+		Double remAux = (CompleteValue - days) * 10;
+		Integer remainder = remAux.intValue();
+		
+		if(remainder > 5){
+			value = String.valueOf(days + 1);
+		}
+		if(remainder < 5){
+			value = String.valueOf(days);
+		}
+		if(remainder == 5){
+			value = String.valueOf(days + 0.5);
+		}
+		
+		return value;
+	}
+	
+	/**
+	*
+	*/
+	public String calculateDurationHours(String value, Double workingHours){
+		
+		Double days = Double.valueOf(value);
+		Double hours = days * workingHours;
+		value = String.valueOf(hours);
+		
+		return value;
+	}
+	
 }
