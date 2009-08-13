@@ -182,6 +182,7 @@ Private -  This Project will not appear in search. Membership is by invitation o
         <fullName>WorkingHours__c</fullName>
         <label>Working hours</label>
         <precision>2</precision>
+        <required>true</required>
         <scale>0</scale>
         <type>Number</type>
     </fields>
