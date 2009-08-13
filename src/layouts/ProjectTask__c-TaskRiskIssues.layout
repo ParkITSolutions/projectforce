@@ -21,6 +21,10 @@
                 <behavior>Required</behavior>
                 <field>DurationUI__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>RawDuration__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsLeftToRight</style>

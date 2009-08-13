@@ -58,6 +58,10 @@
         <relationshipLabel><!-- Project Task --></relationshipLabel>
     </fields>
     <fields>
+        <label><!-- RawDuration --></label>
+        <name>RawDuration__c</name>
+    </fields>
+    <fields>
         <label><!-- Start Date --></label>
         <name>StartDate__c</name>
     </fields>

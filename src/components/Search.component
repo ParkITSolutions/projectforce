@@ -1,20 +1,10 @@
 <apex:component controller="SearchController"> 
     <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/search.js')}" />
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/searchComponent.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.SearchResources, 'inc/js/search.js')}" />
     <apex:attribute name="module" description="Type of search" type="String" required="true" assignTo="{!module}" />    
     <apex:attribute name="projectId" description="Id for project detail search" type="String" required="false" assignTo="{!teamId}" />
     <apex:attribute name="label" description="Label to show on the search box" type="String" required="false" assignTo="{!labelName}" />
-	<script type="text/javascript">
-		function encodeCriteria(){
-			var criteria = document.getElementsByClassName('key_imput')[0].value
-			criteria = criteria.replace(/&/g,"_")
-			criteria = criteria.replace(/%/g,":")
-			criteria = criteria.replace(/#/g,"-")
-			document.getElementsByClassName('key_imput')[0].value = criteria
-			return true
-		}
-		
-	</script>   
    
     <div class="searchBox">
         <div>
@@ -43,17 +33,10 @@
 	        keyImput.value = "{!$CurrentPage.parameters.key}";
 	    }
     	auxMeth();
+    	
     	decodeCriteria()
+    	
     </script>
     
-    <script type="text/javascript">
-    function decodeCriteria(){
-    	var criteria = document.getElementsByClassName('key_imput')[0].value
-		criteria = criteria.replace(/_/g,"&")
-		criteria = criteria.replace(/:/g,"%")
-		criteria = criteria.replace(/-/g,"#")
-		document.getElementsByClassName('key_imput')[0].value = criteria
-	}
-			
-    </script>
+   
 </apex:component>

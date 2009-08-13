@@ -104,6 +104,13 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>RawDuration__c</fullName>
+        <label>RawDuration</label>
+        <precision>18</precision>
+        <scale>0</scale>
+        <type>Number</type>
+    </fields>
+    <fields>
         <fullName>StartDate__c</fullName>
         <description>StartDate</description>
         <label>Start Date</label>
