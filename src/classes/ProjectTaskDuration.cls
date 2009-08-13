@@ -228,13 +228,17 @@ public class ProjectTaskDuration {
 	*
 	*/
 	public void insertRawDuration(ProjectTask__c task, String displayType, String duration, Double workingHours, String param){
+		
+		System.debug('-------------- duration '+ duration );
+		System.debug('-------------- working  '+ workingHours );
+		System.debug('-------------- param  '+ param );
 		Integer value;
 		Integer durValue = Integer.valueOf(duration);
 		
 		if(param == 'none'){
 			if( displayType.equals('Days') ){
-				Double hours = Double.valueOf( durValue ) * workingHours;
-				value = Integer.valueOf(hours);
+				Double hours = Double.valueOf( duration ) * workingHours;
+				value = hours.intValue();
 			}
 			else{
 				value = durValue;
@@ -242,8 +246,8 @@ public class ProjectTaskDuration {
 		}
 		
 		if(param == 'days'){
-			Double hours = Double.valueOf( durValue ) * workingHours;
-			value = Integer.valueOf(hours);
+			Double hours = Double.valueOf( duration ) * workingHours;
+			value = hours.intValue();
 		}
 		
 		if(param == 'hours'){
@@ -258,11 +262,11 @@ public class ProjectTaskDuration {
 	*/
 	public String replaceHours(String value){
 		
-		if(value.contains('d')){
-			value = value.replace('d', '');
+		if(value.contains('h')){
+			value = value.replace('h', '');
 		}
 		else{
-			value = value.replace('D', '');
+			value = value.replace('H', '');
 		}
 		value = value.trim();	
 		
@@ -274,11 +278,11 @@ public class ProjectTaskDuration {
 	*/
 	public String replaceDays(String value){
 		
-		if(value.contains('h')){
-			value = value.replace('h', '');
+		if(value.contains('d')){
+			value = value.replace('d', '');
 		}
 		else{
-			value = value.replace('H', '');
+			value = value.replace('D', '');
 		}
 		value = value.trim();
 		
