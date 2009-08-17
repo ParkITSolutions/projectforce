@@ -20,11 +20,11 @@
                 <field>AllowCustomerUsers__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>DisplayDuration__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>DaysInWorkWeek__c</field>
             </layoutItems>
             <layoutItems>

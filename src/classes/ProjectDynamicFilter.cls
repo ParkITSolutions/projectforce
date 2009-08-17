@@ -102,7 +102,8 @@ public class ProjectDynamicFilter {
 		List<SFField> picklists  = new List<SFField>();
 		List<SFField> checkboxes = new List<SFField>();
 		List<SFField> others     = new List<SFField>();
-		Set<String>   outFields  = new Set<String>{ 'IsExpanded', 'System Modstamp', 'Deleted', 'Id', 'Record ID', 'TaskPosition', 'TaskSyncId', 'Last Modified Date', 'Indent'  };  
+		// Add to this set the field who can't be shown
+		Set<String>   outFields  = new Set<String>{ 'IsExpanded', 'System Modstamp', 'Deleted', 'Id', 'Record ID', 'TaskPosition', 'TaskSyncId', 'Last Modified Date', 'Indent', 'Duration Display', 'RawDuration'  };  
 		
 		fieldList = new List<SFField>();
 	   	for (String fldName: fieldMap.keySet()) {

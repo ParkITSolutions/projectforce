@@ -348,6 +348,11 @@ public with sharing class ProjectMembersWidgetController {
 	public void saveMembers () {
 		List<ProjectMember__c> newMemberList = new List<ProjectMember__c>();
 		List<String> newMembers = newMemberVars.colleagueNames.split('[ ]*,[ ]*');
+		
+		if(newMembers.size() == 0){ //this case is when users put ",,,,,,"
+			newMembers.add(''+Math.random()+'');//puts an user that does not exist in order to throw an error
+		}
+		
 		List<User> userList = new List<User>();
 		already = false;
 		Map<String, User> usersMap = new Map<String, User>();

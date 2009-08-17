@@ -119,6 +119,7 @@
    
     </div>
                 <div class="informationPanel clear" id="infoToUser" style="display:none">
+               
                 </div>
     <!-- Main Content -->
     <div class="main_content">

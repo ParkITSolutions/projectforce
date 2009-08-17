@@ -157,14 +157,57 @@ public class ProjectTaskDuration {
 	
 	/**
 	*
-	*
-	public ProjectTask__c verifyStartDate(){
+	*/
+	public ProjectTask__c verifyStartDate(ProjectTask__c task, Project2__c project){
 		
+		Set<String> workdays = this.getWorkDays( Integer.valueOf(project.DaysInWorkWeek__c ) );
+		Datetime myDate = Datetime.valueOf(task.StartDate__c + '00:00:00');
+		String weekday = '';		
+		boolean isCorrect = false;
 		
-	}*/
+		while(isCorrect == false){
+			weekday = myDate.format('EEE');
+			if(workdays.contains(weekday)){
+				isCorrect = true;
+				task.StartDate__c = Date.newInstance(myDate.year(), myDate.month(), (myDate.day()));
+			}
+			else{
+				myDate = myDate.addDays(1);
+			}	
+		}
+		
+		return task;
+	}
 	
 	/**
 	*
+	*/
+	public ProjectTask__c verifyEndDate(ProjectTask__c task, Project2__c project){
+		if(task.EndDate__c  != null){
+			Set<String> workdays = this.getWorkDays( Integer.valueOf(project.DaysInWorkWeek__c ) );
+			Datetime myDate = Datetime.valueOf(task.EndDate__c + '00:00:00');
+			String weekday = '';		
+			boolean isCorrect = false;
+			
+			while(isCorrect == false){
+				weekday = myDate.format('EEE');
+				if(workdays.contains(weekday)){
+					isCorrect = true;
+					task.EndDate__c = Date.newInstance(myDate.year(), myDate.month(), (myDate.day()));
+				}
+				else{
+					myDate = myDate.addDays(1);
+				}	
+			}
+		}
+		return task;
+	}
+	
+	/**
+	*Method used to parse the duration entry. Taking into account the Hours / Days convention
+	*@param task
+	*@return ProjectTask__c
+	*@author Matias Menafra
 	*/
 	public ProjectTask__c parseDuration(ProjectTask__c task){
 		String input;
@@ -225,13 +268,18 @@ public class ProjectTaskDuration {
 	}
 	
 	/**
-	*
+	* Method to syncronize and store the Duration value always as a hour value.
+	* for future calculations thes value will be usefull
+	*@param task
+	*@param displayType
+	*@param duration
+	*@param workingHours
+	*@param param 
+	*@return void
+	*@author Matias Menafra
 	*/
 	public void insertRawDuration(ProjectTask__c task, String displayType, String duration, Double workingHours, String param){
 		
-		System.debug('-------------- duration '+ duration );
-		System.debug('-------------- working  '+ workingHours );
-		System.debug('-------------- param  '+ param );
 		Integer value;
 		Double durValue = Double.valueOf(duration);
 		
@@ -314,7 +362,10 @@ public class ProjectTaskDuration {
 		if(remainder > 5){
 			value = String.valueOf(days + 1);
 		}
-		if(remainder < 5){
+		if(remainder < 5 & days == 0){
+			value = String.valueOf(days + 0.5);
+		}
+		if(remainder < 5 && days != 0){
 			value = String.valueOf(days);
 		}
 		if(remainder == 5){

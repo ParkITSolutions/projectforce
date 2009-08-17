@@ -44,26 +44,41 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 
 		    } 	
 		    
-		    //TODO testing
-			ProjectTaskDuration duration = new ProjectTaskDuration();
-		    for( Integer j = 0; j < Trigger.new.size(); j++ ){
-		
-		    	tempPTNew = Trigger.new.get( j );		
-		 		tempPTNew = duration.parseDuration(tempPTNew);
-		 		System.debug('!!!----- valores : ' + tempPTNew.Duration__c);
-		 		if(tempPTNew.Project__c != null){
-		 			Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
-								from Project2__c 
-								where Id =: tempPTNew.Project__c];
-								
-					if(project.DisplayDuration__c.equals('Days')){
-						tempPTNew.EndDate__c = duration.doCalculateEndDateInDays(tempPTNew, Integer.valueOf(project.DaysInWorkWeek__c));
-					}
-					else{
-						tempPTNew.EndDate__c = duration.doCalculateEndDateInHours(tempPTNew, project);
-					}	
-    			}
-		    } 
+			    //TODO testing
+				ProjectTaskDuration duration = new ProjectTaskDuration();
+			    for( Integer j = 0; j < Trigger.new.size(); j++ ){
+			
+			    	tempPTNew = Trigger.new.get( j );		
+			 		
+			 		if(!tempPTNew.Milestone__c){
+			 			
+				 		if(tempPTNew.Project__c != null){
+				 			
+				 			Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
+											from Project2__c 
+											where Id =: tempPTNew.Project__c];
+											
+							duration.verifyStartDate(tempPTNew, project);
+							duration.verifyEndDate(tempPTNew, project);
+							
+				 			if(tempPTNew.EndDate__c == null){
+				 				tempPTNew = duration.parseDuration(tempPTNew);
+				 				
+								if(project.DisplayDuration__c.equals('Days')){
+									tempPTNew.EndDate__c = duration.doCalculateEndDateInDays(tempPTNew, Integer.valueOf(project.DaysInWorkWeek__c));
+								}
+								else{
+									tempPTNew.EndDate__c = duration.doCalculateEndDateInHours(tempPTNew, project);
+								}	
+				 			}
+				 			else{
+	 							tempPTNew = duration.doCalculateDuration(tempPTNew);
+	 							tempPTNew = duration.parseDuration(tempPTNew);
+				 			}
+		    			}
+		    			
+			    	} 
+		    }
 		    //TODO finish testing	
 		    
 		}
