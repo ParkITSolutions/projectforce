@@ -20,7 +20,7 @@
     <fields>
         <fullName>Duration__c</fullName>
         <description>Duration</description>
-        <label>Duration</label>
+        <label>Duration Display</label>
         <precision>13</precision>
         <scale>1</scale>
         <type>Number</type>

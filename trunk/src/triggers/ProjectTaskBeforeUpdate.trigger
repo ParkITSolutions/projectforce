@@ -28,38 +28,47 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 
     	tempPTOld = Trigger.old.get( k );
     	tempPTNew = Trigger.new.get( k );	
-		
-		Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
-								from Project2__c 
-								where Id =: tempPTNew.Project__c];
-								
-    	//Recalculate Duration when EndDate or StartDate was changed
-    	if(tempPTOld.EndDate__c != tempPTNew.EndDate__c || tempPTOld.StartDate__c != tempPTNew.StartDate__c){
- 			tempPTNew = duration.doCalculateDuration(tempPTNew);
-    	}
     	
-	   	//Recalculate EndDate when Duration was changed
-    	if(tempPTOld.DurationUI__c != tempPTNew.DurationUI__c){
- 			tempPTNew = duration.parseDuration(tempPTNew);
- 			if(project.DisplayDuration__c.equals('Days')){
-				tempPTNew.EndDate__c = duration.doCalculateEndDateInDays(tempPTNew, Integer.valueOf(project.DaysInWorkWeek__c));
-			}
-			else{
-				tempPTNew.EndDate__c = duration.doCalculateEndDateInHours(tempPTNew, project);
-			}	
-    	}
+    	Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
+									from Project2__c 
+									where Id =: tempPTNew.Project__c];
+									
+    	duration.verifyStartDate(tempPTNew, project);
     	
-	   	if( tempPTOld.Project__c != tempPTNew.Project__c){
-    		tempPTNew.addError( 'You can not modify project.');
-		}
-		
-		if( parentTasks.size() > 0 ){
-	    	if(tempPTOld.Project__c != parentTasks.get(k).Project__c ){
-	    		tempPTNew.addError( 'Invalid parent task value.');
+		if(!tempPTNew.Milestone__c){
+			
+			duration.verifyStartDate(tempPTNew, project);
+			duration.verifyEndDate(tempPTNew, project);
+													
+	    	//Recalculate Duration when EndDate or StartDate was changed
+	    	if(tempPTOld.EndDate__c != tempPTNew.EndDate__c || tempPTOld.StartDate__c != tempPTNew.StartDate__c){
+	 			tempPTNew = duration.doCalculateDuration(tempPTNew);
+	    	}
+	    	
+		   	//Recalculate EndDate when Duration was changed
+	    	if(tempPTOld.DurationUI__c != tempPTNew.DurationUI__c){
+	 			tempPTNew = duration.parseDuration(tempPTNew);
+	 			if(project.DisplayDuration__c.equals('Days')){
+					tempPTNew.EndDate__c = duration.doCalculateEndDateInDays(tempPTNew, Integer.valueOf(project.DaysInWorkWeek__c));
+				}
+				else{
+					tempPTNew.EndDate__c = duration.doCalculateEndDateInHours(tempPTNew, project);
+				}	
 	    	}
 		}
 		
-   	 	AuxMap.put( tempPTOld.id, tempPTOld );
+		   	if( tempPTOld.Project__c != tempPTNew.Project__c){
+	    		tempPTNew.addError( 'You can not modify project.');
+			}
+			
+			if( parentTasks.size() > 0 ){
+		    	if(tempPTOld.Project__c != parentTasks.get(k).Project__c ){
+		    		tempPTNew.addError( 'Invalid parent task value.');
+		    	}
+			}
+			
+	   	 	AuxMap.put( tempPTOld.id, tempPTOld );
+		
     } 
     ProjectUtil.BaseMap=AuxMap;    
 }

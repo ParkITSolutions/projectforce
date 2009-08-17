@@ -6,6 +6,7 @@ public class ProjectSubscribersEmailServices {
     //E-mail services instance
     private Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
     private List<ProjectSubscription__c> subscriptions = new List<ProjectSubscription__c>();
+    private List<ProjectSubscription__c> subscriptions2 = new List<ProjectSubscription__c>();
     public Boolean isTaskEdit = false;  
     public Boolean isTest = false;
     
@@ -227,15 +228,16 @@ public class ProjectSubscribersEmailServices {
 	        			+ lstPT[0].Description__c+'<br /><br />The percent completed has changed from '+oldPercent
 	        			+' to '+lstPT[0].PercentCompleted__c;
         	emailSub = lstPT[0].Name + ' percent completed changed';
-
-
+        	
 	        if (!isTest){
 	            subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, 
 	            					Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, 
 	            					ProjectTaskChanged__c, ProjectTaskDeleted__c 
 	            					FROM ProjectSubscription__c 
-	            					WHERE  Project__c =: lstPT[0].Project__c   and ProjectTaskChanged__c = true and user__c in :SubAssignees];
+	            					WHERE  Project__c =: lstPT[0].Project__c   and ProjectTaskChanged__c = true];
+	             
 	        }
+	        
 	    	if( subscriptions.size() > 0){	
 	    	     genAddress( subscriptions, emailMsj, emailSub );
 			}        

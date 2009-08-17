@@ -16,7 +16,7 @@
         <name>DurationUI__c</name>
     </fields>
     <fields>
-        <label><!-- Duration --></label>
+        <label><!-- Duration Display --></label>
         <name>Duration__c</name>
     </fields>
     <fields>
