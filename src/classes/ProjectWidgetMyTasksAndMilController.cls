@@ -51,10 +51,8 @@ public class ProjectWidgetMyTasksAndMilController {
         List<ProjectTask__c> myProjectsTasks = new List<ProjectTask__c>();
                 
         //Populate allProjects  
-        
-        allProjectsTasks = [Select  p.Id, 
-                            	(Select User__c From ProjectsAssignees__r) 
-                            	From ProjectTask__c  p];
+        for(ProjectTask__c pt : [Select  p.Id, (Select User__c From ProjectsAssignees__r) From ProjectTask__c  p] )
+            allProjectsTasks.add(pt) ;
                         
         // Set id of Project assign to me
         Set<Id> projToMe = new Set<Id>();
