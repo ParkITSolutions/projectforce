@@ -19,6 +19,8 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 			for(ProjectTask__c nTask : Trigger.new) {
 				String queueId = projectMap.get('Project' + nTask.Project__c);
 				if(nTask.Milestone__c){
+					
+					nTask.DurationUI__c = '1'; 
 		 			
 		 			if(nTask.EndDate__c != null)
  		 			nTask.EndDate__c.addError( 'The Milestones can not have End Date.');
