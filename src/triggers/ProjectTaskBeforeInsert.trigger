@@ -21,6 +21,7 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 				if(nTask.Milestone__c){
 					
 					nTask.DurationUI__c = '1'; 
+					nTask.Duration__c = 1.0; 
 		 			
 		 			if(nTask.EndDate__c != null)
  		 			nTask.EndDate__c.addError( 'The Milestones can not have End Date.');
