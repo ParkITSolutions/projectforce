@@ -128,7 +128,7 @@ public with sharing class ProjectOverviewController {
         if(System.currentPageReference().getParameters().get('filter') != null)
             filter = System.currentPageReference().getParameters().get('filter');
             
-                    
+ 
         //@newProjects
         if(filter == 'newProjects'){
             /*projects = [Select (Select Id From ProjectsMembers__r), 

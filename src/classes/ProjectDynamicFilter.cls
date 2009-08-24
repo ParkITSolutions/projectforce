@@ -120,7 +120,7 @@ public class ProjectDynamicFilter {
 	    	else if (  newField.fieldType.toLowerCase() == 'boolean' ){
 	    		checkboxes.add( newField );
 	    	}
-	    	else if (  newField.fieldType.toLowerCase() != 'reference' ){
+	    	else if (  newField.fieldType.toLowerCase() != 'reference' && newField.fieldType.toLowerCase() != 'textarea'){
 	    		others.add( newField );
 	    	}
 		}
@@ -165,12 +165,20 @@ public class ProjectDynamicFilter {
 		
 		for( SFField f : this.fieldList ){
 			if( f.name != 'assignee' && f.value != null && f.value != '' && f.value != 'false' ){
-				System.debug( '*_*' + f.value + f.name);
-				if( f.fieldType.toLowercase() == 'date'){
+				System.debug( '*_***' + f.name +':' + f.fieldType);
+				if( f.fieldType.toLowercase() == 'date' ){
 					//auxDateStr = f.value.split( '/', 0 );
 					fieldsName += ' AND ' + f.name + ' = ' + f.value;//+ auxDateStr[2] + '-' + auxDateStr[0] + '-' + auxDateStr[1];
-				}else if( f.fieldType == 'BOOLEAN' )
+				}else if(f.fieldType.toLowercase() == 'datetime'){
+					String foo = f.value + 'T' + '00:00:00Z';
+					fieldsName += ' AND ' + f.name + ' = ' + foo;
+				}
+				else if( f.fieldType == 'BOOLEAN' ) 
 					fieldsName += ' AND ' + f.name + ' = ' + f.value + ' ';
+				else if( f.fieldType == 'PERCENT' )
+					fieldsName += ' AND ' + f.name + ' = ' + f.value + ' ';
+				else if( f.fieldType == 'TEXTAREA' )
+					fieldsName += ' AND (' + f.name + ' LIKE \'%' + f.value + '%\') ';
 				else 
 					fieldsName += ' AND ' + f.name + ' = \'' + f.value + '\' ';
 			}

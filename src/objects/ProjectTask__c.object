@@ -13,7 +13,7 @@
     <fields>
         <fullName>DurationUI__c</fullName>
         <label>Duration</label>
-        <length>10</length>
+        <length>5</length>
         <required>true</required>
         <type>Text</type>
     </fields>
