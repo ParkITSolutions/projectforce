@@ -293,6 +293,14 @@ Private -  This Project will not appear in search. Membership is by invitation o
         <excludedStandardButtons>Accept</excludedStandardButtons>
     </searchLayouts>
     <sharingModel>Private</sharingModel>
+    <validationRules>
+        <fullName>Working_hours_Limit</fullName>
+        <active>true</active>
+        <description>Controls user input for working hours, should not exceed 24 hours per day</description>
+        <errorConditionFormula>WorkingHours__c &gt;24</errorConditionFormula>
+        <errorDisplayField>WorkingHours__c</errorDisplayField>
+        <errorMessage>Value cannot exceed 24 hours per day</errorMessage>
+    </validationRules>
     <webLinks>
         <fullName>ProjectTimeline</fullName>
         <availability>online</availability>
