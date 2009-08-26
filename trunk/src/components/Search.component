@@ -6,20 +6,48 @@
     <apex:attribute name="projectId" description="Id for project detail search" type="String" required="false" assignTo="{!teamId}" />
     <apex:attribute name="label" description="Label to show on the search box" type="String" required="false" assignTo="{!labelName}" />
    
+   <script>
+   
+   function func(){
+   
+   document.getElementById('search_error').style.display='';
+   return false;
+   
+   }
+   
+   </script>
+   
     <div class="searchBox">
         <div>
             <div>
                 <div class="center_gray">
-                    <apex:form onsubmit="encodeCriteria()" >
+                    <apex:form onsubmit="func()" >
                         <div class="search_box_input f_left" >
                             <div class="legend_portal">
                                 <span><img class="f_left" alt="" src="{!URLFOR($Resource.ProjectResources, 'images/layout/magnifier.gif')}" />Find {!labelName}</span>
                             </div>
                             <apex:inputText value="{!key}" id="searchQuery" styleClass="key_imput" onfocus="changeInputValue('focus');" onblur="changeInputValue('blur');"/>
                             <apex:inputText style="display: none;"/>
+                           
                         </div>
+                        
+                        <style>
+                        	.my_error{
+                        		color: red;
+                        		position:relative;
+								right:180px;
+								top:8px;
+								display: none;
+                        	}
+                        </style>
+                        
+                        <div id="search_error" class="my_error"> Error </div>
+                      
                         <apex:commandButton value="Search" action="{!searchKey}" id="searchBtn" styleClass="search_btn f_left" style="background-image: none !important;" />
+                        
+                           
                     </apex:form>
+                  
                 </div>
             </div>
         </div>

@@ -234,6 +234,11 @@ public class ProjectTaskDuration {
 		
 		if(!isDays && !isHours){
 			//no Hour / Days conevention used
+			if( !project.DisplayDuration__c.equals('Days') ){
+				//to deal with decimal hour values
+				Double valueAux = Math.floor( Double.valueOf(input) ) ;
+				input = String.valueOf(valueAux);
+			}
 			this.insertRawDuration(task, project.DisplayDuration__c, input, project.WorkingHours__c, 'none');
 		}
 		

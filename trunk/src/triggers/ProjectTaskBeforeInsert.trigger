@@ -19,16 +19,21 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 			for(ProjectTask__c nTask : Trigger.new) {
 				String queueId = projectMap.get('Project' + nTask.Project__c);
 				if(nTask.Milestone__c){
-					
+					Project2__c project1 = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
+											from Project2__c 
+											where Id =: nTask.Project__c];
+					duration.verifyStartDate(nTask, project1);
+											
 					nTask.DurationUI__c = '1'; 
 					nTask.Duration__c = 1.0; 
 		 			
 		 			if(nTask.EndDate__c != null)
- 		 			nTask.EndDate__c.addError( 'The Milestones can not have End Date.');
+ 		 				nTask.EndDate__c.addError( 'The Milestones can not have End Date.');
  		 			
  		 			if(nTask.ParentTask__c != null)
- 		 			nTask.ParentTask__c.addError( 'The Milestones can not have Parent Task.');
- 		 			
+ 		 				nTask.ParentTask__c.addError( 'The Milestones can not have Parent Task.');
+ 		 				
+ 		 			nTask.EndDate__c = nTask.StartDate__c;
 		 		} 
 				if(queueId != null)
                     nTask.OwnerId = queueId;
@@ -54,30 +59,38 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 			    	tempPTNew = Trigger.new.get( j );		
 			 		
 			 		if(!tempPTNew.Milestone__c){
-			 			
+			 						 			
 				 		if(tempPTNew.Project__c != null){
 				 			
 				 			Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
 											from Project2__c 
 											where Id =: tempPTNew.Project__c];
-											
-							duration.verifyStartDate(tempPTNew, project);
-							duration.verifyEndDate(tempPTNew, project);
 							
-				 			if(tempPTNew.EndDate__c == null){
-				 				tempPTNew = duration.parseDuration(tempPTNew);
-				 				
-								if(project.DisplayDuration__c.equals('Days')){
-									tempPTNew.EndDate__c = duration.doCalculateEndDateInDays(tempPTNew, Integer.valueOf(project.DaysInWorkWeek__c));
-								}
-								else{
-									tempPTNew.EndDate__c = duration.doCalculateEndDateInHours(tempPTNew, project);
-								}	
-				 			}
-				 			else{
-	 							tempPTNew = duration.doCalculateDuration(tempPTNew);
-	 							tempPTNew = duration.parseDuration(tempPTNew);
-				 			}
+							String regex = tempPTNew.DurationUI__c;
+							regex = regex.replaceAll('\\d[0-9]*[\\\\.\\d{0,2}]?[h,d,H,D]?','');
+							if(regex != ''){
+								tempPTNew.DurationUI__c.addError('Invalid format for Hours / Days convention!');
+							}
+							else{
+							
+								duration.verifyStartDate(tempPTNew, project);
+								duration.verifyEndDate(tempPTNew, project);
+								
+					 			if(tempPTNew.EndDate__c == null){
+					 				tempPTNew = duration.parseDuration(tempPTNew);
+					 				
+									if(project.DisplayDuration__c.equals('Days')){
+										tempPTNew.EndDate__c = duration.doCalculateEndDateInDays(tempPTNew, Integer.valueOf(project.DaysInWorkWeek__c));
+									}
+									else{
+										tempPTNew.EndDate__c = duration.doCalculateEndDateInHours(tempPTNew, project);
+									}	
+					 			}
+					 			else{
+		 							tempPTNew = duration.doCalculateDuration(tempPTNew);
+		 							tempPTNew = duration.parseDuration(tempPTNew);
+					 			}
+							}
 		    			}
 		    			
 			    	} 
