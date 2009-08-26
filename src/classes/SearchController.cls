@@ -14,6 +14,8 @@ public class SearchController {
 	// Default input field text value
 	private String defText = '';
 	
+	private boolean isCriteriaLengthProperly = true;
+	
 	// Map with action=>PageReference
 	private Map<String, PageReference> searchIn = new Map<String, PageReference>{
 		'project' => Page.ProjectSearchResult
@@ -106,6 +108,18 @@ public class SearchController {
 	*@return PageReference
 	*/
 	public PageReference searchKey(){
+		
+		isCriteriaLengthProperly = true;
+		
+		if(this.key.length() < 2){
+			
+			isCriteriaLengthProperly = false;
+			
+			PageReference pageRef = Page.projectOverview;
+			pageRef.setRedirect(true);			
+			return pageRef;
+		}
+		
 		if(this.module != null && this.module != ''){
 			PageReference pageRef = searchIn.get(module);
 			pageRef.getParameters().put('key', this.key);
@@ -118,5 +132,13 @@ public class SearchController {
 		}else {
 			return null;
 		}
+	}
+	
+	/**
+	*@return boolean
+	*/	
+	public boolean getIsCriteriaLengthProperly() {
+			
+		return isCriteriaLengthProperly;
 	}
 }

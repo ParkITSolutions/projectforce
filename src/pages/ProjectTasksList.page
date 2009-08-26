@@ -31,6 +31,12 @@
         #paginationOverlay{
             background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat center;
         }
+        .borderRed{
+        	border-color: red;
+        }
+        .colorRed{
+        	color: red;
+        }
     </style>
    
     <!-- ProjectTaskList JS -->
@@ -157,7 +163,7 @@
             <div id="paginationOverlay" style="display:none;"></div> 
                             
             <apex:outputpanel id="taskListPanel" layout="block" >
-                <apex:form id="ref">
+                <apex:form id="ref" onsubmit="">
                     <apex:actionFunction action="{!refreshTaskList}" oncomplete="showHideOverlay(); advFilterAfterRerender();" name="sortListEvent" rerender="ref" />
                     <div class="tableTopContainer" style="height: auto;">            
                         <div class="filterContainer" >
@@ -275,15 +281,15 @@
 
                                                 <apex:outputPanel rendered="{!IF( o.fieldType == 'DATE' || o.fieldType == 'DATETIME', true, false) }" layout="block" styleClass="DymFilElem">
                                                     <span class="DynFIlLabel">{!o.label}</span><br />
-                                                    {!o.fieldType}
-                                                    <apex:inputText value="{!o.value}" styleClass="DynFilDateField" onClick="setActualFieldId(this);" title="MM/DD/YYYY" size="10" onchange="closeCalendar();" onfocus="f=''"/>
-                                                    <!-- {!o.name}::{!o.FieldType} -->
+                                                    <apex:inputText alt="{!o.name}" value="{!o.value}" styleClass="DynFilDateField" onClick="setActualFieldId(this);" title="MM/DD/YYYY" size="10" onchange="closeCalendar();" onfocus="f=''"/>
+                                                    <br><span id="{!o.name}" style="display: none;" class="colorRed">Not valid date.</span>
                                                 </apex:outputPanel>   
-                                       
+                                         
                                                 <apex:outputPanel rendered="{!IF( o.fieldType != 'PICKLIST' && o.fieldType != 'BOOLEAN'&& o.fieldType != 'DATE' && o.fieldType != 'DATETIME', true, false) }" layout="block" styleClass="DymFilElem">
                                                     <span class="DynFIlLabel">{!o.label}</span><br />
-                                                    <apex:inputText value="{!o.value}"  onfocus="f=''"/>
-                                                    <!-- {!o.name}::{!o.FieldType} -->
+                                                    <apex:inputText alt="{!o.name}" value="{!o.value}"  onfocus="f=''" styleClass="{!o.fieldType}" title="{!o.label}"/>
+                                                    <br><span id="{!o.name}_int" style="display: none;" class="colorRed">Must be an Int value</span>
+                                                    <span id="{!o.name}_percent" style="display: none;" class="colorRed">Must be between 0 and 100</span>
                                                 </apex:outputPanel>   
                                             </apex:repeat>
                                         </td>
@@ -300,10 +306,10 @@
                                                     </apex:selectList>
                                                 </div>
                                                 <br />
-                                                <apex:commandLink action="{!dynFilter.loadFilter}" rerender="AdvancedFilterContainer"
-                                                    onclick="showHideOverlay();" oncomplete="sortListEvent();" styleclass="blackbutton" >
+                                                <apex:actionFunction name="callx" action="{!dynFilter.loadFilter}" rerender="AdvancedFilterContainer" oncomplete="sortListEvent();"/>
+                                                <a class="blackbutton" onclick="validateDynForm();" href="javascript:;">
                                                     <span>Apply Filter</span>
-                                                   </apex:commandLink>
+                                                   </a>
                                                 <apex:commandLink action="{!dynFilter.deleteFilter}"  rerender="AdvancedFilterContainer"
                                                     onclick="if(confirm('Are you want to delete this filter')){showHideOverlay();}else{return false;}"
                                                     oncomplete="showHideOverlay();" styleclass="blackbutton" >
@@ -699,7 +705,7 @@
     <script>
         showActionSuccess();
         gCal = false;
-        readPortalCSSRules();
+        
          window.onload = function(){ Calendar.setup({
              dateField     : 'dateHidden',
              triggerElement: 'dateHidden'
@@ -718,7 +724,54 @@
 		   		$$('.blackbutton')[5].onclick();
 		}
 
-		
+		function validateDynForm(){
+    noErr = true;
+    finalErr = false;;
+ $('advancedFilterContainer2').descendants().each(function(e){
+
+    e.style.borderColor = '';
+    idMess = '';
+
+    if( e.type == 'text' ){
+
+        e.value.strip();
+        if( e.title == 'MM/DD/YYYY' ){
+	    idMess = e.alt;		
+            date = e.value.split('-');
+            noErr = date.length == 3 &&
+                    date[ 0 ].length == 4 && 0 < date[ 0 ] &&
+                    date[ 1 ].length == 2 && 0 < date[ 1 ] && date[ 1 ] < 13 && 
+		    date[ 2 ].length == 2 && 0 < date[ 2 ] && date[ 2 ] < 32;
+        }else if( e.className == 'STRING' ){
+            if( e.title == 'Duration' ){
+	            idMess = e.alt + "_int";		
+                noErr = !isNaN(e.value);
+            }
+        }else if( e.className == 'PERCENT' ){
+	    idMess = e.alt + "_percent";		
+            noErr = !isNaN(e.value);
+            if( noErr && e.value != '' ) {
+                val = parseInt( e.value );
+                noErr =  -1 < val && val < 101;
+            }
+        }
+        $( idMess ).hide();
+        if( !noErr ){
+            e.style.borderColor = 'red';
+            $( idMess ).show();
+        }
+        if( !finalErr )
+        finalErr = !noErr;
+    }
+
+});  
+
+if( !finalErr){
+    showHideOverlay();
+    callx(); 
+
+}
+}
        
     </script>
     <input type="text" id="dateHidden" value="" onchange="setValsAndCloseCalendar();" style="display: none;"/>

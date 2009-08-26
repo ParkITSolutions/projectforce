@@ -520,5 +520,6 @@ public with sharing class ProjectSearchResultController {
 		public String getRealName () {
 			return realName;
 		}	
+			
 	}
 }

@@ -60,7 +60,7 @@
 				<apex:outputpanel rendered="{!IF(totalItemsNumber == 0 ,true,false)}">
 					<div class="noResult">No results for '{!criteria}'</div>
 				</apex:outputpanel>
-	
+				
 				<!-- Output panel Start -->								
 				<apex:outputpanel rendered="{!IF(totalItemsNumber == 0 ,false,true)}">
 	
