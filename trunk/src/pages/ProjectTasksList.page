@@ -281,7 +281,7 @@
 
                                                 <apex:outputPanel rendered="{!IF( o.fieldType == 'DATE' || o.fieldType == 'DATETIME', true, false) }" layout="block" styleClass="DymFilElem">
                                                     <span class="DynFIlLabel">{!o.label}</span><br />
-                                                    <apex:inputText alt="{!o.name}" value="{!o.value}" styleClass="DynFilDateField" onClick="setActualFieldId(this);" title="MM/DD/YYYY" size="10" onchange="closeCalendar();" onfocus="f=''"/>
+                                                    <apex:inputText alt="{!o.name}" value="{!o.value}" styleClass="DynFilDateField" onClick="setActualFieldId(this);" title="MM/DD/YYYY" size="10" onchange="closeCalendar();" onfocus="f='';setActualFieldId(this);"/>
                                                     <br><span id="{!o.name}" style="display: none;" class="colorRed">Not valid date.</span>
                                                 </apex:outputPanel>   
                                          
@@ -307,9 +307,10 @@
                                                 </div>
                                                 <br />
                                                 <apex:actionFunction name="callx" action="{!dynFilter.loadFilter}" rerender="AdvancedFilterContainer" oncomplete="sortListEvent();"/>
-                                                <a class="blackbutton" onclick="validateDynForm();" href="javascript:;">
-                                                    <span>Apply Filter</span>
-                                                   </a>
+												<apex:commandLink action="{!dynFilter.loadFilter}" rerender="AdvancedFilterContainer"
+													onclick="showHideOverlay();" oncomplete="sortListEvent();" styleclass="blackbutton" >
+													<span>Apply Filter</span>
+												</apex:commandLink>
                                                 <apex:commandLink action="{!dynFilter.deleteFilter}"  rerender="AdvancedFilterContainer"
                                                     onclick="if(confirm('Are you want to delete this filter')){showHideOverlay();}else{return false;}"
                                                     oncomplete="showHideOverlay();" styleclass="blackbutton" >
@@ -320,10 +321,13 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2">
-                                                <hr size="1" style="background: #ADADAD;" />                                            <apex:commandLink action="{!refreshTaskList}"  rerender="taskListPanel" onclick="showHideOverlay();"  oncomplete="showHideOverlay();advFilterAfterRerender();" styleclass="blackbutton" >
-                                                <span>Apply Filter</span>
-                                                 <apex:param name="svFil0" value="false" assignTo="{!filter.svFilter}"/>
-                                               </apex:commandLink>
+                                                <hr size="1" style="background: #ADADAD;" />            
+                                                <apex:outputPanel id="fu" rendered="false"></apex:outputPanel>                                
+                                                <apex:actionFunction name="foo" rerender="taskListPanel" action="{!refreshTaskList}" oncomplete="showHideOverlay();advFilterAfterRerender();" />
+                                                <apex:commandLink rerender="fu" onclick="validateDynForm();" styleclass="blackbutton" >
+                                                	<span>Apply Filter</span>
+                                                    <apex:param name="svFil0" value="false" assignTo="{!filter.svFilter}"/>
+                                                </apex:commandLink>
                                             <apex:outputPanel rendered="{!AND(filterApplyed, NOT(filter.svFilter))}">   
                                                 <a class="blackbutton SaveFilterBtn" onclick="createOverlay('', 'saveNewFlter', '160');">
                                                     <span>Save Filter</span>
@@ -736,19 +740,20 @@
 
         e.value.strip();
         if( e.title == 'MM/DD/YYYY' ){
-	    idMess = e.alt;		
+	    	idMess = e.alt;		
             date = e.value.split('-');
-            noErr = date.length == 3 &&
-                    date[ 0 ].length == 4 && 0 < date[ 0 ] &&
-                    date[ 1 ].length == 2 && 0 < date[ 1 ] && date[ 1 ] < 13 && 
+            if( e.value != '' )
+            	noErr = date.length == 3 &&
+                    	date[ 0 ].length == 4 && 0 < date[ 0 ] &&
+                    	date[ 1 ].length == 2 && 0 < date[ 1 ] && date[ 1 ] < 13 && 
 		    date[ 2 ].length == 2 && 0 < date[ 2 ] && date[ 2 ] < 32;
         }else if( e.className == 'STRING' ){
+            idMess = e.alt + "_int";		
             if( e.title == 'Duration' ){
-	            idMess = e.alt + "_int";		
                 noErr = !isNaN(e.value);
             }
         }else if( e.className == 'PERCENT' ){
-	    idMess = e.alt + "_percent";		
+	    	idMess = e.alt + "_percent";		
             noErr = !isNaN(e.value);
             if( noErr && e.value != '' ) {
                 val = parseInt( e.value );
@@ -756,19 +761,19 @@
             }
         }
         $( idMess ).hide();
-        if( !noErr ){
+        if( !noErr ){ 
+        	noErr = true;
             e.style.borderColor = 'red';
             $( idMess ).show();
+            finalErr = true;
         }
-        if( !finalErr )
-        finalErr = !noErr;
     }
 
 });  
 
 if( !finalErr){
     showHideOverlay();
-    callx(); 
+    foo(); 
 
 }
 }

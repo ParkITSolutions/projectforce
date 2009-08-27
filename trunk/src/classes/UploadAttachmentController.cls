@@ -15,7 +15,7 @@ public class UploadAttachmentController {
 	// max attachment size bytes
     public final Integer MAX_SIZE = 5240000;
     
-    public Set<String> imagesTypes = new Set<String> {'image/jpeg', 'image/pjpeg', 'image/png', 'image/x-png', 'image/gif', 'image/bmp'};
+    public Set<String> imagesTypes = new Set<String> {'image/jpeg', 'image/pjpeg', 'image/png', 'image/x-png', 'image/gif'};
   	
   	// New Attachment Object
 	public Attachment newAttach = new Attachment();
@@ -67,10 +67,12 @@ public class UploadAttachmentController {
 	*@return void
 	*/
 	public void setNewAttach (Attachment newAttach) {
-		if(this.newAttach !=null)
+		
+		if(this.newAttach != null)
 		this.newAttach = new Attachment();
 		
 		this.newAttach = newAttach;	
+		
 	}
 	
 	/**
@@ -103,12 +105,10 @@ public class UploadAttachmentController {
 			validAttSize = true;
 			
 			//Update project with current avatar
-			if(asAvatar.equals('true') && imagesTypes.contains(newAttach.ContentType)){
+			if(asAvatar.equals('true') && imagesTypes.contains(newAttach.ContentType) && newAttach.name.length() < 71){
 				if(parentId != null){
 					//Read Project
-					Project2__c project = [select p.Id, p.Picture__c 
-											from Project2__c p 
-											where p.Id =: parentId];
+					Project2__c project = [select p.Id, p.Picture__c from Project2__c p where p.Id =: parentId];
 					
 					//Read old avatar and delete it.
 					if(project.Picture__c != null){
@@ -123,13 +123,15 @@ public class UploadAttachmentController {
 					update project;
 				}
 			}else if (asAvatar.equals('true')){
-				errorMsg = 'Please select an image file, such: jpg, gif or png';
+				errorMsg = 'Please select an image file. Valid format: .jpeg, .pjpeg, .png, .x-png, .gif';
+				if(newAttach.name.length() > 70 )
+					errorMsg += '. The length of the attachment name must be less than 64.';
 				validAttSize = false;
 				return null;				
-			}else
+			}else{
 				insert newAttach;
-			
-			
+			}
+			 
 			PageReference pageRef = Page.UploadAttachment;
 			pageRef.setRedirect(true);
 			return pageRef;

@@ -16,12 +16,25 @@ public with sharing class ProjectOverviewController {
     public String objectPrefix = Schema.SObjectType.Project2__c.getKeyPrefix();
     //Items to list per page 
     static final Integer itemsToList = 10;
+    
+    public String domain;
+    
     /**
     * Construct
     */
     public projectOverviewController(){
         projectsForTabs();
+        
+        domain = ProjectUtil.getDomain();
     }   
+    
+    
+	/**
+	*@return String
+	*/
+	public String getDomain(){
+		return this.domain;
+	}
     
     /**
     *@param Boolean b

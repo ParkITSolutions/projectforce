@@ -289,7 +289,7 @@ public class ProjectDynamicFilter {
 	
 	/*
 	* Inner Class
-	*/
+	*/  
 	public class SFField {
 		
 		List<SelectOption> options = new List<SelectOption>();
