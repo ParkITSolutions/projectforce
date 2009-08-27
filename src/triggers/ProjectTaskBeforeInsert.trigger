@@ -5,6 +5,7 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 		 	List<Id> tasksInTrrNewIds = new List<Id>();
 			List<ProjectTask__c> parentTasks = new List<ProjectTask__c>();			
 			List<String> projectSharingGroupNames = new List<String>();		
+			ProjectTaskDuration duration = new ProjectTaskDuration();
 			
 			for(ProjectTask__c p : Trigger.new) {
 		 		tasksInTrrNewIds.add( p.ParentTask__c );
@@ -53,7 +54,7 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 		    } 	
 		    
 			    //TODO testing
-				ProjectTaskDuration duration = new ProjectTaskDuration();
+				
 			    for( Integer j = 0; j < Trigger.new.size(); j++ ){
 			
 			    	tempPTNew = Trigger.new.get( j );		

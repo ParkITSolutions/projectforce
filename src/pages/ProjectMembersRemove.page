@@ -15,6 +15,7 @@
 		<div class="overlayMainContent">
 			<apex:form id="removeMemberForm">
 			    <script>
+						
                     var removeStatus = '{!finish}';
                     if( removeStatus == 'true' ){
                         modal.close();
@@ -59,12 +60,13 @@
 							action="{!removeMember}" 
 							style="float: none;background: #21637D none repeat scroll 0 0 !important;" 
 							value="Continue and delete member" 
-							rerender="removeMemberForm"
-							oncomplete="showMessageToUser('Member has been deleted to this project','success');setTimeout('Effect.Fade(\'infoToUser\')', 10000);"/>
+							rerender="removeMemberForm,adminRemove"
+							oncomplete="displayMessageToUser();"/>
 							 
 						<input class="allButtons cancelButtons" style="float: none;" type="button" value="Cancel" onclick="modal.close();"/>
 					</div>
 				</apex:outputPanel>
+				<apex:outputPanel styleClass="adminRemove" id="adminRemove" style="display:none;">{!error}</apex:outputPanel>
 				<div align="center">
 					<apex:outputPanel layout="block" id="cancelBtnContainer" rendered="{!error}">
 	      			    <apex:commandButton styleClass="allButtons cancelButtons" id="removeCancelButton" action="{!resetErrorAndFinish}" rerender="newMemberForm" value="Cancel" onclick="modal.close();$('paginationOverlay').hide();" />
