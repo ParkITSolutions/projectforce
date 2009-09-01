@@ -1,9 +1,10 @@
 <apex:page sidebar="false" showHeader="false" controller="UploadAttachmentController">
-	<script type="text/javascript">
+	<script type="text/javascript"> 
 		function validateFile(ele){
 			if(ele != null || ele != '')
 			{
-				document.getElementById('errorText').style.display = 'none';
+				if($('errorText'))
+				$('errorText').hide();
 			}
 		}
 		
@@ -11,7 +12,7 @@
 			$$('.inputFileDiv')[0].style.display = 'none';
 			$$('.uploadingStatus')[0].innerHTML = 'Uploading File, please wait...';
 		}
-		
+
 	</script>
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/uploadAttachment.css')}" />
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/uploadAttachment.js')}" />
@@ -23,7 +24,7 @@
 	<!-- Portal Support -->
 	<apex:includeScript value="{!$Resource.portalSupport}"/>	
 
-	<apex:outputpanel rendered="{!IF(parentId == null, true, false)}">
+	<apex:outputpanel rendered="{!IF(parentId == null, true, false)}" style="display: block;" layout="block">
 		<div id="uploadFinished"></div>
 	</apex:outputpanel>
 	
@@ -40,6 +41,7 @@
 							filename="{!newAttach.Name}" 
 							fileSize="{!newAttach.BodyLength}"
 							onChange="validateFile(this.value);"
+							onkeydown="blur();"
 							/><br/>
 						<apex:outputPanel rendered="{!NOT validAttSize}">
 							<span class="errorText" id="errorText"><b>Error:</b> {!errorMsg}</span>

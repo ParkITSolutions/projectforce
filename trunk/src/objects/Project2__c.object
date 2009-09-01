@@ -31,19 +31,21 @@ Private -  This Project will not appear in search. Membership is by invitation o
     <fields>
         <fullName>AllowCustomerUsers__c</fullName>
         <defaultValue>false</defaultValue>
-        <inlineHelpText>Set cheked to allow customer portal users.</inlineHelpText>
+        <inlineHelpText>Check to allow customer portal users.</inlineHelpText>
         <label>Allow customer portal users</label>
         <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>AllowPartnerUsers__c</fullName>
         <defaultValue>false</defaultValue>
-        <inlineHelpText>Set cheked to allow partner portal users</inlineHelpText>
+        <inlineHelpText>Check to allow partner portal users</inlineHelpText>
         <label>Allow partner portal users</label>
         <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>DaysInWorkWeek__c</fullName>
+        <description>Sets how many days in a  work week.</description>
+        <inlineHelpText>1 = Mon /  7 = Sun</inlineHelpText>
         <label>Days in a work week</label>
         <picklist>
             <picklistValues>
@@ -86,7 +88,7 @@ Private -  This Project will not appear in search. Membership is by invitation o
     </fields>
     <fields>
         <fullName>DisplayDuration__c</fullName>
-        <inlineHelpText>Set how you want see the Duration field, in hours or days.</inlineHelpText>
+        <inlineHelpText>Sets how the Duration field will be displayed, in hours or days.</inlineHelpText>
         <label>Display Duration</label>
         <picklist>
             <picklistValues>
@@ -181,6 +183,8 @@ Private -  This Project will not appear in search. Membership is by invitation o
     <fields>
         <fullName>WorkingHours__c</fullName>
         <defaultValue>1</defaultValue>
+        <description>Sets the amount of hour worked per day.</description>
+        <inlineHelpText>Working hour should be between 1 - 24</inlineHelpText>
         <label>Working hours</label>
         <precision>2</precision>
         <required>true</required>

@@ -97,21 +97,6 @@
             }
         }
         
-        /**
-        * Reset Task filters
-        */
-        function resetFilters(){
-       
-           var filterCont = $('advancedFilterContainer2').childElements()[0];
-           var inputs = filterCont.getElementsByTagName('input');
-           var selects = filterCont.getElementsByTagName('select');
-           for(var it=0; it < inputs.length; it++)
-               inputs[it].value = '';
-          
-           for(var it=0; it < selects.length; it++)
-               selects[it].value = '';
-              
-        }
     </script>
 
     <apex:form >
@@ -231,7 +216,7 @@
                             <!-- Quick Filter -->
                             <div class="f_right" style="margin-bottom: -12px;">
                                 <span>Quick filter:</span>
-                                <apex:selectList id="chooseOption" value="{!option}" onchange="resetFilters(); option(); showHideOverlay();" size="1">
+                                <apex:selectList id="chooseOption" value="{!option}" onchange=" option(); showHideOverlay();" size="1">
                                     <apex:selectOption itemValue="all" itemLabel="All Tasks"/>
                                     <apex:selectOption itemValue="my" itemLabel="My Tasks"/>
                                     <apex:selectOption itemValue="complete" itemLabel="100% Complete Tasks"/>
@@ -241,7 +226,7 @@
                                 </apex:selectList>
                             </div>
                             <!-- Advanced Filter Toggle -->
-                            <div class="linksFilterContent">
+                            <div class="linksFilterContent" style="visibility:hidden;">
                                 <a href="javascript:;" id="advFilterShow" title="Click to view the advanced filter." onclick="advancedFilter();">
                                     Show Advanced filter <span class="ColorGray"><img src="{!URLFOR($Resource.commonResources, 'images/arrows/arrow_down.gif')}" /></span>                                   
                                 </a>
@@ -264,35 +249,6 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                        <td  valign="top">
-                                            <apex:repeat value="{!dynFilterList}" var="o" id="dynFil">
-                                                <apex:outputPanel rendered="{!IF( o.fieldType == 'PICKLIST', true, false) }" layout="block" styleClass="DymFilElem" >
-                                                    <span id="fufu" class="DynFIlLabel" style="z-index:9999;">{!o.label}</span><br />
-                                                    <apex:selectList size="1" value="{!o.value}" onfocus="f=''">
-                                                        <apex:selectOptions value="{!o.options}" />
-                                                    </apex:selectList>
-                                                </apex:outputPanel>   
-                                       
-                                                <apex:outputPanel rendered="{!IF( o.fieldType == 'BOOLEAN', true, false) }" layout="block" styleClass="DymFilElem">
-                                                    <span class="DynFIlLabel">{!o.label}</span><br />
-                                                    <apex:inputCheckbox value="{!o.value}" onfocus="f=''" />
-                                                    <!-- {!o.name}::{!o.FieldType} -->
-                                                </apex:outputPanel>   
-
-                                                <apex:outputPanel rendered="{!IF( o.fieldType == 'DATE' || o.fieldType == 'DATETIME', true, false) }" layout="block" styleClass="DymFilElem">
-                                                    <span class="DynFIlLabel">{!o.label}</span><br />
-                                                    <apex:inputText alt="{!o.name}" value="{!o.value}" styleClass="DynFilDateField" onClick="setActualFieldId(this);" title="MM/DD/YYYY" size="10" onchange="closeCalendar();" onfocus="f='';setActualFieldId(this);"/>
-                                                    <br><span id="{!o.name}" style="display: none;" class="colorRed">Not valid date.</span>
-                                                </apex:outputPanel>   
-                                         
-                                                <apex:outputPanel rendered="{!IF( o.fieldType != 'PICKLIST' && o.fieldType != 'BOOLEAN'&& o.fieldType != 'DATE' && o.fieldType != 'DATETIME', true, false) }" layout="block" styleClass="DymFilElem">
-                                                    <span class="DynFIlLabel">{!o.label}</span><br />
-                                                    <apex:inputText alt="{!o.name}" value="{!o.value}"  onfocus="f=''" styleClass="{!o.fieldType}" title="{!o.label}"/>
-                                                    <br><span id="{!o.name}_int" style="display: none;" class="colorRed">Must be an Int value</span>
-                                                    <span id="{!o.name}_percent" style="display: none;" class="colorRed">Must be between 0 and 100</span>
-                                                </apex:outputPanel>   
-                                            </apex:repeat>
-                                        </td>
                                         <td valign="top">
                                             <!-- Saved Filters -->
                                             <div class="savedFilters" style="width: 220px;">
@@ -301,17 +257,17 @@
                                                 </div>
                                                 <div class="elemFilter">
                                                     Filter Name<br/>
-                                                    <apex:selectList value="{!dynFilter.filterName}" size="1" styleClass="elemFormFilter"  onclick="f='savedFilter'">
-                                                        <apex:selectOptions value="{!dynFilter.savedFilters}" />
-                                                    </apex:selectList>
+                                                    <!--  apex:selectList value="{!dynFilter.filterName}" size="1" styleClass="elemFormFilter"  onclick="f='savedFilter'" -->
+                                                        <!-- apex:selectOptions value="{!dynFilter.savedFilters}" / -->
+                                                    <!-- /apex:selectList -->
                                                 </div>
                                                 <br />
-                                                <apex:actionFunction name="callx" action="{!dynFilter.loadFilter}" rerender="AdvancedFilterContainer" oncomplete="sortListEvent();"/>
-												<apex:commandLink action="{!dynFilter.loadFilter}" rerender="AdvancedFilterContainer"
+                                                <apex:actionFunction name="callx" action="null" rerender="AdvancedFilterContainer" oncomplete="sortListEvent();"/>
+												<apex:commandLink action="null" rerender="AdvancedFilterContainer"
 													onclick="showHideOverlay();" oncomplete="sortListEvent();" styleclass="blackbutton" >
 													<span>Apply Filter</span>
 												</apex:commandLink>
-                                                <apex:commandLink action="{!dynFilter.deleteFilter}"  rerender="AdvancedFilterContainer"
+                                                <apex:commandLink action="null"  rerender="AdvancedFilterContainer"
                                                     onclick="if(confirm('Are you want to delete this filter')){showHideOverlay();}else{return false;}"
                                                     oncomplete="showHideOverlay();" styleclass="blackbutton" >
                                                     <span>Remove Filter</span>
@@ -341,7 +297,7 @@
                                        </table>
                                    
                                  </apex:outputPanel>
-                                </div>
+                            </div>
                         </div>
                     </div>
           
@@ -627,78 +583,8 @@
         </div>  
     </div>  
     <!-- ### Save New Filter Overlay ### -->                                      
-    <div id="saveNewFlter" style="display: none;" class="overlayForm">
-       
-        <!-- Overlay Title -->
-        <div class="overlayTitleContent">
-            <div class="overlayTitle">Save Filter</div>
-            <div class="overlayCloseEvent">
-                <a href="Javascript:;" onclick="modal.close();">
-                    <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}"    alt="Close Window" title="Close Window" />
-                </a>
-            </div>
-        </div>
-
-        <div id="overlayMain" class="overlayMainContent">
-            <apex:form onsubmit="return validateFilterName();">
-                <!-- Overlay Form Content -->
-                <div class="overlayFormContent">
-                    Entrer Filter Name:
-                    <apex:inputText styleClass="savedFilterName" value="{!dynFilter.FilterName}" />
-                </div>
-                <div class="overlaySeparateLine"></div>
-                <!-- Saven and Cancel Buttons -->
-                <div class="overlayFromButtons" align="center">
-                    <apex:commandButton id="DeleteAssigneeBtn" styleClass="btn allButtons"
-                        style="background:#21637D none repeat scroll 0 0 !important; !important;"
-                        action="{!saveFilter}" value="Save Filter" onclick=""
-                        rerender="AdvancedFilterContainer" oncomplete="showHideOverlay();" >
-                    <apex:param name="svFil1" value="true" assignTo="{!Filter.SvFilter}"/>
-                    </apex:commandButton>                       
-                    <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="modal.close();" value="Cancel"/>
-                </div>
-            </apex:form>
-        </div>
-    </div>
 
     <!-- ### Filter columns Overlay ### -->                                      
-    <div id="filteColumns" style="display: none;" class="overlayForm">
-       
-        <!-- Overlay Title -->
-        <div class="overlayTitleContent">
-            <div class="overlayTitle">Filter Columns</div>
-            <div class="overlayCloseEvent">
-                <a href="Javascript:;" onclick="modal.close();">
-                    <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}"    alt="Close Window" title="Close Window" />
-                </a>
-            </div>
-        </div>
-
-        <div id="overlayMain" class="overlayMainContent">
-            <apex:form onsubmit="return validateFilterName();">
-                <!-- Overlay Form Content -->
-                <div class="overlayFormContent">
-                    <div id="multiSelLeft" style="float: left;">
-                    </div>
-                    <div id="multiSelCenter" style="float: left;">
-                        <input type="button" value="&gt;&gt;" />
-                        <br />
-                        <input type="button" value="&lt;&lt;" />
-                    </div>
-                    <div id="multiSelRight">
-                    </div>
-                </div>
-                <div class="overlaySeparateLine"></div>
-                <!-- Saven and Cancel Buttons -->
-                <div class="overlayFromButtons" align="center">
-                    <apex:commandButton id="DeleteAssigneeBtn" styleClass="btn allButtons" style="background:#21637D none repeat scroll 0 0 !important; !important;" action="{!Filter.saveFilter}" value="Save Filter" onclick="" rerender="AdvancedFilterContainer" oncomplete="showHideOverlay();" >
-                    <apex:param name="svFil1" value="true" assignTo="{!filter.SvFilter}"/>
-                    </apex:commandButton>                       
-                    <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="modal.close();" value="Cancel"/>
-                </div>
-            </apex:form>
-        </div>
-    </div>
     <style>
     .DymFilElem{
         height:45px;
@@ -716,16 +602,19 @@
           });
           gCal = true;
 		  document.observe('keypress', respondToClick);
+          $('advancedFilterContainer2').remove();
           }
 
         genCal();
 		var f = '';
 		function respondToClick(event) {
 		  if( event.keyCode == 13 )
-		    if( f == '' )
+		    if( f == 'newFilter' )
 		    	$$('.blackbutton')[7].onclick();
-		   	else
+		   	else if( f == 'savedFilter' )
 		   		$$('.blackbutton')[5].onclick();
+		   		
+		    f = '';
 		}
 
 		function validateDynForm(){

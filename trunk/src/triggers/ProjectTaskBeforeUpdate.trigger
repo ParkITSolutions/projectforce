@@ -52,7 +52,8 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 			else{
 				duration.verifyStartDate(tempPTNew, project);
 				duration.verifyEndDate(tempPTNew, project);
-														
+				
+				//TODO branch code to pemit changes only on Start date and End date seperatly 														
 		    	//Recalculate Duration when EndDate or StartDate was changed
 		    	if(tempPTOld.EndDate__c != tempPTNew.EndDate__c || tempPTOld.StartDate__c != tempPTNew.StartDate__c){
 		 			tempPTNew = duration.doCalculateDuration(tempPTNew);
