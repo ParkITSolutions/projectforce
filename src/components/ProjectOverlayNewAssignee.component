@@ -33,7 +33,7 @@
 
             <span class="overlayRequiredInfo">= Required Information</span>
                 <apex:form id="newMemberForm" onSubmit="return validateFormNewAss();">
-                    <apex:actionFunction name="refreshMembers2" rerender="membersComBoxCont"  oncomplete="$('{!$Component.scaleComBox}').value=0;$('sw_o').hide();refreshDetail();" />
+                    <apex:actionFunction name="refreshMembers2" rerender="membersComBox,membersComBoxCont"   oncomplete="$('{!$Component.scaleComBox}').value=0;$('sw_o').hide();refreshDetail();" />
                     <div class="overlayFormContent overlayFormContent2">
 
                         <!-- Members list (combobox) -->
@@ -76,6 +76,7 @@
                     <!-- Save and Cancel Buttons -->
                     <div class="overlayFromButtons overlayFromButtons2">
                             <apex:commandButton action="{!saveAssignee}" styleClass="allButtons" 
+                            	rerender="newMemberForm"
                             	value="Save" oncomplete="refreshMembers2();modal.close()" 
                             	onClick="$('sw_o').show()" 
                             	/>

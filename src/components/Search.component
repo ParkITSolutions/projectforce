@@ -7,6 +7,8 @@
     <apex:attribute name="label" description="Label to show on the search box" type="String" required="false" assignTo="{!labelName}" />
    
    <apex:stylesheet value="{!URLFOR($Resource.SearchResources, 'inc/css/search.css')}" />
+                        
+    <div id="search_error" class="search_error" onclick="hideError();" onkeypress="hideError();"> Search must contain more than one character </div>
    
     <div class="searchBox">
         <div>
@@ -17,6 +19,7 @@
                             <div class="legend_portal">
                                 <span><img class="f_left" alt="" src="{!URLFOR($Resource.ProjectResources, 'images/layout/magnifier.gif')}" />Find {!labelName}</span>
                             </div>
+                           
                             <apex:inputText value="{!key}" id="searchQuery" styleClass="key_imput" onfocus="changeInputValue('focus'); " onblur="changeInputValue('blur');" onclick="hideError();" onkeypress="hideError();"/>
                             <apex:inputText style="display: none;"/>
                            
@@ -26,13 +29,15 @@
                         
                            
                     </apex:form>
+                    
+                     
                   
                 </div>
             </div>
         </div>
     </div> 
     
-    <div id="search_error" class="search_error" onclick="hideError();" onkeypress="hideError();"> Search must contain more than one character </div>
+   
     
     <script>
 			

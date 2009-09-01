@@ -23,7 +23,7 @@ public class UploadAttachmentController {
     
     // Error message
     public String errorMsg = '';
-	
+	 
 	/**
 	* Constructor
 	*/
@@ -67,12 +67,10 @@ public class UploadAttachmentController {
 	*@return void
 	*/
 	public void setNewAttach (Attachment newAttach) {
-		
 		if(this.newAttach != null)
 		this.newAttach = new Attachment();
 		
 		this.newAttach = newAttach;	
-		
 	}
 	
 	/**
@@ -99,7 +97,6 @@ public class UploadAttachmentController {
 		newAttach.ParentId = parentId;
 		
 		asAvatar = System.currentPageReference().getParameters().get('asAvatar');
-		
 		if(newAttach.BodyLength <= MAX_SIZE){
 			
 			validAttSize = true;
@@ -122,27 +119,32 @@ public class UploadAttachmentController {
 					project.Picture__c = newAttach.Id;
 					update project;
 				}
+			}else if (asAvatar.equals('true') && newAttach.name.length() > 70){
+				errorMsg = 'The length of the attachment name must be less than 64.';
+				validAttSize = false;
+				return null;				
 			}else if (asAvatar.equals('true')){
 				errorMsg = 'Please select an image file. Valid format: .jpeg, .pjpeg, .png, .x-png, .gif';
-				if(newAttach.name.length() > 70 )
-					errorMsg += '. The length of the attachment name must be less than 64.';
 				validAttSize = false;
 				return null;				
 			}else{
 				insert newAttach;
 			}
-			 
+			this.newAttach = new Attachment();
+			this.newAttach.body = null;
+			this.parentId = null;
 			PageReference pageRef = Page.UploadAttachment;
 			pageRef.setRedirect(true);
 			return pageRef;
 			
 		}else{
-			if(newAttach.BodyLength < 1 || newAttach.BodyLength == null){
+			if(newAttach.BodyLength < 1 || newAttach.BodyLength == null){ 
 				errorMsg = 'Please select the file you want upload. Attachment size must be less than 5Mb.';
 				validAttSize = false; 
 			}
 			return null;
 		}		
+
 	}
 	
 	/**

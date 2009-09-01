@@ -79,6 +79,9 @@ public class GenerateEnvironmentTest {
         project.description__c = 'Open';
         project.Access__c = 'Description ...';
         project.priority__c = 'High';
+        project.DisplayDuration__c = 'Days';
+        project.WorkingHours__c = 8.0;
+        project.DaysInWorkWeek__c = '5';
         project.Type__c = 'open';
         project.PublicProfile__c = profList[ 0 ].Id;
         project.NewmemberProfile__c = profList[ 1 ].Id;
@@ -87,11 +90,17 @@ public class GenerateEnvironmentTest {
         project2.description__c = 'Description ...';
         project2.Access__c = 'Close';
         project2.priority__c = 'Medium';
+        project2.DisplayDuration__c = 'Days';
+        project2.WorkingHours__c = 8.0;
+        project2.DaysInWorkWeek__c = '5';
         project2.Type__c = 'close';
     
         project3.name = 'Project 2 name';
         project3.description__c = 'Description ...';
         project3.Access__c = 'Private';
+        project3.DisplayDuration__c = 'Days';
+        project3.WorkingHours__c = 8.0;
+        project3.DaysInWorkWeek__c = '5';
         project3.priority__c = 'Medium';
         project3.Type__c = 'private';
     
@@ -126,12 +135,12 @@ public class GenerateEnvironmentTest {
         task.Project__c = project.id;
         task.StartDate__c = Date.today();
         task.EndDate__c = Date.today();
-        task.Duration__c = 2;
+        task.DurationUI__c = '2';
         
         mile.Name = 'milestone';
         mile.Project__c = project.id;
         mile.StartDate__c = Date.today();
-        mile.Duration__c = 2;
+        mile.DurationUI__c = '2';
         mile.PercentCompleted__c = 55;
         mile.Milestone__c = true;
         
@@ -139,7 +148,7 @@ public class GenerateEnvironmentTest {
         task2.Project__c = project2.id;
         task2.StartDate__c = Date.today();
         task2.EndDate__c = Date.today();
-        task2.Duration__c = 2;      
+        task2.DurationUI__c = '2';      
         
         List<ProjectTask__c> taskList = new List<ProjectTask__c>();
         taskList.add( task );

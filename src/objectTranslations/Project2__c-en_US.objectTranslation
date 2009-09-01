@@ -17,16 +17,17 @@ Private -  This Project will not appear in search. Membership is by invitation o
         <name>Access__c</name>
     </fields>
     <fields>
-        <help><!-- Set cheked to allow customer portal users. --></help>
+        <help><!-- Check to allow customer portal users. --></help>
         <label><!-- Allow customer portal users --></label>
         <name>AllowCustomerUsers__c</name>
     </fields>
     <fields>
-        <help><!-- Set cheked to allow partner portal users --></help>
+        <help><!-- Check to allow partner portal users --></help>
         <label><!-- Allow partner portal users --></label>
         <name>AllowPartnerUsers__c</name>
     </fields>
     <fields>
+        <help><!-- 1 = Mon /  7 = Sun --></help>
         <label><!-- Days in a work week --></label>
         <name>DaysInWorkWeek__c</name>
     </fields>
@@ -35,7 +36,7 @@ Private -  This Project will not appear in search. Membership is by invitation o
         <name>Description__c</name>
     </fields>
     <fields>
-        <help><!-- Set how you want see the Duration field, in hours or days. --></help>
+        <help><!-- Sets how the Duration field will be displayed, in hours or days. --></help>
         <label><!-- Display Duration --></label>
         <name>DisplayDuration__c</name>
     </fields>
@@ -79,6 +80,7 @@ Private -  This Project will not appear in search. Membership is by invitation o
         <name>Type__c</name>
     </fields>
     <fields>
+        <help><!-- Working hour should be between 1 - 24 --></help>
         <label><!-- Working hours --></label>
         <name>WorkingHours__c</name>
     </fields>

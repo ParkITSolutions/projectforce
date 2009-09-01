@@ -160,7 +160,7 @@ public class ProjectTaskDuration {
 	*/
 	public ProjectTask__c verifyStartDate(ProjectTask__c task, Project2__c project){
 		
-		Set<String> workdays = this.getWorkDays( Integer.valueOf(project.DaysInWorkWeek__c ) );
+		Set<String> workdays = this.getWorkDays( Integer.valueOf(project.DaysInWorkWeek__c ));
 		Datetime myDate = Datetime.valueOf(task.StartDate__c + '00:00:00');
 		String weekday = '';		
 		boolean isCorrect = false;

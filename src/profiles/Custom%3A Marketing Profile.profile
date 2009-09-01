@@ -83,6 +83,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectDynamicFilterTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectInitProfiles</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -164,6 +168,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectSetupController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProjectSetupControllerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>

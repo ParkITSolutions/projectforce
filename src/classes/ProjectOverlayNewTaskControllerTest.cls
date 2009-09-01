@@ -21,6 +21,8 @@
     	mileC.setProject( GenerateEnvironmentTest.project.Id );
     	
     	ProjectTask__c newTask = new ProjectTask__c();
+    	newTask.StartDate__c = Date.today();
+    	newTask.DurationUI__c = '1';
     	mileC.setTask( newTask );
     	
     	mileC.insertTask();

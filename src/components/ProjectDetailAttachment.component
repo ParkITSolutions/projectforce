@@ -75,4 +75,19 @@
 			</div>
 		</div>
 	</apex:outputPanel>
+	<script>
+function openAttachmentOverlay(){
+
+    createOverlay('', 'newAttachmentOverlay', 180);
+
+    newAttachmentToProject();
+
+    observeIframeUpload();
+
+    //Hack for IE6
+
+    $('uploadIframe').src = $('uploadIframe').src;
+    newAttachmentToProject();
+
+}	</script>
 </apex:component>

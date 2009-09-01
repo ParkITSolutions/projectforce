@@ -125,7 +125,7 @@ public class ProjectSubscribersEmailServices {
 
         }
            
-        if (!isTest){
+        if (!isTest ){
           	 subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, 
           	 					Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, 
           	 					ProjectTaskChanged__c, ProjectTaskDeleted__c 
