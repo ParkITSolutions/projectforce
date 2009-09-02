@@ -69,7 +69,7 @@ public class ProjectTaskDuration {
 	*/
 	public Date doCalculateEndDateInDays (ProjectTask__c task, Integer wdays){
 		
-		Double aux = math.ceil( task.Duration__c );		
+		Double aux = math.ceil( (task.Duration__c!=null)?task.Duration__c:1);		
 		Integer days = aux.intValue();
 		return this.doExcludeNonWorkingDays(task.StartDate__c, wdays, days);
 	
@@ -78,7 +78,7 @@ public class ProjectTaskDuration {
 	/**
 	*@param task instance
 	*@param project instance
-	*@return task end date
+	*@return task end date 
 	*/
 	public Date doCalculateEndDateInHours(ProjectTask__c task, Project2__c project){
 		
@@ -94,7 +94,7 @@ public class ProjectTaskDuration {
 	*@param number of workdays
 	*@return work days names
 	*/
-	public Set<String> getWorkDays(Integer days){
+	public Set<String> getWorkDays(Integer days){ 
 		List<String> weekdays = new List<String>{'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'};
 		Set<String> workdays = new Set<String>();
 		

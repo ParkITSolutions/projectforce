@@ -17,6 +17,16 @@ public class ProjectUtil {
 	public static Map<String,ProjectTask__c> BaseMap = new Map<String,ProjectTask__c>();
     public static Boolean DeleteTaskMailSent = false;
     public static Boolean flagAssignee = true;
+    public static Boolean flagValidationParentTask = true;
+    
+    
+    public static void setFlagValidationParentTask(Boolean value){
+    	ProjectUtil.flagValidationParentTask = value;
+    }
+    
+    public static Boolean getFlagValidationParentTask(){
+    	return ProjectUtil.flagValidationParentTask;
+    }
     
     /**
     *@param Boolean b

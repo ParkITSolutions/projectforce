@@ -134,7 +134,7 @@ public class ProjectSetupController {
 	*@return boolean 
 	*/
 	public Boolean canView(){		
-		return  this.getIfCanModifyAllData() || savedProfilesStr[0].CanViewButtonNew__c.contains( UserInfo.getProfileId());
+		return  this.getIfCanModifyAllData() || (( this.savedProfilesStr.size() > 0 ) && savedProfilesStr[0].CanViewButtonNew__c.contains( UserInfo.getProfileId()));
 	}	
 
 	/**

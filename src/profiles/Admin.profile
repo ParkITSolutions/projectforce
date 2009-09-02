@@ -47,6 +47,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ParentTask</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectDeleteTaskOverlayController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -208,6 +212,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectTaskDuration</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProjectTaskDurationTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>

@@ -24,7 +24,7 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
  			if(task.ParentTask__c != null)
 				task.ParentTask__c.addError('The Milestones can not have Parent Task.');
 				
-			task.EndDate__c = task.StartDate__c;
+			//task.EndDate__c = task.StartDate__c;
  		}
     }
 
@@ -40,6 +40,26 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
     	Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
 									from Project2__c 
 									where Id =: tempPTNew.Project__c];
+		
+		//Testing ParentTask
+		
+		List<ProjectTask__c> childTasks = new List<ProjectTask__c>();
+		childTasks = [select Id , ParentTask__c from ProjectTask__c where ParentTask__c =: tempPTNew.Id];
+		if(childTasks.size() > 0){/*
+			if(ProjectUtil.getFlagValidationParentTask()){
+				if(tempPTOld.StartDate__c != tempPTNew.StartDate__c){
+					tempPTNew.StartDate__c.addError( 'You cant modify Parent Task Start Date');
+				}
+				if(tempPTOld.EndDate__c != tempPTNew.EndDate__c){
+					tempPTNew.EndDate__c.addError( 'You cant modify Parent Task End Date');
+				}
+				if(tempPTOld.DurationUI__c != tempPTNew.DurationUI__c){
+					tempPTNew.DurationUI__c.addError( 'You cant modify Parent Task Duration');
+				}
+			}*/
+		}
+		
+		//Testing finished
 									
     	duration.verifyStartDate(tempPTNew, project);
     	
@@ -82,7 +102,17 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 		    	}
 		    	
 			}
-			
+			//Testing
+			System.debug('-------------->>>>>>>>>>>>>>>>>>>POR PREGUNTAR  ' + childTasks.size() + '   id: '+tempPTNew.Id);
+			if(childTasks.size() == 0){
+				System.debug('-------------->>>>>>>>>>>>>>>>>>>> Entrando child Size');
+				if(tempPTNew.ParentTask__c != null){
+					System.debug('-------------->>>>>>>>>>>>>>>>>>>> Entrando Insert Tarea con padre');
+					ParentTask parent = new ParentTask();
+					parent.checkParentTask(tempPTNew);
+				}
+			}
+			//Testing
 	   	 	AuxMap.put( tempPTOld.id, tempPTOld );
 		
     } 
