@@ -34,7 +34,7 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
  		 			if(nTask.ParentTask__c != null)
  		 				nTask.ParentTask__c.addError( 'The Milestones can not have Parent Task.');
  		 				
- 		 			nTask.EndDate__c = nTask.StartDate__c;
+ 		 			//nTask.EndDate__c = nTask.StartDate__c;
 		 		} 
 				if(queueId != null)
                     nTask.OwnerId = queueId;

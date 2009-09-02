@@ -75,6 +75,8 @@ public class ProjectDynamicFilter {
 	*@param Schema.DescribeFieldResult pickListField
 	*@return List<SelectOption>
 	*/
+	
+	/**
 	private List<SelectOption> genPicklistValues(Schema.DescribeFieldResult pickListField){
 		List<SelectOption> relationshipOptions = new List<SelectOption>();
        	relationshipOptions.add(new SelectOption('', '-- Any --'));
@@ -83,7 +85,7 @@ public class ProjectDynamicFilter {
        	
        	return relationShipOptions;
    	}
-
+	*/
 	/**
 	* Generate Salesforce Fields
 	*@return void
@@ -96,6 +98,7 @@ public class ProjectDynamicFilter {
 	*/
 	public String genStrWithFieldsName(){
 		String fieldsName = '';
+		/**
 		List<String> auxDateStr = new List<String>();
 		
 		for( SFField f : this.fieldList ){
@@ -118,6 +121,7 @@ public class ProjectDynamicFilter {
 					fieldsName += ' AND ' + f.name + ' = \'' + f.value + '\' ';
 			}
 		}
+		*/
 		return fieldsName;
 	}
 	
@@ -125,6 +129,7 @@ public class ProjectDynamicFilter {
 	* Save the current filter values
 	*/
 	public void saveFilter(){
+		/**
 		String fieldToSave  = ''; 
 		String filterToSave = '';
 		for( SFField f : this.fieldList ){ 
@@ -133,15 +138,18 @@ public class ProjectDynamicFilter {
 				filterToSave += fieldToSave + '#';
 			}
 		}
+		*/
 	}
 	/**
 	*Load filter values for a filter
 	*@param Id projectId, Id filterId
 	*/
+	
+	
 	public void loadFilter(){
 		
 	}
-
+	
 	/**
 	*@return saved filters options
 	*/
@@ -153,22 +161,26 @@ public class ProjectDynamicFilter {
 	*@return members asoc. to project options 
 	*/
 	public List<SelectOption> getAssignees(){
-		List<ProjectMember__c> members = new List<ProjectMember__c>();
-		List<SelectOption> options = new List<SelectOption>();
 		
+		List<ProjectMember__c> members = new List<ProjectMember__c>(); 
+		List<SelectOption> options = new List<SelectOption>();
+		/**
 		members = [select m.Id, m.Name, User__r.Id from ProjectMember__c m where m.Project__c =: projectId order by m.Name asc];
 		options.add(new SelectOption('', '-- Any --'));
 		for (ProjectMember__c member : members){
 			options.add(new SelectOption(member.User__r.Id, member.Name));		
 		}	
+		*/
 		return options;
 	}
 
 	/**
 	* Delete Filter
 	*/
+	/*
 	public void deleteFilter(){
 	}
+	*/
 
 	
 	/*

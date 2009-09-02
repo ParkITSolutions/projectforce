@@ -10,6 +10,8 @@ public class ProjectOverlayNewTaskController {
     public ProjectMember__c projectMember = new ProjectMember__c();    
    	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
    	public String  taskPrefix = Schema.SObjectType.Projecttask__c.getKeyPrefix();
+   	
+   	public String domain;
    	 
     /**
     * Constructor
@@ -17,6 +19,15 @@ public class ProjectOverlayNewTaskController {
     public ProjectOverlayNewTaskController(){
     	getCurrentProject();	
     	genPermissions();
+    	
+    	domain = ProjectUtil.getDomain();
+	}
+	
+	/**
+	*@return String
+	*/
+	public String getDomain(){
+		return this.domain;
 	}
 
    	/**

@@ -11,13 +11,48 @@
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
 
+		System.currentPageReference().getParameters().put('id', GenerateEnvironmentTest.project.id );
+		ProjectDynamicFilter dyn = new ProjectDynamicFilter();
+
+		// Inner class
 		ProjectDynamicFilter.SFField innCls = new ProjectDynamicFilter.SFField();
 		
-		innCls.name    = 'name' ; 		//Set
+		innCls.name    = 'name' ; 			//Set
 		String bugOfHolding = innCls.name;	//Get
 		
 		innCls.fieldType =	'type';
 		bugOfHolding= innCls.fieldType;
+		
+		innCls.value =	'value';
+		bugOfHolding =	innCls.value;
+		
+		innCls.label =	'label';
+		bugOfHolding =	innCls.label;
+		
+		innCls.index =	1;
+		innCls.index =	innCls.index;
+		
+		innCls.setValuieDate( innCls.getValueDate());
+		innCls.setOpSelected(innCls.getOpSelected());
+		innCls.getOptions();		
+		
+
+		// Class
+		
+		List<ProjectDynamicFilter.SFField> fieldList = new List<ProjectDynamicFilter.SFField>();
+		dyn.getProjectId();
+		
+		dyn.getFieldList();
+		
+		dyn.setFieldList( fieldList );
+		dyn.getFieldList();
+
+		dyn.getLoadingFilter();		
+		
+		dyn.setFilterName('filter_name');
+		dyn.getFilterName();
+		
+		
 
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );    	
