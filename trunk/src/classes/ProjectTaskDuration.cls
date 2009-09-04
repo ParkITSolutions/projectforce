@@ -132,7 +132,7 @@ public class ProjectTaskDuration {
 	}
 	
 	/**
-	* Exclude non working days and retrun duration (in days)
+	* Exclude non working days and return duration (in days)
 	*@param task start date
 	*@param task end date
 	*@param working days
@@ -161,6 +161,9 @@ public class ProjectTaskDuration {
 	public ProjectTask__c verifyStartDate(ProjectTask__c task, Project2__c project){
 		
 		Set<String> workdays = this.getWorkDays( Integer.valueOf(project.DaysInWorkWeek__c ));
+		System.debug('------------------->>>>>>>>>>>>>>> Entrada Tarea : ' + task.Id);
+		System.debug('------------------->>>>>>>>>>>>>>> Entrada Tarea : ' + task.StartDate__c);
+		System.debug('------------------->>>>>>>>>>>>>>> Entrada Tarea : ' + task.EndDate__c);
 		Datetime myDate = Datetime.valueOf(task.StartDate__c + '00:00:00');
 		String weekday = '';		
 		boolean isCorrect = false;

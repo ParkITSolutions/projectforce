@@ -51,6 +51,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ParentTaskTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectDeleteTaskOverlayController</apexClass>
         <enabled>true</enabled>
     </classAccesses>

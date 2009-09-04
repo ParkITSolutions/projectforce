@@ -4,54 +4,134 @@
 public class ParentTask {
 	
 	public List<ProjectTask__c> updates = new List<ProjectTask__c>();
+	public BigListOfTask taskList;
 	
 	/**
 	* Class constructor
 	*/
 	public ParentTask (){
-		
 	}
 	
-	public List<ProjectTask__c> getTaskChildren(ProjectTask__c task){
+	public void setProjectId (String projectId){ 
+		this.taskList = new BigListOfTask(projectId);
+	}
+	
+	public Double setTaskIndent(ProjectTask__c task){
 		
-		List<ProjectTask__c> children = [select Id, StartDate__c, EndDate__c, PercentCompleted__c, ParentTask__c from ProjectTask__c where ParentTask__c =: task.Id];
+		if(task.ParentTask__c != null){
+			//ProjectTask__c parentTask = [select Id, Indent__c 
+			//							from ProjectTask__c where Id =: task.ParentTask__c limit 1];	
+			ProjectTask__c parentTask = this.taskList.getById(task.ParentTask__c);									
+			return ParentTask.Indent__c + 1.0;
+		}
+		else
+			return	0.0;		
+	}
+	
+	public Boolean taskHasChildren(ProjectTask__c task){
+		
+		return true;
+	}
+	
+	public List<ProjectTask__c> getTaskChildren(ProjectTask__c task, ProjectTask__c hijo){
+		
+		//List<ProjectTask__c> children = [select Id, StartDate__c, EndDate__c, PercentCompleted__c, ParentTask__c from ProjectTask__c where ParentTask__c =: task.Id limit 1000];
+		List<ProjectTask__c> children = this.taskList.getByParentId(task.Id);
+		if(children.size() != 0){
+			Boolean found = false;
+			for(ProjectTask__c ntask : children){
+				if(ntask.Id == hijo.Id){
+					System.debug('se encontro el hijo');
+					found = true;
+					ntask = hijo;
+				}
+			}
+			if(!found){
+				children.add(hijo);
+			}
+		}
+		else{
+			children.add(hijo);
+		}
+		
 		return children;
-		
 	}
 	
 	public void checkParentTask(ProjectTask__c task){ 
 		
 		if(task.ParentTask__c != null){
-			ProjectTask__c parentTask = [select Id, StartDate__c, EndDate__c, PercentCompleted__c from ProjectTask__c where Id =: task.ParentTask__c];
+			System.debug('-------------------------------->>>> Recursion '+ task.Id);
+			//ProjectTask__c parentTask = [select Id, Duration__c, DurationUI__c, Indent__c, ParentTask__c, PercentCompleted__c,  Project__c,  StartDate__c, EndDate__c from ProjectTask__c where Id =: task.ParentTask__c limit 1];
+			ProjectTask__c parentTask = this.taskList.getbyId(task.ParentTask__c);
 			ProjectTask__c auxTask    = new ProjectTask__c();	
 			auxTask.StartDate__c      = null;
 			auxTask.EndDate__c 		  = null;
 			Double percentage		  = 0.0;
 			
-			List<ProjectTask__c> children = this.getTaskChildren(parentTask);
+			List<ProjectTask__c> children = this.getTaskChildren(parentTask, task);
+			System.debug('-------------------------------->>>> num Childs  '+ children.size());
 			for(ProjectTask__c nTask : children) {
 				if(auxTask.StartDate__c != null){
-					if(nTask.StartDate__c <= auxTask.StartDate__c){
+					if(task.Id != nTask.Id){
+						if(nTask.StartDate__c <= auxTask.StartDate__c){
+							auxTask.StartDate__c = nTask.StartDate__c;
+						}
+					}
+					else{
+						if(task.StartDate__c <= auxTask.StartDate__c){
+							auxTask.StartDate__c = task.StartDate__c;
+						}
+					}
+				}
+				else{
+					System.debug ('primera vez valor start '+nTask.StartDate__c);
+					if(task.Id != nTask.Id){
 						auxTask.StartDate__c = nTask.StartDate__c;
 					}
+					else{
+						auxTask.StartDate__c = task.StartDate__c;
+					}
+					
 				}
-				else{
-					auxTask.StartDate__c = nTask.StartDate__c;
-				}
+				
 				if(auxTask.EndDate__c != null){
-					if(nTask.EndDate__c >= auxTask.EndDate__c){
-						auxTask.EndDate__c = nTask.EndDate__c;
+					if(task.Id != nTask.Id){
+						if(nTask.EndDate__c >= auxTask.EndDate__c){
+							auxTask.EndDate__c = nTask.EndDate__c;
+						}
+					}
+					else{
+						if(task.EndDate__c >= auxTask.EndDate__c){
+							auxTask.EndDate__c = task.EndDate__c;
+						}
 					}
 				}
 				else{
-					auxTask.EndDate__c = nTask.EndDate__c;
+					System.debug ('primera vez valor end '+nTask.EndDate__c);
+					if(task.Id != nTask.Id){
+						auxTask.EndDate__c = nTask.EndDate__c;
+					}
+					else{
+						auxTask.EndDate__c = task.EndDate__c;
+					}
+					
 				}
 				
-				if(nTask.PercentCompleted__c != null){
-					System.debug('>>>>>>>>>>  Before PERCENTAGE   '+ percentage+'  >>>>>>>>>>>>');
-					percentage = percentage + nTask.PercentCompleted__c;
-					System.debug('>>>>>>>>>>   PERCENTAGE   '+ percentage+'  >>>>>>>>>>>>');
+				if(nTask.PercentCompleted__c == null ){
+					nTask.PercentCompleted__c = 0.0;
 				}
+					if(task.Id != nTask.Id){
+						percentage = percentage + nTask.PercentCompleted__c;
+					}
+					else{
+						if(task.PercentCompleted__c == null){
+							percentage = percentage + 0.0;
+						}
+						else{
+							percentage = percentage + task.PercentCompleted__c;
+						}
+					}
+				
 				
 			}
 			
@@ -60,21 +140,83 @@ public class ParentTask {
 			if(percentage != 0.0){
 				parentTask.PercentCompleted__c = percentage / children.size();
 			}
+			//TODO fix validation flag for trigger
 			ProjectUtil.setFlagValidationParentTask(false);
 			this.updates.add(parentTask);
 			ProjectUtil.setFlagValidationParentTask(true);
-			System.debug('>>>>>>>>>>   RUN  >>>>>>>>>>>>');
-			System.debug('childs :'+children.size());
-			System.debug('percentage :'+percentage);
-			System.debug('Satrt :'+parentTask.StartDate__c);
-			System.debug('End : '+parentTask.EndDate__c);
-			System.debug('%%'+parentTask.PercentCompleted__c);
-			System.debug('---------------------------------------');
 			this.checkParentTask(parentTask);
 		}
 		else{
+			for(ProjectTask__c t : this.updates){
+				System.debug('++++++++++++++++++++++++ task id :'+ t.Id);
+				System.debug('++++++++++++++++++++++++ task StartDate :'+ t.StartDate__c);
+				System.debug('++++++++++++++++++++++++ task EndDate :'+ t.EndDate__c);
+				System.debug('++++++++++++++++++++++++ task Parent :'+ t.ParentTask__c);
+			}
+			ProjectUtil.setFlagValidationParentTask(false);
 			update this.updates;
-			System.debug('-------------->>>>>>>>>>>>>>>>>>>> UPDATING  '+ this.updates.size());
+			ProjectUtil.setFlagValidationParentTask(true);
 		}
+	}
+	
+	public Class BigListOfTask{
+		private List<List<ProjectTask__c>> bList = new List<List<ProjectTask__c>>();
+		
+		public bigListOfTask(String projectId){
+			
+			for( List<ProjectTask__c> ptList : [ select Id, Duration__c, DurationUI__c, Indent__c, ParentTask__c, PercentCompleted__c,  Project__c,  StartDate__c, EndDate__c from ProjectTask__c where Project__c =: projectId ])
+				this.bList.add(ptList);
+		}
+
+		private void add( ProjectTask__c task, Integer ind ){
+			
+			if( this.bList[this.bList.size() - 1 ].size() < 200)
+				this.bList[this.bList.size() - 1 ].add( task );
+			else
+				this.bList[this.bList.size()].add( task );
+		}
+		
+		private ProjectTask__c get( Integer ind ){
+			return bList[  ind / 200 ][ ind - Math.mod( ind, 200 )*200];
+		}
+
+	
+		private ProjectTask__c getById( Id taskId ){
+			
+			ProjectTask__c ret = new ProjectTask__c();
+			for( List<ProjectTask__c> ptList : this.bList ){
+				for(ProjectTask__c pt :ptList ){
+					if( pt.id == taskId ){
+						ret =  pt;
+						break;
+						break;
+					}	
+				}
+			}
+			
+			return ret;
+		}		
+		
+		private List<ProjectTask__c> getByParentId( Id parentTaskId ){
+	
+			List<ProjectTask__c> r = new List<ProjectTask__c>();
+			for( List<ProjectTask__c> ptList : this.bList )
+				for(ProjectTask__c pt :ptList )
+					if( pt.ParentTask__c == parentTaskId )
+					r.add( pt );
+			
+			return r;
+		}		
+		
+		
+		private Integer size(){
+			
+			Integer length = 0; 
+			for( List<ProjectTask__c> ptList : this.bList )
+				length =+ ptList.size();
+				
+			return length;
+		}
+		
 	}
 }

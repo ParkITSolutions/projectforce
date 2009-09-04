@@ -95,6 +95,9 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 		    			}
 		    			
 			    	} 
+			    	
+			    	ParentTask parent = new ParentTask();
+			    	tempPTNew.Indent__c = parent.setTaskIndent(tempPTNew);
 		    }
 		    //TODO finish testing	
 		    
