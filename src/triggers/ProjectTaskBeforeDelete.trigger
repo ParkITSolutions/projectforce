@@ -26,5 +26,13 @@ trigger ProjectTaskBeforeDelete on ProjectTask__c (before delete)
 	for( Attachment a : [select Id from Attachment where parentId in : Trigger.old limit 1000])
 		attachs.add( a );
 	delete attachs;
-
+	
+	List<ProjectTask__c> children = new List<ProjectTask__c>();
+	for(ProjectTask__c t : [select Id from ProjectTask__c where ParentTask__c in : Trigger.old limit 1000]){
+		children.add(t);
+	}
+	ProjectUtil.setFlagValidationParentTask(false);
+	delete children;
+	ProjectUtil.setFlagValidationParentTask(true);
+	
 }

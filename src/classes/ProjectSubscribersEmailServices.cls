@@ -195,7 +195,6 @@ public class ProjectSubscribersEmailServices {
    public void sendMailForTaskPercentChanged( List<String> lstPTId ){   
    	
   		Map<String,ProjectTask__c> BaseMap=ProjectUtil.BaseMap;
-    
         Double OldPercent=BaseMap.get(lstPTId[0]).PercentCompleted__c;
         String OldStatus=BaseMap.get(lstPTId[0]).Status__c;
      

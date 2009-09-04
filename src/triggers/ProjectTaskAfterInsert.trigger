@@ -24,19 +24,12 @@ trigger ProjectTaskAfterInsert on ProjectTask__c (after insert) {
 			    tasks.add(p);
 			    
 			    //Testing
-			    
-		    			List<ProjectTask__c> childTasks = new List<ProjectTask__c>();
-						childTasks = [select Id , ParentTask__c from ProjectTask__c where ParentTask__c =: m.Id];
-						System.debug('-------------->>>>>>>>>>>>>>>>>>>POR PREGUNTAR  ' + childTasks.size() + '   id: '+m.Id);
-						if(childTasks.size() == 0){
-							System.debug('-------------->>>>>>>>>>>>>>>>>>>> Entrando child Size');
-							if(m.ParentTask__c != null){
-								System.debug('-------------->>>>>>>>>>>>>>>>>>>> Entrando Insert Tarea con padre');
-								ParentTask parent = new ParentTask();
-								parent.checkParentTask(m);
-							}
-						}
-						//Testing
+			    if(m.ParentTask__c != null){
+					ParentTask parent = new ParentTask();
+					parent.setProjectId(m.Project__c);
+					parent.checkParentTask(m);
+				}
+				//Testing
 						
 			}
 			insert tasks;
