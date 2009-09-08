@@ -48,6 +48,8 @@ public without sharing class ProjectMembersListController {
 	* Constructor
 	*/
 	public ProjectMembersListController () {
+		    	TaskDependencies pb = new TaskDependencies();
+		
 		genPermissions();
 		genMembers();
 	}

@@ -27,12 +27,27 @@ trigger ProjectTaskBeforeDelete on ProjectTask__c (before delete)
 		attachs.add( a );
 	delete attachs;
 	
-	List<ProjectTask__c> children = new List<ProjectTask__c>();
-	for(ProjectTask__c t : [select Id from ProjectTask__c where ParentTask__c in : Trigger.old limit 1000]){
-		children.add(t);
+	
+	
+	Set<Id> taskIds = new Set<Id>();
+	for(ProjectTask__c  tsk : Trigger.old){
+		taskIds.add(tsk.Id);
 	}
-	ProjectUtil.setFlagValidationParentTask(false);
+	List<ProjectTask__c> children = new List<ProjectTask__c>();
+	for(ProjectTask__c t : [select Id, Duration__c, DurationUI__c, Indent__c, ParentTask__c, PercentCompleted__c,  Project__c,  StartDate__c, EndDate__c from ProjectTask__c where ParentTask__c in : taskIds limit 1000]){
+		ProjectTask__c aux = Trigger.oldMap.get(t.Id);
+		if(aux != null){
+			if(aux.Id != t.Id){
+				children.add(t);
+			}
+		}
+		else{
+			children.add(t);
+		}
+		
+	}
+	
 	delete children;
-	ProjectUtil.setFlagValidationParentTask(true);
+	
 	
 }

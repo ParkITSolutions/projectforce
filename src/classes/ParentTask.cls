@@ -3,7 +3,7 @@
 */
 public class ParentTask {
 	
-	public List<ProjectTask__c> updates = new List<ProjectTask__c>();
+	public Map<Id,ProjectTask__c> updates = new Map<Id,ProjectTask__c>();
 	public BigListOfTask taskList;
 	
 	/**
@@ -19,8 +19,6 @@ public class ParentTask {
 	public Double setTaskIndent(ProjectTask__c task){
 		
 		if(task.ParentTask__c != null){
-			//ProjectTask__c parentTask = [select Id, Indent__c 
-			//							from ProjectTask__c where Id =: task.ParentTask__c limit 1];	
 			ProjectTask__c parentTask = this.taskList.getById(task.ParentTask__c);									
 			return ParentTask.Indent__c + 1.0;
 		}
@@ -29,13 +27,17 @@ public class ParentTask {
 	}
 	
 	public Boolean taskHasChildren(ProjectTask__c task){
-		
-		return true;
+		List<ProjectTask__c> children = this.taskList.getByParentId(task.Id);
+		if(children.size() > 0){
+			return true;
+		}
+		else{
+			return false;		
+		}
 	}
 	
 	public List<ProjectTask__c> getTaskChildren(ProjectTask__c task, ProjectTask__c hijo){
 		
-		//List<ProjectTask__c> children = [select Id, StartDate__c, EndDate__c, PercentCompleted__c, ParentTask__c from ProjectTask__c where ParentTask__c =: task.Id limit 1000];
 		List<ProjectTask__c> children = this.taskList.getByParentId(task.Id);
 		if(children.size() != 0){
 			Boolean found = false;
@@ -61,7 +63,6 @@ public class ParentTask {
 		
 		if(task.ParentTask__c != null){
 			System.debug('-------------------------------->>>> Recursion '+ task.Id);
-			//ProjectTask__c parentTask = [select Id, Duration__c, DurationUI__c, Indent__c, ParentTask__c, PercentCompleted__c,  Project__c,  StartDate__c, EndDate__c from ProjectTask__c where Id =: task.ParentTask__c limit 1];
 			ProjectTask__c parentTask = this.taskList.getbyId(task.ParentTask__c);
 			ProjectTask__c auxTask    = new ProjectTask__c();	
 			auxTask.StartDate__c      = null;
@@ -140,24 +141,30 @@ public class ParentTask {
 			if(percentage != 0.0){
 				parentTask.PercentCompleted__c = percentage / children.size();
 			}
-			//TODO fix validation flag for trigger
+
 			ProjectUtil.setFlagValidationParentTask(false);
-			this.updates.add(parentTask);
+			this.updates.put(parentTask.Id, parentTask);
 			ProjectUtil.setFlagValidationParentTask(true);
+			
 			this.checkParentTask(parentTask);
 		}
 		else{
-			for(ProjectTask__c t : this.updates){
+			for(ProjectTask__c t : this.updates.values()){
+				System.debug('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
 				System.debug('++++++++++++++++++++++++ task id :'+ t.Id);
 				System.debug('++++++++++++++++++++++++ task StartDate :'+ t.StartDate__c);
 				System.debug('++++++++++++++++++++++++ task EndDate :'+ t.EndDate__c);
 				System.debug('++++++++++++++++++++++++ task Parent :'+ t.ParentTask__c);
+				System.debug('++++++++++++++++++++++++ task Percentage :'+ t.PercentCompleted__c);
+				System.debug('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
 			}
 			ProjectUtil.setFlagValidationParentTask(false);
-			update this.updates;
+			update this.updates.values();
 			ProjectUtil.setFlagValidationParentTask(true);
 		}
 	}
+	
+	
 	
 	public Class BigListOfTask{
 		private List<List<ProjectTask__c>> bList = new List<List<ProjectTask__c>>();

@@ -4,14 +4,16 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
  	List<Id> tasksInTrrNewIds = new List<Id>();
 	List<ProjectTask__c> parentTasks = new List<ProjectTask__c>();
 	 
-	//Task duration util class
+	//Task duration util class 
 	ProjectTaskDuration duration = new ProjectTaskDuration();
 	List<String> listIds = new List<String>(); 
 	Map<Id, Project2__c> projectMap = new Map<Id, Project2__c>();
+	
 	Project2__c project1;
 	Project2__c project;
 	for( Project2__c p :[select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c from Project2__c ])
 		projectMap.put( p.Id, p );
+	
 	for( ProjectTask__c task : Trigger.new){
  		listIds.add( task.id );
  		tasksInTrrNewIds.add(task.ParentTask__c );
@@ -28,9 +30,6 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
  		
  		if(task.Milestone__c){
  			project1 = projectMap.get(task.Project__c);
- 									//[select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
-									//from Project2__c 
-									//where Id =: task.Project__c];
 									
 			duration.verifyStartDate(task, project1);
 			
@@ -40,7 +39,6 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
  			if(task.ParentTask__c != null)
 				task.ParentTask__c.addError('The Milestones can not have Parent Task.');
 				
-			//task.EndDate__c = task.StartDate__c;
  		}
     }
 
@@ -52,9 +50,6 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
     	tempPTNew = Trigger.new.get( k );	
     	
     	project = projectMap.get(tempPTNew.Project__c);
-    								//[select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
-									//from Project2__c 
-									//where Id =: tempPTNew.Project__c];
 		
 		//Testing ParentTask
 		List<ProjectTask__c> childTasks = new List<ProjectTask__c>();
@@ -63,20 +58,24 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 				childTasks.add(task);
 			}
 		}
-		
-		if(childTasks.size() > 0){/*
+		System.debug('&&&&&&&&&&&&&&&&&&&&&&&&&&  chidl task size :'+childTasks.size()+ '  ' + ProjectUtil.getFlagValidationParentTask());
+		if(childTasks.size() > 0){
 			if(ProjectUtil.getFlagValidationParentTask()){
 				if(tempPTOld.StartDate__c != tempPTNew.StartDate__c){
-					tempPTNew.StartDate__c.addError( 'You cant modify Parent Task Start Date');
+					tempPTNew.StartDate__c.addError( 'You cant modify Parent Tasks Start Date');
 				}
 				if(tempPTOld.EndDate__c != tempPTNew.EndDate__c){
-					tempPTNew.EndDate__c.addError( 'You cant modify Parent Task End Date');
+					tempPTNew.EndDate__c.addError( 'You cant modify Parent Tasks End Date');
 				}
 				if(tempPTOld.DurationUI__c != tempPTNew.DurationUI__c){
-					tempPTNew.DurationUI__c.addError( 'You cant modify Parent Task Duration');
+					tempPTNew.DurationUI__c.addError( 'You cant modify Parent Tasks Duration');
 				}
-			}*/
+				if(tempPTOld.PercentCompleted__c != tempPTNew.PercentCompleted__c){
+					tempPTNew.PercentCompleted__c.addError( 'You cant modify Parent Tasks Percentage value');
+				}
+			}
 		}
+		else{
 		
 		//Testing finished
 									
@@ -94,12 +93,14 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 				
 				//TODO branch code to permit changes only on Start date and End date seperatly 														
 		    	//Recalculate Duration when EndDate or StartDate was changed
-		    	if(tempPTOld.EndDate__c != tempPTNew.EndDate__c || tempPTOld.StartDate__c != tempPTNew.StartDate__c){
-		 			tempPTNew = duration.doCalculateDuration(tempPTNew);
+		    	if(tempPTNew.EndDate__c != null){
+		    		if(tempPTOld.EndDate__c != tempPTNew.EndDate__c || tempPTOld.StartDate__c != tempPTNew.StartDate__c){
+		 				tempPTNew = duration.doCalculateDuration(tempPTNew);
+		    		}
 		    	}
 		    	
 			   	//Recalculate EndDate when Duration was changed
-		    	if(tempPTOld.DurationUI__c != tempPTNew.DurationUI__c){
+		    	if(tempPTOld.DurationUI__c != tempPTNew.DurationUI__c || tempPTNew.EndDate__c == null){
 		 			tempPTNew = duration.parseDuration(tempPTNew);
 		 			if(project.DisplayDuration__c.equals('Days')){
 						tempPTNew.EndDate__c = duration.doCalculateEndDateInDays(tempPTNew, Integer.valueOf(project.DaysInWorkWeek__c));
@@ -112,12 +113,12 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 		}
 		
 		   	if( tempPTOld.Project__c != tempPTNew.Project__c){
-	    		tempPTNew.addError( 'You can not modify project.');
+	    		tempPTNew.Project__c.addError( 'You can not modify project.');
 			}
 			
 			if( parentTasks.size() > 0 ){
 		    	//if(tempPTOld.Project__c != parentTasks.get(k).Project__c ){
-		    	//	tempPTNew.addError( 'Invalid parent task value.');
+		    		//tempPTNew.addError( 'Invalid parent task value.');
 		    	//}
 		    	
 			}
@@ -143,7 +144,7 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 			//}
 			tempPTNew.Indent__c = parent.setTaskIndent(tempPTNew);
 			//Testing
-			
+	  }	
     } 
     ProjectUtil.BaseMap=AuxMap;    
 }

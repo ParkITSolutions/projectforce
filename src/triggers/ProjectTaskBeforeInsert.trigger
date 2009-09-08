@@ -11,12 +11,12 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 		 		tasksInTrrNewIds.add( p.ParentTask__c );
 				projectSharingGroupNames.add('Project' + p.Project__c);	
 			}
-			
+			 
 			Map<String, Id> projectMap = new Map<String, Id>();			
 			for(Group g: [select Id, name from Group where Name in: projectSharingGroupNames]) {
 				projectMap.put(g.Name, g.Id);
 			}
-
+ 
 			for(ProjectTask__c nTask : Trigger.new) {
 				String queueId = projectMap.get('Project' + nTask.Project__c);
 				if(nTask.Milestone__c){
@@ -30,7 +30,7 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 		 			
 		 			if(nTask.EndDate__c != null)
  		 				nTask.EndDate__c.addError( 'The Milestones can not have End Date.');
- 		 			
+ 		 			 
  		 			if(nTask.ParentTask__c != null)
  		 				nTask.ParentTask__c.addError( 'The Milestones can not have Parent Task.');
  		 				
@@ -39,7 +39,7 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 				if(queueId != null)
                     nTask.OwnerId = queueId;
 			}
-			
+			 
 			parentTasks = [ select id, Project__c from ProjectTask__c where id in: tasksInTrrNewIds limit 1000];
 			
 		    ProjectTask__c tempPTOld = new ProjectTask__c();
@@ -60,7 +60,7 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 			    	tempPTNew = Trigger.new.get( j );		
 			 		
 			 		if(!tempPTNew.Milestone__c){
-			 						 			
+			 						 			 
 				 		if(tempPTNew.Project__c != null){
 				 			
 				 			Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
@@ -93,14 +93,15 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 					 			}
 							}
 		    			}
-		    			
-			    	} 
+		    		
+			    	}
 			    	
 			    	ParentTask parent = new ParentTask();
+			    	parent.setProjectId(tempPTNew.Project__c);
 			    	tempPTNew.Indent__c = parent.setTaskIndent(tempPTNew);
 		    }
-		    //TODO finish testing	
-		    
+		    //TODO finish testing
+		     
 		}
 		finally{
 			ProjectUtil.currentlyExeTrigger = false;
