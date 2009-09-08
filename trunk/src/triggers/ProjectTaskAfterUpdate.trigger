@@ -21,9 +21,9 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
     	
     }
     
-    //pEmail.sendMailForTaskChanged( lstPTId );
+    pEmail.sendMailForTaskChanged( lstPTId );
     //TODO correct trigger too many SOQL
-   	//ProjectSubscribersEmailServices pEmail2 = new ProjectSubscribersEmailServices();
+   	ProjectSubscribersEmailServices pEmail2 = new ProjectSubscribersEmailServices();
     
     if(lstPTId.size() > 0){
     	//TODO correct trigger too many SOQL

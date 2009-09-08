@@ -279,6 +279,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>TaskDependencies</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>TaskQuickAccessController</apexClass>
         <enabled>true</enabled>
     </classAccesses>

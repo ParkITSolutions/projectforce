@@ -23,6 +23,7 @@ public with sharing class ProjectOverviewController {
     * Construct
     */
     public projectOverviewController(){
+    	    	
         projectsForTabs();
         
         domain = ProjectUtil.getDomain();
