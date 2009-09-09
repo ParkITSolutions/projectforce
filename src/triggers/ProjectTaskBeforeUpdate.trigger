@@ -41,7 +41,10 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 				
  		}
     }
-
+	
+	ParentTask parent = new ParentTask(); 
+	parent.setProjectId(Trigger.old.get(0).Project__c);
+			
     ProjectTask__c tempPTOld = new ProjectTask__c();
     ProjectTask__c tempPTNew = new ProjectTask__c();
     for( Integer k = 0; k < Trigger.old.size(); k++ ){
@@ -51,7 +54,6 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
     	
     	project = projectMap.get(tempPTNew.Project__c);
 		
-		//Testing ParentTask
 		List<ProjectTask__c> childTasks = new List<ProjectTask__c>();
 		for(ProjectTask__c task : allChildTasks ){
 			if(task.ParentTask__c == tempPTNew.Id){
@@ -59,7 +61,7 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 			}
 		}
 		System.debug('&&&&&&&&&&&&&&&&&&&&&&&&&&  chidl task size :'+childTasks.size()+ '  ' + ProjectUtil.getFlagValidationParentTask());
-		if(childTasks.size() > 0){
+		if(childTasks.size() > 0 && ProjectUtil.getFlagValidationParentTask()){
 			if(ProjectUtil.getFlagValidationParentTask()){
 				if(tempPTOld.StartDate__c != tempPTNew.StartDate__c){
 					tempPTNew.StartDate__c.addError( 'You cant modify Parent Tasks Start Date');
@@ -77,8 +79,6 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 		}
 		else{
 		
-		//Testing finished
-									
     	duration.verifyStartDate(tempPTNew, project);
     	
 		if(!tempPTNew.Milestone__c){
@@ -95,6 +95,7 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 		    	//Recalculate Duration when EndDate or StartDate was changed
 		    	if(tempPTNew.EndDate__c != null){
 		    		if(tempPTOld.EndDate__c != tempPTNew.EndDate__c || tempPTOld.StartDate__c != tempPTNew.StartDate__c){
+		 				System.debug('Entro para recalcular su duration');
 		 				tempPTNew = duration.doCalculateDuration(tempPTNew);
 		    		}
 		    	}
@@ -124,10 +125,9 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 			}
 	   	 	AuxMap.put( tempPTOld.id, tempPTOld ); 
 			
-			//Testing
-			ParentTask parent = new ParentTask(); 
+			//ParentTask parent = new ParentTask(); 
+			//parent.setProjectId(tempPTNew.Project__c);
 			System.debug('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ task ID: '+tempPTNew.Id +'  tamano:   '+childTasks.size());
-			parent.setProjectId(tempPTNew.Project__c);
 			//if(childTasks.size() == 0){
 				System.debug('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ENTRO CHECK 1');
 				if( tempPTNew.ParentTask__c != null ){ 
@@ -136,15 +136,19 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 					//tempPTOld.PercentCompleted__c != tempPTNew.PercentCompleted__c ||
 					//tempPTOld.ParentTask__c != tempPTNew.ParentTask__c){
 						if(ProjectUtil.getFlagValidationParentTask()){
-							System.debug('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ENTRO CHECK 2');
+							System.debug('UPDATE@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ENTRO CHECK 2');
 							parent.checkParentTask(tempPTNew);
 						}
 					//}
 				}
 			//}
-			tempPTNew.Indent__c = parent.setTaskIndent(tempPTNew);
-			//Testing
+			if(ProjectUtil.getParentTaskUpdateIndent()){
+				tempPTNew.Indent__c = parent.setTaskIndent(tempPTNew);
+				System.debug(' Vaolres de indet al finalizar update : ' + tempPTNew.Id+'   '+tempPTNew.Indent__c);
+			}
+			
 	  }	
+	  
     } 
     ProjectUtil.BaseMap=AuxMap;    
 }

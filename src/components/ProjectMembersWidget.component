@@ -50,7 +50,7 @@
 		<div class="swirly_overlay" style="display: none;"></div>
 		<!-- Overlay Title -->
 		<div class="overlayTitleContent">
-		<div class="overlayTitle">Add new member to <script>trunkText('{!teamName}',24);</script></div>
+		<div class="overlayTitle">Add new member to {!IF(LEN(teamName)>24,LEFT(teamName,24)+'...', teamName)}</div>
 		<div class="overlayCloseEvent">
 			<a href="Javascript:;" 	onclick="modal.close();"> 
 				<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" /> 

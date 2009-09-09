@@ -3,7 +3,7 @@ trigger ProjectTaskBeforeDelete on ProjectTask__c (before delete)
 	// Send email to subscribers members
 	ProjectSubscribersEmailServices pEmail = new ProjectSubscribersEmailServices();
 	List<String> lstTasksId = new List<String>(); 
-    for ( ProjectTask__c pT : Trigger.old ){
+    for ( ProjectTask__c pT : Trigger.old ){ 
     	lstTasksId.add(pT.id);
     }
     
@@ -28,26 +28,19 @@ trigger ProjectTaskBeforeDelete on ProjectTask__c (before delete)
 	delete attachs;
 	
 	
-	
-	Set<Id> taskIds = new Set<Id>();
+	//Logic to erase Child tasks
+	/*Map<Id,ProjectTask__c> taskIds = new Map<Id,ProjectTask__c>();
 	for(ProjectTask__c  tsk : Trigger.old){
-		taskIds.add(tsk.Id);
+		taskIds.put(tsk.Id, tsk);
 	}
 	List<ProjectTask__c> children = new List<ProjectTask__c>();
-	for(ProjectTask__c t : [select Id, Duration__c, DurationUI__c, Indent__c, ParentTask__c, PercentCompleted__c,  Project__c,  StartDate__c, EndDate__c from ProjectTask__c where ParentTask__c in : taskIds limit 1000]){
-		ProjectTask__c aux = Trigger.oldMap.get(t.Id);
-		if(aux != null){
-			if(aux.Id != t.Id){
-				children.add(t);
-			}
-		}
-		else{
+	for(ProjectTask__c t : [select Id, Duration__c, DurationUI__c, Indent__c, ParentTask__c, PercentCompleted__c,  Project__c,  StartDate__c, EndDate__c from ProjectTask__c where ParentTask__c in : taskIds.values() limit 1000]){
+		if(!taskIds.containsKey(t.Id)){
 			children.add(t);
 		}
-		
 	}
-	
+	ProjectUtil.setFlagValidationParentTask(false);
 	delete children;
-	
-	
+	ProjectUtil.setFlagValidationParentTask(true);
+*/	
 }

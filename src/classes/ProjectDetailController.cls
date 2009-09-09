@@ -212,7 +212,7 @@ public with sharing class ProjectDetailController
 			this.isMember = false;
 			
 			genPermissions();
-			this.isLastMemberAdmin = false;			
+			this.isLastMemberAdmin = false;		
 
 			if( this.projectType == 'private'  )
 				return this.projectRedirect();
