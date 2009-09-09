@@ -18,6 +18,7 @@ public class ProjectUtil {
     public static Boolean DeleteTaskMailSent = false;
     public static Boolean flagAssignee = true;
     public static Boolean flagValidationParentTask = true;
+    public static Boolean parentTaskUpdateIndent = true;
     
     
     public static void setFlagValidationParentTask(Boolean value){
@@ -26,6 +27,14 @@ public class ProjectUtil {
     
     public static Boolean getFlagValidationParentTask(){
     	return ProjectUtil.flagValidationParentTask;
+    }
+    
+    public static void setParentTaskUpdateIndent(Boolean value){
+    	ProjectUtil.parentTaskUpdateIndent = value;
+    }
+    
+    public static Boolean getParentTaskUpdateIndent(){
+    	return ProjectUtil.parentTaskUpdateIndent;
     }
     
     /**

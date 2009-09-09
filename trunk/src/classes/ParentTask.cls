@@ -5,11 +5,17 @@ public class ParentTask {
 	
 	public Map<Id,ProjectTask__c> updates = new Map<Id,ProjectTask__c>();
 	public BigListOfTask taskList;
+	public Map<Id,ProjectTask__c> indentUpdateTasks = new Map<Id,ProjectTask__c>();
 	
 	/**
 	* Class constructor
 	*/
 	public ParentTask (){
+	}
+	
+	public ProjectTask__c getParentTask(ProjectTask__c task){
+		ProjectTask__c parentTask = this.taskList.getById(task.ParentTask__c);	
+		return parentTask;
 	}
 	
 	public void setProjectId (String projectId){ 
@@ -25,6 +31,33 @@ public class ParentTask {
 		else
 			return	0.0;		
 	}
+	
+	public void updateAllChildrensIndent(ProjectTask__c task){
+		System.debug('---------------DENTRO Tarea para el update children indent : ' + task.Id); 
+		List<ProjectTask__c> children = this.taskList.getByParentId(task.Id);
+		System.debug('Tamano de children size: '+children.size()); 
+		for(ProjectTask__c tsk : children){
+			ProjectTask__c aux = new ProjectTask__c(); 
+			aux = tsk;
+			aux.Indent__c = this.setTaskIndent(aux);
+			this.indentUpdateTasks.put(aux.Id,aux);
+			taskList.setById(aux);
+				System.debug('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+				System.debug('++++++++++++++++++++++++ task id :'+ aux.Id);
+				System.debug('++++++++++++++++++++++++ task StartDate :'+ aux.StartDate__c);
+				System.debug('++++++++++++++++++++++++ task EndDate :'+ aux.EndDate__c);
+				System.debug('++++++++++++++++++++++++ task Parent :'+ aux.ParentTask__c);
+				System.debug('++++++++++++++++++++++++ task Percentage :'+ aux.Indent__c);
+				System.debug('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+		}
+		
+		if(children.size() != 0 ){
+			for(ProjectTask__c childs : children){
+				this.updateAllChildrensIndent(childs);
+			}
+		}
+	}
+	
 	
 	public Boolean taskHasChildren(ProjectTask__c task){
 		List<ProjectTask__c> children = this.taskList.getByParentId(task.Id);
@@ -43,7 +76,6 @@ public class ParentTask {
 			Boolean found = false;
 			for(ProjectTask__c ntask : children){
 				if(ntask.Id == hijo.Id){
-					System.debug('se encontro el hijo');
 					found = true;
 					ntask = hijo;
 				}
@@ -62,7 +94,7 @@ public class ParentTask {
 	public void checkParentTask(ProjectTask__c task){ 
 		
 		if(task.ParentTask__c != null){
-			System.debug('-------------------------------->>>> Recursion '+ task.Id);
+			System.debug('-------------------------------->>>> Recursion '+ task.Id + ' Parent Id: ' + task.ParentTask__c);
 			ProjectTask__c parentTask = this.taskList.getbyId(task.ParentTask__c);
 			ProjectTask__c auxTask    = new ProjectTask__c();	
 			auxTask.StartDate__c      = null;
@@ -139,8 +171,12 @@ public class ParentTask {
 			parentTask.StartDate__c = auxTask.StartDate__c;
 			parentTask.EndDate__c   = auxTask.EndDate__c;
 			if(percentage != 0.0){
-				parentTask.PercentCompleted__c = percentage / children.size();
+				parentTask.PercentCompleted__c = Math.floor(percentage / children.size());
 			}
+			else{
+				parentTask.PercentCompleted__c = 0.0;
+			}
+			
 
 			ProjectUtil.setFlagValidationParentTask(false);
 			this.updates.put(parentTask.Id, parentTask);
@@ -156,6 +192,7 @@ public class ParentTask {
 				System.debug('++++++++++++++++++++++++ task EndDate :'+ t.EndDate__c);
 				System.debug('++++++++++++++++++++++++ task Parent :'+ t.ParentTask__c);
 				System.debug('++++++++++++++++++++++++ task Percentage :'+ t.PercentCompleted__c);
+				System.debug('++++++++++++++++++++++++ task Duration :'+ t.DurationUI__c);
 				System.debug('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
 			}
 			ProjectUtil.setFlagValidationParentTask(false);
@@ -180,16 +217,29 @@ public class ParentTask {
 			if( this.bList[this.bList.size() - 1 ].size() < 200)
 				this.bList[this.bList.size() - 1 ].add( task );
 			else
-				this.bList[this.bList.size()].add( task );
+				this.bList[this.bList.size()].add( task ); 
 		}
 		
 		private ProjectTask__c get( Integer ind ){
 			return bList[  ind / 200 ][ ind - Math.mod( ind, 200 )*200];
 		}
 
-	
-		private ProjectTask__c getById( Id taskId ){
-			
+		public void setById( ProjectTask__c newTask ){
+			Integer count = 0;
+			for( List<ProjectTask__c> ptList : this.bList ){
+				count = 0;
+				for(ProjectTask__c pt :ptList ){
+					if( pt.id == newTask.id ){
+						ptList[ count ] = newTask;
+						break;
+						break;
+					}	
+					count++;
+				}
+			}
+		}
+		
+		private ProjectTask__c getById( Id taskId ){			
 			ProjectTask__c ret = new ProjectTask__c();
 			for( List<ProjectTask__c> ptList : this.bList ){
 				for(ProjectTask__c pt :ptList ){
