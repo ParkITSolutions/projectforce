@@ -28,19 +28,18 @@ trigger ProjectTaskBeforeDelete on ProjectTask__c (before delete)
 	delete attachs;
 	
 	
-	//Logic to erase Child tasks
-	/*Map<Id,ProjectTask__c> taskIds = new Map<Id,ProjectTask__c>();
+	//Creates list of Task Ids to use in query for mass removal
+	Map<Id,ProjectTask__c> taskIds = new Map<Id,ProjectTask__c>();
 	for(ProjectTask__c  tsk : Trigger.old){
 		taskIds.put(tsk.Id, tsk);
 	}
-	List<ProjectTask__c> children = new List<ProjectTask__c>();
+	
+	//Add to children List all childs for later deletion
+	ProjectUtil.childrenTaskToDelete = new List<ProjectTask__c>();
 	for(ProjectTask__c t : [select Id, Duration__c, DurationUI__c, Indent__c, ParentTask__c, PercentCompleted__c,  Project__c,  StartDate__c, EndDate__c from ProjectTask__c where ParentTask__c in : taskIds.values() limit 1000]){
+		//if same task already in Trigger.old doesnt add to children List for removal
 		if(!taskIds.containsKey(t.Id)){
-			children.add(t);
+			ProjectUtil.childrenTaskToDelete.add(t);
 		}
 	}
-	ProjectUtil.setFlagValidationParentTask(false);
-	delete children;
-	ProjectUtil.setFlagValidationParentTask(true);
-*/	
 }

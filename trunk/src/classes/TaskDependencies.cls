@@ -1,6 +1,6 @@
 public with sharing class TaskDependencies {
 
-	BigListOfTask bL = new BigListOfTask('SELECT Id, StartDate__c, EndDate__c FROM ProjectTask__c');
+	BigListOfTask bL = new BigListOfTask('SELECT Id, name, StartDate__c, EndDate__c FROM ProjectTask__c');
 	BigListOfTaskPredecessors bLP;// = new BigListOfTaskPredecessors();
 
 	List<ProjectTaskPred__c> relsList = new List<ProjectTaskPred__c>();
@@ -10,12 +10,31 @@ public with sharing class TaskDependencies {
 	ProjectTaskPred__c pred = new ProjectTaskPred__c();
 	ProjectTask__c predTask = new ProjectTask__c();
 
-	
 	public TaskDependencies(){}
 	
-	public void boo( Id projectId ){
+	public void setProps( Id projectId ){
 		this.bLP = new BigListOfTaskPredecessors( projectId );
 		System.debug('[3>>> bL' + this.bL.size() + 'bLP' + this.bLP.size() + '-' + this.bLP.get(0).Predecessor__c);
+	}
+
+	BigListOfTaskPredecessors relsToModify = new BigListOfTaskPredecessors();
+	BigListOfTask tasksToModify = new BigListOfTask();	
+	List<ProjectTaskPred__c> rListAux = new List<ProjectTaskPred__c>();
+	Integer daysBt = 0;
+	
+	// Aux method
+	public Boolean taskAndRelsToModify( ProjectTask__c oldTask ){
+		Boolean someTasksMustBeModify = false;
+		for( ProjectTaskPred__c p : this.rListAux ){
+			if( p.Lag_Time__c < daysBt ){
+				p.Lag_Time__c = 0;
+				someTasksMustBeModify = true;
+				this.tasksToModify.add(this.bL.getById(p.Parent__c));
+			}else
+				p.Lag_Time__c = p.Lag_Time__c - this.daysBt;
+			this.relsToModify.add( p );
+		}		
+		return someTasksMustBeModify;
 	}
 	
 	public void modifyStartOrEndDate( ProjectTask__c oldTask, ProjectTask__c newTask ){
@@ -23,51 +42,36 @@ public with sharing class TaskDependencies {
 		this.task = oldTask;
 		this.pred = bLP.getByParentId( oldTask.id );
 		this.predTask = bL.getById( pred.Predecessor__c );		
-		
-		// Start to atart
-		if( this.pred.Lag_Type__c == 'Start-to-Start' ){
-			if( this.canModifySToS( newTask.StartDate__c )){
-				Boolean fu = false;
-				BigListOfTaskPredecessors relsToModify = new BigListOfTaskPredecessors();
-				BigListOfTask tasksToModify = new BigListOfTask();
-				
-				List<ProjectTaskPred__c> rListAux = new List<ProjectTaskPred__c>();
-				rListAux = this.bLP.getListPred( newTask.id, 'Start-to-Start' ); 
-				Integer daysBt = newTask.StartDate__c.daysBetween( oldTask.StartDate__c );
-				System.debug('[2>>>' + rListAux.size() + '-' + newTask.id + '=' + this.bLP.get(0).Predecessor__c);
-				for( ProjectTaskPred__c p : rListAux ){
-					if( p.Lag_Time__c < daysBt ){
-						p.Lag_Time__c = 0;
-						fu = true;
-						tasksToModify.add(taskList.getById(p.Parent__c));
-					}else
-						p.Lag_Time__c = p.Lag_Time__c - daysBt;
-					relsToModify.add( p );
-				}
+		this.daysBt = newTask.StartDate__c.daysBetween( oldTask.StartDate__c );
 
+		// Start to atart
+		if( this.pred.Lag_Type__c == 'Start-to-Start'  && oldTask.StartDate__c != newTask.StartDate__c ){
+			if( this.canModifySToS( newTask.StartDate__c )){
+				this.rListAux = this.bLP.getListPred( newTask.id, 'Start-to-Start' ); 
+				Integer daysBt = newTask.StartDate__c.daysBetween( oldTask.StartDate__c );
+				//this.daysBt = Math.abs(Date.valueOf('2009-09-21 00:00:00').daysBetween( oldTask.StartDate__c ));
 				Integer ind = 0;
-				while( fu ){
-					rListAux = this.bLP.getListPred( tasksToModify.get( ind ).id, 'Start-to-Start' ); 
-					daysBt   = newTask.StartDate__c.daysBetween( oldTask.StartDate__c );
-					fu = false;
-					for( ProjectTaskPred__c p : rListAux ){
-						if( p.Lag_Time__c < daysBt ){
-							p.Lag_Time__c = 0;
-							fu = true;
-							tasksToModify.add(taskList.getById(p.Parent__c));
-						}else
-							p.Lag_Time__c = p.Lag_Time__c - daysBt;
-						relsToModify.add( p );
-					}					
+				Boolean fu = this.taskAndRelsToModify( this.task ); 
+				while(fu){
+					this.rListAux.clear(); 
+					this.task = tasksToModify.get( ind );
+					this.rListAux = this.bLP.getListPred( tasksToModify.get( ind ).id, 'Start-to-Start' );
+					ind++;
+					fu = this.taskAndRelsToModify( this.task ); 
 				}
-				relsToModify.debugg('tokenfoo');
-			}else
-				 throw new CustomException('We have a problem Hustonforce');   
+			}else{
+				throw new CustomException('We have a problem Hustonforce');
+			}   
 		}
+		
+		System.debug( '[>] ' + this.tasksToModify.size());
+		this.relsToModify.updateNow();
+		this.tasksToModify.updateNow();
 		
 	}
 	
 	public Boolean canModifySToS( Date newStartDate ){
+		System.debug('1>> ' + this.predTask.name + '=' + this.predTask.StartDate__c +' :: '+ newStartDate);
 		return this.predTask.StartDate__c <= newStartDate;
 	} 
 
@@ -115,11 +119,22 @@ public with sharing class TaskDependencies {
 		public Integer size(){
 			return this.bList.size();
 		}
+
+		public void updateNow(){
+			ProjectUtil.setTaskDependenciesFlag( true );
+			update this.bList;
+		}
+		public void debugg( String token ){
+			System.debug('\n\n' + token + '\n\n');
+			System.debug('Size -->' + this.size() + '\n\n');
+			System.debug('List --> ' + this.bList );
+		}
 	}
 
 	public class BigListOfTaskPredecessors{
 
 		List<ProjectTaskPred__c> bList = new List<ProjectTaskPred__c>();
+		Map<id, ProjectTaskPred__c> bMap   = new Map<id, ProjectTaskPred__c>();
 
 		public BigListOfTaskPredecessors(){}
 		
@@ -127,19 +142,28 @@ public with sharing class TaskDependencies {
 			for( ProjectTaskPred__c pT : [ SELECT Id, Project__c, Parent__c, Predecessor__c, Lag_Time__c, Lag_Type__c, Lag_Unit__c FROM ProjectTaskPred__c WHERE Project__c =: projectId ])
 				if( this.bList.size() < 1000 )
 				this.bList.add( pT );
-				
-				System.debug('{>>>' + this.bList);
 		}		
 		
 		public ProjectTaskPred__c get( Integer i ){
-			return this.bList.get( i );
+			ProjectTaskPred__c rPred = new ProjectTaskPred__c();
+			
+			if(this.size() > 0)
+			rPred = this.bList.get( i );
+			
+			return rPred;
 		}
 		
 		public ProjectTaskPred__c getByParentId( Id parentId ){
-			Integer k;
-			for( k = 0; k < this.size() && bList[ k ].parent__c != parentId; k++) ;
-			
-			return ( k == 1000 ? null : this.get( k-1 ));
+			Integer k = 0;
+			ProjectTaskPred__c rTask = new ProjectTaskPred__c();
+			while( k < this.size()){
+				if(this.bList[ k ].Parent__c == parentId){
+					rTask = this.get(k);
+					break;
+				}
+				k++;
+			}
+			return rTask;
 		}
 		
 		public List<ProjectTaskPred__c> getListPred( Id predecessor, String typeRel ){
@@ -167,6 +191,11 @@ public with sharing class TaskDependencies {
 			this.bList.clear();
 		}
 		
+		public void updateNow(){
+			ProjectUtil.setTaskDependenciesFlag( true );
+			update this.bList;
+		}
+
 		public void debugg( String token ){
 			System.debug('\n\n' + token + '\n\n');
 			System.debug('Size -->' + this.size() + '\n\n');

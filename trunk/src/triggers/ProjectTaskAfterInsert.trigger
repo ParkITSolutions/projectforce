@@ -23,13 +23,12 @@ trigger ProjectTaskAfterInsert on ProjectTask__c (after insert) {
 			    p.RowCause = 'Manual';
 			    tasks.add(p);
 			    
-			    //Testing
+			    //Re-Evaulates Parent task after Inserting 
 			    if(m.ParentTask__c != null){
 					ParentTask parent = new ParentTask();
 					parent.setProjectId(m.Project__c);
 					parent.checkParentTask(m);
 				}
-				//Testing
 						
 			}
 			insert tasks;

@@ -541,19 +541,6 @@ public with sharing class ProjectMembersWidgetController {
 	}
 	
 	/**
-	* Return team name truncated
-	* @return String
-	*/
-	public String getTeamNameTruncated(){
-		
-		String teamNameAux = this.getTeamName();
-		if(teamNameAux.length() > 24){
-			teamNameAux	= teamNameAux.subString(0,24) + '...';
-		}
-		return teamNameAux;
-	}
-	
-	/**
     * Inner class for TeamMeber type
     *@class
     */

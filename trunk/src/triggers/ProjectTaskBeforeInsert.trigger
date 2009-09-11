@@ -31,10 +31,6 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 		 			if(nTask.EndDate__c != null)
  		 				nTask.EndDate__c.addError( 'The Milestones can not have End Date.');
  		 			 
- 		 			if(nTask.ParentTask__c != null)
- 		 				nTask.ParentTask__c.addError( 'The Milestones can not have Parent Task.');
- 		 				
- 		 			//nTask.EndDate__c = nTask.StartDate__c;
 		 		} 
 				if(queueId != null)
                     nTask.OwnerId = queueId;
@@ -49,24 +45,20 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 	
 				if( parentTasks.size() > 0 )
 			    	if( tempPTNew.Project__c != parentTasks.get( k ).Project__c )
-			    		tempPTNew.addError( 'Invalid parent task value.-');
+			    		tempPTNew.addError( 'Invalid parent task value.');
 
 		    } 	
-		    
-			    //TODO testing
 				
 			    for( Integer j = 0; j < Trigger.new.size(); j++ ){
-			
 			    	tempPTNew = Trigger.new.get( j );		
-			 		
 			 		if(!tempPTNew.Milestone__c){
-			 						 			 
 				 		if(tempPTNew.Project__c != null){
 				 			
 				 			Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
 											from Project2__c 
 											where Id =: tempPTNew.Project__c];
 							
+							//TODO move Validation to Duration Clase
 							String regex = tempPTNew.DurationUI__c;
 							regex = regex.replaceAll('\\d[0-9]*[\\\\.\\d{0,2}]?[h,d,H,D]?','');
 							if(regex != ''){
@@ -100,8 +92,6 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 			    	parent.setProjectId(tempPTNew.Project__c);
 			    	tempPTNew.Indent__c = parent.setTaskIndent(tempPTNew);
 		    }
-		    //TODO finish testing
-		     
 		}
 		finally{
 			ProjectUtil.currentlyExeTrigger = false;

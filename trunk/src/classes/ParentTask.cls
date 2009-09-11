@@ -6,7 +6,7 @@ public class ParentTask {
 	public Map<Id,ProjectTask__c> updates = new Map<Id,ProjectTask__c>();
 	public BigListOfTask taskList;
 	public Map<Id,ProjectTask__c> indentUpdateTasks = new Map<Id,ProjectTask__c>();
-	
+	public Boolean validParentTask = true;
 	/**
 	* Class constructor
 	*/
@@ -58,6 +58,21 @@ public class ParentTask {
 		}
 	}
 	
+	
+	public void checkParentTaskRedundancy(ProjectTask__c task, String parentId){
+		List<ProjectTask__c> children = this.taskList.getByParentId(task.Id);
+		for(ProjectTask__c tsk : children){
+			if(tsk.Id == parentId && tsk.Milestone__c == false){
+				this.validParentTask = this.validParentTask && false;
+			}
+		}
+		
+		if(children.size() != 0 ){
+			for(ProjectTask__c child : children){
+				this.checkParentTaskRedundancy(child, parentId);
+			}
+		}
+	}
 	
 	public Boolean taskHasChildren(ProjectTask__c task){
 		List<ProjectTask__c> children = this.taskList.getByParentId(task.Id);
@@ -117,7 +132,6 @@ public class ParentTask {
 					}
 				}
 				else{
-					System.debug ('primera vez valor start '+nTask.StartDate__c);
 					if(task.Id != nTask.Id){
 						auxTask.StartDate__c = nTask.StartDate__c;
 					}
@@ -126,28 +140,50 @@ public class ParentTask {
 					}
 					
 				}
-				
-				if(auxTask.EndDate__c != null){
-					if(task.Id != nTask.Id){
-						if(nTask.EndDate__c >= auxTask.EndDate__c){
-							auxTask.EndDate__c = nTask.EndDate__c;
+				if(!nTask.Milestone__c){
+					if(auxTask.EndDate__c != null){
+						if(task.Id != nTask.Id){
+							if(nTask.EndDate__c >= auxTask.EndDate__c){
+								auxTask.EndDate__c = nTask.EndDate__c;
+							}
+						}
+						else{
+							if(task.EndDate__c >= auxTask.EndDate__c){
+								auxTask.EndDate__c = task.EndDate__c;
+							}
 						}
 					}
 					else{
-						if(task.EndDate__c >= auxTask.EndDate__c){
+						if(task.Id != nTask.Id){
+							auxTask.EndDate__c = nTask.EndDate__c;
+						}
+						else{
 							auxTask.EndDate__c = task.EndDate__c;
 						}
+						
 					}
 				}
 				else{
-					System.debug ('primera vez valor end '+nTask.EndDate__c);
-					if(task.Id != nTask.Id){
-						auxTask.EndDate__c = nTask.EndDate__c;
+					if(auxTask.EndDate__c != null){
+						if(task.Id != nTask.Id){
+							if(nTask.StartDate__c >= auxTask.EndDate__c){
+								auxTask.EndDate__c = nTask.StartDate__c;
+							}
+						}
+						else{
+							if(task.StartDate__c >= auxTask.EndDate__c){
+								auxTask.EndDate__c = task.StartDate__c;
+							}
+						}
 					}
 					else{
-						auxTask.EndDate__c = task.EndDate__c;
+						if(task.Id != nTask.Id){
+							auxTask.EndDate__c = nTask.StartDate__c;
+						}
+						else{
+							auxTask.EndDate__c = task.StartDate__c;
+						}
 					}
-					
 				}
 				
 				if(nTask.PercentCompleted__c == null ){
@@ -208,7 +244,7 @@ public class ParentTask {
 		
 		public bigListOfTask(String projectId){
 			
-			for( List<ProjectTask__c> ptList : [ select Id, Duration__c, DurationUI__c, Indent__c, ParentTask__c, PercentCompleted__c,  Project__c,  StartDate__c, EndDate__c from ProjectTask__c where Project__c =: projectId ])
+			for( List<ProjectTask__c> ptList : [ select Id, Duration__c, DurationUI__c, Indent__c, ParentTask__c, PercentCompleted__c,  Project__c,  StartDate__c, EndDate__c, Milestone__c from ProjectTask__c where Project__c =: projectId ])
 				this.bList.add(ptList);
 		}
 
