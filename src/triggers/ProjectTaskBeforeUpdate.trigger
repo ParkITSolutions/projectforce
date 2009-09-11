@@ -3,8 +3,6 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 	Map<String,ProjectTask__c> AuxMap = new Map<String,ProjectTask__c>();
  	List<Id> tasksInTrrNewIds = new List<Id>();
 	List<ProjectTask__c> parentTasks = new List<ProjectTask__c>();
-	 
-	//Task duration util class 
 	ProjectTaskDuration duration = new ProjectTaskDuration();
 	List<String> listIds = new List<String>(); 
 	Map<Id, Project2__c> projectMap = new Map<Id, Project2__c>();
@@ -30,15 +28,10 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
  		
  		if(task.Milestone__c){
  			project1 = projectMap.get(task.Project__c);
-									
 			duration.verifyStartDate(task, project1);
-			
- 			if(task.EndDate__c != null)
-				task.EndDate__c.addError('The Milestones can not have End Date.');
-			//TODO remove Milestone will allow having Parent tasks
- 			if(task.ParentTask__c != null)
-				task.ParentTask__c.addError('The Milestones can not have Parent Task.');
-				
+			task.EndDate__c = null;
+			task.DurationUI__c = '1';
+			task.Duration__c = 1.0; 
  		}
     }
 	
@@ -60,7 +53,7 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 				childTasks.add(task);
 			}
 		}
-		System.debug('&&&&&&&&&&&&&&&&&&&&&&&&&&  chidl task size :'+childTasks.size()+ '  ' + ProjectUtil.getFlagValidationParentTask());
+		
 		if(childTasks.size() > 0 && ProjectUtil.getFlagValidationParentTask()){
 			if(ProjectUtil.getFlagValidationParentTask()){
 				if(tempPTOld.StartDate__c != tempPTNew.StartDate__c){
@@ -75,6 +68,16 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 				if(tempPTOld.PercentCompleted__c != tempPTNew.PercentCompleted__c){
 					tempPTNew.PercentCompleted__c.addError( 'You cant modify Parent Tasks Percentage value');
 				}
+				if(tempPTOld.Milestone__c != tempPTNew.Milestone__c){
+					tempPTNew.Milestone__c.addError( 'You cant change a Parent Task into a Milestone');
+				}
+				
+				if(tempPTOld.ParentTask__c != tempPTNew.ParentTask__c){
+					parent.checkParentTaskRedundancy(tempPTNew, tempPTNew.ParentTask__c);
+					if( !parent.validParentTask ){
+						tempPTNew.ParentTask__c.addError('Parent Task cannot be a descendant child');
+					}
+				}
 			}
 		}
 		else{
@@ -82,6 +85,7 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
     	duration.verifyStartDate(tempPTNew, project);
     	
 		if(!tempPTNew.Milestone__c){
+			//TODO move validation to duration Class
 			String regex = tempPTNew.DurationUI__c;
 			regex = regex.replaceAll('\\d[0-9]*[\\\\.\\d{0,2}]?[h,d,H,D]?','');
 			if(regex != ''){
@@ -91,11 +95,9 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 				duration.verifyStartDate(tempPTNew, project);
 				duration.verifyEndDate(tempPTNew, project);
 				
-				//TODO branch code to permit changes only on Start date and End date seperatly 														
 		    	//Recalculate Duration when EndDate or StartDate was changed
 		    	if(tempPTNew.EndDate__c != null){
 		    		if(tempPTOld.EndDate__c != tempPTNew.EndDate__c || tempPTOld.StartDate__c != tempPTNew.StartDate__c){
-		 				System.debug('Entro para recalcular su duration');
 		 				tempPTNew = duration.doCalculateDuration(tempPTNew);
 		    		}
 		    	}
@@ -117,38 +119,17 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 	    		tempPTNew.Project__c.addError( 'You can not modify project.');
 			}
 			
-			if( parentTasks.size() > 0 ){
-		    	//if(tempPTOld.Project__c != parentTasks.get(k).Project__c ){
-		    		//tempPTNew.addError( 'Invalid parent task value.');
-		    	//}
-		    	
-			}
 	   	 	AuxMap.put( tempPTOld.id, tempPTOld ); 
 			
-			//ParentTask parent = new ParentTask(); 
-			//parent.setProjectId(tempPTNew.Project__c);
-			System.debug('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ task ID: '+tempPTNew.Id +'  tamano:   '+childTasks.size());
-			//if(childTasks.size() == 0){
-				System.debug('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ENTRO CHECK 1');
-				if( tempPTNew.ParentTask__c != null ){ 
-					//if(tempPTOld.EndDate__c != tempPTNew.EndDate__c || tempPTOld.StartDate__c != tempPTNew.StartDate__c ||
-					//tempPTOld.DurationUI__c != tempPTNew.DurationUI__c ||
-					//tempPTOld.PercentCompleted__c != tempPTNew.PercentCompleted__c ||
-					//tempPTOld.ParentTask__c != tempPTNew.ParentTask__c){
-						if(ProjectUtil.getFlagValidationParentTask()){
-							System.debug('UPDATE@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ENTRO CHECK 2');
-							parent.checkParentTask(tempPTNew);
-						}
-					//}
+			if( tempPTNew.ParentTask__c != null && tempPTOld.ParentTask__c == tempPTNew.ParentTask__c){ 
+				if(ProjectUtil.getFlagValidationParentTask()){
+					parent.checkParentTask(tempPTNew);
 				}
-			//}
+			}
 			if(ProjectUtil.getParentTaskUpdateIndent()){
 				tempPTNew.Indent__c = parent.setTaskIndent(tempPTNew);
-				System.debug(' Vaolres de indet al finalizar update : ' + tempPTNew.Id+'   '+tempPTNew.Indent__c);
 			}
-			
 	  }	
-	  
     } 
     ProjectUtil.BaseMap=AuxMap;    
 }

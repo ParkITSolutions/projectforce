@@ -1,26 +1,14 @@
 trigger ProjectTaskAfterDelete on ProjectTask__c (after delete) {
-	
-	Map<Id,ProjectTask__c> taskIds = new Map<Id,ProjectTask__c>();
-	for(ProjectTask__c  tsk : Trigger.old){
-		taskIds.put(tsk.Id, tsk);
-	}
-	List<ProjectTask__c> children = new List<ProjectTask__c>();
-	for(ProjectTask__c t : [select Id, Duration__c, DurationUI__c, Indent__c, ParentTask__c, PercentCompleted__c,  Project__c,  StartDate__c, EndDate__c from ProjectTask__c where ParentTask__c in : taskIds.values() limit 1000]){
-		if(!taskIds.containsKey(t.Id)){
-			children.add(t);
-		}
-	}
+	//Sets flag for deleting children Tasks
 	ProjectUtil.setFlagValidationParentTask(false);
-	delete children;
+	delete ProjectUtil.childrenTaskToDelete;
 	ProjectUtil.setFlagValidationParentTask(true);
 	
 	if(ProjectUtil.getFlagValidationParentTask()){
 		Set<Id> parIds = new Set<Id>();
-		List<ProjectTask__c> tasks = new List<ProjectTask__c>();
 		for(ProjectTask__c pt : Trigger.old){
 			if(!Trigger.oldMap.containsKey(pt.ParentTask__c)){
 				parIds.add(pt.ParentTask__c);
-				tasks.add(pt);
 			}
 		}
 		
@@ -30,6 +18,5 @@ trigger ProjectTaskAfterDelete on ProjectTask__c (after delete) {
 			parent.checkParentTask(tsk);
 		}
 	}
-	
 	
 }
