@@ -106,33 +106,34 @@
 	        		showMessageToUser('The selected tasks have been marked complete', 'success');
 	        	}else{
 	        		showMessageToUser('Percentage in parent task taks can\'t be modify' , '')
-	        		hightLightParentChecked(checkedParent);
+	        		//hightLightParentChecked(checkedParent);
 	        	}
 	        	setTimeout('Effect.Fade(\'infoToUser\')', 10000);   	
         	}
         }
         
       function hightLightParentChecked(checkedParent){
-      	var table = $('taskList');
-      	alert(checkedParent);
-       	var rows = table.getElementsByTagName('tr');
-       	for (var i = 0; i<rows.length; i++){
-        	var inputs = rows[i].getElementsByTagName('input');
-        	var it=0;
-           	while((it < inputs.length) && (checkedParent.indexOf(inputs[it].value) == -1)){
-           		++it;
-           	}
-           	if(it!=inputs.length){
-        		new Effect.Highlight(rows[i], { startcolor: '#ffff99',endcolor: '',duration: 10 });
-           		inputs[it].checked = true;
-           	}
+      	if(checkedParent!=''){
+	      	var table = $$('.pageList')[0];
+	       	var rows = table.getElementsByTagName('tr');
+	       	for (var i = 0; i<rows.length; i++){
+	        	var inputs = rows[i].getElementsByTagName('input');
+	        	var it=0;
+	           	while((it < inputs.length) && (checkedParent.indexOf(inputs[it].value) == -1)){
+	           		++it;
+	           	}
+	           	if(it!=inputs.length){
+	        		new Effect.Highlight(rows[i], { startcolor: '#ffff99',endcolor: '',duration: 10 });
+	           		inputs[it].checked = true;
+	           	}
+	        }
         }
 	}
         
     </script>
 
     <apex:form >
-        <apex:actionFunction action="{!refreshTaskList}" name="refreshListSort" rerender="taskListPanel" oncomplete="advFilterAfterRerender();">
+        <apex:actionFunction action="{!refreshTaskList}" name="refreshListSort" rerender="taskListPanel" oncomplete="advFilterAfterRerender();hightLightParentChecked('{!idTaskToMarkComplete}');">
             <apex:param name="criteria" value="" />
             <apex:param name="sb" value="refresh" />
         </apex:actionFunction>     
