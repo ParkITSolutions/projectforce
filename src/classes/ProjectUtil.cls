@@ -20,7 +20,7 @@ public class ProjectUtil {
     public static Boolean flagValidationParentTask = true;
     public static Boolean parentTaskUpdateIndent = true;
     public static List<ProjectTask__c> childrenTaskToDelete = new List<ProjectTask__c>();
-    public static Boolean taskDependenciesFlag = false;
+    public static Boolean taskDependenciesFlag = true;
     
     public static void setTaskDependenciesFlag(Boolean value){
     	ProjectUtil.taskDependenciesFlag = value;

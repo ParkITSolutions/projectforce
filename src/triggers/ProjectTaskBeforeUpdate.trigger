@@ -7,6 +7,16 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 	List<String> listIds = new List<String>(); 
 	Map<Id, Project2__c> projectMap = new Map<Id, Project2__c>();
 	
+	TaskDependencies tD = new TaskDependencies();
+	
+	Integer count;
+	for( count = 0; count < Trigger.new.size(); count++ ){
+		if(ProjectUtil.getTaskDependenciesFlag()){
+			tD.setProps( Trigger.old[count].Project__c );
+			tD.modifyStartOrEndDate( Trigger.old[count], Trigger.new[count]);
+		}
+	}
+	
 	Project2__c project1;
 	Project2__c project;
 	for( Project2__c p :[select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c from Project2__c ])
@@ -46,6 +56,12 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
     	tempPTNew = Trigger.new.get( k );	
     	
     	project = projectMap.get(tempPTNew.Project__c);
+		
+		if( tempPTNew.StartDate__c > tempPTNew.EndDate__c ){
+			tempPTNew.StartDate__c.addError('Start date should not be greater than End Date');
+			tempPTNew.EndDate__c.addError('End date should not be smaller than Start Date');
+		}
+		else{
 		
 		List<ProjectTask__c> childTasks = new List<ProjectTask__c>();
 		for(ProjectTask__c task : allChildTasks ){
@@ -130,6 +146,7 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 				tempPTNew.Indent__c = parent.setTaskIndent(tempPTNew);
 			}
 	  }	
+    }
     } 
     ProjectUtil.BaseMap=AuxMap;    
 }

@@ -26,6 +26,7 @@ public with sharing class ProjectTaskListController {
     public String sortBy;
     public String oldSortBy;
     public String idTaskToComplete = '';
+    public String idTaskToMarkComplete = '';
    
     public String domain = ProjectUtil.getDomain();
 
@@ -852,14 +853,31 @@ public with sharing class ProjectTaskListController {
     */
     public void setIdTaskToComplete (String i) {
          this.idTaskToComplete = i;  
-     }   
+     }
+	//Delete...
+    /** 
+    *Get task to mark as completed
+    *@return String task id
+    */
+    public String getIdTaskToMarkComplete () {
+        return idTaskToMarkComplete;   
+    }
 
+	/**
+	*Set task to be marcked as complete
+	*
+	*/     
+    public void setIdTaskToMarkComplete (String i) {
+         this.idTaskToMarkComplete = i;  
+     }
+    //...Delete
     /**
     * Mark Complete
     */
     public void markComplete () {
         List<String> idsUpdate = new List<String>();
-                   
+       	setIdTaskToMarkComplete(getIdTaskToComplete());
+        idTaskToMarkComplete = '';
         if (idTaskToComplete != '' && idTaskToComplete != null) {
             idsUpdate = getIdTaskToComplete().split(':');
         }
@@ -868,23 +886,35 @@ public with sharing class ProjectTaskListController {
             List<ProjectTask__c> tasksUpdate = [select (Select User__c from ProjectsAssignees__r ), id from ProjectTask__c where id in: idsUpdate];
             
             if (tasksUpdate.size() > 0) {
+                Boolean markingParent = false;
+                Integer indexTask = 0;
                 for (ProjectTask__c iterTask : tasksUpdate) {
                     Boolean cantEditAndDelete = false;
                     Integer countAssignee = 0;
-                    while (!cantEditAndDelete && countAssignee < iterTask.ProjectsAssignees__r.size()) {
-                        if(iterTask.ProjectsAssignees__r[countAssignee].User__c != USERID) {
-                            cantEditAndDelete =  true;
-                        }else {
-                            countAssignee++;
-                        }
-                    }
-                    if(!cantEditAndDelete || editDeletePer || iterTask.createdById == USERID){
-                        iterTask.PercentCompleted__c = 100;
-                    }else {
-                        throw new CustomException('Insufficient Privileges');  
+                    ParentTask parent = new ParentTask();
+                    parent.setProjectId(PROJECTID);
+                    Boolean hasChild = parent.taskHasChildren(iterTask); 
+                    if (hasChild){
+                    	markingParent = true;
+                    	idTaskToMarkComplete = idTaskToMarkComplete + tasksUpdate[indexTask] + ':';
+                    }else{
+	                    while (!cantEditAndDelete && countAssignee < iterTask.ProjectsAssignees__r.size()) {
+	                        if(iterTask.ProjectsAssignees__r[countAssignee].User__c != USERID) {
+	                            cantEditAndDelete =  true;
+	                        }else {
+	                            countAssignee++;
+	                        }
+	                    }
+	                    if(!cantEditAndDelete || editDeletePer || iterTask.createdById == USERID){
+	                        iterTask.PercentCompleted__c = 100;
+	                    }else {
+	                        throw new CustomException('Insufficient Privileges');  
+	                    }
                     }                       
-                }  
-                update tasksUpdate;
+                }
+                if(!markingParent){
+                	update tasksUpdate;
+                }
 
             }else{
                 throw new CustomException('Insufficient Privileges');

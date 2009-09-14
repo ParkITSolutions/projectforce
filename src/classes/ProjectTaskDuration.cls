@@ -16,7 +16,7 @@ public class ProjectTaskDuration {
 	*/
 	public ProjectTask__c doCalculateEndDate (ProjectTask__c task){
 		
-    	if(task.Project__c != null){
+    	if(task.Project__c != null){ 
 
 			Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c from Project2__c where Id =: task.Project__c];
 
@@ -71,6 +71,7 @@ public class ProjectTaskDuration {
 		
 		Double aux = math.ceil( (task.Duration__c!=null)?task.Duration__c:1);		
 		Integer days = aux.intValue();
+		
 		return this.doExcludeNonWorkingDays(task.StartDate__c, wdays, days);
 	
 	}
@@ -85,6 +86,7 @@ public class ProjectTaskDuration {
 		Integer hours = project.WorkingHours__c.intValue();
 		Integer wdays = Integer.valueOf(project.DaysInWorkWeek__c);
 		Integer days = (Decimal.valueOf(task.Duration__c / hours).round(System.Roundingmode.CEILING).intValue());		
+		
 		return this.doExcludeNonWorkingDays(task.StartDate__c, wdays, days);
 	
 	}
@@ -145,7 +147,7 @@ public class ProjectTaskDuration {
 		Integer days = 1;
 		String weekday = '';
 		
-		while(!myDate.isSameDay(Datetime.valueOf(endDate + '00:00:00'))){
+		while( !myDate.isSameDay(Datetime.valueOf(endDate + '00:00:00')) && days < 400 ){
 			weekday = myDate.format('EEE');
 			if(workdays.contains(weekday))
 				days++;
@@ -162,17 +164,28 @@ public class ProjectTaskDuration {
 		
 		Set<String> workdays = this.getWorkDays( Integer.valueOf(project.DaysInWorkWeek__c ));
 		Datetime myDate = Datetime.valueOf(task.StartDate__c + '00:00:00');
+		Datetime myEndDate;
+		if(task.EndDate__c != null){
+			myEndDate = Datetime.valueOf(task.EndDate__c + '00:00:00');
+		}
+		
 		String weekday = '';		
 		boolean isCorrect = false;
 		
 		while(isCorrect == false){
 			weekday = myDate.format('EEE');
-			if(workdays.contains(weekday)){
+			if(workdays.contains(weekday)){ 
 				isCorrect = true;
 				task.StartDate__c = Date.newInstance(myDate.year(), myDate.month(), (myDate.day()));
+				if(task.EndDate__c != null){
+					task.EndDate__c = Date.newInstance(myEndDate.year(), myEndDate.month(), (myEndDate.day()));
+				}
 			}
 			else{
 				myDate = myDate.addDays(1);
+				if(task.EndDate__c != null){
+					myEndDate = myEndDate.addDays(1);
+				}
 			}	
 		}
 		
@@ -186,6 +199,7 @@ public class ProjectTaskDuration {
 		if(task.EndDate__c  != null){
 			Set<String> workdays = this.getWorkDays( Integer.valueOf(project.DaysInWorkWeek__c ) );
 			Datetime myDate = Datetime.valueOf(task.EndDate__c + '00:00:00');
+			Datetime myStartDate = Datetime.valueOf(task.StartDate__c + '00:00:00');
 			String weekday = '';		
 			boolean isCorrect = false;
 			
@@ -248,6 +262,7 @@ public class ProjectTaskDuration {
 			
 			if(project.DisplayDuration__c.equals('Days')){
 				//do nothing Project already in Days
+				this.calculateDurationDays(input);
 			}
 			else{
 				input = this.calculateDurationHours(input, project.WorkingHours__c);
@@ -266,9 +281,14 @@ public class ProjectTaskDuration {
 			}
 		}
 		
-		task.Duration__c = Double.valueOf(input);
-		task.DurationUI__c = input;
-		
+		if(project.DisplayDuration__c.equals('Days')){
+			task.Duration__c = Double.valueOf(input);
+			task.DurationUI__c = input;
+		}
+		else{
+			task.Duration__c = task.RawDuration__c;
+			task.DurationUI__c = String.valueOf( task.RawDuration__c );
+		}
     	return task;
 	}
 	
@@ -300,6 +320,7 @@ public class ProjectTaskDuration {
 		
 		if(param == 'days'){
 			Double hours = Double.valueOf( duration ) * workingHours;
+			hours = Math.Ceil(hours);
 			value = hours.intValue();
 		}
 		
@@ -355,25 +376,30 @@ public class ProjectTaskDuration {
 		Double input1 = Double.valueOf(value); 
 		Integer workHours = workingHours.intValue();
 		Double CompleteValue = (input1 / workHours);
-		Integer days = Math.round(Math.floor(CompleteValue));
-				
-		Double remAux = (CompleteValue - days) * 10;
-		Integer remainder = remAux.intValue();
+		CompleteValue = Math.ceil(100*CompleteValue) / 100;
 		
-		if(remainder > 5){
-			value = String.valueOf(days + 1);
-		}
-		if(remainder < 5 & days == 0){
-			value = String.valueOf(days + 0.5);
-		}
-		if(remainder < 5 && days != 0){
-			value = String.valueOf(days);
-		}
-		if(remainder == 5){
-			value = String.valueOf(days + 0.5);
-		}
+		Double aux = CompleteValue * 100; 
+		Integer aux2 =  Math.mod(aux.intValue(),100);
+		Double aux3 = Double.valueOf(String.valueOf(aux2));
+		CompleteValue = Math.floor( CompleteValue ) + 0.25 * Math.ceil( aux3 / 25 );
 		
-		return value;
+		return String.valueOf(CompleteValue);
+	}
+	
+	/**
+	*
+	*/
+	public String calculateDurationDays(String value){
+		//TODO terminar de corregir metodo para dias!!!!
+		Double input1 = Double.valueOf(value); 
+ 		Double CompleteValue = Math.ceil(100 * input1) / 100;
+		
+		Double aux = CompleteValue * 100; 
+		Integer aux2 =  Math.mod(aux.intValue(),100);
+		Double aux3 = Double.valueOf(String.valueOf(aux2));
+		CompleteValue = Math.floor( CompleteValue ) + 0.25 * Math.ceil( aux3 / 25 );
+		
+		return String.valueOf(CompleteValue);
 	}
 	
 	/**

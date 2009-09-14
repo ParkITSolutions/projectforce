@@ -50,7 +50,7 @@
        
         var globalInfoBig = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/infoBig.gif')}';
         var globalCheckNew = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}';
-       
+        var compleatingTwice = false;
         var boobleBoo = false;
         document.observe("dom:loaded", documentLoad );           
        
@@ -80,6 +80,9 @@
                 $( 'advFilterHide' ).style.display = 'block';
                    $( 'advancedFilterContainer2' ).show();
             }
+            if($('paginationOverlay').style.display == ''){
+            	showHideOverlay();
+            }
         }
        
         /**
@@ -95,6 +98,17 @@
                 $$('.SaveFilterBtn')[0].hide();
                 return true;
             }
+        }
+        
+        function showMessage(checkedParent){
+        	if(!compleatingTwice){
+	        	if(checkedParent==''){
+	        		showMessageToUser('The selected tasks have been marked complete', 'success');
+	        	}else{
+	        		showMessageToUser('Percentage in parent task taks can\'t be modify' , '')
+	        	}
+	        	setTimeout('Effect.Fade(\'infoToUser\')', 10000);   	
+        	}
         }
         
     </script>
@@ -171,8 +185,8 @@
                                                 </apex:outputpanel>
                                             </td>
                                             <td>
-                                                <apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
-                                                        <apex:commandLink action="{!markComplete}" oncomplete="fadeUpdating();" rerender="auxProjectTaskListPanel" styleclass="blackbutton" onclick="bulkTaskCompleted('{!$Component.auxInputTextTop}');">
+                                                <apex:outputpanel id="markCompleteBtn" rendered="{!IF(editDeletePer ,true,false)}" layout="block">
+                                                        <apex:commandLink action="{!markComplete}" oncomplete="refreshListSort();showMessage('{!idTaskToMarkComplete}');" rerender="auxProjectTaskListPanel" styleclass="blackbutton" onclick="bulkTaskCompleted('{!$Component.auxInputTextTop}');">
                                                             <span>Mark Complete</span> 
                                                         </apex:commandLink>
                                                         <apex:inputText id="auxInputTextTop" style="display:none;" value="{!idTaskToComplete}" />
@@ -320,7 +334,7 @@
                            </apex:outputPanel>
                        
                         <!-- Task List Table -->
-                        <apex:outputPanel rendered="{!IF(totalItemsNumber > 0,true, false)}">                
+                        <apex:outputPanel id="taskListTbl" rendered="{!IF(totalItemsNumber > 0,true, false)}">                
                             <table class="pageList" >
                                    <!-- Table Head -->
                                 <thead>
@@ -544,7 +558,7 @@
                                         </td>
                                         <td>
                                             <apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
-                                                 <apex:commandLink action="{!markComplete}" oncomplete="fadeUpdating();" rerender="auxProjectTaskListPanel" styleclass="blackbutton" onclick="bulkTaskCompleted('{!$Component.auxInputTextTop}');">
+                                                 <apex:commandLink action="{!markComplete}" oncomplete="refreshListSort();showMessage('{!idTaskToMarkComplete}');" rerender="auxProjectTaskListPanel" styleclass="blackbutton" onclick="bulkTaskCompleted('{!$Component.auxInputTextTop}');">
                                                     <span>Mark Complete</span> 
                                                 </apex:commandLink>
                                              </apex:outputpanel>
