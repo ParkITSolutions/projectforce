@@ -33,7 +33,8 @@ public with sharing class TaskDependencies {
 				someTasksMustBeModify = true;
 				tempTask = this.bL.getById(p.Parent__c);
 				tempTask.StartDate__c = this.newTask.StartDate__c;
-				tempTask.EndDate__c = Date.valueOf(oldTask.EndDate__c).addDays(daysBt - p.Lag_Time__c.intValue());
+				System.debug('[[>]] name '+ tempTask.name +' : ' + daysBt+ ' : ' + (daysBt - p.Lag_Time__c.intValue()));
+				tempTask.EndDate__c = Date.valueOf(tempTask.EndDate__c).addDays(daysBt - p.Lag_Time__c.intValue());
 				p.Lag_Time__c = 0;
 				this.tasksToModify.add( tempTask );
 			}else

@@ -910,7 +910,8 @@ public with sharing class ProjectTaskListController {
 	                    }else {
 	                        throw new CustomException('Insufficient Privileges');  
 	                    }
-                    }                       
+                    }
+                    indexTask++;                      
                 }
                 if(!markingParent){
                 	update tasksUpdate;
