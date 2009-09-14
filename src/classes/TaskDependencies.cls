@@ -43,7 +43,7 @@ public with sharing class TaskDependencies {
 		}		
 		return someTasksMustBeModify;
 	}
-	
+	 
 	public void modifyStartOrEndDate( ProjectTask__c oldTask, ProjectTask__c newTask ){
 
 		this.task = oldTask;
