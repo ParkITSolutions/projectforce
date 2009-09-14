@@ -26,7 +26,6 @@ public with sharing class TaskDependencies {
 	// Aux method
 	public Boolean taskAndRelsToModify( ProjectTask__c oldTask ){
 		Boolean someTasksMustBeModify = false;
-		Integer dif = 0;
 		for( ProjectTaskPred__c p : this.rListAux ){
 			System.debug( '[rListAux ' + this.rListAux );
 			if( p.Lag_Time__c < daysBt ){
@@ -34,8 +33,7 @@ public with sharing class TaskDependencies {
 				someTasksMustBeModify = true;
 				tempTask = this.bL.getById(p.Parent__c);
 				tempTask.StartDate__c = this.newTask.StartDate__c;
-				dif = Integer.valueOf(p.Lag_Time__c);
-				tempTask.EndDate__c = Date.valueOf(this.newTask.StartDate__c).addDays(daysBt);
+				tempTask.EndDate__c = Date.valueOf(oldTask.EndDate__c).addDays(daysBt - p.Lag_Time__c.intValue());
 				p.Lag_Time__c = 0;
 				this.tasksToModify.add( tempTask );
 			}else
@@ -56,7 +54,7 @@ public with sharing class TaskDependencies {
 		if( this.pred.Lag_Type__c == 'Start-to-Start'  && oldTask.StartDate__c != newTask.StartDate__c ){
 			if( this.canModifySToS( newTask.StartDate__c )){
 				this.rListAux = this.bLP.getListPred( newTask.id, 'Start-to-Start' ); 
-				Integer daysBt = Math.abs(newTask.StartDate__c.daysBetween( oldTask.StartDate__c ));
+				//Integer daysBt = Math.abs(newTask.StartDate__c.daysBetween( oldTask.StartDate__c ));
 				//this.daysBt = Math.abs(Date.valueOf('2009-09-21 00:00:00').daysBetween( oldTask.StartDate__c ));
 				Integer ind = 0;
 				Boolean fu = this.taskAndRelsToModify( this.task ); 
