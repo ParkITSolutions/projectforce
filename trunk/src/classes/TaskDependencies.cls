@@ -7,6 +7,7 @@ public with sharing class TaskDependencies {
 	BigListOfTask taskList = new BigListOfTask();
 
 	ProjectTask__c task = new ProjectTask__c();
+	ProjectTask__c newTask = new ProjectTask__c();
 	ProjectTaskPred__c pred = new ProjectTaskPred__c();
 	ProjectTask__c predTask = new ProjectTask__c();
 
@@ -25,11 +26,18 @@ public with sharing class TaskDependencies {
 	// Aux method
 	public Boolean taskAndRelsToModify( ProjectTask__c oldTask ){
 		Boolean someTasksMustBeModify = false;
+		Integer dif = 0;
 		for( ProjectTaskPred__c p : this.rListAux ){
+			System.debug( '[rListAux ' + this.rListAux );
 			if( p.Lag_Time__c < daysBt ){
-				p.Lag_Time__c = 0;
+				ProjectTask__c tempTask = new ProjectTask__c();
 				someTasksMustBeModify = true;
-				this.tasksToModify.add(this.bL.getById(p.Parent__c));
+				tempTask = this.bL.getById(p.Parent__c);
+				tempTask.StartDate__c = this.newTask.StartDate__c;
+				dif = Integer.valueOf(p.Lag_Time__c);
+				tempTask.EndDate__c = Date.valueOf(this.newTask.StartDate__c).addDays(daysBt);
+				p.Lag_Time__c = 0;
+				this.tasksToModify.add( tempTask );
 			}else
 				p.Lag_Time__c = p.Lag_Time__c - this.daysBt;
 			this.relsToModify.add( p );
@@ -40,31 +48,38 @@ public with sharing class TaskDependencies {
 	public void modifyStartOrEndDate( ProjectTask__c oldTask, ProjectTask__c newTask ){
 
 		this.task = oldTask;
+		this.newTask = newTask;
 		this.pred = bLP.getByParentId( oldTask.id );
 		this.predTask = bL.getById( pred.Predecessor__c );		
-		this.daysBt = newTask.StartDate__c.daysBetween( oldTask.StartDate__c );
-
+		this.daysBt = Math.abs(newTask.StartDate__c.daysBetween( oldTask.StartDate__c ));
 		// Start to atart
 		if( this.pred.Lag_Type__c == 'Start-to-Start'  && oldTask.StartDate__c != newTask.StartDate__c ){
 			if( this.canModifySToS( newTask.StartDate__c )){
 				this.rListAux = this.bLP.getListPred( newTask.id, 'Start-to-Start' ); 
-				Integer daysBt = newTask.StartDate__c.daysBetween( oldTask.StartDate__c );
+				Integer daysBt = Math.abs(newTask.StartDate__c.daysBetween( oldTask.StartDate__c ));
 				//this.daysBt = Math.abs(Date.valueOf('2009-09-21 00:00:00').daysBetween( oldTask.StartDate__c ));
 				Integer ind = 0;
 				Boolean fu = this.taskAndRelsToModify( this.task ); 
 				while(fu){
 					this.rListAux.clear(); 
 					this.task = tasksToModify.get( ind );
+					this.pred = bLP.getByParentId( this.task.id );
+					this.predTask = bL.getById( pred.Predecessor__c );		
+					System.debug( 'fuu ' + fu + ' - ' + this.task.Name );
 					this.rListAux = this.bLP.getListPred( tasksToModify.get( ind ).id, 'Start-to-Start' );
 					ind++;
 					fu = this.taskAndRelsToModify( this.task ); 
+					System.debug( 'fuu ' + fu + ' - ' + this.task.Name + ' - rListAux' + this.rListAux);
 				}
 			}else{
 				throw new CustomException('We have a problem Hustonforce');
 			}   
 		}
 		
-		System.debug( '[>] ' + this.tasksToModify.size());
+		System.debug('Dayys' + daysBt);
+		System.debug( '[>] ' + this.tasksToModify.size() + ' - ' + this.relsToModify.size());
+		this.relsToModify.debugg('tokken');
+		this.tasksToModify.debugg('tokken2');
 		this.relsToModify.updateNow();
 		this.tasksToModify.updateNow();
 		
@@ -121,7 +136,7 @@ public with sharing class TaskDependencies {
 		}
 
 		public void updateNow(){
-			ProjectUtil.setTaskDependenciesFlag( true );
+			ProjectUtil.setTaskDependenciesFlag( false );
 			update this.bList;
 		}
 		public void debugg( String token ){
@@ -139,7 +154,7 @@ public with sharing class TaskDependencies {
 		public BigListOfTaskPredecessors(){}
 		
 		public BigListOfTaskPredecessors( Id projectId ){
-			for( ProjectTaskPred__c pT : [ SELECT Id, Project__c, Parent__c, Predecessor__c, Lag_Time__c, Lag_Type__c, Lag_Unit__c FROM ProjectTaskPred__c WHERE Project__c =: projectId ])
+			for( ProjectTaskPred__c pT : [ SELECT Id, Name, Project__c, Parent__c, Predecessor__c, Lag_Time__c, Lag_Type__c, Lag_Unit__c FROM ProjectTaskPred__c WHERE Project__c =: projectId ])
 				if( this.bList.size() < 1000 )
 				this.bList.add( pT );
 		}		
@@ -192,7 +207,7 @@ public with sharing class TaskDependencies {
 		}
 		
 		public void updateNow(){
-			ProjectUtil.setTaskDependenciesFlag( true );
+			ProjectUtil.setTaskDependenciesFlag( false );
 			update this.bList;
 		}
 

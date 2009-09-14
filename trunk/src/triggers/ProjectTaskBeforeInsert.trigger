@@ -18,6 +18,10 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 			}
  
 			for(ProjectTask__c nTask : Trigger.new) {
+				if( nTask.StartDate__c > nTask.EndDate__c ){
+					nTask.StartDate__c.addError('Start date should not be greater than End Date');
+					nTask.EndDate__c.addError('End date should not be smaller than Start Date');		
+				}
 				String queueId = projectMap.get('Project' + nTask.Project__c);
 				if(nTask.Milestone__c){
 					Project2__c project1 = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
