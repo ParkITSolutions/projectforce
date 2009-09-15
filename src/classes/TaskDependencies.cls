@@ -2,7 +2,7 @@ public with sharing class TaskDependencies {
 
 	BigListOfTask bL = new BigListOfTask('SELECT Id, name, StartDate__c, EndDate__c FROM ProjectTask__c');
 	BigListOfTaskPredecessors bLP;// = new BigListOfTaskPredecessors();
-
+	Integer boo = 0;
 	List<ProjectTaskPred__c> relsList = new List<ProjectTaskPred__c>();
 	BigListOfTask taskList = new BigListOfTask();
 
@@ -22,20 +22,27 @@ public with sharing class TaskDependencies {
 	BigListOfTask tasksToModify = new BigListOfTask();	
 	List<ProjectTaskPred__c> rListAux = new List<ProjectTaskPred__c>();
 	Integer daysBt = 0;
+	Integer daysBtLastPred = 0;
 	
 	// Aux method
 	public Boolean taskAndRelsToModify( ProjectTask__c oldTask ){
 		Boolean someTasksMustBeModify = false;
+		ProjectTask__c tempTask = new ProjectTask__c();
 		for( ProjectTaskPred__c p : this.rListAux ){
-			System.debug( '[rListAux ' + this.rListAux );
+			this.boo++;
+			p.Lag_Time__c -= this.daysBtLastPred;
+			tempTask = this.bL.getById(p.Parent__c);
+			System.debug('{>'+this.boo + 'days' + this.daysBt + 'daysLP' + this.daysBtLastPred + 'lag ' + p.Lag_Time__c);
+			this.daysBt = Math.abs(tempTask.StartDate__c.daysBetween( this.newTask.StartDate__c ));
+			System.debug('*{>'+this.boo + 'days' + this.daysBt + 'lag ' + p.Lag_Time__c);
+			//System.debug('foo '+this.boo+'> Task' + this.task.name +' : Pred' + this.predTask.name + ':'+ p.Lag_Time__c + ' : ' + this.daysBt);
 			if( p.Lag_Time__c < daysBt ){
-				ProjectTask__c tempTask = new ProjectTask__c();
+				System.debug('[[<>]]');				
 				someTasksMustBeModify = true;
-				tempTask = this.bL.getById(p.Parent__c);
 				tempTask.StartDate__c = this.newTask.StartDate__c;
-				System.debug('[[>]] name '+ tempTask.name +' : ' + daysBt+ ' : ' + (daysBt - p.Lag_Time__c.intValue()));
-				tempTask.EndDate__c = Date.valueOf(tempTask.EndDate__c).addDays(daysBt - p.Lag_Time__c.intValue());
+				tempTask.EndDate__c = Date.valueOf(tempTask.EndDate__c).addDays(daysBt);
 				p.Lag_Time__c = 0;
+				System.debug( '[task] ' + tempTask.name);
 				this.tasksToModify.add( tempTask );
 			}else
 				p.Lag_Time__c = p.Lag_Time__c - this.daysBt;
@@ -50,25 +57,21 @@ public with sharing class TaskDependencies {
 		this.newTask = newTask;
 		this.pred = bLP.getByParentId( oldTask.id );
 		this.predTask = bL.getById( pred.Predecessor__c );		
-		this.daysBt = Math.abs(newTask.StartDate__c.daysBetween( oldTask.StartDate__c ));
+		//this.daysBt = Math.abs(newTask.StartDate__c.daysBetween( oldTask.StartDate__c ));
 		// Start to atart
 		if( this.pred.Lag_Type__c == 'Start-to-Start'  && oldTask.StartDate__c != newTask.StartDate__c ){
 			if( this.canModifySToS( newTask.StartDate__c )){
 				this.rListAux = this.bLP.getListPred( newTask.id, 'Start-to-Start' ); 
-				//Integer daysBt = Math.abs(newTask.StartDate__c.daysBetween( oldTask.StartDate__c ));
-				//this.daysBt = Math.abs(Date.valueOf('2009-09-21 00:00:00').daysBetween( oldTask.StartDate__c ));
 				Integer ind = 0;
-				Boolean fu = this.taskAndRelsToModify( this.task ); 
-				while(fu){
+				  
+				while(this.taskAndRelsToModify( this.task )){
 					this.rListAux.clear(); 
-					this.task = tasksToModify.get( ind );
+					this.daysBtLastPred = Math.abs(this.task.StartDate__c.daysBetween(this.tasksToModify.get( ind ).StartDate__c ));  
+					this.task = this.tasksToModify.get( ind );
 					this.pred = bLP.getByParentId( this.task.id );
 					this.predTask = bL.getById( pred.Predecessor__c );		
-					System.debug( 'fuu ' + fu + ' - ' + this.task.Name );
 					this.rListAux = this.bLP.getListPred( tasksToModify.get( ind ).id, 'Start-to-Start' );
 					ind++;
-					fu = this.taskAndRelsToModify( this.task ); 
-					System.debug( 'fuu ' + fu + ' - ' + this.task.Name + ' - rListAux' + this.rListAux);
 				}
 			}else{
 				throw new CustomException('We have a problem Hustonforce');
@@ -79,6 +82,7 @@ public with sharing class TaskDependencies {
 		System.debug( '[>] ' + this.tasksToModify.size() + ' - ' + this.relsToModify.size());
 		this.relsToModify.debugg('tokken');
 		this.tasksToModify.debugg('tokken2');
+		
 		this.relsToModify.updateNow();
 		this.tasksToModify.updateNow();
 		
