@@ -888,11 +888,11 @@ public with sharing class ProjectTaskListController {
             if (tasksUpdate.size() > 0) {
                 Boolean markingParent = false;
                 Integer indexTask = 0;
+	            ParentTask parent = new ParentTask();
+	            parent.setProjectId(PROJECTID);
                 for (ProjectTask__c iterTask : tasksUpdate) {
                     Boolean cantEditAndDelete = false;
                     Integer countAssignee = 0;
-                    ParentTask parent = new ParentTask();
-                    parent.setProjectId(PROJECTID);
                     Boolean hasChild = parent.taskHasChildren(iterTask); 
                     if (hasChild){
                     	markingParent = true;
