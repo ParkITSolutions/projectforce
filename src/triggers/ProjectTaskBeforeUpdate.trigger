@@ -7,8 +7,8 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 	List<String> listIds = new List<String>(); 
 	Map<Id, Project2__c> projectMap = new Map<Id, Project2__c>();
 	
+	/*
 	TaskDependencies tD = new TaskDependencies();
-	
 	Integer count;
 	for( count = 0; count < Trigger.new.size(); count++ ){
 		if(ProjectUtil.getTaskDependenciesFlag()){
@@ -16,7 +16,7 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 			tD.modifyStartOrEndDate( Trigger.old[count], Trigger.new[count]);
 		}
 	}
-	
+	*/
 	Project2__c project1;
 	Project2__c project;
 	for( Project2__c p :[select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c from Project2__c ])

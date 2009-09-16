@@ -116,9 +116,9 @@ public with sharing class ProjectSearchResultController {
 			}
 		}else{
 			//decode
-			criteria = criteria.replaceAll('_', '&');
-			criteria = criteria.replaceAll(':', '%');
-			criteria = criteria.replaceAll('-', '#');
+			criteria = criteria.replaceAll('cde38;', '&');
+			criteria = criteria.replaceAll('cde37;', '%');
+			criteria = criteria.replaceAll('cde35;', '#');
 			
 			List<List<SObject>> resultList = search.query('FIND \'' + criteria + '*\' IN ALL FIELDS RETURNING ' 
 											+ namespace + 'Project2__c (Id, Name, Description__c)');

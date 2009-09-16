@@ -13,7 +13,8 @@ public class UploadAttachmentController {
 	public String buttonStyle = '';
 	
 	// max attachment size bytes
-    public final Integer MAX_SIZE = 5240000;
+    //public final Integer MAX_SIZE = 5240000;
+    public final Integer MAX_SIZE = 131000;
     
     public Set<String> imagesTypes = new Set<String> {'image/jpeg', 'image/pjpeg', 'image/png', 'image/x-png', 'image/gif'};
   	
@@ -137,9 +138,9 @@ public class UploadAttachmentController {
 			pageRef.setRedirect(true);
 			return pageRef;
 			
-		}else{
+		}else{ 
 			if(newAttach.BodyLength < 1 || newAttach.BodyLength == null){ 
-				errorMsg = 'Please select the file you want upload. Attachment size must be less than 5Mb.';
+				errorMsg = 'Please select the file you want upload. Attachment size must be less than 128 KB.';
 				validAttSize = false; 
 			}
 			return null;
