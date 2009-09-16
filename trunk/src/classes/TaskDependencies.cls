@@ -1,5 +1,5 @@
 public with sharing class TaskDependencies {
-
+	/**
 	BigListOfTask bL = new BigListOfTask('SELECT Id, name, StartDate__c, EndDate__c FROM ProjectTask__c');
 	BigListOfTaskPredecessors bLP;// = new BigListOfTaskPredecessors();
 	Integer boo = 0;
@@ -10,9 +10,9 @@ public with sharing class TaskDependencies {
 	ProjectTask__c newTask = new ProjectTask__c();
 	ProjectTaskPred__c pred = new ProjectTaskPred__c();
 	ProjectTask__c predTask = new ProjectTask__c();
-
+	*/
 	public TaskDependencies(){}
-	
+	/**
 	public void setProps( Id projectId ){
 		this.bLP = new BigListOfTaskPredecessors( projectId );
 		System.debug('[3>>> bL' + this.bL.size() + 'bLP' + this.bLP.size() + '-' + this.bLP.get(0).Predecessor__c);
@@ -32,17 +32,14 @@ public with sharing class TaskDependencies {
 			this.boo++;
 			p.Lag_Time__c -= this.daysBtLastPred;
 			tempTask = this.bL.getById(p.Parent__c);
-			System.debug('{>'+this.boo + 'days' + this.daysBt + 'daysLP' + this.daysBtLastPred + 'lag ' + p.Lag_Time__c);
 			this.daysBt = Math.abs(tempTask.StartDate__c.daysBetween( this.newTask.StartDate__c ));
-			System.debug('*{>'+this.boo + 'days' + this.daysBt + 'lag ' + p.Lag_Time__c);
-			//System.debug('foo '+this.boo+'> Task' + this.task.name +' : Pred' + this.predTask.name + ':'+ p.Lag_Time__c + ' : ' + this.daysBt);
 			if( p.Lag_Time__c < daysBt ){
-				System.debug('[[<>]]');				
+				System.debug('\n\n [Procesadno]' + this.boo + ' '  + tempTask.name );
+				System.debug('\n Days pred ' + this.daysBtLastPred + ' daysBt ' + this.daysBt + ' lag ' + p.Lag_Time__c);				
 				someTasksMustBeModify = true;
 				tempTask.StartDate__c = this.newTask.StartDate__c;
 				tempTask.EndDate__c = Date.valueOf(tempTask.EndDate__c).addDays(daysBt);
 				p.Lag_Time__c = 0;
-				System.debug( '[task] ' + tempTask.name);
 				this.tasksToModify.add( tempTask );
 			}else
 				p.Lag_Time__c = p.Lag_Time__c - this.daysBt;
@@ -220,4 +217,5 @@ public with sharing class TaskDependencies {
 			System.debug('List --> ' + this.bList );
 		}
 	}
+	*/
 }

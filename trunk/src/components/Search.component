@@ -7,9 +7,7 @@
     <apex:attribute name="label" description="Label to show on the search box" type="String" required="false" assignTo="{!labelName}" />
    
    <apex:stylesheet value="{!URLFOR($Resource.SearchResources, 'inc/css/search.css')}" />
-                        
-    <div id="search_error" class="search_error" onclick="hideError();" onkeypress="hideError();"> Search must contain more than one character </div>
-   
+
     <div class="searchBox">
         <div>
             <div>
