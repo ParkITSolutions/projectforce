@@ -1,5 +1,4 @@
 trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
-	
 	Map<String,ProjectTask__c> AuxMap = new Map<String,ProjectTask__c>();
  	List<Id> tasksInTrrNewIds = new List<Id>();
 	List<ProjectTask__c> parentTasks = new List<ProjectTask__c>();
@@ -17,9 +16,10 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 		}
 	}
 	*/
+	
 	Project2__c project1;
 	Project2__c project;
-	for( Project2__c p :[select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c from Project2__c ])
+	for( Project2__c p :[select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c from Project2__c limit 1000])
 		projectMap.put( p.Id, p );
 	
 	for( ProjectTask__c task : Trigger.new){
@@ -148,5 +148,5 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 	  }	
     }
     } 
-    ProjectUtil.BaseMap=AuxMap;    
+    ProjectUtil.BaseMap=AuxMap;  
 }

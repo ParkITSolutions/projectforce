@@ -43,7 +43,7 @@ public class ProjectTaskDuration {
 		
 		if(task.Project__c != null){
 			
-			Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c from Project2__c where Id =: task.Project__c];		
+			Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c from Project2__c where Id =: task.Project__c limit 1];		
 			
 			days = this.doExcludeNonWorkingDays(task.StartDate__c, task.EndDate__c, Integer.valueOf(project.DaysInWorkWeek__c));
 			
