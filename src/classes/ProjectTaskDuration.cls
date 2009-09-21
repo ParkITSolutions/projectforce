@@ -234,7 +234,7 @@ public class ProjectTaskDuration {
 		
 		Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
 								from Project2__c 
-								where Id =: task.Project__c];
+								where Id =: task.Project__c limit 1];
 			
 		boolean isDays  = false;
 		boolean isHours = false;
@@ -253,6 +253,9 @@ public class ProjectTaskDuration {
 				Double valueAux = Math.floor( Double.valueOf(input) ) ;
 				input = String.valueOf(valueAux);
 			}
+			else{
+				input = this.calculateDurationDays(input);
+			}
 			this.insertRawDuration(task, project.DisplayDuration__c, input, project.WorkingHours__c, 'none');
 		}
 		
@@ -261,8 +264,7 @@ public class ProjectTaskDuration {
 			this.insertRawDuration(task, project.DisplayDuration__c, input, project.WorkingHours__c, 'days');
 			
 			if(project.DisplayDuration__c.equals('Days')){
-				//do nothing Project already in Days
-				this.calculateDurationDays(input);
+				input = this.calculateDurationDays(input);
 			}
 			else{
 				input = this.calculateDurationHours(input, project.WorkingHours__c);
@@ -393,11 +395,16 @@ public class ProjectTaskDuration {
 		//TODO terminar de corregir metodo para dias!!!!
 		Double input1 = Double.valueOf(value); 
  		Double CompleteValue = Math.ceil(100 * input1) / 100;
-		
+		System.debug('------------------------- input1 : '+input1);
+		System.debug('------------------------- CompleteValue : '+CompleteValue);
 		Double aux = CompleteValue * 100; 
+		System.debug('------------------------- aux : '+aux);
 		Integer aux2 =  Math.mod(aux.intValue(),100);
+		System.debug('------------------------- aux2 : '+aux2);
 		Double aux3 = Double.valueOf(String.valueOf(aux2));
+		System.debug('------------------------- aux3 : '+aux3);
 		CompleteValue = Math.floor( CompleteValue ) + 0.25 * Math.ceil( aux3 / 25 );
+		System.debug('------------------------- CompleteValue : '+CompleteValue);
 		
 		return String.valueOf(CompleteValue);
 	}
