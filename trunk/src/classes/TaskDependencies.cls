@@ -1,7 +1,10 @@
 public with sharing class TaskDependencies {
+
+	BigListOfTask bTaskList = new BigListOfTask('SELECT Id, name, StartDate__c, EndDate__c, Duration__c FROM ProjectTask__c');
+	BigListOfTaskPredecessors bPredList = new BigListOfTaskPredecessors();
+
+
 	/**
-	BigListOfTask bL = new BigListOfTask('SELECT Id, name, StartDate__c, EndDate__c FROM ProjectTask__c');
-	BigListOfTaskPredecessors bLP;// = new BigListOfTaskPredecessors();
 	Integer boo = 0;
 	List<ProjectTaskPred__c> relsList = new List<ProjectTaskPred__c>();
 	BigListOfTask taskList = new BigListOfTask();
@@ -12,6 +15,33 @@ public with sharing class TaskDependencies {
 	ProjectTask__c predTask = new ProjectTask__c();
 	*/
 	public TaskDependencies(){}
+	
+	public void InsertinfPred( ProjectTaskPred__c predObj ){
+		
+		ProjectTask__c predTask 	= new ProjectTask__c();
+		ProjectTask__c parentTask 	= new ProjectTask__c();
+		
+		predTask 	= this.bTaskList.getById( predObj.Predecessor__c );
+		parentTask 	= this.bTaskList.getById( predObj.Parent__c );
+		
+		// Days between  parentTask.endDate__c and parentTask.startDate__c
+		Integer parentInterval = Math.abs(Date.valueOf( parentTask.endDate__c ).daysBetween(Date.valueOf( parentTask.startDate__c )));
+		
+		//
+		Date newParentStartDate = Date.valueOf( predTask.startDate__c ).addDays( Integer.valueOf( predObj.Lag_Unit__c == null ? '0' : predObj.Lag_Unit__c ));		
+		Date newParentEndDate = Date.valueOf( predTask.startDate__c ).addDays( Integer.valueOf( predObj.Lag_Unit__c == null ? '0' : predObj.Lag_Unit__c ) + parentInterval);		
+		
+		//
+		ProjectTask__c taskToModify = new ProjectTask__c();
+		taskToModify = this.bTaskList.getById( predObj.Parent__c );
+		taskToModify.StartDate__c = newParentStartDate;
+		taskToModify.EndDate__c = newParentEndDate;
+		
+		update taskToModify;
+		
+	}
+	
+	
 	/**
 	public void setProps( Id projectId ){
 		this.bLP = new BigListOfTaskPredecessors( projectId );
@@ -104,7 +134,7 @@ public with sharing class TaskDependencies {
 			ind++;
 		}
 	}
-
+	*/
 	public class BigListOfTask{
 		List<ProjectTask__c> bList = new List<ProjectTask__c>();
 		Map<Id, ProjectTask__c>  bMap = new Map<Id, ProjectTask__c>();
@@ -217,5 +247,5 @@ public with sharing class TaskDependencies {
 			System.debug('List --> ' + this.bList );
 		}
 	}
-	*/
+	
 }
