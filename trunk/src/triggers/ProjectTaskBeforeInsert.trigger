@@ -63,12 +63,12 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 											where Id =: tempPTNew.Project__c];
 							
 							//TODO move Validation to Duration Clase
-							String regex = tempPTNew.DurationUI__c;
-							regex = regex.replaceAll('\\d[0-9]*[\\\\.\\d{0,2}]?[h,d,H,D]?','');
-							if(regex != ''){
+							String regex1 = tempPTNew.DurationUI__c;
+							String result = regex1.replaceAll('\\d[0-9]*[\\\\.\\d{0,2}]?[h,d,H,D]?','');
+							if( result != '' ){
 								tempPTNew.DurationUI__c.addError('Invalid format for Hours / Days convention!');
 							}
-							else{
+							else{ 
 							
 								duration.verifyStartDate(tempPTNew, project);
 								duration.verifyEndDate(tempPTNew, project);
