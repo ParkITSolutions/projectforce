@@ -7,6 +7,7 @@ public with sharing class ProjectTaskListController {
     public Project2__c project = null ;
     public Id USERID = UserInfo.getUserId();
     public Boolean editDeletePer = false;
+    //public Boolean isAssigneeMe = false;
     public boolean isProjectMember = false;
     public String PROJECTID = System.currentPageReference().getParameters().get('id');
     public String csvFileId = '';
@@ -705,6 +706,10 @@ public with sharing class ProjectTaskListController {
         System.debug( '>*>' + listToOrder.size());
     }
    
+   public Boolean isAssigneeMe {
+            get; set;
+   }
+   
     /**
     * Get sort list option
     */
@@ -766,9 +771,10 @@ public with sharing class ProjectTaskListController {
            
             TaskDetail.isTaskOwner = resultTaskList[i].createdById == USERID;
            
-            if(resultTaskList[i].ProjectsAssignees__r.size() > 0)
+            if(resultTaskList[i].ProjectsAssignees__r.size() > 0){
                 TaskDetail.canEditAndDelete = (resultTaskList[i].ProjectsAssignees__r[0].User__c == USERID ) ? true : false;
-           
+                this.isAssigneeMe = (resultTaskList[i].ProjectsAssignees__r[0].User__c == USERID ) ? true : false;
+            }
             System.debug( '[1>' + resultTaskList[i].PercentCompleted__c );
             if(resultTaskList[i].PercentCompleted__c != null){
                 TaskDetail.PercentCompleted= (resultTaskList[i].PercentCompleted__c).intValue();
@@ -1094,6 +1100,7 @@ public with sharing class ProjectTaskListController {
         public Boolean canEditAndDelete {
             get; set;
         }
+        
     }
    
     /**
