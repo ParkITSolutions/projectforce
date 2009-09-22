@@ -2,59 +2,59 @@ public with sharing class TaskDependencies {
 
 	BigListOfTask bTaskList = new BigListOfTask('SELECT Id, name, StartDate__c, EndDate__c, Duration__c FROM ProjectTask__c');
 	BigListOfTaskPredecessors bPredList = new BigListOfTaskPredecessors();
-	List<ProjectTask__c> taskToModifyList = new List<ProjectTask__c>();
+	Map<id, ProjectTask__c> taskToModifyList = new Map<id, ProjectTask__c>();
 
-
-	/**
-	Integer boo = 0;
-	List<ProjectTaskPred__c> relsList = new List<ProjectTaskPred__c>();
-	BigListOfTask taskList = new BigListOfTask();
-
-	ProjectTask__c task = new ProjectTask__c();
-	ProjectTask__c newTask = new ProjectTask__c();
-	ProjectTaskPred__c pred = new ProjectTaskPred__c();
-	ProjectTask__c predTask = new ProjectTask__c();
-	*/
 	public TaskDependencies(){}
 	
 	public void InsertinfPred( ProjectTaskPred__c predObj ){
 		
+		if( this.bPredList.size() == 0 )
+		this.bPredList = new BigListOfTaskPredecessors( predObj.Project__c );
+		
 		ProjectTask__c predTask 	= new ProjectTask__c();
 		ProjectTask__c parentTask 	= new ProjectTask__c();
 		
-		predTask 	= this.bTaskList.getById( predObj.Predecessor__c );
-		parentTask 	= this.bTaskList.getById( predObj.Parent__c );
+		if( this.taskToModifyList.containsKey(predObj.Predecessor__c))
+			predTask = this.taskToModifyList.get(predObj.Predecessor__c);
+		else
+			predTask 	= this.bTaskList.getById( predObj.Predecessor__c );
+		
+		if( this.taskToModifyList.containsKey( predObj.Parent__c ))
+			parentTask 	= this.taskToModifyList.get( predObj.Parent__c );		
+		else
+			parentTask 	= this.bTaskList.getById( predObj.Parent__c );
+		
+		
+		//predTask 	= this.bTaskList.getById( predObj.Parent__c );
+		//parentTask 	= this.bTaskList.getById( predObj.Predecessor__c );
 		
 		// Days between  parentTask.endDate__c and parentTask.startDate__c
 		Integer parentInterval = Math.abs(Date.valueOf( parentTask.endDate__c ).daysBetween(Date.valueOf( parentTask.startDate__c )));
-		
+
 		//
-		Date newParentStartDate = Date.valueOf( predTask.endDate__c ).addDays( Integer.valueOf( predObj.Lag_Unit__c == null ? '0' : predObj.Lag_Unit__c ));		
-		Date newParentEndDate = Date.valueOf( predTask.endDate__c ).addDays( Integer.valueOf( predObj.Lag_Unit__c == null ? '0' : predObj.Lag_Unit__c ) + parentInterval);		
+		Date newParentStartDate = Date.valueOf( parentTask.endDate__c ).addDays( Integer.valueOf( predObj.Lag_Unit__c == null ? '0' : predObj.Lag_Unit__c ));		
+		Date newParentEndDate   = Date.valueOf( predTask.endDate__c   ).addDays( Integer.valueOf( predObj.Lag_Unit__c == null ? '0' : predObj.Lag_Unit__c ) + parentInterval);		
 		
 		//
 		ProjectTask__c taskToModify = new ProjectTask__c();
-		taskToModify = this.bTaskList.getById( predObj.Parent__c );
+		taskToModify = this.bTaskList.getById( predObj.Predecessor__c );
 		taskToModify.StartDate__c = newParentStartDate;
-		taskToModify.EndDate__c = newParentEndDate;
+		taskToModify.EndDate__c   = newParentEndDate;
 		
-		this.taskToModifyList.add( taskToModify );
+		this.taskToModifyList.put( taskToModify.id, taskToModify );
 
 		List<ProjectTaskPred__c> relationsList = new List<ProjectTaskPred__c>();  
-		relationsList = bPredList.getListPred( taskToModify.id, 'Finish-to-Start');
-		if(relationsList.size() > 0 )
-		for( ProjectTaskPred__c r : relationsList)
-			this.InsertinfPred( r );
-		
-				
-		
-		
-		
+		relationsList = bPredList.getListPred( taskToModify.id  , '2');
+		if(relationsList.size() > 0 ){
+			System.debug( '<dentro>' );	
+			for( ProjectTaskPred__c r : relationsList)
+				this.InsertinfPred( r );
+		}
 	}
 	
 	public void updateNow(){
 		if( this.taskToModifyList.size() > 0 )
-		update this.taskToModifyList;	
+		update this.taskToModifyList.values();	
 	}
 
 	public class BigListOfTask{
@@ -136,7 +136,7 @@ public with sharing class TaskDependencies {
 		public List<ProjectTaskPred__c> getListPred( Id predecessor, String typeRel ){
 			List<ProjectTaskPred__c> rList = new List<ProjectTaskPred__c>();
 			for(ProjectTaskPred__c ptp : this.bList)
-				if( ptp.Predecessor__c == predecessor && ptp.Lag_Type__c == typeRel )
+				if( ptp.Parent__c == predecessor  )
 				rList.add( ptp );
 				
 			return rList;

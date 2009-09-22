@@ -248,6 +248,9 @@ public class ProjectTaskDuration {
 		
 		if(!isDays && !isHours){
 			//no Hour / Days conevention used
+			if(input.equals('0') || input.equals('0.0') || input.equals('0.00')){
+				input = '1';
+			}
 			if( !project.DisplayDuration__c.equals('Days') ){
 				//to deal with decimal hour values
 				Double valueAux = Math.floor( Double.valueOf(input) ) ;
@@ -350,7 +353,9 @@ public class ProjectTaskDuration {
 			value = value.replace('H', '');
 		}
 		value = value.trim();	
-		
+		if(value.equals('0') || value.equals('0.0') || value.equals('0.00')){
+			value = '1';
+		}
 		return value;
 	}
 	
@@ -366,7 +371,9 @@ public class ProjectTaskDuration {
 			value = value.replace('D', '');
 		}
 		value = value.trim();
-		
+		if(value.equals('0') || value.equals('0.0') || value.equals('0.00')){
+			value = '1';
+		}
 		return value;
 	}
 	
@@ -395,16 +402,10 @@ public class ProjectTaskDuration {
 		//TODO terminar de corregir metodo para dias!!!!
 		Double input1 = Double.valueOf(value); 
  		Double CompleteValue = Math.ceil(100 * input1) / 100;
-		System.debug('------------------------- input1 : '+input1);
-		System.debug('------------------------- CompleteValue : '+CompleteValue);
 		Double aux = CompleteValue * 100; 
-		System.debug('------------------------- aux : '+aux);
 		Integer aux2 =  Math.mod(aux.intValue(),100);
-		System.debug('------------------------- aux2 : '+aux2);
 		Double aux3 = Double.valueOf(String.valueOf(aux2));
-		System.debug('------------------------- aux3 : '+aux3);
 		CompleteValue = Math.floor( CompleteValue ) + 0.25 * Math.ceil( aux3 / 25 );
-		System.debug('------------------------- CompleteValue : '+CompleteValue);
 		
 		return String.valueOf(CompleteValue);
 	}
