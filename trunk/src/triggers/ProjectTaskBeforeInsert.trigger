@@ -26,10 +26,10 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 				if(nTask.Milestone__c){
 					Project2__c project1 = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
 											from Project2__c 
-											where Id =: nTask.Project__c];
+											where Id =: nTask.Project__c limit 1];
 					duration.verifyStartDate(nTask, project1);
 											
-					nTask.DurationUI__c = '1'; 
+					nTask.DurationUI__c = '1.0'; 
 					nTask.Duration__c = 1.0; 
 		 			
 		 			if(nTask.EndDate__c != null)
@@ -60,7 +60,7 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 				 			
 				 			Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
 											from Project2__c 
-											where Id =: tempPTNew.Project__c];
+											where Id =: tempPTNew.Project__c limit 1];
 							
 							//TODO move Validation to Duration Clase
 							String regex1 = tempPTNew.DurationUI__c;
@@ -94,7 +94,15 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 			    	
 			    	ParentTask parent = new ParentTask();
 			    	parent.setProjectId(tempPTNew.Project__c);
-			    	tempPTNew.Indent__c = parent.setTaskIndent(tempPTNew);
+			    	if(tempPTNew.ParentTask__c != null){
+			    		ProjectTask__c parentTsk = parent.getParentTask(tempPTNew);
+			    		if(parentTsk.Milestone__c == false){
+			    			tempPTNew.Indent__c = parent.setTaskIndent(tempPTNew);
+			    		}
+			    		else{
+			    			tempPTNew.ParentTask__c.addError('Parent Task cannot be a Milestone');
+			    		}
+			    	}
 		    }
 		}
 		finally{

@@ -248,7 +248,8 @@ public class ProjectTaskDuration {
 		
 		if(!isDays && !isHours){
 			//no Hour / Days conevention used
-			if(input.equals('0') || input.equals('0.0') || input.equals('0.00')){
+			Double inputAux  = Double.valueOf(input);
+			if(input.equals('0') || input.equals('0.0') || input.equals('0.00') || inputAux == 0.0){
 				input = '1';
 			}
 			if( !project.DisplayDuration__c.equals('Days') ){
@@ -353,7 +354,8 @@ public class ProjectTaskDuration {
 			value = value.replace('H', '');
 		}
 		value = value.trim();	
-		if(value.equals('0') || value.equals('0.0') || value.equals('0.00')){
+		Double valueAux = Double.valueOf(value);
+		if(value.equals('0') || value.equals('0.0') || value.equals('0.00') || valueAux == 0.0){
 			value = '1';
 		}
 		return value;
@@ -371,7 +373,8 @@ public class ProjectTaskDuration {
 			value = value.replace('D', '');
 		}
 		value = value.trim();
-		if(value.equals('0') || value.equals('0.0') || value.equals('0.00')){
+		Double valueAux = Double.valueOf(value);
+		if(value.equals('0') || value.equals('0.0') || value.equals('0.00') || valueAux == 0.0){
 			value = '1';
 		}
 		return value;

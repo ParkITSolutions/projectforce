@@ -16,37 +16,50 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 		}
 	}
 	*/
+
+	if( ProjectUtil.getTaskDependenciesFlag()){
+		TaskDependencies td = new TaskDependencies();
+		Integer cc = 0;
+		for(ProjectTask__c p :  Trigger.new  ){
+			td.movingTask( Trigger.old.get(cc), p);
+			cc++;
+		}	
+		td.updateNow();
+	}	
 	
 	Project2__c project1;
 	Project2__c project;
 	for( Project2__c p :[select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c from Project2__c limit 1000])
 		projectMap.put( p.Id, p );
-	
+	/*
 	for( ProjectTask__c task : Trigger.new){
  		listIds.add( task.id );
  		tasksInTrrNewIds.add(task.ParentTask__c );
 	}
+	*/
 	
-	parentTasks = [ select id, Project__c from ProjectTask__c where id in: tasksInTrrNewIds];
-	List<ProjectTask__c> allChildTasks = new List<ProjectTask__c>();
-	allChildTasks = [select Id , ParentTask__c from ProjectTask__c where ParentTask__c in: listIds];
+	ParentTask parent = new ParentTask(); 
+	parent.setProjectId(Trigger.old.get(0).Project__c);
+	
+	//parentTasks = [ select id, Project__c from ProjectTask__c where id in: tasksInTrrNewIds];
+	//List<ProjectTask__c> allChildTasks = new List<ProjectTask__c>();
+	//allChildTasks = [select Id , ParentTask__c from ProjectTask__c where ParentTask__c in: listIds];
 	
  	for( ProjectTask__c task : Trigger.new){
  		
- 		listIds.add( task.id );
- 		tasksInTrrNewIds.add(task.ParentTask__c );
+ 		//listIds.add( task.id );
+ 		//tasksInTrrNewIds.add(task.ParentTask__c );
  		
  		if(task.Milestone__c){
  			project1 = projectMap.get(task.Project__c);
 			duration.verifyStartDate(task, project1);
 			task.EndDate__c = null;
-			task.DurationUI__c = '1';
+			task.DurationUI__c = '1.0';
 			task.Duration__c = 1.0; 
  		}
     }
 	
-	ParentTask parent = new ParentTask(); 
-	parent.setProjectId(Trigger.old.get(0).Project__c);
+	
 			
     ProjectTask__c tempPTOld = new ProjectTask__c();
     ProjectTask__c tempPTNew = new ProjectTask__c();
@@ -64,6 +77,9 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 		else{
 		
 		List<ProjectTask__c> childTasks = new List<ProjectTask__c>();
+		List<ProjectTask__c> allChildTasks = new List<ProjectTask__c>();
+		ProjectTask__c tskk = parent.getParentTask(tempPTNew);
+		allChildTasks = parent.getTaskChildren(tskk, tempPTNew);
 		for(ProjectTask__c task : allChildTasks ){
 			if(task.ParentTask__c == tempPTNew.Id){
 				childTasks.add(task);
@@ -91,7 +107,7 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 				if(tempPTOld.ParentTask__c != tempPTNew.ParentTask__c){
 					parent.checkParentTaskRedundancy(tempPTNew, tempPTNew.ParentTask__c);
 					if( !parent.validParentTask ){
-						tempPTNew.ParentTask__c.addError('Parent Task cannot be a descendant child');
+						tempPTNew.ParentTask__c.addError('Parent Task cannot be a descendant child or milestone');
 					}
 				}
 			}
@@ -112,7 +128,7 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 				duration.verifyEndDate(tempPTNew, project);
 				
 		    	//Recalculate Duration when EndDate or StartDate was changed
-		    	if(tempPTNew.EndDate__c != null){
+		    	if(tempPTNew.EndDate__c != null && tempPTOld.EndDate__c != null){
 		    		if(tempPTOld.EndDate__c != tempPTNew.EndDate__c || tempPTOld.StartDate__c != tempPTNew.StartDate__c){
 		 				tempPTNew = duration.doCalculateDuration(tempPTNew);
 		    		}
