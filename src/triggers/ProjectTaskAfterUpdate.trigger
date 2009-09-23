@@ -5,7 +5,7 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
 	List<String> lstPTId = new List<String>();
     ParentTask parent = new ParentTask(); 
     parent.setProjectId(Trigger.old.get(0).Project__c);
-    
+  	
     ProjectTask__c tempPTOld = new ProjectTask__c();
     ProjectTask__c tempPTNew = new ProjectTask__c();
     for( Integer k = 0; k < Trigger.old.size(); k++ ){
