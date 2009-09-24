@@ -1,9 +1,6 @@
 trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 	Map<String,ProjectTask__c> AuxMap = new Map<String,ProjectTask__c>();
- 	List<Id> tasksInTrrNewIds = new List<Id>();
-	List<ProjectTask__c> parentTasks = new List<ProjectTask__c>();
 	ProjectTaskDuration duration = new ProjectTaskDuration();
-	List<String> listIds = new List<String>(); 
 	Map<Id, Project2__c> projectMap = new Map<Id, Project2__c>();
 	
 	/*
@@ -25,30 +22,17 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 			cc++;
 		}	
 		td.updateNow();
-	}	
+	} 
 	
 	Project2__c project1;
 	Project2__c project;
 	for( Project2__c p :[select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c from Project2__c limit 1000])
 		projectMap.put( p.Id, p );
-	/*
-	for( ProjectTask__c task : Trigger.new){
- 		listIds.add( task.id );
- 		tasksInTrrNewIds.add(task.ParentTask__c );
-	}
-	*/
 	
 	ParentTask parent = new ParentTask(); 
-	parent.setProjectId(Trigger.old.get(0).Project__c);
-	
-	//parentTasks = [ select id, Project__c from ProjectTask__c where id in: tasksInTrrNewIds];
-	//List<ProjectTask__c> allChildTasks = new List<ProjectTask__c>();
-	//allChildTasks = [select Id , ParentTask__c from ProjectTask__c where ParentTask__c in: listIds];
+	BigListOfTasks bigListOfTasks = new BigListOfTasks(Trigger.new.get(0).Project__c);
 	
  	for( ProjectTask__c task : Trigger.new){
- 		
- 		//listIds.add( task.id );
- 		//tasksInTrrNewIds.add(task.ParentTask__c );
  		
  		if(task.Milestone__c){
  			project1 = projectMap.get(task.Project__c);
@@ -58,7 +42,6 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 			task.Duration__c = 1.0; 
  		}
     }
-	
 	
 			
     ProjectTask__c tempPTOld = new ProjectTask__c();
@@ -75,17 +58,19 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 			tempPTNew.EndDate__c.addError('End date should not be smaller than Start Date');
 		}
 		else{
-		
+		//TODO not working validation for parentTask children always zero
 		List<ProjectTask__c> childTasks = new List<ProjectTask__c>();
 		List<ProjectTask__c> allChildTasks = new List<ProjectTask__c>();
 		ProjectTask__c tskk = parent.getParentTask(tempPTNew);
-		allChildTasks = parent.getTaskChildren(tskk, tempPTNew);
+		allChildTasks = ParentTask.getTaskChildren(tskk, tempPTNew);
 		for(ProjectTask__c task : allChildTasks ){
 			if(task.ParentTask__c == tempPTNew.Id){
 				childTasks.add(task);
 			}
 		}
 		
+		System.debug('-------------CHILDREN ::' +childTasks.size() );
+		System.debug(childTasks);
 		if(childTasks.size() > 0 && ProjectUtil.getFlagValidationParentTask()){
 			if(ProjectUtil.getFlagValidationParentTask()){
 				if(tempPTOld.StartDate__c != tempPTNew.StartDate__c){
@@ -155,7 +140,7 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 			
 			if( tempPTNew.ParentTask__c != null && tempPTOld.ParentTask__c == tempPTNew.ParentTask__c){ 
 				if(ProjectUtil.getFlagValidationParentTask()){
-					parent.checkParentTask(tempPTNew);
+					ParentTask.updateParentTasks(tempPTNew.id);
 				}
 			}
 			if(ProjectUtil.getParentTaskUpdateIndent()){

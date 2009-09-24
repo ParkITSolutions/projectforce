@@ -895,7 +895,7 @@ public with sharing class ProjectTaskListController {
                 Boolean markingParent = false;
                 Integer indexTask = 0;
 	            ParentTask parent = new ParentTask();
-	            parent.setProjectId(PROJECTID);
+	            BigListOfTasks bigListOfTasks = new BigListOfTasks(PROJECTID);
                 for (ProjectTask__c iterTask : tasksUpdate) {
                     Boolean cantEditAndDelete = false;
                     Integer countAssignee = 0;

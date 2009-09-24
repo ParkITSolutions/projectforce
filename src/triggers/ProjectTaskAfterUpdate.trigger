@@ -4,7 +4,6 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
 	ProjectSubscribersEmailServices pEmail = new ProjectSubscribersEmailServices();
 	List<String> lstPTId = new List<String>();
     ParentTask parent = new ParentTask(); 
-    parent.setProjectId(Trigger.old.get(0).Project__c);
   	
     ProjectTask__c tempPTOld = new ProjectTask__c();
     ProjectTask__c tempPTNew = new ProjectTask__c();
@@ -22,7 +21,8 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
     if(tempPTOld.ParentTask__c != tempPTNew.ParentTask__c){
 			ProjectTask__c tsk = parent.getParentTask(tempPTNew);
 			//updating parents
-			parent.checkParentTask(tempPTNew);
+			//ParentTask.checkParentTask(tempPTNew);
+			ParentTask.updateParentTasks(tempPTNew.Id);
 			//updating childs Indent Value
 			parent.updateAllChildrensIndent(tsk);
 			

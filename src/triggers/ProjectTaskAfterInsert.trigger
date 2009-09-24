@@ -26,8 +26,8 @@ trigger ProjectTaskAfterInsert on ProjectTask__c (after insert) {
 			    //Re-Evaulates Parent task after Inserting 
 			    if(m.ParentTask__c != null){
 					ParentTask parent = new ParentTask();
-					parent.setProjectId(m.Project__c);
-					parent.checkParentTask(m);
+					BigListOfTasks bigListOfTasks = new BigListOfTasks(m.Project__c);
+					ParentTask.checkParentTask(m);
 				}
 						
 			}
