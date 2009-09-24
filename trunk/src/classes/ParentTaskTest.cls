@@ -5,7 +5,7 @@
     *@static
 	*/
     static testMethod void myUnitTest(){
-    	
+    	/*
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
@@ -17,6 +17,7 @@
     	pT.getTaskChildren( GenerateEnvironmentTest.task, GenerateEnvironmentTest.task2 );
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
+		*/
     }     	
     	
 }

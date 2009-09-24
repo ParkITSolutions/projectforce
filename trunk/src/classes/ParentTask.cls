@@ -1,51 +1,62 @@
 /**
-*@author: Matias Menafra - Sep 1, 2009
+*@author Matias Menafra - Sep 1, 2009
 */
 public class ParentTask {
-	
+	//
 	public static Map<Id,ProjectTask__c> updates = new Map<Id,ProjectTask__c>();
+	//
 	public Map<Id,ProjectTask__c> indentUpdateTasks = new Map<Id,ProjectTask__c>();
+	//
 	public Boolean validParentTask = true;
 	
 	/**
 	* Class constructor
 	*/
 	public ParentTask (){
+		//Does nothing
 	}
 	
+	/**
+	* Method to get the parent task of a given task
+	* @param ProjectTask task
+	* @return ProjectTask
+	*/
 	public ProjectTask__c getParentTask(ProjectTask__c task){
+		
 		ProjectTask__c parentTask = BigListOfTasks.getById(task.ParentTask__c);	
-		System.debug(parentTask);							
 		return parentTask;
 	}
 	
+	/**
+	* Method used to calculate the correct Indent value for a given Task
+	* @param ProjectTask task
+	* @return Double
+	*/
 	public Double setTaskIndent(ProjectTask__c task){
 		
 		if(task.ParentTask__c != null){
-			ProjectTask__c parentTask = BigListOfTasks.getById(task.ParentTask__c);		
+			ProjectTask__c parentTask = this.getParentTask(task);		
 			return ParentTask.Indent__c + 1.0;
 		}
 		else
 			return	0.0;		
 	}
 	
+	/**
+	* Method updates all child tasks Indent Value
+	* @param ProjectTask task
+	* @return Void
+	*/
 	public void updateAllChildrensIndent(ProjectTask__c task){
-		System.debug('---------------DENTRO Tarea para el update children indent : ' + task.Id); 
+		
 		List<ProjectTask__c> children = BigListOfTasks.getByParentId(task.Id);
-		System.debug('Tamano de children size: '+children.size()); 
+		
 		for(ProjectTask__c tsk : children){
 			ProjectTask__c aux = new ProjectTask__c(); 
 			aux = tsk;
 			aux.Indent__c = this.setTaskIndent(aux);
 			this.indentUpdateTasks.put(aux.Id,aux);
 			BigListOfTasks.setById(aux);
-				System.debug('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-				System.debug('++++++++++++++++++++++++ task id :'+ aux.Id);
-				System.debug('++++++++++++++++++++++++ task StartDate :'+ aux.StartDate__c);
-				System.debug('++++++++++++++++++++++++ task EndDate :'+ aux.EndDate__c);
-				System.debug('++++++++++++++++++++++++ task Parent :'+ aux.ParentTask__c);
-				System.debug('++++++++++++++++++++++++ task Percentage :'+ aux.Indent__c);
-				System.debug('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
 		}
 		
 		if(children.size() != 0 ){
@@ -55,7 +66,9 @@ public class ParentTask {
 		}
 	}
 	
-	
+	/**
+	* 
+	*/
 	public void checkParentTaskRedundancy(ProjectTask__c task, String parentId){
 		List<ProjectTask__c> children = BigListOfTasks.getByParentId(task.Id);
 		for(ProjectTask__c tsk : children){
@@ -71,6 +84,9 @@ public class ParentTask {
 		}
 	}
 	
+	/**
+	* 
+	*/
 	public Boolean taskHasChildren(ProjectTask__c task){
 		List<ProjectTask__c> children = BigListOfTasks.getByParentId(task.Id);
 		if(children.size() > 0){
@@ -81,6 +97,9 @@ public class ParentTask {
 		}
 	}
 	
+	/**
+	* 
+	*/
 	public static List<ProjectTask__c> getTaskChildren(ProjectTask__c task, ProjectTask__c hijo){
 		
 		List<ProjectTask__c> children = BigListOfTasks.getByParentId(task.Id);
@@ -110,7 +129,7 @@ public class ParentTask {
 	*/
 	@future
 	public static void updateParentTasks(String taskId){
-		ProjectTask__c t = [Select Id, Project__c from ProjectTask__c where Id =: taskId];
+		ProjectTask__c t = [Select Id, Project__c from ProjectTask__c where Id =: taskId limit 1];
 		BigListOfTasks bigList = new BigListOfTasks(t.Project__c);
 		
 		ProjectTask__c aux = new ProjectTask__c();
@@ -119,6 +138,9 @@ public class ParentTask {
 		checkParentTask(task);
 	}
 	
+	/**
+	* 
+	*/
 	public static void checkParentTask(ProjectTask__c task){ 
 		
 		if(task.ParentTask__c != null){
@@ -250,11 +272,13 @@ public class ParentTask {
 		}
 	}
 	
-	//New method for testing parent updates wiithout using recursion
+	/**
+	* 
+	*/
 	@future
 	public static void newUpdateParentTask(List<String> taskIds){
 		String id = taskIds.get(0);
-		ProjectTask__c t = [Select Id, Project__c from ProjectTask__c where Id =: id];
+		ProjectTask__c t = [Select Id, Project__c from ProjectTask__c where Id =: id limit 1];
 		BigListOfTasks bigList = new BigListOfTasks(t.Project__c);
 		
 		List<ProjectTask__c> tasks = new List<ProjectTask__c>();
@@ -262,15 +286,6 @@ public class ParentTask {
 			ProjectTask__c tsk = BigListOfTasks.getbyId(String.valueOf(taskId));
 			tasks.add(tsk); 
 		}
-		
-		/*
-		List<ProjectTask__c> parentTasks = new List<ProjectTask__c>();
-		for(ProjectTask__c tsk : tasks){
-			if(tsk.ParentTask__c != null){
-				ProjectTask__c parent = BigListOfTasks.getbyId(tsk.ParentTask__c);
-				parentTasks.add(parent);
-			}
-		}*/
 		
 		for(ProjectTask__c task : tasks){
 			ProjectTask__c parentTask = BigListOfTasks.getbyId(task.ParentTask__c);

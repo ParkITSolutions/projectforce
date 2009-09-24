@@ -71,6 +71,8 @@ public with sharing class TaskDependencies {
 		
 		ProjectTask__c predTask 	= new ProjectTask__c();
 		ProjectTask__c parentTask 	= new ProjectTask__c();
+		ProjectTask__c taskToModify = new ProjectTask__c();
+		List<ProjectTaskPred__c> relationsList = new List<ProjectTaskPred__c>();  
 		
 		if( this.taskToModifyList.containsKey(predObj.Predecessor__c))
 			predTask = this.taskToModifyList.get(predObj.Predecessor__c);
@@ -94,23 +96,20 @@ public with sharing class TaskDependencies {
 
 		//
 		Date newParentStartDate = Date.valueOf( parentTask.endDate__c ).addDays( predObj.Lag_Time__c.intValue() +1);		
-		
 		Date newParentEndDate   = Date.valueOf( parentTask.endDate__c   ).addDays( predObj.Lag_Time__c.intValue() + parentInterval + 1);		
-		
 		//
-		ProjectTask__c taskToModify = new ProjectTask__c();
 		taskToModify = this.bTaskList.getById( predObj.Predecessor__c );
-		taskToModify.StartDate__c = newParentStartDate;
-		taskToModify.EndDate__c   = newParentEndDate;
-		
-		this.taskToModifyList.put( taskToModify.id, taskToModify );
 
-		List<ProjectTaskPred__c> relationsList = new List<ProjectTaskPred__c>();  
-		relationsList = bPredList.getListPred( taskToModify.id  , '2');
-		if(relationsList.size() > 0 ){
-			System.debug( '<dentro>' );	
-			for( ProjectTaskPred__c r : relationsList)
-				this.InsertinfPred( r );
+		if(Date.valueOf( parentTask.endDate__c ).daysBetween( taskToModify.startDate__c ) < 0 ){
+			taskToModify.StartDate__c = newParentStartDate;
+			taskToModify.EndDate__c   = newParentEndDate;
+			
+			this.taskToModifyList.put( taskToModify.id, taskToModify );
+	
+			relationsList = bPredList.getListPred( taskToModify.id  , '2');
+			if(relationsList.size() > 0 )
+				for( ProjectTaskPred__c r : relationsList)
+					this.InsertinfPred( r );
 		}
 	}
 	
