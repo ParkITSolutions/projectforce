@@ -13,10 +13,13 @@ trigger ProjectTaskAfterDelete on ProjectTask__c (after delete) {
 		}
 		
 		ParentTask parent = new ParentTask();
-		parent.setProjectId(Trigger.old.get(0).Project__c);
+		BigListOfTasks bigListOfTasks = new BigListOfTasks(Trigger.old.get(0).Project__c);
+		
+		List<String> taskIds = new List<String>();
 		for(ProjectTask__c tsk : [select Id, Duration__c, DurationUI__c, Indent__c, ParentTask__c, PercentCompleted__c,  Project__c,  StartDate__c, EndDate__c from ProjectTask__c where ParentTask__c in : parIds limit 1000]){
-			parent.checkParentTask(tsk);
+			taskIds.add(tsk.Id);
 		}
+		ParentTask.newUpdateParentTask(taskIds);
 	}
 	
 }

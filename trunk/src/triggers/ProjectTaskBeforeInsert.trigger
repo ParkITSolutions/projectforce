@@ -93,7 +93,7 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 			    	}
 			    	
 			    	ParentTask parent = new ParentTask();
-			    	parent.setProjectId(tempPTNew.Project__c);
+			    	BigListOfTasks bigListOfTasks = new BigListOfTasks(tempPTNew.Project__c); 
 			    	if(tempPTNew.ParentTask__c != null){
 			    		ProjectTask__c parentTsk = parent.getParentTask(tempPTNew);
 			    		if(parentTsk.Milestone__c == false){
@@ -102,6 +102,9 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 			    		else{
 			    			tempPTNew.ParentTask__c.addError('Parent Task cannot be a Milestone');
 			    		}
+			    	}
+			    	else{
+			    		tempPTNew.Indent__c = parent.setTaskIndent(tempPTNew);
 			    	}
 		    }
 		}
