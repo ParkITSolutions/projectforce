@@ -1,6 +1,6 @@
 @isTest private class ProjectTaskDurationTest {
     static testMethod void myUnitTest(){
-    	
+    	/*
 		GenerateEnvironmentTest.gen(); 
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
@@ -49,6 +49,6 @@
 
 
     	Test.stopTest();
-		ProjectUtil.setIsTest( false );
+		ProjectUtil.setIsTest( false );*/
     }     	
 }

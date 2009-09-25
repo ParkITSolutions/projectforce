@@ -4,19 +4,7 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 	ProjectTaskDuration duration = new ProjectTaskDuration(Trigger.new.get(0));
 	ParentTask parent = new ParentTask(); 
 	BigListOfTasks bigListOfTasks = new BigListOfTasks(Trigger.new.get(0).Project__c);
-	
-	//TODO refactor this and put it inside the main for loop
-	/*if( ProjectUtil.getTaskDependenciesFlag()){
-		TaskDependencies td = new TaskDependencies(Trigger.new[0].project__c);
-		Integer cc = 0;
-		for(ProjectTask__c p :  Trigger.new  ){
-			td.movingTask2( Trigger.old.get(cc), p);
-			cc++;
-		}	
-		td.updateNow();
-	} 
-	*/
-	
+		
     ProjectTask__c tempPTOld = new ProjectTask__c();
     ProjectTask__c tempPTNew = new ProjectTask__c();
     
@@ -80,6 +68,15 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 		//if all validations passed
 		if(triggerValidation){
 			
+			if( ProjectUtil.getTaskDependenciesFlag()){
+				TaskDependencies td = new TaskDependencies(Trigger.new[0].project__c);
+				Integer cc = 0;
+				for(ProjectTask__c p :  Trigger.new  ){
+					td.movingTask2( Trigger.old.get(cc), p);
+					cc++;
+				}	
+				td.updateNow();
+			} 
 			tempPTNew = duration.calculateTaskUpdate(tempPTOld, tempPTNew);
 			parent.parentTaskUpdate(tempPTOld, tempPTNew);
 			
