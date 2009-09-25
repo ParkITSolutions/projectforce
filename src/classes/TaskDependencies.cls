@@ -23,7 +23,7 @@ public with sharing class TaskDependencies {
 			predTask = this.bTaskList.getById( relationsList[k].Parent__c );
 			goGoGo = Date.valueOf( predTask.endDate__c ).daysBetween( Date.valueOf( taskNew.startDate__c ))-1 >= 0 ; 
 		}
- 
+
  		if( !goGoGo ){
 			this.taskToModifyList.clear();
 			taskNew.StartDate__c = taskOld.StartDate__c;
