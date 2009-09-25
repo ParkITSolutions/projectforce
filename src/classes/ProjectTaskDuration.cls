@@ -1,14 +1,124 @@
-/**
+/** 
 *@author: Nicolas Gunther - July 9, 2009
 */
 public class ProjectTaskDuration {
 
+	private String displayDuration; 
+	private Double workingHours; 
+	private String daysInWorkWeek; 
+	
 	/**
 	* Class constructor
 	*/
-	public ProjectTaskDuration (){
+	public ProjectTaskDuration (ProjectTask__c task){
+		
+		Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
+								from Project2__c 
+								where Id =: task.Project__c];
+		
+		this.displayDuration = project.DisplayDuration__c;
+		this.workingHours = project.WorkingHours__c;
+		this.daysInWorkWeek = project.DaysInWorkWeek__c;
+		
 	}
 
+	/**
+	* Method used to validate duration entry field
+	* @param ProjectTask__c task
+	* @return Boolean
+	*/
+	public Boolean validateDurationInput(ProjectTask__c task){
+		
+		String regex = task.DurationUI__c;
+		String result = regex.replaceAll('\\d[0-9]*[\\\\.\\d{0,2}]?[h,d,H,D]?','');
+		
+		if( result != '' ){
+			return false;
+		}
+		else{
+			return true;
+		}
+		
+	}
+
+	/**
+	* Method which will calculate a tasks or milestones start date, end date, and duration values correctly when inserted
+	* @param ProjectTask__c task
+	* @param Project2__c projectInfo
+	* @return ProjectTask__c
+	*/
+	public ProjectTask__c calculateTaskInsert(ProjectTask__c task){
+		
+		if(task.Milestone__c == true){
+			
+			task = this.verifyStartDate(task);
+			task.EndDate__c = null;
+			task.DurationUI__c = '1.0';
+			task.Duration__c = 1.0; 
+		}
+		else{
+			task = this.verifyStartDate(task);
+			task = this.verifyEndDate(task);
+								
+			if(task.EndDate__c == null){
+				task = this.parseDuration(task);
+					 				
+				if(this.displayDuration.equals('Days')){
+					task.EndDate__c = this.doCalculateEndDateInDays(task, Integer.valueOf(this.daysInWorkWeek));
+				}
+				else{
+					task.EndDate__c = this.doCalculateEndDateInHours(task);
+				}	
+			}
+			else{
+		 		task = this.doCalculateDuration(task);
+		 		task = this.parseDuration(task);
+			}
+		}
+		
+		return task;
+	}
+
+	/**
+	* Method which will calculate a task or milestones start date, end date, and duration values correctly when Updated
+	* @param ProjectTask__c tempPTOld
+	* @param ProjectTask__c tempPTNew
+	* @param Project2__c projectInfo
+	* @return ProjectTask__c
+	*/
+	public ProjectTask__c calculateTaskUpdate(ProjectTask__c tempPTOld, ProjectTask__c tempPTNew){
+	
+		if(tempPTNew.Milestone__c == true){
+			
+			tempPTNew = this.verifyStartDate(tempPTNew);
+			tempPTNew.EndDate__c = null;
+			tempPTNew.DurationUI__c = '1.0';
+			tempPTNew.Duration__c = 1.0; 
+		}
+		else{
+			tempPTNew = this.verifyStartDate(tempPTNew);
+			tempPTNew = this.verifyEndDate(tempPTNew);
+				
+		    if(tempPTNew.EndDate__c != null && tempPTOld.EndDate__c != null){
+		    	if(tempPTOld.EndDate__c != tempPTNew.EndDate__c || tempPTOld.StartDate__c != tempPTNew.StartDate__c){
+		 			tempPTNew = this.doCalculateDuration(tempPTNew);
+		    	}
+		    }
+		    	
+		    if(tempPTOld.DurationUI__c != tempPTNew.DurationUI__c || tempPTNew.EndDate__c == null){
+		 		tempPTNew = this.parseDuration(tempPTNew);
+		 		if(this.displayDuration.equals('Days')){
+					tempPTNew.EndDate__c = this.doCalculateEndDateInDays(tempPTNew,Integer.valueOf(this.daysInWorkWeek));
+				}
+				else{
+					tempPTNew.EndDate__c = this.doCalculateEndDateInHours(tempPTNew);
+				}	
+		    }
+		}
+		
+		return tempPTNew;
+	}
+	
 	/**
 	* Calculate task end date
 	*@param task instance
@@ -18,12 +128,10 @@ public class ProjectTaskDuration {
 		
     	if(task.Project__c != null){ 
 
-			Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c from Project2__c where Id =: task.Project__c];
-
-			if(project.DisplayDuration__c.equals('Days')){
-				task.EndDate__c = this.doCalculateEndDateInDays(task, Integer.valueOf(project.DaysInWorkWeek__c));
+			if(this.displayDuration.equals('Days')){
+				task.EndDate__c = this.doCalculateEndDateInDays(task, Integer.valueOf(this.daysInWorkWeek));
 			}else{
-				task.EndDate__c = this.doCalculateEndDateInHours(task, project);
+				task.EndDate__c = this.doCalculateEndDateInHours(task);
 			}	
 
     	}
@@ -31,7 +139,7 @@ public class ProjectTaskDuration {
 	}
 	
 	/**
-	* Calulate duration with start and end date
+	* Calulates duration with start and end date
 	*@param task start date
 	*@param task end data
 	*@retrun duration
@@ -43,14 +151,12 @@ public class ProjectTaskDuration {
 		
 		if(task.Project__c != null){
 			
-			Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c from Project2__c where Id =: task.Project__c limit 1];		
+			days = this.doExcludeNonWorkingDays(task.StartDate__c, task.EndDate__c, Integer.valueOf(this.daysInWorkWeek));
 			
-			days = this.doExcludeNonWorkingDays(task.StartDate__c, task.EndDate__c, Integer.valueOf(project.DaysInWorkWeek__c));
-			
-			if(project.DisplayDuration__c.equals('Days')){
+			if(this.displayDuration.equals('Days')){
 				duration = days;
 			}else{
-				duration = (Decimal.valueOf(days * project.WorkingHours__c).round(System.Roundingmode.CEILING).intValue());
+				duration = (Decimal.valueOf(days * this.workingHours).round(System.Roundingmode.CEILING).intValue());
 			}			
  
 			task.Duration__c = duration;
@@ -77,14 +183,15 @@ public class ProjectTaskDuration {
 	}
 	
 	/**
+	* Calculate EndDate from Duration field in Hours
 	*@param task instance
 	*@param project instance
 	*@return task end date 
 	*/
-	public Date doCalculateEndDateInHours(ProjectTask__c task, Project2__c project){
+	public Date doCalculateEndDateInHours(ProjectTask__c task){
 		
-		Integer hours = project.WorkingHours__c.intValue();
-		Integer wdays = Integer.valueOf(project.DaysInWorkWeek__c);
+		Integer hours = this.workingHours.intValue();
+		Integer wdays = Integer.valueOf(this.daysInWorkWeek);
 		Integer days = (Decimal.valueOf(task.Duration__c / hours).round(System.Roundingmode.CEILING).intValue());		
 		
 		return this.doExcludeNonWorkingDays(task.StartDate__c, wdays, days);
@@ -92,7 +199,7 @@ public class ProjectTaskDuration {
 	}
 	
 	/**
-	* Get work week days
+	* Get work week days from project
 	*@param number of workdays
 	*@return work days names
 	*/
@@ -154,15 +261,17 @@ public class ProjectTaskDuration {
 			myDate = myDate.addDays(1);
 		}
 		return days;	
-	
 	}
 	
 	/**
-	*
+	* Method for verifying start date is always on a valid working day
+	* @param ProjectTask__c task
+	* @param Project2__c project
+	* @return ProjectTask__c
 	*/
-	public ProjectTask__c verifyStartDate(ProjectTask__c task, Project2__c project){
+	public ProjectTask__c verifyStartDate(ProjectTask__c task){
 		
-		Set<String> workdays = this.getWorkDays( Integer.valueOf(project.DaysInWorkWeek__c ));
+		Set<String> workdays = this.getWorkDays( Integer.valueOf(this.daysInWorkWeek));
 		Datetime myDate = Datetime.valueOf(task.StartDate__c + '00:00:00');
 		Datetime myEndDate;
 		if(task.EndDate__c != null){
@@ -193,11 +302,14 @@ public class ProjectTaskDuration {
 	}
 	
 	/**
-	*
+	* Method for verifying end date is always on a valid working day
+	* @param ProjectTask__c task
+	* @param Project2__c project
+	* @return ProjectTask__c
 	*/
-	public ProjectTask__c verifyEndDate(ProjectTask__c task, Project2__c project){
+	public ProjectTask__c verifyEndDate(ProjectTask__c task){
 		if(task.EndDate__c  != null){
-			Set<String> workdays = this.getWorkDays( Integer.valueOf(project.DaysInWorkWeek__c ) );
+			Set<String> workdays = this.getWorkDays( Integer.valueOf(this.daysInWorkWeek ) );
 			Datetime myDate = Datetime.valueOf(task.EndDate__c + '00:00:00');
 			Datetime myStartDate = Datetime.valueOf(task.StartDate__c + '00:00:00');
 			String weekday = '';		
@@ -232,10 +344,6 @@ public class ProjectTaskDuration {
 			input = String.valueOf(task.Duration__c); 
 		}
 		
-		Project2__c project = [select Id, DisplayDuration__c, WorkingHours__c, DaysInWorkWeek__c 
-								from Project2__c 
-								where Id =: task.Project__c limit 1];
-			
 		boolean isDays  = false;
 		boolean isHours = false;
 		
@@ -252,7 +360,7 @@ public class ProjectTaskDuration {
 			if(input.equals('0') || input.equals('0.0') || input.equals('0.00') || inputAux == 0.0){
 				input = '1';
 			}
-			if( !project.DisplayDuration__c.equals('Days') ){
+			if( !this.displayDuration.equals('Days') ){
 				//to deal with decimal hour values
 				Double valueAux = Math.floor( Double.valueOf(input) ) ;
 				input = String.valueOf(valueAux);
@@ -260,34 +368,34 @@ public class ProjectTaskDuration {
 			else{
 				input = this.calculateDurationDays(input);
 			}
-			this.insertRawDuration(task, project.DisplayDuration__c, input, project.WorkingHours__c, 'none');
+			this.insertRawDuration(task, this.displayDuration, input, this.workingHours, 'none');
 		}
 		
 		if(isDays){
 			input = this.replaceDays(input);
-			this.insertRawDuration(task, project.DisplayDuration__c, input, project.WorkingHours__c, 'days');
+			this.insertRawDuration(task, this.displayDuration, input, this.workingHours, 'days');
 			
-			if(project.DisplayDuration__c.equals('Days')){
+			if(this.displayDuration.equals('Days')){
 				input = this.calculateDurationDays(input);
 			}
 			else{
-				input = this.calculateDurationHours(input, project.WorkingHours__c);
+				input = this.calculateDurationHours(input, this.workingHours);
 			}
 		}
 		
 		if(isHours){
 			input = this.replaceHours(input);
-			this.insertRawDuration(task, project.DisplayDuration__c, input, project.WorkingHours__c, 'hours');
+			this.insertRawDuration(task, this.displayDuration, input, this.workingHours, 'hours');
 			
-			if(project.DisplayDuration__c.equals('Days')){
-				input = this.calculateDurationDays(input, project.WorkingHours__c);
+			if(this.displayDuration.equals('Days')){
+				input = this.calculateDurationDays(input, this.workingHours);
 			}
 			else{
 				//do nothing Project already in Hours
 			}
 		}
 		
-		if(project.DisplayDuration__c.equals('Days')){
+		if(this.displayDuration.equals('Days')){
 			task.Duration__c = Double.valueOf(input);
 			task.DurationUI__c = input;
 		}
@@ -300,7 +408,7 @@ public class ProjectTaskDuration {
 	
 	/**
 	* Method to syncronize and store the Duration value always as a hour value.
-	* for future calculations thes value will be usefull
+	* for future calculations this value will be usefull
 	*@param task
 	*@param displayType
 	*@param duration
@@ -343,7 +451,9 @@ public class ProjectTaskDuration {
 	}
 	
 	/**
-	*
+	* Method for striping duration of hour / Days convention characters
+	* @param String value
+	* @return String
 	*/
 	public String replaceHours(String value){
 		
@@ -362,7 +472,9 @@ public class ProjectTaskDuration {
 	}
 	
 	/**
-	*
+	* Method for striping duration of hour / Days convention characters
+	* @param String value
+	* @return String
 	*/
 	public String replaceDays(String value){
 		
@@ -382,6 +494,9 @@ public class ProjectTaskDuration {
 	
 	/**
 	*
+	* @param String value
+	* @param Double workingHours	
+	* @return String
 	*/
 	public String calculateDurationDays(String value, Double workingHours){
 		
@@ -400,9 +515,11 @@ public class ProjectTaskDuration {
 	
 	/**
 	*
+	* @param String value
+	* @return String
 	*/
 	public String calculateDurationDays(String value){
-		//TODO terminar de corregir metodo para dias!!!!
+
 		Double input1 = Double.valueOf(value); 
  		Double CompleteValue = Math.ceil(100 * input1) / 100;
 		Double aux = CompleteValue * 100; 
@@ -415,6 +532,9 @@ public class ProjectTaskDuration {
 	
 	/**
 	*
+	* @param String value
+	* @param Double workingHours
+	* @return String
 	*/
 	public String calculateDurationHours(String value, Double workingHours){
 		

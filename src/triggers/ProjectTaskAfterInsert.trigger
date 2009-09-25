@@ -2,6 +2,10 @@ trigger ProjectTaskAfterInsert on ProjectTask__c (after insert) {
     if (!ProjectUtil.currentlyExeTrigger) {
     	ProjectUtil.currentlyExeTrigger = true;
 		try {		
+			
+			ParentTask parent = new ParentTask();
+			BigListOfTasks bigListOfTasks = new BigListOfTasks(Trigger.new.get(0).Project__c);
+			
 			List<String> projectSharingGroupNames = new List<String>();		
 			for(ProjectTask__c p : Trigger.new) {
 				projectSharingGroupNames.add('ProjectSharing' + p.Project__c);
@@ -23,10 +27,8 @@ trigger ProjectTaskAfterInsert on ProjectTask__c (after insert) {
 			    p.RowCause = 'Manual';
 			    tasks.add(p);
 			    
-			    //Re-Evaulates Parent task after Inserting 
+			    //Re-Evaulates Parent nodes after Inserting a task with a Parent
 			    if(m.ParentTask__c != null){
-					ParentTask parent = new ParentTask();
-					BigListOfTasks bigListOfTasks = new BigListOfTasks(m.Project__c);
 					ParentTask.checkParentTask(m);
 				}
 						
