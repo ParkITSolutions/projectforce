@@ -1,10 +1,14 @@
 public with sharing class TaskDependencies {
 
-	BigListOfTask bTaskList = new BigListOfTask('SELECT Id, name, StartDate__c, EndDate__c, Duration__c FROM ProjectTask__c');
+	BigListOfTask bTaskList;// = new BigListOfTask('SELECT Id, name, StartDate__c, EndDate__c, Duration__c FROM ProjectTask__c');
 	BigListOfTaskPredecessors bPredList = new BigListOfTaskPredecessors();
 	Map<id, ProjectTask__c> taskToModifyList = new Map<id, ProjectTask__c>();
 	Integer interval = null;
-	public TaskDependencies(){}
+	Boolean goGoGo = null;
+	
+	public TaskDependencies( Id projectId ){
+		bTaskList = new BigListOfTask('SELECT Id, name, StartDate__c, EndDate__c, Duration__c, Milestone__c FROM ProjectTask__c WHERE Project__c =\'' + projectId + '\'');
+	}
 	
 	public Boolean goGoGo( ProjectTask__c taskOld, ProjectTask__c taskNew ){
 
@@ -13,28 +17,40 @@ public with sharing class TaskDependencies {
 		List<ProjectTaskPred__c> relationsList = new List<ProjectTaskPred__c>();  
 		relationsList = bPredList.getListByParent( taskNew.id  , '2');
 
+		if(relationsList.size() > 0)
 		for( Integer k = 0; k < relationsList.size() && goGoGo; k++ ){
-			System.debug('Aduuken > ' );
 			predTask = new ProjectTask__c();
 			predTask = this.bTaskList.getById( relationsList[k].Parent__c );
-			goGoGo = Date.valueOf( predTask.endDate__c ).daysBetween( Date.valueOf( taskNew.startDate__c )) >= 0; 
+			goGoGo = Date.valueOf( predTask.endDate__c ).daysBetween( Date.valueOf( taskNew.startDate__c ))-1 >= 0 ; 
 		}
-	
-		if( !goGoGo ){
+ 
+ 		if( !goGoGo ){
 			this.taskToModifyList.clear();
 			taskNew.StartDate__c = taskOld.StartDate__c;
+			taskNew.EndDate__c = taskOld.EndDate__c;
 		} 
 		
 		return goGoGo;
 	}
 	
+	public void movingTask2( ProjectTask__c taskOld, ProjectTask__c taskNew ){
+
+		if( taskOld.Milestone__c == taskNew.Milestone__c ){
+			if( this.bPredList.size() == 0 )
+			this.bPredList = new BigListOfTaskPredecessors( taskOld.Project__c );
+	
+			this.goGoGo = this.goGoGo( taskOld, taskNew );
+	
+			if(this.goGoGo)
+			
+			this.movingTask( taskOld, taskNew );
+		}
+	}	
+	
 	public void movingTask( ProjectTask__c taskOld, ProjectTask__c taskNew ){
 		
-		Boolean goGoGo = true;
 		ProjectTask__c newTask = new ProjectTask__c();
 		
-		//this.interval = 0;
-
 		if( this.bPredList.size() == 0 )
 		this.bPredList = new BigListOfTaskPredecessors( taskOld.Project__c );
 
@@ -45,14 +61,15 @@ public with sharing class TaskDependencies {
 			if( this.interval == null )
 				this.interval = Date.valueOf( taskOld.endDate__c ).daysBetween(Date.valueOf( taskNew.endDate__c ));			
 		}else if( taskOld.StartDate__c != taskNew.StartDate__c && taskOld.endDate__c == taskNew.endDate__c){
-			this.interval = 0;
+			if( this.interval == null )
+				this.interval = 0;
 		}
 
-		goGoGo = true;//this.goGoGo( taskOld, taskNew );
-
+		
+		
 		List<ProjectTaskPred__c> relationsList = new List<ProjectTaskPred__c>();  
 		relationsList = bPredList.getListPred( taskOld.id  , '2');
-		if(relationsList.size() > 0 && goGoGo )
+		if(relationsList.size() > 0 && this.goGoGo )
 			for( ProjectTaskPred__c r : relationsList){
 				newTask = new ProjectTask__c();
 				newTask = this.bTaskList.getById( r.Predecessor__c );
@@ -84,11 +101,11 @@ public with sharing class TaskDependencies {
 		else
 			parentTask 	= this.bTaskList.getById( predObj.Parent__c );
 		
+		if( predTask.Milestone__c == true )
+			predTask.EndDate__c = predTask.StartDate__c;
+		if( parentTask.Milestone__c == true )
+			parentTask.EndDate__c = parentTask.StartDate__c;
 		
-		//predTask 	= this.bTaskList.getById( predObj.Parent__c );
-		//parentTask 	= this.bTaskList.getById( predObj.Predecessor__c );
-		
-		// Days between  parentTask.endDate__c and parentTask.startDate__c
 		Integer parentInterval = Math.abs(Date.valueOf( predTask.endDate__c ).daysBetween(Date.valueOf( predTask.startDate__c )));
 		
 		Integer bla = Date.valueOf( parentTask.endDate__c ).daysBetween(Date.valueOf( predTask.startDate__c ));
@@ -100,7 +117,7 @@ public with sharing class TaskDependencies {
 		//
 		taskToModify = this.bTaskList.getById( predObj.Predecessor__c );
 
-		if(Date.valueOf( parentTask.endDate__c ).daysBetween( taskToModify.startDate__c ) < 0 ){
+		if(Date.valueOf( parentTask.endDate__c ).daysBetween( Date.valueOf(taskToModify.startDate__c )) < 0 ){
 			taskToModify.StartDate__c = newParentStartDate;
 			taskToModify.EndDate__c   = newParentEndDate;
 			
@@ -218,7 +235,6 @@ public with sharing class TaskDependencies {
 				
 			return rList;
 		}
-
 		
 		public void add( ProjectTaskPred__c pT ){	
 			this.bList.add( pT );
