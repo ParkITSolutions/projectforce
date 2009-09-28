@@ -72,7 +72,7 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 				TaskDependencies td = new TaskDependencies(Trigger.new[0].project__c);
 				Integer cc = 0;
 				for(ProjectTask__c p :  Trigger.new  ){
-					td.movingTask2( Trigger.old.get(cc), p);
+					td.movingTask( Trigger.old.get(cc), p);
 					cc++;
 				}	
 				td.updateNow();

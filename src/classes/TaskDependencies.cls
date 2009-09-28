@@ -4,6 +4,7 @@ public with sharing class TaskDependencies {
 	BigListOfTaskPredecessors bPredList = new BigListOfTaskPredecessors();
 	Map<id, ProjectTask__c> taskToModifyList = new Map<id, ProjectTask__c>();
 	Integer interval = null;
+	String  direction = '';
 	Boolean goGoGo = null;
 	
 	public TaskDependencies( Id projectId ){
@@ -13,6 +14,7 @@ public with sharing class TaskDependencies {
 	public Boolean goGoGo( ProjectTask__c taskOld, ProjectTask__c taskNew ){
 
 		Boolean goGoGo = true;
+		Integer localInteval = 0;
 		ProjectTask__c predTask = new ProjectTask__c();
 		List<ProjectTaskPred__c> relationsList = new List<ProjectTaskPred__c>();  
 		relationsList = bPredList.getListByParent( taskNew.id  , '2');
@@ -20,10 +22,14 @@ public with sharing class TaskDependencies {
 		if(relationsList.size() > 0)
 		for( Integer k = 0; k < relationsList.size() && goGoGo; k++ ){
 			predTask = new ProjectTask__c();
-			predTask = this.bTaskList.getById( relationsList[k].Parent__c );
-			goGoGo = Date.valueOf( predTask.endDate__c ).daysBetween( Date.valueOf( taskNew.startDate__c ))-1 >= 0 ; 
+			if( this.taskToModifyList.containsKey( relationsList[k].Parent__c ))
+				predTask = this.taskToModifyList.get( relationsList[k].Parent__c );
+			else
+				predTask = this.bTaskList.getById( relationsList[k].Parent__c );
+			
+			localInteval = Date.valueOf( predTask.endDate__c ).daysBetween( Date.valueOf( taskNew.startDate__c ));
+			goGoGo = this.direction == 'rigth' ?  localInteval - 1 >= 0 :  localInteval > 0; 
 		}
-
  		if( !goGoGo ){
 			this.taskToModifyList.clear();
 			taskNew.StartDate__c = taskOld.StartDate__c;
@@ -33,23 +39,10 @@ public with sharing class TaskDependencies {
 		return goGoGo;
 	}
 	
-	public void movingTask2( ProjectTask__c taskOld, ProjectTask__c taskNew ){
-
-		if( taskOld.Milestone__c == taskNew.Milestone__c ){
-			if( this.bPredList.size() == 0 )
-			this.bPredList = new BigListOfTaskPredecessors( taskOld.Project__c );
-	
-			this.goGoGo = this.goGoGo( taskOld, taskNew );
-	
-			if(this.goGoGo)
-			
-			this.movingTask( taskOld, taskNew );
-		}
-	}	
-	
 	public void movingTask( ProjectTask__c taskOld, ProjectTask__c taskNew ){
 		
 		ProjectTask__c newTask = new ProjectTask__c();
+		this.taskToModifyList.put( taskNew.id, taskNew );
 		
 		if( this.bPredList.size() == 0 )
 		this.bPredList = new BigListOfTaskPredecessors( taskOld.Project__c );
@@ -65,7 +58,8 @@ public with sharing class TaskDependencies {
 				this.interval = 0;
 		}
 
-		
+		this.direction = this.interval > 0 ? 'right' : 'left';
+		this.goGoGo = this.goGoGo( taskOld, taskNew );
 		
 		List<ProjectTaskPred__c> relationsList = new List<ProjectTaskPred__c>();  
 		relationsList = bPredList.getListPred( taskOld.id  , '2');
@@ -75,7 +69,7 @@ public with sharing class TaskDependencies {
 				newTask = this.bTaskList.getById( r.Predecessor__c );
 				newTask.startDate__c = Date.valueOf(newTask.startDate__c).addDays( this.interval );
 				newTask.endDate__c = Date.valueOf(newTask.endDate__c).addDays( this.interval );
-				this.taskToModifyList.put( newTask.id, newTask );
+				//this.taskToModifyList.put( newTask.id, newTask );
 				
 				this.movingTask( this.bTaskList.getById( r.Predecessor__c ), newTask);
 			}
@@ -132,8 +126,12 @@ public with sharing class TaskDependencies {
 	
 	public void updateNow(){
 		if( this.taskToModifyList.size() > 0 ){
-			ProjectUtil.setTaskDependenciesFlag(false);	
-			update this.taskToModifyList.values();
+			ProjectUtil.setTaskDependenciesFlag(false);
+			List<ProjectTask__c> auxList = new List<ProjectTask__c>();
+			auxList = this.taskToModifyList.values();
+			if( this.direction != '' )
+				auxList.remove(0);
+			update  auxList;
 		}
 	}
 
