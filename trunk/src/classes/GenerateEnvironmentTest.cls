@@ -160,7 +160,7 @@ public class GenerateEnvironmentTest {
         pred.Parent__c = task.id;
         pred.Project__c = project.id;
         
-        insert pred;        
+        //insert pred;        
         
         // Assignies
         assi.Name = 'Assignee 1';

@@ -47,8 +47,8 @@ public with sharing class TaskDependencies {
 		ProjectTask__c taskOld = new ProjectTask__c();
 		ProjectTask__c taskNew = new ProjectTask__c();
 		
-		taskNew = taskNewParam;
-		taskOld = taskOldParam;
+		taskNew = taskNewParam.clone();
+		taskOld = taskOldParam.clone();
 		
 		this.taskToModifyList.put( taskNew.id, taskNew );
 		
@@ -84,7 +84,8 @@ public with sharing class TaskDependencies {
 				newTask = new ProjectTask__c();
 				newTask = this.bTaskList.getById( r.Predecessor__c );
 				newTask.startDate__c = Date.valueOf(newTask.startDate__c).addDays( this.interval );
-				newTask.endDate__c = Date.valueOf(newTask.endDate__c).addDays( this.interval );
+				
+				newTask.endDate__c = newTask.Milestone__c == true ? newTask.startDate__c : Date.valueOf(newTask.endDate__c).addDays( this.interval );
 				
 				this.movingTask( this.bTaskList.getById( r.Predecessor__c ), newTask);
 			}
@@ -149,7 +150,7 @@ public with sharing class TaskDependencies {
 		//
 		taskToModify = this.bTaskList.getById( predObj.Predecessor__c );
 
-		if(Date.valueOf( parentTask.endDate__c ).daysBetween( Date.valueOf(taskToModify.startDate__c )) < 0 ){
+		if(Date.valueOf( parentTask.endDate__c ).daysBetween( Date.valueOf(taskToModify.startDate__c )) <= 0 ){
 			taskToModify.StartDate__c = newParentStartDate;
 			taskToModify.EndDate__c   = newParentEndDate;
 			
@@ -167,7 +168,19 @@ public with sharing class TaskDependencies {
 			ProjectUtil.setTaskDependenciesFlag( false );
 			this.taskToModifyList.remove( firstTaskId );
 			update this.taskToModifyList.values();
+			this.taskToModifyList = new Map<id, ProjectTask__c>();
 		}
+	}
+
+	public List<ProjectTask__c> listToUpdateNow(){
+		if( this.taskToModifyList.size() > 0 ){
+			ProjectUtil.setTaskDependenciesFlag( false );
+			this.taskToModifyList.remove( firstTaskId );
+			return this.taskToModifyList.values();
+			this.taskToModifyList = new Map<id, ProjectTask__c>();
+			//ProjectUtil.setTaskDependenciesFlag( true );
+		}
+		return null;
 	}
 
 	public List<ProjectTask__c> getListToUpdate(){

@@ -34,9 +34,11 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
 			parent.updateAllChildrensIndent(tsk);
 			//sets flags and updates the list of modified tasks
 			ProjectUtil.setFlagValidationParentTask(false);
-			ProjectUtil.setParentTaskUpdateIndent(false);
+			//ProjectUtil.setParentTaskUpdateIndent(false);
+			ProjectUtil.setTaskDependenciesFlag( false );
 				update parent.indentUpdateTasks.values(); 
-			ProjectUtil.setParentTaskUpdateIndent(true);
+			//ProjectUtil.setParentTaskUpdateIndent(true);
+			ProjectUtil.setTaskDependenciesFlag( true );
 			ProjectUtil.setFlagValidationParentTask(true);
 			
 	    }
