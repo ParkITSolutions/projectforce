@@ -67,6 +67,9 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 		
 		//if all validations passed
 		if(triggerValidation){
+
+			tempPTNew = duration.calculateTaskUpdate(tempPTOld, tempPTNew);
+			parent.parentTaskUpdate(tempPTOld, tempPTNew);
 			
 			if( ProjectUtil.getTaskDependenciesFlag()){
 				TaskDependencies td = new TaskDependencies(Trigger.new[0].project__c);
@@ -77,8 +80,6 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 				}	
 				td.updateNow();
 			} 
-			tempPTNew = duration.calculateTaskUpdate(tempPTOld, tempPTNew);
-			parent.parentTaskUpdate(tempPTOld, tempPTNew);
 			
 		}
 		AuxMap.put( tempPTOld.id, tempPTOld ); 

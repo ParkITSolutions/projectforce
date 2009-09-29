@@ -1,11 +1,13 @@
 public with sharing class TaskDependencies {
 
-	BigListOfTask bTaskList;// = new BigListOfTask('SELECT Id, name, StartDate__c, EndDate__c, Duration__c FROM ProjectTask__c');
+	BigListOfTask bTaskList;
 	BigListOfTaskPredecessors bPredList = new BigListOfTaskPredecessors();
 	Map<id, ProjectTask__c> taskToModifyList = new Map<id, ProjectTask__c>();
+	Id firstTaskId = null;
 	Integer interval = null;
 	String  direction = '';
 	Boolean goGoGo = null;
+	Boolean cyclicDependencieChecked = false;
 	
 	public TaskDependencies( Id projectId ){
 		bTaskList = new BigListOfTask('SELECT Id, name, StartDate__c, EndDate__c, Duration__c, Milestone__c FROM ProjectTask__c WHERE Project__c =\'' + projectId + '\'');
@@ -39,18 +41,32 @@ public with sharing class TaskDependencies {
 		return goGoGo;
 	}
 	
-	public void movingTask( ProjectTask__c taskOld, ProjectTask__c taskNew ){
+	public void movingTask( ProjectTask__c taskOldParam, ProjectTask__c taskNewParam ){
 		
 		ProjectTask__c newTask = new ProjectTask__c();
+		ProjectTask__c taskOld = new ProjectTask__c();
+		ProjectTask__c taskNew = new ProjectTask__c();
+		
+		taskNew = taskNewParam;
+		taskOld = taskOldParam;
+		
 		this.taskToModifyList.put( taskNew.id, taskNew );
 		
+		if( this.firstTaskId == null )
+			this.firstTaskId = taskNew.Id;
+			
 		if( this.bPredList.size() == 0 )
-		this.bPredList = new BigListOfTaskPredecessors( taskOld.Project__c );
-
+			this.bPredList = new BigListOfTaskPredecessors( taskOld.Project__c );
+			
+		if( taskOldParam.Milestone__c == true )
+			taskOld.EndDate__c = taskOld.StartDate__c;
+		if( taskNewParam.Milestone__c == true )
+			taskNew.EndDate__c = taskNew.StartDate__c;
+			
 		if( taskOld.StartDate__c != taskNew.StartDate__c && taskOld.endDate__c != taskNew.endDate__c){
 			if( this.interval == null )
 				this.interval = Date.valueOf( taskOld.startDate__c ).daysBetween(Date.valueOf( taskNew.startDate__c ));
-		}else if( taskOld.StartDate__c == taskNew.StartDate__c && taskOld.endDate__c != taskNew.endDate__c){
+		}else if( taskOld.StartDate__c == taskNew.StartDate__c && taskOld.endDate__c != taskNew.endDate__c ){
 			if( this.interval == null )
 				this.interval = Date.valueOf( taskOld.endDate__c ).daysBetween(Date.valueOf( taskNew.endDate__c ));			
 		}else if( taskOld.StartDate__c != taskNew.StartDate__c && taskOld.endDate__c == taskNew.endDate__c){
@@ -59,7 +75,7 @@ public with sharing class TaskDependencies {
 		}
 
 		this.direction = this.interval > 0 ? 'right' : 'left';
-		this.goGoGo = this.goGoGo( taskOld, taskNew );
+		this.goGoGo = this.goGoGo( taskOldParam, taskNewParam );
 		
 		List<ProjectTaskPred__c> relationsList = new List<ProjectTaskPred__c>();  
 		relationsList = bPredList.getListPred( taskOld.id  , '2');
@@ -69,10 +85,28 @@ public with sharing class TaskDependencies {
 				newTask = this.bTaskList.getById( r.Predecessor__c );
 				newTask.startDate__c = Date.valueOf(newTask.startDate__c).addDays( this.interval );
 				newTask.endDate__c = Date.valueOf(newTask.endDate__c).addDays( this.interval );
-				//this.taskToModifyList.put( newTask.id, newTask );
 				
 				this.movingTask( this.bTaskList.getById( r.Predecessor__c ), newTask);
 			}
+	}
+	
+	public Boolean checkCyclicDependencie ( Id iniTaskId, Id endTaskId )  {
+		Boolean result = false;
+		ProjectTask__c currentTask = new ProjectTask__c();
+		List<ProjectTaskPred__c> currentTaskPredList = new List<ProjectTaskPred__c>();
+		
+		currentTaskPredList = bPredList.getListPred( iniTaskId  , '2');
+		
+		Integer count = 0; 
+		while( currentTaskPredList.size() > 0 && count < currentTaskPredList.size()){
+			currentTask = this.bTaskList.getById( currentTaskPredList[ count ].Predecessor__c );
+			if( currentTask.Id == endTaskId )
+				result = true;
+			else
+				result = checkCyclicDependencie( currentTask.id, endTaskId );
+			count ++;
+		}
+		return result;		
 	}
 	
 	public void InsertinfPred( ProjectTaskPred__c predObj ){
@@ -85,6 +119,7 @@ public with sharing class TaskDependencies {
 		ProjectTask__c taskToModify = new ProjectTask__c();
 		List<ProjectTaskPred__c> relationsList = new List<ProjectTaskPred__c>();  
 		
+		
 		if( this.taskToModifyList.containsKey(predObj.Predecessor__c))
 			predTask = this.taskToModifyList.get(predObj.Predecessor__c);
 		else
@@ -93,8 +128,11 @@ public with sharing class TaskDependencies {
 		if( this.taskToModifyList.containsKey( predObj.Parent__c ))
 			parentTask 	= this.taskToModifyList.get( predObj.Parent__c );		
 		else
-			parentTask 	= this.bTaskList.getById( predObj.Parent__c );
-		
+			parentTask 	= this.bTaskList.getById( predObj.Parent__c );	
+
+		if(this.checkCyclicDependencie( predTask.id, parentTask.id ))
+			throw new CustomException(' ');
+				
 		if( predTask.Milestone__c == true )
 			predTask.EndDate__c = predTask.StartDate__c;
 		if( parentTask.Milestone__c == true )
@@ -126,12 +164,9 @@ public with sharing class TaskDependencies {
 	
 	public void updateNow(){
 		if( this.taskToModifyList.size() > 0 ){
-			ProjectUtil.setTaskDependenciesFlag(false);
-			List<ProjectTask__c> auxList = new List<ProjectTask__c>();
-			auxList = this.taskToModifyList.values();
-			if( this.direction != '' )
-				auxList.remove(0);
-			update  auxList;
+			ProjectUtil.setTaskDependenciesFlag( false );
+			this.taskToModifyList.remove( firstTaskId );
+			update this.taskToModifyList.values();
 		}
 	}
 
