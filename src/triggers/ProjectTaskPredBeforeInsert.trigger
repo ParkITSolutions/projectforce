@@ -9,9 +9,9 @@ trigger ProjectTaskPredBeforeInsert on ProjectTaskPred__c (Before Insert, Before
 				try{
 					td.InsertinfPred(p);
 				}catch (Exception e){
-					p.parent__c.addError( 'Cyclic dependencie its not permited.' );
-					break;
+					p.parent__c.addError( 'Cyclic dependency is not permited.' );
 				}
+			ProjectUtil.flags.put('ya', true);
 		    td.updateNow();
 
        }else if(Trigger.isUpdate){
@@ -19,12 +19,12 @@ trigger ProjectTaskPredBeforeInsert on ProjectTaskPred__c (Before Insert, Before
 			TaskDependencies td = new TaskDependencies(Trigger.new[0].project__c);
 			for( ProjectTaskPred__c p :  Trigger.new )
 					td.InsertinfPred( p );					
+			ProjectUtil.flags.put('ya', true);
 		    td.updateNow();
-
        }else if(Trigger.isDelete){
-			ProjectUtil.setTaskDependenciesFlag( false );
+			ProjectUtil.setTaskDependenciesFlag( false ); 
        }
-   }else if(Trigger.isAfter){
+   }else if(Trigger.isAfter){ 
 
        if(Trigger.isInsert){
 

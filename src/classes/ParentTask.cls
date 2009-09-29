@@ -9,11 +9,21 @@ public class ParentTask {
 	//value to check if task can be a valid Parent Task
 	public Boolean validParentTask = true;
 	
+	public static List<ProjectTask__c> modifiedDependecies = new List<ProjectTask__c>();
+	
 	/**
 	* Class constructor
 	*/
 	public ParentTask (){
 		//Does nothing
+	}
+	
+	private static void mergeTasks(){
+		if(ParentTask.modifiedDependecies!= null )
+		for( ProjectTask__c mDTsk : ParentTask.modifiedDependecies ){
+			ParentTask.updates.put( mDTsk.Id,mDTsk );
+			BigListOfTasks.setById( mDTsk );
+		}
 	}
 	
 	/**
@@ -55,11 +65,14 @@ public class ParentTask {
 	* @return void
 	*/
 	public void parentTaskUpdate(ProjectTask__c tempPTOld, ProjectTask__c tempPTNew){
-		
-		if( tempPTNew.ParentTask__c != null && tempPTOld.ParentTask__c == tempPTNew.ParentTask__c){ 
-			if(ProjectUtil.getFlagValidationParentTask()){
+		ParentTask.mergeTasks();
+		if(tempPTNew.ParentTask__c != null && tempPTOld.ParentTask__c == tempPTNew.ParentTask__c){ 
+			if(ProjectUtil.getFlagValidationParentTask())
 				ParentTask.updateParentTasks(tempPTNew.id);
-			}
+		}else{
+			ProjectUtil.setTaskDependenciesFlag( false );
+			if(ProjectUtil.getFlagValidationParentTask())
+				update ParentTask.updates.values();
 		}
 		
 		if(ProjectUtil.getParentTaskUpdateIndent()){
@@ -199,7 +212,7 @@ public class ParentTask {
 		ProjectTask__c t = [Select Id, Project__c from ProjectTask__c where Id =: taskId limit 1];
 		//Initializes BigList with the ProjectID
 		BigListOfTasks bigList = new BigListOfTasks(t.Project__c);
-		
+		ParentTask.mergeTasks();
 		ProjectTask__c task = BigListOfTasks.getbyId((Id)taskId);
 		checkParentTask(task);
 	}

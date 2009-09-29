@@ -67,19 +67,25 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 		
 		//if all validations passed
 		if(triggerValidation){
-
-			tempPTNew = duration.calculateTaskUpdate(tempPTOld, tempPTNew);
-			parent.parentTaskUpdate(tempPTOld, tempPTNew);
-			
-			if( ProjectUtil.getTaskDependenciesFlag()){
+			if( ProjectUtil.getTaskDependenciesFlag()){ 
+				ProjectUtil.flags.put('ya', true);
 				TaskDependencies td = new TaskDependencies(Trigger.new[0].project__c);
 				Integer cc = 0;
 				for(ProjectTask__c p :  Trigger.new  ){
 					td.movingTask( Trigger.old.get(cc), p);
 					cc++;
 				}	
-				td.updateNow();
+				//td.updateNow();
+				ParentTask.modifiedDependecies = td.listToUpdateNow();
+				tempPTNew = duration.calculateTaskUpdate(tempPTOld, tempPTNew);
+				parent.parentTaskUpdate(tempPTOld, tempPTNew);
+			}else{
+				tempPTNew = duration.calculateTaskUpdate(tempPTOld, tempPTNew);
+				if(!ProjectUtil.flags.get('ya') || !ProjectUtil.flags.containsKey('ya'))
+					parent.parentTaskUpdate(tempPTOld, tempPTNew);
 			} 
+			
+
 			
 		}
 		AuxMap.put( tempPTOld.id, tempPTOld ); 
