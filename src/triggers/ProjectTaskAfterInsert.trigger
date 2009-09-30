@@ -5,6 +5,7 @@ trigger ProjectTaskAfterInsert on ProjectTask__c (after insert) {
 			
 			ParentTask parent = new ParentTask();
 			BigListOfTasks bigListOfTasks = new BigListOfTasks(Trigger.new.get(0).Project__c);
+			TaskDependencies td = new TaskDependencies(Trigger.new[0].project__c);
 			
 			List<String> projectSharingGroupNames = new List<String>();		
 			for(ProjectTask__c p : Trigger.new) {
@@ -30,6 +31,7 @@ trigger ProjectTaskAfterInsert on ProjectTask__c (after insert) {
 			    //Re-Evaulates Parent nodes after Inserting a task with a Parent
 			    if(m.ParentTask__c != null){
 					ParentTask.checkParentTask(m);
+                	td.delAllRelsFromMe( parent.getParentTask(m));
 				}
 						
 			}

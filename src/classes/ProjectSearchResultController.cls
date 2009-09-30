@@ -91,7 +91,12 @@ public with sharing class ProjectSearchResultController {
 	public void search() {
 		
 		List<SearchResult> tempResultList = new List<SearchResult>();	
-		String namespace = (ProjectUtil.getNamespace() != '' ) ? ProjectUtil.getNamespace() + '__' : '';		
+		String namespace = (ProjectUtil.getNamespace() != '' ) ? ProjectUtil.getNamespace() + '__' : '';	
+		
+		//decode
+		criteria = criteria.replaceAll('cde38;', '&');
+		criteria = criteria.replaceAll('cde37;', '%');
+		criteria = criteria.replaceAll('cde35;', '#');	
 
  		if(teamId != null){ //Searching project TASKS	
 
@@ -115,10 +120,6 @@ public with sharing class ProjectSearchResultController {
 				tempResultList.add(currentResult);
 			}
 		}else{
-			//decode
-			criteria = criteria.replaceAll('cde38;', '&');
-			criteria = criteria.replaceAll('cde37;', '%');
-			criteria = criteria.replaceAll('cde35;', '#');
 			
 			List<List<SObject>> resultList = search.query('FIND \'' + criteria + '*\' IN ALL FIELDS RETURNING ' 
 											+ namespace + 'Project2__c (Id, Name, Description__c)');

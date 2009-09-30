@@ -62,7 +62,7 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
                 //if all validations passed
                 if(triggerValidation){
                 	nTask = duration.calculateTaskInsert(nTask);
-                	nTask.Indent__c = parent.setTaskIndent(nTask);
+                	nTask.Indent__c = parent.setTaskIndent(nTask);                	
                 }
 		    }
 		}

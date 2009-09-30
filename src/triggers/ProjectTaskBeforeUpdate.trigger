@@ -68,7 +68,8 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 		//if all validations passed
 		if(triggerValidation){
 			if( ProjectUtil.getTaskDependenciesFlag()){ 
-				ProjectUtil.flags.put('ya', true);
+				tempPTNew = duration.calculateTaskUpdate(tempPTOld, tempPTNew);
+				ProjectUtil.flags.put('exeParentTaskUpdate', true);
 				TaskDependencies td = new TaskDependencies(Trigger.new[0].project__c);
 				Integer cc = 0;
 				for(ProjectTask__c p :  Trigger.new  ){
@@ -77,11 +78,11 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 				}	
 				//td.updateNow();
 				ParentTask.modifiedDependecies = td.listToUpdateNow();
-				tempPTNew = duration.calculateTaskUpdate(tempPTOld, tempPTNew);
+				
 				parent.parentTaskUpdate(tempPTOld, tempPTNew);
 			}else{
 				tempPTNew = duration.calculateTaskUpdate(tempPTOld, tempPTNew);
-				if(!ProjectUtil.flags.get('ya') || !ProjectUtil.flags.containsKey('ya'))
+				if(!ProjectUtil.flags.get('exeParentTaskUpdate') || !ProjectUtil.flags.containsKey('exeParentTaskUpdate'))
 					parent.parentTaskUpdate(tempPTOld, tempPTNew);
 			} 
 			

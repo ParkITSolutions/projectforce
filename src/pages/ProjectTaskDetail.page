@@ -118,7 +118,7 @@
                                     status="taskStatus"
                                     rendered="{!IF(Task.PercentCompleted == 100, false, true)}"
                                     styleClass="blackbutton completeButton"
-                                    oncomplete="completed();">
+                                    oncomplete="completed(); apexAFRefreshDetail()">
                                     <span>Mark Complete</span>
                                 </apex:commandLink>
                             </apex:outputPanel>
@@ -158,9 +158,9 @@
                 <div style="display: none;" id="sw_all" class="swirly_members"></div>
                 
                 <!-- Method to refresh task detail -->
-                <apex:form >               
+                <apex:form id="taskDetail" >               
                     <apex:detail subject="{!Task.Id}" relatedList="false"  title="false" />
-                    <apex:actionFunction name="apexAFRefreshDetail" action="{!doRefresh}" rerender="detailContainer" oncomplete="clearTableDetail();$( 'sw_all' ).hide();"/>
+                    <apex:actionFunction name="apexAFRefreshDetail" action="{!doRefresh}" rerender="detailContainer, taskDetail" oncomplete="clearTableDetail();$( 'sw_all' ).hide();"/>
                 </apex:form>
                
                 <div class="bPageBlock">
@@ -305,11 +305,11 @@
                             <apex:facet name="stop">   
                                 <apex:outputPanel id="TaskPanel2">       
                                     <apex:commandLink action="{!markComplete}"                                                                                 
-                                        rerender="TaskPanel2"
+                                        rerender="TaskPanel2, taskDetail"
                                         status="taskStatus2"
                                         rendered="{!IF(Task.PercentCompleted == 100, false, true)}"
                                         styleClass="blackbutton completeButton"
-                                        oncomplete="completed();">
+                                        oncomplete="completed(); apexAFRefreshDetail()">
                                         <span>Mark Complete</span>
                                     </apex:commandLink>
                                 </apex:outputPanel>

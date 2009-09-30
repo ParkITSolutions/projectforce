@@ -2,28 +2,21 @@
 *@author Matias Menafra - Sep 1, 2009
 */
 public class ParentTask {
-	//Map of tasks to update
-	public static Map<Id,ProjectTask__c> updates = new Map<Id,ProjectTask__c>();
+	
 	//Map of task nfor updating Indent value
 	public Map<Id,ProjectTask__c> indentUpdateTasks = new Map<Id,ProjectTask__c>();
 	//value to check if task can be a valid Parent Task
 	public Boolean validParentTask = true;
-	
+	//List of tasks modified by task links
 	public static List<ProjectTask__c> modifiedDependecies = new List<ProjectTask__c>();
+	//Map of tasks to update
+	public static Map<Id,ProjectTask__c> updates = new Map<Id,ProjectTask__c>();
 	
 	/**
 	* Class constructor
 	*/
 	public ParentTask (){
 		//Does nothing
-	}
-	
-	private static void mergeTasks(){
-		if(ParentTask.modifiedDependecies!= null )
-		for( ProjectTask__c mDTsk : ParentTask.modifiedDependecies ){
-			ParentTask.updates.put( mDTsk.Id,mDTsk );
-			BigListOfTasks.setById( mDTsk );
-		}
 	}
 	
 	/**
@@ -164,6 +157,18 @@ public class ParentTask {
 		}
 		else{
 			return false;		
+		}
+	}
+	
+	/**
+	* Method which merges changed tasks from task dependecies with task being changes by ParenT task
+	* @return void
+	*/
+	private static void mergeTasks(){
+		if(ParentTask.modifiedDependecies!= null )
+		for( ProjectTask__c mDTsk : ParentTask.modifiedDependecies ){
+			ParentTask.updates.put( mDTsk.Id,mDTsk );
+			BigListOfTasks.setById( mDTsk );
 		}
 	}
 	
@@ -472,7 +477,8 @@ public class ParentTask {
 		}
 		
 		ProjectUtil.setFlagValidationParentTask(false);
-		update updates.values();
+		if(updates.size() > 0)
+			update updates.values();
 		ProjectUtil.setFlagValidationParentTask(true);
 	}
 }
