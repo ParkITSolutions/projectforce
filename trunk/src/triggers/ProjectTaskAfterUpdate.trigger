@@ -3,6 +3,7 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
 	// Send email to subscribers members
 	ProjectSubscribersEmailServices pEmail = new ProjectSubscribersEmailServices();
 	ProjectSubscribersEmailServices pEmail2 = new ProjectSubscribersEmailServices();
+	TaskDependencies td = new TaskDependencies(Trigger.new[0].project__c);
 	
 	List<String> lstPTId = new List<String>();
     ParentTask parent = new ParentTask(); 
@@ -22,8 +23,10 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
     
 	    //If parentTask changed Recalculate all Parents
 	    if(tempPTOld.ParentTask__c != tempPTNew.ParentTask__c){
+
 			
 			ProjectTask__c tsk = parent.getParentTask(tempPTNew);
+			td.delAllRelsFromMe( tsk ); 
 			//updating parents
 			ParentTask.updateParentTasks(tempPTNew.Id);
 			
@@ -44,11 +47,9 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
 	    }
     }
     
-   	//TODO correct trigger too many SOQL
-    //pEmail.sendMailForTaskChanged( lstPTId );
+    pEmail.sendMailForTaskChanged( lstPTId );
     
     if(lstPTId.size() > 0){
-    	//TODO correct trigger too many SOQL
-    	//pEmail2.sendMailForTaskPercentChanged( lstPTId );
+    	pEmail2.sendMailForTaskPercentChanged( lstPTId );
     }
 }

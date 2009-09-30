@@ -42,7 +42,11 @@
 	</script>
 	<style>
 		#holderNew div.loader {
-			background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat scroll center 200px;
+			background-image:url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')});
+			background-repeat:no-repeat;
+			background-color: #FFFFFF;
+			background-position:center;
+			
 		}
 	</style>	
 	<!-- Initialize the overlay box for modal.js -->
@@ -84,13 +88,21 @@
 							<b>&nbsp;</b>
 						</li>
 						<li id="newProjects">
-							<apex:commandLink value="New {!$ObjectType.Project2__c.labelPlural}" onclick="newSwitchTab('newProjects');" rerender="content_teams, filter" action="{!projectsForTabs}" onComplete="finish(true);" >
+							<apex:commandLink value="New {!$ObjectType.Project2__c.labelPlural}" 
+											  onclick="newSwitchTab('newProjects');" 
+											  rerender="content_teams, filter" 
+											  action="{!projectsForTabs}" 
+											  onComplete="finish(true);" >
 								<apex:param name="filter" value="newProjects" />
 							</apex:commandLink>
 							<b>&nbsp;</b>
 						</li>
 						<li id="allProjects">
-							<apex:commandLink value="All {!$ObjectType.Project2__c.labelPlural}" onclick="newSwitchTab('allProjects');" rerender="content_teams, filter" action="{!projectsForTabs}" onComplete="finish(true); ">
+							<apex:commandLink value="All {!$ObjectType.Project2__c.labelPlural}" 
+											  onclick="newSwitchTab('allProjects');" 
+											  rerender="content_teams, filter" 
+											  action="{!projectsForTabs}" 
+											  onComplete="finish(true); ">
 								<apex:param name="filter" value="allProjects" />
 							</apex:commandLink>
 							<b>&nbsp;</b>

@@ -12,12 +12,19 @@ public with sharing class TaskDependencies {
 	public TaskDependencies( Id projectId ){
 		bTaskList = new BigListOfTask('SELECT Id, name, StartDate__c, EndDate__c, Duration__c, Milestone__c FROM ProjectTask__c WHERE Project__c =\'' + projectId + '\'');
 	}
-	
+	/**
+	*@return Boolean
+	*@Param ProjectTask__c ProjectTask__c
+	*
+	* Check some condition for continue
+	*/
 	public Boolean goGoGo( ProjectTask__c taskOld, ProjectTask__c taskNew ){
 
 		Boolean goGoGo = true;
 		Integer localInteval = 0;
 		ProjectTask__c predTask = new ProjectTask__c();
+
+		// Get relations for the current prokect.
 		List<ProjectTaskPred__c> relationsList = new List<ProjectTaskPred__c>();  
 		relationsList = bPredList.getListByParent( taskNew.id  , '2');
 
@@ -29,9 +36,13 @@ public with sharing class TaskDependencies {
 			else
 				predTask = this.bTaskList.getById( relationsList[k].Parent__c );
 			
-			localInteval = Date.valueOf( predTask.endDate__c ).daysBetween( Date.valueOf( taskNew.startDate__c ));
+			// Look if PredTask is a Milestone
+			localInteval = Date.valueOf( predTask.Milestone__c == true ? predTask.startDate__c : predTask.endDate__c ).daysBetween( Date.valueOf( taskNew.startDate__c ));
 			goGoGo = this.direction == 'rigth' ?  localInteval - 1 >= 0 :  localInteval > 0; 
 		}
+		
+		// If can not continue restore odl values of the task in trigger (Before Update)
+		// and empty the task list to modify.
  		if( !goGoGo ){
 			this.taskToModifyList.clear();
 			taskNew.StartDate__c = taskOld.StartDate__c;
@@ -47,33 +58,48 @@ public with sharing class TaskDependencies {
 		ProjectTask__c taskOld = new ProjectTask__c();
 		ProjectTask__c taskNew = new ProjectTask__c();
 		
+		// Clone the params for modify EndDate__c value
 		taskNew = taskNewParam.clone();
 		taskOld = taskOldParam.clone();
 		
+		// Add the current new task to the list of task to modify
 		this.taskToModifyList.put( taskNew.id, taskNew );
 		
+		// Backup the Id of the first task for remove this from the list of task to modify 
+		// because this task is in the trigger.
 		if( this.firstTaskId == null )
 			this.firstTaskId = taskNew.Id;
-			
+		
+		// Generate the big list of relationships for current project.	
 		if( this.bPredList.size() == 0 )
 			this.bPredList = new BigListOfTaskPredecessors( taskOld.Project__c );
-			
+		
+		// Verifying if old or new task are milestone. If the task is a milestone then
+		// the end date take the value of the star data for this script.
 		if( taskOldParam.Milestone__c == true )
 			taskOld.EndDate__c = taskOld.StartDate__c;
 		if( taskNewParam.Milestone__c == true )
 			taskNew.EndDate__c = taskNew.StartDate__c;
 			
+		// Calculate the interval to move the tasks.
+		// 4 cases
 		if( taskOld.StartDate__c != taskNew.StartDate__c && taskOld.endDate__c != taskNew.endDate__c){
+			// Case 1: move the the task.Change the end and the start Date.
 			if( this.interval == null )
 				this.interval = Date.valueOf( taskOld.startDate__c ).daysBetween(Date.valueOf( taskNew.startDate__c ));
 		}else if( taskOld.StartDate__c == taskNew.StartDate__c && taskOld.endDate__c != taskNew.endDate__c ){
+			// Case 2: only change the end date of the task.
 			if( this.interval == null )
 				this.interval = Date.valueOf( taskOld.endDate__c ).daysBetween(Date.valueOf( taskNew.endDate__c ));			
 		}else if( taskOld.StartDate__c != taskNew.StartDate__c && taskOld.endDate__c == taskNew.endDate__c){
+			// Case 3: only change the start date of the task.
 			if( this.interval == null )
 				this.interval = 0;
-		}
+		}else if( this.interval == null )
+			// Case 4:
+			this.interval = 0;
 
+		// Determinate the direction of movement, that will be used in goGoGo() method
 		this.direction = this.interval > 0 ? 'right' : 'left';
 		this.goGoGo = this.goGoGo( taskOldParam, taskNewParam );
 		
@@ -187,6 +213,29 @@ public with sharing class TaskDependencies {
 		return this.taskToModifyList.values();
 	} 
 	
+	public void delAllRelsFromMe( ProjectTask__c task ){
+
+		List<ProjectTaskPred__c> relsToDelete 	= new List<ProjectTaskPred__c>();
+		List<ProjectTaskPred__c> relsToMe 		= new List<ProjectTaskPred__c>();
+		List<ProjectTaskPred__c> relsFromMe 	= new List<ProjectTaskPred__c>();
+
+		if( this.bPredList.size() == 0 )
+		this.bPredList = new BigListOfTaskPredecessors( task.Project__c );
+		
+		relsToMe 	= this.bPredList.getListPred( task.id, '2');
+		relsFromMe	= this.bPredList.getListByParent( task.id, '2');
+		
+		if( relsToMe.size() > 0 )
+		relsToDelete.addAll( relsToMe );
+		
+		if( relsFromMe.size() > 0 )
+		relsToDelete.addAll( relsFromMe );
+
+		
+		if( relsToDelete.size() > 0 )
+		delete relsToDelete;
+
+	}	
 	
 	public class BigListOfTask{
 		List<ProjectTask__c> bList = new List<ProjectTask__c>();

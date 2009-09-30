@@ -11,7 +11,7 @@ public Class BigListOfTasks{
 		*/
 		public BigListOfTasks(String projectId){
 			
-			for( List<ProjectTask__c> ptList : [ select Id, Duration__c,Indent__c, DurationUI__c,  ParentTask__c, PercentCompleted__c,Project__c,  StartDate__c, EndDate__c, Milestone__c from ProjectTask__c where Project__c =: projectId ]){
+			for( List<ProjectTask__c> ptList : [ select Id, Name, Duration__c,Indent__c, DurationUI__c,  ParentTask__c, PercentCompleted__c,Project__c,  StartDate__c, EndDate__c, Milestone__c from ProjectTask__c where Project__c =: projectId ]){
 				BigListOfTasks.bList.add(ptList); 
 			}
 		}
