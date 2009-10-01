@@ -8,7 +8,7 @@
 	public static ProjectTask__c pt5;
 	public static ProjectTask__c pt6;
 	
-	public static void generateEnviroment(){ 
+	public static testMethod void generateEnviroment(){ 
 		
 		GenerateEnvironmentTest.gen();
 		List<ProjectTask__c> tsks = new List<ProjectTask__c>();
@@ -83,6 +83,7 @@
 			pt6.ParentTask__c = pt2.Id;
 		tsks.add( pt6 );
 	 
+	 	insert tsks;
 	}
 	
 	/**
@@ -98,15 +99,38 @@
 		BigListOfTasks bigListOfTasks = new BigListOfTasks(GenerateEnvironmentTest.project.Id);
 		ParentTask parent = new ParentTask();
 
-		ProjectTask__c aux = parent.getParentTask(pt);
 		Boolean validInsert = parent.validateParentTaskInsert(pt);
+		System.assertEquals(validInsert, true);
+		
+		validInsert = parent.validateParentTaskInsert(pt1); 
+		System.assertEquals(validInsert, true);
+		
 		pt.ParentTask__c = pt6.Id;
-		Boolean validInsert2 = parent.validateParentTaskInsert(pt);
+		update pt;
+		validInsert = parent.validateParentTaskInsert(pt);
+		System.assertEquals(validInsert, false);
 		
 		parent.parentTaskUpdate(pt3, pt3);
 		
 		Double indent = parent.setTaskIndent(pt5);
 		
+		parent.updateAllChildrensIndent(pt);
+		
+		parent.checkParentTaskRedundancy(pt, pt3.Id);
+		
+		Boolean hasChildren = parent.taskHasChildren(pt);
+		hasChildren = parent.taskHasChildren(pt6);
+		
+		List<ProjectTask__c> childs = ParentTask.getTaskChildren(pt, pt2);
+		
+		ParentTask.updateParentTasks(pt3.Id);
+		
+		List<String> tsks = new List<String>();
+		tsks.add(pt.Id);
+		tsks.add(pt3.Id);
+		tsks.add(pt6.Id);
+		
+		ParentTask.batchUpdateParentTask(tsks);
     	Test.stopTest();
 		
     }     	

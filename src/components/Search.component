@@ -18,17 +18,12 @@
                                 <span><img class="f_left" alt="" src="{!URLFOR($Resource.ProjectResources, 'images/layout/magnifier.gif')}" />Find {!labelName}</span>
                             </div>
                            
-                            <apex:inputText value="{!key}" id="searchQuery" styleClass="key_imput" onfocus="changeInputValue('focus'); " onblur="changeInputValue('blur');" onclick="hideError();" onkeypress="hideError();"/>
-                            <apex:inputText style="display: none;"/>
-                           
+                          	<apex:inputText value="{!key}" id="searchQuery" styleClass="key_imput" onfocus="changeInputValue('focus'); " onblur="changeInputValue('blur');" onclick="hideError();" onkeypress="hideError();"/>
                         </div>
                         
                         <apex:commandButton value="Search" action="{!searchKey}" id="searchBtn" styleClass="search_btn f_left" style="background-image: none !important;" />
-                        
-                           
+                          
                     </apex:form>
-                    
-                     
                   
                 </div>
             </div>

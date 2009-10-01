@@ -81,7 +81,8 @@
 											</div>
 										</td>
 										<td>								
-											<div class="{!task.isToLate} f_left">
+											<div class="{!task.isToLate} f_left" style="overflow: hidden; width: 99%;">
+											
 												<a href="projecttaskdetail?id={!task.TaskId}">{!task.TaskName}</a><br/>
 												<span class="gray"> {!task.EndDate}</span>
 											</div>

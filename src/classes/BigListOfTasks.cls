@@ -7,22 +7,23 @@ public Class BigListOfTasks{
 		
 		/**
 		* Class Constructor
-		* @param String projectId
+		* @param String param
 		*/
-		public BigListOfTasks(String projectId){
-			
-			for( List<ProjectTask__c> ptList : [ select Id, Name, Duration__c,Indent__c, DurationUI__c,  ParentTask__c, PercentCompleted__c,Project__c,  StartDate__c, EndDate__c, Milestone__c from ProjectTask__c where Project__c =: projectId ]){
+		public BigListOfTasks(String param){
+			if( param.toLowerCase().contains('select') && param.toLowerCase().contains('from'))
+				for( List<ProjectTask__c> ptList : Database.query( param ))
+				BigListOfTasks.bList.add(ptList);			
+			else
+				for( List<ProjectTask__c> ptList : [ select Id, Name, Duration__c,Indent__c, DurationUI__c,  ParentTask__c, PercentCompleted__c,Project__c,  StartDate__c, EndDate__c, Milestone__c from ProjectTask__c where Project__c =: param ])
 				BigListOfTasks.bList.add(ptList); 
-			}
 		}
 	
 		/**
 		* adds a task to the list of tasks
 		* @param ProjectTask__c task
-		* @param Integer ind
 		* @return void
 		*/
-		public static void add( ProjectTask__c task, Integer ind ){
+		public static void add( ProjectTask__c task){
 			
 			if( bList[bList.size() - 1 ].size() < 200)
 				bList[bList.size() - 1 ].add( task );

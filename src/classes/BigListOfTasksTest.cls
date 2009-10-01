@@ -1,4 +1,4 @@
-@isTest private class ProjectTaskDurationTest {
+@isTest private class BigListOfTasksTest {
 	
 	public static ProjectTask__c pt;
 	public static ProjectTask__c pt1;
@@ -41,42 +41,25 @@
 		
 		insert tsks;		
 	}
-    
-    public static testMethod void myUnitTest(){
-    	
+	
+	 public static testMethod void myUnitTest(){
+			
 		generateEnvironment();
+		BigListOfTasks bigListOfTask = new BigListOfTasks(GenerateEnvironmentTest.project.Id);
+		
     	Test.startTest();
-
-		ProjectTaskDuration d = new ProjectTaskDuration(pt);
-
-		d.validateDurationInput(pt);
 		
-		pt = d.calculateTaskInsert(pt);
-		pt.EndDate__c = null;
-		pt = d.calculateTaskInsert(pt);
-		pt2 = d.calculateTaskInsert(pt2);
+		ProjectTask__c aux = BigListOfTasks.get(0);
+		ProjectTask__c pt3 = new ProjectTask__c();
+		BigListOfTasks.add(pt3);
 		
-		pt1 = d.calculateTaskUpdate(pt1, pt1);
-		pt2 = d.calculateTaskUpdate(pt2, pt2);
+		BigListOfTasks.setById(pt2);
 		
-		d.doCalculateEndDate(pt1);
+		ProjectTask__c aux2 = BigListOfTasks.getById(pt.Id);
 		
-		pt = d.doCalculateDuration(pt);
+		List<ProjectTask__c> lst = BigListOfTasks.getByParentId(pt.Id);
 		
-		pt = d.verifyStartDate(pt);
-		pt = d.verifyEndDate(pt);
-		
-		pt2.DurationUI__c = '6';
-		pt = d.parseDuration(pt2);
-		pt2.DurationUI__c = '6h';
-		pt = d.parseDuration(pt2);
-		pt2.DurationUI__c = '6d';
-		pt = d.parseDuration(pt2);
-		pt2.DurationUI__c = '6H';
-		pt = d.parseDuration(pt2);
-		pt2.DurationUI__c = '6D';
-		pt = d.parseDuration(pt2);
-		
-    	Test.stopTest();
-    }     	
+		Integer size = BigListOfTasks.size();
+		Test.stopTest();		 
+	 }
 }
