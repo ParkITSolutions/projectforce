@@ -170,6 +170,7 @@
                                 <td class="labelCol">
                                     Status
                                 </td>
+                                
                                 <td class="dataCol">
                                     <span class="taskStatus" style="display:none;" id="">In Progress</span>
                                     <span class="taskPercent" id="completedPercentNumber">{!Task.PercentCompleted}%</span>

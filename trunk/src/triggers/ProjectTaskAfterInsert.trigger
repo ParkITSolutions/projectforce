@@ -30,8 +30,8 @@ trigger ProjectTaskAfterInsert on ProjectTask__c (after insert) {
 			    
 			    //Re-Evaulates Parent nodes after Inserting a task with a Parent
 			    if(m.ParentTask__c != null){
+			    	td.delAllRelsFromMe( parent.getParentTask(m));
 					ParentTask.checkParentTask(m);
-                	td.delAllRelsFromMe( parent.getParentTask(m));
 				}
 						
 			}
