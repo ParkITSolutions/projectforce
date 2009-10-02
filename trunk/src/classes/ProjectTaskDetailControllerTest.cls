@@ -39,6 +39,8 @@
         if(projectAss.getPercent() == null) 
             System.assert(true, 'Project Assignee Class null var');     
         
+        String ass = projectAss.getAssigneeId();
+        
         ProjectTaskDetailController.AttachmentInfo attchInfo = new ProjectTaskDetailController.AttachmentInfo();
         
         if(attchInfo.getId() == null) 
@@ -51,6 +53,24 @@
     	
     	
     	
+		taskDetailController.deleteAttach();
+		Boolean max = taskDetailController.getMaxAssignees();
+    	
+    	taskDetailController.doRefresh();
+    	UserPermissions userPerm = new UserPermissions();
+    	userPerm = taskDetailController.getUserPermissions();
+    	TaskComment__c comm = taskDetailController.getComment();
+    	taskDetailController.setComment(comm);
+    	String retVal = taskDetailController.getParam();
+    	List<TaskComment__c> lstComments = taskDetailController.getTaskComments();
+    	taskDetailController.saveComment();
+    	taskDetailController.deleteComment();
+    	Boolean val = taskDetailController.getAllowComments();
+    	
+    	Id num = '2';
+    	attchInfo.setId(num);
+    	attchInfo.setName('mat');
+    	attchInfo.setAttachImage('miguel');
     	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );

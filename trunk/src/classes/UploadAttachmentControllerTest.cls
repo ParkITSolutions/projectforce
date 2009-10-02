@@ -24,7 +24,9 @@
 		upc.setNewAttach( new Attachment(Name = 'avatar', Body = Crypto.generateMac('HMacSHA1', Blob.valueOf('String'), Blob.valueOf('String'))) );    	
 		upc.getNewAttach();    	
 		upc.saveNewAttach();    	
-		upc.cancelAttach();    	
+		upc.cancelAttach();    
+		upc.getErrorMsg();
+			
     	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );

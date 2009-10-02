@@ -788,7 +788,12 @@ public with sharing class ProjectTaskListController {
                 TaskDetail.cantDias = resultTaskList[i].EndDate__c.daysBetween(System.today());
                
             }else{
-                TaskDetail.comparoFecha = false; 
+                if(resultTaskList[i].Milestone__c && resultTaskList[i].StartDate__c < System.today()){
+            		TaskDetail.comparoFecha = true;  
+            		TaskDetail.cantDias = resultTaskList[i].StartDate__c.daysBetween(System.today());
+            	}else{
+            		TaskDetail.comparoFecha = false;  
+            	}
             }
            
             if(TaskDetail.comparoFecha == true && opciones.equals('oTask'))

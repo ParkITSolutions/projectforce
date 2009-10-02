@@ -17,10 +17,12 @@ trigger ProjectTaskPredBeforeInsert on ProjectTaskPred__c (Before Insert, Before
        }else if(Trigger.isUpdate){
 
 			TaskDependencies td = new TaskDependencies(Trigger.new[0].project__c);
-			for( ProjectTaskPred__c p :  Trigger.new )
-					td.InsertinfPred( p );					
+			for( ProjectTaskPred__c p :  Trigger.new ){
+				//td.InsertinfPred( p );				
+				td.changeLag( p );
+			}	
 			ProjectUtil.flags.put('exeParentTaskUpdate', true);
-		    td.updateNow();
+		    //td.updateNow();
        }else if(Trigger.isDelete){
 			ProjectUtil.setTaskDependenciesFlag( false ); 
        }

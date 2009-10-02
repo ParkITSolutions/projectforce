@@ -52,8 +52,16 @@
 		dyn.setFilterName('filter_name');
 		dyn.getFilterName();
 		
+		dyn.setLoadingFilter(true);
+		fieldList = dyn.getFieldList();
+		dyn.setLoadingFilter(false);
 		
-
+		String aux = dyn.genStrWithFieldsName();
+		dyn.saveFilter();
+		dyn.loadFilter();
+		
+		List<SelectOption> retValue = dyn.getSavedFilters();
+		List<SelectOption> retValue1 = dyn.getAssignees();
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );    	
     	

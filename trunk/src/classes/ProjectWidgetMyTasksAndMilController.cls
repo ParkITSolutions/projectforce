@@ -49,6 +49,9 @@ public class ProjectWidgetMyTasksAndMilController {
         List<ProjectTask__c> allProjectsTasks = new List<ProjectTask__c>();
         //5 Project assign to Me
         List<ProjectTask__c> myProjectsTasks = new List<ProjectTask__c>();
+        
+        //5 Project assign to Me
+        List<ProjectTask__c> myMilestones = new List<ProjectTask__c>();
                 
         //Populate allProjects  
         for(ProjectTask__c pt : [Select  p.Id, (Select User__c From ProjectsAssignees__r) From ProjectTask__c  p] )
@@ -73,6 +76,43 @@ public class ProjectWidgetMyTasksAndMilController {
         						From ProjectTask__c  p 
         						where p.Id in : projToMe and  p.EndDate__c != null  order by p.EndDate__c asc ];
         						
+        //Populate myMilestones
+        myMilestones = [ Select p.Priority__c, 
+                                p.Name, p.Id, p.Milestone__c, 
+                                p.PercentCompleted__c, 
+                                p.StartDate__c, 
+                                p.Duration__c 
+        				 From ProjectTask__c  p 
+        				 where p.Id in : projToMe 
+        				 and p.Milestone__c = true 
+        				 and p.PercentCompleted__c != 100
+        				 order by p.StartDate__c asc 
+        				 limit 5];
+       
+        for( ProjectTask__c ms : myMilestones) {
+        	 ProjectTasks myMilestone = new ProjectTasks();
+        	 myMilestone.TaskName = ms.Name;
+        	 myMilestone.taskId = ms.Id;
+        	 myMilestone.EndDate = '';
+        	 
+        	 if(ms.Priority__c == '' || ms.Priority__c == null){
+             	myMilestone.Priority = 'Medium';
+             }else {
+             	myMilestone.Priority = ms.Priority__c;
+             }
+                    
+        	 myMilestone.Priority = ms.Priority__c;
+        	 myMilestone.setDaysCount(ms.StartDate__c, ms.Duration__c);
+        	 myMilestone.displayTitle = false;
+        	 
+        	 if(ms.StartDate__c < Date.today()){
+        	  	myMilestone.isToLate = 'latter';
+        	  	myMilestone.displayTitle = true;
+        	 }
+        	 
+        	 milestonesList.add(myMilestone);
+        }
+        				
         for( ProjectTask__c pro : myProjectsTasks) {
             if(pro.PercentCompleted__c < 100 || pro.PercentCompleted__c == null){
                     ProjectTasks myTask = new ProjectTasks();
@@ -114,11 +154,6 @@ public class ProjectWidgetMyTasksAndMilController {
                                 tasksList.add(myTask);
                                 countTask ++;
                             }   
-                        }else{
-                            if(countMilestones < 5){
-                                milestonesList.add(myTask);
-                                countMilestones++;
-                            }
                         }
                     }
                     currentDate = pro.EndDate__c.format();
