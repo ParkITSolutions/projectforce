@@ -60,6 +60,26 @@
 
 		team.getSearchResultList();
 		
+		team.refreshPages();
+		Integer page = team.getCurrentPagination();
+		Integer page1 = team.getCntPagination();
+		Integer page2 = team.getNumberOfItemsToShow();
+		Integer page3 = team.getJumpPage();
+		String user = team.getCurrentUser();
+		
+		Id num = '3';
+		srch.setId(num);
+		Id retvalue1 = srch.getId();
+		String retValue2 = srch.getName();
+		String retValue3 = srch.getRealName();
+		String retValue4 = srch.getResultType();
+		String retValue5 = srch.getMatches();
+		
+		srch.setResultType('dde');
+		srch.setRealName('miguel');
+		srch.setName('ted', 'de');
+		
+		
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     }     	

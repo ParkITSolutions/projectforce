@@ -265,6 +265,18 @@
         taskList.setFilter( fil );
 		//fil.deleteFilter();
 
+		Project2__c proj = taskList.getProject();
+		String idProj = taskList.getProjectId();
+		Boolean filterApplied = taskList.getFilterApplyed();
+		Integer totItems = taskList.getTotalItemsNumber();
+		String dom =taskList.getDomain();
+		String idMarkComplete =taskList.getIdTaskToMarkComplete();
+		taskList.setIdTaskToMarkComplete('1');
+		taskList.markComplete();
+		taskList.generateTaskListCsv();
+		
+		
+		
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     }     	

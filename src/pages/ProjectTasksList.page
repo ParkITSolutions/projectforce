@@ -533,7 +533,7 @@
                                             </td>
                                             <td class="proj_task_end_date" style="text-align: right;" >
                                                 {!task.DueDate}
-                                                <apex:outputpanel rendered="{!IF(task.comparoFecha ,true,false)}" layout="block">
+                                                <apex:outputpanel rendered="{!IF(task.comparoFecha,true,false)}" layout="block">
                                                     {!task.cantDias} day late
                                                 </apex:outputpanel>
                                             </td>

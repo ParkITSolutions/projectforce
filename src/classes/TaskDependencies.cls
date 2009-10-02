@@ -101,22 +101,65 @@ public with sharing class TaskDependencies {
 			// Case 4:
 			this.interval = 0;
 
+		
+
 		// Determinate the direction of movement, that will be used in goGoGo() method
 		this.direction = this.interval > 0 ? 'right' : 'left';
 		this.goGoGo = this.goGoGo( taskOldParam, taskNewParam );
-		
+		Integer taskLarg;		
 		List<ProjectTaskPred__c> relationsList = new List<ProjectTaskPred__c>();  
 		relationsList = bPredList.getListByParent( taskOld.id  , '2');
 		if(relationsList.size() > 0 && this.goGoGo )
 			for( ProjectTaskPred__c r : relationsList){
 				newTask = new ProjectTask__c();
 				newTask = BigListOfTasks.getById( r.Predecessor__c );
+				taskLarg = newTask.endDate__c.daysBetween(newTask.startDate__c);
 				newTask.startDate__c = Date.valueOf(newTask.startDate__c).addDays( this.interval );				
 				newTask.endDate__c = newTask.Milestone__c == true ? newTask.startDate__c : Date.valueOf(newTask.endDate__c).addDays( this.interval );
 				this.movingTask( BigListOfTasks.getById( r.Predecessor__c ), newTask);
 			}
 	}
+
+	public Date getGreaterEndDate( List<ProjectTask__c> taskList ){
+		
+		ProjectTask__c g = new ProjectTask__c();
+		Date rDate;
+		if(taskList.size() > 0 ){
+			g = taskList.remove(0);
+			for( ProjectTask__c t : taskList )			
+				if( g.endDate__c.daysBetween( t.endDate__c) > 0 )
+				g = t;
+			rDate = g.endDate__c; 	
+		}
+		return rDate;
+	} 
 	
+	public void changeLag(ProjectTaskPred__c predObj){
+		
+		if( this.bPredList.size() == 0 )
+		this.bPredList = new BigListOfTaskPredecessors( predObj.Project__c );
+		
+		ProjectTask__c newTask = new ProjectTask__c();
+		ProjectTask__c oldTask = new ProjectTask__c();
+		ProjectTask__c parentTask = new ProjectTask__c();
+		
+		parentTask = BigListOfTasks.getById( predObj.parent__c );
+
+		if( this.taskToModifyList.containsKey(predObj.Predecessor__c))
+			newTask = this.taskToModifyList.get(predObj.Predecessor__c);
+		else
+			newTask = BigListOfTasks.getById( predObj.Predecessor__c );
+		
+		oldTask = newTask;
+		
+		Integer l = Date.valueOf(newTask.startDate__c).daysBetween(Date.valueOf(newTask.endDate__c))+1;
+		newTask.StartDate__c = Date.valueOf(parentTask.EndDate__c).addDays(predObj.Lag_Time__c.intValue()+1);		
+		newTask.EndDate__c = Date.valueOf(parentTask.EndDate__c).addDays(predObj.Lag_Time__c.intValue() + l);
+		
+		update newTask;
+		
+	}	
+
 	/**
 	*@param Id, Id
 	*@return Boolean
@@ -198,6 +241,7 @@ public with sharing class TaskDependencies {
 	}
 	
 	public void updateNow(){
+		
 		if( this.taskToModifyList.size() > 0 ){
 			ProjectUtil.setTaskDependenciesFlag( false );
 			this.taskToModifyList.remove( firstTaskId );
@@ -247,6 +291,29 @@ public with sharing class TaskDependencies {
 		if( relsToDelete.size() > 0 )
 		delete relsToDelete;
 	}	
+	
+	public Date setDateInWorkingDay( Date d, Integer wrkDays ){
+
+		Date rDate;
+		Datetime tempDate = Datetime.valueOf( d + '00:00:00');
+		Set<String> weekdays = new Set<String>{'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'};
+		
+		for( String day : weekdays.clone())
+			weekdays.remove( day );
+			
+		if( weekdays.contains( tempDate.format( 'EEE' )))
+			rDate = Date.valueOf( tempDate );
+		else
+			tempDate = tempDate.addDays(1);
+
+		while( rDate != null )
+			if( weekdays.contains( tempDate.format( 'EEE' )))
+				rDate = Date.valueOf( tempDate );
+			else
+				tempDate = tempDate.addDays(1);
+		
+		return rDate;		
+	}
 
 	public class BigListOfTaskPredecessors{
 
@@ -365,5 +432,6 @@ public with sharing class TaskDependencies {
 		}
 
 	}
+	
 	
 }

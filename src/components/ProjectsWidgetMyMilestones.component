@@ -2,7 +2,6 @@
     
     <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsWidgetMyTasksAndMilestones.css')}" />
 
-
     <div class="teamWidget mySmallWidget" >
         <!-- Widget Title -->       
         <div class="thinHeader">
@@ -12,7 +11,7 @@
         <div class="box_content">
             <div class="thinBodyFixed">
                 <div style="{!IF(milestonesListSize > 0, 'display:none', '')}; ">
-                    <div class="grayColor noitems" >You have no upcoming Milstones</div>
+                    <div class="grayColor noitems" >You have no upcoming Milestones</div>
                 </div>
                 <div style="{!IF(milestonesListSize > 0, '', 'display:none')}; ">
                     <ul class="proj_task">      
@@ -22,7 +21,7 @@
                                     <div class="overdue">Overdue</div>
                                 </apex:outputPanel>
                                 <apex:outputPanel rendered="{!IF((task.isToLate != 'latter'),true,false)}" layout="block">
-                                    <div class="grayColor"><b>{!task.DaysCount}</b> ({!task.EndDate})  </div>
+                                    <div class="grayColor"><b>{!task.DaysCount}</b>  </div>
                                 </apex:outputPanel>
                             </li> 
                             <li>
@@ -40,8 +39,8 @@
                                 </div>
                                 <div class="f_left {!task.isToLate}">
                                     <a href="/apex/projecttaskdetail?id={!task.TaskId}">{!task.TaskName}</a><br/>
-                                    <apex:outputPanel rendered="{!IF((task.isToLate == 'latter'),true,false)}" layout="block">
-                                        <span class="gray">{!task.DaysCount} due {!task.EndDate}</span>
+                                    <apex:outputPanel rendered="{!IF((task.isToLate == 'latter'),true,true)}" layout="block">
+                                        <span class="gray">{!task.DaysCount} </span>
                                     </apex:outputPanel>
                                 </div>
                                 <div class="clear"></div> 

@@ -4,7 +4,7 @@ trigger ProjectTaskAfterInsert on ProjectTask__c (after insert) {
 		try {		
 			
 			ParentTask parent = new ParentTask();
-			BigListOfTasks bigListOfTasks = new BigListOfTasks(Trigger.new.get(0).Project__c);
+			BigListOfTasks bigListOfTask = new BigListOfTasks(Trigger.new.get(0).Project__c);
 			TaskDependencies td = new TaskDependencies(Trigger.new[0].project__c);
 			
 			List<String> projectSharingGroupNames = new List<String>();		
@@ -30,6 +30,19 @@ trigger ProjectTaskAfterInsert on ProjectTask__c (after insert) {
 			    
 			    //Re-Evaulates Parent nodes after Inserting a task with a Parent
 			    if(m.ParentTask__c != null){
+			    	ProjectTask__c aux = parent.getParentTask(m).clone();
+			    	if(aux.Milestone__c == true){
+			    		aux.EndDate__c = aux.StartDate__c;
+			    		aux.Milestone__c = false;
+			    		BigListOfTasks.setById(aux);
+			    		//TODO corregir este flag, por que sino no borra las dependencias cuando convierte en padre el milestone
+			    		ProjectUtil.setFlagValidationParentTask(false);
+			    		ProjectUtil.setTaskDependenciesFlag(false);
+			    		ProjectUtil.flags.put('exeParentTaskUpdate', false);
+						update aux;
+						ProjectUtil.setFlagValidationParentTask(true);
+			    	}
+			    	//then check and update its parent
 			    	td.delAllRelsFromMe( parent.getParentTask(m));
 					ParentTask.checkParentTask(m);
 				}

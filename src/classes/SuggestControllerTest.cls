@@ -32,6 +32,8 @@
         SuggestController.Suggestions suggClass = new SuggestController.Suggestions();
         suggClass.getName();
         suggClass.getId();    	
+    	suggClass.setId('3');
+    	suggClass.setName('migue');
     	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );

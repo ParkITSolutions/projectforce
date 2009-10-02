@@ -363,6 +363,9 @@ public class ProjectTaskDuration {
 			if( !this.displayDuration.equals('Days') ){
 				//to deal with decimal hour values
 				Double valueAux = Math.floor( Double.valueOf(input) ) ;
+				if(valueAux == 0.0){
+					valueAux = 1.0;
+				}
 				input = String.valueOf(valueAux);
 			}
 			else{
@@ -373,6 +376,10 @@ public class ProjectTaskDuration {
 		
 		if(isDays){
 			input = this.replaceDays(input);
+			Double valueAux = Math.floor( Double.valueOf(input) ) ;
+			if(valueAux == 0.0){
+				input = '1.0';
+			}
 			this.insertRawDuration(task, this.displayDuration, input, this.workingHours, 'days');
 			
 			if(this.displayDuration.equals('Days')){
@@ -385,6 +392,10 @@ public class ProjectTaskDuration {
 		
 		if(isHours){
 			input = this.replaceHours(input);
+			Double valueAux = Math.floor( Double.valueOf(input) ) ;
+			if(valueAux == 0.0){
+				input = '1.0';
+			}
 			this.insertRawDuration(task, this.displayDuration, input, this.workingHours, 'hours');
 			
 			if(this.displayDuration.equals('Days')){

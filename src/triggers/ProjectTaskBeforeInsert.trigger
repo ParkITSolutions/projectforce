@@ -51,9 +51,9 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 					triggerValidation = triggerValidation && false;
 				}
 				
-				if(parent.validateParentTaskInsert(nTask) == false){
-					nTask.ParentTask__c.addError('Parent Task cannot be a  milestone');
-				}
+				//if(parent.validateParentTaskInsert(nTask) == false){
+					//nTask.ParentTask__c.addError('Parent Task cannot be a  milestone');
+				//}
 				
 				String queueId = projectMap.get('Project' + nTask.Project__c);
 				if(queueId != null)
