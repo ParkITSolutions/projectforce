@@ -126,14 +126,37 @@ public class ProjectTaskDetailController {
 	}	
 	
 	/**
+	* Method which checks if Task is a parent Task
+	*@return boolean
+	*/
+	public Boolean getIsTaskParent(){
+		try{
+			ParentTask parent = new ParentTask(); 
+			
+			ProjectTask__c myTask = [Select PercentCompleted__c, Project__c, Id 
+										From ProjectTask__c 
+										where Id =: param];
+										
+			BigListOfTasks bigListOfTasks = new BigListOfTasks(myTask.Project__c);	
+			return parent.taskHasChildren(myTask);
+			
+		}catch(Exception e){
+			throw e;
+		}
+	}
+	
+	/**
 	* Update the task's percent to 100
 	*@return void
 	*/
 	public void markComplete(){
 		try{
+			ParentTask parent = new ParentTask(); 
+			
 			ProjectTask__c myTask = [Select PercentCompleted__c, Project__c, Id 
 										From ProjectTask__c 
 										where Id =: param];
+										
 			myTask.PercentCompleted__c = 100;
 			update myTask;
 		}catch(Exception e){
@@ -284,7 +307,7 @@ public class ProjectTaskDetailController {
 		project = [select Id, Access__c from Project2__c where Id =:projectId];
 		
 		if(project.size() > 0){
-			if(project[0].Access__c.equals('Close')){
+			if(project[0].Access__c.equals('Closed')){
 			
 				List<ProjectMember__c> userMember = new List<ProjectMember__c>();
 				userMember = [select id 

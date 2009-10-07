@@ -67,7 +67,7 @@
     	taskDetailController.deleteComment();
     	Boolean val = taskDetailController.getAllowComments();
     	
-    	Id num = '2';
+    	Id num = null;
     	attchInfo.setId(num);
     	attchInfo.setName('mat');
     	attchInfo.setAttachImage('miguel');

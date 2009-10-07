@@ -33,7 +33,10 @@
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
 
-		upsert GenerateEnvironmentTest.pred;
+		try{
+			upsert GenerateEnvironmentTest.pred;
+		}catch (Exception e){}
+		
 		upsert GenerateEnvironmentTest.assi;
 
     	Test.stopTest();
@@ -54,7 +57,10 @@
 		
 		upsert GenerateEnvironmentTest.assi;
         delete GenerateEnvironmentTest.assi;
- 		delete GenerateEnvironmentTest.pred;
+        try{
+ 			delete GenerateEnvironmentTest.pred;
+        }catch (Exception e){}
+        
 		delete GenerateEnvironmentTest.task;
 		
     	Test.stopTest();
@@ -64,7 +70,7 @@
   	/**
 	* Test3
 	*@void
-    *@static
+    *@static 
 	*/
     static testMethod void myUnitTest4(){
     	

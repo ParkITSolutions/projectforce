@@ -4,7 +4,7 @@
 public class ParentTask {
 	
 	//Map of task nfor updating Indent value
-	public Map<Id,ProjectTask__c> indentUpdateTasks = new Map<Id,ProjectTask__c>();
+	public static Map<Id,ProjectTask__c> indentUpdateTasks = new Map<Id,ProjectTask__c>();
 	//value to check if task can be a valid Parent Task
 	public Boolean validParentTask = true;
 	//List of tasks modified by task links
@@ -24,9 +24,13 @@ public class ParentTask {
 	* @param ProjectTask task
 	* @return ProjectTask
 	*/
-	public ProjectTask__c getParentTask(ProjectTask__c task){
+	public static ProjectTask__c getParentTask(ProjectTask__c task){
 		
-		ProjectTask__c parentTask = BigListOfTasks.getById(task.ParentTask__c);	
+		ProjectTask__c parentTask = new ProjectTask__c(); 
+		
+		if(BigListOfTasks.getById(task.ParentTask__c) != null )
+			parentTask = BigListOfTasks.getById(task.ParentTask__c);	
+		
 		return parentTask;
 	}
 	
@@ -38,8 +42,8 @@ public class ParentTask {
 	public Boolean validateParentTaskInsert(ProjectTask__c task){
 		
 		if( task.ParentTask__c != null ){
-			ProjectTask__c parentTsk = this.getParentTask(task);
-			if(parentTsk.Milestone__c == true){
+			ProjectTask__c parentTsk = getParentTask(task);
+			if(parentTsk == null ){
 				return false;
 			}
 			else{
@@ -59,9 +63,20 @@ public class ParentTask {
 	*/
 	public void parentTaskUpdate(ProjectTask__c tempPTOld, ProjectTask__c tempPTNew){
 		ParentTask.mergeTasks();
+		
+		List<Id> modsIds = new List<Id>();
+		List<String> modsStarDate = new List<String>(); 		
+		List<String> modsEndDate = new List<String>(); 		
+
+		for( ProjectTask__c t : ParentTask.updates.values()){
+				modsIds.add( t.id);
+				modsStarDate.add( String.valueOf(t.StartDate__c ));
+				modsEndDate.add( String.valueOf(t.EndDate__c ));
+		}
+
 		if(tempPTNew.ParentTask__c != null && tempPTOld.ParentTask__c == tempPTNew.ParentTask__c){ 
 			if(ProjectUtil.getFlagValidationParentTask())
-				ParentTask.updateParentTasks(tempPTNew.id);
+				ParentTask.updateParentTasks(tempPTNew.id, modsIds, modsStarDate, modsEndDate );
 		}else{
 			ProjectUtil.setTaskDependenciesFlag( false );
 			if(ProjectUtil.getFlagValidationParentTask())
@@ -69,7 +84,7 @@ public class ParentTask {
 		}
 		
 		if(ProjectUtil.getParentTaskUpdateIndent()){
-			tempPTNew.Indent__c = this.setTaskIndent(tempPTNew);
+			tempPTNew.Indent__c = setTaskIndent(tempPTNew);
 		}
 		
 	}
@@ -79,14 +94,37 @@ public class ParentTask {
 	* @param ProjectTask task
 	* @return Double
 	*/
-	public Double setTaskIndent(ProjectTask__c task){
+	public static Double setTaskIndent(ProjectTask__c task){
 		
 		if(task.ParentTask__c != null){
-			ProjectTask__c parentTask = this.getParentTask(task);		
+			ProjectTask__c parentTask = getParentTask(task);		
 			return ParentTask.Indent__c + 1.0;
 		}
 		else
 			return	0.0;		
+	}
+	
+	@future
+	public static void callUpdateAllChildrenIndent(String idTsk, String idProject){
+		//Reset big list with new taskList
+		//SOQL query to retrieve a task object to get projectId
+		System.debug(idTsk);
+		ProjectTask__c t = [Select Id, Project__c from ProjectTask__c where Id =: idTsk limit 1];
+		//Initializes BigList with the ProjectID
+		
+		BigListOfTasks bigList = new BigListOfTasks(t.Project__c);
+		
+		ProjectTask__c tskAux = BigListOfTasks.getById((Id)idTsk);	
+		//updates all childs Indent Value
+		updateAllChildrensIndent(tskAux);
+		//sets flags and updates the list of modified tasks
+		ProjectUtil.setFlagValidationParentTask( false );
+		ProjectUtil.setTaskDependenciesFlag( false );
+		ProjectUtil.flags.put('exeParentTaskUpdate', true);
+		System.debug(indentUpdateTasks.values());
+			update indentUpdateTasks.values(); 
+		ProjectUtil.setTaskDependenciesFlag( true );
+		ProjectUtil.setFlagValidationParentTask( true );
 	}
 	
 	/**
@@ -94,7 +132,7 @@ public class ParentTask {
 	* @param ProjectTask task
 	* @return Void
 	*/
-	public void updateAllChildrensIndent(ProjectTask__c task){
+	public static void updateAllChildrensIndent(ProjectTask__c task){
 		//Gets all child task by Parent Id
 		List<ProjectTask__c> children = BigListOfTasks.getByParentId(task.Id);
 		
@@ -102,8 +140,8 @@ public class ParentTask {
 		for(ProjectTask__c tsk : children){
 			ProjectTask__c aux = new ProjectTask__c(); 
 			aux = tsk;
-			aux.Indent__c = this.setTaskIndent(aux);
-			this.indentUpdateTasks.put(aux.Id,aux);
+			aux.Indent__c = setTaskIndent(aux);
+			indentUpdateTasks.put(aux.Id,aux);
 			BigListOfTasks.setById(aux);
 		}
 		
@@ -112,7 +150,7 @@ public class ParentTask {
 			//for each child task calls method recursivly
 			for(ProjectTask__c childs : children){
 				//Method is called recursivly to update all his children
-				this.updateAllChildrensIndent(childs);
+				updateAllChildrensIndent(childs);
 			}
 		}
 	}
@@ -165,10 +203,13 @@ public class ParentTask {
 	* @return void
 	*/
 	private static void mergeTasks(){
-		if(ParentTask.modifiedDependecies!= null )
-		for( ProjectTask__c mDTsk : ParentTask.modifiedDependecies ){
-			ParentTask.updates.put( mDTsk.Id,mDTsk );
-			BigListOfTasks.setById( mDTsk );
+		if(ParentTask.modifiedDependecies!= null ){
+			//throw new CustomException('#' + ParentTask.modifiedDependecies.size());
+			for( ProjectTask__c mDTsk : ParentTask.modifiedDependecies ){	
+				//throw new CustomException('#' + mDTsk.name +'::'+mDTsk.startDate__c);
+				ParentTask.updates.put( mDTsk.Id,mDTsk );
+				BigListOfTasks.setById( mDTsk );
+			}
 		}
 	}
 	
@@ -182,7 +223,8 @@ public class ParentTask {
 	public static List<ProjectTask__c> getTaskChildren(ProjectTask__c task, ProjectTask__c hijo){
 		
 		//Gets all child task by Parent Id
-		List<ProjectTask__c> children = BigListOfTasks.getByParentId(task.Id);
+		List<ProjectTask__c> children = new List<ProjectTask__c>();
+		children = BigListOfTasks.getByParentId(task.Id);
 		//checks how many child task there are
 		if(children.size() != 0){
 			Boolean found = false;
@@ -211,13 +253,35 @@ public class ParentTask {
 	* @param String taskId
 	*/
 	@future
-	public static void updateParentTasks(String taskId){
-		
+	public static void updateParentTasks(String taskId, List<id> ids, List<String> startDate, List<String> endDate ){ 
+		 
 		//SOQL query to retrieve a task object to get projectId
 		ProjectTask__c t = [Select Id, Project__c from ProjectTask__c where Id =: taskId limit 1];
 		//Initializes BigList with the ProjectID
+		
 		BigListOfTasks bigList = new BigListOfTasks(t.Project__c);
-		ParentTask.mergeTasks();
+		//ParentTask.mergeTasks();
+		ProjectTask__c auxTask = new ProjectTask__c();
+		Integer c = 0;
+		for( Id i : ids ){
+			auxTask = BigListOfTasks.getById( i );
+			auxTask.StartDate__c = Date.valueOf( startDate[ c ]);
+			auxTask.EndDate__c = Date.valueOf( endDate[ c ]);
+			BigListOfTasks.setById( auxTask );
+			ParentTask.updates.put(auxTask.id, auxTask);
+			c++;
+		}
+		List<ProjectTask__c> aux = ParentTask.updates.values();
+		System.debug('EN EL MERGE ----------------------------------------------------------');
+		System.debug('EN EL MERGE ----------------------------------------------------------'+updates.size());
+		for(ProjectTask__c tsk : aux){
+					System.debug('EN EL MERGE ----------------------------------------------------------');
+					System.debug('Name: ' + tsk.Name);
+					System.debug('Start Date : '+ tsk.StartDate__c);
+					System.debug('End Date : ' + tsk.EndDate__c);
+					System.debug('Percetage : ' + tsk.PercentCompleted__c);
+					System.debug('----------------------------------------------------------');
+				}
 		ProjectTask__c task = BigListOfTasks.getbyId((Id)taskId);
 		checkParentTask(task);
 	}
@@ -228,7 +292,6 @@ public class ParentTask {
 	* @return Void
 	*/
 	public static void checkParentTask(ProjectTask__c task){ 
-		
 		//checks if task has a parent task assigned
 		if(task.ParentTask__c != null){
 			ProjectTask__c parentTask = BigListOfTasks.getbyId(task.ParentTask__c);
@@ -241,6 +304,7 @@ public class ParentTask {
 			//gets all child tasks for given parent 
 			List<ProjectTask__c> children = getTaskChildren(parentTask, task);
 			//Recalculates neccesary information for updating Parent Node
+			
 			for(ProjectTask__c nTask : children){
 				if(auxTask.StartDate__c != null){
 					if(task.Id != nTask.Id){
@@ -347,6 +411,16 @@ public class ParentTask {
 		else{
 			//the end of the parent task hierarchy is found send to update all parent nodes
 			ProjectUtil.setFlagValidationParentTask(false);
+				//throw new CustomException('#' + updates.values().size());
+				List<ProjectTask__c> aux = updates.values();
+				for(ProjectTask__c tsk : aux){
+					System.debug('----------------------------------------------------------');
+					System.debug('Name: ' + tsk.Name);
+					System.debug('Start Date : '+ tsk.StartDate__c);
+					System.debug('End Date : ' + tsk.EndDate__c);
+					System.debug('Percetage : ' + tsk.PercentCompleted__c);
+					System.debug('----------------------------------------------------------');
+				}
 				update updates.values();
 			ProjectUtil.setFlagValidationParentTask(true);
 		}

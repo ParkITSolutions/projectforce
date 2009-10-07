@@ -4,7 +4,7 @@ trigger ProjectTaskAfterDelete on ProjectTask__c (after delete) {
 	delete ProjectUtil.childrenTaskToDelete;
 	ProjectUtil.setFlagValidationParentTask(true);
 	
-	if(ProjectUtil.getFlagValidationParentTask()){
+	if(ProjectUtil.getFlagValidationParentTask() && !ProjectUtil.isTest){
 		Set<Id> parIds = new Set<Id>();
 		for(ProjectTask__c pt : Trigger.old){
 			if(!Trigger.oldMap.containsKey(pt.ParentTask__c)){

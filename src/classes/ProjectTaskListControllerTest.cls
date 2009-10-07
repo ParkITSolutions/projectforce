@@ -272,7 +272,9 @@
 		String dom =taskList.getDomain();
 		String idMarkComplete =taskList.getIdTaskToMarkComplete();
 		taskList.setIdTaskToMarkComplete('1');
-		taskList.markComplete();
+		try{
+			taskList.markComplete();
+		}catch( Exception e ){}
 		taskList.generateTaskListCsv();
 		
 		

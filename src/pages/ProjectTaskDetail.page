@@ -116,10 +116,10 @@
                                 <apex:commandLink action="{!markComplete}"                                                                                 
                                     rerender="TaskPanel"
                                     status="taskStatus"
-                                    rendered="{!IF(Task.PercentCompleted == 100, false, true)}"
+                                    rendered="{!IF(Task.PercentCompleted == 100 || isTaskParent, false, true)}"
                                     styleClass="blackbutton completeButton"
                                     oncomplete="completed(); apexAFRefreshDetail()">
-                                    <span>Mark Complete</span>
+                                    <span>Mark Complete</span> 
                                 </apex:commandLink>
                             </apex:outputPanel>
                         </apex:facet>

@@ -38,7 +38,7 @@
 	
 		var API_SESSION_ID = '{!$Api.Session_ID}';
 		document.observe('dom:loaded', footerBug);
-
+  
 	</script>
 	<style>
 		#holderNew div.loader {
@@ -69,7 +69,7 @@
 		<c:ProjectSetupWidget />  
 	</div>
 	<!-- Main Content Div --> 
-	<div class="main_content" >
+	<div class="main_content" > 
 		
 		<div class="RightOverview">
 			<!-- Tabs -->
@@ -110,7 +110,7 @@
 						<li id="CreateNewProjectContainer">
 							<apex:outputPanel rendered="{!CanViewCreateNewProject}">
 								<!-- /apex/projectRedirect?sO=Project2__c&attr=project&page=ProjectCreateNew&rR=NewProjectFormContainer&oC=true -->
-								<a href="https://na1.salesforce.com/{!objectPrefix}/e?retURL=https://{!domain}/apex/projectOverview">
+								<a href="https://{!domain}/{!objectPrefix}/e?retURL=https://{!domain}/apex/projectOverview">
 									<div id="left">
 									</div>
 									<div id="middle">
@@ -220,7 +220,7 @@
 										</a>
 									</div>
 									<div class="detailTeams">
-										<h4><a href="/apex/ProjectDetail?id={!t.Id}">{!t.Name}</a></h4>
+										<h4><a href="/apex/ProjectDetail?id={!t.Id}" >{!t.Name}</a></h4>
 										<div>
 											<span>{!t.tasks}</span>
 											<a href="/apex/ProjectTasksList?id={!t.Id}&filter=all">Tasks</a> |

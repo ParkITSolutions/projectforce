@@ -37,5 +37,20 @@
         <name>User__c</name>
         <relationshipLabel><!-- Project Subscription --></relationshipLabel>
     </fields>
+    <layouts>
+        <layout>ProjectSubscription Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Information --></label>
+            <section>Information</section>
+        </sections>
+        <sections>
+            <label><!-- System Information --></label>
+            <section>System Information</section>
+        </sections>
+    </layouts>
     <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>

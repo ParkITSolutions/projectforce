@@ -538,7 +538,7 @@ public with sharing class ProjectTaskListController {
                     fields += (field + ', ');
             }               
         }else
-            fields = 'Id, Name, Duration__c, Description__c, Milestone__c, Status__c, Id__c, CreatedById, PercentCompleted__c, EndDate__c, Priority__c,';
+            fields = 'Id, Name, Duration__c, Description__c, Milestone__c, Status__c, Id__c, CreatedById, PercentCompleted__c, StartDate__c, EndDate__c, Priority__c,';
                
            
         //Build query statement
@@ -554,7 +554,7 @@ public with sharing class ProjectTaskListController {
         System.debug( '>>>' + query );
         //System.debug( '\n/n>>>' + this.getFilterValues() );
         /* ### Apply Sort ### */
-       
+         
         // Sorting by priority or assignee name can't be implemented in the SOQL query
         // and require a bit of tricky
         if (sortBy == 'Priority__c'){
@@ -724,15 +724,10 @@ public with sharing class ProjectTaskListController {
         String opciones = this.getOption();
 
            //Test for dynamic columns
-        List<String> selectedFields = new List<String> {'Name', 'Priority__c', 'EndDate__c'};
+        List<String> selectedFields = new List<String> {'Name', 'Priority__c', 'StartDate__c', 'EndDate__c'};
        
         for(Integer i=0; i < resultTaskList.size();i++){
-           
-            //Test for dynamic columns
-            for(String field : selectedFields){
-                System.debug('HERE: ' + field + ' value: ' + resultTaskList[i].get(field));
-            }
-           
+                      
             TaskDetails TaskDetail = new TaskDetails();
             TaskDetail.id = resultTaskList[i].Id;
            
@@ -750,7 +745,7 @@ public with sharing class ProjectTaskListController {
 
             TaskDetail.Name = resultTaskList[i].Name;
             /*Under consideration - 07/22/2009
-              String picture = TaskDetail.getAsigneeName();*/
+              String picture = TaskDetail.getAsigneeName();*/     
            
             //Pririty
             TaskDetail.Priority = resultTaskList[i].Priority__c;

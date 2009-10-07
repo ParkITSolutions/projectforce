@@ -67,7 +67,7 @@
 		Integer page3 = team.getJumpPage();
 		String user = team.getCurrentUser();
 		
-		Id num = '3';
+		Id num = null;
 		srch.setId(num);
 		Id retvalue1 = srch.getId();
 		String retValue2 = srch.getName();

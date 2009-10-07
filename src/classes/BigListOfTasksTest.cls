@@ -48,7 +48,7 @@
 		BigListOfTasks bigListOfTask = new BigListOfTasks(GenerateEnvironmentTest.project.Id);
 		
     	Test.startTest();
-		
+		if(BigListOfTasks.size() > 0)
 		ProjectTask__c aux = BigListOfTasks.get(0);
 		ProjectTask__c pt3 = new ProjectTask__c();
 		BigListOfTasks.add(pt3);

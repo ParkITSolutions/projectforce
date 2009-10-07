@@ -119,10 +119,18 @@
 					</div>
 					<div class="overlaySeparateLine"></div>
 					
+					<script>
+					function hideOverlay(){
+  						modal.close(); 
+       				 	hideSwirly('swirly_overlay'); 
+       					$('swirly_members').show();
+    				}
+					</script>
+					
 					<!-- Save and Cancel Buttons -->
 					<div class="overlayFromButtons" align="center">
 						<apex:commandButton action="{!saveMembers}" 
-							oncomplete="ifError();"
+							oncomplete="hideOverlay(); ifError(); "
 							styleclass="btn allButtons" 
 							style="float: none;width: 70px !important;background: #21637D none repeat scroll 0 0 !important;" 
 							value="Send" 
@@ -205,7 +213,7 @@
 				<div class="contentHolder">
 					<div class="linkAction" >
 						<apex:outputpanel rendered="{!userPermissions.canManage}">
-							<a onclick="createOverlay('','inviteTeam','280','selectFixIE6();startFunction();relocateOverlay()');" href="javascript:;">New</a> |
+							<a onclick="createOverlay('','inviteTeam','280','selectFixIE6();startFunction();relocateOverlay()');" href="javascript:;">New</a> |  
 						</apex:outputpanel>
 						<a href="/apex/ProjectMembersList?id={!team}#" class="topRightLinks">See More&#187;</a>
 					</div>
