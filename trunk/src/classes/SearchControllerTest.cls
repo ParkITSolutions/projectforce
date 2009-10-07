@@ -28,9 +28,11 @@
     	sc.getModule();
     	sc.setLabelName('Projects');
     	String retVal = sc.getDefaultText();
-    	Pagereference pr = sc.searchKey();myUnitTest();
+    	sc.setKey( 'kkey' );
+    	//TODO Pagereference pr = sc.searchKey();
+    	//myUnitTest();
 		Boolean retVal1 = sc.getIsCriteriaLengthProperly();
-		
+   		
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     } 

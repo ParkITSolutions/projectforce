@@ -3,7 +3,7 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 	Map<String,ProjectTask__c> AuxMap = new Map<String,ProjectTask__c>();
 	ProjectTaskDuration duration = new ProjectTaskDuration(Trigger.new.get(0));
 	ParentTask parent = new ParentTask(); 
-	BigListOfTasks bigListOfTasks = new BigListOfTasks(Trigger.new.get(0).Project__c);
+	BigListOfTasks bigListOfTasks = new BigListOfTasks(Trigger.new.get(0).Project__c); 
 		
     ProjectTask__c tempPTOld = new ProjectTask__c();
     ProjectTask__c tempPTNew = new ProjectTask__c();
@@ -14,11 +14,22 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
     	tempPTOld = Trigger.old.get( k );
     	tempPTNew = Trigger.new.get( k );	
     	
+    	//Trimming duration values to avoid errors
+    	if(tempPTNew.DurationUI__c.length() > 7){
+    		tempPTNew.DurationUI__c = tempPTNew.DurationUI__c.substring(0, 6);
+    	}
+    	
+    	
     	if( tempPTOld.Project__c != tempPTNew.Project__c){
 	    		tempPTNew.Project__c.addError( 'You can not modify project.');
 	    		triggerValidation = triggerValidation && false;
 		}
-			
+		
+		if(parent.validateParentTaskInsert(tempPTNew) == false){
+			tempPTNew.ParentTask__c.addError('Parent Task selected does not belong in current project.');
+			triggerValidation = triggerValidation && false;
+		}	
+				
 		if( tempPTNew.StartDate__c > tempPTNew.EndDate__c ){
 			tempPTNew.StartDate__c.addError('Start date should not be greater than End Date');
 			tempPTNew.EndDate__c.addError('End date should not be smaller than Start Date');
@@ -69,6 +80,7 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 		if(triggerValidation){
 			if( ProjectUtil.getTaskDependenciesFlag()){ 
 				tempPTNew = duration.calculateTaskUpdate(tempPTOld, tempPTNew);
+				
 				ProjectUtil.flags.put('exeParentTaskUpdate', true);
 				TaskDependencies td = new TaskDependencies(Trigger.new[0].project__c);
 				Integer cc = 0;
@@ -84,9 +96,6 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 				if(!ProjectUtil.flags.get('exeParentTaskUpdate') || !ProjectUtil.flags.containsKey('exeParentTaskUpdate'))
 					parent.parentTaskUpdate(tempPTOld, tempPTNew);
 			} 
-			
-
-			
 		}
 		AuxMap.put( tempPTOld.id, tempPTOld ); 
     }

@@ -88,12 +88,12 @@ public class GenerateEnvironmentTest {
         
         project2.name = 'Project 2 name';
         project2.description__c = 'Description ...';
-        project2.Access__c = 'Close';
+        project2.Access__c = 'Closed';
         project2.priority__c = 'Medium';
         project2.DisplayDuration__c = 'Days';
         project2.WorkingHours__c = 8.0;
         project2.DaysInWorkWeek__c = '5';
-        project2.Type__c = 'close';
+        project2.Type__c = 'closed';
     
         project3.name = 'Project 2 name';
         project3.description__c = 'Description ...';

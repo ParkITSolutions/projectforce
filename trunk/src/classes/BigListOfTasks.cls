@@ -37,7 +37,10 @@ public Class BigListOfTasks{
 		* @return ProjectTask__c
 		*/
 		public static ProjectTask__c get( Integer ind ){
-			return bList[  ind / 200 ][ ind - Math.mod( ind, 200 )*200];
+			if( bList.size()>0 && bList[  ind / 200 ].size() > 0 )
+				return bList[  ind / 200 ][ ind - Math.mod( ind, 200 )*200];
+			else
+				return null;
 		}
 		
 		/**
@@ -67,13 +70,14 @@ public Class BigListOfTasks{
 		*/
 		public static ProjectTask__c getById( Id taskId ){			
 			ProjectTask__c ret = new ProjectTask__c();
+			ret = null;
 			for( List<ProjectTask__c> ptList : bList ){
 				for(ProjectTask__c pt :ptList ){
 					if( pt.id == taskId ){
 						ret =  pt;
 						break;
 						break;
-					}	
+					}
 				}
 			}
 			

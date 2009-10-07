@@ -226,7 +226,9 @@ public class ProjectTaskDuration {
 		Set<String> workdays = this.getWorkDays(wdays);
 		Datetime myDate = Datetime.valueOf(startDate + '00:00:00');
 		String weekday = '';		
-		
+		if(days > 1000){
+			days = 1000;
+		}
 		for(Integer i = 0; i < days; i++){
 			weekday = myDate.format('EEE');
 			if(!workdays.contains(weekday))

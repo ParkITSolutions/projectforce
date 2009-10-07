@@ -15,6 +15,26 @@ Close - Administrator must invite users to join. Anyone can see the Project
 Private -  This Project will not appear in search. Membership is by invitation only. Only members can see the Project. --></help>
         <label><!-- Access --></label>
         <name>Access__c</name>
+        <picklistValues>
+            <masterLabel>Close</masterLabel>
+            <translation><!-- Close --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Closed</masterLabel>
+            <translation><!-- Closed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Description ...</masterLabel>
+            <translation><!-- Description ... --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Open</masterLabel>
+            <translation><!-- Open --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Private</masterLabel>
+            <translation><!-- Private --></translation>
+        </picklistValues>
     </fields>
     <fields>
         <help><!-- Check to allow customer portal users. --></help>
@@ -30,6 +50,34 @@ Private -  This Project will not appear in search. Membership is by invitation o
         <help><!-- 1 = Mon /  7 = Sun --></help>
         <label><!-- Days in a work week --></label>
         <name>DaysInWorkWeek__c</name>
+        <picklistValues>
+            <masterLabel>1</masterLabel>
+            <translation><!-- 1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>2</masterLabel>
+            <translation><!-- 2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>3</masterLabel>
+            <translation><!-- 3 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>4</masterLabel>
+            <translation><!-- 4 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>5</masterLabel>
+            <translation><!-- 5 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>6</masterLabel>
+            <translation><!-- 6 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>7</masterLabel>
+            <translation><!-- 7 --></translation>
+        </picklistValues>
     </fields>
     <fields>
         <label><!-- Description --></label>
@@ -39,6 +87,14 @@ Private -  This Project will not appear in search. Membership is by invitation o
         <help><!-- Sets how the Duration field will be displayed, in hours or days. --></help>
         <label><!-- Display Duration --></label>
         <name>DisplayDuration__c</name>
+        <picklistValues>
+            <masterLabel>Days</masterLabel>
+            <translation><!-- Days --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Hours</masterLabel>
+            <translation><!-- Hours --></translation>
+        </picklistValues>
     </fields>
     <fields>
         <label><!-- Image --></label>
@@ -56,6 +112,18 @@ Private -  This Project will not appear in search. Membership is by invitation o
     <fields>
         <label><!-- Priority --></label>
         <name>Priority__c</name>
+        <picklistValues>
+            <masterLabel>High</masterLabel>
+            <translation><!-- High --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Low</masterLabel>
+            <translation><!-- Low --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Medium</masterLabel>
+            <translation><!-- Medium --></translation>
+        </picklistValues>
     </fields>
     <fields>
         <label><!-- ProjectCreatedBy --></label>
@@ -84,5 +152,56 @@ Private -  This Project will not appear in search. Membership is by invitation o
         <label><!-- Working hours --></label>
         <name>WorkingHours__c</name>
     </fields>
+    <layouts>
+        <layout>Overview</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Fields --></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label><!-- New Section --></label>
+            <section>New Section</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Project2 Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Project Access --></label>
+            <section>Project Access</section>
+        </sections>
+        <sections>
+            <label><!-- Project Information --></label>
+            <section>Project Information</section>
+        </sections>
+        <sections>
+            <label><!-- System Information --></label>
+            <section>System Information</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>Project Name</nameFieldLabel>
+    <recordTypes>
+        <label><!-- Test --></label>
+        <name>Test</name>
+    </recordTypes>
     <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- Value cannot exceed 24 hours per day --></errorMessage>
+        <name>Working_hours_Limit</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Value must be greater than Zero --></errorMessage>
+        <name>Working_hours_negative_value</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- ProjectTimeline --></label>
+        <name>ProjectTimeline</name>
+    </webLinks>
 </CustomObjectTranslation>

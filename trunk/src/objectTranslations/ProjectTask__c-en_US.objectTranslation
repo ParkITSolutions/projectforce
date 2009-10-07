@@ -51,6 +51,22 @@
     <fields>
         <label><!-- Priority --></label>
         <name>Priority__c</name>
+        <picklistValues>
+            <masterLabel>High</masterLabel>
+            <translation><!-- High --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Low</masterLabel>
+            <translation><!-- Low --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Medium</masterLabel>
+            <translation><!-- Medium --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Normal</masterLabel>
+            <translation><!-- Normal --></translation>
+        </picklistValues>
     </fields>
     <fields>
         <label><!-- Project --></label>
@@ -68,6 +84,30 @@
     <fields>
         <label><!-- Status --></label>
         <name>Status__c</name>
+        <picklistValues>
+            <masterLabel>Assigned</masterLabel>
+            <translation><!-- Assigned --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Closed</masterLabel>
+            <translation><!-- Closed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>In Progress</masterLabel>
+            <translation><!-- In Progress --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Open</masterLabel>
+            <translation><!-- Open --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Reopened</masterLabel>
+            <translation><!-- Reopened --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Resolved</masterLabel>
+            <translation><!-- Resolved --></translation>
+        </picklistValues>
     </fields>
     <fields>
         <label><!-- TaskPosition --></label>
@@ -77,5 +117,35 @@
         <label><!-- TaskSyncId --></label>
         <name>TaskSyncId__c</name>
     </fields>
+    <layouts>
+        <layout>ProjectTask Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>TaskRiskIssues</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Fields --></label>
+            <section>Fields</section>
+        </sections>
+    </layouts>
     <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- Duration cannot be zero --></errorMessage>
+        <name>Duration_zero_value</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- The percent must be between 0 and 100 --></errorMessage>
+        <name>PercentBetweenZeroAndOneHundred</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Star date must be lower than end date --></errorMessage>
+        <name>startDateMinorEndDate</name>
+    </validationRules>
 </CustomObjectTranslation>

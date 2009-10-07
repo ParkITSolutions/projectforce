@@ -349,14 +349,27 @@ public with sharing class ProjectMembersWidgetController {
 		List<ProjectMember__c> newMemberList = new List<ProjectMember__c>();
 		List<String> newMembers = newMemberVars.colleagueNames.split('[ ]*,[ ]*');
 		
+		
+		
 		if(newMembers.size() == 0){ //this case is when users put ",,,,,,"
 			newMembers.add(''+Math.random()+'');//puts an user that does not exist in order to throw an error
 		}
+		System.debug('##### idTeam '+idTeam);
+		
+		/* TODO */
+		//returns current project members
+		List<String> currentMembersList = new List<String>();
+		for(ProjectMember__c iterMembers : [select Id, User__c from ProjectMember__c where Project__c =:idTeam]){
+			currentMembersList.add(iterMembers.User__c);	
+			System.debug('##### '+iterMembers.Id);
+		}
+		
+		
 		
 		List<User> userList = new List<User>();
 		already = false;
 		Map<String, User> usersMap = new Map<String, User>();
-		for (User iterUser :[select id, Name, IsActive, Email from User where Name in:newMembers]) {
+		for (User iterUser :[select id, Name, IsActive, Email from User where Name in:newMembers and Name not in:currentMembersList]) {
 			usersMap.put(iterUser.Name, iterUser);
 		}
 		

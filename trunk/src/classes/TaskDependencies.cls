@@ -28,6 +28,7 @@ public with sharing class TaskDependencies {
 		List<ProjectTaskPred__c> relationsList = new List<ProjectTaskPred__c>();  
 		relationsList = bPredList.getListByPred( taskNew.id  , '2');
 
+		//throw new CustomException('#' + relationsList.size() +':::'+ taskNew.name);
 		if(relationsList.size() > 0 )
 		for( Integer k = 0; k < relationsList.size() && goGoGo; k++ ){
 			predTask = new ProjectTask__c();
@@ -39,15 +40,18 @@ public with sharing class TaskDependencies {
 			// Look if PredTask is a Milestone
 			localInteval = Date.valueOf( predTask.Milestone__c == true ? predTask.startDate__c : predTask.endDate__c ).daysBetween( Date.valueOf( taskNew.startDate__c ));
 			goGoGo = this.direction == 'rigth' ?  localInteval - 1 >= 0 :  localInteval > 0; 
+			// throw new CustomException('#' + this.direction +':'+ localInteval+':'+goGoGo);
 		}
 		
 		// If can not continue restore odl values of the task in trigger (Before Update)
 		// and empty the task list to modify.
+ 		//goGoGo = true;
  		if( !goGoGo ){
 			this.taskToModifyList.clear();
 			taskNew.StartDate__c = taskOld.StartDate__c;
 			taskNew.EndDate__c = taskOld.EndDate__c;
 		} 
+		//throw new CustomException('#' + goGoGo );
 		
 		return goGoGo;
 	}
@@ -56,13 +60,20 @@ public with sharing class TaskDependencies {
 	
 	public void movingTask( ProjectTask__c taskOldParam, ProjectTask__c taskNewParam ){
 		
+		
 		ProjectTask__c newTask = new ProjectTask__c();
 		ProjectTask__c taskOld = new ProjectTask__c();
 		ProjectTask__c taskNew = new ProjectTask__c();
 		
 		// Clone the params for modify EndDate__c value
-		taskNew = taskNewParam.clone();
-		taskOld = taskOldParam.clone();
+		if( this.taskToModifyList.containsKey(taskOldParam.Id))
+			taskNew = this.taskToModifyList.get(taskOldParam.Id);
+		else
+			taskNew = taskNewParam.clone();
+		if( this.taskToModifyList.containsKey( taskOld.Id ))
+			taskOld 	= this.taskToModifyList.get( taskOld.Id );		
+		else
+			taskOld = taskOldParam.clone();
 		
 		// Add the current new task to the list of task to modify
 		this.taskToModifyList.put( taskNew.id, taskNew );
@@ -109,31 +120,26 @@ public with sharing class TaskDependencies {
 		Integer taskLarg;		
 		List<ProjectTaskPred__c> relationsList = new List<ProjectTaskPred__c>();  
 		relationsList = bPredList.getListByParent( taskOld.id  , '2');
+		//if(this.goGoGo == false)
+		//throw new CustomException('#' + this.goGoGo + '-'+taskNew.name);
 		if(relationsList.size() > 0 && this.goGoGo )
 			for( ProjectTaskPred__c r : relationsList){
 				newTask = new ProjectTask__c();
 				newTask = BigListOfTasks.getById( r.Predecessor__c );
-				taskLarg = newTask.endDate__c.daysBetween(newTask.startDate__c);
-				newTask.startDate__c = Date.valueOf(newTask.startDate__c).addDays( this.interval );				
-				newTask.endDate__c = newTask.Milestone__c == true ? newTask.startDate__c : Date.valueOf(newTask.endDate__c).addDays( this.interval );
-				this.movingTask( BigListOfTasks.getById( r.Predecessor__c ), newTask);
+				if( newTask.Milestone__c || newTask.startDate__c.addDays(-r.Lag_Time__c.intValue()).daysBetween(taskNew.endDate__c) >= 0 ){
+					taskLarg = newTask.milestone__c == true ? 1 : Math.abs(newTask.endDate__c.daysBetween(newTask.startDate__c));
+					//throw new CustomException('#' + r.Lag_Time__c.intValue());
+					//newTask.startDate__c = Date.valueOf(newTask.startDate__c).addDays( this.interval );				
+					newTask.startDate__c = Date.valueOf(taskNew.endDate__c).addDays( 1 + r.Lag_Time__c.intValue());				
+					//newTask.endDate__c = newTask.Milestone__c == true ? newTask.startDate__c : Date.valueOf(newTask.endDate__c).addDays( this.interval );
+					newTask.endDate__c = Date.valueOf(newTask.startDate__c).addDays( taskLarg );
+					//if( newTask.name == 'Parent3A')
+						//throw new CustomException('#' + 'Muving' );
+					this.movingTask( BigListOfTasks.getById( r.Predecessor__c ), newTask);
+				}
 			}
 	}
 
-	public Date getGreaterEndDate( List<ProjectTask__c> taskList ){
-		
-		ProjectTask__c g = new ProjectTask__c();
-		Date rDate;
-		if(taskList.size() > 0 ){
-			g = taskList.remove(0);
-			for( ProjectTask__c t : taskList )			
-				if( g.endDate__c.daysBetween( t.endDate__c) > 0 )
-				g = t;
-			rDate = g.endDate__c; 	
-		}
-		return rDate;
-	} 
-	
 	public void changeLag(ProjectTaskPred__c predObj){
 		
 		if( this.bPredList.size() == 0 )
@@ -153,11 +159,14 @@ public with sharing class TaskDependencies {
 		oldTask = newTask;
 		
 		Integer l = Date.valueOf(newTask.startDate__c).daysBetween(Date.valueOf(newTask.endDate__c))+1;
-		newTask.StartDate__c = Date.valueOf(parentTask.EndDate__c).addDays(predObj.Lag_Time__c.intValue()+1);		
-		newTask.EndDate__c = Date.valueOf(parentTask.EndDate__c).addDays(predObj.Lag_Time__c.intValue() + l);
+		newTask.StartDate__c = Date.valueOf(parentTask.Milestone__c==true ? parentTask.StartDate__c : parentTask.EndDate__c).addDays(predObj.Lag_Time__c.intValue()+1);		
+		newTask.EndDate__c = Date.valueOf(parentTask.Milestone__c==true ? parentTask.StartDate__c : parentTask.EndDate__c).addDays(predObj.Lag_Time__c.intValue() + l);
 		
 		update newTask;
 		
+		//this.movingTask(oldTask, newTask); 
+		
+		//this.taskToModifyList.put( newTask.id, newTask );
 	}	
 
 	/**
@@ -241,6 +250,7 @@ public with sharing class TaskDependencies {
 	}
 	
 	public void updateNow(){
+		//throw new CustomException('#' + this.taskToModifyList.size());
 		
 		if( this.taskToModifyList.size() > 0 ){
 			ProjectUtil.setTaskDependenciesFlag( false );
@@ -251,6 +261,7 @@ public with sharing class TaskDependencies {
 	}
 
 	public List<ProjectTask__c> listToUpdateNow(){
+		//throw new CustomException('#' + this.taskToModifyList.size());
 		if( this.taskToModifyList.size() > 0 ){
 			ProjectUtil.setTaskDependenciesFlag( false );
 			this.taskToModifyList.remove( firstTaskId );
@@ -277,7 +288,7 @@ public with sharing class TaskDependencies {
 		this.bPredList = new BigListOfTaskPredecessors( task.Project__c );
 		
 		// Get all parents
-		relsToMe 	= this.bPredList.getListByParent( task.id, '2');
+		//relsToMe 	= this.bPredList.getListByParent( task.id, '2');
 		
 		// Get all predecessors
 		relsFromMe	= this.bPredList.getListByPred( task.id, '2');

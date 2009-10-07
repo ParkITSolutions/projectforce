@@ -14,10 +14,70 @@
     <fields>
         <label><!-- Lag Type --></label>
         <name>Lag_Type__c</name>
+        <picklistValues>
+            <masterLabel>1</masterLabel>
+            <translation><!-- 1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>2</masterLabel>
+            <translation><!-- 2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>3</masterLabel>
+            <translation><!-- 3 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>4</masterLabel>
+            <translation><!-- 4 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Finish-to-Finish</masterLabel>
+            <translation><!-- Finish-to-Finish --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Finish-to-Start</masterLabel>
+            <translation><!-- Finish-to-Start --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Start-to-Finish</masterLabel>
+            <translation><!-- Start-to-Finish --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Start-to-Start</masterLabel>
+            <translation><!-- Start-to-Start --></translation>
+        </picklistValues>
     </fields>
     <fields>
         <label><!-- Lag Unit --></label>
         <name>Lag_Unit__c</name>
+        <picklistValues>
+            <masterLabel>1</masterLabel>
+            <translation><!-- 1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>2</masterLabel>
+            <translation><!-- 2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>3</masterLabel>
+            <translation><!-- 3 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>day</masterLabel>
+            <translation><!-- day --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>hour</masterLabel>
+            <translation><!-- hour --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>month</masterLabel>
+            <translation><!-- month --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>year</masterLabel>
+            <translation><!-- year --></translation>
+        </picklistValues>
     </fields>
     <fields>
         <label><!-- Parent --></label>

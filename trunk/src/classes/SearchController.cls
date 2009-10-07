@@ -120,9 +120,9 @@ public class SearchController {
 			return pageRef;
 		}
 		
-		if(this.module != null && this.module != ''){
+		if(this.module != null && this.module != '' && this.key != null ){
 			PageReference pageRef = searchIn.get(module);
-			pageRef.getParameters().put('key', this.key);
+			pageRef.getParameters().put('key', this.key );
 			if(this.teamId != null || this.teamId != ''){
 				pageRef.getParameters().put('id', this.teamId);
 			}

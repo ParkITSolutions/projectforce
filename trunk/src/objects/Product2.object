@@ -7,9 +7,4 @@
         </picklist>
         <type>Picklist</type>
     </fields>
-    <listViews>
-        <fullName>AllProducts</fullName>
-        <filterScope>Everything</filterScope>
-        <label>All Products</label>
-    </listViews>
 </CustomObject>

@@ -23,12 +23,28 @@ public with sharing class ProjectOverviewController {
     * Construct
     */
     public projectOverviewController(){
-    	    	
         projectsForTabs();
         
         domain = ProjectUtil.getDomain();
     }   
     
+  	/**
+    *If a given string has its length greater than wordLength param,
+    *it returns the same string but cut by lengthCriteria
+    *
+    *@param String string
+    *@param int wordLength
+    *@param int lengthCriteria
+	*@return String
+	*/
+	public String cutString(String phrase, Integer wordLength, Integer lengthCriteria){
+		
+		if(phrase.length() > wordLength){
+			phrase = phrase.substring(0, lengthCriteria)+'...';
+		}
+		
+		return phrase;
+	}
     
 	/**
 	*@return String
@@ -145,12 +161,6 @@ public with sharing class ProjectOverviewController {
  
         //@newProjects
         if(filter == 'newProjects'){
-            /*projects = [Select (Select Id From ProjectsMembers__r), 
-                        (Select Id, Milestone__c 
-                            From ProjectsTasks__r), t.CreatedDate , t.Name, t.Picture__c, t.Id 
-                            From Project2__c t 
-                            order by t.CreatedDate  desc 
-                            limit :lim];*/
             for(Project2__c project : [Select
                                               (Select Id 
                                                From ProjectsMembers__r), 
@@ -223,7 +233,7 @@ public with sharing class ProjectOverviewController {
             for(Integer i=0; i<projects.size(); i++){
                 
                 Project t = new Project();
-                t.name = projects[i].Name;
+                t.name = cutString(projects[i].Name, 70, 60);
                 t.image = projects[i].Picture__c;
                 t.id = projects[i].Id;
                 t.members = projects[i].ProjectsMembers__r.size();

@@ -13,7 +13,7 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 			
 			for(ProjectTask__c p : Trigger.new) {
 		 		tasksInTrrNewIds.add( p.ParentTask__c );
-				projectSharingGroupNames.add('Project' + p.Project__c);	
+				projectSharingGroupNames.add('Project' + p.Project__c);
 			}
 			 
 			Map<String, Id> projectMap = new Map<String, Id>();			
@@ -51,9 +51,10 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 					triggerValidation = triggerValidation && false;
 				}
 				
-				//if(parent.validateParentTaskInsert(nTask) == false){
-					//nTask.ParentTask__c.addError('Parent Task cannot be a  milestone');
-				//}
+				if(parent.validateParentTaskInsert(nTask) == false){
+					nTask.ParentTask__c.addError('Parent Task selected does not belong in current project.');
+					triggerValidation = triggerValidation && false;
+				}
 				
 				String queueId = projectMap.get('Project' + nTask.Project__c);
 				if(queueId != null)
@@ -62,7 +63,7 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
                 //if all validations passed
                 if(triggerValidation){
                 	nTask = duration.calculateTaskInsert(nTask);
-                	nTask.Indent__c = parent.setTaskIndent(nTask);                	
+                	nTask.Indent__c = ParentTask.setTaskIndent(nTask);                	
                 }
 		    }
 		}
