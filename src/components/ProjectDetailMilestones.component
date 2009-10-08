@@ -59,7 +59,7 @@
 										<apex:repeat value="{!AllProjectTasks}" var="task">
 											<tr>
 												<td>
-													<div class="{!task.isToLate}">
+													<div class="{!task.isToLate}__"> 
 														<a href="projectTaskDetail?id={!task.TaskId}">{!task.TaskName}</a><br/>
 						                       			<apex:outputpanel layout="block" rendered="{!IF(task.isToLate == 'latter',false,true)}"  styleClass="margin_top">	
 							                       			<apex:outputpanel layout="block" rendered="{!IF(task.DayPercent > 44 ,true,false)}" >
@@ -87,7 +87,7 @@
 													<a href="/{!task.UserId}"  class="name_margin">{!task.UserName}</a>
 												</td>
 											</tr>
-										</apex:repeat>
+										</apex:repeat>  
 									</tbody>
 								</table>
 

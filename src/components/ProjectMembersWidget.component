@@ -57,6 +57,7 @@
 			</a>
 		</div>
 		</div>
+		
 		<div class="overlayMainContent" id="overlayMainContent">
 			<!-- Required Information --> 
 			<apex:form id="newMemberForm" onSubmit="if(validateColleguesInput()){showSwirly('swirly_overlay'); Form.disable(this.id);} else return false;">
@@ -77,8 +78,12 @@
 							&nbsp; <apex:inputTextArea id="colleaguesNames"
 										styleClass="colleaguesNames" style="width:310px; height:63px;"
 										value="{!newMemberVars.colleagueNames}"
-										onFocus="var options = {script: function (input) {return ('SuggestDispatcher?input='+input+'&class=colleagueNames&teamId={!teamId}');}};xml = new AutoComplete('{!$Component.colleaguesNames}',options);return true" 
-										
+										onFocus="var options = {script: function (input) {
+												 		return ('SuggestDispatcher?input='+input+'&class=colleagueNames&teamId={!team}');
+												 	}
+												 };
+												 xml = new AutoComplete('{!$Component.colleaguesNames}',options);
+												 return true" 
 										onBlur="javascript: hideSuggest();" />
 							</td>
 						</tr>
@@ -131,6 +136,7 @@
 					<div class="overlayFromButtons" align="center">
 						<apex:commandButton action="{!saveMembers}" 
 							oncomplete="hideOverlay(); ifError(); "
+							onclick="validateColleguesInput()"
 							styleclass="btn allButtons" 
 							style="float: none;width: 70px !important;background: #21637D none repeat scroll 0 0 !important;" 
 							value="Send" 

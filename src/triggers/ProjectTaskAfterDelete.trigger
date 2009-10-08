@@ -19,7 +19,10 @@ trigger ProjectTaskAfterDelete on ProjectTask__c (after delete) {
 		for(ProjectTask__c tsk : [select Id, Duration__c, DurationUI__c, Indent__c, ParentTask__c, PercentCompleted__c,  Project__c,  StartDate__c, EndDate__c from ProjectTask__c where ParentTask__c in : parIds limit 1000]){
 			taskIds.add(tsk.Id);
 		}
-		ParentTask.batchUpdateParentTask(taskIds);
+		//call to @future method
+		if(taskIds.size() > 0){
+			ParentTask.batchUpdateParentTask(taskIds);
+		}
 	}
 	
 }

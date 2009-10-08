@@ -6,11 +6,11 @@ trigger ProjectTaskPredBeforeInsert on ProjectTaskPred__c (Before Insert, Before
 
 			TaskDependencies td = new TaskDependencies(Trigger.new[0].project__c);
 			for( ProjectTaskPred__c p :  Trigger.new )
-				try{
+				//try{
 					td.InsertinfPred(p);
-				}catch (Exception e){
-					p.parent__c.addError( 'Cyclic dependency is not permited.' );
-				}
+				//}catch (Exception e){
+					//p.parent__c.addError( 'Cyclic dependency is not permited.' );
+				//}
 			ProjectUtil.flags.put('exeParentTaskUpdate', true);
 		    td.updateNow(); 
 
