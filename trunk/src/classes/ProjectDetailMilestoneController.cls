@@ -33,7 +33,7 @@ public class ProjectDetailMilestoneController {
 	* Set Sidebar
 	*@param Boolean
 	*@return void
-	*/
+	*/ 
 	public void setSidebar (Boolean b){
 		this.sidebar = b;
 	}
@@ -110,7 +110,6 @@ public class ProjectDetailMilestoneController {
 	 					and p.Project__c =: teamId  
 	 					order by p.EndDate__c asc limit 5
 	 					];
-	 					
 	 	listSize = milestones.size();  // think there is a better way todo this
 	 	
 	 	// Retrieve Users

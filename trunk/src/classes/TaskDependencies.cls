@@ -3,6 +3,7 @@ public with sharing class TaskDependencies {
 	BigListOfTasks bTaskList;
 	BigListOfTaskPredecessors bPredList = new BigListOfTaskPredecessors();
 	Map<id, ProjectTask__c> taskToModifyList = new Map<id, ProjectTask__c>();
+	Project2__c project;
 	Id firstTaskId = null;
 	Integer interval = null;
 	String  direction = '';
@@ -11,6 +12,7 @@ public with sharing class TaskDependencies {
 	
 	public TaskDependencies( Id projectId ){
 		bTaskList = new BigListOfTasks('SELECT Id, name, StartDate__c, EndDate__c, Duration__c, DurationUI__c, PercentCompleted__c, Milestone__c,ParentTask__c, Indent__c, Project__c  FROM ProjectTask__c WHERE Project__c =\'' + projectId + '\'');
+		this.project = [ SELECT Id, DaysInWorkWeek__c FROM Project2__c WHERE Id =: projectId ][0];
 	}
 	/**
 	*@return Boolean
@@ -32,14 +34,14 @@ public with sharing class TaskDependencies {
 		if(relationsList.size() > 0 )
 		for( Integer k = 0; k < relationsList.size() && goGoGo; k++ ){
 			predTask = new ProjectTask__c();
-			if( this.taskToModifyList.containsKey( relationsList[k].Parent__c ))
+			if( this.taskToModifyList.containsKey( relationsList[k].Parent__c )) 
 				predTask = this.taskToModifyList.get( relationsList[k].Parent__c );
 			else
 				predTask = BigListOfTasks.getById( relationsList[k].Parent__c );
 			
 			// Look if PredTask is a Milestone
 			localInteval = Date.valueOf( predTask.Milestone__c == true ? predTask.startDate__c : predTask.endDate__c ).daysBetween( Date.valueOf( taskNew.startDate__c ));
-			goGoGo = this.direction == 'rigth' ?  localInteval - 1 >= 0 :  localInteval > 0; 
+			goGoGo = this.direction == 'rigth' ?  localInteval - 1 >= 0 :  localInteval > relationsList[k].Lag_Time__c.intValue(); 
 			// throw new CustomException('#' + this.direction +':'+ localInteval+':'+goGoGo);
 		}
 		
@@ -122,19 +124,20 @@ public with sharing class TaskDependencies {
 		relationsList = bPredList.getListByParent( taskOld.id  , '2');
 		//if(this.goGoGo == false)
 		//throw new CustomException('#' + this.goGoGo + '-'+taskNew.name);
+		Integer inter; 
+		Boolean conditionCanMove;
+		Boolean conditionMovePred;
 		if(relationsList.size() > 0 && this.goGoGo )
 			for( ProjectTaskPred__c r : relationsList){
 				newTask = new ProjectTask__c();
 				newTask = BigListOfTasks.getById( r.Predecessor__c );
-				if( newTask.Milestone__c || newTask.startDate__c.addDays(-r.Lag_Time__c.intValue()).daysBetween(taskNew.endDate__c) >= 0 ){
-					taskLarg = newTask.milestone__c == true ? 1 : Math.abs(newTask.endDate__c.daysBetween(newTask.startDate__c));
-					//throw new CustomException('#' + r.Lag_Time__c.intValue());
-					//newTask.startDate__c = Date.valueOf(newTask.startDate__c).addDays( this.interval );				
+				inter = getNonWDays( Date.valueOf(taskNew.endDate__c), Date.valueOf(newTask.startDate__c), Integer.valueOf( this.project.DaysInWorkWeek__c ));					taskLarg = newTask.milestone__c == true ? 1 : Math.abs(newTask.endDate__c.daysBetween(newTask.startDate__c));
+				conditionCanMove  = newTask.startDate__c.addDays(-r.Lag_Time__c.intValue() -inter).daysBetween(taskNew.endDate__c) >= 0;
+				conditionMovePred = this.isWorkingDay( taskNew.endDate__c.addDays(r.Lag_Time__c.intValue())); 
+				if( newTask.Milestone__c || conditionCanMove || !conditionMovePred ){
 					newTask.startDate__c = Date.valueOf(taskNew.endDate__c).addDays( 1 + r.Lag_Time__c.intValue());				
-					//newTask.endDate__c = newTask.Milestone__c == true ? newTask.startDate__c : Date.valueOf(newTask.endDate__c).addDays( this.interval );
+					newTask.StartDate__c = Date.valueOf(newTask.StartDate__c.addDays(inter));
 					newTask.endDate__c = Date.valueOf(newTask.startDate__c).addDays( taskLarg );
-					//if( newTask.name == 'Parent3A')
-						//throw new CustomException('#' + 'Muving' );
 					this.movingTask( BigListOfTasks.getById( r.Predecessor__c ), newTask);
 				}
 			}
@@ -156,11 +159,19 @@ public with sharing class TaskDependencies {
 		else
 			newTask = BigListOfTasks.getById( predObj.Predecessor__c );
 		
-		oldTask = newTask;
-		
+		if(newTask.Milestone__c == true)
+			newTask.endDate__c = newTask.StartDate__c;  
+
+		oldTask = newTask.clone() ;
+
 		Integer l = Date.valueOf(newTask.startDate__c).daysBetween(Date.valueOf(newTask.endDate__c))+1;
 		newTask.StartDate__c = Date.valueOf(parentTask.Milestone__c==true ? parentTask.StartDate__c : parentTask.EndDate__c).addDays(predObj.Lag_Time__c.intValue()+1);		
 		newTask.EndDate__c = Date.valueOf(parentTask.Milestone__c==true ? parentTask.StartDate__c : parentTask.EndDate__c).addDays(predObj.Lag_Time__c.intValue() + l);
+
+		Integer inter = getNonWDays( Date.valueOf(parentTask.endDate__c), Date.valueOf(newTask.startDate__c), Integer.valueOf( this.project.DaysInWorkWeek__c ));
+		newTask.StartDate__c = Date.valueOf(newTask.StartDate__c.addDays(inter));
+		newTask.EndDate__c   = Date.valueOf(newTask.EndDate__c.addDays(inter));
+		//throw new CustomException('#' + fooo );
 		
 		update newTask;
 		
@@ -231,8 +242,13 @@ public with sharing class TaskDependencies {
 		bla = bla > 0 ? bla-1 : 0;
 
 		//
-		Date newParentStartDate = Date.valueOf( parentTask.endDate__c ).addDays( predObj.Lag_Time__c.intValue() +1);		
-		Date newParentEndDate   = Date.valueOf( parentTask.endDate__c   ).addDays( predObj.Lag_Time__c.intValue() + parentInterval + 1);		
+		Date newParentStartDate = Date.valueOf( parentTask.endDate__c ).addDays( predObj.Lag_Time__c.intValue() +1 );		
+		Date newParentEndDate   = Date.valueOf( parentTask.endDate__c   ).addDays( predObj.Lag_Time__c.intValue() + parentInterval + 1);	
+		Integer fooo = getNonWDays( Date.valueOf(predTask.StartDate__c), newParentStartDate, 5);
+		//throw new CustomException('#' + fooo ); 
+		newParentStartDate.addDays(fooo);
+		newParentEndDate.addDays(fooo);
+		
 		//
 		taskToModify = BigListOfTasks.getById( predObj.Predecessor__c );
 
@@ -302,28 +318,46 @@ public with sharing class TaskDependencies {
 		if( relsToDelete.size() > 0 )
 		delete relsToDelete;
 	}	
-	
-	public Date setDateInWorkingDay( Date d, Integer wrkDays ){
 
-		Date rDate;
-		Datetime tempDate = Datetime.valueOf( d + '00:00:00');
-		Set<String> weekdays = new Set<String>{'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'};
+	public Boolean isWorkingDay( Date d ){
+		Set<String> workdays = new Set<String>();
+		Integer rToReturn = 0;
+		List<String> weekdays = new List<String>{'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'};
 		
-		for( String day : weekdays.clone())
-			weekdays.remove( day );
+		for(Integer i = 0; i < Integer.valueOf( this.project.DaysInWorkWeek__c ); i++)
+			workdays.add( weekdays[ i ]); 
 			
-		if( weekdays.contains( tempDate.format( 'EEE' )))
-			rDate = Date.valueOf( tempDate );
-		else
-			tempDate = tempDate.addDays(1);
-
-		while( rDate != null )
-			if( weekdays.contains( tempDate.format( 'EEE' )))
-				rDate = Date.valueOf( tempDate );
-			else
-				tempDate = tempDate.addDays(1);
+		Datetime tempDate = Datetime.valueOf( d + '00:00:00' );	
+		return workdays.contains( tempDate.format( 'EEE' ));	
+	}
+	
+	public Integer getNonWDays( Date initD, Date endD, Integer workingDays ){
+		Set<String> workdays = new Set<String>();
+		Integer rToReturn = 0;
+		List<String> weekdays = new List<String>{'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'};
 		
-		return rDate;		
+		for(Integer i = 0; i < workingDays; i++){
+			workdays.add(weekdays[i]);	
+		}
+		
+		Integer dasyBet = Math.abs( initD.daysBetween( endD ));
+		Datetime tempDate = Datetime.valueOf( initD + '00:00:00' );
+		for( Integer k = 0; k < dasyBet+1; k ++){  
+			tempDate = tempDate.addDays( 1 );
+			rToReturn += workdays.contains( tempDate.format( 'EEE' )) == true ? 0 : 1;
+		}
+		
+		//rToReturn = 0;
+		//tempDate = Datetime.valueOf( endD + '00:00:00' );
+		Boolean c = !workdays.contains( tempDate.format( 'EEE' ));
+		while( c ){
+			rToReturn++;
+			tempDate = tempDate.addDays( 1 );
+			c = !workdays.contains( tempDate.format( 'EEE' ));
+		}
+		
+		return rToReturn;
+		
 	}
 
 	public class BigListOfTaskPredecessors{
