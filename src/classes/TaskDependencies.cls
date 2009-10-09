@@ -46,8 +46,9 @@ public with sharing class TaskDependencies {
 			// Look if PredTask is a Milestone
 			localInteval = Date.valueOf( predTask.Milestone__c == true ? predTask.startDate__c : predTask.endDate__c ).daysBetween( Date.valueOf( taskNew.startDate__c ));
 			nonWkDays = this.getNonWDays(  Date.valueOf(predTask.endDate__c),  Date.valueOf(taskNew.startDate__c), Integer.valueOf(this.project.DaysInWorkWeek__c ));
-			goGoGo = this.direction == 'rigth' ?  localInteval - 1 >= 0 :  localInteval > relationsList[k].Lag_Time__c.intValue() - nonWkDays; 
-			// throw new CustomException('#' + this.direction +':'+ localInteval+':'+goGoGo);
+			
+			//throw new CustomException('#>' + localInteval +'>'+ (relationsList[k].Lag_Time__c.intValue() + nonWkDays));
+			goGoGo = this.direction == 'right' ?  localInteval - 1 >= 0 : localInteval > relationsList[k].Lag_Time__c.intValue() + nonWkDays; 
 		}
 		
 		// If can not continue restore odl values of the task in trigger (Before Update)
@@ -59,7 +60,7 @@ public with sharing class TaskDependencies {
 			taskNew.EndDate__c = taskOld.EndDate__c;
 		} 
 		//throw new CustomException('#' + goGoGo );
-		
+	
 		return goGoGo;
 	}
 	
@@ -141,13 +142,13 @@ public with sharing class TaskDependencies {
 				newTask = milestoneToTask( BigListOfTasks.getById( r.Predecessor__c ));
 				
 				oldStartDate = Date.valueOf( newTask.StartDate__c );
-				inter = getNonWDays( Date.valueOf(taskNew.endDate__c), Date.valueOf(newTask.startDate__c), Integer.valueOf( this.project.DaysInWorkWeek__c ));					
 				taskLarg = newTask.milestone__c == true ? 1 : Math.abs(newTask.endDate__c.daysBetween(newTask.startDate__c));
 				conditionCanMove  = newTask.startDate__c.addDays(-r.Lag_Time__c.intValue() -inter).daysBetween(taskNew.endDate__c) >= 0;
 				conditionMovePred = this.isWorkingDay( taskNew.endDate__c.addDays(r.Lag_Time__c.intValue()));
 				daysToSubstract = 0;
-				if( newTask.Milestone__c || !conditionMovePred || conditionCanMove ){
+				if( newTask.Milestone__c || !conditionMovePred || conditionCanMove  ){
 					newTask.startDate__c = Date.valueOf(taskNew.endDate__c).addDays( 1 + r.Lag_Time__c.intValue());				
+					inter = getNonWDays( Date.valueOf(taskNew.endDate__c), Date.valueOf(newTask.startDate__c), Integer.valueOf( this.project.DaysInWorkWeek__c ));					
 					newTask.StartDate__c = Date.valueOf(newTask.StartDate__c.addDays(inter));
 					if( 0 <= getNonWDays( oldStartDate,Date.valueOf(newTask.EndDate__c), Integer.valueOf( this.project.DaysInWorkWeek__c )) &&  taskLarg > 1 )
 					daysToSubstract = getNonWDays( oldStartDate, Date.valueOf(newTask.startDate__c), Integer.valueOf( this.project.DaysInWorkWeek__c ));
@@ -383,7 +384,7 @@ public with sharing class TaskDependencies {
 		}
 		
 		//if( rToReturn > 0)
-		//throw new CustomException('#' + rToReturn + ' : ' + initD+ ' : ' +endD );
+		//throw new CustomException('#' + rToReturn +': :'+initD+': :'+endD);
 		return rToReturn;
 		
 	}
