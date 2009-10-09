@@ -3,9 +3,4 @@
     <apiVersion>15.0</apiVersion>
     <description>This is a generic template for Visualforce Page.  With this template, you may adjust the default elements and values and add new elements and values.</description>
     <label>ProjectMembersList</label>
-    <packageVersions>
-        <majorNumber>1</majorNumber>
-        <minorNumber>36</minorNumber>
-        <namespace>TIMBASURVEYS</namespace>
-    </packageVersions>
 </ApexPage>
