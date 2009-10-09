@@ -129,20 +129,7 @@
 			 
 			<div class="clear"></div>
 		</div>
-		<style>
-			div.informationPanel {
-			    background-color: #FFFFBF;
-			    border: 1px solid #ADD1E7;
-			    font-size: 15px;
-			    font-weight: bold;
-			    margin:20px 15px 0 215px !important;
-			    width: auto !important;
-			    overflow: hidden;
-			    padding: 5px;
-			    position: relative;
-			}
-		</style>
-	<div class="informationPanel clear" id="infoToUser" style=""></div>
+	<div class="informationPanel clear" id="infoToUser" style="display:none;"></div>
 
 	<!-- Main Content Div -->
 	<div class="main_cont" style = "margin-left:205px!important;" >
