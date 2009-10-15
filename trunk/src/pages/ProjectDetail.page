@@ -30,6 +30,7 @@
 
     <!-- Delete Project Overlay -->   
     <c:ProjectOverlayDeleteProject />
+    <c:ProjectOverlayDeleteAttachment />
     
     <!-- ### Initialize the overlay box for modal.js ### -->
     <a href="#modal_container" id="initializeModal" style="display:none;"></a>

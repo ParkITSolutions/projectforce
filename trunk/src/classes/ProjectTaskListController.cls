@@ -99,6 +99,34 @@ public with sharing class ProjectTaskListController {
         //dynFilterList = this.dynFilter.getFieldList();
        
     }   
+    
+    public Set<Id> idsToDelSet = new Set<Id>();
+    public String idsToDel = ':';
+ 
+    public void setIdsToDel( String ids ){ 
+    	System.debug('+>>>>>>' + 'FOOdevug');
+  		idsToDel = ids;
+
+		this.idsToDelSet.clear();
+    	for( String e : ids.split( ':' ))
+    	this.idsToDelSet.add( e );
+    }
+
+    public String getIdsToDel(){
+    	return idsToDel;
+    }
+    
+    public void verifyIdsToDel(){
+    	System.debug('+>>>>>>' + 'devug' + this.idsToDelSet);
+    	
+    	List<ProjectTask__c> tList = new List<ProjectTask__c>();
+    	
+    	tList = [ SELECT Id FROM ProjectTask__c WHERE Id IN: idsToDelSet AND OwnerId =: UserInfo.getUserId()];
+    	
+    	
+    	refreshTaskList();
+    }
+    
 
     /**
     *Get option
@@ -110,7 +138,7 @@ public with sharing class ProjectTaskListController {
    
     /**
     *Set option
-    *@param String
+    *@param String 
     */
     public void setOption(String option) {
         this.option = option;
@@ -260,6 +288,10 @@ public with sharing class ProjectTaskListController {
     *@return List<TaskDetails>
     */
     public List<TaskDetails> getTaskList(){
+    	for( TaskDetails t : taskList)
+    	if( this.idsToDelSet.contains(t.id))
+    		System.debug( ']=[ ' + t.highliteTask);
+    	
         return taskList;
     }
    
@@ -775,8 +807,14 @@ public with sharing class ProjectTaskListController {
                 TaskDetail.PercentCompleted= (resultTaskList[i].PercentCompleted__c).intValue();
             }else{
                 TaskDetail.PercentCompleted= 0;
-            }
-            System.debug( '[2>' + resultTaskList[i].PercentCompleted__c );
+            }           
+             
+            	//TaskDetail.highliteTask = true;
+            if (this.idsToDelSet.contains( resultTaskList[i].id )){
+            	TaskDetail.highliteTask = true;
+            	system.debug('+>>>>>>' + 'devug' + this.idsToDelSet + '][' + resultTaskList[i].id+ '][' + TaskDetail.highliteTask);
+            }else
+            	TaskDetail.highliteTask = false;
            
             if(resultTaskList[i].EndDate__c < System.today()){
                 TaskDetail.comparoFecha=true;
@@ -1088,9 +1126,13 @@ public with sharing class ProjectTaskListController {
         public boolean comparoFecha {
             get; set;
         }
+        
+        public Boolean highliteTask {
+        	get; set;
+        }
        
         public Integer cantDias {
-            get; set;
+            get; set; 
         } 
        
         public User userTask {

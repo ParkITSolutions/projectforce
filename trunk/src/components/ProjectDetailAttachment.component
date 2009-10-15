@@ -25,6 +25,7 @@
 				<apex:outputpanel rendered="{!userPermissions.canCreate}">
 					<a href="Javascript:;" onclick="openAttachmentOverlay();">New Attachment</a>
 				</apex:outputPanel>
+				
 			</div>
 			<!-- Widget Container --> 		
 			<div class="wideBody">
@@ -37,23 +38,16 @@
 								<td>Name</td>
 								<td>Weight(Kb)</td>
 								<td>Created Date</td>
-								<td>Created By</td>														
+								<td>Created By</td>				 										
 							</tr>
 							<apex:repeat value="{!attachments}" var="attachment">									
 								<tr>
 									<td>
-										<apex:commandLink action="{!DeleteAttach}"
-											rerender="projectAttachmentWidget"
-											rendered="{!IF(OR(userPermissions.canManage, attachment.isOwner), true, false)}"
-											onclick="if(confirm('Are you sure you want to delete this file?')){showSwirly('swirlyAttachment');}else{return false;}"
-											oncomplete="hideSwirly('swirlyAttachment');"												
-											value="Delete" >
-											<apex:param name="idAttach" value="{!attachment.Id}"/>
-										</apex:commandLink>
+										<a href="javascript:;" onclick="createOverlay('', 'DeleteAttachmentOverlay', 180); document.getElementById('j_id0:j_id9:j_id10:overlayForm2:idToDelete').value ='{!attachment.Id}';">Delete</a>
 									</td>
-									<td>
-										<img style="vertical-align:bottom;" src="https://na1.salesforce.com{!URLFOR($Resource.FileTypeIcons, attachment.attachImage)}"/> &nbsp;
-										<a href="#" onclick="window.open('https://na1.salesforce.com/servlet/servlet.FileDownload?file={!attachment.Id}')" > {!attachment.Name} </a>
+									<td> 
+										<img style="vertical-align:bottom;" src="https://{!domain}{!URLFOR($Resource.FileTypeIcons, attachment.attachImage)}"/> &nbsp;
+										<a href="#" onclick="window.open('https://{!domain}/servlet/servlet.FileDownload?file={!attachment.Id}')" > {!attachment.Name} </a>
 									</td>
 									<td>
 										<apex:outputField value="{!attachment.Attachment.BodyLength}"/>
@@ -69,8 +63,18 @@
 						</table>
 					</apex:outputPanel>
 					<apex:outputPanel rendered="{!IF(attachmentCount, false, true)}">
-						Not Attachments Yet
+						<ul class="noattachment">
+							<li>
+								No Attachments Yet<br/>
+								<apex:outputpanel rendered="{!userPermissions.canCreate}"  > 
+									<a  href="javascript:;" onclick="openAttachmentOverlay();">Attach a new file</a>
+								</apex:outputpanel>
+							</li>
+						</ul>
 					</apex:outputPanel>
+				</apex:outputPanel>
+				<apex:outputpanel style="float: right" rendered="{!IF(attachmentCount, true, true)}">
+					<a href="#" title="See all attachments" >  See More&#187;</a>
 				</apex:outputPanel>
 			</div>
 		</div>

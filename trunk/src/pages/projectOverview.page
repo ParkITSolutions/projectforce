@@ -1,6 +1,5 @@
 <apex:page sidebar="false" tabStyle="Project2__c" controller="ProjectOverviewController"  >
 
-
 	<!-- Prototype / Scriptaculous Framework -->
 	<apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/prototype.js')}"/>
 	<apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/scriptaculous.js')}"/>
@@ -46,7 +45,6 @@
 			background-repeat:no-repeat;
 			background-color: #FFFFFF;
 			background-position:center;
-			
 		}
 	</style>	
 	<!-- Initialize the overlay box for modal.js -->
@@ -125,9 +123,9 @@
 				</apex:form>
 			</div>
 			<div class="tabBorderBlue">&nbsp;</div>
-			<!-- Content Projects -->
-			<div id="holderNew">
-				<div class="loader" style="display:none;" id="load_"></div>
+			<!-- Content Projects -->  
+			<div id="holderNew">              
+				<div class="loader" style="display:none;" id="load_"></div>                    
 				<apex:outputPanel id="content_teams" layout="block" styleClass="content_teams">
 					<!-- FILTER -->
 					<apex:outputPanel layout="block" id="filter" rendered="{!isAllProjects}">
@@ -181,23 +179,36 @@
 									</apex:outputPanel>	
 								</li>
 								<!--  previous page -->
-								<li class="prev {!IF(NOT paginator.prevPageLinkShow,'prev_disabled','')}">
-									<apex:commandLink action="{!paginator.prevPage}" value="Previous Page" rerender="content_teams" rendered="{!paginator.prevPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);"/>
-									<apex:outputText value="Previous Page" rendered="{!NOT paginator.prevPageLinkShow}" />
+								<li class="prev">
+									<apex:commandLink action="{!paginator.prevPage}" value="" rerender="content_teams" rendered="{!paginator.prevPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);">
+										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_prev.gif')}" alt="<" border="0" />
+									</apex:commandLink>
+									<apex:commandLink action="{!paginator.prevPage}" value="Previous Page" rerender="content_teams" rendered="{!paginator.prevPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);" />
+									<apex:outputPanel rendered="{!paginator.prevPageShow}">
+										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_prev_disabled.gif')}" alt="<" border="0" />
+										<apex:outputText value="Previous Page" />
+									</apex:outputPanel>	
 								</li>
 								<!--  actual page  -->								
 								<li> ({!paginator.currentPagination} - {!paginator.cntPagination}) </li>
-								<li class="next {!IF(NOT paginator.nextPageLinkShow,'next_disabled','')}">
-									<apex:commandLink action="{!paginator.nextPage}" value="Next Page" rerender="content_teams" rendered="{!paginator.nextPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);"/>										
-									<apex:outputText value="Next Page" rendered="{!NOT paginator.nextPageLinkShow}" />
+								<!-- next page  -->
+								<li class="next">
+									<apex:commandLink action="{!paginator.nextPage}" value="Next Page" rerender="content_teams" rendered="{!paginator.nextPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);"/>
+									<apex:commandLink action="{!paginator.nextPage}" value="" rerender="content_teams" rendered="{!paginator.nextPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);">
+										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_next.gif')}" alt=">" border="0" />
+									</apex:commandLink>										
+									<apex:outputText value="" rendered="{!NOT paginator.nextPageLinkShow}">
+										<apex:outputText value="Next Page" />
+										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_next_disabled.gif')}" alt=">" border="0" />
+									</apex:outputText>
 								</li>
 								<!--  last page  -->	
 								<li> 
 									<apex:commandLink action="{!paginator.lastPage}" rerender="content_teams" rendered="{!(paginator.currentPagination < paginator.cntPagination)}" onclick="showLoaderForTabs();" oncomplete="finish(false);" >
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_last.gif')}" alt="<<" title="<<first"/>
+										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_last.gif')}" alt=">>" title="<<first"/>
 									</apex:commandLink>
 									<apex:outputPanel rendered="{!(paginator.currentPagination == paginator.cntPagination)}">
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_last_disabled.gif')}" alt="<<"/>
+										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_last_disabled.gif')}" alt=">>"/>
 									</apex:outputPanel>	
 								</li>								</ul>
 							</apex:form>				
@@ -208,7 +219,7 @@
 					<!-- TEAMS LIST -->
 					<div class="content_teams">
 						<div style="{!IF(projectsForTabsSize > 0, 'display:none', '')}; ">
-							<div class="grayColor noitems" >No {!$ObjectType.Project2__c.labelPlural} Yet</div>
+							<div class="grayColor noitems" style="height:250px;" >No {!$ObjectType.Project2__c.labelPlural} Yet</div>
 						</div>
 						<div style="{!IF(projectsForTabsSize > 0, '', 'display:none')}; ">
 							<apex:repeat value="{!projectsForTabs}" var="t" first="{!paginator.firstItem}" rows="{!paginator.numberOfItemsToShow}">	
@@ -238,7 +249,7 @@
 						</div> 
 					</div>	
 					
-												<!-- PAGINATION    -->
+					<!-- PAGINATION    -->
 					<apex:outputPanel layout="block" id="paginationBottom" rendered="{!isAllProjects}" styleClass="navigatorContainerBottom">				
 						<div class="navigation">
 							<apex:form >
@@ -253,27 +264,41 @@
 									</apex:outputPanel>	
 								</li>
 								<!--  previous page -->
-								<li class="prev {!IF(NOT paginator.prevPageLinkShow,'prev_disabled','')}">
-									<apex:commandLink action="{!paginator.prevPage}" value="Previous Page" rerender="content_teams" rendered="{!paginator.prevPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);"/>
-									<apex:outputText value="Previous Page" rendered="{!NOT paginator.prevPageLinkShow}" />
+								<li class="prev">
+									<apex:commandLink action="{!paginator.prevPage}" value="" rerender="content_teams" rendered="{!paginator.prevPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);">
+										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_prev.gif')}" alt="<" border="0" />
+									</apex:commandLink>
+									<apex:commandLink action="{!paginator.prevPage}" value="Previous Page" rerender="content_teams" rendered="{!paginator.prevPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);" />
+									<apex:outputPanel rendered="{!paginator.prevPageShow}">
+										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_prev_disabled.gif')}" alt="<" border="0" />
+										<apex:outputText value="Previous Page" />
+									</apex:outputPanel>	
 								</li>
 								<!--  actual page  -->								
 								<li> ({!paginator.currentPagination} - {!paginator.cntPagination}) </li>
-								<li class="next {!IF(NOT paginator.nextPageLinkShow,'next_disabled','')}">
-									<apex:commandLink action="{!paginator.nextPage}" value="Next Page" rerender="content_teams" rendered="{!paginator.nextPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);"/>										
-									<apex:outputText value="Next Page" rendered="{!NOT paginator.nextPageLinkShow}" />
+								<!-- next page  -->
+								<li class="next">
+									<apex:commandLink action="{!paginator.nextPage}" value="Next Page" rerender="content_teams" rendered="{!paginator.nextPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);"/>
+									<apex:commandLink action="{!paginator.nextPage}" value="" rerender="content_teams" rendered="{!paginator.nextPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);">
+										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_next.gif')}" alt=">" border="0" />
+									</apex:commandLink>										
+									<apex:outputText value="" rendered="{!NOT paginator.nextPageLinkShow}">
+										<apex:outputText value="Next Page" />
+										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_next_disabled.gif')}" alt=">" border="0" />
+									</apex:outputText>
 								</li>
 								<!--  last page  -->	
 								<li> 
 									<apex:commandLink action="{!paginator.lastPage}" rerender="content_teams" rendered="{!(paginator.currentPagination < paginator.cntPagination)}" onclick="showLoaderForTabs();" oncomplete="finish(false);" >
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_last.gif')}" alt="<<" title="<<first"/>
+										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_last.gif')}" alt=">>" title="<<first"/>
 									</apex:commandLink>
 									<apex:outputPanel rendered="{!(paginator.currentPagination == paginator.cntPagination)}">
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_last_disabled.gif')}" alt="<<"/>
+										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_last_disabled.gif')}" alt=">>"/>
 									</apex:outputPanel>	
 								</li>								</ul>
-							</apex:form>						
+							</apex:form>				
 						</div> 
+						<hr class="filterHR" style="color: #E1E1E2;"/>	
 					</apex:outputPanel>		
 					<!-- /PAGINATION -->  
 					

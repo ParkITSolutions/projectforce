@@ -97,11 +97,11 @@
 										<td>
 		 									{!task.status}
 										</td>		
-										<td>				
-		 									<span class="percent">{!task.Percent} %</span>
+										<td>
 											<div class="proj_percent_complete_outline">
 					                        	<div class="proj_percent_complete_value" style="width: {!task.Percent}%;"></div>
 					                       	</div>
+					                       	<span class="percent">&nbsp;{!task.Percent} %</span>
 										</td>						
 									</tr>
 								</apex:repeat>
