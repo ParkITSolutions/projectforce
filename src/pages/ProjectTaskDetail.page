@@ -321,7 +321,8 @@
                 </apex:outputpanel>
             </div>
         </div>
-    </div>    
+    </div>
+ 
     <script>    	
          clearTableDetail();         
      </script>

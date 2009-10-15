@@ -1,6 +1,7 @@
 <apex:page id="proMemRem" sidebar="false" tabStyle="Project2__c" controller="ProjectMembersListController">
 	
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsMembersRemove.css')}" />
+
 	<!-- Content  -->
 	<div id="removeMemberOverlay" style="display:none;" class="overlayForm">	
 		<!-- Overlay Title -->
@@ -40,12 +41,12 @@
 				</div>
 				<apex:outputPanel rendered="{!error}">
                         <table style="width: 95%;">
-                            <tr>
-                                <td>
+                            <tr>                                                     
+                                <td style="text-align='center';">
+                                	<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/error_icon.gif')}" />
                                     <span class="inputInfoDark">
                                         You can not remove all admin members
-                                    </span>
-                                    <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/error_icon.png')}" /> 
+                                    </span> 
                                 </td>
                             </tr>
                         </table>

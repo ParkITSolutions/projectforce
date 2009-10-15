@@ -1,7 +1,7 @@
 /**
-*@author Nicolas Gunther - 03/23/2009
-*/   
-public class ProjectDetailAttachmentController {
+*@author Andres Canavesi - 10/13/2009
+*/
+public class ProjectAttachmentsController {
 
 	private String project = null;
 	
@@ -31,12 +31,18 @@ public class ProjectDetailAttachmentController {
     private boolean nextPageShow  = false;
     
     private String domain;
-	
-	public ProjectDetailAttachmentController (){
+    
+    public ProjectAttachmentsController (){
+		
 		domain = ProjectUtil.getDomain();
+			
 	}
 	
-	 /**
+	public String getEmptyValue(){
+    	return '';
+    }
+    
+     /**
     * Generates number of pages
     */
     public void genCntPagination() {
@@ -167,7 +173,9 @@ public class ProjectDetailAttachmentController {
 	*@return void
 	*/
 	public void setProject(String id){
+		
 		project = id;
+		
 		readAttachments();
 		
 		totalItemsNumber = attachments.size();
@@ -195,22 +203,7 @@ public class ProjectDetailAttachmentController {
 		return attachments.size() > 0;
 	}
 	
-	public String getEmptyValue(){
-    	return '';
-    }
-    
-    public void setEmptyValue(String value ){ 
-    	this.EmptyValue = value;
-    }
-    
-    public String getIdToDelete(){
-    	idToDelete = this.EmptyValue;
-    	return this.idToDelete;
-    }
-    
-    public void setIdToDelete(String value ){ 
-		String attachId = value;
-    }
+	
 	
 	/**
 	* Read user permissions
@@ -231,16 +224,14 @@ public class ProjectDetailAttachmentController {
 		genPermissions();
 		return userPermissions;
 	}	
-                          
+
 	/**
 	*
 	*@return void
 	*/
 	public void readAttachments(){
 		List<Attachment> attachmentsList = new List<Attachment>();
-		this.project = System.currentPageReference().getParameters().get('id');
 		if(project != null){
-			System.debug('\n\n========================\n' + project);
 			attachmentsList = [select name, id, parentid, ContentType, BodyLength, 
 								LastModifiedDate, LastModifiedBy.Name, CreatedById
 								from attachment 
@@ -248,7 +239,8 @@ public class ProjectDetailAttachmentController {
 								order by name];
 		}
 		loadAttachmentList(attachmentsList);
-	}       
+	}
+	
 	
 	/**
 	* Load attachment list
@@ -260,7 +252,6 @@ public class ProjectDetailAttachmentController {
 		String avatarId;
 		
 		//Get current Avatar
-		System.debug('\n\n========================\n' + project);
 		avatarId = [ select Picture__c from Project2__c where Id =: project limit 1 ].Picture__c ;
 		
 		for (Attachment item: attachs){	
@@ -347,15 +338,18 @@ public class ProjectDetailAttachmentController {
 	*/
 	public void deleteAttach (){
 		String attachId = this.getIdToDelete();
-		System.debug('##### delete: '+attachId);
 		if(attachId != null && attachId != ''){
-			
 			Attachment attach = [select Id from Attachment where Id =: attachId];
 			delete attach;
 			readAttachments();
 		}		
 	}
-	                                    
+	
+	 public String getIdToDelete(){
+    	idToDelete = this.EmptyValue;
+    	return this.idToDelete;
+    }
+	
 	
 	/**
 	* Inner Class AttachmentInfo
@@ -441,6 +435,6 @@ public class ProjectDetailAttachmentController {
         */
         public Boolean getIsOwner(){
         	return isOwner;
-        }                 
+        }                       
 	}
 }

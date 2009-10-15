@@ -37,6 +37,10 @@
         .colorRed{
             color: red;
         }
+        
+        .red{
+        	/*background: red;*/
+        }
     </style>
    
     <!-- ProjectTaskList JS -->
@@ -210,7 +214,7 @@
                                                 </apex:outputpanel>
                                             </td>
                                             <td>
-                                                <apex:outputpanel id="markCompleteBtn" rendered="{!IF(editDeletePer ,true,false)}" layout="block">
+                                                <apex:outputpanel id="markCompleteBtn"  layout="block">
                                                         <apex:commandLink action="{!markComplete}" oncomplete="refreshList();showMessage('{!idTaskToMarkComplete}');" rerender="auxProjectTaskListPanel" styleclass="blackbutton" onclick="bulkTaskCompleted('{!$Component.auxInputTextTop}');">
                                                             <span>Mark Complete</span> 
                                                         </apex:commandLink>
@@ -225,7 +229,7 @@
                                                 </apex:outputpanel>
                                             </td>
                                             <td>
-                                                <apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
+                                                <apex:outputpanel layout="block">
                                                         <a class="blackbutton" onclick="bulkTaskDelete();">
                                                             <span>Delete</span>
                                                         </a>
@@ -469,10 +473,10 @@
                                 <tbody>
                                     <!-- item START -->          
                                     <apex:repeat var="task" value="{!taskList}" rows="{!numberOfItemsToShow}" first="{!firstRow}" id="taskList">
-                                        <tr {!IF(task.comparoFecha ,'class=\"red\"','')} >
+                                        <tr {!IF(OR(task.comparoFecha, task.highliteTask==true ) ,'class=\"red\"','')} >
                                             <td align="center">
-                                                <apex:outputpanel rendered="{!IF(OR(editDeletePer,task.canEditAndDelete) ,true,false)}" layout="block">
-                                                     <input type="checkbox" value="{!task.Id}"/>
+                                                <apex:outputpanel rendered="{!IF(OR(OR(editDeletePer,task.canEditAndDelete), task.isTaskOwner) ,true,false)}" layout="block">
+                                                     <input type="checkbox" class="checkbox" value="{!task.Id}" onclick="getCheccked();" />
                                                 </apex:outputpanel>
                                             </td>
                                             <td>
@@ -582,7 +586,7 @@
                                             </apex:outputpanel>
                                         </td>
                                         <td>
-                                            <apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
+                                            <apex:outputpanel layout="block">
                                                  <apex:commandLink action="{!markComplete}" oncomplete="refreshList();showMessage('{!idTaskToMarkComplete}');" rerender="auxProjectTaskListPanel" styleclass="blackbutton" onclick="bulkTaskCompleted('{!$Component.auxInputTextTop}');">
                                                     <span>Mark Complete</span> 
                                                 </apex:commandLink>
@@ -596,27 +600,28 @@
                                             </apex:outputpanel>
                                         </td>
                                         <td>
-                                            <apex:outputpanel rendered="{!IF(editDeletePer ,true,false)}" layout="block">
-                                                <a class="blackbutton" onclick="bulkTaskDelete();">
+                                            <apex:outputpanel layout="block">
+                                            	<apex:commandLink action="{!verifyIdsToDel}" styleClass="blackbutton" rerender="taskList" oncomplete="cabu();">
                                                     <span>Delete</span>
-                                                </a>
+                                                </apex:commandLink> 
                                             </apex:outputpanel>
                                         </td>
-                                   </tr>
+                                   </tr> 
                                 </table>
                             </apex:outputpanel>
                           </center>             
                     </div>
 
                     <!-- Refresh list action -->
-                    <apex:commandbutton action="{!refreshTaskList}" id="getList" rerender="taskListPanel" style="display:none;">
+                    <apex:commandbutton action="{!refreshTaskList}" id="getList" rerender="taskListPanel" style="display:none;" >
                         <apex:param name="sortBy" value="Name"  assignTo="{!sortBy}" />
                     </apex:commandbutton>
                     <script> 
                         rerender = '{!$Component.getList}';        
                     </script>
-                    <apex:actionFunction name="taskListRefresh" action="{!refreshTaskList}" rerender="taskListPanel" oncomplete="advFilterAfterRerender();" />                    
-
+                    <apex:actionFunction name="taskListRefresh" action="{!refreshTaskList}" rerender="taskListPanel" oncomplete="advFilterAfterRerender();$('ProjectsTaskList:ref:toDelFromTL').value ='';" />                    
+					<apex:actionFunction name="cabu" action="{!verifyIdsToDel}" rerender="taskListPanel" oncomplete="advFilterAfterRerender();efectToRows();"/>	
+               	<apex:inputHidden id="toDelFromTL" value="{!IdsToDel}" /> 
                 </apex:form>
             </apex:outputpanel>   
         </div>  
@@ -632,6 +637,33 @@
     }
     </style>
     <script>
+
+		function getCheccked(){ 
+			ch = new Array();
+			$$('.checkbox').each( function( e ){
+			    if( e.type == 'checkbox' && e.checked == true )
+			    ch.push( e.value );
+			});
+			
+			
+			
+			if( ch.length > 0 )
+				$('ProjectsTaskList:ref:toDelFromTL').value =  ch.join( ':' );
+			else
+				$('ProjectsTaskList:ref:toDelFromTL').value = ':';
+				
+			//alert($('ProjectsTaskList:ref:toDelFromTL').value);
+			
+		}
+
+		function efectToRows(){
+			$$('.red').each( function(e){
+				new Effect.Highlight( e, { startcolor: '#F47878',endcolor: '',duration: 10 });
+			})
+          showMessageToUser('Some task can not be deleted for you', '');
+          setTimeout('Effect.Fade(\'infoToUser\')', 10000);       
+		}
+
         showActionSuccess();
         gCal = false;
         
@@ -708,5 +740,6 @@ if( !finalErr){
        
     </script>
     <input type="text" id="dateHidden" value="" onchange="setValsAndCloseCalendar();" style="display: none;"/>
-    <apex:outputpanel id="auxProjectTaskListPanel" />
+    <apex:outputpanel id="auxProjectTaskListPanel" >
+    </apex:outputpanel>
 </apex:page>

@@ -1,0 +1,60 @@
+<apex:component id="projectOverlayDeleteAttachment" controller="ProjectDetailAttachmentController" allowDML="true" >
+	<script>
+		function deleteChangeOverlay(){
+			document.getElementById('overlayMain').style.display = 'none';
+			document.getElementById('overlayDeleting').style.display = 'block';
+		}
+	</script>
+	<!-- Content  -->
+	<div id="DeleteAttachmentOverlay" style="display: none;" class="overlayForm">
+		<div class="swirly_overlay" id="sw_ov" style="display: none;"></div>
+ 
+		<!-- Overlay Title -->
+		<div class="overlayTitleContent">
+			<div class="overlayTitle">Delete Attachment</div>
+			<div class="overlayCloseEvent">
+				<a href="Javascript:;" onclick="modal.close();"> 
+					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}"	alt="Close Window" title="Close Window" /> 
+				</a> 
+			</div>
+		</div>
+		
+		<div id="overlayDeleting" class="overlayMainContent" style="display:none;">
+			Deleting...
+		</div>
+		
+		<div id="overlayMain" class="overlayMainContent">
+			<!-- Action Status -->
+			<div id="overlayFormStatus" class="overlayFormStatus" style="display:none;">
+				{Status...}
+			</div>
+			<!-- Overlay Form -->
+			
+			<apex:form id="overlayForm2">
+				<apex:inputHidden id="idToDelete" value="{!EmptyValue}" />
+				<!-- Overlay Form Content -->
+				<div class="overlayFormContent">
+					<strong>Are you sure you want to continue?</strong><br />
+					<span>Once an Attachment is deleted, it is not recoverable</span>
+				</div>
+				<div class="overlaySeparateLine" />
+				<!-- Delete and Cancel Buttons -->
+				<div class="overlayFromButtons" align="center">
+
+					<apex:commandButton id="DeleteAttachmentBtn" 
+										styleClass="btn allButtons" 
+										style="background:#21637D none repeat scroll 0 0 !important; !important;" 
+										action="{!deleteAttach}" 
+										value="Continue and delete Attachment" 
+										onclick="deleteChangeOverlay()" 
+										rerender="projectAttachmentWidget" 
+										oncomplete="modal.close();"  />
+						                                               
+			        <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="modal.close();" value="Cancel"/>
+				</div>
+			</apex:form> 
+		</div>
+
+	</div>                          
+	 
+</apex:component>

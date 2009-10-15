@@ -1,0 +1,104 @@
+<apex:page sidebar="false" id="ProjectsTaskList" controller="ProjectAttachmentListController" tabstyle="Project2__c">	
+   
+    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
+   
+    <!-- Prototype / Scriptaculous Framework -->  
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/> 
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectLayout.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskList.css')}" />   
+    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />
+   
+    <!-- Portal Support -->
+    <apex:includeScript value="{!$Resource.portalSupport}"/> 
+   
+    <!-- CSS styles for Portal Integration -->
+    <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsTable.css')}" />
+   
+    <!-- ### Styles ### -->
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgets/TeamsOverlayNewTask.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />       
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/calendarview.css')}" />       
+   
+    <!-- ProjectTaskList CSS -->
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskList.css')}" />
+   
+   	<c:ProjectOverlayDeleteAttachment />
+   	 
+    <style>
+        #paginationOverlay{
+            background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat center;
+        }
+        .borderRed{
+            border-color: red;
+        }
+        .colorRed{
+            color: red;
+        }
+    </style>
+   
+    <!-- ProjectTaskList JS -->
+    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskList.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/calendarview.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/datepicker.js')}"/>
+   
+   
+    <c:ProjectOverlayNewTask />
+    <c:ProjectOverlayNewMilestone />
+    <c:ProjectDeleteTaskOverlay id="componentDeleteTask" />
+    <div class="confirmation" id="confirmation" style="display:none;">
+      
+    </div>
+    <!-- Projects overlay new task (quick task)  -->
+   
+   <!-- Header -->
+        <apex:composition template="HeaderTemplate">
+            <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
+            <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
+            <apex:define name="title">Project Detail</apex:define>
+            <apex:define name="search">
+                <c:Search module="project" projectId="{!teamIdParam}" label="Tasks"/>
+            </apex:define>
+        </apex:composition> 
+ 
+    <!-- Main Content Div -->
+    <div class="main_content_projectList" id="main_content_projectList">
+       
+        <!-- BreadCrumb and buttons -->    
+        <div align="center" class="breadCrumbAndButtons">
+               <apex:outputpanel layout="block" styleclass="breadCrumbs">
+                 <div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
+                    <a  href="/apex/ProjectDetail?id={!teamIdParam}" title="{!ProjectName}"><apex:outputText escape="true" value="{!ProjectName}" /></a> >                                    
+                    <apex:outputpanel layout="block" rendered="{!IF(LEN(ProjectName) > 24,true,false)}"
+                    style="display: none;z-index:9999;" styleClass="mouseOverInfo">
+                        <div class="body">{!ProjectName}</div>
+                    </apex:outputpanel>
+                </div>   
+                <strong>Project attachments</strong>
+              </apex:outputpanel>
+        </div>
+
+        <!-- Holder --> 
+        <div class="informationPanel clear" id="infoToUser" style="display:none;"></div>
+        <div id='holder' class="holder" >
+            <!-- Overlay -->
+            <div id="paginationOverlay" style="display:none;"></div> 
+            
+            <div class="swirlyDetail" style="display: none;" />
+            
+            <apex:form id="mainContentForm">
+    
+            	<!-- Project Attachments (Overlay and Widget) -->
+                <c:ProjectOverlayNewAttachment parentId="{!teamIdParam}" />
+                <c:ProjectAttachments project="{!teamIdParam}"/>
+                    
+            </apex:form> 
+            
+        </div>  
+    </div>  
+    
+</apex:page>

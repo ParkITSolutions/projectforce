@@ -138,7 +138,7 @@
 								<td><apex:inputCheckbox id="assignedToMe" value="{!subscription.ProjectTaskAssignedToMe__c}"/></td>
 							</tr>
 							<tr>
-								<td class="labelTD"><label for = "ProjectSubscription:form_content:assignedToMeChanged">When a task assigned to me has been changed by another </label></td>
+								<td class="labelTD"><label for = "ProjectSubscription:form_content:assignedToMeChanged">When a percent of a task assigned to me has been changed by another </label></td>
 								<td><apex:inputCheckbox id="assignedToMeChanged" value="{!subscription.ProjectTaskAssignToMeChanged__c}"/></td>
 							</tr>
 							<tr>

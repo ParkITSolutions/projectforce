@@ -52,6 +52,10 @@
                 <behavior>Edit</behavior>
                 <field>Milestone__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>TaskPosition__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>
