@@ -3,6 +3,18 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <description>ProjectTask</description>
     <fields>
+        <fullName>Currency__c</fullName>
+        <label>Currency</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>DateTime__c</fullName>
+        <label>DateTime</label>
+        <type>DateTime</type>
+    </fields>
+    <fields>
         <fullName>Description__c</fullName>
         <description>Description</description>
         <label>Description</label>
@@ -27,9 +39,23 @@
         <type>Number</type>
     </fields>
     <fields>
+        <fullName>Email__c</fullName>
+        <externalId>true</externalId>
+        <label>Email</label>
+        <type>Email</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
         <fullName>EndDate__c</fullName>
         <description>EndDate</description>
         <label>End Date</label>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Formula__c</fullName>
+        <formula>Today()</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Formula</label>
         <type>Date</type>
     </fields>
     <fields>
@@ -75,6 +101,11 @@
         <precision>17</precision>
         <scale>1</scale>
         <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Phone__c</fullName>
+        <label>Phone</label>
+        <type>Phone</type>
     </fields>
     <fields>
         <fullName>Priority__c</fullName>
@@ -164,6 +195,11 @@
         <label>TaskSyncId</label>
         <length>50</length>
         <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>URL__c</fullName>
+        <label>URL</label>
+        <type>Url</type>
     </fields>
     <label>Project Task</label>
     <nameField>

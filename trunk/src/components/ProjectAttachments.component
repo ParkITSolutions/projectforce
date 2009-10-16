@@ -4,6 +4,7 @@
 	
 	<!-- ProjectDetailAttachmentOverlay Common JS -->
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectDetailAttachment.js')}"/>
+	<apex:includeScript value="{!URLFOR($Resource.Attachments, 'inc/js/attachments.js')}"/>
 	
 	<style>
 		div.wideBody div.swirlyAttachment{
@@ -35,7 +36,6 @@
     z-index: 9999;
     top: 0;
     left: 0pt;
-    display: none;
     
 }
 	</style>	
@@ -48,8 +48,11 @@
     					
 
 	<!-- Generic Refresh Attachment Method -->
-	<apex:actionFunction name="refreshAttachmentList" action="{!readAttachments}" rerender="projectAttachmentWidget" oncomplete="hideSwirly('swirlyAttachment');" />
-	
+	<apex:actionFunction name="refreshAttachmentList" 
+						 action="{!readAttachments}" 
+						 rerender="generalPanel" 
+						 oncomplete="hideSwirly('swirlyAttachment'); $('paginationOverlay').hide();" />
+		
 								<apex:outputpanel styleClass="buttons"  layout="block">
                                     <table align="center" cellpadding="0" cellspacing="0">
                                         <tr>
@@ -62,9 +65,9 @@
                                             </td>
                                             <td>
                                                 <apex:outputpanel layout="block">
-                                                        <a class="blackbutton" onclick="bulkTaskDelete();">
-                                                            <span>Delete</span>
-                                                        </a>
+	                                            	
+	                                                <a class="blackbutton"  href="javascript:;" onclick="createOverlay('', 'DeleteAttachmentOverlay', 180); setAttachmentsChecked()" ><span>Delete</span></a>
+	                                                 
                                                 </apex:outputpanel>
                                             </td>
                                         </tr>
@@ -72,8 +75,13 @@
                                     </table>
                                 </apex:outputpanel>
                                 
+                    <apex:outputpanel id="generalPanel">
+                                
                          		   <!-- Pagination -->
-                                   <apex:outputpanel id="paginationLinks" styleClass="pagination" layout="block" rendered="{!IF(AND(prevPageShow,nextPageShow),false,true)}">
+                                   <apex:outputpanel id="paginationLinks" 
+                                   					 styleClass="pagination" 
+                                   					 layout="block" 
+                                   					 rendered="{!IF(totalItemsNumber > numberOfItemsToShow, true,false)}">
                                     <div class="pages">
                                         <ul>
                                             <li class="prev {!IF(prevPageShow,'prev_disabled','')}">
@@ -90,11 +98,12 @@
                                 </apex:outputpanel>
                              
 						<div class="wideBody">
-							<div class="swirlyAttachment" ></div>
+							<div class="swirlyAttachment" style="display:none;"></div>	
 						
 						<!-- Attachment List Table -->
                         <apex:outputPanel id="projectAttachmentWidget" rendered="{!IF(totalItemsNumber > 0,true, false)}">                
-                            <table class="pageList" >
+                            
+                            <table id="attachmentTable" class="pageList" >
                                 <!-- Table Head -->
                                 <thead>
                                     <tr>
@@ -126,11 +135,11 @@
                                     <!-- item START -->          
                                     <apex:repeat var="attachment" value="{!attachments}" rows="{!numberOfItemsToShow}" first="{!firstRow}" id="taskList">
                                         <tr>
-                                        	<td align="center">
-                                                 <input type="checkbox" value="{!attachment.Id}"/>
+                                        	<td align="center" id="chkAttach">
+                                                 <input type="checkbox" value="{!attachment.Id}" />
                                             </td>
                                             <td align="center">
-                                                <a href="javascript:;" onclick="createOverlay('', 'DeleteAttachmentOverlay', 180); document.getElementById('ProjectsTaskList:j_id16:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!attachment.Id}';">Delete</a>
+                                                  <a href="javascript:;" onclick="createOverlay('', 'DeleteAttachmentOverlay', 180); document.getElementById('ProjectAttachmentList:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!attachment.Id}';">Delete</a> 
                                             </td>
                                             <td align="center">
                                                 <img style="vertical-align:bottom;" src="https://{!domain}{!URLFOR($Resource.FileTypeIcons, attachment.attachImage)}"/> &nbsp;
@@ -152,25 +161,11 @@
                                     </apex:repeat>
                                 </tbody>
                             </table>
+                           
+                            
                         </apex:outputPanel><!-- End Attachment List Table -->
 						</div> <!-- end wideBody -->
-						
+					</apex:outputpanel> <!-- end general panel -->
 					</div><!-- holder -->
-					
-					
-	<script>
-function openAttachmentOverlay(){
-
-    createOverlay('', 'newAttachmentOverlay', 180);
-
-    newAttachmentToProject();
-
-    observeIframeUpload();
-
-    //Hack for IE6
-
-    $('uploadIframe').src = $('uploadIframe').src;
-    newAttachmentToProject();
-
-}	</script>
+	
 </apex:component>

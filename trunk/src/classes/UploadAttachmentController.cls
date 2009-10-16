@@ -6,7 +6,10 @@ public class UploadAttachmentController {
 	// Parent Id parameter
 	public String parentId = System.currentPageReference().getParameters().get('pId');
 	
-	//Set as Avatar
+	// First-time indicator
+	public String t = System.currentPageReference().getParameters().get('t');
+	
+	// Set as Avatar
 	public String asAvatar = '';
 	
 	// Set place witch the Form is used
@@ -39,6 +42,22 @@ public class UploadAttachmentController {
 	*/
 	public void setParentId (String parentId) {
 		this.parentId = parentId;
+	}
+	
+	/**
+	*@return String
+	*/
+	public String getT () {
+		return t;
+	}
+	
+	/**
+	* Set t
+	*@param String parentId
+	*@return void
+	*/
+	public void setT (String parentId) {
+		this.t = t;
 	}
 	
 	/**
@@ -137,6 +156,7 @@ public class UploadAttachmentController {
 			PageReference pageRef = Page.UploadAttachment;
 			pageRef.setRedirect(true);
 			return pageRef;
+			
 			
 		}else{ 
 			if(newAttach.BodyLength < 1 || newAttach.BodyLength == null){ 

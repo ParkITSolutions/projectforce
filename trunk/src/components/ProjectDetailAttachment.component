@@ -12,8 +12,12 @@
 	</style>	
 
 	<!-- Generic Refresh Attachment Method -->
-	<apex:actionFunction name="refreshAttachmentList" action="{!readAttachments}" rerender="projectAttachmentWidget" oncomplete="hideSwirly('swirlyAttachment');" />
+	<apex:actionFunction name="refreshAttachmentList" 
+						 action="{!readAttachments}" 
+						 rerender="projectAttachmentWidget, seeMoreLink" 
+						 oncomplete="hideSwirly('swirlyAttachment');" />
 	
+	<apex:actionFunction name="reloadIframe" action="{!dummyRefresh}" rerender="iframeWrapperPanel" />
 	<apex:outputPanel layout="block">
 		<div class="myBigWidget">
 			<!-- Widget Title -->		
@@ -23,7 +27,7 @@
 			<!-- Widget Links Holder -->
 			<div class="linkAction">
 				<apex:outputpanel rendered="{!userPermissions.canCreate}">
-					<a href="Javascript:;" onclick="openAttachmentOverlay();">New Attachment</a>
+					<a href="Javascript:;" onclick="fixedModalNewAttachment.open();">New Attachment</a>
 				</apex:outputPanel>
 				
 			</div>
@@ -40,10 +44,10 @@
 								<td>Created Date</td>
 								<td>Created By</td>				 										
 							</tr>
-							<apex:repeat value="{!attachments}" var="attachment">									
-								<tr>
+							<apex:repeat value="{!attachments}" var="attachment" rows="{!numberOfItemsToShowSummary}">									
+								<tr> 
 									<td>
-										<a href="javascript:;" onclick="createOverlay('', 'DeleteAttachmentOverlay', 180); document.getElementById('j_id0:j_id9:j_id10:overlayForm2:idToDelete').value ='{!attachment.Id}';">Delete</a>
+										<a href="javascript:;" onclick="createOverlay('', 'DeleteAttachmentOverlay', 180); document.getElementById('ProjectDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!attachment.Id}';">Delete</a>
 									</td>
 									<td> 
 										<img style="vertical-align:bottom;" src="https://{!domain}{!URLFOR($Resource.FileTypeIcons, attachment.attachImage)}"/> &nbsp;
@@ -60,22 +64,33 @@
 									</td>
 								</tr>
 							</apex:repeat>
+								<tr>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									
+								</tr>
 						</table>
-					</apex:outputPanel>
+						<apex:outputpanel id="seeMoreLink" style="float: right" rendered="{!IF(totalItemsNumber > numberOfItemsToShowSummary, true,false)}">
+											<span class="linkAction">Displaying {!numberOfItemsToShowSummary} of {!totalItemsNumber} attachments. </span><br>
+											<a href="projectAttachmentList?id={!project}" title="See all attachments" >  See More&#187;</a>
+										</apex:outputPanel>
+						</apex:outputPanel>
+					
 					<apex:outputPanel rendered="{!IF(attachmentCount, false, true)}">
 						<ul class="noattachment">
 							<li>
 								No Attachments Yet<br/>
 								<apex:outputpanel rendered="{!userPermissions.canCreate}"  > 
-									<a  href="javascript:;" onclick="openAttachmentOverlay();">Attach a new file</a>
+									<a  href="javascript:;" onclick="fixedModalNewAttachment.open();">Attach a new file</a>
 								</apex:outputpanel>
 							</li>
 						</ul>
 					</apex:outputPanel>
 				</apex:outputPanel>
-				<apex:outputpanel style="float: right" rendered="{!IF(attachmentCount, true, true)}">
-					<a href="#" title="See all attachments" >  See More&#187;</a>
-				</apex:outputPanel>
+				
 			</div>
 		</div>
 	</apex:outputPanel>

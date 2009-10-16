@@ -15,7 +15,8 @@ public with sharing class ProjectTaskListController {
     public String filter = System.currentPageReference().getParameters().get('filter');
     public Filter advanceFilter = new Filter(PROJECTID);
     public Boolean filterApplyed = false;
-   
+    public Boolean someTaskCantBeDel = false;
+    
     public List<ProjectTask__c> ListTask = new List<ProjectTask__c>();
     public Map<String, User> mapAsignees = new Map<String, User>();
     public List<TaskDetails> taskList = new List<TaskDetails>();
@@ -117,17 +118,35 @@ public with sharing class ProjectTaskListController {
     }
     
     public void verifyIdsToDel(){
-    	System.debug('+>>>>>>' + 'devug' + this.idsToDelSet);
-    	
-    	List<ProjectTask__c> tList = new List<ProjectTask__c>();
-    	
-    	tList = [ SELECT Id FROM ProjectTask__c WHERE Id IN: idsToDelSet AND OwnerId =: UserInfo.getUserId()];
-    	
-    	
-    	refreshTaskList();
+    	if ( this.userPermissions.getCanManage() == false ) {
+	    	List<ProjectTask__c> tList = new List<ProjectTask__c>();
+	    	
+	    	tList = [ SELECT Id, CreatedById FROM ProjectTask__c WHERE Id IN: idsToDelSet AND CreatedById =: UserInfo.getUserId()];
+	    	
+	    	this.idsToDel = '';
+	    	for( ProjectTask__c e : tList ){    		
+	    		if( this.idsToDelSet.contains( e.id ))
+	    		this.idsToDelSet.remove( e.id );
+	    		this.idsToDel += e.id + ':';
+	    	}	
+	    	
+	    	if( this.idsToDelSet.size() > 0 ){
+	    		refreshTaskList();
+	    		this.setSomeTaskCantBeDel( true );
+	    	}else
+	    		this.setSomeTaskCantBeDel( false );
+    	}
     }
     
 
+    public void setSomeTaskCantBeDel( Boolean b){
+    	this.someTaskCantBeDel = b;
+    }
+    
+    public Boolean getSomeTaskCantBeDel(){
+    	return this.someTaskCantBeDel;
+    }
+   
     /**
     *Get option
     *@return String

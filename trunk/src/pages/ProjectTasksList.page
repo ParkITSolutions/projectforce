@@ -37,10 +37,8 @@
         .colorRed{
             color: red;
         }
-        
-        .red{
-        	/*background: red;*/
-        }
+        .chk{}
+        .red{}
     </style>
    
     <!-- ProjectTaskList JS -->
@@ -58,87 +56,6 @@
         var boobleBoo = false;
         document.observe("dom:loaded", documentLoad );           
        
-        /**
-        * Show/Hide advance filter
-        */
-        function advancedFilter(){
-       
-            $( 'advFilterShow' ).style.display == 'none' ? $( 'advFilterShow' ).show() : $( 'advFilterShow' ).hide();
-            $( 'advFilterHide' ).style.display == 'none' ? $( 'advFilterHide' ).show() : $( 'advFilterHide' ).hide();           
-            if( $( 'advancedFilterContainer2' ).style.display == 'none'){
-                $( 'advancedFilterContainer2' ).show();
-                boobleBoo = true;
-            }
-            else{
-                $( 'advancedFilterContainer2' ).hide();
-                boobleBoo = false;
-            }
-        }
-       
-        /**
-        * Open advance filter on rerender action
-        */
-        function advFilterAfterRerender(){
-            if( boobleBoo ){
-                $( 'advFilterShow' ).style.display = 'none';
-                $( 'advFilterHide' ).style.display = 'block';
-                   $( 'advancedFilterContainer2' ).show();
-            }
-            if($('paginationOverlay').style.display == ''){
-                showHideOverlay();
-            }
-        }
-       
-        /**
-        * Validate Save Filter name
-        */
-        function validateFilterName (){
-            if($$('.savedFilterName')[0].value == ''){
-                alert('Please enter Filter name');
-                return false;
-            }else{
-                   setTimeout('modal.close();', 1000);
-                showHideOverlay();
-                $$('.SaveFilterBtn')[0].hide();
-                return true;
-            }
-        }
-        
-        function showMessage(checkedParent){
-            if(!compleatingTwice){
-                if(checkedParent==''){
-                    showMessageToUser('The selected tasks have been marked complete', 'success');
-                }else{
-                    showMessageToUser('Percentage in parent task taks can\'t be modify' , '')
-                    //hightLightParentChecked(checkedParent);
-                }
-                setTimeout('Effect.Fade(\'infoToUser\')', 10000);       
-            }
-        }
-        
-      function hightLightParentChecked(checkedParent){
-        if(checkedParent!=''){
-            var table = $$('.pageList')[0];
-            var rows = table.getElementsByTagName('tr');
-            for (var i = 1; i<rows.length; i++){
-                var inputs = rows[i].getElementsByTagName('input');
-                var it=0;
-                while((it < inputs.length) && (checkedParent.indexOf(inputs[it].value) == -1)){
-                    ++it;
-                }
-                if(it!=inputs.length){
-                    new Effect.Highlight(rows[i], { startcolor: '#F47878',endcolor: '',duration: 10 });
-                    inputs[it].checked = true;
-                }
-            }
-        }
-       }
-        
-        function refreshList(){
-        	if(!compleatingTwice){
-		        refreshListSort();
-        	}    	
-        }
         
     </script>
 
@@ -230,9 +147,9 @@
                                             </td>
                                             <td>
                                                 <apex:outputpanel layout="block">
-                                                        <a class="blackbutton" onclick="bulkTaskDelete();">
-                                                            <span>Delete</span>
-                                                        </a>
+	                                            	<apex:commandLink action="{!verifyIdsToDel}" styleClass="blackbutton" rerender="taskList" oncomplete="verifyPermisions();" onclick="$('paginationOverlay').show();">
+	                                                    <span>Delete</span>
+	                                                </apex:commandLink> 
                                                 </apex:outputpanel>
                                             </td>
                                         </tr>
@@ -370,7 +287,7 @@
                                     <tr>
                                         <th width="4%">
                                             <apex:outputpanel layout="block">
-                                                <input type="checkbox" onclick="markCheckboxes(this);" id="checkMaster"/>
+                                                <input type="checkbox" onclick="markCheckboxes(this);getCheccked()" id="checkMaster"/>
                                             </apex:outputpanel>
                                         </th>
                                         <th width="8%" style="padding:3px 0px;"> Action </th>                           
@@ -473,7 +390,7 @@
                                 <tbody>
                                     <!-- item START -->          
                                     <apex:repeat var="task" value="{!taskList}" rows="{!numberOfItemsToShow}" first="{!firstRow}" id="taskList">
-                                        <tr {!IF(OR(task.comparoFecha, task.highliteTask==true ) ,'class=\"red\"','')} >
+                                        <tr class="{!IF(task.comparoFecha, 'red','')} {!IF(task.highliteTask, 'chk','')}" > 
                                             <td align="center">
                                                 <apex:outputpanel rendered="{!IF(OR(OR(editDeletePer,task.canEditAndDelete), task.isTaskOwner) ,true,false)}" layout="block">
                                                      <input type="checkbox" class="checkbox" value="{!task.Id}" onclick="getCheccked();" />
@@ -601,7 +518,7 @@
                                         </td>
                                         <td>
                                             <apex:outputpanel layout="block">
-                                            	<apex:commandLink action="{!verifyIdsToDel}" styleClass="blackbutton" rerender="taskList" oncomplete="cabu();">
+                                            	<apex:commandLink action="{!verifyIdsToDel}" styleClass="blackbutton" rerender="taskList" oncomplete="verifyPermisions();" onclick="$('paginationOverlay').show();">
                                                     <span>Delete</span>
                                                 </apex:commandLink> 
                                             </apex:outputpanel>
@@ -620,7 +537,7 @@
                         rerender = '{!$Component.getList}';        
                     </script>
                     <apex:actionFunction name="taskListRefresh" action="{!refreshTaskList}" rerender="taskListPanel" oncomplete="advFilterAfterRerender();$('ProjectsTaskList:ref:toDelFromTL').value ='';" />                    
-					<apex:actionFunction name="cabu" action="{!verifyIdsToDel}" rerender="taskListPanel" oncomplete="advFilterAfterRerender();efectToRows();"/>	
+					<apex:actionFunction name="verifyPermisions" action="{!verifyIdsToDel}" rerender="taskListPanel" oncomplete="advFilterAfterRerender();efectToRows('{!SomeTaskCantBeDel}');"/>	
                	<apex:inputHidden id="toDelFromTL" value="{!IdsToDel}" /> 
                 </apex:form>
             </apex:outputpanel>   
@@ -638,105 +555,11 @@
     </style>
     <script>
 
-		function getCheccked(){ 
-			ch = new Array();
-			$$('.checkbox').each( function( e ){
-			    if( e.type == 'checkbox' && e.checked == true )
-			    ch.push( e.value );
-			});
-			
-			
-			
-			if( ch.length > 0 )
-				$('ProjectsTaskList:ref:toDelFromTL').value =  ch.join( ':' );
-			else
-				$('ProjectsTaskList:ref:toDelFromTL').value = ':';
-				
-			//alert($('ProjectsTaskList:ref:toDelFromTL').value);
-			
-		}
 
-		function efectToRows(){
-			$$('.red').each( function(e){
-				new Effect.Highlight( e, { startcolor: '#F47878',endcolor: '',duration: 10 });
-			})
-          showMessageToUser('Some task can not be deleted for you', '');
-          setTimeout('Effect.Fade(\'infoToUser\')', 10000);       
-		}
-
-        showActionSuccess();
-        gCal = false;
         
-         window.onload = function(){ Calendar.setup({
-             dateField     : 'dateHidden',
-             triggerElement: 'dateHidden'
-          });
-          gCal = true;
-          document.observe('keypress', respondToClick);
-          $('advancedFilterContainer2').remove();
-          }
-
-        genCal();
-        var f = '';
-        function respondToClick(event) {
-          if( event.keyCode == 13 )
-            if( f == 'newFilter' )
-                $$('.blackbutton')[7].onclick();
-            else if( f == 'savedFilter' )
-                $$('.blackbutton')[5].onclick();
-                
-            f = '';
-        }
-
-        function validateDynForm(){
-    noErr = true;
-    finalErr = false;;
- $('advancedFilterContainer2').descendants().each(function(e){
-
-    e.style.borderColor = '';
-    idMess = '';
-
-    if( e.type == 'text' ){
-
-        e.value.strip();
-        if( e.title == 'MM/DD/YYYY' ){
-            idMess = e.alt;     
-            date = e.value.split('-');
-            if( e.value != '' )
-                noErr = date.length == 3 &&
-                        date[ 0 ].length == 4 && 0 < date[ 0 ] &&
-                        date[ 1 ].length == 2 && 0 < date[ 1 ] && date[ 1 ] < 13 && 
-            date[ 2 ].length == 2 && 0 < date[ 2 ] && date[ 2 ] < 32;
-        }else if( e.className == 'STRING' ){
-            idMess = e.alt + "_int";        
-            if( e.title == 'Duration' ){
-                noErr = !isNaN(e.value);
-            }
-        }else if( e.className == 'PERCENT' ){
-            idMess = e.alt + "_percent";        
-            noErr = !isNaN(e.value);
-            if( noErr && e.value != '' ) {
-                val = parseInt( e.value );
-                noErr =  -1 < val && val < 101;
-            }
-        }
-        $( idMess ).hide();
-        if( !noErr ){ 
-            noErr = true;
-            e.style.borderColor = 'red';
-            $( idMess ).show();
-            finalErr = true;
-        }
-    }
-
-});  
-
-if( !finalErr){
-    showHideOverlay();
-    foo(); 
-
-}
-}
+         window.onload = function(){ 
+	         $('advancedFilterContainer2').remove();
+         }
        
     </script>
     <input type="text" id="dateHidden" value="" onchange="setValsAndCloseCalendar();" style="display: none;"/>

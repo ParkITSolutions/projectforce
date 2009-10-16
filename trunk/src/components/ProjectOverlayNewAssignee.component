@@ -37,7 +37,7 @@
                     <div class="overlayFormContent overlayFormContent2">
 
                         <!-- Members list (combobox) -->
-                        <apex:outputPanel id="membersComBoxCont" layout="block">
+                        <apex:outputPanel id="membersComBoxCont" layout="block" style="_height:80px;">
                         <table align="center">
                             <tr>
                                 <td align="right">

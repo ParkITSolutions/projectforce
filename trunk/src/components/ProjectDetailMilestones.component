@@ -52,7 +52,7 @@
 										<tr>
 											<td>Milestone Information</td>
 											<td>Assignee</td>
-											
+											<td>Date</td>
 										</tr>
 									</thead>
 									<tbody>
@@ -85,6 +85,9 @@
 												</td>
 												<td>
 													<a href="/{!task.UserId}"  class="name_margin">{!task.UserName}</a>
+												</td>
+												<td>
+													{!task.EndDate}
 												</td>
 											</tr>
 										</apex:repeat>  

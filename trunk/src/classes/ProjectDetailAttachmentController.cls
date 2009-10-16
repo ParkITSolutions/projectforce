@@ -13,11 +13,19 @@ public class ProjectDetailAttachmentController {
 	
 	private String emptyValue;
 	
+	private Integer numberOfItemsToShowSummary; //number of items displaying on project detail
+	
+	public void dummyRefresh () {}
+		
+	public Set<Id> idsToDelSet = new Set<Id>();
+   
+    public String idsToDel = ':';
+    
 	 /**
     * Set of Integers to control pagination
     */
     private Integer totalItemsNumber;
-    private Integer numberOfItemsToShow = 2;
+    private Integer numberOfItemsToShow = 10;
     private Integer cntPagination = 0;
     private Integer currentPagination = 1;
     private Integer firstRow = 0;
@@ -34,7 +42,28 @@ public class ProjectDetailAttachmentController {
 	
 	public ProjectDetailAttachmentController (){
 		domain = ProjectUtil.getDomain();
+		numberOfItemsToShowSummary = 5;
 	}
+	
+	 public void setIdsToDel( String ids ){ 
+    	idsToDel = ids;
+    }
+
+    public String getIdsToDel(){
+    	return idsToDel;
+    }
+    
+   	//massive deleting
+    public void deleteChecked(){
+    	for( String attachId : idsToDel.split( ':' )){
+    		
+    		Attachment attach = [select Id from Attachment where Id =: attachId];
+			delete attach;
+	
+    	}
+    	
+    	idsToDel='';
+    }
 	
 	 /**
     * Generates number of pages
@@ -121,6 +150,13 @@ public class ProjectDetailAttachmentController {
     public Integer getCurrentPagination () {
         return currentPagination;
     }
+    
+    /**
+    *@return Integer
+    */
+    public Integer getNumberOfItemsToShowSummary() {
+        return numberOfItemsToShowSummary;
+    }
 	
 	
 	 /**
@@ -167,10 +203,12 @@ public class ProjectDetailAttachmentController {
 	*@return void
 	*/
 	public void setProject(String id){
-		project = id;
+		
+		this.project = id;
+		
 		readAttachments();
 		
-		totalItemsNumber = attachments.size();
+		this.totalItemsNumber = attachments.size();
 		
 		genCntPagination();
 	}
@@ -240,14 +278,18 @@ public class ProjectDetailAttachmentController {
 		List<Attachment> attachmentsList = new List<Attachment>();
 		this.project = System.currentPageReference().getParameters().get('id');
 		if(project != null){
-			System.debug('\n\n========================\n' + project);
 			attachmentsList = [select name, id, parentid, ContentType, BodyLength, 
 								LastModifiedDate, LastModifiedBy.Name, CreatedById
 								from attachment 
 								where parentid =: project
-								order by name];
+								order by LastModifiedDate desc];
 		}
 		loadAttachmentList(attachmentsList);
+		
+		totalItemsNumber = attachments.size();
+		
+		genCntPagination();
+		
 	}       
 	
 	/**
@@ -260,7 +302,6 @@ public class ProjectDetailAttachmentController {
 		String avatarId;
 		
 		//Get current Avatar
-		System.debug('\n\n========================\n' + project);
 		avatarId = [ select Picture__c from Project2__c where Id =: project limit 1 ].Picture__c ;
 		
 		for (Attachment item: attachs){	
@@ -339,7 +380,6 @@ public class ProjectDetailAttachmentController {
 		attachments = attachList;
 	
 	}
-	
 
 	/**
 	* Delete Attachment
@@ -347,13 +387,29 @@ public class ProjectDetailAttachmentController {
 	*/
 	public void deleteAttach (){
 		String attachId = this.getIdToDelete();
-		System.debug('##### delete: '+attachId);
+		
 		if(attachId != null && attachId != ''){
 			
 			Attachment attach = [select Id from Attachment where Id =: attachId];
 			delete attach;
 			readAttachments();
-		}		
+			
+			this.totalItemsNumber = attachments.size();
+   			cntPagination = 0;
+    		currentPagination = 1;
+     		firstRow = 0;
+    
+    		prevPageLinkShow = false;
+    		prevPageShow  = false;
+    		nextPageLinkShow  = false;
+    		boolean nextPageShow  = false;
+    
+			genCntPagination();
+			
+			
+		}	
+		
+		deleteChecked();	
 	}
 	                                    
 	
