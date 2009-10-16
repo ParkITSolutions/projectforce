@@ -135,7 +135,7 @@
 					<!-- Save and Cancel Buttons -->
 					<div class="overlayFromButtons" align="center">
 						<apex:commandButton action="{!saveMembers}" 
-							oncomplete="hideOverlay(); ifError(); "
+							oncomplete="hideOverlay(); ifError(); apexAFRefreshDetail() "
 							onclick="validateColleguesInput()"
 							styleclass="btn allButtons" 
 							style="float: none;width: 70px !important;background: #21637D none repeat scroll 0 0 !important;" 

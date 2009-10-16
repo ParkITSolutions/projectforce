@@ -3,7 +3,7 @@
 	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/projectSubscribe.css')}" /> 
 	<style>
 	.LinkManageConf{
-		background: transparent url({!URLFOR($Resource.commonResources, 'images/icons/settings.png')}) no-repeat scroll left center;
+		background: transparent url({!URLFOR($Resource.commonResources, 'images/icons/settings.gif')}) no-repeat scroll left center;
 		padding-left: 20px;
 	}
 	</style>

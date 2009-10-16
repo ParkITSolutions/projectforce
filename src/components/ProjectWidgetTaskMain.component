@@ -23,9 +23,10 @@
 								<a href="javascript:;" id="filter" class="contact_border"  onclick="dropDownContact(this);">View: All Tasks</a>
 								<ul style="display:none;">
 									<li>
-										<apex:commandLink action="{!getAllProjectTasks}"  value="View..." rerender="{!$Component.noTopicList}" onclick="dropDownContact(document.getElementById('filter'));">
+										<a href="javascript:;" onclick="dropDownContact(document.getElementById('filter'));">
+											View...
 											<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/sortUp.png')}"/>
-										</apex:commandLink>
+										</a>
 									</li>
 									<li>
 										<apex:commandLink action="{!getAllProjectTasks}" id="refreshTaskWidget" value="All Tasks" rerender="{!$Component.TaskWidgetFull}" onclick="showLoaderAll(document.getElementById('filter'));dropDownContact(document.getElementById('filter'));" onComplete="hideLoader('results_task_loader');" />

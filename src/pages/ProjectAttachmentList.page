@@ -1,4 +1,10 @@
-<apex:page sidebar="false" id="ProjectsTaskList" controller="ProjectAttachmentListController" tabstyle="Project2__c">	
+<apex:page sidebar="false" id="ProjectAttachmentList" controller="ProjectAttachmentListController" tabstyle="Project2__c">	
+   
+    <!-- Ajax Toolkit -->
+    <script type="text/javascript" src="/soap/ajax/11.1/connection.js" ></script>
+    <script>
+        var API_SESSION_ID = '{!$Api.Session_ID}';
+    </script>
    
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}"/>
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
@@ -10,6 +16,14 @@
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectLayout.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskList.css')}" />   
     <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />
+    
+     <!-- Common JS for All Sections -->
+    <script type="text/javascript" src="{!URLFOR($Resource.ProjectResources, 'inc/js/TeamsWidgetCommon.js')}" ></script>
+    <script type="text/javascript" src="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}" ></script>
+    <script type="text/javascript" src="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" ></script>
+   
+    <script type="text/javascript" src="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupTop.js')}" ></script>
+    <script type="text/javascript" src="{!URLFOR($Resource.ProjectResources, 'inc/js/projectDetail.js')}" ></script>
    
     <!-- Portal Support -->
     <apex:includeScript value="{!$Resource.portalSupport}"/> 
@@ -27,7 +41,7 @@
     <!-- ProjectTaskList CSS -->
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskList.css')}" />
    
-   	<c:ProjectOverlayDeleteAttachment />
+   	<c:ProjectOverlayDeleteAttachment id="ProjectOverlayDeleteAttachmentInclude" />
    	 
     <style>
         #paginationOverlay{
@@ -94,7 +108,7 @@
     
             	<!-- Project Attachments (Overlay and Widget) -->
                 <c:ProjectOverlayNewAttachment parentId="{!teamIdParam}" />
-                <c:ProjectAttachments project="{!teamIdParam}"/>
+                <c:ProjectAttachments project="{!teamIdParam}" id="ProjectAttachmentsInclude"/>
                     
             </apex:form> 
             

@@ -8,6 +8,14 @@
         <value>Project Task</value>
     </caseValues>
     <fields>
+        <label><!-- Currency --></label>
+        <name>Currency__c</name>
+    </fields>
+    <fields>
+        <label><!-- DateTime --></label>
+        <name>DateTime__c</name>
+    </fields>
+    <fields>
         <label><!-- Description --></label>
         <name>Description__c</name>
     </fields>
@@ -20,8 +28,16 @@
         <name>Duration__c</name>
     </fields>
     <fields>
+        <label><!-- Email --></label>
+        <name>Email__c</name>
+    </fields>
+    <fields>
         <label><!-- End Date --></label>
         <name>EndDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Formula --></label>
+        <name>Formula__c</name>
     </fields>
     <fields>
         <label><!-- Id --></label>
@@ -47,6 +63,10 @@
     <fields>
         <label><!-- Percent Completed --></label>
         <name>PercentCompleted__c</name>
+    </fields>
+    <fields>
+        <label><!-- Phone --></label>
+        <name>Phone__c</name>
     </fields>
     <fields>
         <label><!-- Priority --></label>
@@ -116,6 +136,10 @@
     <fields>
         <label><!-- TaskSyncId --></label>
         <name>TaskSyncId__c</name>
+    </fields>
+    <fields>
+        <label><!-- URL --></label>
+        <name>URL__c</name>
     </fields>
     <layouts>
         <layout>ProjectTask Layout</layout>

@@ -25,7 +25,7 @@
 	<apex:includeScript value="{!$Resource.portalSupport}"/>	
 
 	<apex:outputpanel rendered="{!IF(parentId == null, true, false)}" style="display: block;" layout="block">
-		<div id="uploadFinished"></div>
+		<div id="uploadFinished"><script>parent.fixedModalNewAttachment.close();parent.reloadIframe();parent.showSwirly('swirlyAttachment');parent.refreshAttachmentList();</script></div>
 	</apex:outputpanel>
 	
 	<apex:outputpanel rendered="{!IF(parentId == null, false, true)}">
@@ -48,12 +48,12 @@
 						</apex:outputPanel>
 					</div>
 					<div class="overlaySeparateLine"></div>
-					<!-- Saven and Cancel Buttons -->
+					<!-- Save and Cancel Buttons -->
 					<div class="overlayFromButtons" align="center">
 						<apex:commandButton styleclass="btn allButtons" 
-							action="{!saveNewAttach}" value="Done" onclick="setUploadingStatus();" 
+							action="{!saveNewAttach}" value="Done" onclick="setUploadingStatus();"
 							style="float: none;width: 70px !important;background: #21637D none repeat scroll 0 0 !important;"/>
-						<apex:commandButton styleClass="btn allButtons" value="Cancel" style="float: none;width: 70px !important;background: #989999 none repeat scroll 0 0 !important;" onclick="cancelAction(); return false;"  />
+						<input id="cancelNewAttachBtn" type="button" class="btn allButtons" value="Cancel" style="float: none;width: 70px !important;background: #989999 none repeat scroll 0 0 !important;" onclick="parent.fixedModalNewAttachment.close(); cancelAction(); return false; "/>
 					</div>
 				</div>
 				<div class="uploadingStatus"></div>

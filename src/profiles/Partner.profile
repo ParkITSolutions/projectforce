@@ -67,10 +67,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProjectAttachmentsController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ProjectDeleteTaskOverlayController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1398,6 +1394,14 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
+        <field>ProjectTask__c.Currency__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>ProjectTask__c.DateTime__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
         <field>ProjectTask__c.Description__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
@@ -1411,7 +1415,15 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
+        <field>ProjectTask__c.Email__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
         <field>ProjectTask__c.EndDate__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>ProjectTask__c.Formula__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>false</editable>
@@ -1436,6 +1448,10 @@
     <fieldLevelSecurities>
         <editable>true</editable>
         <field>ProjectTask__c.PercentCompleted__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>ProjectTask__c.Phone__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
@@ -1464,6 +1480,10 @@
     <fieldLevelSecurities>
         <editable>true</editable>
         <field>ProjectTask__c.TaskSyncId__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>ProjectTask__c.URL__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>false</editable>
@@ -1647,6 +1667,13 @@
     </objectPermissions>
     <objectPermissions>
         <object>Contract</object>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <object>Foo__c</object>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>

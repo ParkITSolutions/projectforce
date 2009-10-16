@@ -1,7 +1,7 @@
 <apex:component id="projectOverlayDeleteAttachment" controller="ProjectDetailAttachmentController" allowDML="true" >
 	<script>
 		function deleteChangeOverlay(){
-			document.getElementById('overlayMain').style.display = 'none';
+			document.getElementById('overlayQuestion').style.display = 'none';
 			document.getElementById('overlayDeleting').style.display = 'block';
 		}
 	</script>
@@ -22,7 +22,7 @@
 		<div id="overlayDeleting" class="overlayMainContent" style="display:none;">
 			Deleting...
 		</div>
-		
+		<div id="overlayQuestion">
 		<div id="overlayMain" class="overlayMainContent">
 			<!-- Action Status -->
 			<div id="overlayFormStatus" class="overlayFormStatus" style="display:none;">
@@ -32,6 +32,7 @@
 			
 			<apex:form id="overlayForm2">
 				<apex:inputHidden id="idToDelete" value="{!EmptyValue}" />
+				<apex:inputHidden id="toDelFromTL" value="{!IdsToDel}" />
 				<!-- Overlay Form Content -->
 				<div class="overlayFormContent">
 					<strong>Are you sure you want to continue?</strong><br />
@@ -46,15 +47,15 @@
 										style="background:#21637D none repeat scroll 0 0 !important; !important;" 
 										action="{!deleteAttach}" 
 										value="Continue and delete Attachment" 
-										onclick="deleteChangeOverlay()" 
-										rerender="projectAttachmentWidget" 
-										oncomplete="modal.close();"  />
+										onclick="deleteChangeOverlay();" 
+										rerender="projectAttachmentWidget, paginationLinks" 
+										oncomplete="modal.close(); showHideOverlay(); refreshAttachmentList(); "  />
 						                                               
 			        <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="modal.close();" value="Cancel"/>
 				</div>
 			</apex:form> 
 		</div>
-
+	</div><!-- end overlayQuestion -->
 	</div>                          
 	 
 </apex:component>
