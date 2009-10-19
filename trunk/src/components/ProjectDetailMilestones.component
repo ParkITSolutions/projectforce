@@ -87,7 +87,7 @@
 													<a href="/{!task.UserId}"  class="name_margin">{!task.UserName}</a>
 												</td>
 												<td>
-													{!task.EndDate}
+													{!task.StartDate}
 												</td>
 											</tr>
 										</apex:repeat>  

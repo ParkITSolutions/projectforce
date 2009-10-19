@@ -11,8 +11,17 @@
 		function setUploadingStatus(){
 			$$('.inputFileDiv')[0].style.display = 'none';
 			$$('.uploadingStatus')[0].innerHTML = 'Uploading File, please wait...';
+			parent.document.getElementById('modalCloseButton').style.visibility = 'hidden';
 		}
-
+		
+		function initOverlay(){
+			parent.fixedModalNewAttachment.close();
+			parent.reloadIframe();
+			parent.showSwirly('swirlyAttachment');
+			parent.refreshAttachmentList();
+			parent.document.getElementById('modalCloseButton').style.visibility = 'visible';
+		}
+		
 	</script>
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/uploadAttachment.css')}" />
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/uploadAttachment.js')}" />
@@ -25,7 +34,7 @@
 	<apex:includeScript value="{!$Resource.portalSupport}"/>	
 
 	<apex:outputpanel rendered="{!IF(parentId == null, true, false)}" style="display: block;" layout="block">
-		<div id="uploadFinished"><script>parent.fixedModalNewAttachment.close();parent.reloadIframe();parent.showSwirly('swirlyAttachment');parent.refreshAttachmentList();</script></div>
+		<div id="uploadFinished"><script>initOverlay();</script></div>
 	</apex:outputpanel>
 	
 	<apex:outputpanel rendered="{!IF(parentId == null, false, true)}">

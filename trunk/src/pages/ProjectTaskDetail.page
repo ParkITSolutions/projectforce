@@ -147,20 +147,23 @@
 
         <!-- Holder -->     
         <div class="holder" style="overflow:hidden;clear:both;margin:0px;margin-left:200px;margin-bottom:0px;" id="holder">
-      
+      		
             <apex:outputpanel rendered="{!IF(!detailsOk,true,false)}"  layout="block">
                 <p>No Id given , no id to look for</p>
             </apex:outputpanel>
             <apex:outputpanel id="detailContainer" styleClass="projectTaskDetail" rendered="{!detailsOk}" layout="block" style="overflow:hidden; position:relative; clear:both;" >
 			
-					
-
                 <div style="display: none;" id="sw_all" class="swirly_members"></div>
+                <div style="display: none;" id="sw_all2" class="swirly_members"></div>
                 
                 <!-- Method to refresh task detail -->
                 <apex:form id="taskDetail" >               
                     <apex:detail subject="{!Task.Id}" relatedList="false"  title="false" />
-                    <apex:actionFunction name="apexAFRefreshDetail" action="{!doRefresh}" rerender="detailContainer, taskDetail" oncomplete="clearTableDetail();$( 'sw_all' ).hide();"/>
+                    <apex:actionFunction name="apexAFRefreshDetail" 
+                    	action="{!doRefresh}" 
+                    	rerender="detailContainer, taskDetail" 
+                    	oncomplete="clearTableDetail();$( 'sw_all' ).hide(); $( 'sw_all2' ).hide()"/>
+                    	
                 </apex:form>
                
                 <div class="bPageBlock">
@@ -188,6 +191,7 @@
                                     <!-- Upload Attachment -->
                                     <c:ProjectOverlayNewAttachment parentId="{!Task.Id}" />
 	                                <apex:outputPanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}">    
+	                                    
 	                                    <div class="DistincLink">
 		                                    <a href="Javascript:;" onclick="openAttachmentUploader();">
 		                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add Attachment" title="Add Attachment" />
@@ -224,9 +228,9 @@
                               	<td class="dataCol">
 	                            	<apex:outputpanel rendered="{!AND(NOT(MaxAssignees), OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe))}">
 	                                	<div class="DistincLink">
-	                                      	<a id="lnkAddAssignee" href="javascript:;" onclick="createOverlay('','addAssigneeOverlay','200','relocateOverlay()');refreshPercentList();" >
+	                                      	<a id="lnkAddAssignee" href="javascript:;" onclick="createOverlay('','addAssigneeOverlay','200','relocateOverlay()');refreshPercentList(); $('sw_o').show(); refreshMembers2()" >
 	                                      		<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add assignee" title="Add assignee" />
-	                                          	New assignee
+	                                          	New assignee_
 	                                      	</a>
 	                                	</div>
 	                             	</apex:outputpanel>

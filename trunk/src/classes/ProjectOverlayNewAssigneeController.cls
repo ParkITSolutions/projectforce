@@ -173,8 +173,8 @@ public class ProjectOverlayNewAssigneeController {
 	*Create a members list.
 	*@return void
 	*/
-	private void createMemList(){
-		System.debug('---------------------------->>>>>>>>>>>>>>>>>>>>>>>>> Start');
+	public void createMemList(){
+
 		List<ProjectMember__c> memList = new List<ProjectMember__c>();
 		List<ProjectAssignee__c> assi = new List<ProjectAssignee__c>();
 		List<String> idsAssi = new List<String>();
@@ -202,7 +202,6 @@ public class ProjectOverlayNewAssigneeController {
 				this.memberList.add( aMember );			
 			}
 		}	
-		System.debug('---------------------------->>>>>>>>>>>>>>>>>>>>>>>>> Start');
-		System.debug(this.memberList);	
 	}
+	
 }
