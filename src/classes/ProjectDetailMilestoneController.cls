@@ -136,7 +136,7 @@ public class ProjectDetailMilestoneController {
 				miMilestones.setTaskName(milestone.Name);
 				miMilestones.setTaskId(milestone.Id);
 				miMilestones.setStartDate(milestone.StartDate__c);
-				System.debug('\n\n=========================\n'+milestone.StartDate__c);
+				System.debug('\n\n=========================\n'+miMilestones.StartDate);
 				if(milestone.ProjectsAssignees__r.size() > 0){
 					miMilestones.setUser(userMap.get(milestone.ProjectsAssignees__r[0].User__c));					
 				}
@@ -164,7 +164,7 @@ public class ProjectDetailMilestoneController {
         public String DaysCount;
         public String UserId;
 		public String UserName;
-		public Date StartDate;
+		public String StartDate;
 		public String EndDate;
 		public String EndDateRight;
 		public Integer DayPercent;
@@ -261,12 +261,12 @@ public class ProjectDetailMilestoneController {
         /**
       	*@return String
       	*/
-      	public Date getStartDate() {
-      		return StartDate;
+      	public String getStartDate() {
+      		return this.StartDate;
         }
         
       	public void setStartDate(Date value) {
-      		Date StartDate = value;
+      		StartDate = String.valueOf(value);
         }
         
         /**

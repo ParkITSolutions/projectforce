@@ -135,7 +135,7 @@
 					<!-- Save and Cancel Buttons -->
 					<div class="overlayFromButtons" align="center">
 						<apex:commandButton action="{!saveMembers}" 
-							oncomplete="hideOverlay(); ifError(); apexAFRefreshDetail() "
+							oncomplete="hideOverlay(); ifError(); "
 							onclick="validateColleguesInput()"
 							styleclass="btn allButtons" 
 							style="float: none;width: 70px !important;background: #21637D none repeat scroll 0 0 !important;" 
@@ -154,7 +154,9 @@
 						</div>
 					</apex:outputPanel>
 					
-					<apex:actionFunction name="chch" rerender="auxP1, auxP2" oncomplete="$$('.swirly_overlay')[0].hide();$( 'modal_container' ).style.height = 120 + 'px';"/>				
+					<apex:actionFunction name="chch" 
+						rerender="auxP1, auxP2" 
+						oncomplete="$$('.swirly_overlay')[0].hide();$( 'modal_container' ).style.height = 120 + 'px';"/>				
 				</apex:form>
 			</div>
 		</div>
@@ -248,14 +250,15 @@
 					
 					<!-- Sync Save Members -->
 					<apex:form >
-						<apex:actionPoller action="{!syncSaveMembers}"
+						<apex:actionPoller action="{!syncSaveMembers}" 
 							enabled="{!initAddMembers}"
 							rerender="auxPanel, membersListContainer, thisForm" interval="5"
 							onComplete="refreshCount(); {!IF(initAddMembers, 'sSwirly();', 'hSwirly();')}" />
 						
 						<!-- Action Function for Refresh Member List -->
 						<apex:actionFunction name="rerenderMemberList"
-							action="{!refreshMethod}" rerender="membersListContainer" />
+							action="{!refreshMethod}" 
+							rerender="membersListContainer" />
 					</apex:form>
 					
 					<!-- Members Repeat -->

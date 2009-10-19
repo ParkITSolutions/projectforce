@@ -6,9 +6,6 @@ public class UploadAttachmentController {
 	// Parent Id parameter
 	public String parentId = System.currentPageReference().getParameters().get('pId');
 	
-	// First-time indicator
-	public String t = System.currentPageReference().getParameters().get('t');
-	
 	// Set as Avatar
 	public String asAvatar = '';
 	
@@ -17,7 +14,7 @@ public class UploadAttachmentController {
 	
 	// max attachment size bytes
     //public final Integer MAX_SIZE = 5240000;
-    public final Integer MAX_SIZE = 131000;
+    public final Integer MAX_SIZE = 100000;
     
     public Set<String> imagesTypes = new Set<String> {'image/jpeg', 'image/pjpeg', 'image/png', 'image/x-png', 'image/gif'};
   	
@@ -42,22 +39,6 @@ public class UploadAttachmentController {
 	*/
 	public void setParentId (String parentId) {
 		this.parentId = parentId;
-	}
-	
-	/**
-	*@return String
-	*/
-	public String getT () {
-		return t;
-	}
-	
-	/**
-	* Set t
-	*@param String parentId
-	*@return void
-	*/
-	public void setT (String parentId) {
-		this.t = t;
 	}
 	
 	/**
@@ -115,10 +96,9 @@ public class UploadAttachmentController {
 	public PageReference saveNewAttach () {
 		
 		newAttach.ParentId = parentId;
-		
+		System.debug('\n\n======================\n'+newAttach.BodyLength);  /** No se ve porque el metodo retorna un PageReference */
 		asAvatar = System.currentPageReference().getParameters().get('asAvatar');
 		if(newAttach.BodyLength <= MAX_SIZE){
-			
 			validAttSize = true;
 			
 			//Update project with current avatar

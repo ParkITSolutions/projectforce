@@ -446,7 +446,7 @@
                                                 <div class="proj_percent_complete_outline {!IF((task.PercentCompleted == 0),'zero','')}" id="track-{!task.id}">
                                                     <div class="proj_percent_complete_value" style="width:{!task.percentCompleted}%;" id="percentBar-{!task.id}"></div>
                                                 </div>
-                                                <div class="percent" id="percentNumber-{!task.id}">{!task.PercentCompleted}%</div>
+                                                <div class="percent" id="percentNumber-{!task.id}">&nbsp;{!task.PercentCompleted}%</div>
                                                 <div id="actualPercent-{!task.id}" style="display:none;">{!task.PercentCompleted}</div>                                     
                                             </td>
                                             <td class="imgColumns" align="center">

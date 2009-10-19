@@ -15,6 +15,7 @@
 
     <!-- Content  -->
     <div id="addAssigneeOverlay" style="display: none;" class="overlayForm">
+    <div style="display: none;" id="sw_all" class="swirly_members"></div>
 
         <div class="swirly_overlay" id="sw_o" style="display: none;" ></div>
 
@@ -30,10 +31,18 @@
 
         <div class="overlayMainContent">
         <!-- Required Information -->
+        
+        	<apex:form >
+        		<apex:actionFunction name="refreshMembers2" 
+                    	action="{!createMemList}"
+                    	rerender="membersComBox,membersComBoxCont"   
+                    	oncomplete="$('sw_o').hide();$('{!$Component.scaleComBox}').value=0;refreshDetail(); " />
+                    
+        	</apex:form>
 
             <span class="overlayRequiredInfo">= Required Information</span>
                 <apex:form id="newMemberForm" onSubmit="return validateFormNewAss();">
-                    <apex:actionFunction name="refreshMembers2" rerender="membersComBox,membersComBoxCont"   oncomplete="$('{!$Component.scaleComBox}').value=0;$('sw_o').hide();refreshDetail();" />
+                    
                     <div class="overlayFormContent overlayFormContent2">
 
                         <!-- Members list (combobox) -->
