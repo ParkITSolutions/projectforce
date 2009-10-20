@@ -40,21 +40,22 @@
 							<tr>
 								<td></td>
 								<td>Name</td>
-								<td>Weight(Kb)</td>
+								<td>Weight</td>
 								<td>Created Date</td>
 								<td>Created By</td>				 										
-							</tr>
+							</tr>    
 							<apex:repeat value="{!attachments}" var="attachment" rows="{!numberOfItemsToShowSummary}">									
 								<tr> 
 									<td>
 										<a href="javascript:;" onclick="createOverlay('', 'DeleteAttachmentOverlay', 180); document.getElementById('ProjectDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!attachment.Id}';">Delete</a>
 									</td>
-									<td> 
+									<td>
 										<img style="vertical-align:bottom;" src="https://{!domain}{!URLFOR($Resource.FileTypeIcons, attachment.attachImage)}"/> &nbsp;
 										<a href="#" onclick="window.open('https://{!domain}/servlet/servlet.FileDownload?file={!attachment.Id}')" > {!attachment.Name} </a>
-									</td>
+									</td>  
 									<td>
 										<apex:outputField value="{!attachment.Attachment.BodyLength}"/>
+										Kb
 									</td>
 									<td>
 										<apex:outputField value="{!attachment.Attachment.LastModifiedDate}"/>

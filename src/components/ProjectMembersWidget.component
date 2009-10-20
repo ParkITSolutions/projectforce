@@ -252,7 +252,7 @@
 					<apex:form >
 						<apex:actionPoller action="{!syncSaveMembers}" 
 							enabled="{!initAddMembers}"
-							rerender="auxPanel, membersListContainer, thisForm" interval="5"
+							rerender="auxPanel, membersListContainer, thisForm, detailListPanel" interval="5"
 							onComplete="refreshCount(); {!IF(initAddMembers, 'sSwirly();', 'hSwirly();')}" />
 						
 						<!-- Action Function for Refresh Member List -->

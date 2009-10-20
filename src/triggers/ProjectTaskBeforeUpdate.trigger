@@ -93,7 +93,7 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 				parent.parentTaskUpdate(tempPTOld, tempPTNew);
 			}else{
 				tempPTNew = duration.calculateTaskUpdate(tempPTOld, tempPTNew);
-				if(!ProjectUtil.flags.get('exeParentTaskUpdate') || !ProjectUtil.flags.containsKey('exeParentTaskUpdate'))
+				if(!ProjectUtil.flags.containsKey('exeParentTaskUpdate') || !ProjectUtil.flags.get('exeParentTaskUpdate'))
 					parent.parentTaskUpdate(tempPTOld, tempPTNew);
 			} 
 		}

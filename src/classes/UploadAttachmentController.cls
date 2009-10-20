@@ -14,7 +14,7 @@ public class UploadAttachmentController {
 	
 	// max attachment size bytes
     //public final Integer MAX_SIZE = 5240000;
-    public final Integer MAX_SIZE = 100000;
+    public final Integer MAX_SIZE = 131072; // 128Kb
     
     public Set<String> imagesTypes = new Set<String> {'image/jpeg', 'image/pjpeg', 'image/png', 'image/x-png', 'image/gif'};
   	
@@ -93,13 +93,15 @@ public class UploadAttachmentController {
 	* Save Attachment
 	*@return PageReference
 	*/
-	public PageReference saveNewAttach () {
+	public pageReference saveNewAttach () {
 		
 		newAttach.ParentId = parentId;
-		System.debug('\n\n======================\n'+newAttach.BodyLength);  /** No se ve porque el metodo retorna un PageReference */
+		System.debug('\n\n======================\n'+newAttach.BodyLength);
 		asAvatar = System.currentPageReference().getParameters().get('asAvatar');
 		if(newAttach.BodyLength <= MAX_SIZE){
 			validAttSize = true;
+			
+			System.debug('\n\n======================\n'+newAttach.BodyLength+' <= '+MAX_SIZE);
 			
 			//Update project with current avatar
 			if(asAvatar.equals('true') && imagesTypes.contains(newAttach.ContentType) && newAttach.name.length() < 71){
@@ -120,13 +122,15 @@ public class UploadAttachmentController {
 					update project;
 				}
 			}else if (asAvatar.equals('true') && newAttach.name.length() > 70){
-				errorMsg = 'The length of the attachment name must be less than 64.';
+				errorMsg = '<b>Error:</b> The length of the attachment name must be less than 64.';
+				System.debug('\n\n=====\n'+errorMsg);
 				validAttSize = false;
-				return null;				
+				//return null;				
 			}else if (asAvatar.equals('true')){
-				errorMsg = 'Please select an image file. Valid format: .jpeg, .pjpeg, .png, .x-png, .gif';
+				errorMsg = '<b>Error:</b> Please select an image file. Valid format: .jpeg, .pjpeg, .png, .x-png, .gif';
+				System.debug('\n\n=====\n'+errorMsg);
 				validAttSize = false;
-				return null;				
+				//return null;				
 			}else{
 				insert newAttach;
 			}
@@ -137,15 +141,26 @@ public class UploadAttachmentController {
 			pageRef.setRedirect(true);
 			return pageRef;
 			
-			
 		}else{ 
+			System.debug('\n\n======================\n trace (1)');
 			if(newAttach.BodyLength < 1 || newAttach.BodyLength == null){ 
-				errorMsg = 'Please select the file you want upload. Attachment size must be less than 128 KB.';
+				System.debug('\n\n======================\n trace (2)');
+				errorMsg = '<b>Error:</b> Please select the file you want upload. Attachment size must be less than 128 KB.';
 				validAttSize = false; 
 			}
+			
+			if (newAttach.BodyLength > MAX_SIZE) {
+				System.debug('\n\n======================\n trace (4)');
+				errorMsg = '<b>Error:</b> Attachment size must be less than 128 KB.';
+				validAttSize = false; 	
+			}	
+			
+			this.newAttach = new Attachment();
+			this.newAttach.body = null;
+			
 			return null;
 		}		
-
+		
 	}
 	
 	/**

@@ -977,7 +977,9 @@ public with sharing class ProjectTaskListController {
                     indexTask++;                      
                 }
                 if(!markingParent){
+                	ProjectUtil.setTaskDependenciesFlag(false);
                 	update tasksUpdate;
+                	ProjectUtil.setTaskDependenciesFlag(true);
                 }
 
             }else{

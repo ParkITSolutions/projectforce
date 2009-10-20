@@ -37,6 +37,7 @@ public class ProjectTaskDetailController {
 	*/	
 	public void doRefresh (){
 		this.getTask(param);
+		System.debug('##### doRefresh');
 	}
 	
 	/**

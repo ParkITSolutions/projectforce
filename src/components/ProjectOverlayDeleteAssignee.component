@@ -36,7 +36,12 @@
 				<!-- Saven and Cancel Buttons -->
 				<div class="overlayFromButtons" align="center">
 
-					<apex:commandButton id="DeleteAssigneeBtn" styleClass="btn allButtons" style="background:#21637D none repeat scroll 0 0 !important; !important;" action="{!deleteAssignee}" value="Continue and delete assignee" onclick="modal.close();showSwirl();" rerender="membersComBoxCont" oncomplete="refreshDetail()"  />
+					<apex:commandButton id="DeleteAssigneeBtn" 
+									    styleClass="btn allButtons" 
+									    style="background:#21637D none repeat scroll 0 0 !important; !important;" 
+									    action="{!deleteAssignee}" value="Continue and delete assignee" 
+									    onclick="modal.close();showSwirl(); $('sw_all2').show()" rerender="membersComBoxCont" 
+									    oncomplete="refreshDetail()"  />
 						
 			        <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="modal.close();" value="Cancel"/>
 				</div>
