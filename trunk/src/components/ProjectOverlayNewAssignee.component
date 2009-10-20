@@ -88,13 +88,13 @@
                             	rerender="newMemberForm"
                             	value="Save" oncomplete="refreshMembers2();modal.close()" 
                             	onClick="$('sw_o').show()" 
-                            	/>
+                            	onComplete="detailListPanel(); modal.close(); $('sw_all2').show()"/>
                             	
                             <apex:commandButton action="{!saveAssignee}" 
                             	styleClass="allButtons" 
                             	value="Save and new" 
                             	onclick="$('sw_o').show()" 
-                            	oncomplete="refreshMembers2()" />
+                            	oncomplete="refreshMembers2(); detailListPanel(); " />
                             	
                             <input id="cancelBtn" class="allButtons" type="button" value="Cancel" onclick="modal.close();stopFunction();" />
                     </div>

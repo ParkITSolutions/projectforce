@@ -6,6 +6,9 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
 	TaskDependencies td = new TaskDependencies(Trigger.new[0].project__c);
 	
 	List<String> lstPTId = new List<String>();
+	
+	List<String> mailingList = new List<String>();
+	
 	if(Trigger.old.get( 0 ).ParentTask__c == Trigger.new.get( 0 ).ParentTask__c){
 		BigListOfTasks bigListOfTask = new BigListOfTasks(Trigger.new.get(0).Project__c);
 	}
@@ -22,6 +25,8 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
     	if(tempPTOld.PercentCompleted__c != tempPTNew.PercentCompleted__c){
     		lstPTId.add(tempPTNew.Id);
     	}
+    	
+    	mailingList.add(Trigger.new.get( k ).Id);
     	
     
 	    //If parentTask changed Recalculate all Parents
@@ -48,25 +53,11 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
 			
 			//TODO refactor Child indent
 			ParentTask.callUpdateAllChildrenIndent(tempPTNew.Id, tempPTNew.Project__c); 
-			/*
-			//Reset big list with new taskList
-			BigListOfTasks bigListOfTa = new BigListOfTasks(tempPTNew.Project__c);
 			
-			//updates all childs Indent Value
-			parent.updateAllChildrensIndent(tsk);
-			//sets flags and updates the list of modified tasks
-			ProjectUtil.setFlagValidationParentTask(false);
-			//ProjectUtil.setParentTaskUpdateIndent(false);
-			ProjectUtil.setTaskDependenciesFlag( false );
-				update parent.indentUpdateTasks.values(); 
-			//ProjectUtil.setParentTaskUpdateIndent(true);
-			ProjectUtil.setTaskDependenciesFlag( true );
-			ProjectUtil.setFlagValidationParentTask(true);
-			*/
 	    }
     }
     
-    pEmail.sendMailForTaskChanged( lstPTId );
+    pEmail.sendMailForTaskChanged( mailingList );
     
     if(lstPTId.size() > 0){
     	pEmail2.sendMailForTaskPercentChanged( lstPTId );

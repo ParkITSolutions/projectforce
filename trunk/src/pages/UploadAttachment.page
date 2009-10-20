@@ -4,7 +4,7 @@
 			if(ele != null || ele != '')
 			{
 				if($('errorText'))
-				$('errorText').hide();
+				$('errorText').innerHTML = '';
 			}
 		}
 		
@@ -20,6 +20,21 @@
 			parent.showSwirly('swirlyAttachment');
 			parent.refreshAttachmentList();
 			parent.document.getElementById('modalCloseButton').style.visibility = 'visible';
+		}
+		
+		function checkInputFile(){
+			if(!document.getElementsByClassName('newAttach')[0].value){
+				document.getElementById('errorText').innerHTML = "<b>Error:</b> Please select the file you want upload.";
+				return false;
+			}else{
+				if(document.getElementsByClassName('newAttach')[0].value.length >= 80){
+					document.getElementById('errorText').innerHTML = "<b>Error:</b> Filename length must be lower than 80 characters.";
+					return false;
+				}else{
+					setUploadingStatus();
+					return true;
+				}
+			}
 		}
 		
 	</script>
@@ -39,28 +54,27 @@
 	
 	<apex:outputpanel rendered="{!IF(parentId == null, false, true)}">
 		<div class="overlayMainContent">
-			<apex:form >
+			<apex:form onsubmit="return checkInputFile();">
 				<div class="inputFileDiv">	
 					<div class="overlayFormContent">
 						<strong>Select the File</strong><br>
-						<span class="infoText">Type the path of the file or click the Browse button to find the file.</span><br/>
+						<span class="infoText">Click the Browse button to find the file.</span><br/>
 						<apex:inputFile value="{!newAttach.Body}" 
 							id="newAttach" 
+							styleclass="newAttach"
 							contentType="{!newAttach.ContentType}" 
 							filename="{!newAttach.Name}" 
 							fileSize="{!newAttach.BodyLength}"
 							onChange="validateFile(this.value);"
 							onkeydown="blur();"
 							/><br/>
-						<apex:outputPanel rendered="{!NOT validAttSize}">
-							<span class="errorText" id="errorText"><b>Error:</b> {!errorMsg}</span>
-						</apex:outputPanel>
+							<span class="errorText" id="errorText"><apex:outputtext value="{!errorMsg}" escape="false" /></span>
 					</div>
 					<div class="overlaySeparateLine"></div>
 					<!-- Save and Cancel Buttons -->
 					<div class="overlayFromButtons" align="center">
 						<apex:commandButton styleclass="btn allButtons" 
-							action="{!saveNewAttach}" value="Done" onclick="setUploadingStatus();"
+							action="{!saveNewAttach}" value="Done" onclick=""
 							style="float: none;width: 70px !important;background: #21637D none repeat scroll 0 0 !important;"/>
 						<input id="cancelNewAttachBtn" type="button" class="btn allButtons" value="Cancel" style="float: none;width: 70px !important;background: #989999 none repeat scroll 0 0 !important;" onclick="parent.fixedModalNewAttachment.close(); cancelAction(); return false; "/>
 					</div>

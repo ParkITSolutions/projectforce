@@ -164,9 +164,16 @@
                     	rerender="detailContainer, taskDetail" 
                     	oncomplete="clearTableDetail();$( 'sw_all' ).hide(); $( 'sw_all2' ).hide()"/>
                     	
+                     <apex:actionFunction name="detailListPanel" 
+                    	action="{!doRefresh}" 
+                    	rerender="detailListPanel" 
+                    	oncomplete="$('sw_o').hide(); $('sw_all2').hide();"/>
+                    	
                 </apex:form>
                
                 <div class="bPageBlock">
+                
+                <apex:outputpanel id="detailListPanel">
                     <table class="detailList">
                         <tbody>
                             <tr>
@@ -230,7 +237,7 @@
 	                                	<div class="DistincLink">
 	                                      	<a id="lnkAddAssignee" href="javascript:;" onclick="createOverlay('','addAssigneeOverlay','200','relocateOverlay()');refreshPercentList(); $('sw_o').show(); refreshMembers2()" >
 	                                      		<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add assignee" title="Add assignee" />
-	                                          	New assignee_
+	                                          	New assignee
 	                                      	</a>
 	                                	</div>
 	                             	</apex:outputpanel>
@@ -291,6 +298,7 @@
 							</tr>
                         </tbody>                   
                     </table>
+                     </apex:outputPanel>
                 </div><br style="clear:both;" />               
             </apex:outputpanel>
             <br style="clear:both;" />
