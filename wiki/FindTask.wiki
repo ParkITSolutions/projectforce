@@ -4,6 +4,7 @@ To locate a task or milestone must have at least one task or milestone that cont
 
 <img  src="http://projectforce.googlecode.com/svn/wiki/images/New/Find 3.png" align="left" />
 
+
 The results are displayed.
 
 <img  src="http://projectforce.googlecode.com/svn/wiki/images/New/Find 4.png" align="left" />
