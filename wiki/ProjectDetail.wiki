@@ -17,7 +17,7 @@ To add a task click on New link, in the All Tasks section, or click on New Taks 
 
 - Create New Task (Overlay)
 
-<img  src="http://projectforce.googlecode.com/svn/wiki/images/New/Create task 1.png"/>
+<img  src="http://projectforce.googlecode.com/svn/wiki/images/New/Create task 1.PNG"/>
 
 - Create Full Task
 
@@ -39,4 +39,4 @@ The other way to create Milestones is creating a Full Task and checking "Milesto
 
 *-- WIDGET LINKS --*
 
-<img  src="http://projectforce.googlecode.com/svn/wiki/images/New/Project Detail 4.PNG"/>
+<img  src="http://projectforce.googlecode.com/svn/wiki/images/New/Project Detail 4.png"/>
