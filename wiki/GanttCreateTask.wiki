@@ -1,4 +1,4 @@
-=There are three possible ways to create a task: =
+=There are two possible ways to create a task: =
 
 ==1.From the task list page==
 
