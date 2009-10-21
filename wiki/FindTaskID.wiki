@@ -4,8 +4,8 @@ To locate a task or milestone must have at least one task or milestone with the 
 
 Click on "Go" link.
 
-http://projectforce.googlecode.com/svn/wiki/images/FindTaskIDReal.png
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Find ID 1.png" />
 
 The results are displayed.
 
-http://projectforce.googlecode.com/svn/wiki/images/FindTaskResultsIDReal.png
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Find ID 2.png" />
