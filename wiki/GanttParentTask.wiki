@@ -23,7 +23,7 @@ The selected task in the step 4, is now the parent of the task selected in the s
 
 1. Select the task you want to be the child.
 
-2. Click on the right identation button.
+2. Click on the left identation button.
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/New/Gantt 10.png"/>
 
