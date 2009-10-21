@@ -26,4 +26,4 @@ To join the project an admin must invite you
 Members can create and view tasks and milestones.
 Admins can create projects.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/AccessProjectReal.png" align="left" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Access.png" align="left" />
