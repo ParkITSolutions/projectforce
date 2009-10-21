@@ -4,33 +4,34 @@ From here you can see all the fields, edit, mark complete and delete the task or
 
 You can add files to the task. To do this make the following steps.
 
+-- ADD NEW ATTACHMENT --
 1. Click on Add New Attachment.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailAttachment.png" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Task Detail 2.png" />
 
 2. Click on Browse... button and select the file.
+   Then click on Done button.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailAttachmentBrowse.png" />
-
-3. Click on Done button.
-
-<img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailAttachmentSave.png" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Task Detail 3.png" />
 
 The file is added in the task or milestone.
 
-Also you can add Assegnees to the task or milestone. To do this make the following steps.
+-- ADD NEW ASSIGNEE --
+Also you can add Assignees to the task or milestone. To do this make the following steps.
 
-1. Click on New Assegnee link.
+1. Click on New Assignee link.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetaiAssegnee.png" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Task Detail 4.png" />
 
 2. Select a member and a percent dedicated, and click on Save button. If you want to add more than one assegnee click on Save and New button.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailAssegneeOverlay.png" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Task Detail 5.png" />
 
-The assegnee is added in the task or milestone.
+The assignee is added in the task or milestone.
 
 To enter a comment for the task make the following steps.
+
+-- ADD A COMMENT --
 
 1. Write your comment in the text field next to "Comments" text.
 
