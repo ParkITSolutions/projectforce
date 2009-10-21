@@ -16,7 +16,7 @@ With Undo and Redo buttons can revert the changes of the Timeline.
 
 == There are four views, this are in the top right of the page:==
 
-The first view is the Day, with this view you can see all the task for the selected day. By default shows the todays day.
+The first view is the Day, with this view you can see all the task for the selected day. By default shows the present day.
 
 The second view is the Week, with this view you can see all the tasks by week.
 
