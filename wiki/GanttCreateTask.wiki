@@ -10,7 +10,7 @@ To create a task from this page follow these steps:
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/New/Gantt 12.PNG"/>
 
-3.Press enter. The task is created with default values. In the Duration and %Complete columns the zero value is by default, in the  Start Date and Due Date todays date is by default, and in the Assegnee column the logged user is by default.
+3. Press enter. The task is created with default values. In the Duration and %Complete columns the zero value is by default, in the  Start Date and Due Date todays date is by default, and in the Assegnee column the logged user is by default.
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/New/Gantt 13.PNG"/>
 
