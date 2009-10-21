@@ -50,3 +50,11 @@ To enter a comment for the task make the following steps.
 For delete your comment click on "Delete Comment" link next to the comment you want to remove.
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/New/Task Detail 10.png" />
+
+*-- MARK COMPLETE --*
+
+To mark complete a task/milestone you must to click on Mark Complete button.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Task Detail 8.png" />
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Task Detail 9.png" />
