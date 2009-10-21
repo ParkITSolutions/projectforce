@@ -17,7 +17,8 @@ You can add files to the task. To do this make the following steps.
 The file is added in the task or milestone.
 
 
--- ADD NEW ASSIGNEE --
+
+*-- ADD NEW ASSIGNEE --*
 
 Also you can add Assignees to the task or milestone. To do this make the following steps.
 
@@ -32,7 +33,7 @@ Also you can add Assignees to the task or milestone. To do this make the followi
 The assignee is added in the task or milestone.
 
 
--- ADD A COMMENT --
+*-- ADD A COMMENT --*
 
 To enter a comment for the task make the following steps.
 
