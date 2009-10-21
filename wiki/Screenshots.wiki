@@ -58,7 +58,7 @@
 
 
 
-* TimeLine (Gantt) *
+* TimeLine(Gantt) *
 
 <img  src="http://projectforce.googlecode.com/svn/wiki/images/New/s11_gantt1.PNG" align="left" />
 
