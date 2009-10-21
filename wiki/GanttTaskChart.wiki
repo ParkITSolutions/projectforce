@@ -1,4 +1,4 @@
-==In this page you have five buttons: ==
+==In this page you have eight buttons: ==
 
 With the New button you can create new tasks or milestones above or below other tasks or milestones.
 
@@ -9,6 +9,10 @@ With the Delete button you can delete the created tasks or milestones, to do thi
 When you select a task and click on the right identation arrow, the selected task is now parent of the task below.
 
 When you select a task which is parent of another task, and click on the left identation arrow, the selected task is not more the parent of the task below.
+
+With the Synchronize button the Timeline was refreshed.
+
+With Undo and Redo buttons can revert the changes of the Timeline.
 
 == There are four views, this are in the top right of the page:==
 
