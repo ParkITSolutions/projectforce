@@ -4,7 +4,7 @@ _You can choose more than one option._
 
 _To go to this page, you have to go to the project detail or members list pages, and click on "Manage Subscriptions" link._
 
-<img  src="http://projectforce.googlecode.com/svn/wiki/images/ManageSubscriptionsLink.png"/>
+<img  src="http://projectforce.googlecode.com/svn/wiki/images/New/s10_manage.png"/>
 
 _Select any option and click on "Save" button._
 
