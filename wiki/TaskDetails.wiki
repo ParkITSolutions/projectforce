@@ -1,6 +1,6 @@
 From here you can see all the fields, edit, mark complete and delete the task or milestone.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/TasksMilestonesDetailReal.png" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Task Detail 1.png" />
 
 You can add files to the task. To do this make the following steps.
 
