@@ -7,4 +7,6 @@ If you want to create one project, and then create another project, click on Sav
 
 If you want to cancel the creation of the project, click on Cancel button.
 
-<img  src="http://projectforce.googlecode.com/svn/wiki/images/CreateProjectReal.png" align="left" />
+<img  src="http://projectforce.googlecode.com/svn/wiki/images/New/Create Project 2.png" align="left" />
+
+<img  src="http://projectforce.googlecode.com/svn/wiki/images/New/Create Project.png" align="left" />
