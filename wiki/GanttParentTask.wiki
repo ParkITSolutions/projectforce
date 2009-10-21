@@ -19,7 +19,7 @@
 The selected task in the step 4, is now the parent of the task selected in the step 1. The parent task change the color to green and is resized to fit the child task.
 
 
-===2. Using the right identation button:===
+===2. Using the left/right identation button:===
 
 1. Select the task you want to be the child.
 
@@ -31,5 +31,4 @@ The selected task in the step 1, is now child of the task above. The parent task
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/New/Gantt 11.PNG"/>
 
-The right identation works only for one task, if you want to make one task parent of many tasks, you have to do the step one for all the tasks you want to be childs.
  
