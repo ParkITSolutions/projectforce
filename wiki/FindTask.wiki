@@ -2,8 +2,8 @@ From Project Detail, Project Task List, Project Member List and Search Tasks pag
 
 To locate a task or milestone must have at least one task or milestone that contains the word of the search.
 
-http://projectforce.googlecode.com/svn/wiki/images/FindTaskReal.png
+<img  src="http://projectforce.googlecode.com/svn/wiki/images/New/Find 3.png" align="left" />
 
 The results are displayed.
 
-http://projectforce.googlecode.com/svn/wiki/images/FindResultsTaskReal.png
+<img  src="http://projectforce.googlecode.com/svn/wiki/images/New/Find 4.png" align="left" />
