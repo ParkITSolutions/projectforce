@@ -8,17 +8,16 @@
 
 3. Click on Parent icon, next to the parent field.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttParentTaskIcon.png"/>
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Gantt 14.png"/>
 
 4. Select the task you want to be the parent.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttParentTaskOverlay.png" />
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Gantt 15.png"/>
 
 5. Click on Save button.
 
 The selected task in the step 4, is now the parent of the task selected in the step 1. The parent task change the color to green and is resized to fit the child task.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttParentTaskOverview.png"/>
 
 ===2. Using the right dentation button:===
 
@@ -26,8 +25,11 @@ The selected task in the step 4, is now the parent of the task selected in the s
 
 2. Click on the right identation button.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttParentTaskRightIdentationButton.png"/>
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Gantt 10.png"/>
 
 The selected task in the step 1, is now child of the task above. The parent task change the color to green and is resized to fit the child task.
 
-The right identation works only for one task, if you want to make one task parent of many tasks, you have to do the step one for all the tasks you want to be childs. 
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Gantt 11.PNG"/>
+
+The right identation works only for one task, if you want to make one task parent of many tasks, you have to do the step one for all the tasks you want to be childs.
+ 
