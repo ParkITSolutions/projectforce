@@ -55,4 +55,31 @@ To create a task from this page follow these steps:
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/Gantt/GanttCreateTaskBelow.png"/>
 
-3. Repeat the steps from 4 to 7 of the previous case.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* Create/Edit task has three tabs: *
+
+- Tab Details
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Gantt 3.png"/>
+
+- Tab Task Links
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Gantt 5.png"/>
+
+- Tab Assignees
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Gantt 4.png"/>
