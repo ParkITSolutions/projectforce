@@ -24,4 +24,4 @@ Due Date  : This column displays the end date for the task or milestone.
 
 Assegnee  : This colum display the assegnee of the task or milestone.
 
-<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Gant8.png"/>
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Gant 8.png"/>
