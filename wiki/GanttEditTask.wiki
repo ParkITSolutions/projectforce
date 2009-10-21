@@ -1,4 +1,4 @@
-=== Create or Edit Tasks ===
+=== Edit Tasks ===
 
 You must have a task selected for editing.
 
