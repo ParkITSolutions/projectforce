@@ -2,9 +2,11 @@
 
 <img  src="http://projectforce.googlecode.com/svn/wiki/images/New/s1_overview.png" align="left" />
 
+
 === Project Detail ===
 
 <img  src="http://projectforce.googlecode.com/svn/wiki/images/New/s2_ProjectDetail.png" align="left" />
+
 
 === Create Project ===
 
