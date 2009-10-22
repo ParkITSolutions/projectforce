@@ -51,7 +51,7 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install12.jpg
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install11.jpg
 
-*_15. Click on "Setup" link at the top of the page._*
+*_15. Wait for the email of SalesForce and then click on "Setup" link at the top of the page._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install13.jpg
 
