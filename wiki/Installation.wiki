@@ -79,7 +79,7 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install14.jpg
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install15.jpg
 
-*_22. Click on the "Project" link which is next to "Projects" Tab_*
+*_22. Click on the "Project" link which is next to "ProjectForce"_*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install17_2.png
 
