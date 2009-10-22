@@ -23,7 +23,7 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install5.jpg
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install6.jpg
 
-*_7. Click on "Get It Now"._*
+*_7. Click on "Get It Now" again._*
 
 *_8. Check "I have read and agree..." option._*
 
