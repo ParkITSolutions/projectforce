@@ -115,7 +115,7 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install25.png
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Insall26.png
 
-*_34. Repeat the previous steps 19, 20 and 21._*
+*_34. Repeat the previous steps 20 and 21._*
 
 *_35. Click on "Project Task" link._*
 
