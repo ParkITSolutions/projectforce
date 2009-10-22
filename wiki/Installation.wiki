@@ -1,5 +1,5 @@
 #labels Featured
-*_1. Click on "Force.com Platform", and select AppExchange option._*
+*_1. Click on "Force.com Platform", and select App Exchange option._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/install1.JPG
 
