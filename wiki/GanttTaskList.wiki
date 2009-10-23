@@ -1,5 +1,3 @@
-==In this page you have five buttons: ==
-
 In the task list you can change some data of the tasks.
 
 == There are six columns:==
