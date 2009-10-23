@@ -6,7 +6,7 @@ In the task list you can change some data of the tasks.
 
 Task Name : In this column you would see the name of the created task or milestone.
 
-Est(hrs)  : In this column you will see the estimated time in hours for the task or milestone.
+Duration  : In this column you will see the estimated time in hours for the task or milestone.
 
 Start Date: This column displays the start date of the task.
 
