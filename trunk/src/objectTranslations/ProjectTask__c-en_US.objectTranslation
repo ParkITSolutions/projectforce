@@ -20,6 +20,10 @@
         <name>Duration__c</name>
     </fields>
     <fields>
+        <label><!-- Email --></label>
+        <name>Email_del__c</name>
+    </fields>
+    <fields>
         <label><!-- End Date --></label>
         <name>EndDate__c</name>
     </fields>
@@ -143,6 +147,10 @@
     <validationRules>
         <errorMessage><!-- The percent must be between 0 and 100 --></errorMessage>
         <name>PercentBetweenZeroAndOneHundred</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Start Date can&apos;t be lower than 01/01/1990 --></errorMessage>
+        <name>startDateLowerThan1990</name>
     </validationRules>
     <validationRules>
         <errorMessage><!-- Star date must be lower than end date --></errorMessage>

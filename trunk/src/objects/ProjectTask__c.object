@@ -27,6 +27,11 @@
         <type>Number</type>
     </fields>
     <fields>
+        <fullName>Email_del__c</fullName>
+        <label>Email</label>
+        <type>Email</type>
+    </fields>
+    <fields>
         <fullName>EndDate__c</fullName>
         <description>EndDate</description>
         <label>End Date</label>
@@ -187,6 +192,14 @@
         <errorConditionFormula>OR(PercentCompleted__c &gt; 1.0,PercentCompleted__c &lt; 0.0)</errorConditionFormula>
         <errorDisplayField>PercentCompleted__c</errorDisplayField>
         <errorMessage>The percent must be between 0 and 100</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>startDateLowerThan1990</fullName>
+        <active>true</active>
+        <description>StartDate must be greater than 1990</description>
+        <errorConditionFormula>StartDate__c  &lt;  DATE(1990,1,1)</errorConditionFormula>
+        <errorDisplayField>StartDate__c</errorDisplayField>
+        <errorMessage>Start Date can&apos;t be lower than 01/01/1990</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>startDateMinorEndDate</fullName>

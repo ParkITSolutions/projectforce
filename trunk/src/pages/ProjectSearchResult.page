@@ -47,6 +47,8 @@
 	<!-- Sidebar -->
 	<div class="sidebar">
 		<c:ProjectsWidgetMyTasks />
+		<c:ProjectsWidgetMyMilestones />
+		<c:ProjectSetupWidget /> 
 	</div>
 	
 	<!-- Main Content Div Start -->

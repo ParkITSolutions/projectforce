@@ -61,6 +61,7 @@
                                     <apex:inputField id="taskStartDate" value="{!Task.StartDate__c}" styleClass="medium" required="true" />
                                     <div id="taskStartDate-comp" style="display:none;">{!$Component.taskStartDate}</div>
                                     <div class="red" style="display: none;" id="startDateError"><strong>Error:</strong> You must enter a value</div>
+                                    <div class="red" style="display: none;" id="startDateLower1990"><strong>Error:</strong> Can't be lower than 1/1/1990</div>
                                     <div class="red" style="display: none;" id="startDateInvalid"><strong>Error:</strong> You must enter a valid value</div>
                                     <br/>
                                     <label>Due Date</label><span class="notrequired"></span>
