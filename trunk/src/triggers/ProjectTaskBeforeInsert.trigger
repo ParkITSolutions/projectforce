@@ -51,6 +51,11 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 					triggerValidation = triggerValidation && false;
 				}
 				
+				if(nTask.PercentCompleted__c > Math.floor(nTask.PercentCompleted__c)){
+					nTask.PercentCompleted__c.addError('Percent Completed must be an Integer.');
+					triggerValidation = triggerValidation && false;
+				}
+				
 				if(parent.validateParentTaskInsert(nTask) == false){
 					nTask.ParentTask__c.addError('Parent Task selected does not belong in current project.');
 					triggerValidation = triggerValidation && false;

@@ -13,7 +13,8 @@ public class ProjectTaskDetailController {
 	public String param = ''; 
 	public UserPermissions userPermissions = new UserPermissions();
 	public String taskId;
-
+	public void dummyRefresh () {}
+    
 	
 	/**
 	* Constructor

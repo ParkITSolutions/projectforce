@@ -28,6 +28,11 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 		if(parent.validateParentTaskInsert(tempPTNew) == false){
 			tempPTNew.ParentTask__c.addError('Parent Task selected does not belong in current project.');
 			triggerValidation = triggerValidation && false;
+		}
+		
+		if(tempPTNew.PercentCompleted__c > Math.floor(tempPTNew.PercentCompleted__c)){
+			tempPTNew.PercentCompleted__c.addError('Percent Completed must be an Integer.');
+			triggerValidation = triggerValidation && false;
 		}	
 				
 		if( tempPTNew.StartDate__c > tempPTNew.EndDate__c ){

@@ -183,6 +183,13 @@ public class ProjectWidgetTasksMainController {
 				
 				ProjectTask miTasks = new ProjectTask();
 				miTasks.setTaskName(tasks[i].Name);
+				// Short Task Name
+        		if(tasks[i].Name.length() > 40){
+		        	miTasks.setShortTaskName(tasks[i].Name.substring(0,35)+'...');
+		       	}else{
+		       		miTasks.setShortTaskName(tasks[i].Name);
+		       	}
+		       				
 				miTasks.setPriority(tasks[i].Priority__c);
 				miTasks.setPercent(tasks[i].PercentCompleted__c);
 				miTasks.setTaskId(tasks[i].Id);
@@ -215,6 +222,7 @@ public class ProjectWidgetTasksMainController {
         public String TaskId;
         public String Priority;
         public String TaskName;
+        public String shortTaskName;
         public Integer Percent;
         public String UserId;
 		public String UserName;
@@ -403,6 +411,21 @@ public class ProjectWidgetTasksMainController {
         */
         public void setTaskName(String sName){
             TaskName = sName;
-        }	       
+        }
+        
+        /**
+      	*@return String
+      	*/
+      	public String getShortTaskName(){
+            return shortTaskName;
+        }
+        
+        /**
+        *@param String sName
+        *@return void
+        */
+        public void setShortTaskName(String sName){
+            shortTaskName = sName;
+        }	  
 	}	
 }

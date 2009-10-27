@@ -47,7 +47,7 @@
 	<apex:outputpanel rendered="{!IF(userPermissions.canManage, true, false)}">
 		<!-- Content  -->
 		<div id="inviteTeam" style="display: none;" class="overlayForm">
-		<div class="swirly_overlay" style="display: none;"></div>
+		<div id="swirly_overlay" class="swirly_overlay" style="display: none;"></div>
 		<!-- Overlay Title -->
 		<div class="overlayTitleContent">
 		<div class="overlayTitle">Add new member to {!IF(LEN(teamName)>24,LEFT(teamName,24)+'...', teamName)}</div>
@@ -297,5 +297,18 @@
 		</div>
 	</div>
 	<div class="clear"></div>
-		
+	<script>
+	<!-- ### Script Swirly ### -->
+		function showSwirly(elemId){
+			var divLoaders = $(elemId);
+			var div = divLoaders.ancestors()[0];   
+			divLoaders.style.height = div.getHeight()+'px';
+			Effect.Appear(divLoaders, { duration: 0.1, to: 0.8 });
+		}
+		function hideSwirly(elemId){
+			var divLoaders = $(elemId);
+			Effect.Fade(divLoaders);
+		}
+		</script>
+	
 </apex:component>
