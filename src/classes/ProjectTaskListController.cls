@@ -1103,7 +1103,19 @@ public with sharing class ProjectTaskListController {
        
         // Task Name
         public String Name { get; set; }
-                   
+        
+        // Short Task Name
+        public String shortName {
+        	get {
+        		if(this.name.length() > 40){
+        			return this.name.substring(0,35)+'...';
+        		}else{
+        			return this.name;
+        		}
+        	}
+        	set {}
+        }
+            
         // Project Name
         public String ProjectName { get; set;}
        

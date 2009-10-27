@@ -433,7 +433,7 @@
                                             </td> 
                                             <!-- Task Name -->                         
                                             <td class="proj_task_title">
-                                                <div><a href="projecttaskdetail?id={!task.id}" class="">{!task.Name}</a></div>
+                                                <div><a href="projecttaskdetail?id={!task.id}" class="" title="{!task.Name}">{!task.shortName}</a></div>
                                             </td>
                                             <!-- Task Asignee -->
                                             <td class="proj_task_assigned">
