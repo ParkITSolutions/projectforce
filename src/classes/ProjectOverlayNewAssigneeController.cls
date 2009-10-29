@@ -62,6 +62,16 @@ public class ProjectOverlayNewAssigneeController {
 	}
 	
 	/**
+	*@return Boolean
+	*/
+	public Boolean getMoreMembers(){
+		System.debug( ':> ' + this.memberList.size() );
+		
+		// The option "Choose a member" count in the size list
+		return this.memberList.size() > 2;
+	}
+	
+	/**
 	*Return member selected id.
 	*@return Id
 	*/
@@ -192,15 +202,14 @@ public class ProjectOverlayNewAssigneeController {
 		memList = [ select Id, User__c, User__r.Name 
 						from ProjectMember__c 
 						where Project__c =: projectId and User__r.IsActive != false and User__c not in: idsAssi ];
- 		
- 		if( memList.size() > 0 ){
- 			this.memberList = new List<SelectOption>();
-			SelectOption aMember = new SelectOption( 'Choose a member', 'Choose a member' );
+ 		System.debug( '-:> ' + assi.size() + '-:> ' + memList.size());
+		this.memberList = new List<SelectOption>();
+		SelectOption aMember = new SelectOption( 'Choose a member', 'Choose a member' );
+		this.memberList.add( aMember );			
+ 		if( memList.size() > 0 )
+		for(ProjectMember__c m : memList){
+			aMember = new SelectOption( m.User__c, m.User__r.Name );
 			this.memberList.add( aMember );			
-			for(ProjectMember__c m : memList){
-				aMember = new SelectOption( m.User__c, m.User__r.Name );
-				this.memberList.add( aMember );			
-			}
 		}	
 	}
 	

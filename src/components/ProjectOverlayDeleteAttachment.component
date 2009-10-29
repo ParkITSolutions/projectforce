@@ -5,15 +5,24 @@
 			document.getElementById('overlayDeleting').style.display = 'block';
 		}
 	</script>
+	
+	<!-- Overlay Styles --> 
+	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsOverlayDeleteAttachment.css')}" />
+	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamsOverlayNewMilestone.js')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />
+	
+	<!-- ### Initialize fixed Overlay ### -->
+	<div id="fixedModalDeleteAttachmentOverlay" class="fixedModalOverlay" style="display:none;"></div>
+	
 	<!-- Content  -->
-	<div id="DeleteAttachmentOverlay" style="display: none;" class="overlayForm">
+	<div id="deleteAttachmentOverlay" style="display: none;" class="overlayForm">
 		<div class="swirly_overlay" id="sw_ov" style="display: none;"></div>
  
 		<!-- Overlay Title -->
 		<div class="overlayTitleContent">
 			<div class="overlayTitle">Delete Attachment</div>
 			<div class="overlayCloseEvent">
-				<a href="Javascript:;" onclick="modal.close();"> 
+				<a href="Javascript:;" onclick="fixedModalDeleteAttachment.close();"> 
 					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}"	alt="Close Window" title="Close Window" /> 
 				</a> 
 			</div>
@@ -49,9 +58,9 @@
 										value="Continue and delete Attachment" 
 										onclick="deleteChangeOverlay();" 
 										rerender="projectAttachmentWidget, paginationLinks" 
-										oncomplete="modal.close(); showHideOverlay(); refreshAttachmentList(); "  />
+										oncomplete="fixedModalDeleteAttachment.close(); showHideOverlay(); refreshAttachmentList(); "  />
 						                                               
-			        <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="modal.close();" value="Cancel"/>
+			        <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="fixedModalDeleteAttachment.close();" value="Cancel"/>
 				</div>
 			</apex:form> 
 		</div>

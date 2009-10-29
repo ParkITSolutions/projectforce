@@ -47,11 +47,11 @@
 							<apex:repeat value="{!attachments}" var="attachment" rows="{!numberOfItemsToShowSummary}">									
 								<tr> 
 									<td>
-										<a href="javascript:;" onclick="createOverlay('', 'DeleteAttachmentOverlay', 180); document.getElementById('ProjectDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!attachment.Id}';">Delete</a>
+										<a href="javascript:;" onclick="fixedModalDeleteAttachment.open(); document.getElementById('ProjectDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!attachment.Id}';">Delete</a>
 									</td>
 									<td>
 										<img style="vertical-align:bottom;" src="https://{!domain}{!URLFOR($Resource.FileTypeIcons, attachment.attachImage)}"/> &nbsp;
-										<a href="#" onclick="window.open('https://{!domain}/servlet/servlet.FileDownload?file={!attachment.Id}')" > {!attachment.Name} </a>
+										<a href="#" onclick="window.open('https://{!domain}/servlet/servlet.FileDownload?file={!attachment.Id}')" title="{!attachment.Name}" > {!attachment.shortName} </a>
 									</td>  
 									<td>
 										<apex:outputField value="{!attachment.Attachment.BodyLength}"/>

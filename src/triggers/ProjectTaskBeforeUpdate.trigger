@@ -30,10 +30,12 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 			triggerValidation = triggerValidation && false;
 		}
 		
-		if(tempPTNew.PercentCompleted__c > Math.floor(tempPTNew.PercentCompleted__c)){
-			tempPTNew.PercentCompleted__c.addError('Percent Completed must be an Integer.');
-			triggerValidation = triggerValidation && false;
-		}	
+		if(tempPTNew.PercentCompleted__c <> null){
+			if(tempPTNew.PercentCompleted__c > Math.floor(tempPTNew.PercentCompleted__c)){
+				tempPTNew.PercentCompleted__c.addError('Percent Completed must be an Integer.');
+				triggerValidation = triggerValidation && false;
+			}
+		}
 				
 		if( tempPTNew.StartDate__c > tempPTNew.EndDate__c ){
 			tempPTNew.StartDate__c.addError('Start date should not be greater than End Date');

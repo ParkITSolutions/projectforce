@@ -423,7 +423,19 @@ public class ProjectDetailAttachmentController {
 		String id;
 		Attachment attach;
 		Boolean isOwner = false;
-		      
+		
+		public String shortName {
+			set {}
+			get {
+				if(this.name.length() > 45){
+					return this.name.substring(1,40)+'... '+this.name.substring(this.name.lastIndexOf('.'));
+				}
+				else{
+					return this.name;
+				}
+			}
+		}
+		
         /**
         *@return String Attach id
         */

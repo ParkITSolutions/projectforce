@@ -27,11 +27,6 @@
         <type>Number</type>
     </fields>
     <fields>
-        <fullName>Email_del__c</fullName>
-        <label>Email</label>
-        <type>Email</type>
-    </fields>
-    <fields>
         <fullName>EndDate__c</fullName>
         <description>EndDate</description>
         <label>End Date</label>
@@ -75,6 +70,7 @@
     </fields>
     <fields>
         <fullName>PercentCompleted__c</fullName>
+        <defaultValue>0.0</defaultValue>
         <description>PercentCompleted</description>
         <label>Percent Completed</label>
         <precision>17</precision>
