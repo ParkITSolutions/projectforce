@@ -300,6 +300,7 @@
 	<script>
 	<!-- ### Script Swirly ### -->
 		function showSwirly(elemId){
+			sSwirly();
 			var divLoaders = $(elemId);
 			var div = divLoaders.ancestors()[0];   
 			divLoaders.style.height = div.getHeight()+'px';

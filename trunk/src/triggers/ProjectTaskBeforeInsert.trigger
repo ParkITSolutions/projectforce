@@ -48,12 +48,14 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 				//duration validation
 				if(duration.validateDurationInput(nTask) == false){
 					nTask.DurationUI__c.addError('Invalid format for Hours / Days convention!');
-					triggerValidation = triggerValidation && false;
+					triggerValidation = triggerValidation && false; 
 				}
 				
-				if(nTask.PercentCompleted__c > Math.floor(nTask.PercentCompleted__c)){
-					nTask.PercentCompleted__c.addError('Percent Completed must be an Integer.');
-					triggerValidation = triggerValidation && false;
+				if(nTask.PercentCompleted__c <> null){
+					if(nTask.PercentCompleted__c > Math.floor(nTask.PercentCompleted__c)){
+						nTask.PercentCompleted__c.addError('Percent Completed must be an Integer.');
+						triggerValidation = triggerValidation && false;
+					}
 				}
 				
 				if(parent.validateParentTaskInsert(nTask) == false){

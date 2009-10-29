@@ -45,7 +45,7 @@
             <apex:form >
                 <apex:actionFunction name="refreshAssignToTask" action="{!dummyRefresh}" rerender="assignToTask" oncomplete="enabDisbTask('on')" />
             </apex:form>
-            <apex:form id="quickTaskForm" onSubmit=" return checkFormNewTaskOverlay('{!$Component.member}','{!$Component.taskEstimate}','{!$Component.name}','{!$Component.taskStartDate}','{!$Component.taskDueDate    }');"  > 
+            <apex:form id="quickTaskForm" onSubmit="return checkFormNewTaskOverlay('{!$Component.member}','{!$Component.taskEstimate}','{!$Component.name}','{!$Component.taskStartDate}','{!$Component.taskDueDate}');"  > 
                 <div id="formTaskID" style="display:none;">{!$Component.quickTaskForm}</div>
                 <apex:actionStatus id="taskStatus" layout="block">
                         <apex:facet name="start"><apex:outputText value="Saving Task..." /></apex:facet>
@@ -118,4 +118,5 @@
                 </form>
             </div>
     </div>
+    
 </apex:component>

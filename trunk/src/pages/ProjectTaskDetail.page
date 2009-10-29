@@ -1,25 +1,32 @@
 <apex:page id="ProjectTaskDetail" standardController="ProjectTask__c" extensions="ProjectTaskDetailController" sidebar="false" tabStyle="Project2__c">
     <!-- Ajax Toolkit SDFC -->
     <apex:includeScript value="/soap/ajax/11.1/connection.js"/>
-      
-    <!-- Prototype + Scriptaculous -->
+    
+    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}"/>
+    
+    <!-- Script.aculo.us / Prototype -->
     <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>
-    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}"/>
+    
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectLayout.css')}" />   
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskDetail.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />
-   
+    
     <!-- Portal Support -->
     <apex:includeScript value="{!$Resource.portalSupport}"/>
-   
+    
     <!-- CSS styles for Portal Integration -->
     <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+    
+    <!-- Common JS for All Sections -->
 
-    <!-- ProjectTaskDetail CSS -->
+    <!-- CSS Includes -->
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
+ 	
+ 	<!-- ProjectTaskDetail CSS -->
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskDetails.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgets/TeamMemberWidget.css')}" />   
@@ -53,9 +60,6 @@
 	     	height : 100%!important;
 	     }
 	    
-	     .sidebar{
-	     	height : auto !important;
-	     }
     </style>
                        
    	<div class="confirmation" id="confirmation" style="display:none;">
@@ -140,15 +144,14 @@
 
         <!-- Sidebar -->
         <div class="sidebar">
-   
-            <!-- Team members -->
-            <c:ProjectMembersWidget projectId="{!Task.ProjectId}" />  
-           
-            <c:ProjectOverlayNewAssignee />
-
-            <!-- <div class="clear"></div> -->
-        
-
+	   		<apex:outputPanel id="sidebarWidgets">
+	            <!-- Team members -->
+	            <c:ProjectMembersWidget projectId="{!Task.ProjectId}" />  
+	        </apex:outputPanel>
+			<div class="clear"></div>
+		</div>
+		
+		<c:ProjectOverlayNewAssignee />
         <!-- Holder -->     
         <div class="holder" style="overflow:hidden;clear:both;margin:0px;margin-left:200px;margin-bottom:0px;" id="holder">
       		

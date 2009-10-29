@@ -20,10 +20,6 @@
         <name>Duration__c</name>
     </fields>
     <fields>
-        <label><!-- Email --></label>
-        <name>Email_del__c</name>
-    </fields>
-    <fields>
         <label><!-- End Date --></label>
         <name>EndDate__c</name>
     </fields>

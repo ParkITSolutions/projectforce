@@ -94,7 +94,7 @@
                             	styleClass="allButtons" 
                             	value="Save and new" 
                             	onclick="$('sw_o').show()" 
-                            	oncomplete="refreshMembers2(); detailListPanel(); " />
+                            	oncomplete="refreshMembers2(); detailListPanel();{!IF( MoreMembers , '', 'modal.close();')}" /> 
                             	
                             <input id="cancelBtn" class="allButtons" type="button" value="Cancel" onclick="modal.close();stopFunction();" />
                     </div>

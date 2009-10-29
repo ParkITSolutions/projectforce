@@ -1329,10 +1329,6 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
-        <field>ProjectTask__c.Email_del__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
         <field>ProjectTask__c.EndDate__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>

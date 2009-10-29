@@ -490,9 +490,11 @@ public class ProjectTaskDetailController {
 				AuxList = [ select Id 
 								from ProjectMember__c 
 								where Project__c =: taskDetail.ProjectId  and User__r.IsActive != false];
+				System.debug(':::>' + AuxList.size() + ' > ' + taskDetail.CantAssignees); 
 				if (taskDetail.CantAssignees==AuxList.size()){
 					return true;
 				}else return false;
+				
 			
 	}
 	
