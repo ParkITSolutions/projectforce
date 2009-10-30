@@ -1,7 +1,5 @@
 trigger ProjectAssigneeAfterInsert on ProjectAssignee__c (after insert) 
 {
-	// Send email to subscribers members
-	ProjectSubscribersEmailServices emailServices = new ProjectSubscribersEmailServices();
 	List<String> assignees = new List<String>();
 
 	try {
@@ -32,7 +30,7 @@ trigger ProjectAssigneeAfterInsert on ProjectAssignee__c (after insert)
 		insert assignee;
 	
 		//Send e-mail notifications
-		emailServices.sendMailForTaskAssigned(assignees);
+		ProjectSubscribersEmailServices.sendMailForTaskAssignedFuture(assignees);
 		
 	} catch(Exception e) {
 	}
