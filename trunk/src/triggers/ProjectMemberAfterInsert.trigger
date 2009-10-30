@@ -10,7 +10,7 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert)
 		    	lstPMId.add(pM.id);
 		    }
 		    
-		    pEmail.sendMemberJoinLeave( lstPMId, 'join' );
+		    ProjectSubscribersEmailServices.sendMemberJoinLeaveFuture( lstPMId, 'join' );
 		    
             List<String> idsTeam = new List<String>();
             List<String> idsProfile = new List<String>();
