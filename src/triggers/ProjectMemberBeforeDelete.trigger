@@ -1,6 +1,7 @@
 trigger ProjectMemberBeforeDelete on ProjectMember__c (before delete){
     if (!ProjectUtil.currentlyExeTrigger){
 
+		ProjectSubscribersEmailServices mail = new ProjectSubscribersEmailServices();
 		ProjectUtil.currentlyExeTrigger = true;
 	    try{
 			List<String> lstPMId = new List<String>();
@@ -8,7 +9,7 @@ trigger ProjectMemberBeforeDelete on ProjectMember__c (before delete){
 		    	lstPMId.add(pM.id);
 		    }
 		    
-		    ProjectSubscribersEmailServices.sendMemberJoinLeaveFuture( lstPMId, 'leave' );
+		    mail.sendMemberJoinLeave( lstPMId, 'leave' );
 	    }finally{
 	        ProjectUtil.currentlyExeTrigger = false;
 	    }

@@ -180,4 +180,17 @@ public class ProjectUtil {
         return domain;   
     }
      
+	public static Map<String, String> taskDescription( ProjectTask__c task ){ 
+		Map<String, String> maping = new Map<String, String>();
+		
+		maping.put( 'id', task.Id );
+		maping.put( 'project', task.Project__c );
+		maping.put( 'name', task.Name );
+		maping.put( 'description', task.Description__c );
+		maping.put( 'endDate', task.EndDate__c.format() );
+		maping.put( 'startDate', task.StartDate__c.format() );
+		maping.put( 'priority', task.Priority__c );		
+		
+		return maping;
+	}     
 }
