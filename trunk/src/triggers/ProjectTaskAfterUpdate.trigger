@@ -1,8 +1,5 @@
 trigger ProjectTaskAfterUpdate on ProjectTask__c (after update) 
 {
-	// Send email to subscribers members
-	ProjectSubscribersEmailServices pEmail = new ProjectSubscribersEmailServices();
-	ProjectSubscribersEmailServices pEmail2 = new ProjectSubscribersEmailServices();
 	TaskDependencies td = new TaskDependencies(Trigger.new[0].project__c);
 	
 	List<String> lstPTId = new List<String>();
@@ -26,8 +23,7 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
     		lstPTId.add(tempPTNew.Id);
     	}
     	
-    	mailingList.add(Trigger.new.get( k ).Id);
-    	
+    	mailingList.add(Trigger.new.get( k ).Id);    	
     
 	    //If parentTask changed Recalculate all Parents
 	    if(tempPTOld.ParentTask__c != tempPTNew.ParentTask__c){
@@ -56,10 +52,12 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
 			
 	    }
     }
-    
-    pEmail.sendMailForTaskChanged( mailingList );
+
+	ProjectSubscribersEmailServices mail = new ProjectSubscribersEmailServices();
+    mail.sendMailForTaskChanged( mailingList );
     
     if(lstPTId.size() > 0){
-    	pEmail2.sendMailForTaskPercentChanged( lstPTId );
+    	mail.sendMailForTaskPercentChanged( lstPTId );
     }
+    
 }

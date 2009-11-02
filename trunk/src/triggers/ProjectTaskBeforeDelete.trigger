@@ -1,13 +1,13 @@
 trigger ProjectTaskBeforeDelete on ProjectTask__c (before delete) 
 {
 	// Send email to subscribers members
-	ProjectSubscribersEmailServices pEmail = new ProjectSubscribersEmailServices();
 	List<String> lstTasksId = new List<String>(); 
     for ( ProjectTask__c pT : Trigger.old ){ 
-    	lstTasksId.add(pT.id);
+    	lstTasksId.add( pT.id );
     }
-    
-    pEmail.sendMailForTaskDeleted( lstTasksId );
+     
+    ProjectSubscribersEmailServices mail = new ProjectSubscribersEmailServices();
+    mail.sendMailForTaskDeleted( lstTasksId );
     
     ProjectUtil.DeleteTaskMailSent=true;
     

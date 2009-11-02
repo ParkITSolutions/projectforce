@@ -40,12 +40,8 @@ public class ProjectSubscribersEmailServices {
     *@param String action
     *@return void
     */
-    @future
-    public static void sendMemberJoinLeaveFuture( List<String> lstPMId, String acction ){
-    	ProjectSubscribersEmailServices i = new ProjectSubscribersEmailServices();
-    	i.sendMemberJoinLeave( lstPMId, acction );
-    }  
-    public void sendMemberJoinLeave( List<String> lstPMId, String acction ){  
+    public void sendMemberJoinLeave( List<String> lstPMId, String acction )
+    {
         String emailMsj = '';
         String emailSub = '';
 
@@ -91,18 +87,8 @@ public class ProjectSubscribersEmailServices {
     *@param List<String> lstPAId
     *@return void
     */
-    @future
-    public static void sendMailForTaskAssignedFuture( List<String> lstPAId ){
-    	ProjectSubscribersEmailServices i = new ProjectSubscribersEmailServices();
-    	i.sendMailForTaskAssigned(lstPAId);
-    }
-
-    /**
-    * Send mail to subscribers
-    *@param List<String> lstPAId
-    *@return void
-    */
-    public void sendMailForTaskAssigned( List<String> lstPAId ){
+    public void sendMailForTaskAssigned( List<String> lstPAId )
+    {
         String emailMsj = '';
         String emailSub = ''; 
         List<String> lstUserId = new  List<String>();   
@@ -297,17 +283,6 @@ public class ProjectSubscribersEmailServices {
     *@param List<String> lstAssId
     *@return void
     */
-    @future
-	public static void sendMailForAssDeletedFuture( List<String> lstAssId ){
-		ProjectSubscribersEmailServices i = new ProjectSubscribersEmailServices();
-		i.sendMailForAssDeleted(lstAssId);
-	}
-	
-    /**
-    *
-    *@param List<String> lstAssId
-    *@return void
-    */
 	public void sendMailForAssDeleted( List<String> lstAssId ){
         String emailMsj = '';
         String emailSub = '';
@@ -321,9 +296,12 @@ public class ProjectSubscribersEmailServices {
 				FROM ProjectAssignee__c 
 				WHERE Id in: lstAssId ];
 
-		string pId = '';
-		if( pas.size() > 0 )
-        	pId = pas[0].Project__c;
+        string pId='';
+        List<ProjectTask__c> ptL = [SELECT Project__c from ProjectTask__c where id=:pas[0].ProjectTask__c];
+       	if (ptL.size() > 0) {
+       		pId=ptL[0].Project__c;
+       	}
+
         
         if ((pAs.size()>0) && !(ProjectUtil.DeleteTaskMailSent)){
 				for( ProjectAssignee__c pA : pAs ){

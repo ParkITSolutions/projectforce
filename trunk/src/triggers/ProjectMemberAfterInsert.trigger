@@ -4,13 +4,12 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert)
     	ProjectUtil.currentlyExeTrigger = true;
     	try {
 			// Send email to subscribers members
-			ProjectSubscribersEmailServices pEmail = new ProjectSubscribersEmailServices();
 			List<String> lstPMId = new List<String>();
 		    for ( ProjectMember__c pM : Trigger.new){
 		    	lstPMId.add(pM.id);
 		    }
-		    
-		    ProjectSubscribersEmailServices.sendMemberJoinLeaveFuture( lstPMId, 'join' );
+			ProjectSubscribersEmailServices mail = new ProjectSubscribersEmailServices();
+		    mail.sendMemberJoinLeave( lstPMId, 'join' );
 		    
             List<String> idsTeam = new List<String>();
             List<String> idsProfile = new List<String>();
