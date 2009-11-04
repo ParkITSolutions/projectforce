@@ -554,8 +554,6 @@
     }
     </style>
     <script>
-
-
         
          window.onload = function(){ 
 	         $('advancedFilterContainer2').remove();
