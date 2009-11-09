@@ -8,7 +8,7 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert)
 		    for ( ProjectMember__c pM : Trigger.new){
 		    	lstPMId.add(pM.id);
 		    }
-			ProjectSubscribersEmailServices mail = new ProjectSubscribersEmailServices();
+			ProjectSubscribersEmailServices mail = ProjectSubscribersEmailServices.getInstance();
 		    mail.sendMemberJoinLeave( lstPMId, 'join' );
 		    
             List<String> idsTeam = new List<String>();

@@ -330,10 +330,6 @@
         <apexClass>UserPermissionsTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
-    <classAccesses>
-        <apexClass>ValidationRulesMetadata</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
     <fieldLevelSecurities>
         <editable>false</editable>
         <field>Account.AccountNumber</field>

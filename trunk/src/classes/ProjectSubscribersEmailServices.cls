@@ -3,6 +3,8 @@
 */
 public class ProjectSubscribersEmailServices {
 
+	private static ProjectSubscribersEmailServices instance = null;
+
     //E-mail services instance
     private Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
     private List<ProjectSubscription__c> subscriptions = new List<ProjectSubscription__c>();
@@ -14,8 +16,15 @@ public class ProjectSubscribersEmailServices {
 	 
     /**
     * Constructor
-    */
-    public ProjectSubscribersEmailServices(){}
+    */ 
+    private ProjectSubscribersEmailServices(){}
+    
+    public static ProjectSubscribersEmailServices getInstance(){
+    	if( instance == null )
+    	instance = new ProjectSubscribersEmailServices();
+    	
+    	return instance;
+    }
 
     /**
     *@param Boolean isTest
@@ -244,7 +253,7 @@ public class ProjectSubscribersEmailServices {
     }
 
     /**
-    * Send mail to subscribers
+    *Send mail to subscribers
     *@param List<String> lstTaskId
     *@return void
     */
@@ -278,48 +287,55 @@ public class ProjectSubscribersEmailServices {
         }
     }
     
-    /**
-    *
+    /*s*
     *@param List<String> lstAssId
     *@return void
     */
-	public void sendMailForAssDeleted( List<String> lstAssId ){
+    @future
+    public static void sendMailForAssDeletedFuture( List<String> lstAssId, List<String> taskIdList, List<String> usersIdList ){
+    	
+    	ProjectSubscribersEmailServices i = new ProjectSubscribersEmailServices();
+    	i.sendMailForAssDeleted( lstAssId, taskIdList, usersIdList );
+    }
+    
+    /**
+    *@param List<String> lstAssId
+    *@return void
+    */
+	public void sendMailForAssDeleted( List<String> lstAssId, List<String> taskIdList, List<String> usersIdList ){
         String emailMsj = '';
         String emailSub = '';
-		List<ProjectAssignee__c> pAs = new List<ProjectAssignee__c>();
+		List<ProjectTask__c> tasks = new List<ProjectTask__c>();
 		
         List<String> lstUserId = new  List<String>();   		
-		
+		/*
 		pAs = [ SELECT Id,User__c,ProjectTask__r.Project__c, ProjectTask__c, Project__c, Project__r.Name, 
 				ProjectTask__r.Name, ProjectTask__r.Description__c, ProjectTask__r.EndDate__c, 
 				ProjectTask__r.StartDate__c, ProjectTask__r.Priority__c 
 				FROM ProjectAssignee__c 
 				WHERE Id in: lstAssId ];
-
-        string pId='';
-        List<ProjectTask__c> ptL = [SELECT Project__c from ProjectTask__c where id=:pas[0].ProjectTask__c];
-       	if (ptL.size() > 0) {
-       		pId=ptL[0].Project__c;
-       	}
-
+		*/
+		
+		tasks = [ SELECT Id, Project__c, name, description__c, endDate__c, startDate__c, priority__c, project__r.name FROM ProjectTask__c WHERE id in: taskIdList];
+		
         
-        if ((pAs.size()>0) && !(ProjectUtil.DeleteTaskMailSent)){
-				for( ProjectAssignee__c pA : pAs ){
+        if ((tasks.size()>0) && !(ProjectUtil.DeleteTaskMailSent)){
+		        string pId = tasks[0].project__c;
+				for( ProjectTask__c t : tasks ){
 			        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='
-			        		+ pA.Project__c + '">' + pA.Project__r.Name + '</a><br />Task Name: <a href="' 
-			        		+ Label.sfdcHostName+'apex/projecttaskdetail?id='+pA.ProjectTask__c + '">' 
-			        		+ pA.ProjectTask__r.Name + '</a><br />Priority: ' + pA.ProjectTask__r.Priority__c 
-			        		+ '<br />Start date: ' + pA.ProjectTask__r.StartDate__c + '<br />End date: ' 
-			        		+ pA.ProjectTask__r.EndDate__c + '<br />Description:' + pA.ProjectTask__r.Description__c;
+			        		+ t.Project__c + '">' + t.Project__r.Name + '</a><br />Task Name: <a href="' 
+			        		+ Label.sfdcHostName+'apex/projecttaskdetail?id='+t.id + '">' 
+			        		+ t.Name + '</a><br />Priority: ' + t.Priority__c 
+			        		+ '<br />Start date: ' + t.StartDate__c + '<br />End date: ' 
+			        		+ t.EndDate__c + '<br />Description:' + t.Description__c;
 			        
-			        emailSub = 'You were unassigned from the task ' + pA.ProjectTask__r.Name + '.';			    
-				    lstUserId.add(pA.user__c);
+			        emailSub = 'You were unassigned from the task ' + t.Name + '.';			    
 				}
 				if(!isTest){
 			    	subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, 
 			    						Project__r.Name, ProjectTaskAssignToMeChanged__c 
 			    						FROM ProjectSubscription__c 
-			    						WHERE Project__c =: pId and ProjectTaskAssignedToMe__c = true and User__c in : lstUserId ];
+			    						WHERE Project__c =: pId and ProjectTaskAssignedToMe__c = true and User__c in : usersIdList ];
 		        }	
 				if( subscriptions.size() > 0){
 		    	    genAddress( subscriptions, emailMsj, emailSub );
