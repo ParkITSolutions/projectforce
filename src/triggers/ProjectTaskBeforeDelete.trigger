@@ -6,7 +6,7 @@ trigger ProjectTaskBeforeDelete on ProjectTask__c (before delete)
     	lstTasksId.add( pT.id );
     }
      
-    ProjectSubscribersEmailServices mail = new ProjectSubscribersEmailServices();
+    ProjectSubscribersEmailServices mail = ProjectSubscribersEmailServices.getInstance();
     mail.sendMailForTaskDeleted( lstTasksId );
     
     ProjectUtil.DeleteTaskMailSent=true;

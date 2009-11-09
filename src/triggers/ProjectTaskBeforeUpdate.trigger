@@ -3,7 +3,7 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 	Map<String,ProjectTask__c> AuxMap = new Map<String,ProjectTask__c>();
 	ProjectTaskDuration duration = new ProjectTaskDuration(Trigger.new.get(0));
 	ParentTask parent = new ParentTask(); 
-	BigListOfTasks bigListOfTasks = new BigListOfTasks(Trigger.new.get(0).Project__c); 
+	BigListOfTasks bigListOfTask = new BigListOfTasks(Trigger.new.get(0).Project__c); 
 		
     ProjectTask__c tempPTOld = new ProjectTask__c();
     ProjectTask__c tempPTNew = new ProjectTask__c();
@@ -19,14 +19,21 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
     		tempPTNew.DurationUI__c = tempPTNew.DurationUI__c.substring(0, 6);
     	}
     	
-    	
     	if( tempPTOld.Project__c != tempPTNew.Project__c){
 	    		tempPTNew.Project__c.addError( 'You can not modify project.');
 	    		triggerValidation = triggerValidation && false;
 		}
 		
+		ProjectTask__c prjTsk = new ProjectTask__c();
+		if(tempPTNew.ParentTask__c != null){
+			prjTsk = BigListOfTasks.getById(tempPTNew.ParentTask__c);
+			if(prjTsk == null){
+				tempPTNew.ParentTask__c.addError('Parent Task selected does not belong to current project.');
+				triggerValidation = triggerValidation && false;
+			}
+		}
 		if(parent.validateParentTaskInsert(tempPTNew) == false){
-			tempPTNew.ParentTask__c.addError('Parent Task selected does not belong in current project.');
+			tempPTNew.ParentTask__c.addError('Parent Task selected does not belong to current project.');
 			triggerValidation = triggerValidation && false;
 		}
 		

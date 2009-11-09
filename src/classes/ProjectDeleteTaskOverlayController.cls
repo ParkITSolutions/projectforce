@@ -24,7 +24,7 @@ public class ProjectDeleteTaskOverlayController {
     }
     
     /**
-    *@return String idDeletes
+    *@return String idDeletes 
     */
     public String getIdDeletes () {
         return idDeletes;   

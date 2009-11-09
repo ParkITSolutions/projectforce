@@ -21,7 +21,7 @@
 			<div id="overlayMain" class="overlayMainContent">				 
 				<!-- Overlay Form Content -->
 				<div class="overlayFormContent">
-					<strong>There are no profiles, The System proceed to create it.</strong><br />
+					<strong>There are no profiles currently available. Please click Continue to create them. This is required for Projectforce to function porperly.</strong><br />
 				</div>
 				<div class="overlaySeparateLine" style="margin-button:20px;"/></div>
 				<!-- Save Button -->

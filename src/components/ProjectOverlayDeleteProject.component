@@ -35,7 +35,7 @@
 			<div class="overlaySeparateLine"></div>
 			<div class="overlayFromButtons" align="center">
 				<span id="deleteButton">
-					<input type="button" class="allButtons actionButtons" style="background-color: #21637D!important;" value="Continue and delete project" onclick="statusDeleteProject(this); removeProject();"/>
+					<input type="button" class="allButtons actionButtons" style="background-color: #21637D!important;" value="Continue and delete project" onclick="statusDeleteProject(this); removeProject();$('closeOverlayButton').style.display = 'none'"/>
 				</span>
 				<input id="cancelDeleteProjectBtn" type="button" class="allButtons cancelButtons" value="Cancel" onclick="fixedModalDeleteProject.close(); "/>
 			</div>	

@@ -30,7 +30,7 @@ trigger ProjectAssigneeAfterInsert on ProjectAssignee__c (after insert)
 		insert assignee;
 	
 		//Send e-mail notifications
-		ProjectSubscribersEmailServices mail = new ProjectSubscribersEmailServices();
+		ProjectSubscribersEmailServices mail = ProjectSubscribersEmailServices.getInstance();
 		mail.sendMailForTaskAssigned( assignees );
 		
 	} catch(Exception e) {

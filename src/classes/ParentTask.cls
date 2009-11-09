@@ -98,7 +98,7 @@ public class ParentTask {
 	public static Double setTaskIndent(ProjectTask__c task){
 		
 		if(task.ParentTask__c != null){
-			ProjectTask__c parentTask = getParentTask(task);		
+			ProjectTask__c parentTask = getParentTask(task);
 			return ParentTask.Indent__c + 1.0;
 		}
 		else

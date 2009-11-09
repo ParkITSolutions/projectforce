@@ -53,7 +53,7 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
 	    }
     }
 
-	ProjectSubscribersEmailServices mail = new ProjectSubscribersEmailServices();
+	ProjectSubscribersEmailServices mail = ProjectSubscribersEmailServices.getInstance();
     mail.sendMailForTaskChanged( mailingList );
     
     if(lstPTId.size() > 0){
