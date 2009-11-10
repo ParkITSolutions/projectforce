@@ -15,7 +15,6 @@
 
     <!-- Content  -->
     <div id="addAssigneeOverlay" style="display: none;" class="overlayForm">
-    <div style="display: none;" id="sw_all" class="swirly_members"></div>
 
         <div class="swirly_overlay" id="sw_o" style="display: none;" ></div>
 

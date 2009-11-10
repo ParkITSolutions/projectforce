@@ -98,7 +98,7 @@
                                 </apex:outputpanel>
                              
 						<div class="wideBody">
-							<div class="swirlyAttachment" style="display:none;"></div>	
+							<div id="swirlyAttachment" class="swirlyAttachment" style="display:none;"></div>	
 						
 						<!-- Attachment List Table -->
                         <apex:outputPanel id="projectAttachmentWidget" rendered="{!IF(totalItemsNumber > 0,true, false)}">                

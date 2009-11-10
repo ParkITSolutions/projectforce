@@ -4,6 +4,8 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
 	
 	List<String> lstPTId = new List<String>();
 	
+	List<String> statusChangedTaskList = new List<String>();
+	
 	List<String> mailingList = new List<String>();
 	
 	if(Trigger.old.get( 0 ).ParentTask__c == Trigger.new.get( 0 ).ParentTask__c){
@@ -23,8 +25,12 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
     		lstPTId.add(tempPTNew.Id);
     	}
     	
-    	mailingList.add(Trigger.new.get( k ).Id);    	
-    
+    	if(tempPTOld.Status__c != tempPTNew.Status__c){
+    		statusChangedTaskList.add(tempPTNew.Id);
+    	}
+    	
+    	mailingList.add(Trigger.new.get( k ).Id);   
+    	
 	    //If parentTask changed Recalculate all Parents
 	    if(tempPTOld.ParentTask__c != tempPTNew.ParentTask__c){
 			ProjectTask__c tsk = ParentTask.getParentTask(tempPTNew).clone();
@@ -60,4 +66,7 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
     	mail.sendMailForTaskPercentChanged( lstPTId );
     }
     
+    if(statusChangedTaskList.size() > 0){
+    	mail.sendMailForTaskStatusChanged(statusChangedTaskList);
+    }
 }

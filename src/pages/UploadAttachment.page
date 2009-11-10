@@ -31,6 +31,9 @@
 					document.getElementById('errorText').innerHTML = "<b>Error:</b> Filename length must be lower than 80 characters.";
 					return false;
 				}else{
+					//splitByDot = document.getElementsByClassName('newAttach')[0].value.split('.');
+					//attExt = splitByDot[ splitByDot.length ];
+					
 					setUploadingStatus();
 					return true;
 				}
@@ -49,7 +52,11 @@
 	<apex:includeScript value="{!$Resource.portalSupport}"/>	
 
 	<apex:outputpanel rendered="{!IF(parentId == null, true, false)}" style="display: block;" layout="block">
-		<div id="uploadFinished"><script>initOverlay();</script></div>
+		<div id="uploadFinished">
+			<script>
+				initOverlay();
+			</script>
+		</div>
 	</apex:outputpanel>
 	
 	<apex:outputpanel rendered="{!IF(parentId == null, false, true)}">

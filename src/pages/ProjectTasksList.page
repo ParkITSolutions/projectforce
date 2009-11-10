@@ -453,7 +453,13 @@
                                                 {!task.Estimate}
                                             </td>
                                             <td class="proj_task_end_date" style="text-align: right;" >
+                                                <apex:outputpanel rendered="{!IF(task.Milestone,true,false)}" layout="block">
+                                                {!task.StartDate}
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!IF(task.Milestone,false,true)}" layout="block">
                                                 {!task.DueDate}
+                                                </apex:outputpanel>
+                                                
                                                 <apex:outputpanel rendered="{!IF(task.comparoFecha,true,false)}" layout="block">
                                                     {!task.cantDias} day late
                                                 </apex:outputpanel>

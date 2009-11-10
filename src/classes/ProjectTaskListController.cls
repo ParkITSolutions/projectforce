@@ -812,6 +812,7 @@ public with sharing class ProjectTaskListController {
             TaskDetail.Estimate = resultTaskList[i].Duration__c;
             TaskDetail.Description = resultTaskList[i].Description__c;
             TaskDetail.Milestone = resultTaskList[i].Milestone__c;
+            TaskDetail.StartDate = ((resultTaskList[i].StartDate__c).format());
             TaskDetail.status = resultTaskList[i].status__c;
             TaskDetail.autoId = resultTaskList[i].id__c;
            

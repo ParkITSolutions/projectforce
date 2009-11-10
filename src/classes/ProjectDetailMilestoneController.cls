@@ -178,7 +178,6 @@ public class ProjectDetailMilestoneController {
       	* Constructor
       	*/
       	public ProjectTasks(){		
-      		
       	}		
 		
 		/**
@@ -262,7 +261,8 @@ public class ProjectDetailMilestoneController {
       	*@return String
       	*/
       	public String getStartDate() {
-      		return this.StartDate;
+      		Datetime myDate = Datetime.valueOf(this.StartDate + ' 00:00:00');
+      		return myDate.format('MM/dd/yyyy');
         }
         
       	public void setStartDate(Date value) {

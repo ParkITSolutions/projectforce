@@ -125,12 +125,12 @@ public class UploadAttachmentController {
 				errorMsg = '<b>Error:</b> The length of the attachment name must be less than 64.';
 				System.debug('\n\n=====\n'+errorMsg);
 				validAttSize = false;
-				//return null;				
+				//return null;
 			}else if (asAvatar.equals('true')){
 				errorMsg = '<b>Error:</b> Please select an image file. Valid format: .jpeg, .pjpeg, .png, .x-png, .gif';
 				System.debug('\n\n=====\n'+errorMsg);
 				validAttSize = false;
-				//return null;				
+				//return null;
 			}else{
 				insert newAttach;
 			}
@@ -153,7 +153,7 @@ public class UploadAttachmentController {
 				System.debug('\n\n======================\n trace (4)');
 				errorMsg = '<b>Error:</b> Attachment size must be less than 128 KB.';
 				validAttSize = false; 	
-			}	
+			} 
 			
 			this.newAttach = new Attachment();
 			this.newAttach.body = null;
