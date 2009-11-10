@@ -194,6 +194,56 @@ public class ProjectSubscribersEmailServices {
 			}        
         }
     }
+    
+     /**
+    * Send mail to subscribers
+    *@param List<String> lstPTId
+    *@return void
+    */
+   public void sendMailForTaskStatusChanged( List<String> lstPTId )
+    {
+        String emailMsj = '';
+        String emailSub = '';
+
+        List<String> lstUserId = new  List<String>();  
+        
+        List<ProjectTask__c> lstPT = new  List<ProjectTask__c>();    
+        lstPT = [ SELECT Id, Project__c, Project__r.Name, Name, Description__c, EndDate__c, 
+        			StartDate__c, Priority__c 
+        			FROM ProjectTask__c 
+        			WHERE Id in : lstPTId ];
+        
+        List<String> SubAssignees = new List<String>();
+        if (lstPT.size()>0){
+            for (ProjectAssignee__c a :[select id, user__c 
+            								from ProjectAssignee__c 
+            								where ProjectTask__c =: lstPT[0].id]){
+        		SubAssignees.add(a.user__c);
+            }
+  	        //Sub:{Task Name} has been updated
+	        //Body: {Task Details such as name and description and start and end date}      
+	        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='
+	        			+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a><br />Task Name: <a href="' 
+	        			+ Label.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">' + lstPT[0].Name 
+	        			+ '</a><br />Priority: ' + lstPT[0].Priority__c + '<br />Start date: ' 
+	        			+ lstPT[0].StartDate__c + '<br />End date: ' + lstPT[0].EndDate__c 
+	        			+ '<br />Description: ' + lstPT[0].Description__c;
+	        emailSub = lstPT[0].Name + ' has been updated its status';
+
+	        if (!isTest){
+	            subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, 
+	            					Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, 
+	            					ProjectTaskChanged__c, ProjectTaskDeleted__c 
+	            					FROM ProjectSubscription__c 
+	            					WHERE  Project__c =: lstPT[0].Project__c  
+	            					AND User__r.Id!=:UserInfo.getUserId() 
+	            					AND ProjectTaskChanged__c = true];
+	        }
+	    	if( subscriptions.size() > 0){	
+	    	     genAddress( subscriptions, emailMsj, emailSub );
+			}       
+        }
+    }
 
 
     /**
@@ -308,13 +358,6 @@ public class ProjectSubscribersEmailServices {
 		List<ProjectTask__c> tasks = new List<ProjectTask__c>();
 		
         List<String> lstUserId = new  List<String>();   		
-		/*
-		pAs = [ SELECT Id,User__c,ProjectTask__r.Project__c, ProjectTask__c, Project__c, Project__r.Name, 
-				ProjectTask__r.Name, ProjectTask__r.Description__c, ProjectTask__r.EndDate__c, 
-				ProjectTask__r.StartDate__c, ProjectTask__r.Priority__c 
-				FROM ProjectAssignee__c 
-				WHERE Id in: lstAssId ];
-		*/
 		
 		tasks = [ SELECT Id, Project__c, name, description__c, endDate__c, startDate__c, priority__c, project__r.name FROM ProjectTask__c WHERE id in: taskIdList];
 		

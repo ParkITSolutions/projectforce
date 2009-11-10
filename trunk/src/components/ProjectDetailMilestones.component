@@ -61,13 +61,16 @@
 												<td>
 													<div class="{!task.isToLate}__"> 
 														<a href="projectTaskDetail?id={!task.TaskId}">{!task.TaskName}</a><br/>
+						                       			
 						                       			<apex:outputpanel layout="block" rendered="{!IF(task.isToLate == 'latter',false,true)}"  styleClass="margin_top">	
+							             
 							                       			<apex:outputpanel layout="block" rendered="{!IF(task.DayPercent > 44 ,true,false)}" >
 																<div class="proj_percent_complete_outline_milestone white_day" style="width:{!task.DayPercent}px ">  
 																	<span class="gray"> {!task.DaysCount}</span>   		
 									                       		</div>
 									                       		<div class="sup_margin"><img  src="{!IF(task.isToLate == '',URLFOR($Resource.ProjectResources, '/images/layout/icons/flag_green.png'),URLFOR($Resource.ProjectResources, '/images/layout/icons/flag_red.png'))}"  /></div>	
 								                       		</apex:outputpanel>
+								                       		
 								                       		<apex:outputpanel layout="block" rendered="{!IF(task.DayPercent > 44 ,false,true)}">
 																<div class="proj_percent_complete_outline_milestone white_day" style="width:{!task.DayPercent}px "></div>
 																<span class="gray f_left_margin"> {!task.DaysCount}</span>
@@ -75,12 +78,16 @@
 									                       			<img  src="{!IF(task.isToLate == '',URLFOR($Resource.ProjectResources, '/images/layout/icons/flag_green.png'),URLFOR($Resource.ProjectResources, '/images/layout/icons/flag_red.png'))}"  />
 									                       		</div>	
 								                       		</apex:outputpanel>
+								                       		
 														</apex:outputpanel>
+														
 														<apex:outputpanel layout="block"  rendered="{!IF(task.isToLate == 'latter',true,false)}" styleClass="div_left margin_top">	
+														 
 															<div class="proj_percent_complete_outline_milestone" style="width:{!task.DayPercent}px "></div>
 								                       		<span class="gray f_left_margin"> {!task.DaysCount}</span> 
 								                       		<div class="sup_margin"><img  src="{!IF(task.isToLate == '',URLFOR($Resource.ProjectResources, '/images/layout/icons/flag_green.png'),URLFOR($Resource.ProjectResources, '/images/layout/icons/flag_red.png'))}"  /></div>	
 														</apex:outputpanel>
+														
 													</div>
 												</td>
 												<td>

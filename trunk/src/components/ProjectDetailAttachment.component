@@ -33,7 +33,7 @@
 			</div>
 			<!-- Widget Container --> 		
 			<div class="wideBody">
-				<div class="swirlyAttachment" style="display:none;"></div>	
+				<div id="swirlyAttachment" class="swirlyAttachment" style="display:none;"></div>	
 				<apex:outputPanel id="projectAttachmentWidget">
 					<apex:outputPanel rendered="{!attachmentCount}">
 						<table class="pageList">

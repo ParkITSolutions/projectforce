@@ -13,7 +13,7 @@
 	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamsOverlayNewMilestone.js')}" />
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />
 	
-	<div id="newAttachmentOverlay" style="display:none;" class="overlayForm">	
+	<div id="newAttachmentOverlay" style="display:none;z-index:9999;" class="overlayForm">
 		<!-- Overlay Title -->
 		<div class="overlayTitleContent">
 			<div class="overlayTitle">Add Attachment</div>

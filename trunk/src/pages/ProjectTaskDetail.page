@@ -161,7 +161,7 @@
             <apex:outputpanel id="detailContainer" styleClass="projectTaskDetail" rendered="{!detailsOk}" layout="block" style="overflow:hidden; position:relative; clear:both;" >
 			
                 <div style="display: none;" id="sw_all" class="swirly_members"></div>
-                <!--  <div style="display: none;" id="sw_all2" class="swirly_members"></div>   -->   
+                <div style="display: none;" id="sw_all2" class="swirly_members"></div>     
                              
                 <!-- Method to refresh task detail -->
                 <apex:form id="taskDetail" >               
@@ -342,7 +342,7 @@
             </div>
         </div>
     </div>
- 
+ <div id="modal_overlay" style="position: fixed; top: 0pt; left: 0pt; width: 100%; height: 100%; z-index: 9998; display: none;"/>
     <script>    	
          clearTableDetail();         
      </script>
@@ -472,6 +472,6 @@
 	            }
 	        }
 	    };
-		fixedModalNewAttachment = new fixedModalClass('newAttachmentOverlay', 'fixedModalNewAttachmentOverlay', true);
+		fixedModalNewAttachment = new fixedModalClass('newAttachmentOverlay', 'modal_overlay', true);
 </script>
 </apex:page>
