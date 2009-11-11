@@ -27,7 +27,7 @@
 		<!-- Overlay Title -->
 		<div class="overlayTitleContent">
 			<div class="overlayTitle">Create New Milestone</div>
-			<div class="overlayCloseEvent">
+			<div class="overlayCloseEvent" id="overlayCloseEventNewMilestone">
 				<a href="Javascript:;" onclick="resetFormNewMilestone();fixedModalNewMilestone.close();">
 					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
 				</a>
@@ -77,7 +77,7 @@
 										status="MilestoneStatus" style="float: none;width: 70px !important;background:#21637D none repeat scroll 0 0 !important;"
 										value="Save" styleclass="btn allButtons"
                                         onclick="setTimeout('Effect.Fade(\'infoToUser\')', 10000);"
-										oncomplete="showMessageToUser('Created new milestone','success');reloadMilestoneList();try{showSelect();}catch(e){}formValidateMilestone('{!$Component.nameMilestone}', '{!$Component.dueDateMilestone}', '{!$Component.memberMilestone}')">
+										oncomplete="resetFormNewMilestone(); fixedModalNewMilestone.close(); $('overlayCloseEventNewMilestone').show();showMessageToUser('Created new milestone','success');reloadMilestoneList();try{showSelect();}catch(e){}formValidateMilestone('{!$Component.nameMilestone}', '{!$Component.dueDateMilestone}', '{!$Component.memberMilestone}')">
 									</apex:commandButton>
 									<apex:commandButton styleClass="btn allButtons" style="float: none;width: 70px !important;background:#989999 none repeat scroll 0 0 !important;" value="Cancel" onclick="try{showSelect();}catch(e){}resetFormNewMilestone();fixedModalNewMilestone.close(); return false;"  />
 									<a href="https://na1.salesforce.com/{!taskPrefix}/e" onclick="fixedModalNewTask.close();">Create Full Task</a>

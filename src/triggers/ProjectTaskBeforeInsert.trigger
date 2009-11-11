@@ -9,7 +9,7 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 			
 			ProjectTaskDuration duration = new ProjectTaskDuration(Trigger.new.get(0));
 			ParentTask parent = new ParentTask();
-			BigListOfTasks bigListOfTasks = new BigListOfTasks(Trigger.new.get(0).Project__c); 
+			BigListOfTasks bigListOfTask = new BigListOfTasks(Trigger.new.get(0).Project__c); 
 			
 			for(ProjectTask__c p : Trigger.new) {
 		 		tasksInTrrNewIds.add( p.ParentTask__c );
@@ -21,20 +21,6 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 				projectMap.put(g.Name, g.Id);
 			}
  			
- 			/* Code commented Deprecated code, if nothing breaks to be erased
- 			List<ProjectTask__c> parentTasks = new List<ProjectTask__c>();			
- 			parentTasks = [ select id, Project__c from ProjectTask__c where id in: tasksInTrrNewIds limit 1000];
-			
-		    ProjectTask__c tempPTNew = new ProjectTask__c();
-		    for( Integer k = 0; k < Trigger.new.size(); k++ ){
-		    	tempPTNew = Trigger.new.get( k );
-	
-				if( parentTasks.size() > 0 )
-			    	if( tempPTNew.Project__c != parentTasks.get( k ).Project__c )
-			    		tempPTNew.addError( 'Invalid parent task value.');
-		    }
-		    */
-		    
 			for(ProjectTask__c nTask : Trigger.new) {
 				Boolean triggerValidation = true;
 				
@@ -58,6 +44,14 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 					}
 				}
 				
+				ProjectTask__c prjTsk = new ProjectTask__c();
+				if(nTask.ParentTask__c != null){
+					prjTsk = BigListOfTasks.getById(nTask.ParentTask__c);
+					if(prjTsk == null){
+						nTask.ParentTask__c.addError('Parent Task selected does not belong to current project.');
+						triggerValidation = triggerValidation && false;
+					}
+				}
 				if(parent.validateParentTaskInsert(nTask) == false){
 					nTask.ParentTask__c.addError('Parent Task selected does not belong in current project.');
 					triggerValidation = triggerValidation && false;

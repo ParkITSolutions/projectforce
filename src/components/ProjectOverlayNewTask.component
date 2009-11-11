@@ -29,7 +29,7 @@
         <!-- Overlay Title -->
         <div class="overlayTitleContent">
             <div class="overlayTitle">Create New Task</div>
-            <div class="overlayCloseEvent">
+            <div class="overlayCloseEvent" id="overlayCloseEvent">
                 <a href="Javascript:;" onclick="fixedModalNewTask.close();resetFormNewTask();">
                     <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
                 </a>
@@ -91,7 +91,7 @@
                                     <apex:commandButton action="{!insertTask}" id="taskSaveBtn"                                                                             
                                         status="taskStatus" style="float: none;width: 70px !important;background: #21637D none repeat scroll 0 0 !important;"
                                         onclick="setTimeout('Effect.Fade(\'infoToUser\')', 10000);"
-                                        onComplete="try{showSelect();}catch(e){}formValidate('{!$Component.name}', '{!$Component.taskEstimate}', '{!$Component.member}' ,'{!$Component.taskStartDate}' , '{!$Component.taskDueDate}');showMessageToUser('Created new task', 'success')"
+                                        onComplete="$('overlayCloseEvent').show(); try{showSelect();}catch(e){}formValidate('{!$Component.name}', '{!$Component.taskEstimate}', '{!$Component.member}' ,'{!$Component.taskStartDate}' , '{!$Component.taskDueDate}');showMessageToUser('Created new task', 'success')"
                                         value="Save" styleClass="btn allButtons" rerender="quickTaskForm"/>
                                     <input class="allButtons" type="button" style="float: none;width: 70px !important;background:#989999 none repeat scroll 0 0 !important;" value="Cancel"  onclick="try{showSelect();}catch(e){}resetFormNewTask();fixedModalNewTask.close();" />
                                     <a href="https://{!domain}/{!taskPrefix}/e?retURL=https://{!domain}/apex/projectDetail?id={!CurrentProjectId}" onclick="fixedModalNewTask.close();">Create Full Task</a>
