@@ -116,7 +116,7 @@
                     <apex:actionStatus id="taskStatus">
                         <apex:facet name="start">
                             <a class="blackbutton" href="Javascript:;" >
-                                <span>Mark Complete...</span>
+                                <span>Marking Complete...</span>
                             </a>
                         </apex:facet>
                         <apex:facet name="stop">   
@@ -321,7 +321,7 @@
                     <apex:form id="quickMilestoneForm2" styleclass="quickMilestoneForm" onsubmit="if(isCompleted){alert('The task percent is already completed.');return false}" >   
                         <apex:actionStatus id="taskStatus2">
                             <apex:facet name="start">
-                                <a class="blackbutton" href="Javascript:;" ><span>Mark Complete...</span></a>
+                                <a class="blackbutton" href="Javascript:;" ><span>Marking Complete...</span></a>
                             </apex:facet>
                             <apex:facet name="stop">   
                                 <apex:outputPanel id="TaskPanel2">       

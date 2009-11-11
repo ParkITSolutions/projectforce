@@ -125,18 +125,18 @@ public class UploadAttachmentController {
 				errorMsg = '<b>Error:</b> The length of the attachment name must be less than 64.';
 				System.debug('\n\n=====\n'+errorMsg);
 				validAttSize = false;
-				//return null;
+				return null;
 			}else if (asAvatar.equals('true')){
 				errorMsg = '<b>Error:</b> Please select an image file. Valid format: .jpeg, .pjpeg, .png, .x-png, .gif';
 				System.debug('\n\n=====\n'+errorMsg);
 				validAttSize = false;
-				//return null;
+				return null;
 			}else{
 				insert newAttach;
 			}
 			this.newAttach = new Attachment();
 			this.newAttach.body = null;
-			this.parentId = null;
+			this.ParentId = null;
 			PageReference pageRef = Page.UploadAttachment;
 			pageRef.setRedirect(true);
 			return pageRef;
@@ -157,7 +157,6 @@ public class UploadAttachmentController {
 			
 			this.newAttach = new Attachment();
 			this.newAttach.body = null;
-			
 			return null;
 		}		
 		
@@ -170,6 +169,7 @@ public class UploadAttachmentController {
 	public PageReference cancelAttach () {
 		PageReference pageRef = Page.UploadAttachment;
 		pageRef.setRedirect(true);
+			this.parentId = null;
 		return pageRef;
 	} 
 }

@@ -1,7 +1,10 @@
 <apex:page id="proMemRem" sidebar="false" tabStyle="Project2__c" controller="ProjectMembersListController">
 	
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsMembersRemove.css')}" />
-
+	
+	<!-- ### Initialize fixed Overlay ### -->
+    <div id="removeMemberOverlayContainer" class="fixedModalOverlay" style="display:none;"></div>
+    
 	<!-- Content  -->
 	<div id="removeMemberOverlay" style="display:none;" class="overlayForm">	
 		<!-- Overlay Title -->
@@ -40,6 +43,10 @@
 					</apex:outputPanel>
 				</div>
 				<apex:outputPanel rendered="{!error}">
+					<script>
+					createOverlay('','removeMemberOverlay','170','relocateOverlay()')
+					$('paginationOverlay').hide()
+					</script>
                         <table style="width: 95%;">
                             <tr>                                                     
                                 <td style="text-align='center';">

@@ -30,10 +30,7 @@
 				if(document.getElementsByClassName('newAttach')[0].value.length >= 80){
 					document.getElementById('errorText').innerHTML = "<b>Error:</b> Filename length must be lower than 80 characters.";
 					return false;
-				}else{
-					//splitByDot = document.getElementsByClassName('newAttach')[0].value.split('.');
-					//attExt = splitByDot[ splitByDot.length ];
-					
+				}else{		
 					setUploadingStatus();
 					return true;
 				}
@@ -50,15 +47,13 @@
 	
 	<!-- Portal Support -->
 	<apex:includeScript value="{!$Resource.portalSupport}"/>	
-
 	<apex:outputpanel rendered="{!IF(parentId == null, true, false)}" style="display: block;" layout="block">
-		<div id="uploadFinished">
+		<div id="uploadFinished-">
 			<script>
 				initOverlay();
 			</script>
 		</div>
 	</apex:outputpanel>
-	
 	<apex:outputpanel rendered="{!IF(parentId == null, false, true)}">
 		<div class="overlayMainContent">
 			<apex:form onsubmit="return checkInputFile();">
@@ -86,10 +81,10 @@
 					</div>
 				</div>
 				<div class="uploadingStatus"></div>
-				<input type="hidden" id="asAvatar" name="asAvatar" />
+				<input type="hidden" id="asAvatar" name="asAvatar" /> 
 			</apex:form>
 		</div>
-		<div id="uploadCancel" style="display: none;"></div>
+		<div id="uploadCancelX" style="display: none;"></div>
 	</apex:outputpanel>
 	<script>	
 		readPortalCSSRules();
