@@ -4,11 +4,14 @@
 			document.getElementById('overlayQuestion').style.display = 'none';
 			document.getElementById('overlayDeleting').style.display = 'block';
 		}
+		function restoreDeleteOverlay(){
+			document.getElementById('overlayQuestion').style.display = 'block';
+			document.getElementById('overlayDeleting').style.display = 'none';
+		}
 	</script>
 	
 	<!-- Overlay Styles --> 
 	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsOverlayDeleteAttachment.css')}" />
-	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamsOverlayNewMilestone.js')}" />
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />
 	
 	<!-- ### Initialize fixed Overlay ### -->
@@ -21,7 +24,7 @@
 		<!-- Overlay Title -->
 		<div class="overlayTitleContent">
 			<div class="overlayTitle">Delete Attachment</div>
-			<div class="overlayCloseEvent">
+			<div class="overlayCloseEvent" id="overlayCloseEventAttachment">
 				<a href="Javascript:;" onclick="fixedModalDeleteAttachment.close();"> 
 					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}"	alt="Close Window" title="Close Window" /> 
 				</a> 
@@ -56,9 +59,9 @@
 										style="background:#21637D none repeat scroll 0 0 !important; !important;" 
 										action="{!deleteAttach}" 
 										value="Continue and delete Attachment" 
-										onclick="deleteChangeOverlay();" 
+										onclick="$('overlayCloseEventAttachment').hide(); deleteChangeOverlay();" 
 										rerender="projectAttachmentWidget, paginationLinks" 
-										oncomplete="fixedModalDeleteAttachment.close(); showHideOverlay(); refreshAttachmentList(); "  />
+										oncomplete="$('overlayCloseEventAttachment').show(); fixedModalDeleteAttachment.close(); restoreDeleteOverlay(); showHideOverlay(); refreshAttachmentList();"  />
 						                                               
 			        <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="fixedModalDeleteAttachment.close();" value="Cancel"/>
 				</div>

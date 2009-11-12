@@ -326,7 +326,7 @@ public with sharing class TaskDependencies {
 		this.bPredList = new BigListOfTaskPredecessors( task.Project__c );
 		
 		// Get all parents
-		//relsToMe 	= this.bPredList.getListByParent( task.id, '2');
+		relsToMe 	= this.bPredList.getListByParent( task.id, '2');
 		
 		// Get all predecessors
 		relsFromMe	= this.bPredList.getListByPred( task.id, '2');
