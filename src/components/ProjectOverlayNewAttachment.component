@@ -18,7 +18,7 @@
 		<div class="overlayTitleContent">
 			<div class="overlayTitle">Add Attachment</div>
 			<div class="overlayCloseEvent">
-				<a href="Javascript:;" onclick="fixedModalNewAttachment.close();" id="modalCloseButton">
+				<a href="Javascript:;" onclick="modal.close();" id="modalCloseButton">
 					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
 				</a>                                                                                      
 			</div>
@@ -29,5 +29,17 @@
 					marginwidth="0"></iframe>
 		</apex:outputpanel>
 	</div>
-	         
+	<script>
+		var loadAttOverlay = false;
+		function openAttachmentOverlay(){
+			loadAttOverlay = true;
+		    createOverlay('', 'newAttachmentOverlay', 180);
+		    newAttachmentToProject();
+		    observeIframeUpload();
+		    //Hack for IE6
+		
+		    $('uploadIframe').src = $('uploadIframe').src;
+		    newAttachmentToProject();
+		}	
+	</script>	         
 </apex:component>

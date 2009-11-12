@@ -48,9 +48,12 @@
 	<!-- Portal Support -->
 	<apex:includeScript value="{!$Resource.portalSupport}"/>	
 	<apex:outputpanel rendered="{!IF(parentId == null, true, false)}" style="display: block;" layout="block">
-		<div id="uploadFinished-">
+		<div id="uploadFinished">
 			<script>
-				initOverlay();
+				if( parent.loadAttOverlay ){
+					initOverlay();
+					parent.loadAttOverlay = false;
+				}
 			</script>
 		</div>
 	</apex:outputpanel>
@@ -84,7 +87,7 @@
 				<input type="hidden" id="asAvatar" name="asAvatar" /> 
 			</apex:form>
 		</div>
-		<div id="uploadCancelX" style="display: none;"></div>
+		<div id="uploadCancel" style="display: none;"></div>
 	</apex:outputpanel>
 	<script>	
 		readPortalCSSRules();

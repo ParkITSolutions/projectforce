@@ -161,18 +161,10 @@ public with sharing class ProjectOverviewController {
  
         //@newProjects
         if(filter == 'newProjects'){
-            for(Project2__c project : [Select
-                                              (Select Id 
-                                               From ProjectsMembers__r), 
-                                              (Select Id, 
-                                                      Milestone__c 
-                                               From ProjectsTasks__r),
-                                              t.CreatedDate, 
-                                              t.Name, 
-                                              t.Picture__c, t.Id 
-                                       From Project2__c t 
-                                       order by t.CreatedDate  desc 
-                                       limit :lim]){
+            for(Project2__c project : [Select (Select Id  From ProjectsMembers__r), 
+                                              (Select Id, Milestone__c From ProjectsTasks__r),
+                                              t.CreatedDate, t.Name, t.Picture__c, t.Id 
+                                       From Project2__c t order by t.CreatedDate  desc limit :lim]){
                 projects.add(project);
             }                               
         //@allProjects

@@ -94,7 +94,9 @@
 													<a href="/{!task.UserId}"  class="name_margin">{!task.UserName}</a>
 												</td>
 												<td>
-													{!task.StartDate}
+													<apex:outputPanel style="{!IF(task.Late, 'color: red', '')}">
+														{!task.StartDate}
+													</apex:outputPanel>
 												</td>
 											</tr>
 										</apex:repeat>  

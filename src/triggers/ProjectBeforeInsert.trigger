@@ -6,17 +6,11 @@ trigger ProjectBeforeInsert on Project2__c (before insert) {
 	
         //Set Profile according Project Access
         if(project.Access__c.equals('Open')){
-            project.PublicProfile__c = [SELECT id 
-            								FROM ProjectProfile__c 
-            								WHERE Name =: 'Public Profile' 
-            								limit 1].Id;
+            project.PublicProfile__c = [SELECT id FROM ProjectProfile__c WHERE Name =: 'Public Profile' limit 1].Id;
             								
             project.Type__c = 'open';            
         }else if (project.Access__c.equals('Close')) {
-            project.NewMemberProfile__c = [SELECT id 
-            								FROM ProjectProfile__c 
-            								WHERE Name =: 'Member Profile' 
-            								limit 1 ].Id;
+            project.NewMemberProfile__c = [SELECT id FROM ProjectProfile__c WHERE Name =: 'Member Profile' limit 1 ].Id;
             								
             project.PublicProfile__c = null;
             project.Type__c = 'close';           

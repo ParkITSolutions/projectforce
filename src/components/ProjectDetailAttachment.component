@@ -17,7 +17,7 @@
 						 rerender="projectAttachmentWidget, seeMoreLink" 
 						 oncomplete="hideSwirly('swirlyAttachment');" />
 	
-	<apex:actionFunction name="reloadIframe" action="{!dummyRefresh}" rerender="iframeWrapperPanel" />
+	<apex:actionFunction name="reloadIframe" action="{!dummyRefresh}" rerender="iframeWrapperPanel"  />
 	<apex:outputPanel layout="block">
 		<div class="myBigWidget">
 			<!-- Widget Title -->		
@@ -27,7 +27,7 @@
 			<!-- Widget Links Holder -->
 			<div class="linkAction">
 				<apex:outputpanel rendered="{!userPermissions.canCreate}">
-					<a href="Javascript:;" onclick="fixedModalNewAttachment.open();">New Attachment</a>
+					<a href="Javascript:;" onclick="openAttachmentOverlay();">New Attachment</a>
 				</apex:outputPanel>
 				
 			</div>
@@ -85,7 +85,7 @@
 							<li>
 								No Attachments Yet<br/>
 								<apex:outputpanel rendered="{!userPermissions.canCreate}"  > 
-									<a  href="javascript:;" onclick="fixedModalNewAttachment.open();">Attach a new file</a>
+									<a  href="javascript:;" onclick="openAttachmentOverlay();">Attach a new file</a>
 								</apex:outputpanel>
 							</li>
 						</ul>
@@ -95,19 +95,4 @@
 			</div>
 		</div>
 	</apex:outputPanel>
-	<script>
-function openAttachmentOverlay(){
-
-    createOverlay('', 'newAttachmentOverlay', 180);
-
-    newAttachmentToProject();
-
-    observeIframeUpload();
-
-    //Hack for IE6
-
-    $('uploadIframe').src = $('uploadIframe').src;
-    newAttachmentToProject();
-
-}	</script>
 </apex:component>
