@@ -58,9 +58,11 @@ public with sharing class ProjectDetailController
     *@return String
     */
     public String getProjectName(){
-		String pName;
-		pName = [Select Id, Name from Project2__c where id =: teamIdParam].Name;    	
-		
+    	/*Project2__c p = new Project2__c();
+		ApexPages.StandardController sc = new ApexPages.StandardController(p);		
+		String projectName = ((Project2__c)sc.getRecord()).name;
+		*/
+		String pName = [Select Id, Name from Project2__c where id =: teamIdParam].Name;    	
 		if( pName.length() > 24 )
 			pName = pName.substring( 0, 23 );
 				

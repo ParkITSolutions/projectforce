@@ -1,7 +1,7 @@
 /**
 *@author Rodrigo Birriel @ 03/17/2009
 */
-public with sharing class ProjectOverviewController {
+public class ProjectOverviewController {
 
     public List<ProjectMember__c> projects = new List<ProjectMember__c>();
     public List<Project> auxProjectsList = new List<Project>();
@@ -161,10 +161,8 @@ public with sharing class ProjectOverviewController {
  
         //@newProjects
         if(filter == 'newProjects'){
-            for(Project2__c project : [Select (Select Id  From ProjectsMembers__r), 
-                                              (Select Id, Milestone__c From ProjectsTasks__r),
-                                              t.CreatedDate, t.Name, t.Picture__c, t.Id 
-                                       From Project2__c t order by t.CreatedDate  desc limit :lim]){
+            for(Project2__c project : [Select (Select Id  From ProjectsMembers__r), (Select Id, Milestone__c From ProjectsTasks__r), t.CreatedDate, t.Name, t.Picture__c, t.Id 
+                                       From Project2__c t WHERE t.Access__c = 'Open' OR t.Access__c = 'Closed' OR createdById =: UserInfo.getUserId() ORDER by t.CreatedDate  DESC LIMIT :lim]){
                 projects.add(project);
             }                               
         //@allProjects
@@ -175,11 +173,11 @@ public with sharing class ProjectOverviewController {
             for(Project2__c project : [Select (Select Id From ProjectsMembers__r), 
                                         (Select Id, Milestone__c From ProjectsTasks__r), 
                                         t.Name, t.Picture__c, t.Id 
-                                        From Project2__c t 
+                                        From Project2__c t WHERE t.Access__c = 'Open' OR t.Access__c = 'Closed' OR createdById =: UserInfo.getUserId()
                                         order by t.Name asc limit :lim]){
                 projects.add(project);
             }         
-                        
+                                  
             //Only allProjects show pagination and abc
             isAllProjects = false;
         //@Default My Projects

@@ -56,7 +56,6 @@
         </apex:composition> 
        
          <div align="center" class="breadCrumbAndButtons">
-         
             <apex:outputpanel layout="block" styleclass="breadCrumbs">
                 <div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
 				<a id="projectNameBreadcrumb"  href="#"><apex:outputText escape="true" value="{!projectName}" /></a> &gt;										

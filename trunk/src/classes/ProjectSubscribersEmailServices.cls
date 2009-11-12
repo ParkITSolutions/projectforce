@@ -21,7 +21,7 @@ public class ProjectSubscribersEmailServices {
     
     public static ProjectSubscribersEmailServices getInstance(){
     	if( instance == null )
-    	instance = new ProjectSubscribersEmailServices();
+    		instance = new ProjectSubscribersEmailServices();
     	
     	return instance;
     }

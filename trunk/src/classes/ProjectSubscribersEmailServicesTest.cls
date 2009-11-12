@@ -14,9 +14,8 @@
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
     	
-    	ProjectSubscribersEmailServices es = new ProjectSubscribersEmailServices();
-    	
-    	
+    	ProjectSubscribersEmailServices es = ProjectSubscribersEmailServices.getInstance();
+    		
     	es.setIsTaskEdit( true );
     	
     	List<String> lPM = new List<String>();
