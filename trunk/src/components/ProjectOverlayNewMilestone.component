@@ -80,12 +80,12 @@
 										oncomplete="resetFormNewMilestone(); fixedModalNewMilestone.close(); $('overlayCloseEventNewMilestone').show();showMessageToUser('Created new milestone','success');reloadMilestoneList();try{showSelect();}catch(e){}formValidateMilestone('{!$Component.nameMilestone}', '{!$Component.dueDateMilestone}', '{!$Component.memberMilestone}')">
 									</apex:commandButton>
 									<apex:commandButton styleClass="btn allButtons" style="float: none;width: 70px !important;background:#989999 none repeat scroll 0 0 !important;" value="Cancel" onclick="try{showSelect();}catch(e){}resetFormNewMilestone();fixedModalNewMilestone.close(); return false;"  />
-									<a href="https://na1.salesforce.com/{!taskPrefix}/e" onclick="fixedModalNewTask.close();">Create Full Task</a>
+									<a href="https://{!domain}/{!taskPrefix}/e" onclick="fixedModalNewTask.close();">Create Full Task</a>
 									<div id="quickMilestoneFormId" style="display:none;">{!$Component.quickMilestoneForm}</div>			
 								</div>
 							</apex:outputPanel>
 						</apex:facet>
-					</apex:actionStatus>
+					</apex:actionStatus> 
 				</apex:form>
 			</div>
 			<!-- The hidden form to send partial data to edit -->

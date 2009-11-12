@@ -172,12 +172,14 @@ public class ProjectDetailMilestoneController {
         public String Picture;
         public String Priority;
         public String isToLate;
-      	DateTime now = System.now();
+      	private DateTime now = System.now();
+      	private Boolean late;
 		
       	/**
       	* Constructor
       	*/
-      	public ProjectTasks(){		
+      	public ProjectTasks(){	
+      		this.late = false;	
       	}		
 		
 		/**
@@ -423,6 +425,26 @@ public class ProjectDetailMilestoneController {
         */
         public void setTaskName(String sName){
             TaskName = sName;
+        }
+        
+        public DateTime getNow(){
+        	return this.now;
+        }
+        
+        //this method works with milestones because they have not end date
+        public Boolean getLate(){
+        	
+        	Date myToday = Date.today();
+        	
+        	Date taskEndDate =  Date.valueOf(this.StartDate);
+        	
+        	if(taskEndDate.daysBetween(myToday) > 0){
+        		this.late = true;
+        	}else{
+        		this.late = false;
+        	}
+        	
+        	return this.late;
         }
 	 }
 }

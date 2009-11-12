@@ -11,13 +11,23 @@ public class ProjectOverlayNewMilestoneController {
     public Project2__c currentProject = null;
     public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
     public String  taskPrefix = Schema.SObjectType.Projecttask__c.getKeyPrefix();
+    
+    public String domain;
      
+     /**
+	*@return String
+	*/
+	public String getDomain(){
+		return this.domain;
+	}
+	
     /**
     * Constructor
     */
     public ProjectOverlayNewMilestoneController(){
         getCurrentProject();
         genPermissions();   
+        domain = ProjectUtil.getDomain();
     }
     
 

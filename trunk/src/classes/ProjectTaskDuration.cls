@@ -59,7 +59,7 @@ public class ProjectTaskDuration {
 		else{
 			task = this.verifyStartDate(task);
 			task = this.verifyEndDate(task);
-								
+						
 			if(task.EndDate__c == null){
 				task = this.parseDuration(task);
 					 				
@@ -96,7 +96,17 @@ public class ProjectTaskDuration {
 			tempPTNew.Duration__c = 1.0; 
 		}
 		else{
-			tempPTNew = this.verifyStartDate(tempPTNew);
+			
+			//trial correccion for bug 4464
+			if(tempPTOld.EndDate__c == tempPTNew.EndDate__c){
+				System.debug('Fechas Iguales----------------------------------------------------------');		
+				tempPTNew = this.verifyStartDate2(tempPTNew);
+			}
+			else{
+				System.debug('no deberia entrar----------------------------------------------------------');		
+				tempPTNew = this.verifyStartDate(tempPTNew);
+			}
+			
 			tempPTNew = this.verifyEndDate(tempPTNew);
 				
 		    if(tempPTNew.EndDate__c != null && tempPTOld.EndDate__c != null){
@@ -299,7 +309,35 @@ public class ProjectTaskDuration {
 				}
 			}	
 		}
+		System.debug('Primera linea de debug verify Start: '+task);
+		return task;
+	}
+	public ProjectTask__c verifyStartDate2(ProjectTask__c task){
 		
+		Set<String> workdays = this.getWorkDays( Integer.valueOf(this.daysInWorkWeek));
+		Datetime myDate = Datetime.valueOf(task.StartDate__c + '00:00:00');
+		Datetime myEndDate;
+		if(task.EndDate__c != null){
+			myEndDate = Datetime.valueOf(task.EndDate__c + '00:00:00');
+		}
+		
+		String weekday = '';		
+		boolean isCorrect = false;
+		
+		while(isCorrect == false){
+			weekday = myDate.format('EEE');
+			if(workdays.contains(weekday)){ 
+				isCorrect = true;
+				task.StartDate__c = Date.newInstance(myDate.year(), myDate.month(), (myDate.day()));
+				if(task.EndDate__c != null){
+					task.EndDate__c = Date.newInstance(myEndDate.year(), myEndDate.month(), (myEndDate.day()));
+				}
+			}
+			else{
+				myDate = myDate.addDays(1);
+			}	
+		}
+		System.debug('Primera linea de debug verify Start: '+task);
 		return task;
 	}
 	
@@ -328,6 +366,7 @@ public class ProjectTaskDuration {
 				}	
 			}
 		}
+		System.debug('Seunda linea de debug verify Enddate: '+task);
 		return task;
 	}
 	
