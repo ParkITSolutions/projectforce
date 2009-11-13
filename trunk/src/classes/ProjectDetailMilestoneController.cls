@@ -109,7 +109,7 @@ public class ProjectDetailMilestoneController {
 	 					From ProjectTask__c  p 
 	 					where  p.Milestone__c = true 
 	 					and p.Project__c =: teamId  
-	 					order by p.EndDate__c asc limit 5
+	 					order by p.StartDate__c asc limit 10
 	 					];
 	 	listSize = milestones.size();  // think there is a better way todo this
 	 	

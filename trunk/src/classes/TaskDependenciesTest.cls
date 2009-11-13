@@ -39,9 +39,43 @@
     	taskAux.startDate__c = Date.valueOf(task.startDate__c).addDays( 4 );    	 
     	taskAux.endDate__c   = Date.valueOf(task.startDate__c).addDays( 4 );    	 
     	td.movingTask(task, taskAux);
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );
+    }
+
+	static testMethod void myUnitTest2(){
     	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+    	
+    	TaskDependencies td = new TaskDependencies( GenerateEnvironmentTest.project.id );
+    	
+    	ProjectTask__c task = GenerateEnvironmentTest.task;
+    	ProjectTask__c task2 = GenerateEnvironmentTest.task;
+    	ProjectTask__c mile = GenerateEnvironmentTest.mile;
+    	List<ProjectTaskPred__c> listPtp = new List<ProjectTaskPred__c>();    	
+		ProjectTaskPred__c ptp = new ProjectTaskPred__c();
+			ptp.Project__c = GenerateEnvironmentTest.project.id;
+			ptp.Predecessor__c = task.id;
+			ptp.Parent__c = task2.id;
+			ptp.Lag_Time__c = 0;
+			ptp.Lag_Type__c = 'Finish-to-Start';
+		listPtp.add(ptp);
+		 ptp = new ProjectTaskPred__c();
+			ptp.Project__c = GenerateEnvironmentTest.project.id;
+			ptp.Predecessor__c = task2.id;
+			ptp.Parent__c = mile.id;
+			ptp.Lag_Time__c = 0;
+			ptp.Lag_Type__c = 'Finish-to-Start';
+		listPtp.add(ptp);
+
+		insert listPtp;
+		
+		if ( System.Limits.getAggregateQueries() > 0 )
     	td.changeLag( listPtp[ 0 ]);
-				
+		
 		 ptp = new ProjectTaskPred__c();
 			ptp.Project__c = GenerateEnvironmentTest.project.id;
 			ptp.Predecessor__c = mile.id;
@@ -60,5 +94,6 @@
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     }
+
          	
 }

@@ -25,7 +25,7 @@ public class ProjectDetailAttachmentController {
     * Set of Integers to control pagination
     */
     private Integer totalItemsNumber;
-    private Integer numberOfItemsToShow = 10;
+    private Integer numberOfItemsToShow = 3;
     private Integer cntPagination = 0;
     private Integer currentPagination = 1;
     private Integer firstRow = 0;
@@ -302,7 +302,12 @@ public class ProjectDetailAttachmentController {
 		String avatarId;
 		
 		//Get current Avatar
-		avatarId = [ select Picture__c from Project2__c where Id =: project limit 1 ].Picture__c ;
+		//avatarId = [ select Picture__c from Project2__c where Id =: project limit 1 ].Picture__c ;
+
+		List<Project2__c> pic = new List<Project2__c>();
+		pic = [ select Picture__c from Project2__c where Id =: project limit 1 ] ;
+		if( pic.size() > 0 ) 
+		avatarId = pic[0].Picture__c;
 		
 		for (Attachment item: attachs){	
 			

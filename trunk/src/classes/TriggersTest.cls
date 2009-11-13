@@ -16,6 +16,22 @@
 
 		upsert GenerateEnvironmentTest.project;
 		upsert GenerateEnvironmentTest.member;
+
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );
+    }         	
+
+	/**
+	* Test1
+	*@void
+    *@static
+	*/
+    static testMethod void myUnitTes2(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+
 		upsert GenerateEnvironmentTest.task;
 
     	Test.stopTest();
@@ -27,7 +43,7 @@
 	*@void
     *@static
 	*/
-    static testMethod void myUnitTest2(){
+    static testMethod void myUnitTest3(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
@@ -49,7 +65,7 @@
 	*@void
     *@static
 	*/
-    static testMethod void myUnitTest3(){
+    static testMethod void myUnitTest4(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
@@ -72,7 +88,7 @@
 	*@void
     *@static 
 	*/
-    static testMethod void myUnitTest4(){
+    static testMethod void myUnitTest5(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
@@ -89,7 +105,7 @@
 	*@void
     *@static
 	*/
-    static testMethod void myUnitTest5(){
+    static testMethod void myUnitTest6(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
@@ -106,7 +122,7 @@
 	*@void
     *@static
 	*/
-    static testMethod void myUnitTest6(){
+    static testMethod void myUnitTest7(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
@@ -124,7 +140,7 @@
 		p.PublicProfile__c 		= 	null;
 		update p;	
 		
-    	Test.stopTest();
+    	Test.stopTest(); 
 		ProjectUtil.setIsTest( false );
     }   
   	/**
@@ -132,7 +148,7 @@
 	*@void
     *@static
 	*/
-    static testMethod void myUnitTest7(){
+    static testMethod void myUnitTest8(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
