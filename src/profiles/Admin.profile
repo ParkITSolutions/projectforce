@@ -67,6 +67,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectAttachmentListControllerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectDeleteTaskOverlayController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -140,6 +144,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectOverlayDeleteAttachmentController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProjectOverlayDeleteAttachmentTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>

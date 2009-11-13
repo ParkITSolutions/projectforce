@@ -139,7 +139,7 @@
                                                  <input type="checkbox" value="{!attachment.Id}" />
                                             </td>
                                             <td align="center">
-                                                  <a href="javascript:;" onclick="createOverlay('', 'DeleteAttachmentOverlay', 180); document.getElementById('ProjectAttachmentList:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!attachment.Id}';">Delete</a> 
+                                                  <a href="javascript:;" onclick="createOverlay('', 'deleteAttachmentOverlay', 180); $('ProjectAttachmentList:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!attachment.Id}';">Delete</a> 
                                             </td>
                                             <td align="center">
                                                 <img style="vertical-align:bottom;" src="https://{!domain}{!URLFOR($Resource.FileTypeIcons, attachment.attachImage)}"/> &nbsp;

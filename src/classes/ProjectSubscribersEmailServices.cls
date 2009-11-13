@@ -166,7 +166,7 @@ public class ProjectSubscribersEmailServices {
         			WHERE Id in : lstPTId ];
         
         List<String> SubAssignees = new List<String>();
-        if (lstPT.size()>0){
+        if (lstPT.size()>0 ){
             for (ProjectAssignee__c a :[select id, user__c 
             								from ProjectAssignee__c 
             								where ProjectTask__c =: lstPT[0].id]){

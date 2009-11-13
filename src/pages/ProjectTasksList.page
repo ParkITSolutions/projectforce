@@ -124,43 +124,6 @@
             <!-- Overlay -->
             <div id="paginationOverlay" style="display:none; height: 100%"></div> 
              
-             				<script>
-             					//checks if there is any member selected
-                            	function checkMembersSelected(action){
-                           
-										var selected = false;
-										
-										$$('.membersCheckbox').each( function(e){
-											if(e.type == 'checkbox'){
-												if(e.checked)
-													selected = true
-											}
-											
-										})
-										
-										if(selected){
-											if(action == 'delete'){
-												showDeleteEvent()
-											}else{
-												if(action = 'markComplete'){
-													$('paginationOverlay').show()
-													bulkTaskCompleted('ProjectsTaskList:ref:auxInputTextTop')
-													markComplete()
-												}
-											}
-											
-										}else{
-											$('errorPanelText').innerHTML = "You must select at least one task."
-											Effect.ScrollTo('errorPanel')
-											Effect.Appear('errorPanel')
-											Effect.Fade('errorPanel', {duration: 6.0})
-											
-										}
-										
-                            	}
-                            	
-                            </script>
-                                        
             <apex:outputpanel id="taskListPanel" layout="block" >
                 <apex:form id="ref" onsubmit="">
                     <apex:actionFunction action="{!refreshTaskList}" oncomplete="showHideOverlay(); advFilterAfterRerender();" name="sortListEvent" rerender="ref" />
@@ -186,16 +149,15 @@
                                             </td>
                                             <td>
                                                 <apex:outputpanel id="markCompleteBtn"  layout="block">
-                                                        
-                                                        <apex:outputLink value="javascript:;"
-	 														id="markCompleteButtonTop"
-	 														onClick="checkMembersSelected('markComplete');"
-	 														styleclass="blackbutton" >
-	 		
-	 													<span>Mark Complete</span> 
+                                                	
+                                                	<apex:commandLink action="{!markComplete}" 
+                                                 		oncomplete="refreshList();showMessage('{!idTaskToMarkComplete}');" 
+                                                 		rerender="auxProjectTaskListPanel" styleclass="blackbutton" 
+                                                 		onclick="bulkTaskCompleted('{!$Component.auxInputTextTop}');">
+                                                    		<span>Mark Complete</span> 
+                                                	</apex:commandLink>
 	 	
-													</apex:outputLink> 
-                                                        <apex:inputText id="auxInputTextTop" style="display:none;" value="{!idTaskToComplete}" />
+                                                    <apex:inputText id="auxInputTextTop" style="display:none;" value="{!idTaskToComplete}" />
                                                 </apex:outputpanel>
                                             </td>
                                             <td>
@@ -593,13 +555,15 @@
                                         </td>
                                         <td>
                                             <apex:outputpanel layout="block">
-                                            	<apex:commandLink action="{!verifyIdsToDel}" 
-                                            			styleClass="blackbutton" 
-                                            			rerender="taskList" 
-                                            			oncomplete="verifyPermisions();" 
-                                            			onclick="$('paginationOverlay').show();">
-                                                    <span>Delete</span>
-                                                </apex:commandLink> 
+                                                
+                                                <apex:outputLink value="javascript:;"
+	 													id="massiveDeleteButtonBottom"
+	 													onClick="checkMembersSelected('delete');"
+	 													styleclass="blackbutton" >
+	 		
+	 													<span>Delete</span> 
+	 	
+												</apex:outputLink>
                                             </apex:outputpanel>
                                         </td>
                                    </tr> 
@@ -652,4 +616,5 @@
     <input type="text" id="dateHidden" value="" onchange="setValsAndCloseCalendar();" style="display: none;"/>
     <apex:outputpanel id="auxProjectTaskListPanel" >
     </apex:outputpanel>
+   
 </apex:page>

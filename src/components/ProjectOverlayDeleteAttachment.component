@@ -1,12 +1,12 @@
 <apex:component id="projectOverlayDeleteAttachment" controller="ProjectDetailAttachmentController" allowDML="true" >
 	<script>
 		function deleteChangeOverlay(){
-			document.getElementById('overlayQuestion').style.display = 'none';
-			document.getElementById('overlayDeleting').style.display = 'block';
+			$('overlayQuestion2').style.display = 'none';
+			$('overlayDeleting2').style.display = 'block';
 		}
 		function restoreDeleteOverlay(){
-			document.getElementById('overlayQuestion').style.display = 'block';
-			document.getElementById('overlayDeleting').style.display = 'none';
+			$('overlayQuestion2').style.display = 'block';
+			$('overlayDeleting2').style.display = 'none';
 		}
 	</script>
 	
@@ -25,16 +25,16 @@
 		<div class="overlayTitleContent">
 			<div class="overlayTitle">Delete Attachment</div>
 			<div class="overlayCloseEvent" id="overlayCloseEventAttachment">
-				<a href="Javascript:;" onclick="fixedModalDeleteAttachment.close();"> 
+				<a href="Javascript:;" onclick="modal.close();"> 
 					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}"	alt="Close Window" title="Close Window" /> 
 				</a> 
 			</div>
 		</div>
 		
-		<div id="overlayDeleting" class="overlayMainContent" style="display:none;">
+		<div id="overlayDeleting2" class="overlayMainContent" style="display:none;">
 			Deleting...
 		</div>
-		<div id="overlayQuestion">
+		<div id="overlayQuestion2">
 		<div id="overlayMain" class="overlayMainContent">
 			<!-- Action Status -->
 			<div id="overlayFormStatus" class="overlayFormStatus" style="display:none;">
@@ -61,9 +61,9 @@
 										value="Continue and delete Attachment" 
 										onclick="$('overlayCloseEventAttachment').hide(); deleteChangeOverlay();" 
 										rerender="projectAttachmentWidget, paginationLinks" 
-										oncomplete="$('overlayCloseEventAttachment').show(); fixedModalDeleteAttachment.close(); restoreDeleteOverlay(); showHideOverlay(); refreshAttachmentList();"  />
+										oncomplete="$('overlayCloseEventAttachment').show(); modal.close(); restoreDeleteOverlay(); showHideOverlay(); refreshAttachmentList();"  />
 						                                               
-			        <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="fixedModalDeleteAttachment.close();" value="Cancel"/>
+			        <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="modal.close();" value="Cancel"/>
 				</div>
 			</apex:form> 
 		</div>
