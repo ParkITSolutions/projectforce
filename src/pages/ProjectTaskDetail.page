@@ -69,6 +69,7 @@
     <!-- Delete Task Overlay -->
     <c:ProjectDeleteTaskOverlay id="projectDeleteComponent"/>
     <c:ProjectOverlayDeleteAssignee id="projectDeleteAssigneeComponent"/>
+    <c:ProjectOverlayDeleteAttachment id="ProjectOverlayDeleteAttachmentInclude" />
     
      <!-- Upload Attachment -->
     <c:ProjectOverlayNewAttachment parentId="{!Task.Id}" />
@@ -225,13 +226,14 @@
 		                						
 	                                        	<apex:outputPanel styleClass="height20px" rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}"> 
 		                			
-													<apex:commandLink action="{!DeleteAttach}"
-														oncomplete="refreshDetail()"
-														styleclass="notassigned"
-														onclick="if(confirm('Are you sure you want to delete this file?')){;}else{return false;}"
-														value="Delete" >
-														<apex:param name="idAttach" value="{!item.Id}"/>
-													</apex:commandLink>													
+													<apex:outputLink styleclass="notassigned"
+														onClick="createOverlay('', 'deleteAttachmentOverlay', 180); 
+														         $('ProjectTaskDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!item.Id}';"
+														value="javascript:;">
+														
+														Delete
+													</apex:outputLink>	
+																							
 												</apex:outputPanel>
 												</div>
 	                                        </div>

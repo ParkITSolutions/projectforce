@@ -60,6 +60,10 @@
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/calendarview.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/datepicker.js')}"/>
    
+   
+    <c:ProjectOverlayNewTask />
+    <c:ProjectOverlayNewMilestone />
+    <c:ProjectDeleteTaskOverlay id="componentDeleteTask" />
     <div class="confirmation" id="confirmation" style="display:none;">
       
     </div>
@@ -108,8 +112,6 @@
                 <c:ProjectAttachments project="{!teamIdParam}" id="ProjectAttachmentsInclude"/>
                     
             </apex:form> 
-            
-            <c:ProjectOverlayDeleteAttachment />
             
         </div>  
     </div>  

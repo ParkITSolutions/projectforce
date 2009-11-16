@@ -124,6 +124,66 @@
             <!-- Overlay -->
             <div id="paginationOverlay" style="display:none; height: 100%"></div> 
              
+             
+             <script>
+             		//checks if there is any member selected
+
+                            	function checkMembersSelected(action){
+
+                           
+
+										var selected = false;
+
+										
+
+										$$('.membersCheckbox').each( function(e){
+
+											if(e.type == 'checkbox'){
+
+												if(e.checked)
+
+													selected = true
+
+											}
+
+											
+
+										})
+
+										
+
+										if(selected){
+
+											if(action == 'delete'){
+
+												showDeleteEvent()
+
+											}
+
+											
+
+										}else{
+
+											$('errorPanelText').innerHTML = "You must select at least one task."
+
+											Effect.ScrollTo('errorPanel')
+
+											Effect.Appear('errorPanel')
+
+											Effect.Fade('errorPanel', {duration: 4.0})
+											
+											Effect.Appear('paginationOverlay')
+
+											Effect.Fade('paginationOverlay', {duration: 4.0})
+
+										}
+
+									}
+
+
+             
+             </script>
+             
             <apex:outputpanel id="taskListPanel" layout="block" >
                 <apex:form id="ref" onsubmit="">
                     <apex:actionFunction action="{!refreshTaskList}" oncomplete="showHideOverlay(); advFilterAfterRerender();" name="sortListEvent" rerender="ref" />
@@ -152,9 +212,12 @@
                                                 	
                                                 	<apex:commandLink action="{!markComplete}" 
                                                  		oncomplete="refreshList();showMessage('{!idTaskToMarkComplete}');" 
-                                                 		rerender="auxProjectTaskListPanel" styleclass="blackbutton" 
+                                                 		rerender="auxProjectTaskListPanel" styleclass="blackbutton"
+                                                 		id="markCompleteLink" 
                                                  		onclick="bulkTaskCompleted('{!$Component.auxInputTextTop}');">
+                                                    		
                                                     		<span>Mark Complete</span> 
+                                                	
                                                 	</apex:commandLink>
 	 	
                                                     <apex:inputText id="auxInputTextTop" style="display:none;" value="{!idTaskToComplete}" />

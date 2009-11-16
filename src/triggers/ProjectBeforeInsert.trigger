@@ -9,11 +9,11 @@ trigger ProjectBeforeInsert on Project2__c (before insert) {
             project.PublicProfile__c = [SELECT id FROM ProjectProfile__c WHERE Name =: 'Public Profile' limit 1].Id;
             								
             project.Type__c = 'open';            
-        }else if (project.Access__c.equals('Close')) {
+        }else if (project.Access__c.equals('Closed')) {
             project.NewMemberProfile__c = [SELECT id FROM ProjectProfile__c WHERE Name =: 'Member Profile' limit 1 ].Id;
             								
             project.PublicProfile__c = null;
-            project.Type__c = 'close';           
+            project.Type__c = 'closed';           
         }else if (project.Access__c.equals('Private')){
             project.Type__c = 'private';
             project.PublicProfile__c = null;
