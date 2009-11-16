@@ -53,7 +53,7 @@
 						 rerender="generalPanel" 
 						 oncomplete="hideSwirly('swirlyAttachment'); $('paginationOverlay').hide();" />
 		
-								<apex:outputpanel styleClass="buttons"  layout="block">
+								<apex:outputpanel styleClass="buttons"  layout="block" style="width: 98%">
                                     <table align="center" cellpadding="0" cellspacing="0">
                                         <tr>
                                             <td>
@@ -66,7 +66,9 @@
                                             <td>
                                                 <apex:outputpanel layout="block">
 	                                            	
-	                                                <a class="blackbutton"  href="javascript:;" onclick="createOverlay('', 'DeleteAttachmentOverlay', 180); setAttachmentsChecked()" ><span>Delete</span></a>
+	                                                <a class="blackbutton"  href="javascript:;" onclick="createOverlay('', 'deleteAttachmentOverlay', 180); setAttachmentsChecked()" >
+	                                                	<span>Delete</span>
+	                                                </a>
 	                                                 
                                                 </apex:outputpanel>
                                             </td>
@@ -162,9 +164,53 @@
                                 </tbody>
                             </table>
                            
-                            
                         </apex:outputPanel><!-- End Attachment List Table -->
 						</div> <!-- end wideBody -->
+						
+						 <!-- Pagination -->
+                                   <apex:outputpanel id="paginationLinksBottoms" 
+                                   					 styleClass="pagination" 
+                                   					 layout="block" 
+                                   					 rendered="{!IF(totalItemsNumber > numberOfItemsToShow, true,false)}">
+                                    <div class="pages">
+                                        <ul>
+                                            <li class="prev {!IF(prevPageShow,'prev_disabled','')}">
+                                                <apex:commandLink action="{!prevPage}" value="Previous Page" rerender="projectAttachmentWidget, paginationLinks" rendered="{!prevPageLinkShow}"  onclick="showHideOverlay();" oncomplete="showHideOverlay();advFilterAfterRerender();" />
+                                                <apex:outputText value="Previous Page" rendered="{!prevPageShow}" />
+                                            </li>
+                                            <li>({!currentPagination} - {!cntPagination})</li>
+                                            <li class="next {!IF(nextPageShow,'next_disabled','')}">
+                                                <apex:commandLink action="{!nextPage}" value="Next Page" rerender="projectAttachmentWidget, paginationLinks" rendered="{!nextPageLinkShow}"   onclick="showHideOverlay();" oncomplete="showHideOverlay();advFilterAfterRerender();" />                                     
+                                                <apex:outputText value="Next Page" rendered="{!nextPageShow}" />
+                                            </li>
+                                        </ul>                              
+                                    </div>
+                                </apex:outputpanel>
+						
+						<apex:outputpanel styleClass="buttons"  layout="block" style="width: 98%">
+                                    <table align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td>
+                                                <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
+                                                    <a href="Javascript:;" class="blackbutton" onclick="openAttachmentOverlay();">
+                                                        <span>New Attachment</span>
+                                                    </a>
+                                                </apex:outputpanel>
+                                            </td>
+                                            <td>
+                                                <apex:outputpanel layout="block">
+	                                            	
+	                                                <a class="blackbutton"  href="javascript:;" onclick="createOverlay('', 'deleteAttachmentOverlay', 180); setAttachmentsChecked()" >
+	                                                	<span>Delete</span>
+	                                                </a>
+	                                                 
+                                                </apex:outputpanel>
+                                            </td>
+                                        </tr>
+                                        <tr><td>&nbsp;</td></tr>
+                                    </table>
+                                </apex:outputpanel>
+						
 					</apex:outputpanel> <!-- end general panel -->
 					</div><!-- holder -->
 	

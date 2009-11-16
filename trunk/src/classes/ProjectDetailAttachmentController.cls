@@ -25,7 +25,7 @@ public class ProjectDetailAttachmentController {
     * Set of Integers to control pagination
     */
     private Integer totalItemsNumber;
-    private Integer numberOfItemsToShow = 3;
+    private Integer numberOfItemsToShow = 10;
     private Integer cntPagination = 0;
     private Integer currentPagination = 1;
     private Integer firstRow = 0;
