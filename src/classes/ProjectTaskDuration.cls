@@ -266,7 +266,7 @@ public class ProjectTaskDuration {
 		Integer days = 1;
 		String weekday = '';
 		
-		while( !myDate.isSameDay(Datetime.valueOf(endDate + '00:00:00')) && days < 400 ){
+		while( !myDate.isSameDay(Datetime.valueOf(endDate + '00:00:00')) && days < 400){
 			weekday = myDate.format('EEE');
 			if(workdays.contains(weekday))
 				days++;

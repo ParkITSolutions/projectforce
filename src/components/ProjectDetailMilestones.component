@@ -11,7 +11,7 @@
 	<apex:actionFunction name="reloadMilestoneList" action="{!genAllProjectTasks}" rerender="milestonePanelCenter, milestonePanelright" onComplete="hideSwirly('swirly_milestone')" />
     
     <!-- ### Wide Widget ### -->
-	<apex:outputPanel layout="block" rendered="{!IF(!sidebar, true, false)}">
+	<apex:outputPanel id="milestoneWidget" layout="block" rendered="{!IF(!sidebar, true, false)}">
 		<div class="myBigWidget">
 			<!-- Widget Title -->		
 			<div class="wideHeader">
@@ -19,14 +19,36 @@
 			</div>
 			<!-- Widget Links Holder -->
 			<div class="linkAction">
-				<div class="linkAction">
-					<apex:outputpanel rendered="{!userPermissions.canCreate}"  > 
-						<a class="topRightLinks" href="javascript:;" onclick="fixedModalNewMilestone.open();hideErrors();refreshAssignToMilestone();enabDisbMile('off');" >New</a> |  
-					</apex:outputpanel>
-					<a href="ProjectTimeLine?id={!TeamId}">Timeline</a> |
-					<a href="ProjectTasksList?id={!TeamId}&filter=allMilestones" class="topRightLinks" >See More&#187;</a>
-				</div>
+					<!--### Rerender Method ###-->
+					<apex:actionFunction name="reloadProjectMilestones" action="{!genAllProjectTasks}" rerender="noTopicList,milestoneWidget" onComplete="hideLoader('milestoneLoadDiv');" />
+					
+					<ul class="links_sup">
+						<apex:outputpanel rendered="{!userPermissions.canCreate}"> 
+							<li><a class="topRightLinks" href="javascript:;" onclick="fixedModalNewMilestone.open();hideErrors();refreshAssignToMilestone();enabDisbMile('off');" >New</a> | </li>
+						</apex:outputpanel>
+						<li class="contact_border_active" style="position: relative;width:112px;">
+							<a href="javascript:;" id="filterMile" class="contact_border" onclick="dropDownContact(this);">View: All Milestones</a>
+							<ul style="display:none;">
+								<li>
+									<a href="javascript:;" onclick="dropDownContact(document.getElementById('filterMile'));">
+										View...
+										<img alt="" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/sortUp.png')}"/>
+									</a>
+								</li>
+								<li>
+									<apex:commandLink action="{!genAllProjectTasks}" id="refreshMilestoneWidget" rerender="milestonePanelCenter" value="All Milestones"  onclick="dropDownContact($('filterMile'));showSwirly('milestoneLoadDiv');" onComplete="hideLoader('milestoneLoadDiv');" />
+								</li>
+								<li>
+									<apex:commandLink action="{!getMyProjectMilestones}" value="My Milestones" rerender="milestonePanelCenter" onclick="dropDownContact($('filterMile'));showSwirly('milestoneLoadDiv');" onComplete="hideLoader('milestoneLoadDiv');" />
+								</li>	
+							</ul>
+						</li>
+						<li> | <a href="ProjectTimeLine?id={!TeamId}">Timeline</a>  |</li>
+						<li> <a href="ProjectTasksList?id={!TeamId}&filter=allMilestones" class="topRightLinks" >See More&#187;</a></li>
+					</ul>
+				<div class="clear" ></div>
 			</div>
+			
 			<!-- Widget Container --> 		
 			<div class="wideBody">
 				<apex:outputpanel id="milestonePanelCenter" > 

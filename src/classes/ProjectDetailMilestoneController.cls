@@ -9,6 +9,7 @@ public class ProjectDetailMilestoneController {
 	Integer listSize = 0;
 	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
 	List<ProjectTasks> result = new List<ProjectTasks>();
+	
 		
 	/**
 	*@param String id
@@ -136,7 +137,6 @@ public class ProjectDetailMilestoneController {
 				miMilestones.setTaskName(milestone.Name);
 				miMilestones.setTaskId(milestone.Id);
 				miMilestones.setStartDate(milestone.StartDate__c);
-				System.debug('\n\n=========================\n'+miMilestones.StartDate);
 				if(milestone.ProjectsAssignees__r.size() > 0){
 					miMilestones.setUser(userMap.get(milestone.ProjectsAssignees__r[0].User__c));					
 				}
@@ -153,6 +153,82 @@ public class ProjectDetailMilestoneController {
 		 userMap.clear();
 	 }
 		
+	/**
+	* Load my project Milestones
+	*@return void
+	*/
+	public void getMyProjectMilestones() {
+		List<ProjectTask__c> milestones = new List<ProjectTask__c>();
+		result = new List<ProjectTasks>();
+		
+		Set<Id> assignedTasks = new Set<Id>();
+		for(ProjectAssignee__c p: [SELECT Id,
+										ProjectTask__c, Project__c 
+								   FROM ProjectAssignee__c
+								   Where ProjectTask__r.Milestone__c = true 
+								   AND User__c =: UserInfo.getUserId() and  Project__c =: teamId
+								   Order By ProjectTask__r.StartDate__c asc Limit 5]) {
+								   	
+			assignedTasks.add(p.ProjectTask__c);						   	
+		}
+		milestones = [Select 		
+	 					p.Name,
+	 					p.Priority__c, 
+	 					p.Id, 
+	 					p.StartDate__c,
+	 					p.EndDate__c, 
+	 					p.Duration__c, 
+	 					p.Project__c,
+	 					p.Milestone__c,
+	 					p.PercentCompleted__c,
+	 					p.Description__c , 
+	 					(Select User__c, User__r.Name From ProjectsAssignees__r) 
+	 					From ProjectTask__c  p 
+	 					where  p.Milestone__c = true 
+	 					and p.Project__c =: teamId 
+	 					and Id IN: assignedTasks 
+	 					order by p.StartDate__c asc limit 10
+	 					];
+	 	listSize = milestones.size();  // think there is a better way todo this
+	 	// Retrieve Users
+		Set<Id> users = new Set<Id>();		
+	 	for( ProjectTask__c milestone : milestones) {
+	 		if(milestone.ProjectsAssignees__r.size() > 0){
+				users.add(milestone.ProjectsAssignees__r[0].User__c);
+	 		}
+	 	}
+	 	
+	 	Map<Id, User> userMap = new Map<Id,User>();
+		for(User u: [SELECT Id, 
+							Name
+							//(Select Name, Picture__c From People__r) 
+							FROM User u 
+							WHERE u.id IN: users]){
+			userMap.put(u.Id, u);							
+		}
+	 	
+		for( ProjectTask__c milestone : milestones) {
+			if(milestone.PercentCompleted__c < 100){				
+				ProjectTasks miMilestones = new ProjectTasks();
+				miMilestones.setTaskName(milestone.Name);
+				miMilestones.setTaskId(milestone.Id);
+				miMilestones.setStartDate(milestone.StartDate__c);
+				if(milestone.ProjectsAssignees__r.size() > 0){
+					miMilestones.setUser(userMap.get(milestone.ProjectsAssignees__r[0].User__c));					
+				}
+				
+				miMilestones.setPriority(milestone.Priority__c);
+				
+				result.add(miMilestones);
+			}
+			
+		 } 
+		 
+		 milestones.clear();
+		 users.clear();
+		 userMap.clear();		
+	} 	
+	
 	 /**
 	 * Inner Class ProjectTasks
 	 *@class
