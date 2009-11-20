@@ -36,10 +36,10 @@
 									</a>
 								</li>
 								<li>
-									<apex:commandLink action="{!genAllProjectTasks}" id="refreshMilestoneWidget" rerender="milestonePanelCenter" value="All Milestones"  onclick="dropDownContact($('filterMile'));showSwirly('milestoneLoadDiv');" onComplete="hideLoader('milestoneLoadDiv');" />
+									<apex:commandLink action="{!genAllProjectTasks}" id="refreshMilestoneWidget" rerender="milestonePanelCenter" value="All Milestones"  onclick="dropDownContact($('filterMile'));showSwirly('milestoneLoadDiv');$('filterMile').innerHTML = 'View: All Milestones';" onComplete="hideLoader('milestoneLoadDiv');" />
 								</li>
 								<li>
-									<apex:commandLink action="{!getMyProjectMilestones}" value="My Milestones" rerender="milestonePanelCenter" onclick="dropDownContact($('filterMile'));showSwirly('milestoneLoadDiv');" onComplete="hideLoader('milestoneLoadDiv');" />
+									<apex:commandLink action="{!getMyProjectMilestones}" value="My Milestones" rerender="milestonePanelCenter" onclick="dropDownContact($('filterMile'));showSwirly('milestoneLoadDiv');$('filterMile').innerHTML = 'View: My Milestones';" onComplete="hideLoader('milestoneLoadDiv');" />
 								</li>	
 							</ul>
 						</li>
