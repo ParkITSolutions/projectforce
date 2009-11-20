@@ -51,7 +51,11 @@
 		<div id="uploadFinished">
 			<script>
 				if( parent.loadAttOverlay ){
-					initOverlay();
+					parent.fixedModalNewAttachment.close();
+					parent.reloadIframe();
+					parent.showSwirly('swirlyAttachment');
+					parent.refreshAttachmentList();
+					parent.document.getElementById('modalCloseButton').style.visibility = 'visible';
 					parent.loadAttOverlay = false;
 				}
 			</script>

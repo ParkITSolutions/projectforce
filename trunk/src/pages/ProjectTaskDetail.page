@@ -211,7 +211,7 @@
 	                                <apex:outputPanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}">    
 	                                    
 	                                    <div class="DistincLink">
-		                                    <a href="Javascript:;" onclick="openAttachmentOverlay();">
+		                                    <a href="Javascript:;" onclick="setAttachmentOverlay(); fixedModalNewAttachment.open();">
 		                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add Attachment" title="Add Attachment" />
 		                                        Add New Attachment
 		                                    </a>
@@ -477,6 +477,23 @@
 	            }
 	        }
 	    };
-		fixedModalNewAttachment = new fixedModalClass('newAttachmentOverlay', 'modal_overlay', true);
+	    
+		//fixedModalNewAttachment = new fixedModalClass('newAttachmentOverlay', 'modal_overlay', true);
+		
+		fixedModalNewAttachment = new fixedModalClass('newAttachmentOverlay', 'fixedModalNewAttachmentOverlay', true);
+		
+		var loadAttOverlay = false;
+  		
+  		function setAttachmentOverlay(){
+   			loadAttOverlay = true;
+     
+     		 newAttachmentToProject();
+      		observeIframeUpload();
+      		//Hack for IE6
+  
+      		$('uploadIframe').src = $('uploadIframe').src;
+      		newAttachmentToProject();
+  		}
+  
 </script>
 </apex:page>
