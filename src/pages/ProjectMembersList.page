@@ -13,6 +13,10 @@
 	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}" />
 	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}" />
 	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}" />
+	
+	 <!-- overlays resources -->
+    <apex:includeScript value="{!URLFOR($Resource.overlaysResources, 'inc/js/js.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.overlaysResources, 'inc/css/css.css')}"/>
 
 	<!-- Portal Support -->
 	<apex:includeScript value="{!$Resource.portalSupport}" />
@@ -53,6 +57,8 @@
 
 	<!-- Modal JS -->
 	<script src="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" />
+	
+	
 
 
 	<script>
@@ -125,7 +131,7 @@
 			<c:ProjectSubscribe />
 			
 			<!-- Team members -->
-			<c:ProjectMembersWidget projectId="{!projectId}" />	
+			<c:ProjectMembersWidget projectId="{!projectId}" id="ProjectMembersWidget"/>	
 			 
 			<div class="clear"></div>
 		</div>
@@ -144,12 +150,17 @@
 									<table>
 										<tr>
 											<td>
-												<a onclick="createOverlay('','inviteTeam','280','showSelects()','');relocateOverlay();" href="javascript:;" class="blackbutton">
+												<a onclick="addMembersOverlay.open();
+												            addOverlayEvents('addMembersOverlay.close()','ProjectMembersList:ProjectMembersWidget:ProjectMembersWidget:newMemberForm:SaveButton');" 
+												   href="javascript:;" class="blackbutton">
 													<span>New</span>
 												</a>
 											</td>
 											<td>
-												<a href="javascript:;" class="blackbutton" onclick="massiveRemoveOverlay();reMemIds();">
+												<a href="javascript:;" 
+												   class="blackbutton" 
+												   onclick="checkMembersSelected(); 
+												            addOverlayEvents('removeMembersOverlay.close()','ProjectMembersList:ProjectMembersMassiveRemove:ProjectMembersList:massiveMemberRemoveForm:ContinueButton');">
 													<span>Remove</span>
 												</a>
 											</td>
@@ -332,7 +343,11 @@
 								<td>
 									<apex:outputpanel rendered="{!userPermissions.canManage}">
 									 	<a href="Javascript:;" 
-									 	onclick="setHiddenMemberId('{!item.projectMemberId}'); createOverlay('','removeMemberOverlay','170','relocateOverlay()');">Delete</a>
+									 	   onclick="$$('.MemberIdToDel')[0].value = '{!item.projectMemberId}'; 
+									 	            removeMembersOverlay.open(); 
+									 	            addOverlayEvents('removeMembersOverlay.close()','ProjectMembersList:ProjectMembersMassiveRemove:ProjectMembersList:massiveMemberRemoveForm:ContinueButton')">
+									 	   Delete
+									 	</a>
 									</apex:outputpanel>
 								</td>
 								<td class="memberImg">
@@ -395,12 +410,14 @@
 							<table>
 								<tr>
 									<td>
-										<a onclick="createOverlay('','inviteTeam','280','showSelects()','');relocateOverlay();" href="javascript:;" class="blackbutton">
-											<span>New</span>
+										<a onclick="addMembersOverlay.open();
+												    addOverlayEvents('addMembersOverlay.close()','ProjectMembersList:ProjectMembersWidget:ProjectMembersWidget:newMemberForm:SaveButton');" 
+										   href="javascript:;" class="blackbutton">
+										   <span>New</span>
 										</a>
 									</td>
 									<td>
-										<a href="javascript:;" class="blackbutton" onclick="massiveRemoveOverlay();reMemIds();">
+										<a href="javascript:;" class="blackbutton" onclick="checkMembersSelected(); addOverlayEvents('removeMembersOverlay.close()','ProjectMembersList:ProjectMembersMassiveRemove:ProjectMembersList:massiveMemberRemoveForm:ContinueButton');">
 											<span>Remove</span>
 										</a>
 									</td>
@@ -421,7 +438,7 @@
 	
 	<apex:outputpanel id="overlaysPanel">
 		<apex:include id="includeMemRem" pageName="ProjectMembersRemove" />
-		<apex:include pageName="ProjectMembersMassiveRemove" />
+		<apex:include pageName="ProjectMembersMassiveRemove" id="ProjectMembersMassiveRemove" />
 	</apex:outputpanel>
 	
 	<c:ProjectOverlayNewTask />
@@ -432,12 +449,47 @@
 			$$('.actionCheck').each(function (e){
 		            
 		        if( e.checked )
-		        a.push( e.value );            
+		        	a.push( e.value );            
 		 
 		    }); 
  
 		    $$('.MemberIdToDel')[0].value = a.join( '::' );
 		}
+		
+		function checkMembersSelected() {
+
+			var countCheck = 0;
+		
+			var checkBoxs = document.getElementsByTagName('input');
+		
+			for (i = 0; i < checkBoxs.length; i++) {
+		
+				if (checkBoxs[i].className == 'actionCheck') {
+		
+					if(checkBoxs[i].checked) {
+		
+						countCheck++;
+		
+					}
+		
+				}
+		
+			}
+		
+			if (countCheck == 0) {
+		
+				$('infoToUser').innerHTML='There are no members selected'
+				Effect.Appear('infoToUser');
+				Effect.Fade('infoToUser',{duration:6});
+		
+			}else{
+				reMemIds()
+				removeMembersOverlay.open()
+				addOverlayEvents('removeMembersOverlay.close()','ProjectMembersList:ProjectMembersMassiveRemove:ProjectMembersList:massiveMemberRemoveForm:ContinueButton')
+			}
+
+		}
+		
  	</script>
  	
 </apex:page>

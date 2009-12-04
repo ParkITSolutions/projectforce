@@ -40,6 +40,10 @@
    
     <!-- ProjectTaskList CSS -->
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskList.css')}" />
+    
+    <!-- overlays resources -->
+    <apex:includeScript value="{!URLFOR($Resource.overlaysResources, 'inc/js/js.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.overlaysResources, 'inc/css/css.css')}"/>
    
    	<c:ProjectOverlayDeleteAttachment id="ProjectOverlayDeleteAttachmentInclude" />
    	 
@@ -107,7 +111,7 @@
             <apex:form id="mainContentForm">
     
             	<!-- Project Attachments (Overlay and Widget) -->
-                <c:ProjectOverlayNewAttachment parentId="{!teamIdParam}" />
+                <c:ProjectOverlayNewAttachment parentId="{!teamIdParam}" id="ProjectOverlayNewAttachment"/>
                 
                 <c:ProjectAttachments project="{!teamIdParam}" id="ProjectAttachmentsInclude"/>
                     

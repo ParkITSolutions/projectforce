@@ -8,7 +8,10 @@
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/TeamsWidgetMilestones.js')}"/>
 
 	<!--### Rerender Method ###-->
-	<apex:actionFunction name="reloadMilestoneList" action="{!genAllProjectTasks}" rerender="milestonePanelCenter, milestonePanelright" onComplete="hideSwirly('swirly_milestone')" />
+	<apex:actionFunction name="reloadMilestoneList" 
+	 	action="{!genAllProjectTasks}" 
+	 	rerender="milestonePanelCenter, milestonePanelright" 
+	 	onComplete="$('swirlyDetail').hide();" />
     
     <!-- ### Wide Widget ### -->
 	<apex:outputPanel id="milestoneWidget" layout="block" rendered="{!IF(!sidebar, true, false)}">
@@ -24,7 +27,17 @@
 					
 					<ul class="links_sup">
 						<apex:outputpanel rendered="{!userPermissions.canCreate}"> 
-							<li><a class="topRightLinks" href="javascript:;" onclick="fixedModalNewMilestone.open();hideErrors();refreshAssignToMilestone();enabDisbMile('off');" >New</a> | </li>
+							<li>
+								<a class="topRightLinks" 
+								   href="javascript:;" 
+								   onclick="addNewMilestoneOverlay.open();
+								            hideErrors();
+								            refreshAssignToMilestone();
+								           
+								            enabDisbMile('off');" >
+								   New
+								</a> | 
+							</li>
 						</apex:outputpanel>
 						<li class="contact_border_active" style="position: relative;width:112px;">
 							<a href="javascript:;" id="filterMile" class="contact_border" onclick="dropDownContact(this);">View: All Milestones</a>
@@ -59,7 +72,14 @@
 										<li>
 											No Milestones<br/>
 											<apex:outputpanel rendered="{!userPermissions.canCreate}"  > 
-												<a  href="javascript:;" onclick="fixedModalNewMilestone.open();refreshAssignToMilestone();enabDisbMile('off');hideErrors();">Create New Milestone</a>
+												<a  href="javascript:;" 
+												    onclick="addNewMilestoneOverlay.open();
+												             refreshAssignToMilestone();
+												             enabDisbMile('off');
+												             addOverlayEvents('addNewMilestoneOverlay.close()','ProjectDetail:ProjectOverlayNewMilestone:milestoneOverlay:quickMilestoneForm:SaveButton');
+												             hideErrors();">
+												    Create New Milestone
+												</a>
 											</apex:outputpanel>
 										</li>
 									</ul>

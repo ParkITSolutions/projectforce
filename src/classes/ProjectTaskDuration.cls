@@ -59,7 +59,7 @@ public class ProjectTaskDuration {
 		else{
 			task = this.verifyStartDate(task);
 			task = this.verifyEndDate(task);
-						
+			System.debug('TINE O NO END DATE::::::::::'+task.EndDate__c);		
 			if(task.EndDate__c == null){
 				task = this.parseDuration(task);
 					 				
@@ -418,17 +418,22 @@ public class ProjectTaskDuration {
 		if(isDays){
 			input = this.replaceDays(input);
 			Double valueAux = Math.floor( Double.valueOf(input) ) ;
+			System.debug(valueAux+'  AAAAAAAAAAAAAAAAa esta en dias!!!!!   '+input);
+			//ACA esta el bug!!!!
 			if(valueAux == 0.0){
 				input = '1.0';
 			}
+			System.debug(valueAux+'  AAAAAAAAAAAAAAAAa esta en dias!!!!222222222222!   '+input);
 			this.insertRawDuration(task, this.displayDuration, input, this.workingHours, 'days');
 			
 			if(this.displayDuration.equals('Days')){
 				input = this.calculateDurationDays(input);
 			}
 			else{
+				System.debug('AHORA esta en houras las cosa ::' +input);
 				input = this.calculateDurationHours(input, this.workingHours);
 			}
+			System.debug('AAAAAAAAAAAAAAAAa Ahora como quedo ????   '+input);
 		}
 		
 		if(isHours){
@@ -589,11 +594,12 @@ public class ProjectTaskDuration {
 	* @return String
 	*/
 	public String calculateDurationHours(String value, Double workingHours){
-		
+		System.debug('VALOR INTERNOOOOOOOOOOOOOOO ' +value);
 		Double days = Double.valueOf(value);
+		System.debug('VALOR INTERNOOOOOOOOOOOOOOO ' +days);
 		Double hours = days * workingHours;
 		value = String.valueOf(hours);
-		
+		System.debug('VALOR INTERNOOOOOOOOOOOOOOO ' +value);
 		return value;
 	}
 	

@@ -1,4 +1,4 @@
-<apex:component controller="ProjectWidgetTasksMainController">
+<apex:component id="ProjectWidgetTasksMain" controller="ProjectWidgetTasksMainController">
 	<!-- ### Attribute Definitions ### This attribute is required if the component is a teams catalog widget -->
 	<apex:attribute name="team" description="The team ID" type="String" required="false" assignTo="{!teamId}" />
 	<apex:attribute name="sidebar" description="Holder" type="Boolean" required="false" assignTo="{!sidebar}" />		
@@ -17,7 +17,16 @@
 						
 						<ul class="links_sup">
 							<apex:outputpanel rendered="{!userPermissions.canCreate}"> 
-								<li><a class="topRightLinks" href="javascript:;" onclick="fixedModalNewTask.open();refreshAssignToTask();enabDisbTask('off');">New</a> |</li>
+								<li>
+									<a class="topRightLinks" 
+									   href="javascript:;" 
+									   onclick="addNewTaskOverlay.open();
+									            refreshAssignToTask();
+									            enabDisbTask('off');
+									            hideNewTaskOverlayErrors();
+										        addOverlayEvents2(function(){addNewTaskOverlay.close();},'ProjectDetail:ProjectOverlayNewTask:overNewTask:quickTaskForm:taskSaveBtn');">
+									   New</a> |
+							    </li>
 							</apex:outputpanel>
 							<li class="contact_border_active" style="position: relative;">
 								<a href="javascript:;" id="filter" class="contact_border"  onclick="dropDownContact(this);">View: All Tasks</a>
@@ -52,7 +61,12 @@
 									No Tasks
 									<br/>
 									<apex:outputpanel rendered="{!userPermissions.canCreate}"> 
-										<a onclick="fixedModalNewTask.open();refreshAssignToTask();enabDisbTask('off');" href="javascript:;" >Create New Task</a>
+										<a onclick="addNewTaskOverlay.open();
+										            refreshAssignToTask();
+										            enabDisbTask('off');
+										            hideNewTaskOverlayErrors();
+										            addOverlayEvents('addNewTaskOverlay.close()','ProjectDetail:ProjectOverlayNewTask:overNewTask:quickTaskForm:taskSaveBtn');" 
+										   href="javascript:;" >Create New Task</a>
 									</apex:outputpanel>
 								</li>
 							</ul>

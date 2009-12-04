@@ -1,7 +1,7 @@
 /**
 *@author Miguel Soares de Lima @ 03/09/2009
 */
-public class ProjectSubscribersEmailServices {
+public class ProjectSubscribersEmailServices{
 
 	private static ProjectSubscribersEmailServices instance = null;
 
@@ -152,7 +152,17 @@ public class ProjectSubscribersEmailServices {
     *@param List<String> lstPTId
     *@return void
     */
-   public void sendMailForTaskChanged( List<String> lstPTId )
+   public static void sendMailForTaskChangedFuture( List<String> lstPTId ){
+   		ProjectSubscribersEmailServices m = new ProjectSubscribersEmailServices();
+   		m.sendMailForTaskChanged( lstPTId );
+   }
+   
+    /**
+    * Send mail to subscribers
+    *@param List<String> lstPTId
+    *@return void
+    */
+   public  void sendMailForTaskChanged( List<String> lstPTId )
     {
         String emailMsj = '';
         String emailSub = '';
@@ -251,7 +261,12 @@ public class ProjectSubscribersEmailServices {
     *@aram List<String> lstPTId
     *@return void
     */
-   public void sendMailForTaskPercentChanged( List<String> lstPTId ){   
+    public static void sendMailForTaskPercentChangedFuture( List<String> lstPTId ){   
+		ProjectSubscribersEmailServices m = new ProjectSubscribersEmailServices();
+		m.sendMailForTaskPercentChanged( lstPTId ); 
+	}   
+	
+	public void sendMailForTaskPercentChanged( List<String> lstPTId ){   
    	
   		Map<String,ProjectTask__c> BaseMap=ProjectUtil.BaseMap;
         Double OldPercent=BaseMap.get(lstPTId[0]).PercentCompleted__c;
