@@ -9,6 +9,10 @@
     <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>
     
+     <!-- overlays resources -->
+    <apex:includeScript value="{!URLFOR($Resource.overlaysResources, 'inc/js/js.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.overlaysResources, 'inc/css/css.css')}"/>
+    
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectLayout.css')}" />   
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskDetail.css')}" />
@@ -37,7 +41,7 @@
     <!-- ProjectTaskDetail JS -->
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskDetail.js')}" />
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskList.js')}" />
- 	
+    
  	<apex:form >
  		<apex:actionFunction name="reloadIframe" action="{!dummyRefresh}" rerender="iframeWrapperPanel" />
  	</apex:form>
@@ -155,7 +159,7 @@
 			<div class="clear"></div>
 		</div>
 		
-		<c:ProjectOverlayNewAssignee />
+		<c:ProjectOverlayNewAssignee id="ProjectOverlayNewAssignee"/>
         <!-- Holder -->     
         <div class="holder" style="overflow:hidden;clear:both;margin:0px;margin-left:200px;margin-bottom:0px;" id="holder">
       		
@@ -211,7 +215,10 @@
 	                                <apex:outputPanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}">    
 	                                    
 	                                    <div class="DistincLink">
-		                                    <a href="Javascript:;" onclick="setAttachmentOverlay(); fixedModalNewAttachment.open();">
+		                                    <a href="Javascript:;" 
+		                                       onclick="setAttachmentOverlay(); 
+		                                                newAttachmentOverlay.open();
+		                                                addOverlayNewAttachmentEvents('newAttachmentOverlay.close()', 'UploadAttachment:Form:SaveButton');">
 		                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add Attachment" title="Add Attachment" />
 		                                        Add New Attachment
 		                                    </a>
@@ -227,8 +234,9 @@
 	                                        	<apex:outputPanel styleClass="height20px" rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}"> 
 		                			
 													<apex:outputLink styleclass="notassigned"
-														onClick="createOverlay('', 'deleteAttachmentOverlay', 180); 
-														         $('ProjectTaskDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!item.Id}';"
+														onClick="deleteAttachmentOverlay.open(); 
+														         $('ProjectTaskDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!item.Id}';
+														         addOverlayEvents('deleteAttachmentOverlay','ProjectTaskDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn');"
 														value="javascript:;">
 														
 														Delete
@@ -248,7 +256,12 @@
                               	<td class="dataCol">
 	                            	<apex:outputpanel rendered="{!AND(NOT(MaxAssignees), OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe))}">
 	                                	<div class="DistincLink">
-	                                      	<a id="lnkAddAssignee" href="javascript:;" onclick="createOverlay('','addAssigneeOverlay','200','relocateOverlay()');refreshPercentList(); $('sw_o').show(); refreshMembers2()" >
+	                                      	<a id="lnkAddAssignee" 
+	                                      	   href="javascript:;" 
+	                                      	   onclick="addNewAssigneeOverlay.open(); 
+	                                      	            refreshPercentList(); $('sw_o').show(); 
+	                                      	            addOverlayEvents('addNewAssigneeOverlay.close()','ProjectTaskDetail:ProjectOverlayNewAssignee:ProjectOverlayNewAssignee:newMemberForm:SaveButton');
+	                                      	            refreshMembers2()" >
 	                                      		<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add assignee" title="Add assignee" />
 	                                          	New assignee
 	                                      	</a>
@@ -333,7 +346,7 @@
                                     <apex:commandLink action="{!markComplete}"                                                                                 
                                         rerender="TaskPanel2, taskDetail"
                                         status="taskStatus2"
-                                        rendered="{!IF(Task.PercentCompleted == 100, false, true)}"
+                                        rendered="{!IF(Task.PercentCompleted == 100 || isTaskParent, false, true)}"
                                         styleClass="blackbutton completeButton"
                                         oncomplete="completed(); apexAFRefreshDetail()">
                                         <span>Mark Complete</span>
@@ -347,7 +360,7 @@
             </div>
         </div>
     </div>
- <div id="modal_overlay" style="position: fixed; top: 0pt; left: 0pt; width: 100%; height: 100%; z-index: 9998; display: none;"/>
+ <div id="modal_overlay5" style="position: fixed; top: 0pt; left: 0pt; width: 100%; height: 100%; z-index: 9998; display: none; background-color:black; opacity:0.6;"/>
     <script>    	
          clearTableDetail();         
      </script>
@@ -356,144 +369,10 @@
      	refreshDetail();
      }
      
-    var fixedModalClass = Class.create();
-
-	
-
-    /**
-	* Fixed Modal Class
-	* @param String modalContent The div to show over
-	* @param String modalOverlay The div that need to be used as overlay
-	* @param Boolean effects Should we use effects to show and hide ?
-	*/
-	
-	    fixedModalClass.prototype = {
-	        initialize: function(modalContent, modalOverlay, effects) {
-	            effects == null ? this.effectsEnabled = false : this.effectsEnabled = effects;
-	            this.effectsEnabled = effects;
-	            this.modalContent  = $(modalContent);
-	            this.overlay = $(modalOverlay);
-	            Event.observe(modalOverlay, 'click',
-	                function(){
-	                    var e;
-	                    effects == null ? e = false : e = effects;
-	                    if(e){
-	                        var aux = this.modalContent;
-	                        Effect.Appear(this.modalContent,{
-	                            duration: 0.1 ,
-	                            from: 0.0,
-	                            to: 0.6,
-	                            afterFinish:function(){
-	                                Effect.Appear(aux,{
-	                                    duration: 0.2
-	                                });
-	                            }
-	                        });
-	                    }else {
-	                        this.hide();
-	                        $(modalContent).hide();
-	                    }
-	                }
-	                ); //observer to close the modal when the overlay is clicked
-	        },
-	        open: function() {
-	            // get page dimensions to set the overlay div size
-	            var pageDims = getPageSize();
-	            var pageWidth = pageDims[0];
-	            var pageHeight = pageDims[1];
-			
-	            pageHeight = pageHeight + 50;
-						
-	            this.overlay.style.height = pageHeight + 'px';
-	            this.overlay.style.width = pageWidth + 'px';
-			
-	            // If the Browser is IE6
-	            // Hide all Selects
-	            if(detectIE6()){
-				
-	                var pageSels = document.getElementsByTagName('select');
-				
-	                for(var i = 0;i < pageSels.length; i++){
-	                    pageSels[i].style.display = 'none';
-	                }
-				
-	                var overlaySels = this.modalContent.getElementsByTagName('select');
-				
-	                for(var i = 0;i < overlaySels.length; i++){
-					
-	                    overlaySels[i].style.display = '';
-	                }
-	            }
-			
-	            // show
-	            if(this.effectsEnabled){
-	                var aux = this.modalContent;
-	                Effect.Appear(this.overlay,{
-	                    duration: 0.2 ,
-	                    from: 0.0,
-	                    to: 0.6,
-	                    afterFinish:function(){
-	                        Effect.Appear(aux,{
-	                            duration: 0.1
-	                        });
-	                    }
-	                });
-	            } else {
-	                this.overlay.show();
-	                this.modalContent.show();
-	            }
-			
-	            Effect.ScrollTo('sbtabset');
-			
-			
-	        },
-	        close: function(){
-	            // hide
-	            if(this.effectsEnabled){
-	                var aux = this.overlay;
-	                Effect.Fade(this.modalContent,{
-	                    duration: 0.1 ,
-	                    from: 0.6,
-	                    to: 0.0,
-	                    afterFinish:function(){
-	                        Effect.Fade(aux,{
-	                            duration: 0.2
-	                        });
-	                    }
-	                });
-							
-	            } else {
-	                this.overlay.hide();
-	                this.modalContent.hide();
-	            }
-			
-	            if(detectIE6()){
-				
-	                var pageSels = document.getElementsByTagName('select');
-				
-	                for(var i = 0;i < pageSels.length; i++){
-	                    pageSels[i].style.display = '';
-	                }
-	            }
-	        }
-	    };
-	    
-		//fixedModalNewAttachment = new fixedModalClass('newAttachmentOverlay', 'modal_overlay', true);
-		
-		fixedModalNewAttachment = new fixedModalClass('newAttachmentOverlay', 'fixedModalNewAttachmentOverlay', true);
-		
-		var loadAttOverlay = false;
-  		
-  		function setAttachmentOverlay(){
-   			loadAttOverlay = true;
-     
-     		 newAttachmentToProject();
-      		observeIframeUpload();
-      		//Hack for IE6
+   
+    
   
-      		$('uploadIframe').src = $('uploadIframe').src;
-      		newAttachmentToProject();
-  		}
+		
   
 </script>
 </apex:page>

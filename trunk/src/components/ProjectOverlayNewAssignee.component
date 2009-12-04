@@ -1,4 +1,4 @@
-<apex:component controller="ProjectOverlayNewAssigneeController" allowDML="true">
+<apex:component id="ProjectOverlayNewAssignee" controller="ProjectOverlayNewAssigneeController" allowDML="true">
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/newAssigneeOverlay.css')}" />
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/newAssigneeOverlay.js')}" />
     <script>
@@ -11,8 +11,27 @@
             });  
         });
      </script>
+     
+     <style>
+	     #addAssigneeOverlay{
+			background-attachment:scroll;
+			background-color:white;
+			background-image:none;
+			background-position:0 0;
+			background-repeat:repeat;
+			height:180px;
+			left:30%;
+			opacity:1;
+			position:fixed;
+			top:20%;
+			width:400px;
+			z-index:9999;
+		}
+     </style>
 
-
+	<!-- ### Initialize fixed Overlay ### -->
+	<div id="modalAddNewAssigneeOverlay" class="backgroundOverlay" style="display:none; z-index:9998;"></div>
+	
     <!-- Content  -->
     <div id="addAssigneeOverlay" style="display: none;" class="overlayForm">
 
@@ -22,7 +41,7 @@
         <div class="overlayTitleContent">
             <div class="overlayTitle">Add new assignee to <script>trunkText('{!TaskName}',24)</script></div>
             <div class="overlayCloseEvent">
-                <a href="Javascript:;" onclick="modal.close();">
+                <a href="Javascript:;" onclick="addNewAssigneeOverlay.close(); removeOverlayEvents()">
                     <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}"    alt="Close Window" title="Close Window" />
                 </a>
             </div>
@@ -83,19 +102,21 @@
                    
                     <!-- Save and Cancel Buttons -->
                     <div class="overlayFromButtons overlayFromButtons2">
-                            <apex:commandButton action="{!saveAssignee}" styleClass="allButtons" 
+                            <apex:commandButton id="SaveButton"
+                                action="{!saveAssignee}" 
+                                styleClass="allButtons" 
                             	rerender="newMemberForm"
-                            	value="Save" oncomplete="refreshMembers2();modal.close()" 
+                            	value="Save" oncomplete="refreshMembers2();addNewAssigneeOverlay.close(); removeOverlayEvents();" 
                             	onClick="$('sw_o').show()" 
-                            	onComplete="detailListPanel(); modal.close(); $('sw_all2').show()"/>
+                            	onComplete="detailListPanel(); addNewAssigneeOverlay.close(); $('sw_all2').show(); removeOverlayEvents();"/>
                             	
                             <apex:commandButton action="{!saveAssignee}" 
                             	styleClass="allButtons" 
                             	value="Save and new" 
                             	onclick="$('sw_o').show()" 
-                            	oncomplete="refreshMembers2(); detailListPanel();{!IF( MoreMembers , '', 'modal.close();')}" /> 
+                            	oncomplete="refreshMembers2(); detailListPanel();{!IF( MoreMembers , '', 'addNewAssigneeOverlay.close(); removeOverlayEvents();')}" /> 
                             	
-                            <input id="cancelBtn" class="allButtons" type="button" value="Cancel" onclick="modal.close();stopFunction();" />
+                            <input id="cancelBtn" class="allButtons" type="button" value="Cancel" onclick="addNewAssigneeOverlay.close();stopFunction(); removeOverlayEvents()" />
                     </div>
                 </apex:form>
             </div>
@@ -103,6 +124,8 @@
 
     </div>
 
-    
+    <script>
+    	addNewAssigneeOverlay = new modalOverlayClass('addAssigneeOverlay','modalAddNewAssigneeOverlay',  true);
+    </script>
 
 </apex:component>

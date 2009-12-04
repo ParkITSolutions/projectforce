@@ -2,27 +2,27 @@
 	<!-- ProjectOverlayDeleteProject JS -->
  	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/ProjectOverlayDeleteProject.js')}" />
 	<apex:form >
-		<apex:actionFunction name="removeProject" action="{!deleteProject}" rerender="dummy" oncomplete="modal.close();"/>
+		<apex:actionFunction name="removeProject" action="{!deleteProject}" rerender="dummy" oncomplete="deleteProjectOverlay.close(); removeOverlayEvents();"/>
 		<apex:inputHidden value="{!projectId}" id="projectId"/>
 		<!-- PROBABLY DELETE div id="auxForumInputHiddenId" style="display:none;">{!$Component.projectId}</div -->
 	</apex:form>
 	<apex:outputPanel id="dummy"></apex:outputPanel>
 	 
-	          
-		<!-- ### Initialize fixed Overlay ### -->
-	<div id="fixedModalDeleteProjectOverlay" class="fixedModalOverlay" style="display:none;"></div>
-	
 	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsOverlayDeleteProject.css')}" />
 	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamsOverlayNewMilestone.js')}" />
 	           
 	<!-- Overlay Styles --> 
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />
+     
+	<!-- ### Initialize Overlay ### -->
+	<div id="modalDeleteProjectOverlay" class="backgroundOverlay" style="display:none;"></div>
+
 	<div id="deleteProjectOverlay" style="display:none;" class="overlayForm">	
 		<!-- Overlay Title -->
 		<div class="overlayTitleContent">
 			<div class="overlayTitle">Delete project</div>
 			<div class="overlayCloseEvent">
-				<a id="closeOverlayButton" href="Javascript:;" onclick="fixedModalDeleteProject.close();">
+				<a id="closeOverlayButton" href="Javascript:;" onclick="deleteProjectOverlay.close(); removeOverlayEvents();">
 					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
 				</a>                                                                                      
 			</div>
@@ -35,10 +35,14 @@
 			<div class="overlaySeparateLine"></div>
 			<div class="overlayFromButtons" align="center">
 				<span id="deleteButton">
-					<input type="button" class="allButtons actionButtons" style="background-color: #21637D!important;" value="Continue and delete project" onclick="statusDeleteProject(this); removeProject();$('closeOverlayButton').style.display = 'none'"/>
+					<input id="DeleteButton" type="button" class="allButtons actionButtons" style="background-color: #21637D!important;" value="Continue and delete project" onclick="statusDeleteProject(this); removeProject();$('closeOverlayButton').style.display = 'none'"/>
 				</span>
-				<input id="cancelDeleteProjectBtn" type="button" class="allButtons cancelButtons" value="Cancel" onclick="fixedModalDeleteProject.close(); "/>
+				<input id="cancelDeleteProjectBtn" type="button" class="allButtons cancelButtons" value="Cancel" onclick="deleteProjectOverlay.close(); removeOverlayEvents();"/>
 			</div>	
 		</div>
 	</div>
+	
+	<script>
+    	deleteProjectOverlay = new modalOverlayClass('deleteProjectOverlay','modalDeleteProjectOverlay',  true);
+    </script>  
 </apex:component>

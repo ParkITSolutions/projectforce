@@ -1,4 +1,4 @@
-<apex:component controller="ProjectMembersWidgetController" allowDml="true">
+<apex:component id="ProjectMembersWidget" controller="ProjectMembersWidgetController" allowDml="true">
 	<!-- Attribute Definitions -->
 	<apex:attribute name="projectId" description="The project ID" type="String" required="true" assignTo="{!team}" />
 	<apex:attribute name="type" description="The list type" type="String" required="false" assignTo="{!typeList}" />
@@ -42,9 +42,29 @@
 			refreshAssignToTask();
 		}
 	</script>
-
+	
+	<style>
+	#inviteTeam{
+		background-attachment:scroll;
+		background-color:white;
+		background-image:none;
+		background-position:0 0;
+		background-repeat:repeat;
+		height:300px;
+		left:30%;
+		opacity:1;
+		position:fixed;
+		top:20%;
+		width:500px;
+		z-index:9999;
+	}
+	</style>
+	
+	<!-- ### Initialize fixed Overlay ### -->
+	<div id="modalAddMembersOverlay" class="backgroundOverlay" style="display:none;"></div>
+	
 	<!-- NEW MEMBER OVERLAY -->
-	<apex:outputpanel rendered="{!IF(userPermissions.canManage, true, false)}">
+	<apex:outputpanel rendered="{!IF(userPermissions.canManage, true, false)}" id="NewMemberPanel">	
 		<!-- Content  -->
 		<div id="inviteTeam" style="display: none;" class="overlayForm">
 		<div id="swirly_overlay" class="swirly_overlay" style="display: none;"></div>
@@ -52,11 +72,29 @@
 		<div class="overlayTitleContent">
 		<div class="overlayTitle">Add new member to {!IF(LEN(teamName)>24,LEFT(teamName,24)+'...', teamName)}</div>
 		<div class="overlayCloseEvent">
-			<a href="Javascript:;" 	onclick="modal.close();"> 
+			<a href="Javascript:;" 	onclick="closeAddMembersOverlay(); "> 
 				<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" /> 
 			</a>
 		</div>
 		</div>
+		
+		<script>
+			 function getElementByApexID( apexId ){
+			    a = document.getElementsByTagName("*");
+			
+			    e = null;
+			    end = false;
+			    k = 0;
+			    while( k < a.length && !end ){
+			        if( a[ k ].id.indexOf( ':' + apexId ) > -1){
+			            e = a[ k ];
+			            end = true;
+			                }
+			        k++;
+			    }
+			    return e;
+			 }
+		</script>
 		
 		<div class="overlayMainContent" id="overlayMainContent">
 			<!-- Required Information --> 
@@ -126,9 +164,17 @@
 					
 					<script>
 					function hideOverlay(){
-  						modal.close(); 
-       				 	hideSwirly('swirly_overlay'); 
-       					$('swirly_members').show();
+  						closeAddMembersOverlay() 
+       				 	hideSwirly('swirly_overlay')
+       					$('swirly_members').show()
+       					
+    				}
+    				
+    				function closeAddMembersOverlay(){
+    					Form.enable(getElementByApexID('newMemberForm'))
+       					$(getElementByApexID('colleaguesNames')).value = ''
+       					addMembersOverlay.close()
+       					removeOverlayEvents()
     				}
 					</script>
 					
@@ -136,12 +182,13 @@
 					<div class="overlayFromButtons" align="center">
 						<apex:commandButton action="{!saveMembers}" 
 							oncomplete="hideOverlay();ifError();"
+							id="SaveButton"
 							onclick=""
 							styleclass="btn allButtons" 
 							style="float: none;width: 70px !important;background: #21637D none repeat scroll 0 0 !important;" 
 							value="Send" 
 							rerender="membersListContainer" /> 
-						<input id="cancelBtn" class="allButtons" type="button" value="Cancel" onclick="modal.close(); stopFunction();" />
+						<input id="cancelBtn" class="allButtons" type="button" value="Cancel" onclick="closeAddMembersOverlay();" />
 					</div>
 					</apex:outputPanel>
 
@@ -150,7 +197,7 @@
 						<!-- Save and Cancel Buttons -->
 						<div class="overlaySeparateLine"></div>
 						<div class="overlayFromButtons" align="center">
-							<input id="cancelBtn" class="allButtons" type="button" value="Ok" onclick="clickOnCancelBtn();" />
+							<input id="cancelBtn" class="allButtons" type="button" value="Ok" onclick="closeAddMembersOverlay();" />
 						</div>
 					</apex:outputPanel>
 					
@@ -221,7 +268,7 @@
 				<div class="contentHolder">
 					<div class="linkAction" >
 						<apex:outputpanel rendered="{!userPermissions.canManage}">
-							<a onclick="createOverlay('','inviteTeam','280','selectFixIE6();startFunction();relocateOverlay()');" href="javascript:;">New</a> |  
+							<a onclick="addMembersOverlay.open();addOverlayEvents('addMembersOverlay.close()','ProjectDetail:ProjectMembersWidget:ProjectMembersWidget:newMemberForm:SaveButton')" href="javascript:;">New</a> |  
 						</apex:outputpanel>
 						<a href="/apex/ProjectMembersList?id={!team}#" class="topRightLinks">See More&#187;</a>
 					</div>
@@ -310,6 +357,9 @@
 			var divLoaders = $(elemId);
 			Effect.Fade(divLoaders);
 		}
+		
+		 addMembersOverlay = new modalOverlayClass('inviteTeam','modalAddMembersOverlay',  true);
+		  
 		</script>
 	
 </apex:component>

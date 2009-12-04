@@ -10,22 +10,35 @@
 		}
 	</script>
 	
+	<style>
+	     #deleteAttachmentOverlay{
+			background:white none repeat scroll 0 0;
+			height:160px;
+			left:55%;
+			opacity:1;
+			position:fixed;
+			top:50%;
+			width:430px;
+			z-index:9999;
+		}
+     </style>
+     
 	<!-- Overlay Styles --> 
 	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsOverlayDeleteAttachment.css')}" />
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />
 	
-	<!-- ### Initialize fixed Overlay ### -->
-	<div id="fixedModalDeleteAttachmentOverlay" class="fixedModalOverlay" style="display:none;"></div>
+	<!-- ### Initialize Overlay ### -->
+	<div id="modalDeleteAttachmentOverlay" class="backgroundOverlay" style="display:none; z-index:9998;"></div>
 	
 	<!-- Content  -->
-	<div id="deleteAttachmentOverlay" style="display: none;" class="overlayForm">
+	<div id="deleteAttachmentOverlay" style="display: none;" class="overlayForm" >
 		<div class="swirly_overlay" id="sw_ov" style="display: none;"></div>
  
 		<!-- Overlay Title -->
 		<div class="overlayTitleContent">
 			<div class="overlayTitle">Delete Attachment</div>
 			<div class="overlayCloseEvent" id="overlayCloseEventAttachment">
-				<a href="Javascript:;" onclick="modal.close();"> 
+				<a href="Javascript:;" onclick="deleteAttachmentOverlay.close(); removeOverlayEvents();"> 
 					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}"	alt="Close Window" title="Close Window" /> 
 				</a> 
 			</div>
@@ -61,13 +74,17 @@
 										value="Continue and delete Attachment" 
 										onclick="$('overlayCloseEventAttachment').hide(); deleteChangeOverlay();" 
 										rerender="projectAttachmentWidget, paginationLinks" 
-										oncomplete="$('swirlyAttachment').show(); $('overlayCloseEventAttachment').show(); restoreDeleteOverlay(); refreshAttachmentList(); modal.close();"  />
+										oncomplete="$('swirlyAttachment').show(); $('overlayCloseEventAttachment').show(); restoreDeleteOverlay(); refreshAttachmentList(); deleteAttachmentOverlay.close(); removeOverlayEvents();"  />
 						                                               
-			        <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="modal.close();" value="Cancel"/>
+			        <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="deleteAttachmentOverlay.close(); removeOverlayEvents();" value="Cancel"/>
 				</div>
 			</apex:form> 
 		</div>
 	</div><!-- end overlayQuestion -->
-	</div>                          
+	</div>  
+	
+	<script>
+    	deleteAttachmentOverlay = new modalOverlayClass('deleteAttachmentOverlay','modalDeleteAttachmentOverlay',  true);
+    </script>                        
 	 
 </apex:component>

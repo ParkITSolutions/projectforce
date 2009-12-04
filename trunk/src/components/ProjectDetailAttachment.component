@@ -27,10 +27,11 @@
 			<!-- Widget Links Holder -->
 			<div class="linkAction">
 				<apex:outputpanel rendered="{!userPermissions.canCreate}">
-					<a href="Javascript:;" onclick="openAttachmentOverlay();">New Attachment</a>
+					<a href="Javascript:;" onclick="setAttachmentOverlay(); openAttachmentOverlay(); addOverlayNewAttachmentEvents('newAttachmentOverlay.close()','UploadAttachment:Form:SaveButton');">New Attachment</a>
 				</apex:outputPanel>
 				
 			</div>
+			
 			<!-- Widget Container --> 		
 			<div class="wideBody">
 				<div id="swirlyAttachment" class="swirlyAttachment" style="display:none;"></div>	
@@ -47,7 +48,12 @@
 							<apex:repeat value="{!attachments}" var="attachment" rows="{!numberOfItemsToShowSummary}">									
 								<tr> 
 									<td>
-										<a href="javascript:;" onclick="createOverlay('', 'deleteAttachmentOverlay', 180); $('ProjectDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!attachment.Id}';">Delete</a>
+										<a href="javascript:;" 
+										   onclick="deleteAttachmentOverlay.open(); 
+										            $('ProjectDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!attachment.Id}';
+										            addOverlayEvents('deleteAttachmentOverlay.close()', 'ProjectDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn')">
+										   Delete
+										 </a>
 									</td>
 									<td>
 										<img style="vertical-align:bottom;" src="https://{!domain}{!URLFOR($Resource.FileTypeIcons, attachment.attachImage)}"/> &nbsp;
@@ -85,7 +91,7 @@
 							<li>
 								No Attachments Yet<br/>
 								<apex:outputpanel rendered="{!userPermissions.canCreate}"  > 
-									<a  href="javascript:;" onclick="openAttachmentOverlay();">Attach a new file</a>
+									<a  href="javascript:;" onclick="setAttachmentOverlay(); openAttachmentOverlay();">Attach a new file</a>
 								</apex:outputpanel>
 							</li>
 						</ul>

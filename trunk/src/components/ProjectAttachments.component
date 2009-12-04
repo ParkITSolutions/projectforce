@@ -25,19 +25,19 @@
             color: red;
         }
         .swirlyAttachment {
-    background: #FFFFFF url('{!URLFOR($Resource.ProjectResources, 'images/layout/small_loader.gif')}')  no-repeat center;
-    opacity: 0.6;
-    filter: alpha(opacity=60);
-    overflow: hidden;
-    position: absolute;
-    -moz-opacity: 0.6;
-    margin: 0px 1px 0px 1px;
-    width: 100%;
-    z-index: 9999;
-    top: 0;
-    left: 0pt;
-    
-}
+		    background: #FFFFFF url('{!URLFOR($Resource.ProjectResources, 'images/layout/small_loader.gif')}')  no-repeat center;
+		    opacity: 0.6;
+		    filter: alpha(opacity=60);
+		    overflow: hidden;
+		    position: absolute;
+		    -moz-opacity: 0.6;
+		    margin: 0px 1px 0px 1px;
+		    width: 100%;
+		    z-index: 9999;
+		    top: 0;
+		    left: 0pt;
+		    
+		}
 	</style>	
 	
 	 <!-- Holder --> 
@@ -58,7 +58,9 @@
                                         <tr>
                                             <td>
                                                 <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
-                                                    <a href="Javascript:;" class="blackbutton" onclick="openAttachmentOverlay();">
+                                                    <a href="Javascript:;" class="blackbutton" 
+                                                       onclick="openAttachmentOverlay();
+                                                                addOverlayNewAttachmentEvents('deleteAttachmentOverlay.close()', 'UploadAttachment:Form:SaveButton')">
                                                         <span>New Attachment</span>
                                                     </a>
                                                 </apex:outputpanel>
@@ -66,7 +68,11 @@
                                             <td>
                                                 <apex:outputpanel layout="block">
 	                                            	
-	                                                <a class="blackbutton"  href="javascript:;" onclick="createOverlay('', 'deleteAttachmentOverlay', 180); setAttachmentsChecked()" >
+	                                                <a class="blackbutton"  
+	                                                   href="javascript:;" 
+	                                                   onclick="deleteAttachmentOverlay.open();
+	                                                            setAttachmentsChecked();
+	                                                            addOverlayEvents('deleteAttachmentOverlay.close()', 'ProjectAttachmentList:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn')" >
 	                                                	<span>Delete</span>
 	                                                </a>
 	                                                 
@@ -141,7 +147,12 @@
                                                  <input type="checkbox" value="{!attachment.Id}" />
                                             </td>
                                             <td align="center">
-                                                  <a href="javascript:;" onclick="createOverlay('', 'deleteAttachmentOverlay', 180); $('ProjectAttachmentList:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!attachment.Id}';">Delete</a> 
+                                                  <a href="javascript:;" 
+                                                     onclick="deleteAttachmentOverlay.open(); 
+                                                              $('ProjectAttachmentList:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!attachment.Id}';
+                                                              addOverlayEvents('deleteAttachmentOverlay.close()', 'ProjectAttachmentList:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn')">
+                                                     Delete
+                                                  </a> 
                                             </td>
                                             <td align="center">
                                                 <img style="vertical-align:bottom;" src="https://{!domain}{!URLFOR($Resource.FileTypeIcons, attachment.attachImage)}"/> &nbsp;
@@ -200,7 +211,11 @@
                                             <td>
                                                 <apex:outputpanel layout="block">
 	                                            	
-	                                                <a class="blackbutton"  href="javascript:;" onclick="createOverlay('', 'deleteAttachmentOverlay', 180); setAttachmentsChecked()" >
+	                                                <a class="blackbutton"  
+	                                                   href="javascript:;" 
+	                                                   onclick="deleteAttachmentOverlay.open();
+	                                                            setAttachmentsChecked();
+	                                                            addOverlayEvents('deleteAttachmentOverlay.close()', 'ProjectAttachmentList:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn')" >
 	                                                	<span>Delete</span>
 	                                                </a>
 	                                                 

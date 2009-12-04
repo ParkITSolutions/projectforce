@@ -9,7 +9,8 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
 	List<String> mailingList = new List<String>();
 	
 	if(Trigger.old.get( 0 ).ParentTask__c == Trigger.new.get( 0 ).ParentTask__c){
-		BigListOfTasks bigListOfTask = new BigListOfTasks(Trigger.new.get(0).Project__c);
+		//TODO Fro fix error;
+		//BigListOfTasks bigListOfTask = new BigListOfTasks(Trigger.new.get(0).Project__c);
 	}
     ParentTask parent = new ParentTask(); 
   	
@@ -59,11 +60,12 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
 	    }
     }
 
+	//TODO MIGUEL
 	ProjectSubscribersEmailServices mail = ProjectSubscribersEmailServices.getInstance();
-    mail.sendMailForTaskChanged( mailingList );
+    ProjectSubscribersEmailServices.sendMailForTaskChangedFuture( mailingList );
     
     if(lstPTId.size() > 0){
-    	mail.sendMailForTaskPercentChanged( lstPTId );
+    	ProjectSubscribersEmailServices.sendMailForTaskPercentChangedFuture( lstPTId );
     }
     
     if(statusChangedTaskList.size() > 0){

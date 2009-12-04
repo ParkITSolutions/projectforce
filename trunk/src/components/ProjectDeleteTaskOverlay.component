@@ -16,13 +16,37 @@
 	<script>
 		createOverlay('initializeModalOverlay');
 	</script>
+	
+	
+	<style>
+	#deleteTasks{
+		background-attachment:scroll;
+		background-color:white;
+		background-image:none;
+		background-position:0 0;
+		background-repeat:repeat;
+		height:170px;
+		left:30%;
+		opacity:1;
+		position:fixed;
+		top:20%;
+		width:500px;
+		z-index:9999;
+	}
+	
+	
+	</style>
+	
+	<!-- ### Initialize fixed Overlay ### -->
+	<div id="modalRemoveTasksOverlay" class="backgroundOverlay" style="display:none; z-index:9998;"></div>
+	
 	<div id="deleteTasks" style="display:none;" class="overlayForm">	
 		<!-- Overlay Title -->
 
 		<div class="overlayTitleContent">
 			<div class="overlayTitle">Delete <span id="taskName"></span></div>
 			<div class="overlayCloseEvent">
-				<a href="Javascript:;" onclick="modal.close();">
+				<a href="Javascript:;" onclick="removeTasksOverlay.close(); removeOverlayEvents()">
 					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
 				</a>
 			</div>
@@ -45,12 +69,24 @@
 				<!-- Save and Cancel Buttons -->
 				<div class="overlayFromButtons" align="center">
 					<span id="deleteEventContainer">
-						<apex:commandButton id="SaveBtn1"  styleClass="btn allButtons" style="background:#21637D none repeat scroll 0 0 !important;display: none !important;" action="{!deleteTaskFromList}" value="Continue and delete task" onclick="modal.close();showSwirley();setDims('holder','paginationOverlay');setTimeout('Effect.Fade(\'infoToUser\')', 10000);" oncomplete="redirect(); showMessageToUser('Deleted item(s)','success');" rerender="taskListPanel" />
-						<apex:commandButton id="SaveBtn2" styleClass="btn allButtons" style="background:#21637D none repeat scroll 0 0 !important;display: none !important;" action="{!deleteTaskFromDetail}" value="Continue and delete task"/>
+						<apex:commandButton id="SaveBtn1"  
+							styleClass="btn allButtons" 
+							style="background:#21637D none repeat scroll 0 0 !important;display: none !important;" 
+							action="{!deleteTaskFromList}" 
+							value="Continue and delete task" 
+							onclick="removeTasksOverlay.close();showSwirley();setDims('holder','paginationOverlay');setTimeout('Effect.Fade(\'infoToUser\')', 10000); removeOverlayEvents();" 
+							oncomplete="redirect(); showMessageToUser('Deleted item(s)','success'); removeTasksOverlay.close();" 
+							rerender="taskListPanel" />
+					
 					</span>
-			        <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="modal.close();" value="Cancel"/>
+			        <input id="cancelBtn" type="button" class="allButtons cancelButtons" onclick="removeTasksOverlay.close(); removeOverlayEvents()" value="Cancel"/>
 				</div>
 			</apex:form>
 		</div>
 	</div>
+	
+	<script>
+		removeTasksOverlay = new modalOverlayClass('deleteTasks','modalRemoveTasksOverlay',  true);
+		
+	</script>
 </apex:component>
