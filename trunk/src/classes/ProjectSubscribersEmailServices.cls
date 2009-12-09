@@ -261,16 +261,17 @@ public class ProjectSubscribersEmailServices{
     *@aram List<String> lstPTId
     *@return void
     */
-    public static void sendMailForTaskPercentChangedFuture( List<String> lstPTId ){   
+    public static void sendMailForTaskPercentChangedFuture( List<String> lstPTId, List<String> statuses, List<String> percents ){   
+    	ProjectUtil.inFuture = true;
 		ProjectSubscribersEmailServices m = new ProjectSubscribersEmailServices();
-		m.sendMailForTaskPercentChanged( lstPTId ); 
+		m.sendMailForTaskPercentChanged( lstPTId, statuses, percents ); 
 	}   
 	
-	public void sendMailForTaskPercentChanged( List<String> lstPTId ){   
+	public void sendMailForTaskPercentChanged( List<String> lstPTId, List<String> statuses, List<String> percents  ){   
    	
   		Map<String,ProjectTask__c> BaseMap=ProjectUtil.BaseMap;
-        Double OldPercent=BaseMap.get(lstPTId[0]).PercentCompleted__c;
-        String OldStatus=BaseMap.get(lstPTId[0]).Status__c;
+        String OldStatus=statuses[0];//BaseMap.get(lstPTId[0]).Status__c;
+        Double OldPercent=Double.valueOf(percents[0]);////BaseMap.get(lstPTId[0]).PercentCompleted__c;
      
         String emailMsj = '';
         String emailSub = '';

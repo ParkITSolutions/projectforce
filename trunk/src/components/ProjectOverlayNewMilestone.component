@@ -19,38 +19,6 @@
 		var globalCountry = "{!$Organization.Country}";
 		document.observe('dom:loaded',newMilestoneLoad);
 		
-		function addOverlayEvents22(closeFunction, elementClick){
-
-			
-
-			//$(elementClick).focus()
-
-			//Event.observe(document, 'click', function(event){ 
-
-			//	if(event.keyCode == 13) {
-
-					//$(elementClick).click()
-					//alert('ok')
-
-				//}
-
-				//alert(event.keyCode)
-
-				//if(event.keyCode == 27){
-
-					//closeFunction();
-					
-
-					//removeOverlayEvents()
-
-				//}
-
-			//});
-
-	
-
-	}
-
 		
 	</script>
 	

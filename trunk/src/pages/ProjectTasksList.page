@@ -169,7 +169,7 @@
 											if(action == 'delete'){
 
 												showDeleteEvent()
-												addOverlayEvents('removeTasksOverlay.close()', 'ProjectsTaskList:componentDeleteTask:projectDeleteTaskOverlay:overlayForm:SaveBtn1')
+												addOverlayEvents(function(){removeTasksOverlay.close();}, 'ProjectsTaskList:componentDeleteTask:projectDeleteTaskOverlay:overlayForm:SaveBtn1')
 
 											}
 
@@ -206,14 +206,14 @@
                                         <tr>
                                             <td>
                                                 <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
-                                                    <a class="blackbutton"  onclick="addNewTaskOverlay.open(); hideSelect(); addOverlayEvents('addNewTaskOverlay.close()','ProjectsTaskList:ProjectOverlayNewTask:overNewTask:quickTaskForm:taskSaveBtn'); resetFormCreateTask();">
+                                                    <a class="blackbutton"  onclick="addNewTaskOverlay.open(); hideSelect(); addOverlayEvents(function(){addNewTaskOverlay.close();},'ProjectsTaskList:ProjectOverlayNewTask:overNewTask:quickTaskForm:taskSaveBtn'); resetFormCreateTask();">
                                                         <span>New Task</span>
                                                     </a>
                                                 </apex:outputpanel>
                                             </td>
                                             <td>
                                                 <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
-                                                    <a class="blackbutton"  onclick="addNewMilestoneOverlay.open();hideSelect(); addOverlayEvents('addNewMilestoneOverlay.close()', 'ProjectsTaskList:ProjectOverlayNewMilestone:milestoneOverlay:quickMilestoneForm:SaveButton'); hideNewMilestoneOverlayErrors();">
+                                                    <a class="blackbutton"  onclick="addNewMilestoneOverlay.open();hideSelect(); addOverlayEvents(function(){addNewMilestoneOverlay.close();}, 'ProjectsTaskList:ProjectOverlayNewMilestone:milestoneOverlay:quickMilestoneForm:SaveButton'); hideNewMilestoneOverlayErrors();">
                                                         <span>New Milestone</span>
                                                     </a>
                                                 </apex:outputpanel>
@@ -502,7 +502,7 @@
                                                     <div>
                                                        <a href="/{!task.id}/e?retURL=https://{!domain}/apex/ProjectTasksList?id={!ProjectId}">Edit</a>
                                                         <apex:outputpanel rendered="{!OR(editDeletePer, task.isTaskOwner)}">
-                                                            |<a href="javascript:;" onclick="showDeleteEvent('{!task.Id}','', '{!task.name}'); addOverlayEvents('removeTasksOverlay.close()', 'ProjectsTaskList:componentDeleteTask:projectDeleteTaskOverlay:overlayForm:SaveBtn1')" >Del</a>
+                                                            |<a href="javascript:;" onclick="showDeleteEvent('{!task.Id}','', '{!task.name}'); addOverlayEvents(function(){removeTasksOverlay.close();}, 'ProjectsTaskList:componentDeleteTask:projectDeleteTaskOverlay:overlayForm:SaveBtn1')" >Del</a>
                                                         </apex:outputpanel>
                                                     </div>    
                                                 </apex:outputpanel>
@@ -599,14 +599,14 @@
                                      <tr>
                                          <td>
                                             <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
-                                                <a class="blackbutton"  onclick="addNewTaskOverlay.open();hideSelect(); addOverlayEvents('addNewTaskOverlay.close()','ProjectsTaskList:ProjectOverlayNewTask:overNewTask:quickTaskForm:taskSaveBtn'); resetFormCreateTask();">
+                                                <a class="blackbutton"  onclick="addNewTaskOverlay.open();hideSelect(); addOverlayEvents(function(){addNewTaskOverlay.close();},'ProjectsTaskList:ProjectOverlayNewTask:overNewTask:quickTaskForm:taskSaveBtn'); resetFormCreateTask();">
                                                        <span>New Task</span>
                                                 </a>
                                             </apex:outputpanel>
                                         </td>
                                         <td>
                                             <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
-                                                <a class="blackbutton"  onclick="addNewMilestoneOverlay.open();hideSelect(); addOverlayEvents('addNewMilestoneOverlay.close()', 'ProjectsTaskList:ProjectOverlayNewMilestone:milestoneOverlay:quickMilestoneForm:SaveButton'); hideNewMilestoneOverlayErrors()">
+                                                <a class="blackbutton"  onclick="addNewMilestoneOverlay.open();hideSelect(); addOverlayEvents(function(){addNewMilestoneOverlay.close();}, 'ProjectsTaskList:ProjectOverlayNewMilestone:milestoneOverlay:quickMilestoneForm:SaveButton'); hideNewMilestoneOverlayErrors()">
                                                 <span>New Milestone</span></a>
                                             </apex:outputpanel>
                                         </td>

@@ -151,7 +151,7 @@
 										<tr>
 											<td>
 												<a onclick="addMembersOverlay.open();
-												            addOverlayEvents('addMembersOverlay.close()','ProjectMembersList:ProjectMembersWidget:ProjectMembersWidget:newMemberForm:SaveButton');" 
+												            addOverlayEvents(function(){addMembersOverlay.close();},'ProjectMembersList:ProjectMembersWidget:ProjectMembersWidget:newMemberForm:SaveButton');" 
 												   href="javascript:;" class="blackbutton">
 													<span>New</span>
 												</a>
@@ -160,7 +160,7 @@
 												<a href="javascript:;" 
 												   class="blackbutton" 
 												   onclick="checkMembersSelected(); 
-												            addOverlayEvents('removeMembersOverlay.close()','ProjectMembersList:ProjectMembersMassiveRemove:ProjectMembersList:massiveMemberRemoveForm:ContinueButton');">
+												            addOverlayEvents(function(){removeMembersOverlay.close();},'ProjectMembersList:ProjectMembersMassiveRemove:ProjectMembersList:massiveMemberRemoveForm:ContinueButton');">
 													<span>Remove</span>
 												</a>
 											</td>
@@ -345,7 +345,7 @@
 									 	<a href="Javascript:;" 
 									 	   onclick="$$('.MemberIdToDel')[0].value = '{!item.projectMemberId}'; 
 									 	            removeMembersOverlay.open(); 
-									 	            addOverlayEvents('removeMembersOverlay.close()','ProjectMembersList:ProjectMembersMassiveRemove:ProjectMembersList:massiveMemberRemoveForm:ContinueButton')">
+									 	            addOverlayEvents(function(){removeMembersOverlay.close();},'ProjectMembersList:ProjectMembersMassiveRemove:ProjectMembersList:massiveMemberRemoveForm:ContinueButton')">
 									 	   Delete
 									 	</a>
 									</apex:outputpanel>
@@ -411,13 +411,13 @@
 								<tr>
 									<td>
 										<a onclick="addMembersOverlay.open();
-												    addOverlayEvents('addMembersOverlay.close()','ProjectMembersList:ProjectMembersWidget:ProjectMembersWidget:newMemberForm:SaveButton');" 
+												    addOverlayEvents(function(){addNewTaskOverlay.close();},'ProjectMembersList:ProjectMembersWidget:ProjectMembersWidget:newMemberForm:SaveButton');" 
 										   href="javascript:;" class="blackbutton">
 										   <span>New</span>
 										</a>
 									</td>
 									<td>
-										<a href="javascript:;" class="blackbutton" onclick="checkMembersSelected(); addOverlayEvents('removeMembersOverlay.close()','ProjectMembersList:ProjectMembersMassiveRemove:ProjectMembersList:massiveMemberRemoveForm:ContinueButton');">
+										<a href="javascript:;" class="blackbutton" onclick="checkMembersSelected(); addOverlayEvents(function(){removeMembersOverlay.close();},'ProjectMembersList:ProjectMembersMassiveRemove:ProjectMembersList:massiveMemberRemoveForm:ContinueButton');">
 											<span>Remove</span>
 										</a>
 									</td>
@@ -485,7 +485,7 @@
 			}else{
 				reMemIds()
 				removeMembersOverlay.open()
-				addOverlayEvents('removeMembersOverlay.close()','ProjectMembersList:ProjectMembersMassiveRemove:ProjectMembersList:massiveMemberRemoveForm:ContinueButton')
+				addOverlayEvents(function(){removeMembersOverlay.close();},'ProjectMembersList:ProjectMembersMassiveRemove:ProjectMembersList:massiveMemberRemoveForm:ContinueButton')
 			}
 
 		}

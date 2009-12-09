@@ -74,7 +74,7 @@
                     <apex:outputPanel styleClass="isLastMemberAdmin" style="display: none;" >{!isLastMemberAdmin}</apex:outputPanel>
                     <!-- Edit-Delete Project Buttons -->
                     <apex:outputPanel rendered="{!IF(userPermission.canManage, true, false)}">
-                        <a class="blackbutton" href="Javascript:;" onclick="deleteProjectOverlay.open(); addOverlayEvents('deleteProjectOverlay.close()', 'DeleteButton');">
+                        <a class="blackbutton" href="Javascript:;" onclick="deleteProjectOverlay.open(); addOverlayEvents(function(){deleteProjectOverlay.close();}, 'DeleteButton');">
                             <span> Delete </span>
                         </a>
                         
@@ -172,19 +172,5 @@
         }
         var userIsManager = '{!isManager}';
        
-       function openAttachmentOverlay(){
-
-		    newAttachmentOverlay.open()
-		
-		    newAttachmentToProject();
-		
-		    observeIframeUpload();
-		
-		    //Hack for IE6
-		
-		    $('uploadIframe').src = $('uploadIframe').src;
-		
-		}
-
     </script>
 </apex:page>

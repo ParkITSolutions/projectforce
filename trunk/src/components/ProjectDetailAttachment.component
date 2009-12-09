@@ -27,10 +27,15 @@
 			<!-- Widget Links Holder -->
 			<div class="linkAction">
 				<apex:outputpanel rendered="{!userPermissions.canCreate}">
-					<a href="Javascript:;" onclick="setAttachmentOverlay(); openAttachmentOverlay(); addOverlayNewAttachmentEvents('newAttachmentOverlay.close()','UploadAttachment:Form:SaveButton');">New Attachment</a>
+					
+				  	<a href="javascript:;" onclick="openAttachmentOverlay();">
+				  		New Attachment
+				  	</a>
+				  	
 				</apex:outputPanel>
 				
 			</div>
+			
 			
 			<!-- Widget Container --> 		
 			<div class="wideBody">
@@ -51,7 +56,7 @@
 										<a href="javascript:;" 
 										   onclick="deleteAttachmentOverlay.open(); 
 										            $('ProjectDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!attachment.Id}';
-										            addOverlayEvents('deleteAttachmentOverlay.close()', 'ProjectDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn')">
+										            addOverlayEvents(function(){deleteAttachmentOverlay.close();}, 'ProjectDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn')">
 										   Delete
 										 </a>
 									</td>
@@ -91,7 +96,7 @@
 							<li>
 								No Attachments Yet<br/>
 								<apex:outputpanel rendered="{!userPermissions.canCreate}"  > 
-									<a  href="javascript:;" onclick="setAttachmentOverlay(); openAttachmentOverlay();">Attach a new file</a>
+									<a  href="javascript:;" onclick="openAttachmentOverlay();">Attach a new file</a>
 								</apex:outputpanel>
 							</li>
 						</ul>

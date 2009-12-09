@@ -216,9 +216,7 @@
 	                                    
 	                                    <div class="DistincLink">
 		                                    <a href="Javascript:;" 
-		                                       onclick="setAttachmentOverlay(); 
-		                                                newAttachmentOverlay.open();
-		                                                addOverlayNewAttachmentEvents('newAttachmentOverlay.close()', 'UploadAttachment:Form:SaveButton');">
+		                                       onclick="openAttachmentOverlay();">
 		                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add Attachment" title="Add Attachment" />
 		                                        Add New Attachment
 		                                    </a>
@@ -236,7 +234,7 @@
 													<apex:outputLink styleclass="notassigned"
 														onClick="deleteAttachmentOverlay.open(); 
 														         $('ProjectTaskDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!item.Id}';
-														         addOverlayEvents('deleteAttachmentOverlay','ProjectTaskDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn');"
+														         addOverlayEvents(function(){deleteAttachmentOverlay.close();},'ProjectTaskDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn');"
 														value="javascript:;">
 														
 														Delete
@@ -260,7 +258,7 @@
 	                                      	   href="javascript:;" 
 	                                      	   onclick="addNewAssigneeOverlay.open(); 
 	                                      	            refreshPercentList(); $('sw_o').show(); 
-	                                      	            addOverlayEvents('addNewAssigneeOverlay.close()','ProjectTaskDetail:ProjectOverlayNewAssignee:ProjectOverlayNewAssignee:newMemberForm:SaveButton');
+	                                      	            addOverlayEvents(function(){addNewAssigneeOverlay.close();},'ProjectTaskDetail:ProjectOverlayNewAssignee:ProjectOverlayNewAssignee:newMemberForm:SaveButton');
 	                                      	            refreshMembers2()" >
 	                                      		<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add assignee" title="Add assignee" />
 	                                          	New assignee

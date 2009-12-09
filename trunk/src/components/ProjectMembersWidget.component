@@ -268,7 +268,7 @@
 				<div class="contentHolder">
 					<div class="linkAction" >
 						<apex:outputpanel rendered="{!userPermissions.canManage}">
-							<a onclick="addMembersOverlay.open();addOverlayEvents('addMembersOverlay.close()','ProjectDetail:ProjectMembersWidget:ProjectMembersWidget:newMemberForm:SaveButton')" href="javascript:;">New</a> |  
+							<a onclick="addMembersOverlay.open();addOverlayEvents(function(){addMembersOverlay.close();},'ProjectDetail:ProjectMembersWidget:ProjectMembersWidget:newMemberForm:SaveButton')" href="javascript:;">New</a> |  
 						</apex:outputpanel>
 						<a href="/apex/ProjectMembersList?id={!team}#" class="topRightLinks">See More&#187;</a>
 					</div>

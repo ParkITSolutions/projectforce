@@ -1,8 +1,10 @@
-trigger ProjectTaskAfterUpdate on ProjectTask__c (after update) 
+trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
 {
 	TaskDependencies td = new TaskDependencies(Trigger.new[0].project__c);
 	
 	List<String> lstPTId = new List<String>();
+	List<String> percentComplete = new List<String>(); 
+	List<String> statuses = new List<String>(); 
 	
 	List<String> statusChangedTaskList = new List<String>();
 	
@@ -21,6 +23,9 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
     	
     	tempPTOld = Trigger.old.get( k );
     	tempPTNew = Trigger.new.get( k );
+    	
+    	percentComplete.add( String.valueOf( tempPTOld.PercentCompleted__c ));
+    	statuses.add( tempPTOld.Status__c );
     		
     	if(tempPTOld.PercentCompleted__c != tempPTNew.PercentCompleted__c){
     		lstPTId.add(tempPTNew.Id);
@@ -65,7 +70,10 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
     ProjectSubscribersEmailServices.sendMailForTaskChangedFuture( mailingList );
     
     if(lstPTId.size() > 0){
-    	ProjectSubscribersEmailServices.sendMailForTaskPercentChangedFuture( lstPTId );
+    	if( ProjectUtil.inFuture )
+    		mail.sendMailForTaskPercentChanged( lstPTId, statuses, percentComplete );
+    	else
+    		ProjectSubscribersEmailServices.sendMailForTaskPercentChangedFuture( lstPTId, statuses, percentComplete );
     }
     
     if(statusChangedTaskList.size() > 0){
