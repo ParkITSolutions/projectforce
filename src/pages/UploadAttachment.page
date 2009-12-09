@@ -15,7 +15,7 @@
 		}
 		
 		function initOverlay(){
-			parent.newAttachmentOverlay.close();
+			parent.newAttachmentFileOverlay.close();
 			parent.removeOverlayEvents()
 			parent.reloadIframe();
 			parent.showSwirly('swirlyAttachment');
@@ -52,7 +52,7 @@
 		<div id="uploadFinished">
 			<script>
 				if( parent.loadAttOverlay ){
-					parent.newAttachmentOverlay.close();
+					parent.newAttachmentFileOverlay.close();
 					parent.removeOverlayEvents()
 					parent.reloadIframe();
 					parent.showSwirly('swirlyAttachment');
@@ -92,7 +92,7 @@
 						       class="btn allButtons" 
 						       value="Cancel" 
 						       style="float: none;width: 70px !important;background: #989999 none repeat scroll 0 0 !important;" 
-						       onclick="parent.newAttachmentOverlay.close(); parent.removeOverlayEvents(); cancelAction(); return false; "/>
+						       onclick="parent.newAttachmentFileOverlay.close(); parent.removeOverlayEvents(); cancelAction(); return false; "/>
 					</div>
 				</div>
 				<div class="uploadingStatus"></div>

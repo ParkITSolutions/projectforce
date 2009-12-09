@@ -76,7 +76,7 @@
 												    onclick="addNewMilestoneOverlay.open();
 												             refreshAssignToMilestone();
 												             enabDisbMile('off');
-												             addOverlayEvents('addNewMilestoneOverlay.close()','ProjectDetail:ProjectOverlayNewMilestone:milestoneOverlay:quickMilestoneForm:SaveButton');
+												             addOverlayEvents(function(){addNewMilestoneOverlay.close();},'ProjectDetail:ProjectOverlayNewMilestone:milestoneOverlay:quickMilestoneForm:SaveButton');
 												             hideErrors();">
 												    Create New Milestone
 												</a>

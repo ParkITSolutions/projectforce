@@ -24,7 +24,7 @@
 									            refreshAssignToTask();
 									            enabDisbTask('off');
 									            hideNewTaskOverlayErrors();
-										        addOverlayEvents2(function(){addNewTaskOverlay.close();},'ProjectDetail:ProjectOverlayNewTask:overNewTask:quickTaskForm:taskSaveBtn');">
+										        addOverlayEvents(function(){addNewTaskOverlay.close();},'ProjectDetail:ProjectOverlayNewTask:overNewTask:quickTaskForm:taskSaveBtn');">
 									   New</a> |
 							    </li>
 							</apex:outputpanel>
@@ -65,7 +65,7 @@
 										            refreshAssignToTask();
 										            enabDisbTask('off');
 										            hideNewTaskOverlayErrors();
-										            addOverlayEvents('addNewTaskOverlay.close()','ProjectDetail:ProjectOverlayNewTask:overNewTask:quickTaskForm:taskSaveBtn');" 
+										            addOverlayEvents(function(){addNewTaskOverlay.close();},'ProjectDetail:ProjectOverlayNewTask:overNewTask:quickTaskForm:taskSaveBtn');" 
 										   href="javascript:;" >Create New Task</a>
 									</apex:outputpanel>
 								</li>

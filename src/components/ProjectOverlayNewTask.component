@@ -33,37 +33,6 @@
         	
         }
         
-        function addOverlayEvents2(closeFunction, elementClick){
-
-			setTimeout("$(elementClick).focus();",6000)
-
-			Event.observe(document, 'keypress', function(event){ 
-
-				if(event.keyCode == 13) {
-
-					$(elementClick).click()
-
-				}
-
-				
-
-				if(event.keyCode == 27){
-					
-					closeFunction();
-					
-					//addNewTaskOverlay.close()
-
-					removeOverlayEvents()
-
-				}
-
-			});
-
-	
-
-		}
-		
-        
     </script>
     
     <style>

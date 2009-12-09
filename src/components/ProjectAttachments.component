@@ -40,6 +40,18 @@
 		}
 	</style>	
 	
+			<script>
+				function openAttachmentOverlay(){
+
+				   	newAttachmentFileOverlay.open(); 
+					newAttachmentToProject();
+					observeIframeUpload();
+					loadAttOverlay = true;
+					$('uploadIframe').src = $('uploadIframe').src;
+					addOverlayNewAttachmentEvents(function(){newAttachmentOverlay.close();},'UploadAttachment:Form:SaveButton');
+				}
+			</script>
+	
 	 <!-- Holder --> 
         			<div class="informationPanel clear" id="infoToUser" style="display:none;"></div>
         			<div id='holder' class="holder" >
@@ -59,9 +71,8 @@
                                             <td>
                                                 <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
                                                     <a href="Javascript:;" class="blackbutton" 
-                                                       onclick="openAttachmentOverlay();
-                                                                addOverlayNewAttachmentEvents('deleteAttachmentOverlay.close()', 'UploadAttachment:Form:SaveButton')">
-                                                        <span>New Attachment</span>
+                                                       onclick="openAttachmentOverlay();">
+                                                       <span>New Attachment</span>
                                                     </a>
                                                 </apex:outputpanel>
                                             </td>
@@ -72,7 +83,7 @@
 	                                                   href="javascript:;" 
 	                                                   onclick="deleteAttachmentOverlay.open();
 	                                                            setAttachmentsChecked();
-	                                                            addOverlayEvents('deleteAttachmentOverlay.close()', 'ProjectAttachmentList:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn')" >
+	                                                            addOverlayEvents(function(){deleteAttachmentOverlay.close();}, 'ProjectAttachmentList:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn')" >
 	                                                	<span>Delete</span>
 	                                                </a>
 	                                                 
@@ -150,7 +161,7 @@
                                                   <a href="javascript:;" 
                                                      onclick="deleteAttachmentOverlay.open(); 
                                                               $('ProjectAttachmentList:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!attachment.Id}';
-                                                              addOverlayEvents('deleteAttachmentOverlay.close()', 'ProjectAttachmentList:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn')">
+                                                              addOverlayEvents(function(){deleteAttachmentOverlay.close();}, 'ProjectAttachmentList:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn')">
                                                      Delete
                                                   </a> 
                                             </td>
@@ -215,7 +226,7 @@
 	                                                   href="javascript:;" 
 	                                                   onclick="deleteAttachmentOverlay.open();
 	                                                            setAttachmentsChecked();
-	                                                            addOverlayEvents('deleteAttachmentOverlay.close()', 'ProjectAttachmentList:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn')" >
+	                                                            addOverlayEvents(function(){deleteAttachmentOverlay.close();}, 'ProjectAttachmentList:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn')" >
 	                                                	<span>Delete</span>
 	                                                </a>
 	                                                 

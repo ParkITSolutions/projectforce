@@ -1,18 +1,6 @@
 <apex:component controller="ProjectOverlayNewAttachmentController">
 
-	<style>
-	#newAttachmentOverlay{
-		background:white none repeat scroll 0 0;
-		height:190px;
-		left:58%;
-		opacity:1;
-		position:fixed;
-		top:50%;
-		width:332px;
-		z-index:9999;
-	}
 	
-	</style>
 	
 	<!-- Set Attribure for project id. -->
 	<apex:attribute name="parentId" description="Parent Id" type="String" required="true" assignTo="{!parentId}" />		
@@ -28,25 +16,25 @@
 	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamsOverlayNewMilestone.js')}" />
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />
 	
-	<div id="newAttachmentOverlay" style="display:none;z-index:9999;" class="overlayForm">
+	<div id="newAttachmentOverlay" style="display:none;" class="overlayForm">
 		<!-- Overlay Title -->
 		<div class="overlayTitleContent">
 			<div class="overlayTitle">Add Attachment</div>
 			<div class="overlayCloseEvent">
-				<a href="Javascript:;" onclick="newAttachmentOverlay.close();" id="modalCloseButton">
+				<a href="Javascript:;" onclick="newAttachmentFileOverlay.close();" id="modalCloseButton">
 					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
 				</a>                                                                                      
 			</div>
 		</div>                                                               
 		<apex:outputpanel layout="block" id="iframeWrapperPanel" styleclass="overlayMainContent">
 			<iframe name="uploadIframe" id="uploadIframe" src="/apex/UploadAttachment?pId={!parentId}&t=1" height="154px"
-					width="99%" style="border: 0px;" frameborder="0" marginheight="0"
+					width="100%" style="border: 0px;" frameborder="0" marginheight="0"
 					marginwidth="0"></iframe>
 		</apex:outputpanel>
 	</div>
 	<script>
 		
-		newAttachmentOverlay = new modalOverlayClass('newAttachmentOverlay','modalNewAttachmentOverlay',  true);
+		newAttachmentFileOverlay = new modalOverlayClass('newAttachmentOverlay','modalNewAttachmentOverlay',  true);
 	
 	</script>	         
 </apex:component>
