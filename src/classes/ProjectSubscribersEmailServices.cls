@@ -13,7 +13,7 @@ public class ProjectSubscribersEmailServices{
     public Boolean isTest = false;
     
 	public static Boolean alreadySent = false;
-	 
+	
     /**
     * Constructor
     */ 
@@ -43,6 +43,138 @@ public class ProjectSubscribersEmailServices{
         this.isTaskEdit = isTaskEdit;
     }
 
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//Html
+	private String returnHtmlIni(String varHtmlIni){
+		//String varHtmlIni = '';
+		varHtmlIni=varHtmlIni+'<html>';
+		varHtmlIni=varHtmlIni+'<head>';
+		varHtmlIni=varHtmlIni+'	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
+		varHtmlIni=varHtmlIni+'	<title>Project Mail</title>';
+		varHtmlIni=varHtmlIni+'	<style type="text/css" media="screen">';
+		varHtmlIni=varHtmlIni+'		body {';
+		varHtmlIni=varHtmlIni+'			margin: 0;';
+		varHtmlIni=varHtmlIni+'			padding: 0;';
+		varHtmlIni=varHtmlIni+'		}';
+		varHtmlIni=varHtmlIni+'		a {';
+		varHtmlIni=varHtmlIni+'			color: #cc0000;';
+		varHtmlIni=varHtmlIni+'		}';
+		varHtmlIni=varHtmlIni+'		.opcion {';
+		varHtmlIni=varHtmlIni+'			font-family: Georgia;';
+		varHtmlIni=varHtmlIni+'			font-size: 12px;';
+		varHtmlIni=varHtmlIni+'			font-weight: bold;';
+		varHtmlIni=varHtmlIni+'			color: #000000;';
+		varHtmlIni=varHtmlIni+'			margin: 0 0 4px 0;';
+		varHtmlIni=varHtmlIni+'			padding: 0;';
+		varHtmlIni=varHtmlIni+'		}';
+		varHtmlIni=varHtmlIni+'		.header_project{';
+		varHtmlIni=varHtmlIni+'			background-image: url(/img/bgTop.gif);';
+		varHtmlIni=varHtmlIni+'			background-position: left top;';
+		varHtmlIni=varHtmlIni+'			background-repeat: repeat-x;';
+		varHtmlIni=varHtmlIni+'		}';
+		varHtmlIni=varHtmlIni+'		.page_section {';
+		varHtmlIni=varHtmlIni+'			top:0;';
+		varHtmlIni=varHtmlIni+'			left:0;	';
+		varHtmlIni=varHtmlIni+'			/*background:url(section_icon.gif) no-repeat left top;*/';
+		varHtmlIni=varHtmlIni+'			color:#FFFFFF;';
+		varHtmlIni=varHtmlIni+'		}';
+		varHtmlIni=varHtmlIni+'		.header_portal {';
+		varHtmlIni=varHtmlIni+'			background:#004D6B none repeat scroll 0 0;';
+		varHtmlIni=varHtmlIni+'			height: 58px;';
+		varHtmlIni=varHtmlIni+'			position:relative;';
+		varHtmlIni=varHtmlIni+'			width:100%;';
+		varHtmlIni=varHtmlIni+'			display: block;';
+		varHtmlIni=varHtmlIni+'			overflow: hidden;';
+		varHtmlIni=varHtmlIni+'		}';
+		varHtmlIni=varHtmlIni+'		';
+		varHtmlIni=varHtmlIni+'		.tit1{';
+		varHtmlIni=varHtmlIni+'			color:#004D63;';
+		varHtmlIni=varHtmlIni+'			font-style:italic;';
+		varHtmlIni=varHtmlIni+'		}';
+		varHtmlIni=varHtmlIni+'		.tit2{';
+		varHtmlIni=varHtmlIni+'			color:#9C928C;';
+		varHtmlIni=varHtmlIni+'			font-style:italic;';
+		varHtmlIni=varHtmlIni+'		}';
+		varHtmlIni=varHtmlIni+'';
+		varHtmlIni=varHtmlIni+'		';
+		varHtmlIni=varHtmlIni+'	</style>';
+		varHtmlIni=varHtmlIni+'</head>';
+		varHtmlIni=varHtmlIni+'<body>';
+		varHtmlIni=varHtmlIni+'<table width="600" cellspacing="0" cellpadding="0" border="0">';
+		varHtmlIni=varHtmlIni+'	<tr>';
+		varHtmlIni=varHtmlIni+'		<td>';
+		varHtmlIni=varHtmlIni+'			<table width="600" cellspacing="0" cellpadding="0" border="0" style="margin-left: 40px; margin-right: 40px; margin-top: 10px; margin-bottom: 20px;">';
+		varHtmlIni=varHtmlIni+'				<tr>';
+		varHtmlIni=varHtmlIni+'					<td class="header_project" align="center"> ';
+		varHtmlIni=varHtmlIni+'						<div style="background: rgb(255, 247, 255) none repeat scroll 0% 0%; height: 55px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">';
+		varHtmlIni=varHtmlIni+'						<h1>';
+		varHtmlIni=varHtmlIni+'						<font class="tit1">Project</font><font class="tit2">force</font>';
+		varHtmlIni=varHtmlIni+'						</h1>';
+		varHtmlIni=varHtmlIni+'						</div>';
+		varHtmlIni=varHtmlIni+'					</td>';
+		varHtmlIni=varHtmlIni+'				</tr>';
+		varHtmlIni=varHtmlIni+'				<tr>';
+		varHtmlIni=varHtmlIni+'					<td align="center">';
+		varHtmlIni=varHtmlIni+'						<div class="header_portal">';
+		varHtmlIni=varHtmlIni+'							<div class="page_section">';
+		varHtmlIni=varHtmlIni+'								<h1 alt="pepe asd efeee gue hay qeu no se">pepe asd.. </h1>';
+		varHtmlIni=varHtmlIni+'							</div>';
+		varHtmlIni=varHtmlIni+'						</div>';
+		varHtmlIni=varHtmlIni+'					</td>';
+		varHtmlIni=varHtmlIni+'				</tr>';
+		varHtmlIni=varHtmlIni+'				<tr>';
+		varHtmlIni=varHtmlIni+'					<td>';
+		varHtmlIni=varHtmlIni+'						&nbsp;';
+		varHtmlIni=varHtmlIni+'					</td>';
+		varHtmlIni=varHtmlIni+'				</tr>';
+		varHtmlIni=varHtmlIni+'				<tr>';
+		varHtmlIni=varHtmlIni+'					<td>';
+		varHtmlIni=varHtmlIni+'						&nbsp;';
+		varHtmlIni=varHtmlIni+'					</td>';
+		varHtmlIni=varHtmlIni+'				</tr>';
+		varHtmlIni=varHtmlIni+'				<tr>';
+		varHtmlIni=varHtmlIni+'					<td> ';
+		varHtmlIni=varHtmlIni+'						<table width="90%" align="center" border="0" cellspacing="0" cellpadding="0">';
+		varHtmlIni=varHtmlIni+'							<tr>';
+		return varHtmlIni;
+	}
+
+	private String returnHtmlFin(String varHtmlIni,String pie){
+		//String  varHtmlIni= '';
+		varHtmlIni=varHtmlIni+'							</tr>';
+		varHtmlIni=varHtmlIni+'							<tr>';
+		varHtmlIni=varHtmlIni+'								<td>';
+		varHtmlIni=varHtmlIni+'									&nbsp;';
+		varHtmlIni=varHtmlIni+'								</td>';
+		varHtmlIni=varHtmlIni+'							</tr>';
+		varHtmlIni=varHtmlIni+'							<tr>';
+		varHtmlIni=varHtmlIni+'								<td>';
+		varHtmlIni=varHtmlIni+'									&nbsp;';
+		varHtmlIni=varHtmlIni+'								</td>';
+		varHtmlIni=varHtmlIni+'							</tr>';
+		varHtmlIni=varHtmlIni+'							';
+		varHtmlIni=varHtmlIni+'						</table>';
+		varHtmlIni=varHtmlIni+'					</td>';
+		varHtmlIni=varHtmlIni+'				</tr>';
+		if (pie != ''){
+			varHtmlIni=varHtmlIni+'				<tr><td>'+pie;
+			varHtmlIni=varHtmlIni+'				</td></tr>';
+		}
+		varHtmlIni=varHtmlIni+'			</table>';
+		varHtmlIni=varHtmlIni+'		</td>';
+		varHtmlIni=varHtmlIni+'	</tr>';
+		varHtmlIni=varHtmlIni+'</table>';
+		varHtmlIni=varHtmlIni+'</body>';
+		varHtmlIni=varHtmlIni+'</html>';
+		return varHtmlIni;
+	}
+	
+/*	private String returnVarHtml(String titulo, String campo){
+		
+	}*/
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	
     /**
     * Sends email to subscribers
     *@param List<String> lstPMId
@@ -301,6 +433,23 @@ public class ProjectSubscribersEmailServices{
 	        			+ lstPT[0].StartDate__c + '<br />End date: ' + lstPT[0].EndDate__c + '<br />Description: ' 
 	        			+ lstPT[0].Description__c+'<br /><br />The percent completed has changed from '+oldPercent
 	        			+' to '+lstPT[0].PercentCompleted__c;
+	      //  */
+	        /////////
+	        /*
+	        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='
+	        			+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a><br />';
+	        			
+	        			'Task Name: <a href="' + Label.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">' 
+	        			+ lstPT[0].Name + '</a><br />';
+	        			'Priority: ' + lstPT[0].Priority__c + '<br />';
+	        			'Start date: ' 	+ lstPT[0].StartDate__c + '<br />';
+	        			'End date: ' + lstPT[0].EndDate__c + '<br />';
+	        			'Description: '	+ lstPT[0].Description__c+'<br /><br />
+	        			
+	        			The percent completed has changed from '+oldPercent
+	        			+' to '+lstPT[0].PercentCompleted__c;
+	        */
+	        /////////
         	emailSub = lstPT[0].Name + ' percent completed changed';
         	
 	        if (!isTest){

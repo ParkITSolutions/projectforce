@@ -331,6 +331,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>UserDetailController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>UserPermissions</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1797,6 +1801,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>projectOverview</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>userDetail</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <recordTypeVisibilities>
