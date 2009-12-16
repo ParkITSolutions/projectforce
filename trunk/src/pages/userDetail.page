@@ -1,0 +1,82 @@
+<apex:page controller="UserDetailController" sidebar="false" cache="false" >
+
+	<style>
+	#bodyTable{
+		height: 100%;
+	}
+	
+	#header{
+	}
+	
+	#main{
+		float: rigth;
+	}
+	
+	.Field{
+		font-weight: bolder;
+		width: 120px;
+		float: left;
+	}
+	.TableHeader td{
+		font-weight: bolder;
+	}
+	</style>
+	
+    <script>
+	    window.onload( function(){ 
+	        readPortalCSSRules();
+	    });
+    </script>
+    	
+	<!-- Header -->
+	<div id="header" >
+	</div>
+	
+	<!-- Main -->
+	<div id="main">
+		<apex:form id="mainForm">
+			<apex:actionFunction name="reloadAll" rerender="mainForm" />
+			<div id="projectDetail">					
+				<div class="FieldValue">
+					<apex:selectList id="ImPoo" value="{!opSelected}" multiselect="false" size="1"  onchange="reloadAll();">
+						<apex:selectOptions value="{!ProjectSelectOps}" />
+					</apex:selectList>
+					{!opSelected}::>>{!ShowDetail}
+					<apex:outputPanel rendered="{!ShowDetail}">
+						<div>
+							<div class="Field">Name</div>
+							<div class="Value">{!currentProject.Project__r.name}</div>
+						</div>
+						<div>							
+							<div class="Field">Description</div>
+							<div class="Value">{!currentProject.Project__r.Description__c}</div>
+						</div>
+						<div>														
+							<div class="Field">Priority</div>
+							<div class="Value">{!currentProject.Project__r.Priority__c}</div>
+						</div>
+						<div>							
+							<div class="Field">Duration</div>
+							<div class="Value">{!currentProject.Project__r.DisplayDuration__c}</div>
+						</div>
+						<div>							
+							<div class="Field">Days in work week</div>
+							<div class="Value">{!currentProject.Project__r.DaysInWorkWeek__c}</div>
+						</div>
+					</apex:outputPanel>
+				</div>
+			</div>
+			
+			<table>
+				<apex:repeat value="{!tasks}" var="t">
+					<tr class="TableHeader">
+						<td>Name</td> <td>Start date</td> <td>End date</td> <td>Status</td> <td>Priority</td> <td>Milestone</td> <td>Percentage Complete</td> 
+					</tr>
+					<tr>
+						<td>{!t.projectTask__r.name}</td>
+					</tr>
+				</apex:repeat>
+			</table>
+		</apex:form>
+	</div>
+</apex:page>
