@@ -24,6 +24,15 @@ public class ProjectUtil {
     public static Map<String, Boolean> flags = new Map<String, Boolean>(); 
     public static Boolean inFuture = false;
     
+    private static String defaultTaskPriority = 'Medium';
+    
+    public static Integer maxLongWord = 40;
+	public static Integer maxLongPhrase = 128;	
+	
+	public static String getDefaultTaskPriority(){
+		return ProjectUtil.defaultTaskPriority;
+	}
+	
     public static void setTaskDependenciesFlag(Boolean value){
     	ProjectUtil.taskDependenciesFlag = value;
     }
@@ -180,6 +189,10 @@ public class ProjectUtil {
         }
         return domain;   
     }
+    
+    public static String getUrl(){
+    	return 'https://'+getDomain();
+    }
      
 	public static Map<String, String> taskDescription( ProjectTask__c task ){ 
 		Map<String, String> maping = new Map<String, String>();
@@ -193,5 +206,62 @@ public class ProjectUtil {
 		maping.put( 'priority', task.Priority__c );		
 		
 		return maping;
-	}     
+	}    
+	
+	
+	/**
+    *@return String
+    */
+    public static String joinStrListByToken( List<String> listToJoin, String token ){
+ 		String joinedStr = '';
+ 		Integer listSize = listToJoin.size();
+ 		
+		if( listSize > 0 ){ 	
+	 		for( Integer k = 0; k < listSize - 1; k++ )
+	 			joinedStr += listToJoin[ k ] + token;
+	 			
+			joinedStr += listToJoin[ listSize - 1 ];
+		}
+		
+		return joinedStr;
+ 		   	
+    }
+    
+	public static String chopWords( String words ){
+    	return ProjectUtil.chopWords( words, ProjectUtil.maxLongWord );
+    }
+    public static String chopWords( String words, Integer len ){
+    	String strToReturn = '';
+    	if( words != null && words.length() > 0 ){
+	    	List<String> listOfWords = new List<String>();
+	    	listOfWords = words.split( ' ' );
+	    	
+	    	for( Integer k = 0; k < listOfWords.size(); k++ )
+	    		if( listOfWords[ k ].length() > len )
+	    			listOfWords[ k ] = listOfWords[ k ].substring( 0, len ) + '.';
+	    			
+	    	strToReturn = ProjectUtil.joinStrListByToken( listOfWords, ' ' );
+    	}
+    	
+    	return strToReturn;
+    }
+    
+    public static String chopPhrase( String phrase ){
+    	return ProjectUtil.chopPhrase( phrase, ProjectUtil.maxLongPhrase );
+    }
+    
+    public static String chopPhrase( String phrase, Integer len ){
+    	
+    	List<String> cPhrase = new List<String>();
+    	String rPhrase = '';
+    	if( phrase != null ){
+	    	if( phrase.length() > len ){
+		    	cPhrase = phrase.substring( 0, len ).split( ' ' );
+
+		    	rPhrase = ProjectUtil.joinStrListByToken( cPhrase, ' ' ) + '...';
+	    	}else
+	    		rPhrase = phrase;
+    	}
+    	return rPhrase;
+    } 
 }

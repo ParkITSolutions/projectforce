@@ -11,7 +11,7 @@
 	
     <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" /> 
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetailEdit.css')}" />    
-    
+
     <!-- Portal Support -->
     <apex:includeScript value="{!$Resource.portalSupport}"/>  
     
@@ -82,6 +82,14 @@
 				    <span>
 				    	<span class="text_link_underlineColorPaddRight">
 				    	  	<a href="/apex/ProjectMembersList?id={!teamIdParam}#">Member List</a>
+				    	</span>
+				   	</span>
+				</div>
+				<div class="team_detail_commentedItemLeftProfile">					    
+				    <img class="imgSmallLeft" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/star.gif')}"  />
+				    <span>
+				    	<span class="text_link_underlineColorPaddRight">
+				    	  	<a href="ProjectComments?id={!teamIdParam}#">Comments</a>
 				    	</span>
 				   	</span>
 				</div>

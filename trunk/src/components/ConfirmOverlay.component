@@ -1,0 +1,116 @@
+<apex:component id="ConfirmOverlay" controller="ConfirmOverlayController" allowDML="true">
+
+	<apex:includeScript value="{!URLFOR($Resource.OverlayResources, 'inc/js/scriptaculous/lib/prototype.js')}" />
+	 
+	<apex:includeScript value="{!URLFOR($Resource.OverlayResources, 'inc/js/scriptaculous/src/scriptaculous.js')}" />
+	
+	<apex:includeScript value="{!URLFOR($Resource.OverlayResources, 'inc/js/js.js')}" />
+	 
+	<apex:stylesheet value="{!URLFOR($Resource.OverlayResources, 'inc/css/css.css')}" />
+
+	<apex:attribute name="title" 
+					description="Title of the overlay"
+					type="String" 
+					assignTo="{!Title}" 
+					required="true"/>
+					
+	<apex:attribute name="messageToUser" 
+					description="Message displayed to the user"
+					type="String" 
+					assignTo="{!MessageToUser}" 
+					required="true"/>	
+					
+	<apex:attribute name="actionName" 
+					description="Name of the action, example, 'DeleteMembers'"
+					type="String" 
+					assignTo="{!ActionName}" 
+					required="true"/>	
+					
+	<apex:attribute name="refreshPanels" 
+					description="Panels to refresh when actionName is completed, example, 'Panel1, Panel2'"
+					type="String" 
+					assignTo="{!RefreshPanels}" 
+					required="true"/>			
+	
+	<!-- Content -->
+	<apex:outputPanel id="Content"
+		styleClass="content"
+		layout="block"
+		style="display:none">
+		
+		<apex:outputPanel id="Background" styleClass="background" layout="block"> &nbsp; </apex:outputPanel>
+		
+		<!-- end of Form  -->
+		<apex:form id="Form">
+		
+			<!-- HiddenPanel -->
+			<apex:outputPanel id="HiddenPanel">
+				
+				<apex:inputHidden value="{!ActionIds}" id="ActionIds"/>
+				<apex:inputHidden value="{!PostAction}" id="PostAction"/>
+			
+			</apex:outputPanel>
+			<!-- end of HiddenPanel -->
+		
+			<!-- Overlay -->
+			<apex:outputPanel id="Overlay"
+				styleClass="overlay"
+				layout="block">
+			
+				<!-- Title -->
+				<apex:outputPanel id="TitlePanel"
+					styleClass="titlePanel"
+					layout="block">
+			
+					<apex:outputText id="Title"
+						value="{!Title}" />
+			
+				</apex:outputPanel>
+				<!-- end of Title -->
+				
+				<!-- MessageToUser -->
+				<apex:outputPanel id="MessageToUserPanel"
+					styleClass="messageToUserPanel"
+					layout="block">
+			
+					<apex:outputText id="MessageToUser"
+						value="{!MessageToUser}" />
+			
+				</apex:outputPanel>
+				<!-- end of MessageToUser -->
+				
+				<!-- SubmitButtons -->
+				<apex:outputPanel id="SubmitButtons"
+					styleClass="submitButtons"
+					layout="block">
+			
+					<apex:commandButton id="AcceptButton"
+						value="Accept"
+						action="{!Action}"
+						onClick="confirmOverlay.close(); swirly.show()"
+						onComplete="confirmOverlay.postAction()" 
+					    reRender="HiddenPanel" 
+					    styleClass="submitButton"/>
+					    
+					<apex:outputLink id="CancelButton"
+						value="javascript:;"
+						onClick="confirmOverlay.close()"
+					    styleClass="submitButton" >
+					    
+					    Cancel
+					    
+					</apex:outputLink>
+			
+				</apex:outputPanel>
+				<!-- end of SubmitButtons -->
+				
+			</apex:outputPanel>
+			<!-- end of Overlay -->
+		
+		</apex:form>
+		<!-- end of Form  -->
+		
+	</apex:outputPanel>
+	<!-- end of Content -->
+
+</apex:component>

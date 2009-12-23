@@ -43,11 +43,13 @@ public class ProjectSubscribersEmailServices{
         this.isTaskEdit = isTaskEdit;
     }
 
-
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	//Html
-	private String returnHtmlIni(String varHtmlIni){
-		//String varHtmlIni = '';
+	/** 
+	*	First part of the body of the mail html
+	*	@param String varHtml
+	*	@param String title 
+	*/
+	private String returnHtmlIni(String varHtmlIni, String title){
 		varHtmlIni=varHtmlIni+'<html>';
 		varHtmlIni=varHtmlIni+'<head>';
 		varHtmlIni=varHtmlIni+'	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
@@ -58,26 +60,11 @@ public class ProjectSubscribersEmailServices{
 		varHtmlIni=varHtmlIni+'			padding: 0;';
 		varHtmlIni=varHtmlIni+'		}';
 		varHtmlIni=varHtmlIni+'		a {';
-		varHtmlIni=varHtmlIni+'			color: #cc0000;';
-		varHtmlIni=varHtmlIni+'		}';
-		varHtmlIni=varHtmlIni+'		.opcion {';
-		varHtmlIni=varHtmlIni+'			font-family: Georgia;';
-		varHtmlIni=varHtmlIni+'			font-size: 12px;';
-		varHtmlIni=varHtmlIni+'			font-weight: bold;';
-		varHtmlIni=varHtmlIni+'			color: #000000;';
-		varHtmlIni=varHtmlIni+'			margin: 0 0 4px 0;';
-		varHtmlIni=varHtmlIni+'			padding: 0;';
+		varHtmlIni=varHtmlIni+'			color: #FFFFFF !important;';
 		varHtmlIni=varHtmlIni+'		}';
 		varHtmlIni=varHtmlIni+'		.header_project{';
-		varHtmlIni=varHtmlIni+'			background-image: url(/img/bgTop.gif);';
 		varHtmlIni=varHtmlIni+'			background-position: left top;';
 		varHtmlIni=varHtmlIni+'			background-repeat: repeat-x;';
-		varHtmlIni=varHtmlIni+'		}';
-		varHtmlIni=varHtmlIni+'		.page_section {';
-		varHtmlIni=varHtmlIni+'			top:0;';
-		varHtmlIni=varHtmlIni+'			left:0;	';
-		varHtmlIni=varHtmlIni+'			/*background:url(section_icon.gif) no-repeat left top;*/';
-		varHtmlIni=varHtmlIni+'			color:#FFFFFF;';
 		varHtmlIni=varHtmlIni+'		}';
 		varHtmlIni=varHtmlIni+'		.header_portal {';
 		varHtmlIni=varHtmlIni+'			background:#004D6B none repeat scroll 0 0;';
@@ -87,17 +74,6 @@ public class ProjectSubscribersEmailServices{
 		varHtmlIni=varHtmlIni+'			display: block;';
 		varHtmlIni=varHtmlIni+'			overflow: hidden;';
 		varHtmlIni=varHtmlIni+'		}';
-		varHtmlIni=varHtmlIni+'		';
-		varHtmlIni=varHtmlIni+'		.tit1{';
-		varHtmlIni=varHtmlIni+'			color:#004D63;';
-		varHtmlIni=varHtmlIni+'			font-style:italic;';
-		varHtmlIni=varHtmlIni+'		}';
-		varHtmlIni=varHtmlIni+'		.tit2{';
-		varHtmlIni=varHtmlIni+'			color:#9C928C;';
-		varHtmlIni=varHtmlIni+'			font-style:italic;';
-		varHtmlIni=varHtmlIni+'		}';
-		varHtmlIni=varHtmlIni+'';
-		varHtmlIni=varHtmlIni+'		';
 		varHtmlIni=varHtmlIni+'	</style>';
 		varHtmlIni=varHtmlIni+'</head>';
 		varHtmlIni=varHtmlIni+'<body>';
@@ -106,43 +82,66 @@ public class ProjectSubscribersEmailServices{
 		varHtmlIni=varHtmlIni+'		<td>';
 		varHtmlIni=varHtmlIni+'			<table width="600" cellspacing="0" cellpadding="0" border="0" style="margin-left: 40px; margin-right: 40px; margin-top: 10px; margin-bottom: 20px;">';
 		varHtmlIni=varHtmlIni+'				<tr>';
-		varHtmlIni=varHtmlIni+'					<td class="header_project" align="center"> ';
-		varHtmlIni=varHtmlIni+'						<div style="background: rgb(255, 247, 255) none repeat scroll 0% 0%; height: 55px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">';
-		varHtmlIni=varHtmlIni+'						<h1>';
-		varHtmlIni=varHtmlIni+'						<font class="tit1">Project</font><font class="tit2">force</font>';
-		varHtmlIni=varHtmlIni+'						</h1>';
+		varHtmlIni=varHtmlIni+'					<td class="header_project" align="center" span="2">';
+		varHtmlIni=varHtmlIni+'						<div style="background: rgb(255, 247, 255) none repeat scroll 0% 0%; height: 55px;">';
+		varHtmlIni=varHtmlIni+'						<span style="color:#004D63;font-style:italic;font-size:30px;">Project</span><span style="color:#9C928C;font-style:italic;font-size:30px;">force</span>';
 		varHtmlIni=varHtmlIni+'						</div>';
 		varHtmlIni=varHtmlIni+'					</td>';
 		varHtmlIni=varHtmlIni+'				</tr>';
 		varHtmlIni=varHtmlIni+'				<tr>';
-		varHtmlIni=varHtmlIni+'					<td align="center">';
-		varHtmlIni=varHtmlIni+'						<div class="header_portal">';
-		varHtmlIni=varHtmlIni+'							<div class="page_section">';
-		varHtmlIni=varHtmlIni+'								<h1 alt="pepe asd efeee gue hay qeu no se">pepe asd.. </h1>';
-		varHtmlIni=varHtmlIni+'							</div>';
+		varHtmlIni=varHtmlIni+'					<td align="center" span="2">';
+		varHtmlIni=varHtmlIni+'						<div style="background: #004D6B none repeat scroll 0% 0%; height: 55px;">';
+		varHtmlIni=varHtmlIni+'							<div style="color:#FFFFFF;font-size: 22px;">'+title+'</div>';
 		varHtmlIni=varHtmlIni+'						</div>';
 		varHtmlIni=varHtmlIni+'					</td>';
 		varHtmlIni=varHtmlIni+'				</tr>';
 		varHtmlIni=varHtmlIni+'				<tr>';
-		varHtmlIni=varHtmlIni+'					<td>';
+		varHtmlIni=varHtmlIni+'					<td span="2">';
 		varHtmlIni=varHtmlIni+'						&nbsp;';
 		varHtmlIni=varHtmlIni+'					</td>';
 		varHtmlIni=varHtmlIni+'				</tr>';
 		varHtmlIni=varHtmlIni+'				<tr>';
-		varHtmlIni=varHtmlIni+'					<td>';
+		varHtmlIni=varHtmlIni+'					<td span="2">';
 		varHtmlIni=varHtmlIni+'						&nbsp;';
 		varHtmlIni=varHtmlIni+'					</td>';
 		varHtmlIni=varHtmlIni+'				</tr>';
 		varHtmlIni=varHtmlIni+'				<tr>';
-		varHtmlIni=varHtmlIni+'					<td> ';
+		varHtmlIni=varHtmlIni+'					<td span="2"> ';
 		varHtmlIni=varHtmlIni+'						<table width="90%" align="center" border="0" cellspacing="0" cellpadding="0">';
-		varHtmlIni=varHtmlIni+'							<tr>';
 		return varHtmlIni;
 	}
 
-	private String returnHtmlFin(String varHtmlIni,String pie){
-		//String  varHtmlIni= '';
+	/** 
+	*	The fields part of  Html Mail 
+	*	@param String varHtml
+	*	@param String titleField
+	*	@param String field  
+	*	@return String
+	*/
+	private String returnVarHtml(String varHtmlIni, String titleField, String field){
+		varHtmlIni=varHtmlIni+'							<tr>';
+		if (titleField!=''){
+			varHtmlIni=varHtmlIni+'							<td align="left" style="font-family: Georgia;font-size: 12px;font-weight: bold;color: #000000;margin: 0 0 4px 0;padding: 0;font-style:italic;" width="30%">';
+			varHtmlIni=varHtmlIni+'								'+titleField;
+			varHtmlIni=varHtmlIni+'							</td>';
+			varHtmlIni=varHtmlIni+'							<td align="left">';
+		}
+		else{
+			varHtmlIni=varHtmlIni+'							<td align="left" span="2">';
+		}
+		varHtmlIni=varHtmlIni+'									'+field;
+		varHtmlIni=varHtmlIni+'								</td>';
 		varHtmlIni=varHtmlIni+'							</tr>';
+		return varHtmlIni;	
+	}
+	
+	/** 
+	*	Bottom of the HTML mail body
+	*	@param String varHtml
+	*	@param String msj  
+	*	@return String
+	*/
+	private String returnHtmlFin(String varHtmlIni,String msj){
 		varHtmlIni=varHtmlIni+'							<tr>';
 		varHtmlIni=varHtmlIni+'								<td>';
 		varHtmlIni=varHtmlIni+'									&nbsp;';
@@ -157,9 +156,9 @@ public class ProjectSubscribersEmailServices{
 		varHtmlIni=varHtmlIni+'						</table>';
 		varHtmlIni=varHtmlIni+'					</td>';
 		varHtmlIni=varHtmlIni+'				</tr>';
-		if (pie != ''){
-			varHtmlIni=varHtmlIni+'				<tr><td>'+pie;
-			varHtmlIni=varHtmlIni+'				</td></tr>';
+		if (msj != ''){
+			varHtmlIni=varHtmlIni+'			<tr><td style="color:#000000; font-style:italic;" span="2">'+msj;
+			varHtmlIni=varHtmlIni+'			</td></tr>';
 		}
 		varHtmlIni=varHtmlIni+'			</table>';
 		varHtmlIni=varHtmlIni+'		</td>';
@@ -170,9 +169,19 @@ public class ProjectSubscribersEmailServices{
 		return varHtmlIni;
 	}
 	
-/*	private String returnVarHtml(String titulo, String campo){
+	/** 
+	*	Return of subject of the Html Mail
+	*	@param String project
+	*	@param String action  
+	*	@return String
+	*/
+	private String returnHtmlSubject(String project, String action){
+		String aux = project.toUpperCase();
+		String SubjectHtml='ProjectForce : ['+aux+'] '+action;
+		return SubjectHtml;
 		
-	}*/
+	}
+	
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	
     /**
@@ -200,21 +209,32 @@ public class ProjectSubscribersEmailServices{
             					WHERE Project__c =: lstPM[0].Project__c and ProjectMemberJoinLeave__c = true ];
             					
             for(ProjectMember__c proj : lstPM ){
-	            if ( acction == 'leave') 
-	            {
-	                String oldMemberName = proj.User__r.Name;
-	                emailMsj = oldMemberName + ' has left project  <a href="' 
-	                			+ Label.sfdcHostName+'apex/ProjectDetail?id='+ proj.Project__c + + '">' 
-	                			+  proj.Project__r.Name + '</a>.';
-	                emailSub = 'Project Member has Left the project ';
+            	String htmlVar ='';
+				String title='';
+				String field='';
+				String msjFoot='';
+	            if ( acction == 'leave'){
+					title=proj.Project__r.Name ;
+					htmlVar=returnHtmlIni(htmlVar,title);
+					
+					field= proj.User__r.Name + ' has left project  <a href="'+ Label.sfdcHostName+'apex/ProjectDetail?id='+ proj.Project__c + '">'+  proj.Project__r.Name + '</a>.';
+					htmlVar=returnVarHtml(htmlVar,'', field);
+					htmlVar=returnHtmlFin(htmlVar,'');
+					emailMsj=htmlVar;
+					String Msg='Project Member has Left the project';
+					emailSub=returnHtmlSubject(proj.Project__r.Name,Msg);
+					
 	            }
-	            else 
-	            {
-	                emailMsj = 'A new project member has joined project <a href="' 
-	                			+ Label.sfdcHostName+'apex/ProjectDetail?id='+ proj.Project__c +'">' 
-	                			+  proj.Project__r.Name + '</a>. Please welcome ' + proj.User__r.Name 
-	                			+ ' to the project.';
-	                emailSub = 'New Project Member';
+	            else {	                
+	                title=proj.Project__r.Name;
+					htmlVar=returnHtmlIni(htmlVar,title);
+					
+					field= 'A new project member has joined project <a href="' + Label.sfdcHostName+'apex/ProjectDetail?id='+ proj.Project__c +'">'+  proj.Project__r.Name + '</a>. Please welcome ' + proj.User__r.Name+ ' to the project.';
+					htmlVar=returnVarHtml(htmlVar,'', field);
+					htmlVar=returnHtmlFin(htmlVar,'');
+					emailMsj=htmlVar;
+					String Msg='New Project Member';
+					emailSub=returnHtmlSubject(proj.Project__r.Name,Msg);
 	            }
 	            
 				if( subscriptions.size() > 0)	
@@ -250,18 +270,43 @@ public class ProjectSubscribersEmailServices{
         }
 
         for(ProjectAssignee__c proj : lstPA){
-	        //Sub:{Task Name} has been assigned to you
-	        //Body: {Task Details such as name and description and start and end date}      
-	        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='
-	        			+ proj.Project__c + '">' + proj.Project__r.Name + '</a><br />Task Name: <a href="' 
-	        			+ Label.sfdcHostName+'apex/projecttaskdetail?id='+proj.ProjectTask__c + '">' 
-	        			+ proj.ProjectTask__r.Name + '</a><br />Priority: ' 
-	        			+ proj.ProjectTask__r.Priority__c + '<br />Start date: ' 
-	        			+ proj.ProjectTask__r.StartDate__c + '<br />End date: ' 
-	        			+ proj.ProjectTask__r.EndDate__c + '<br />Description: ' 
-	        			+ (( proj.ProjectTask__r.Description__c == null ) ? '' : proj.ProjectTask__r.Description__c);
-	        emailSub = proj.ProjectTask__r.Name + ' has been assigned to you';
 	
+			String htmlVar ='';
+			String title='';
+			String field='';
+			String msjFoot='';
+
+			title='<a style="color:#FFFFFF;" href="' + Label.sfdcHostName +'apex/ProjectDetail?id='+ proj.Project__c + '">'+ proj.Project__r.Name + '</a>';
+			htmlVar=returnHtmlIni(htmlVar,title);
+			
+			title='Task Name';
+			field='<a href="'+ Label.sfdcHostName+'apex/projecttaskdetail?id='+proj.ProjectTask__c + '">'+ proj.ProjectTask__r.Name + '</a>';
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			title='Priority';
+			field=proj.ProjectTask__r.Priority__c;
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			title='Start date';
+			field=proj.ProjectTask__r.StartDate__c.format();
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			title='End date';
+			field=proj.ProjectTask__r.EndDate__c.format();
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			title='Description';
+			field=( proj.ProjectTask__r.Description__c == null ) ? '' : proj.ProjectTask__r.Description__c;
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			msjFoot='You have been assigned to this task';
+			htmlVar=returnHtmlFin(htmlVar,msjFoot);
+			
+			emailMsj=htmlVar;			
+			String Msg='task '+ ProjectUtil.chopWords( ProjectUtil.chopPhrase( proj.ProjectTask__r.Name , 35 )) + ' has been assigned to you';
+			emailSub=returnHtmlSubject(proj.Project__r.Name,Msg);
+			
+			
 	        lstUserId.add(proj.user__c);
 
         }
@@ -314,15 +359,42 @@ public class ProjectSubscribersEmailServices{
             								where ProjectTask__c =: lstPT[0].id]){
         		SubAssignees.add(a.user__c);
             }
-  	        //Sub:{Task Name} has been updated
-	        //Body: {Task Details such as name and description and start and end date}      
-	        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='
-	        			+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a><br />Task Name: <a href="' 
-	        			+ Label.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">' + lstPT[0].Name 
-	        			+ '</a><br />Priority: ' + lstPT[0].Priority__c + '<br />Start date: ' 
-	        			+ lstPT[0].StartDate__c + '<br />End date: ' + lstPT[0].EndDate__c 
-	        			+ '<br />Description: ' + lstPT[0].Description__c;
-	        emailSub = lstPT[0].Name + ' has been updated';
+        
+	        String htmlVar ='';
+			String title='';
+			String field='';
+			String msjFoot='';
+			
+			title='<a style="color:#FFFFFF;" href="' + Label.sfdcHostName +'apex/ProjectDetail?id='+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a>';
+			htmlVar=returnHtmlIni(htmlVar,title);
+			
+			title='Task Name';
+			field='<a href="'+ Label.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">' + lstPT[0].Name+ '</a>';
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			title='Priority';
+			field=lstPT[0].Priority__c;
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			title='Start date';
+			field=lstPT[0].StartDate__c.format();
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			title='End date';
+			field=lstPT[0].EndDate__c.format();
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			title='End Descripcion';
+			field=lstPT[0].Description__c;
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			msjFoot='The task has been updated';
+			htmlVar=returnHtmlFin(htmlVar,msjFoot);
+			
+			emailMsj=htmlVar;
+			
+			String Msg='task '+ ProjectUtil.chopWords( ProjectUtil.chopPhrase( lstPT[0].Name , 35 )) + ' has been updated';
+			emailSub=returnHtmlSubject(lstPT[0].Project__r.Name,Msg);
 
 	        if (!isTest){
 	            subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, 
@@ -362,15 +434,42 @@ public class ProjectSubscribersEmailServices{
             								where ProjectTask__c =: lstPT[0].id]){
         		SubAssignees.add(a.user__c);
             }
-  	        //Sub:{Task Name} has been updated
-	        //Body: {Task Details such as name and description and start and end date}      
-	        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='
-	        			+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a><br />Task Name: <a href="' 
-	        			+ Label.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">' + lstPT[0].Name 
-	        			+ '</a><br />Priority: ' + lstPT[0].Priority__c + '<br />Start date: ' 
-	        			+ lstPT[0].StartDate__c + '<br />End date: ' + lstPT[0].EndDate__c 
-	        			+ '<br />Description: ' + lstPT[0].Description__c;
-	        emailSub = lstPT[0].Name + ' has been updated its status';
+        
+	        String htmlVar ='';
+			String title='';
+			String field='';
+			String msjFoot='';
+			
+			title='<a style="color:#FFFFFF;" href="' + Label.sfdcHostName +'apex/ProjectDetail?id='+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a>';
+			htmlVar=returnHtmlIni(htmlVar,title);
+			
+			title='Task Name';
+			field='<a href="'+ Label.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">' + lstPT[0].Name+ '</a>';
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			title='Priority';
+			field=lstPT[0].Priority__c;
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			title='Start date';
+			field=lstPT[0].StartDate__c.format();
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			title='End date';
+			field=lstPT[0].EndDate__c.format();
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			title='Description';
+			field=lstPT[0].Description__c;
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			msjFoot='The task has been updated';
+			htmlVar=returnHtmlFin(htmlVar,msjFoot);
+			
+			emailMsj=htmlVar;
+	        
+	        String Msg='task '+ProjectUtil.chopWords( ProjectUtil.chopPhrase( lstPT[0].Name , 35 )) + ' has been updated its status';
+			emailSub=returnHtmlSubject(lstPT[0].Project__r.Name,Msg);
 
 	        if (!isTest){
 	            subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, 
@@ -424,33 +523,41 @@ public class ProjectSubscribersEmailServices{
             								where ProjectTask__c =: lstPT[0].id]){
         		SubAssignees.add(a.user__c);
             }
-  	        //Sub:{Task Name} percent completed changed
-	        //Body: {Task Details such as name and description and start and end date}      
-	        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='
-	        			+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a><br />Task Name: <a href="' 
-	        			+ Label.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">' 
-	        			+ lstPT[0].Name + '</a><br />Priority: ' + lstPT[0].Priority__c + '<br />Start date: ' 
-	        			+ lstPT[0].StartDate__c + '<br />End date: ' + lstPT[0].EndDate__c + '<br />Description: ' 
-	        			+ lstPT[0].Description__c+'<br /><br />The percent completed has changed from '+oldPercent
-	        			+' to '+lstPT[0].PercentCompleted__c;
-	      //  */
-	        /////////
-	        /*
-	        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='
-	        			+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a><br />';
-	        			
-	        			'Task Name: <a href="' + Label.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">' 
-	        			+ lstPT[0].Name + '</a><br />';
-	        			'Priority: ' + lstPT[0].Priority__c + '<br />';
-	        			'Start date: ' 	+ lstPT[0].StartDate__c + '<br />';
-	        			'End date: ' + lstPT[0].EndDate__c + '<br />';
-	        			'Description: '	+ lstPT[0].Description__c+'<br /><br />
-	        			
-	        			The percent completed has changed from '+oldPercent
-	        			+' to '+lstPT[0].PercentCompleted__c;
-	        */
-	        /////////
-        	emailSub = lstPT[0].Name + ' percent completed changed';
+
+	        String htmlVar ='';
+	        String title='';
+	        String field='';
+	        String msjFoot='';
+	        
+	        title='<a style="color:#FFFFFF;" href="' + Label.sfdcHostName +'apex/ProjectDetail?id='+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a>';
+	        htmlVar=returnHtmlIni(htmlVar,title);
+	        
+	        title='Task Name';
+	        field='<a href="' + Label.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">'+ lstPT[0].Name + '</a>';
+	        htmlVar=returnVarHtml(htmlVar, title, field);
+	        
+	        title='Priority';
+	        field=lstPT[0].Priority__c;
+	        htmlVar=returnVarHtml(htmlVar, title, field);
+	        
+	        title='Start date';
+	        field=lstPT[0].StartDate__c.format();
+	        htmlVar=returnVarHtml(htmlVar, title, field);
+	        
+	        title='End date';
+	        field=lstPT[0].EndDate__c.format();
+	        htmlVar=returnVarHtml(htmlVar, title, field);
+	        
+	        title='Description';
+	        field=lstPT[0].Description__c;
+	        htmlVar=returnVarHtml(htmlVar, title, field);
+	        
+	        msjFoot='The percent completed from task has changed from '+oldPercent+' to '+lstPT[0].PercentCompleted__c;
+	        htmlVar=returnHtmlFin(htmlVar,msjFoot);
+	        emailMsj=htmlVar;
+
+        	String Msg='task '+ProjectUtil.chopWords( ProjectUtil.chopPhrase( lstPT[0].Name , 35 )) + ' percent completed changed';
+			emailSub=returnHtmlSubject(lstPT[0].Project__r.Name,Msg);
         	
 	        if (!isTest){
 	            subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, 
@@ -489,13 +596,38 @@ public class ProjectSubscribersEmailServices{
 	        					WHERE Project__c =: lstTask[0].Project__c and ProjectTaskDeleted__c = true ];
         }
         for(ProjectTask__c proj : lstTask){
-	        //Sub:{Task Name} has been deleted from {Project Name}
-	        //Body: {Task Details such as name and description and start and end date}      
-	        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='
-	        			+ proj.Project__r.id + '">' + proj.Project__r.Name + '</a><br />Priority: ' 
-	        			+ proj.Priority__c + '<br />Start date: ' + proj.StartDate__c + '<br />End date: ' 
-	        			+ proj.EndDate__c + '<br />Description: ' + proj.Description__c;
-	        emailSub = proj.Name + ' has been deleted from '+proj.Project__r.Name;
+	        
+	        String htmlVar ='';
+			String title='';
+			String field='';
+			String msjFoot='';
+			
+			title='<a style="color:#FFFFFF;" href="' + Label.sfdcHostName +'apex/ProjectDetail?id='+ proj.Project__r.id + '">' + proj.Project__r.Name + '</a>';
+			htmlVar=returnHtmlIni(htmlVar,title);
+			
+			title='Priority';
+			field=proj.Priority__c;
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			title='Start date';
+			field=proj.StartDate__c.format();
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			title='End date';
+			field=proj.EndDate__c.format();
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			title='Description';
+			field=proj.Description__c;
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			msjFoot='Task '+proj.Name + ' has been deleted from '+proj.Project__r.Name;
+			htmlVar=returnHtmlFin(htmlVar,msjFoot);
+			
+			emailMsj=htmlVar;
+			
+			String Msg='task '+ ProjectUtil.chopWords( ProjectUtil.chopPhrase( proj.Name , 35 )) + ' has been deleted';
+			emailSub=returnHtmlSubject(proj.Project__r.Name,Msg);
 	
 			if( subscriptions.size() > 0)	
 	        genAddress( subscriptions, emailMsj, emailSub );
@@ -530,14 +662,43 @@ public class ProjectSubscribersEmailServices{
         if ((tasks.size()>0) && !(ProjectUtil.DeleteTaskMailSent)){
 		        string pId = tasks[0].project__c;
 				for( ProjectTask__c t : tasks ){
-			        emailMsj = 'Project Name: <a href="' + Label.sfdcHostName +'apex/ProjectDetail?id='
-			        		+ t.Project__c + '">' + t.Project__r.Name + '</a><br />Task Name: <a href="' 
-			        		+ Label.sfdcHostName+'apex/projecttaskdetail?id='+t.id + '">' 
-			        		+ t.Name + '</a><br />Priority: ' + t.Priority__c 
-			        		+ '<br />Start date: ' + t.StartDate__c + '<br />End date: ' 
-			        		+ t.EndDate__c + '<br />Description:' + t.Description__c;
+
+			        String htmlVar ='';
+					String title='';
+					String field='';
+					String msjFoot='';
+					
+					title='<a style="color:#FFFFFF;" href="' + Label.sfdcHostName +'apex/ProjectDetail?id='+ t.Project__c + '">' + t.Project__r.Name + '</a>';
+					htmlVar=returnHtmlIni(htmlVar,title);
+					
+					title='Task Name';
+					field='<a href="' + Label.sfdcHostName+'apex/projecttaskdetail?id='+t.id + '">'+ t.Name + '</a>';
+					htmlVar=returnVarHtml(htmlVar, title, field);
+					
+					title='Priority';
+					field='t.Priority__c';
+					htmlVar=returnVarHtml(htmlVar, title, field);
+					
+					title='Start date';
+					field=t.StartDate__c.format();
+					htmlVar=returnVarHtml(htmlVar, title, field);
+					
+					title='End date';
+					field=t.EndDate__c.format();
+					htmlVar=returnVarHtml(htmlVar, title, field);
+					
+					title='Description';
+					field=t.Description__c;
+					htmlVar=returnVarHtml(htmlVar, title, field);
+					
+					msjFoot='You were unassigned from this task';
+					htmlVar=returnHtmlFin(htmlVar,msjFoot);
+					
+					emailMsj=htmlVar;
 			        
-			        emailSub = 'You were unassigned from the task ' + t.Name + '.';			    
+			        String Msg='You were unassigned from task ' + ProjectUtil.chopWords( ProjectUtil.chopPhrase( t.Name , 35 )) + '.';
+					emailSub=returnHtmlSubject(t.Project__r.Name,Msg);
+						    
 				}
 				if(!isTest){
 			    	subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, 

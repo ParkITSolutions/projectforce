@@ -1,0 +1,22 @@
+<apex:component id="PageSwirly">
+	
+	<apex:includeScript value="{!URLFOR($Resource.SwirlyResources, 'inc/js/js.js')}" />
+	 
+	<apex:stylesheet value="{!URLFOR($Resource.SwirlyResources, 'inc/css/css.css')}" />
+	 
+	<apex:outputPanel id="Content" 
+		styleClass="pageSwirly" 
+		layout="block"
+		style="display:none" > 
+					
+		&nbsp; 
+		
+	</apex:outputPanel>
+	
+	<script>
+		
+		swirly.id = '{!$Component.Content}'
+		
+	</script> 
+
+</apex:component>

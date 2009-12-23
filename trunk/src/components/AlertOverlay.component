@@ -1,0 +1,85 @@
+<apex:component id="AlertOverlay" >
+
+	<apex:includeScript value="{!URLFOR($Resource.OverlayResources, 'inc/js/scriptaculous/lib/prototype.js')}" />
+	 
+	<apex:includeScript value="{!URLFOR($Resource.OverlayResources, 'inc/js/scriptaculous/src/scriptaculous.js')}" />
+	
+	<apex:includeScript value="{!URLFOR($Resource.OverlayResources, 'inc/js/js.js')}" />
+	 
+	<apex:stylesheet value="{!URLFOR($Resource.OverlayResources, 'inc/css/css.css')}" />
+
+	<script>
+	
+		alertOverlay.id = '{!$Component.Content}'
+		
+		alertOverlay.message = '{!$Component.Form.MessageTouser}'
+		
+		alertOverlay.title = '{!$Component.Form.Title}'
+		
+	</script>
+
+	<!-- Content -->
+	<apex:outputPanel id="Content"
+		styleClass="content"
+		layout="block"
+		style="display:none">
+		
+		<apex:outputPanel id="Background" styleClass="background" layout="block"> &nbsp; </apex:outputPanel>
+		
+		<!-- end of Form  -->
+		<apex:form id="Form">
+		
+			<!-- Overlay -->
+			<apex:outputPanel id="Overlay"
+				styleClass="overlay"
+				layout="block">
+				
+				<!-- Title -->
+				<apex:outputPanel id="TitlePanel"
+					styleClass="titlePanel"
+					layout="block">
+			
+					<apex:outputText id="Title"
+						value="Title" />
+			
+				</apex:outputPanel>
+				<!-- end of Title -->
+				
+				<!-- MessageToUser -->
+				<apex:outputPanel id="MessageToUserPanel"
+					styleClass="messageToUserPanel"
+					layout="block">
+			
+					<apex:outputText id="MessageToUser"
+						value="Message" />
+			
+				</apex:outputPanel>
+				<!-- end of MessageToUser -->
+				
+				<!-- SubmitButtons -->
+				<apex:outputPanel id="SubmitButtons"
+					styleClass="submitButtons"
+					layout="block">
+			
+					<apex:outputLink id="AcceptButton"
+					    styleClass="submitButton"
+					    onClick="alertOverlay.close()"
+					    value="javascript:;">
+					    
+					    Accept
+					    
+					</apex:outputLink>
+			
+				</apex:outputPanel>
+				<!-- end of SubmitButtons -->
+				
+			</apex:outputPanel>
+			<!-- end of Overlay -->
+		
+		</apex:form>
+		<!-- end of Form  -->
+		
+	</apex:outputPanel>
+	<!-- end of Content -->
+
+</apex:component>
