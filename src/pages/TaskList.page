@@ -1,0 +1,200 @@
+<apex:page id="TaskList" sidebar="false" controller="TaskListController">
+
+	<c:PageSwirly id="PageSwirly" />
+	
+	<c:AlertOverlay id="AlertOverlay"/>
+	
+	<c:ConfirmOverlay id="DeleteTasksOverlay" 
+		title="Delete tasks"
+		messageToUser=" Are you sure you want to continue?
+                        Once task(s) are deleted, it is not recoverable "
+		actionName="DeleteTasks"
+		refreshPanels="TasksTable"/>
+	
+	<c:PromptOverlay id="PromptOverlay"
+	    includeNewTask="true"/>
+	
+	<!-- Refresh functions -->
+	
+	<apex:form >
+	
+		<apex:actionFunction name="RefreshTasksList"
+				action="{!refreshTasksList}"
+				onComplete="swirly.hide();" 
+				reRender="TasksList"/>
+				
+	</apex:form>
+	
+	<!-- End Refresh functions -->
+	
+	<script>
+	
+		var deleteTasksOverlay = new ConfirmOverlay('{!$Component.DeleteTasksOverlay}')
+		
+		function getActionIds(){
+		
+			var actionIds = ''
+			
+			$$('.actionCheckbox').each(function(e){
+					
+					if(e.checked){
+						actionIds = actionIds+e.value+':'
+					}
+				}) 
+				
+			return actionIds
+		}
+		
+		function deleteTasks(){
+			
+			var actionIds = getActionIds()
+			
+			if(actionIds.length == 0){
+			
+				alertOverlay.open('Task list error', 'There is not tasks selected')	
+				
+			}else{
+			
+				deleteTasksOverlay.open()
+				
+				deleteTasksOverlay.setActionIds(actionIds)
+			}
+
+		}
+		
+	</script>
+	
+	<!-- ContentPanel -->
+	<apex:outputPanel id="ContentPanel325" styleClass="contentPanel" layout="block" >
+	
+		<!-- ButtonsPanel -->
+		<apex:outputPanel id="ButtonsPanel" styleClass="buttonsPanel" layout="block" >
+			
+			<apex:form id="ButtonsForm">
+			
+				<apex:outputLink value="javascript:;"
+					id="NewTaskLink"
+					onClick="promptOverlay.open(newTask)">
+					
+					New Task
+				
+				</apex:outputLink>
+		
+				<apex:outputLink value="javascript:;"
+					id="NewMilestoneLink">
+					
+					New Milestone
+					
+				</apex:outputLink>
+				
+				<apex:commandLink action="{!markComplete}" value="Mark Complete" id="MarkCompleteLink"/>
+				
+				<apex:outputLink value="javascript:;"
+					id="Timeline">
+					
+					Timeline
+					
+				</apex:outputLink>
+		
+				<apex:outputLink value="javascript:;"
+					id="Delete"
+					onClick="deleteTasks()">
+					
+					Delete
+					
+				</apex:outputLink>
+			
+			</apex:form>
+			
+		</apex:outputPanel>
+		<!-- End ButtonsPanel -->
+		
+		<!-- PaginationPanel -->
+		<apex:outputPanel id="PaginationPanel" styleClass="paginationPanel" layout="block">
+			
+			Pagination Panel
+				
+		</apex:outputPanel>
+		<!-- End PaginationPanel -->
+			
+		<!-- FilterPanel -->
+		<apex:outputPanel id="FilterPanel" styleClass="filterPanel" layout="block">
+			
+			Filter Panel
+				
+		</apex:outputPanel>
+		<!-- End FilterPanel -->
+		
+		<!-- ExportCSVPanel -->
+		<apex:outputPanel id="ExportCSVPanel" styleClass="exportCSVPanel" layout="block">
+			
+			ExportCSVPanel
+				
+		</apex:outputPanel>
+		<!-- End ExportCSVPanel -->
+		
+		<!-- TasksForm -->
+		<apex:form id="TasksForm">
+		
+			<apex:dataTable value="{!tasks}" 
+				var="task" 
+				id="TasksList" 
+				styleClass="taskTable"
+				cellpadding="5"
+				cellspacing="5">
+				
+				<apex:column id="Action">
+					<apex:facet name="header"><apex:inputCheckbox id="ActionCheckbox"/></apex:facet>
+					<input type="checkbox" value="{!task.id}" class="actionCheckbox"/>
+				</apex:column>
+				
+				<apex:column >
+					<apex:facet name="header">Action</apex:facet>
+					<apex:outputLink value="/{!task.id}/e?retURL={!url}/apex/TaskList?id={!projectId}" id="EditLink">Edit | </apex:outputLink>
+					<apex:outputLink value="javascript:;" id="DeleteLink"> Del</apex:outputLink>
+				</apex:column>
+				
+				<apex:column >
+					<apex:facet name="header"><apex:outputLink value="javascript:;" id="IdLink">Id</apex:outputLink></apex:facet>
+					<apex:outputLink value="javascript:;" id="IdTaskLink">{!task.Id}</apex:outputLink>
+				</apex:column>
+				
+				<apex:column >
+					<apex:facet name="header"><apex:outputLink value="javascript:;" id="PriorityLink">Priority</apex:outputLink></apex:facet>
+					<apex:outputText value="img"/>
+				</apex:column>
+				
+				<apex:column >
+					<apex:facet name="header"><apex:outputLink value="javascript:;" id="NameLink">Name</apex:outputLink></apex:facet>
+					<apex:outputLink value="javascript:;" id="NameTaskLink">{!task.Name}</apex:outputLink>
+				</apex:column>
+				
+				<apex:column >
+					<apex:facet name="header"><apex:outputLink value="javascript:;" id="AssignedToLink">Assigned to</apex:outputLink></apex:facet>
+					<apex:outputLink value="javascript:;" id="AssignedToTaskLink">User name</apex:outputLink>
+				</apex:column>
+				
+				<apex:column >
+					<apex:facet name="header"><apex:outputLink value="javascript:;" id="CompletedLink">% Completed</apex:outputLink></apex:facet>
+					<apex:outputText value="% completed"/>
+				</apex:column>
+				
+				<apex:column >
+					<apex:facet name="header"><apex:outputLink value="javascript:;" id="DurationLink">Duration (hours)</apex:outputLink></apex:facet>
+					<apex:outputText value="duration"/>
+				</apex:column>
+				
+				<apex:column >
+					<apex:facet name="header"><apex:outputLink value="javascript:;" id="DueDateLink">Due date</apex:outputLink></apex:facet>
+					<apex:outputText value="due date"/>
+				</apex:column>
+				
+			</apex:dataTable>
+		
+		</apex:form>
+		<!-- End TasksForm -->
+	
+	</apex:outputPanel>
+	<!-- End ContentPanel -->
+
+</apex:page>

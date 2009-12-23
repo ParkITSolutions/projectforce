@@ -1,10 +1,55 @@
-<apex:page controller="UserDetailController" sidebar="false" cache="false" >
+<apex:page controller="UserDetailController" sidebar="false" cache="true" tabStyle="Project2__c" >
+
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}" />
+    <apex:includeScript value="{!$Resource.portalSupport}"/> 
+    <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+    	<apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/scriptaculous.js')}"/>
+	<apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/effects.js')}"/>
+	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}"/>
 
 	<style>
-	#bodyTable{
-		height: 100%;
+	
+	/* Site style */
+	.noTableFooter{
+		margin-left: 0px;
 	}
 	
+	/* Paginato style*/
+	
+	.Paginator{
+		text-align: center;
+		padding: 10px;
+		
+	}
+	
+	#paginatorCounter{
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+	
+	.PaginatorEnabled, .PaginatorEnabled *{ 
+		color:#5E99AA;
+		font-size:12px;
+		font-weight:bold;
+	}
+	
+	.PaginatorDisabled, .PaginatorDisabled *{
+		color:#ADADAD;
+		font-size:12px;
+		font-weight:bold;
+	}
+	
+	.ProjectSelectot{
+		margin-top: 10px;
+		margin-left: 10px;  
+	}
+	
+	#bodyTable{
+		height: 100%;
+	} 
+	 
 	#header{
 	}
 	
@@ -13,20 +58,101 @@
 	}
 	
 	.Field{
+		text-align:left;
+		padding-left:5px;
+	}
+	
+	.Bolder{
 		font-weight: bolder;
-		width: 120px;
+	}
+	
+	.Value{
+		width: 280px;	
+	}
+	
+	#detailProject{
+		background:#E0E0E0 none repeat scroll 0 0;
+		width: 350px;
+		text-align:left;
+		margin-top:10px;
+		border: solid black 1px;
+		padding: 20px; 
+	}
+
+	#subContainer{
+		background: white;
+		height: 100px;
+	}
+
+	#detailProject img{
 		float: left;
 	}
-	.TableHeader td{
-		font-weight: bolder;
-	}
-	</style>
 	
+	.TableHeader td{
+		color:#333333;
+		font-size:12px;
+		font-weight:bold;
+		text-decoration:underline;
+		
+		border-top: solid 1px;
+		border-bottom: solid 1px;
+		padding: 5px;	
+		
+		width: 150px;
+	}
+
+	.TableData td{
+		color:#333333;
+		font-size:12px;
+		font-weight:bold;
+
+		padding: 5px;	
+		
+		width: 150px;
+	}
+	.Loader{
+		background-color:#FFFFFF;
+		background-image:url(/resource/1260192796000/commonResources/images/loaders/big-loader.gif);
+		background-position:center center;
+		background-repeat:no-repeat;	
+		left:0;
+		opacity:0.6;
+		overflow:hidden;
+		position:absolute;
+		opacity:0.6;
+		overflow:hidden;
+		position:absolute;
+		width: 100%;
+		height: 100%;
+	}
+	
+	#labelSelectProject{
+		padding-left: 10px;
+	}
+	
+	.PercentCompleteBarExt {
+		border:1px solid #CCCCCC;
+		float:left;
+		height:9px;
+		vertical-align:middle;
+		width:100px;
+		margin-right:10px;
+	}	
+	
+	.PercentCompleteBarInn {
+		background-color:#90C142;
+		height:9px;
+		margin:0;
+		display: block;
+	}	
+	</style>
     <script>
 	    window.onload( function(){ 
 	        readPortalCSSRules();
 	    });
     </script>
+    	
+    <c:PageSwirly id="PageSwirly" />
     	
 	<!-- Header -->
 	<div id="header" >
@@ -34,49 +160,181 @@
 	
 	<!-- Main -->
 	<div id="main">
+        <apex:composition template="HeaderTemplate">
+            <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
+            <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
+            <apex:define name="title">Project Detail</apex:define>
+            <apex:define name="search">
+                <c:Search module="project" label="Tasks"/>
+            </apex:define>
+        </apex:composition> 
+ 
 		<apex:form id="mainForm">
-			<apex:actionFunction name="reloadAll" rerender="mainForm" />
-			<div id="projectDetail">					
-				<div class="FieldValue">
-					<apex:selectList id="ImPoo" value="{!opSelected}" multiselect="false" size="1"  onchange="reloadAll();">
-						<apex:selectOptions value="{!ProjectSelectOps}" />
-					</apex:selectList>
-					{!opSelected}::>>{!ShowDetail}
+			<div class="Loader" style="display: none;" />
+			<apex:actionFunction action="{!selectTasks}" name="reloadAll" rerender="mainForm" oncomplete="swirly.hide();" />
+			<span id="labelSelectProject" >Select Project: &nbsp;</span>
+			<apex:selectList id="options" value="{!opSelected}" multiselect="false" size="1" onchange="swirly.show();reloadAll();"  styleClass="ProjectSelectot">
+				<apex:selectOptions value="{!ProjectSelectOps}" />
+			</apex:selectList>
+			<div id="projectDetail" >					
+				<div class="FieldValue" >
 					<apex:outputPanel rendered="{!ShowDetail}">
-						<div>
-							<div class="Field">Name</div>
-							<div class="Value">{!currentProject.Project__r.name}</div>
-						</div>
-						<div>							
-							<div class="Field">Description</div>
-							<div class="Value">{!currentProject.Project__r.Description__c}</div>
-						</div>
-						<div>														
-							<div class="Field">Priority</div>
-							<div class="Value">{!currentProject.Project__r.Priority__c}</div>
-						</div>
-						<div>							
-							<div class="Field">Duration</div>
-							<div class="Value">{!currentProject.Project__r.DisplayDuration__c}</div>
-						</div>
-						<div>							
-							<div class="Field">Days in work week</div>
-							<div class="Value">{!currentProject.Project__r.DaysInWorkWeek__c}</div>
-						</div>
+						<center>
+							<div id="detailProject">
+								<div id="subContainer">
+									<apex:outputPanel rendered="{!AttachmentPrjId!=''}" >
+										<img src="/servlet/servlet.FileDownload?file={!AttachmentPrjId}" width="100" height="100"/>  
+									</apex:outputPanel>
+									<apex:outputPanel rendered="{!AttachmentPrjId==''}" >
+										<img src="{!URLFOR($Resource.commonResources, '/images/placeholders/default_team_100x100.png')}" />
+									</apex:outputPanel>
+									<div class="Field">
+										<span class="Bolder">Name:</span> {!currentProject.Project__r.name}
+		 							</div>
+		 							
+									<div class="Field">
+										<span class="Bolder">Description:</span> {!currentProject.Project__r.Description__c}
+		 							</div>
+		 														
+									<div class="Field">
+										<span class="Bolder">Priority:</span> {!currentProject.Project__r.Priority__c} 
+		 							</div>
+		 							
+									<div class="Field">
+										<span class="Bolder">Duration:</span> {!currentProject.Project__r.DisplayDuration__c}
+		 							</div>
+		 							
+									<div class="Field">
+										<span class="Bolder">Days in work week:</span> {!currentProject.Project__r.DaysInWorkWeek__c}
+		 							</div>
+								</div>
+							</div>
+						</center>
 					</apex:outputPanel>
 				</div>
 			</div>
 			
-			<table>
-				<apex:repeat value="{!tasks}" var="t">
-					<tr class="TableHeader">
-						<td>Name</td> <td>Start date</td> <td>End date</td> <td>Status</td> <td>Priority</td> <td>Milestone</td> <td>Percentage Complete</td> 
-					</tr>
-					<tr>
-						<td>{!t.projectTask__r.name}</td>
-					</tr>
-				</apex:repeat>
+			
+			<apex:outputPanel id="topPaginator" layout="block" styleClass="Paginator" >	
+				<apex:outputPanel rendered="{!page != '1'}" styleClass="PaginatorEnabled" >
+					&#9668; 
+					<apex:commandLink value="Previous Page" rerender="allTaskData, topPaginator, bottomPaginator" action="{!selectTasks}" onclick="swirly.show();" oncomplete="swirly.hide();" >
+						<apex:param value="previous" assignTo="{!page}" />
+					</apex:commandLink>
+				</apex:outputPanel>
+				
+				<apex:outputPanel rendered="{!page == '1'}" styleClass="PaginatorDisabled">
+					&#9668; Previous Page
+				</apex:outputPanel>
+				<span id="paginatorCounter">
+					({!page}-{!lastPage})
+				</span>
+				<apex:outputPanel rendered="{!page != lastPage}" styleClass="PaginatorEnabled">
+					<apex:commandLink value="Next Page" rerender="allTaskData, topPaginator, bottomPaginator" action="{!selectTasks}" onclick="swirly.show();" oncomplete="swirly.hide();">
+						<apex:param value="next" assignTo="{!page}" />
+					</apex:commandLink>
+					&#9658;
+				</apex:outputPanel>
+				<apex:outputPanel rendered="{!page == lastPage}" styleClass="PaginatorDisabled">
+					Next Page &#9658;
+				</apex:outputPanel>
+			</apex:outputPanel>
+			
+			<table cellspacing="0" align="center">
+				<tr class="TableHeader"> 
+					<td>
+						<apex:commandLink action="{!setingOrder}" value="Name" rerender="allTaskData, topPaginator, bottomPaginator" onclick="swirly.show();" oncomplete="swirly.hide();">
+							<apex:param value="projectTask__r.name" assignTo="{!sortBy}" />
+						</apex:commandLink>
+					</td> 
+					<td>
+						<apex:commandLink action="{!setingOrder}" value="Project" rerender="allTaskData, topPaginator, bottomPaginator" onclick="swirly.show();" oncomplete="swirly.hide();">
+							<apex:param value="projectTask__r.Project__r.name" assignTo="{!sortBy}" />
+						</apex:commandLink>
+					</td> 
+					<td>
+						<apex:commandLink value="Start date" action="{!setingOrder}" rerender="allTaskData, topPaginator, bottomPaginator" onclick="swirly.show();" oncomplete="swirly.hide();">
+							<apex:param value="projectTask__r.StartDate__c" assignTo="{!sortBy}" />
+						</apex:commandLink>
+					</td> 
+					<td>
+						<apex:commandLink value="End date" action="{!setingOrder}" rerender="allTaskData, topPaginator, bottomPaginator" onclick="swirly.show();" oncomplete="swirly.hide();">
+							<apex:param value="projectTask__r.EndDate__c" assignTo="{!sortBy}" />
+						</apex:commandLink>
+					</td> 
+					<td>
+						<apex:commandLink value="Status" action="{!setingOrder}" rerender="allTaskData, topPaginator, bottomPaginator" onclick="swirly.show();" oncomplete="swirly.hide();">
+							<apex:param value="projectTask__r.Status__c" assignTo="{!sortBy}" />
+						</apex:commandLink>
+					</td> 
+					<td>
+						<apex:commandLink value="Priority" action="{!setingOrder}" rerender="allTaskData, topPaginator, bottomPaginator" onclick="swirly.show();" oncomplete="swirly.hide();">
+							<apex:param value="projectTask__r.Priority__c" assignTo="{!sortBy}" />
+						</apex:commandLink>
+					</td> 
+					<td>
+						<apex:commandLink value="Milestone" action="{!setingOrder}" rerender="allTaskData, topPaginator, bottomPaginator" onclick="swirly.show();" oncomplete="swirly.hide();">
+							<apex:param value="projectTask__r.Milestone__c" assignTo="{!sortBy}" />
+						</apex:commandLink>
+					</td> 
+					<td>
+						<apex:commandLink value="%Completed" action="{!setingOrder}" rerender="allTaskData, topPaginator, bottomPaginator" onclick="swirly.show();" oncomplete="swirly.hide();">
+							<apex:param value="projectTask__r.PercentCompleted__c" assignTo="{!sortBy}" />
+						</apex:commandLink>
+					</td>  
+				</tr>
 			</table>
+			<apex:outputPanel id="allTaskData">			
+				<table cellspacing="0" align="center">
+					<apex:repeat value="{!tasks}" var="t"  rendered="true" first="{!NotShowFirst}" rows="{!rows}" >
+						<tr class="TableData">
+							<td>
+								<apex:outputLink value="projecttaskdetail?id={!t.id}">{!t.name}</apex:outputLink>
+							</td>
+							<td>
+								<apex:outputLink value="/apex/ProjectDetail?id={!t.project}">{!t.projectName}</apex:outputLink>
+							</td>
+							<td>{!t.formatedStartDate}</td>
+							<td>{!t.formatedEndDate}</td>
+							<td>{!t.Status}</td>
+							<td>{!t.Priority}</td> 
+							<td>{!t.isMilestone}</td>
+							<td valign="middle">
+								<span class="PercentContainer">							
+									<span class="PercentCompleteBarExt">
+										<span class="PercentCompleteBarInn" style="width: {!t.PercentComplete}%;"> </span>
+									</span>
+									{!t.PercentComplete}%
+								</span>
+							</td>
+						</tr>
+					</apex:repeat>			
+				</table>
+			</apex:outputPanel>
+
+			<apex:outputPanel id="bottomPaginator" layout="block" styleClass="Paginator" >	
+				<apex:outputPanel rendered="{!page != '1'}" styleClass="PaginatorEnabled" >
+					&#9668; 
+					<apex:commandLink value="Previous Page" rerender="allTaskData, topPaginator, bottomPaginator" action="{!selectTasks}" onclick="swirly.show();" oncomplete="swirly.hide();">
+						<apex:param value="previous" assignTo="{!page}" />
+					</apex:commandLink>
+				</apex:outputPanel>
+				<apex:outputPanel rendered="{!page == '1'}" styleClass="PaginatorDisabled">
+					&#9668; Previous Page
+				</apex:outputPanel>
+				<span id="paginatorCounter">
+					({!page}-{!lastPage})
+				</span>
+				<apex:outputPanel rendered="{!page != lastPage}" styleClass="PaginatorEnabled">
+					<apex:commandLink value="Next Page" rerender="allTaskData, topPaginator, bottomPaginator" action="{!selectTasks}" onclick="swirly.show();" oncomplete="swirly.hide();">
+						<apex:param value="next" assignTo="{!page}" />
+					</apex:commandLink>
+					&#9658;
+				</apex:outputPanel>
+				<apex:outputPanel rendered="{!page == lastPage}" styleClass="PaginatorDisabled">
+					Next Page &#9658;
+				</apex:outputPanel>
+			</apex:outputPanel>
 		</apex:form>
 	</div>
 </apex:page>

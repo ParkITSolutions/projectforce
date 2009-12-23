@@ -1,0 +1,184 @@
+<apex:page id="ProjectTaskNotes" sidebar="false" cache="true" standardController="Project2__c" extensions="ProjectTaskNotesController" tabStyle="Project2__c">
+	
+    <!-- Ajax Toolkit -->
+    <apex:includeScript value="/soap/ajax/11.1/connection.js" />
+
+   <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}" />
+    
+    <!-- Script.aculo.us / Prototype -->
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}" />
+    
+     <!-- overlays resources -->
+    <apex:includeScript value="{!URLFOR($Resource.overlaysResources, 'inc/js/js.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.overlaysResources, 'inc/css/css.css')}"/>
+    
+    <!-- Portal Support -->
+    
+    <!-- Common JS for All Sections -->
+    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/TeamsWidgetCommon.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" />
+
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupTop.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectDetail.js')}" />
+	 
+    <!-- CSS Includes -->
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
+     
+
+
+	<script src="{!URLFOR($Resource.ckeditor, 'ckeditor/ckeditor.js')}" />
+	 
+	 
+	 
+    <!-- ### Initialize the overlay box for modal.js ### 
+    <a href="#modal_container" id="initializeModal" style="display:none;"></a>
+    <div id="modal_container" ></div>
+    <script>
+        /*createOverlay('initializeModal');*/
+        
+        var globalInfoBig = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/infoBig.gif')}';
+        var globalCheckNew = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}';
+        /* var userIsManager = '{!isManager}';*/
+
+	</script>
+	-->
+	
+	
+    <div id="all" style="overflow:hidden;">
+        
+        <!-- Header -->
+
+        <apex:composition template="HeaderTemplate">
+            <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
+            <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
+            <apex:define name="title">Project Detail</apex:define>
+            <apex:define name="search">
+                <c:Search module="Project" projectId="" label="Tasks"/>
+                <c:Search module="Project" projectId="{!teamIdParam}" label="Tasks"/>
+            </apex:define>
+        </apex:composition> 
+       
+         <div align="center" class="breadCrumbAndButtons">
+            <apex:outputpanel layout="block" styleclass="breadCrumbs">
+                <div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
+				<a id="projectNameBreadcrumb"  href="#">
+					<apex:outputText escape="true" value="projectName" />
+				</a> &gt;										
+					<!-- 
+						<apex:outputpanel layout="block" rendered="{!IF(LEN(Teamspace.Name) > 24,true,false)}" 
+						style="display: none;z-index:9999;" styleClass="mouseOverInfo">
+							<div class="body">{!Teamspace.Name}</div>
+						</apex:outputpanel>
+					 -->
+				</div>	
+                <span class="breadCrumbsLast"><strong>Task Notes</strong></span>     
+            </apex:outputpanel>       
+        </div>
+
+        
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <apex:outputPanel id="sidebarWidgets">
+                <!-- Project Quick Links -->
+                <c:ProjectDetailQuickLinks />
+    
+                <!-- Team Suscribe 
+                <c:ProjectSubscribe /> 
+    			-->
+                <!-- Team members 
+                <c:ProjectMembersWidget projectId="{!teamIdParam}" id="ProjectMembersWidget" />   
+            	-->
+            </apex:outputPanel>
+            <div class="clear"></div>
+        </div>
+   
+    </div>
+    <!-- 
+    <div class="informationPanel clear" id="infoToUser" style="display:none"></div>
+                
+    <div class="messageToUser successMessage" id="MessageToUser" style="display:none" ></div>      
+     -->
+    <div class="messageToUser errorMessage" id="ErrorMessage" style="display:none" ></div>     
+      
+    <!-- Main Content -->
+    <div class="main_content">
+
+                <apex:form id="mainContentForm">
+                <!-- <apex:form onsubmit="return validateDiscussionTopic2('{!$Component.topicName}','{!$Component.topicTextArea}');" > -->
+ 
+				<!-- ====================================================================== -->
+				<div class="wideHeader">
+					<h4>Task Notes</h4>
+				</div>
+				<div class="overlayMainContent">
+					<apex:outputPanel id="topicPanel" layout="block">
+						<div class="overlayFormContent">
+							<table border="0" style="width:97%;">
+								<tr>
+									<td style="height: 500px; width: 1100px;">
+										<div id="loader" style="text-align:center;"><center><img src="{!URLFOR($Resource.ProjectResources, 'images/loaders/big-loader.gif')}" /></center><br />Loading...</div>
+										<div class="FCKloader" id="FCKloader" style="display:block;">{!Html}</div>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">&nbsp;
+										<span class="explain" id="warningSign">(32k character limit counting HTML tags) - Characters remaining:</span>
+										<span class="explain" id="stringSizeCounter">32000</span>
+										<span class="explain" id="newTopicMessageEmptyError">Please fill the message field</span>
+										<span class="explain classColorRed" id="numberOfCharacterExeeded">The number of characters was exceeded</span>
+									</td>
+								</tr>
+							</table>
+						</div>
+						
+					</apex:outputPanel>
+				</div>
+				<div align="center">
+					<apex:commandButton value="Save" styleclass="saveBtn" action="{!SaveEdit}" oncomplete="refreshRecentChanges();" />
+					<!-- <apex:commandButton value="Save" styleclass="saveBtn" action="{!SaveEdit}" onclick="saveContent();" rerender="controllerVar, theTextArea2" oncomplete="refreshRecentChanges();" /> -->
+					<apex:commandButton value="Cancel" styleclass="cancelBtn" action="{!CancelEdit}"/>
+					<!-- <apex:commandButton value="Cancel" styleclass="cancelBtn" action="{!CancelEdit}" onclick="setValResult();switchOverlay(true);"/> -->
+				</div>
+				<!-- ====================================================================== -->
+                </apex:form>
+
+    </div>
+        
+    <!-- <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupBottom.js')}" /> -->
+        
+	<script type="text/javascript">
+	$('FCKloader').hide();
+	window.onload = function(){
+	   
+	    CKEDITOR.replace( 'FCKloader', {
+	       
+	        resize_enabled : false,
+	        skin : 'v2',
+	        height : '380px',
+	        toolbar :
+	        [
+	            ['Source'],
+	            ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print'],
+	            ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+	            ['Bold','Italic','Underline','Strike'],
+	            '/',
+	            ['Subscript','Superscript'],
+	            ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+	            ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+	            ['Link','Unlink','Anchor'],
+	            ['Image','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
+	            '/',
+	            ['Styles','Format','Font','FontSize'],
+	            ['TextColor','BGColor'],['Maximize', 'ShowBlocks']
+	        ]
+	       
+	    });
+	    $('loader').hide();
+	}
+	
+	</script>
+
+</apex:page>

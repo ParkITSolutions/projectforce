@@ -1,0 +1,60 @@
+<apex:component id="PromptOverlay" controller="PromptOverlayController" >
+
+	<apex:includeScript value="{!URLFOR($Resource.OverlayResources, 'inc/js/js.js')}" />
+	 
+	<apex:includeScript value="{!URLFOR($Resource.OverlayResources, 'inc/js/scriptaculous/lib/prototype.js')}" />
+	 
+	<apex:includeScript value="{!URLFOR($Resource.OverlayResources, 'inc/js/scriptaculous/src/scriptaculous.js')}" />
+	 
+	<apex:stylesheet value="{!URLFOR($Resource.OverlayResources, 'inc/css/css.css')}" />
+					
+   	<apex:attribute name="includeNewTask" 
+					description="Flag to include new task component"
+					type="boolean" 
+					assignTo="{!includeNewTask}" 
+					required="false"/>					
+								
+	<script>
+	
+		promptOverlay.id = '{!$Component.Content}';
+		
+	</script>
+	
+	<!-- Content -->
+	<apex:outputPanel id="Content"
+		styleClass="content"
+		layout="block"
+		style="display:none">
+		
+		<apex:outputPanel id="Background" styleClass="background" layout="block"> &nbsp; </apex:outputPanel>
+		
+		<!-- end of Form  -->
+		<apex:form id="Form">
+		
+			<!-- Overlay -->
+			<apex:outputPanel id="Overlay"
+				styleClass="overlay"
+				layout="block">
+			
+				<!-- Component -->
+				<apex:outputPanel id="Component"
+					styleClass="component"
+					layout="block">
+			
+					<apex:outputPanel rendered="{!includeNewTask}">
+						 <c:NewTask id="NewTask" /> 
+					</apex:outputPanel>
+			
+				</apex:outputPanel>
+				<!-- end of Component -->
+				
+			</apex:outputPanel>
+			<!-- end of Overlay -->
+		
+		</apex:form>
+		<!-- end of Form  -->
+		
+	</apex:outputPanel>
+	<!-- end of Content -->
+
+</apex:component>
