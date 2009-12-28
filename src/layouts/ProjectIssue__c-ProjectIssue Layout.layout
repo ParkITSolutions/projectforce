@@ -65,8 +65,4 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
-    <relatedLists>
-        <fields>NAME</fields>
-        <relatedList>ProjectAssignee__c.ProjectIssue__c</relatedList>
-    </relatedLists>
 </Layout>

@@ -57,5 +57,13 @@ public class DAOFactory {
 	}
 	
 	/* End of Member operations */
+	
+	/* Assignee operation */
+	
+	public void addAssignee(String taskId, String assignTo, String projectId){
+		DAOAssignee.add(taskId, assignTo, projectId);
+	}
+	
+	/* End Assignee operation */
 
 }

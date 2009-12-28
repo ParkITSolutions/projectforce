@@ -293,6 +293,20 @@
                            		</td>
 							</tr>
 							<tr>
+								<td class="labelCol vTop">Notes</td>
+								<td class="dataCol">
+									<!-- <apex:outputpanel rendered="{!AND(true)}"> -->
+									<apex:outputpanel >
+	                                	<div class="DistincLink">
+	                                		<a href="ProjectTaskNotes?id_task={!Task.id}">
+	                                			<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add assignee" title="Add assignee" />
+	                                			Edit Notes
+	                                		</a>
+	                                	</div>
+	                             	</apex:outputpanel>
+								</td>
+							</tr>
+							<tr>
 								<td class="labelCol vTop">Comments</td>
 								<td class="dataCol">
 									<apex:form id="taskComments">

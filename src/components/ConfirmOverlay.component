@@ -25,12 +25,6 @@
 					type="String" 
 					assignTo="{!ActionName}" 
 					required="true"/>	
-					
-	<apex:attribute name="refreshPanels" 
-					description="Panels to refresh when actionName is completed, example, 'Panel1, Panel2'"
-					type="String" 
-					assignTo="{!RefreshPanels}" 
-					required="true"/>			
 	
 	<!-- Content -->
 	<apex:outputPanel id="Content"
@@ -40,7 +34,7 @@
 		
 		<apex:outputPanel id="Background" styleClass="background" layout="block"> &nbsp; </apex:outputPanel>
 		
-		<!-- end of Form  -->
+		<!-- Form  -->
 		<apex:form id="Form">
 		
 			<!-- HiddenPanel -->
@@ -50,7 +44,7 @@
 				<apex:inputHidden value="{!PostAction}" id="PostAction"/>
 			
 			</apex:outputPanel>
-			<!-- end of HiddenPanel -->
+			<!-- End HiddenPanel -->
 		
 			<!-- Overlay -->
 			<apex:outputPanel id="Overlay"
@@ -66,7 +60,7 @@
 						value="{!Title}" />
 			
 				</apex:outputPanel>
-				<!-- end of Title -->
+				<!-- End Title -->
 				
 				<!-- MessageToUser -->
 				<apex:outputPanel id="MessageToUserPanel"
@@ -77,7 +71,7 @@
 						value="{!MessageToUser}" />
 			
 				</apex:outputPanel>
-				<!-- end of MessageToUser -->
+				<!-- End MessageToUser -->
 				
 				<!-- SubmitButtons -->
 				<apex:outputPanel id="SubmitButtons"
@@ -86,7 +80,7 @@
 			
 					<apex:commandButton id="AcceptButton"
 						value="Accept"
-						action="{!Action}"
+						action="{!action}"
 						onClick="confirmOverlay.close(); swirly.show()"
 						onComplete="confirmOverlay.postAction()" 
 					    reRender="HiddenPanel" 
@@ -102,15 +96,15 @@
 					</apex:outputLink>
 			
 				</apex:outputPanel>
-				<!-- end of SubmitButtons -->
+				<!-- End SubmitButtons -->
 				
 			</apex:outputPanel>
-			<!-- end of Overlay -->
+			<!-- End Overlay -->
 		
 		</apex:form>
-		<!-- end of Form  -->
+		<!-- End Form  -->
 		
 	</apex:outputPanel>
-	<!-- end of Content -->
+	<!-- End Content -->
 
 </apex:component>

@@ -13,6 +13,10 @@ public class NewTaskController {
 	public String 	projectId 	{ set; get; }
 	
 	private List<ProjectMember__c> projectMembers;
+	
+	public String currentPage {set; get;}
+	
+	public String postAction {set; get;}
 
 	public NewTaskController(){
 		
@@ -20,10 +24,22 @@ public class NewTaskController {
 		
 		this.projectMembers = DAOFactory.getInstance().getProjectMembers(projectId);
 		
+		this.currentPage = Apexpages.currentPage().getUrl();
+		
+		this.postAction = '';
+		
+		this.assignTo = '';
+		
 	}
 	
 	public void action(){
+		
 		DAOFactory.getInstance().addTask(this.name, this.startDate, this.dueDate, this.duration, this.assignTo, this.projectId);
+		
+		if(this.currentPage.contains('TaskList')){
+			
+			this.postAction = 'RefreshTasksList';
+		}
 	}
 	
 	public List<SelectOption> getMembers() {

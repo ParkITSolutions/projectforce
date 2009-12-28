@@ -8,8 +8,7 @@
 		title="Delete tasks"
 		messageToUser=" Are you sure you want to continue?
                         Once task(s) are deleted, it is not recoverable "
-		actionName="DeleteTasks"
-		refreshPanels="TasksTable"/>
+		actionName="DeleteTasks"/>
 	
 	<c:PromptOverlay id="PromptOverlay"
 	    includeNewTask="true"/>
@@ -51,7 +50,7 @@
 			
 			if(actionIds.length == 0){
 			
-				alertOverlay.open('Task list error', 'There is not tasks selected')	
+				alertOverlay.open('Task list error', 'There are not tasks selected')	
 				
 			}else{
 			
@@ -65,7 +64,7 @@
 	</script>
 	
 	<!-- ContentPanel -->
-	<apex:outputPanel id="ContentPanel325" styleClass="contentPanel" layout="block" >
+	<apex:outputPanel id="ContentPanel" styleClass="contentPanel" layout="block" >
 	
 		<!-- ButtonsPanel -->
 		<apex:outputPanel id="ButtonsPanel" styleClass="buttonsPanel" layout="block" >

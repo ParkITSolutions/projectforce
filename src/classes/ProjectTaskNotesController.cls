@@ -4,73 +4,57 @@
 
 public class ProjectTaskNotesController {
 
-	String teamIdParam = System.currentPageReference().getParameters().get('id');
-	Project2__c teamspace = new Project2__c();
-	
-	String Html;
-	
-	
+	private ProjectTask__c taskVar { set; get; }
+	public String taskId { set; get; }
+	public String taskNotes { set; get; }
+	public String taskName { set; get; }
+	public String taskNameShort { set; get; }
+
+	public String projectId { set; get; }
+	public String projectName { set; get; }
+	public String projectNameShort { set; get; }
 	
 	/**
     * Constructor
     * @param ApexPages.StandardController
     */
     public ProjectTaskNotesController(ApexPages.StandardController ctrl){
-    	this.setHtml('XXX - Sacar Hardcodeado - ProjectTaskNotesController.cls');
-    }
-    
-    /**
-    * Empty Constructor
-    */
-    public ProjectTaskNotesController(){
     	
-    }   
-    
-    /**
-    * @param String team id
-    */
-    public void setTeamIdParam (String idTeam){ 
-        this.teamIdParam = idTeam;
+		this.taskVar = new ProjectTask__c();
+		this.obtainData();
     }
     
     /**
-    * @return String teamIdParam The Id of the team
+    * Obtain data from the task and project
+    * @return void	
     */
-    public String getTeamIdParam(){
-        return this.teamIdParam;
-    } 
-    
-    /**
-    * Get project Name
-    * @return String
-    */
-    public String getProjectName(){
-		String pName = [Select Id, Name from Project2__c where id =: teamIdParam].Name;
-		return ProjectUtil.chopWords( ProjectUtil.chopPhrase( pName , 57 ));    	
-    }
-    
-    /**
-    * @return String (html)
-    */
-    public String getHtml(){
-    	return this.Html;
-    }
-    
-    /**
-	* @param String html
-	*/
-    public void setHtml(String htmlAux){
-    	this.Html=htmlAux;
-    }
-    
+	public void obtainData(){
+		
+		this.taskId=System.currentPageReference().getParameters().get('id_task');
+		List<ProjectTask__c> taskList = new List<ProjectTask__c>();
+
+		taskList = [Select p.Id,p.Project__c,p.Project__r.Name, p.Name, p.notes__c From ProjectTask__c p where p.Id =: taskId limit 1];
+		if (taskList.size() > 0 ) {
+			this.taskVar=taskList[0];
+			if (this.taskVar != null){
+				this.projectId=this.taskVar.Project__c;
+				this.projectName=this.taskVar.Project__r.Name;
+				//I cut out the name if too long
+				this.projectNameShort=ProjectUtil.chopWords( ProjectUtil.chopPhrase( this.projectName , 24 ));
+				
+				this.taskName=this.taskVar.Name;
+				//I cut out the name if too long
+				this.taskNameShort=ProjectUtil.chopWords( ProjectUtil.chopPhrase( this.taskName , 24 ));
+				
+				this.taskNotes=this.taskVar.notes__c;
+			}
+		}
+	}
+
     /**
     * @return PageReference
     */
     public PageReference CancelEdit () {
-		//PageReference pageRef = Page.WikiPage;
-		//pageRef.getParameters().put('idWP', editWP.Id);
-		//pageRef.setRedirect(true);
-		//return pageRef;
 		System.debug('XXX - sin terminar...');
 		return null;	
 	}
@@ -80,16 +64,8 @@ public class ProjectTaskNotesController {
 	* @return PageReference
 	*/
 	public PageReference SaveEdit () {
-		
-		/*
-		PageReference pageRef = Page.WikiPage;
-		pageRef.getParameters().put('idWP', editWP.Id);
-		pageRef.setRedirect(true);
-		
-		return pageRef;
-		*/
-		System.debug('XXX - Html='+Html);
-		System.debug('XXX - sin terminar...');
+		this.taskVar.notes__c = taskNotes;
+		update this.taskVar;
 		return null;
 	}
 	

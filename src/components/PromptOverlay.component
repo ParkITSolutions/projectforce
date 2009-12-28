@@ -1,4 +1,4 @@
-<apex:component id="PromptOverlay" controller="PromptOverlayController" >
+<apex:component id="PromptOverlay" controller="PromptOverlayController" allowDML="true">
 
 	<apex:includeScript value="{!URLFOR($Resource.OverlayResources, 'inc/js/js.js')}" />
 	 
@@ -28,8 +28,8 @@
 		
 		<apex:outputPanel id="Background" styleClass="background" layout="block"> &nbsp; </apex:outputPanel>
 		
-		<!-- end of Form  -->
-		<apex:form id="Form">
+		<!-- Form  -->
+		
 		
 			<!-- Overlay -->
 			<apex:outputPanel id="Overlay"
@@ -42,7 +42,7 @@
 					layout="block">
 			
 					<apex:outputPanel rendered="{!includeNewTask}">
-						 <c:NewTask id="NewTask" /> 
+						 	<c:NewTask id="NewTask" /> 
 					</apex:outputPanel>
 			
 				</apex:outputPanel>
@@ -51,7 +51,7 @@
 			</apex:outputPanel>
 			<!-- end of Overlay -->
 		
-		</apex:form>
+		
 		<!-- end of Form  -->
 		
 	</apex:outputPanel>

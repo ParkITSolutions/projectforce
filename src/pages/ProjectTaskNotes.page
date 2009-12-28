@@ -30,51 +30,48 @@
 
 
 	<script src="{!URLFOR($Resource.ckeditor, 'ckeditor/ckeditor.js')}" />
-	 
-	 
-	 
-    <!-- ### Initialize the overlay box for modal.js ### 
-    <a href="#modal_container" id="initializeModal" style="display:none;"></a>
-    <div id="modal_container" ></div>
-    <script>
-        /*createOverlay('initializeModal');*/
-        
-        var globalInfoBig = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/infoBig.gif')}';
-        var globalCheckNew = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}';
-        /* var userIsManager = '{!isManager}';*/
-
-	</script>
-	-->
-	
 	
     <div id="all" style="overflow:hidden;">
         
         <!-- Header -->
-
         <apex:composition template="HeaderTemplate">
             <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
             <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
             <apex:define name="title">Project Detail</apex:define>
             <apex:define name="search">
                 <c:Search module="Project" projectId="" label="Tasks"/>
-                <c:Search module="Project" projectId="{!teamIdParam}" label="Tasks"/>
+                <c:Search module="Project" projectId="{!projectId}" label="Tasks"/>
             </apex:define>
         </apex:composition> 
        
          <div align="center" class="breadCrumbAndButtons">
             <apex:outputpanel layout="block" styleclass="breadCrumbs">
+            	<div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
+					 <a id="projectNameBreadcrumb"  href="/apex/ProjectDetail?id={!projectId}">{!projectNameShort}</a> > 								
+					<apex:outputpanel layout="block" style="display: none;z-index:9999;" styleClass="mouseOverInfo">
+						<div class="body">{!projectName}</div>
+					</apex:outputpanel>
+				</div>
+				<div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
+					 <a id="projectNameBreadcrumb"  href="/apex/ProjectTasksList?id={!taskId}">{!taskNameShort}</a> > 								
+					<apex:outputpanel layout="block" style="display: none;z-index:9999;" styleClass="mouseOverInfo">
+						<div class="body">{!taskName}</div>
+					</apex:outputpanel>
+				</div>
+				<span class="breadCrumbsLast"><strong>Task Notes</strong></span>    
+            
+            
+                <!-- 
                 <div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
-				<a id="projectNameBreadcrumb"  href="#">
-					<apex:outputText escape="true" value="projectName" />
-				</a> &gt;										
-					<!-- 
-						<apex:outputpanel layout="block" rendered="{!IF(LEN(Teamspace.Name) > 24,true,false)}" 
-						style="display: none;z-index:9999;" styleClass="mouseOverInfo">
-							<div class="body">{!Teamspace.Name}</div>
-						</apex:outputpanel>
-					 -->
+				<a id="projectNameBreadcrumb"  href="/apex/projecttaskdetail?id={!projectId}">
+					<apex:outputText escape="true" value="{!projectNameShort}" />
+				</a> &gt;
+					<apex:outputpanel layout="block" style="display: none;z-index:9999;" styleClass="mouseOverInfo">
+						<div class="body">{!projectName}</div>
+					</apex:outputpanel>
 				</div>	
-                <span class="breadCrumbsLast"><strong>Task Notes</strong></span>     
+                 -->
+                
             </apex:outputpanel>       
         </div>
 
@@ -85,12 +82,13 @@
                 <!-- Project Quick Links -->
                 <c:ProjectDetailQuickLinks />
     
-                <!-- Team Suscribe 
+                <!-- Team Suscribe
                 <c:ProjectSubscribe /> 
-    			-->
-                <!-- Team members 
-                <c:ProjectMembersWidget projectId="{!teamIdParam}" id="ProjectMembersWidget" />   
-            	-->
+                -->
+    			
+                <!-- Team members -->
+                 <c:ProjectMembersWidget projectId="{!projectId}" id="ProjectMembersWidget" />   
+
             </apex:outputPanel>
             <div class="clear"></div>
         </div>
@@ -107,53 +105,61 @@
     <div class="main_content">
 
                 <apex:form id="mainContentForm">
-                <!-- <apex:form onsubmit="return validateDiscussionTopic2('{!$Component.topicName}','{!$Component.topicTextArea}');" > -->
- 
-				<!-- ====================================================================== -->
-				<div class="wideHeader">
-					<h4>Task Notes</h4>
-				</div>
-				<div class="overlayMainContent">
-					<apex:outputPanel id="topicPanel" layout="block">
-						<div class="overlayFormContent">
-							<table border="0" style="width:97%;">
-								<tr>
-									<td style="height: 500px; width: 1100px;">
-										<div id="loader" style="text-align:center;"><center><img src="{!URLFOR($Resource.ProjectResources, 'images/loaders/big-loader.gif')}" /></center><br />Loading...</div>
-										<div class="FCKloader" id="FCKloader" style="display:block;">{!Html}</div>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="2">&nbsp;
-										<span class="explain" id="warningSign">(32k character limit counting HTML tags) - Characters remaining:</span>
-										<span class="explain" id="stringSizeCounter">32000</span>
-										<span class="explain" id="newTopicMessageEmptyError">Please fill the message field</span>
-										<span class="explain classColorRed" id="numberOfCharacterExeeded">The number of characters was exceeded</span>
-									</td>
-								</tr>
-							</table>
-						</div>
-						
-					</apex:outputPanel>
-				</div>
-				<div align="center">
-					<apex:commandButton value="Save" styleclass="saveBtn" action="{!SaveEdit}" oncomplete="refreshRecentChanges();" />
-					<!-- <apex:commandButton value="Save" styleclass="saveBtn" action="{!SaveEdit}" onclick="saveContent();" rerender="controllerVar, theTextArea2" oncomplete="refreshRecentChanges();" /> -->
-					<apex:commandButton value="Cancel" styleclass="cancelBtn" action="{!CancelEdit}"/>
-					<!-- <apex:commandButton value="Cancel" styleclass="cancelBtn" action="{!CancelEdit}" onclick="setValResult();switchOverlay(true);"/> -->
-				</div>
-				<!-- ====================================================================== -->
+	                <!-- <apex:form onsubmit="return validateDiscussionTopic2('{!$Component.topicName}','{!$Component.topicTextArea}');" > -->
+	 
+					<!-- ====================================================================== -->
+					<div class="wideHeader">
+						<h4>Task Notes</h4>
+					</div>
+					<div align="center">
+						<apex:commandButton value="Save" styleclass="saveBtn" action="{!SaveEdit}" onclick="saveContent();" oncomplete="refreshRecentChanges();" />
+						<apex:commandButton value="Cancel" styleclass="cancelBtn" action="{!CancelEdit}"/>
+					</div>
+					<div class="overlayMainContent">
+						<apex:outputPanel id="topicPanelCKEditor" layout="block">
+							<div class="overlayFormContent">
+								<table border="0" style="width:97%;">
+									<tr>
+										<td style="height: 500px; width: 1100px;">
+											<!-- CKEditor -->
+											<div id="loader" style="text-align:center;"><center><img src="{!URLFOR($Resource.ProjectResources, 'images/loaders/big-loader.gif')}" /></center><br />Loading...</div>
+										 	<textarea class="CKloader" id="CKloader" style="display:block;">{!taskNotes}</textarea>   
+										 
+											
+											<!-- CKEditor Aux -->
+	                                         <apex:inputTextarea id="ckeditor_aux"  value="{!taskNotes}" styleClass="ckeditor_aux" style="display:none;"/>
+   
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2">&nbsp;
+											<span class="explain" id="warningSign">(32k character limit counting HTML tags) - Characters remaining:</span>
+											<span class="explain" id="stringSizeCounter">32000</span>
+											<!-- <span class="explain" id="newTopicMessageEmptyError">Please fill the message field</span>
+											<span class="explain classColorRed" id="numberOfCharacterExeeded">The number of characters was exceeded</span> -->
+										</td>
+									</tr>
+								</table>
+							</div>
+							
+						</apex:outputPanel>
+					</div>
+					<div align="center">
+						<apex:commandButton value="Save" styleclass="saveBtn" action="{!SaveEdit}" onclick="saveContent();" oncomplete="refreshRecentChanges();" />
+						<apex:commandButton value="Cancel" styleclass="cancelBtn" action="{!CancelEdit}"/>
+					</div>
+					<!-- ====================================================================== -->
                 </apex:form>
 
     </div>
-        
+
     <!-- <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupBottom.js')}" /> -->
         
 	<script type="text/javascript">
-	$('FCKloader').hide();
+	$('CKloader').hide();
 	window.onload = function(){
 	   
-	    CKEDITOR.replace( 'FCKloader', {
+	    CKEDITOR.replace( 'CKloader', {
 	       
 	        resize_enabled : false,
 	        skin : 'v2',
@@ -177,6 +183,23 @@
 	       
 	    });
 	    $('loader').hide();
+	}
+	
+	function getCKContent(){
+	    try {
+	        var markup =  document.getElementById('cke_CKloader').getElementsByTagName('iframe')[0].contentWindow.document.getElementsByTagName('body')[0].innerHTML;
+	        return markup;
+	    } 
+	    catch(e){
+	    }
+	}
+	
+	function saveContent () {
+
+	    var textaux = getCKContent();
+	    
+	   // ckeditor_aux.value = textaux;
+	    $('ProjectTaskNotes:mainContentForm:ckeditor_aux').value=textaux;
 	}
 	
 	</script>

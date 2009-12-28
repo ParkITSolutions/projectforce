@@ -61,6 +61,13 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Notes__c</fullName>
+        <label>Notes</label>
+        <length>32000</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
         <fullName>ParentTask__c</fullName>
         <description>ParentTask</description>
         <label>ParentTask</label>

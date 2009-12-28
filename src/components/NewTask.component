@@ -1,4 +1,4 @@
-<apex:component id="NewTask" controller="NewTaskController">
+<apex:component id="NewTask" controller="NewTaskController" allowDML="true">
 
 	<script>
 	
@@ -18,48 +18,63 @@
 			</apex:outputPanel>
 			<!-- End TitlePanel -->
 			
-			<!-- ComponentBody -->
-			<apex:outputPanel id="ComponentBody"
-				styleClass="componentBody"
-				layout="block">
-		
-				Name: <apex:inputText id="Name" value="{!name}" />	<br>
+			<!-- Form -->
+			<apex:form id="Form">
+			
+				<apex:outputPanel id="HiddenPanel" style="display: none">
 				
-				Start Date: <apex:inputText id="StartDate" value="{!startDate}" /> <br>	
-				
-				Due Date: <apex:inputText id="DueDate" value="{!dueDate}" /> <br>	
-				
-				Duration: <apex:inputText id="Duration" value="{!duration}" /> <br>	
-				
-				Assign To: <apex:selectList value="{!assignTo}" size="1">
-								<apex:selectOptions value="{!members}"/>
-						   </apex:selectList>	
-				
-				<!-- SubmitButtons -->
-				<apex:outputPanel id="SubmitButtons"
-					styleClass="submitButtons"
-					layout="block">
-				
-						<apex:commandButton id="AcceptButton"
-							value="Accept"
-							action="{!action}"
-							onClick="promptOverlay.close(); swirly.open();"
-						    styleClass="submitButton"/>
-						    
-						<apex:outputLink id="CancelButton"
-							value="javascript:;"
-							onClick="promptOverlay.close()"
-						    styleClass="submitButton" >
-						    
-						    Cancel
-						    
-						</apex:outputLink>	
-				
+					<apex:inputHidden value="{!postAction}" id="PostAction"/>
+					
 				</apex:outputPanel>
-				<!-- end of SubmitButtons -->
-				
-			</apex:outputPanel>
-			<!-- end of ComponentBody -->
+			
+				<!-- ComponentBody -->
+				<apex:outputPanel id="ComponentBody"
+					styleClass="componentBody"
+					layout="block">
+			
+					Name: <apex:inputText id="Name" value="{!name}" />	<br>
+					
+					Start Date: <apex:inputText id="StartDate" value="{!startDate}" /> <br>	
+					
+					Due Date: <apex:inputText id="DueDate" value="{!dueDate}" /> <br>	
+					
+					Duration: <apex:inputText id="Duration" value="{!duration}" /> <br>	
+					
+					Assign To: <apex:selectList value="{!assignTo}" size="1">
+									<apex:selectOptions value="{!members}"/>
+							   </apex:selectList>	
+					
+					<!-- SubmitButtons -->
+					<apex:outputPanel id="SubmitButtons"
+						styleClass="submitButtons"
+						layout="block">
+					
+							<apex:commandButton id="AcceptButton"
+								value="Accept"
+								action="{!action}"
+								onClick="promptOverlay.close(); swirly.show();"
+								onComplete="promptOverlay.postAction();"
+								reRender="HiddenPanel"
+							    styleClass="submitButton"/>
+							    
+							<apex:outputLink id="CancelButton"
+								value="javascript:;"
+								onClick="promptOverlay.close()"
+							    styleClass="submitButton" >
+							    
+							    Cancel
+							    
+							</apex:outputLink>	
+					
+					</apex:outputPanel>
+					<!-- end of SubmitButtons -->
+					
+				</apex:outputPanel>
+				<!-- end of ComponentBody -->
+			
+			</apex:form>
+			<!-- End Form -->
 				
 	</apex:outputPanel>
+	
 </apex:component>
