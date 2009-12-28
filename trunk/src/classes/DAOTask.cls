@@ -4,7 +4,21 @@ public class DAOTask {
 	
 	public void add(String name, String startDate, String dueDate, String duration, String assignTo, String projectId){
 		
-		//insert task;
+		ProjectTask__c task = new ProjectTask__c();
+		
+		task.Name = name;
+		task.StartDate__c = Date.parse(startDate);
+		task.EndDate__c = Date.parse(dueDate);
+		task.Duration__c = Double.valueOf(duration);
+		task.Project__c = projectId;
+   		task.Milestone__c = false;
+		task.PercentCompleted__c = ProjectUtil.getDefaultTaskPercentCompleted();
+		task.Priority__c = ProjectUtil.getDefaultTaskPriority();
+			
+		insert task; 
+
+		DAOFactory.getInstance().addAssignee(task.Id, assignTo, projectId);
+			
 	}
 	
 	public void actualize(ProjectTask__c task){

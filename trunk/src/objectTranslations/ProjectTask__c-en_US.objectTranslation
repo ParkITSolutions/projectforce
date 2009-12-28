@@ -40,6 +40,10 @@
         <name>Milestone__c</name>
     </fields>
     <fields>
+        <label><!-- Notes --></label>
+        <name>Notes__c</name>
+    </fields>
+    <fields>
         <label><!-- ParentTask --></label>
         <name>ParentTask__c</name>
         <relationshipLabel><!-- Project Task --></relationshipLabel>

@@ -1634,6 +1634,11 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>false</editable>
+        <field>ProjectTask__c.Notes__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
         <field>ProjectTask__c.ParentTask__c</field>
         <hidden>true</hidden>
     </fieldLevelSecurities>

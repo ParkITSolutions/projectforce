@@ -24,18 +24,32 @@ public class ProjectUtil {
     public static Map<String, Boolean> flags = new Map<String, Boolean>(); 
     public static Boolean inFuture = false;
     
-    private static String defaultTaskPriority = 'Medium';
-    
     public static Integer maxLongWord = 40;
 	public static Integer maxLongPhrase = 128;	
 	
+    
+    /* Default task values */
+    private static String defaultTaskPriority = 'Medium';
+    
+    private static Double defaultTaskPercentCompleted = 0.0;
+    
+    /* End Default task values*/
+    
+	/* Default task values getters */
 	public static String getDefaultTaskPriority(){
 		return ProjectUtil.defaultTaskPriority;
 	}
 	
+	public static Double getDefaultTaskPercentCompleted(){
+		return ProjectUtil.defaultTaskPercentCompleted;
+	}
+	
+	/* End Default task values getters */
+	
     public static void setTaskDependenciesFlag(Boolean value){
     	ProjectUtil.taskDependenciesFlag = value;
     }
+    
     
     public static Boolean getTaskDependenciesFlag(){
     	return ProjectUtil.taskDependenciesFlag;
