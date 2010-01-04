@@ -1840,6 +1840,10 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>OutputStyles</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>ProjectAttachmentList</apexPage>
         <enabled>true</enabled>
     </pageAccesses>

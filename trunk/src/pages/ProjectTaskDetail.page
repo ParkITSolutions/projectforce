@@ -89,27 +89,42 @@
     </apex:composition>
    
     <!-- Main Content Div -->
-    <div class="main_content_projectList" style="overflow:hidden">
+    <!-- <div class="main_content_projectList" style="overflow:hidden"> -->
+    <div class="main_content_projectList">
     
         <!-- BreadCrumb and buttons -->    
         <div align="center" class="breadCrumbAndButtons">
         
 	       	<apex:outputpanel layout="block" styleclass="breadCrumbs">
 	       	
-	            <div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
+	       		<!-- <div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
 					 <a id="projectNameBreadcrumb"  href="/apex/ProjectDetail?id={!Task.ProjectId}">{!Task.ProjectName}</a> > 								
-					<apex:outputpanel layout="block" rendered="{!IF(LEN(Task.ProjectName) > 24,true,false)}" 
+					<apex:outputpanel layout="block" rendered="{!IF(LEN(Task.ProjectName) > 20,true,false)}" 
 					style="display: none;z-index:9999;" styleClass="mouseOverInfo">
+						<div class="body">{!Task.ProjectName}</div>
+					</apex:outputpanel>
+				</div> -->
+	            <div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
+					<a id="projectNameBreadcrumb"  href="/apex/ProjectDetail?id={!Task.ProjectId}">{!projectNameShort}</a> > 								
+					<apex:outputpanel layout="block" style="display: none;z-index:9999;" styleClass="mouseOverInfo">
 						<div class="body">{!Task.ProjectName}</div>
 					</apex:outputpanel>
 				</div>
 				
-				 <a  href="/apex/ProjectTasksList?id={!Task.ProjectId}">Tasks</a> >	
-				 
-				<div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
+				
+				
+				<a  href="/apex/ProjectTasksList?id={!Task.ProjectId}">Tasks</a> >	
+				
+				<!-- <div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
 					<span style = "font-weight:bold;" id="taskNameBreadcrumb">{!Task.Name}</span>									
-					<apex:outputpanel layout="block" rendered="{!IF(LEN(Task.Name) > 24,true,false)}" 
+					<apex:outputpanel layout="block" rendered="{!IF(LEN(Task.Name) > 20,true,false)}" 
 					style="display: none;z-index:9999;" styleClass="mouseOverInfo">
+						<div class="body">{!Task.Name}</div>
+					</apex:outputpanel>
+				</div> --> 
+				<div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
+					<span style = "font-weight:bold;" id="taskNameBreadcrumb">{!taskNameShort}</span>									
+					<apex:outputpanel layout="block" style="display: none;z-index:9999;" styleClass="mouseOverInfo">
 						<div class="body">{!Task.Name}</div>
 					</apex:outputpanel>
 				</div>
@@ -295,13 +310,17 @@
 							<tr>
 								<td class="labelCol vTop">Notes</td>
 								<td class="dataCol">
-									<!-- <apex:outputpanel rendered="{!AND(true)}"> -->
-									<apex:outputpanel >
+									<apex:outputpanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}">
 	                                	<div class="DistincLink">
 	                                		<a href="ProjectTaskNotes?id_task={!Task.id}">
-	                                			<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add assignee" title="Add assignee" />
+	                                			<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/task_edit.png')}" alt="Add assignee" title="Add assignee" />
 	                                			Edit Notes
 	                                		</a>
+	                                	</div>
+	                             	</apex:outputpanel>
+	                             	<apex:outputpanel rendered="{!!AND(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}">
+	                                	<div class="DistincLink">
+	                                			Without permission to edit Notes
 	                                	</div>
 	                             	</apex:outputpanel>
 								</td>

@@ -14,6 +14,9 @@ public class ProjectTaskDetailController {
 	public UserPermissions userPermissions = new UserPermissions();
 	public String taskId;
 	public void dummyRefresh () {}
+	
+	public String taskNameShort { set; get; }
+	public String projectNameShort { set; get; }
     
 	
 	/**
@@ -30,6 +33,7 @@ public class ProjectTaskDetailController {
 		task = [select project__c from ProjectTask__c where Id =:taskId];
 		
 		projectId = task[0].project__c;
+
 	}
 	
 	/**
@@ -219,9 +223,12 @@ public class ProjectTaskDetailController {
 					taskDetail.CantAssignees=0;
 				}
 				taskDetail.Name = TD.Name;
+				this.taskNameShort = ProjectUtil.chopWords( ProjectUtil.chopPhrase( taskDetail.Name , 20 ));
+				
 				userPermissions.setProject(TD.Project__c);
 				taskDetail.ProjectId = TD.Project__c;
 				taskDetail.ProjectName = TD.Project__r.Name;
+				this.projectNameShort = ProjectUtil.chopWords( ProjectUtil.chopPhrase( taskDetail.ProjectName , 20 ));
 				taskDetail.Priority = TD.Priority__c;
 				taskDetail.StartDate = TD.StartDate__c.format();
 				

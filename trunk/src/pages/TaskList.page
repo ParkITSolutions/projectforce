@@ -1,14 +1,17 @@
 <apex:page id="TaskList" sidebar="false" controller="TaskListController">
 
-	<c:PageSwirly id="PageSwirly" />
-	
-	<c:AlertOverlay id="AlertOverlay"/>
-	
+	<c:ApplicationTop id="ApplicationTop" />
+
 	<c:ConfirmOverlay id="DeleteTasksOverlay" 
 		title="Delete tasks"
 		messageToUser=" Are you sure you want to continue?
                         Once task(s) are deleted, it is not recoverable "
 		actionName="DeleteTasks"/>
+		
+	<c:ConfirmOverlay id="MarkCompleteTasksOverlay" 
+		title="Mark complete tasks"
+		messageToUser=" Are you sure you want to continue? "
+		actionName="MarkCompleteTasks"/>	
 	
 	<c:PromptOverlay id="PromptOverlay"
 	    includeNewTask="true"/>
@@ -19,7 +22,7 @@
 	
 		<apex:actionFunction name="RefreshTasksList"
 				action="{!refreshTasksList}"
-				onComplete="swirly.hide();" 
+				onComplete="swirly.hide(); infoToUser.show()" 
 				reRender="TasksList"/>
 				
 	</apex:form>
@@ -29,6 +32,8 @@
 	<script>
 	
 		var deleteTasksOverlay = new ConfirmOverlay('{!$Component.DeleteTasksOverlay}')
+		
+		var markCompleteTasksOverlay = new ConfirmOverlay('{!$Component.MarkCompleteTasksOverlay}')
 		
 		function getActionIds(){
 		
@@ -61,6 +66,36 @@
 
 		}
 		
+		function deleteTask(taskId){
+		
+			$$('.actionCheckbox').each(function (e){
+	              
+	          	e.checked = false           
+	   
+	      	}); 
+		
+			$(taskId).checked = true
+			
+			deleteTasks()
+			
+		}
+		
+		function markCompleteTasks(){
+			
+			var actionIds = getActionIds()
+			
+			if(actionIds.length == 0){
+			
+				alertOverlay.open('Task list error', 'There are not tasks selected')	
+				
+			}else{
+			
+				markCompleteTasksOverlay.open()
+				
+				markCompleteTasksOverlay.setActionIds(actionIds)
+			}
+		}
+		
 	</script>
 	
 	<!-- ContentPanel -->
@@ -73,23 +108,33 @@
 			
 				<apex:outputLink value="javascript:;"
 					id="NewTaskLink"
-					onClick="promptOverlay.open(newTask)">
+					onClick="promptOverlay.open(newTask)"
+					styleClass="button1">
 					
 					New Task
 				
 				</apex:outputLink>
-		
+				
 				<apex:outputLink value="javascript:;"
-					id="NewMilestoneLink">
+					id="NewMilestoneLink"
+					styleClass="button1">
 					
 					New Milestone
 					
 				</apex:outputLink>
 				
-				<apex:commandLink action="{!markComplete}" value="Mark Complete" id="MarkCompleteLink"/>
+				<apex:outputLink value="javascript:;"
+					id="MarkComplete"
+					onClick="markCompleteTasks()"
+					styleClass="button1">
+					
+					Mark Complete
+					
+				</apex:outputLink>
 				
 				<apex:outputLink value="javascript:;"
-					id="Timeline">
+					id="Timeline"
+					styleClass="button1">
 					
 					Timeline
 					
@@ -97,7 +142,8 @@
 		
 				<apex:outputLink value="javascript:;"
 					id="Delete"
-					onClick="deleteTasks()">
+					onClick="deleteTasks()"
+					styleClass="button1">
 					
 					Delete
 					
@@ -138,19 +184,20 @@
 			<apex:dataTable value="{!tasks}" 
 				var="task" 
 				id="TasksList" 
-				styleClass="taskTable"
-				cellpadding="5"
-				cellspacing="5">
+				styleClass="table"
+				cellpadding="0"
+				cellspacing="0"
+				rowClasses="odd,even">
 				
 				<apex:column id="Action">
 					<apex:facet name="header"><apex:inputCheckbox id="ActionCheckbox"/></apex:facet>
-					<input type="checkbox" value="{!task.id}" class="actionCheckbox"/>
+					<input type="checkbox" id="{!task.id}" value="{!task.id}" class="actionCheckbox"/>
 				</apex:column>
 				
 				<apex:column >
 					<apex:facet name="header">Action</apex:facet>
 					<apex:outputLink value="/{!task.id}/e?retURL={!url}/apex/TaskList?id={!projectId}" id="EditLink">Edit | </apex:outputLink>
-					<apex:outputLink value="javascript:;" id="DeleteLink"> Del</apex:outputLink>
+					<apex:outputLink value="javascript:;" id="DeleteLink" onClick="deleteTask('{!task.id}')"> Del</apex:outputLink>
 				</apex:column>
 				
 				<apex:column >

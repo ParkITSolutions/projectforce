@@ -1,0 +1,100 @@
+<apex:page id="OutputStyles" sidebar="false">
+
+	<c:ApplicationTop id="ApplicationTop" />
+	
+	<h1> text H1 </h1> <br><br>
+	
+	<h2> text H2 </h2> <br><br>
+	
+	<h3> text H3 </h3> <br><br>
+	
+	<h4> text H4 </h4> <br><br>
+	
+	<h5> text H5 </h5> <br><br>
+	
+	<h6> text H6 </h6> <br><br>
+	
+	<strong> Strong text </strong> <br><br>
+	
+	<p>paragraph </p> <br><br>
+	
+	<p class="separator">separator </p> <br><br>
+	
+	<b> b tag</b> <br><br>
+	
+	<img src="http://web.educastur.princast.es/proyectos/grupotecne/archivos/investiga/190html.jpg" class="image" width="200"> <br><br>
+	
+	<ul>
+		<li>list</li>
+		<li>list</li>
+		<li>list</li>
+	</ul>
+	
+	<br><br>
+	
+	<span> span </span> <br><br>
+	
+	<span class="textError"> text error </span> <br><br>
+	
+	<a href="#">href</a> <br><br>
+	
+	<select>
+		<option>Option 1</option>
+		<option>Option 2</option>
+		<option>Option 3</option>
+	</select>
+	
+	<br><br>
+	
+	<textarea class="textarea">textarea</textarea> <br><br>
+	
+	<input type="text" value="input text" class="inputText" /> <br><br>
+	
+	<input type="Button" value="Button1" class="button1"/> <br><br>
+	
+	<input type="Button" value="Button2" class="button2"/> <br><br>
+	
+	<table border="0" class="table" cellpadding="0" cellspacing="0">
+		<thead>
+			<tr>
+				<th>table head 1</th>
+				<th>table head 2</th>
+				<th>table head 3</th>
+			</tr>
+		</thead>
+			
+		<tbody>
+			<tr  class="odd">
+				<td>table body 1 odd</td>
+				<td>table body 2 odd</td>
+				<td>table body 3 odd</td>
+			</tr>
+			<tr  class="even">
+				<td>table body 1 even</td>
+				<td>table body 2 even</td>
+				<td>table body 3 even</td>
+			</tr>
+			<tr  class="odd">
+				<td>table body 1 odd</td>
+				<td>table body 2 odd</td>
+				<td>table body 3 odd</td>
+			</tr>
+			<tr  class="even">
+				<td>table body 1 even</td>
+				<td>table body 2 even</td>
+				<td>table body 3 even</td>
+			</tr>
+		</tbody>
+		
+		<tfoot>
+			<tr>
+				<th>table foot 1</th>
+				<th>table foot 2</th>
+				<th>table foot 3</th>
+			</tr>
+		</tfoot>
+	</table>
+	
+	<br>
+	
+</apex:page>

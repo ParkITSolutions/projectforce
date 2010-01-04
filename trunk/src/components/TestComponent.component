@@ -1,0 +1,22 @@
+<apex:component id="NewTask" controller="NewTaskController">
+	
+	<script>
+	
+		var newTask = '{!$Component.Content}'
+		
+	</script>
+	
+	<apex:outputPanel id="Content">
+	
+	<apex:form >
+		 <apex:commandButton id="AcceptButton"
+								value="Accept"
+								action="{!action2}"
+								onClick="swirly.show();"
+								rerender="prueba"
+							    styleClass="submitButton"/>
+	</apex:form>
+	
+	</apex:outputPanel>
+	
+</apex:component>

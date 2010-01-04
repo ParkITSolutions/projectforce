@@ -48,6 +48,8 @@ public class DAOFactory {
 		return DAOTask.listByProject(projectId);
 	}
 	
+	//public void markCompleteTasks(String tasks){DAOTask.markComplete(tasks);}
+	
 	/* End of Task operations */
 	
 	/* Member operations */
@@ -65,5 +67,13 @@ public class DAOFactory {
 	}
 	
 	/* End Assignee operation */
+	
+	/** Project operations */
+	
+	public Project2__c getProjectInfo(String projectid){
+		return DAOProject.getInfo(projectId);
+	}
+	
+	/** End of Project operations */
 
 }
