@@ -1,6 +1,9 @@
+/*
+* @author Matias Menafra - 12/10/2009
+*/
 public class TaskPdfExportController {
 
-private String USERID = UserInfo.getUserId(); 
+	private String USERID = UserInfo.getUserId(); 
 	private Boolean editDeletePer = false;
 	private String projectId = '';
 	private Boolean canComment;
@@ -10,7 +13,6 @@ private String USERID = UserInfo.getUserId();
 	public String param = ''; 
 	public UserPermissions userPermissions = new UserPermissions();
 	public String taskId;
-	public void dummyRefresh () {}
     
 	
 	/**
@@ -35,7 +37,6 @@ private String USERID = UserInfo.getUserId();
 	*/	
 	public void doRefresh (){
 		this.getTask(param);
-		System.debug('##### doRefresh');
 	}
 	
 	/**
@@ -434,12 +435,10 @@ private String USERID = UserInfo.getUserId();
 				AuxList = [ select Id 
 								from ProjectMember__c 
 								where Project__c =: taskDetail.ProjectId  and User__r.IsActive != false];
-				System.debug(':::>' + AuxList.size() + ' > ' + taskDetail.CantAssignees); 
 				if (taskDetail.CantAssignees==AuxList.size()){
 					return true;
 				}else return false;
 				
-			
 	}
 	
 	

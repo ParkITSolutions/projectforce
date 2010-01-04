@@ -19,7 +19,7 @@ public class Project {
 	public Date 	createdDate 			{ set; get; }
 	public String 	prjType 				{ set; get; }
 	public Integer 	workingHours 			{ set; get; }
-	public ProjectTask__c 	tasks 			{ set; get; }
+	public List<ProjectTask__c> 	tasks 			{ set; get; }
 			
 	
 	/**
@@ -27,6 +27,10 @@ public class Project {
 	*/
 	public Project(String id){
 		this.id = id;
+		
+	}
+	
+	public Project(){
 		
 	}
 	
@@ -44,12 +48,18 @@ public class Project {
 	
 	public void setTasks(String tasksIds){
 		
-		//this.tasks = DAOFactory.getInstance().getTasks(tasksIds) create it!
+		this.tasks = DAOFactory.getInstance().getTasks(tasksIds);
 	}
 	
 	public void markCompleteTasks(){
 		
-		//for each tasks as task
-		//	task.markComplete()
+		for(ProjectTask__c task : this.tasks){
+			
+			Task taskAux = new Task();
+			
+			taskAux.id = task.id;
+			
+			taskAux.markComplete();
+		}
 	}
 }
