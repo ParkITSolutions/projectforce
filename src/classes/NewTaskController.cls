@@ -38,7 +38,7 @@ public class NewTaskController {
 		
 		if(this.currentPage.contains('TaskList')){
 			
-			this.postAction = 'RefreshTasksList';
+			this.postAction = 'TaskCreatedSuccess';
 		}
 	}
 	

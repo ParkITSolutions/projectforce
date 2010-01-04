@@ -1734,6 +1734,10 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>OutputStyles</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>ProjectAttachmentList</apexPage>
         <enabled>false</enabled>
     </pageAccesses>

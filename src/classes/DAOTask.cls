@@ -63,4 +63,85 @@ public class DAOTask {
 		return tasks;
 	}
 	
+	/**
+	* Preconditions: 
+	* One task can be completed if:
+    *            -User has permissions (is admin,  is owner,  is assigned).
+    *            -Is not a parent task (has no decendent tasks).
+    *            -Has not its percentage 100%
+    *@param tasks
+    *@return 
+	*/
+	/*public void markComplete(String tasks){
+		
+		
+		if(tasks != null && tasks !=''){
+			
+			List<String> tasksIds = new List<String>();
+			
+			tasksIds = tasks.split(':');
+			
+			List<ProjectTask__c> tasks = [select (Select User__c 
+			                                      from ProjectsAssignees__r ), id 
+										  from ProjectTask__c where id in: tasksIds];  
+		}
+		
+		
+		
+	
+		
+		List<String> idsUpdate = new List<String>();
+       	setIdTaskToMarkComplete(getIdTaskToComplete());
+        idTaskToMarkComplete = '';
+        if (idTaskToComplete != '' && idTaskToComplete != null) {
+            idsUpdate = getIdTaskToComplete().split(':');
+        }
+                   
+        if(idsUpdate.size()>0){
+            List<ProjectTask__c> tasksUpdate = [select (Select User__c from ProjectsAssignees__r ), id from ProjectTask__c where id in: idsUpdate];
+            
+            if (tasksUpdate.size() > 0) {
+                Boolean markingParent = false;
+                Integer indexTask = 0;
+	            ParentTask parent = new ParentTask();
+	            BigListOfTasks bigListOfTasks = new BigListOfTasks(PROJECTID);
+                for (ProjectTask__c iterTask : tasksUpdate) {
+                    Boolean cantEditAndDelete = false;
+                    Integer countAssignee = 0;
+                    Boolean hasChild = parent.taskHasChildren(iterTask); 
+                    if (hasChild){
+                    	markingParent = true;
+                    	idTaskToMarkComplete = idTaskToMarkComplete + tasksUpdate[indexTask] + ':';
+                    }else{
+	                    while (!cantEditAndDelete && countAssignee < iterTask.ProjectsAssignees__r.size()) {
+	                        if(iterTask.ProjectsAssignees__r[countAssignee].User__c != USERID) {
+	                            cantEditAndDelete =  true;
+	                        }else {
+	                            countAssignee++;
+	                        }
+	                    }
+	                    if(!cantEditAndDelete || editDeletePer || iterTask.createdById == USERID){
+	                        iterTask.PercentCompleted__c = 100;
+	                    }else {
+	                        throw new CustomException('Insufficient Privileges');  
+	                    }
+                    }
+                    indexTask++;                      
+                }
+                if(!markingParent){
+                	ProjectUtil.setTaskDependenciesFlag(false);
+                	update tasksUpdate;
+                	ProjectUtil.setTaskDependenciesFlag(true);
+                }
+
+            }else{
+                throw new CustomException('Insufficient Privileges');
+            }
+        }
+        idTaskToComplete = '';
+        
+	}
+	
+	*/
+	
 }

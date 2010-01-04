@@ -27,7 +27,23 @@ public class ConfirmOverlayController {
 			
 			DAOFactory.getInstance().removeTasks(this.actionIds);
 			
-			this.postAction = 'RefreshTasksList';
+			this.postAction = 'DeleteTasksSuccess';
+			
+		}
+		
+		if(this.actionName == 'MarkCompleteTasks'){
+			
+			//DAOFactory.getInstance().markCompleteTasks(this.actionIds);
+			
+			String projectId = System.currentPageReference().getParameters().get('id');
+			
+			Project project = new Project(projectId);
+			
+			project.setTasks(this.actionIds);
+			
+			project.markCompleteTasks();
+			
+			this.postAction = 'MarkCompleteTasksSuccess';
 			
 		}
 		

@@ -14,4 +14,11 @@ public class DAOProject {
 	    return members;
 		
 	}
+	
+	public Project2__c getInfo(String projectId){
+		
+		Project2__c project = new Project2__c();
+		
+		return project;
+	}
 }

@@ -12,6 +12,9 @@
      <!-- overlays resources -->
     <apex:includeScript value="{!URLFOR($Resource.overlaysResources, 'inc/js/js.js')}"/>
     <apex:stylesheet value="{!URLFOR($Resource.overlaysResources, 'inc/css/css.css')}"/>
+     
+    
+    
     
     <!-- Portal Support -->
     
@@ -26,181 +29,236 @@
     <!-- CSS Includes -->
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
+    
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectLayout.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
      
 
 
 	<script src="{!URLFOR($Resource.ckeditor, 'ckeditor/ckeditor.js')}" />
 	
-    <div id="all" style="overflow:hidden;">
-        
-        <!-- Header -->
-        <apex:composition template="HeaderTemplate">
-            <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
-            <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
-            <apex:define name="title">Project Detail</apex:define>
-            <apex:define name="search">
-                <c:Search module="Project" projectId="" label="Tasks"/>
-                <c:Search module="Project" projectId="{!projectId}" label="Tasks"/>
-            </apex:define>
-        </apex:composition> 
-       
-         <div align="center" class="breadCrumbAndButtons">
-            <apex:outputpanel layout="block" styleclass="breadCrumbs">
-            	<div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
-					 <a id="projectNameBreadcrumb"  href="/apex/ProjectDetail?id={!projectId}">{!projectNameShort}</a> > 								
-					<apex:outputpanel layout="block" style="display: none;z-index:9999;" styleClass="mouseOverInfo">
-						<div class="body">{!projectName}</div>
-					</apex:outputpanel>
-				</div>
-				<div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
-					 <a id="projectNameBreadcrumb"  href="/apex/ProjectTasksList?id={!taskId}">{!taskNameShort}</a> > 								
-					<apex:outputpanel layout="block" style="display: none;z-index:9999;" styleClass="mouseOverInfo">
-						<div class="body">{!taskName}</div>
-					</apex:outputpanel>
-				</div>
-				<span class="breadCrumbsLast"><strong>Task Notes</strong></span>    
-            
-            
-                <!-- 
-                <div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
-				<a id="projectNameBreadcrumb"  href="/apex/projecttaskdetail?id={!projectId}">
-					<apex:outputText escape="true" value="{!projectNameShort}" />
-				</a> &gt;
-					<apex:outputpanel layout="block" style="display: none;z-index:9999;" styleClass="mouseOverInfo">
-						<div class="body">{!projectName}</div>
-					</apex:outputpanel>
-				</div>	
-                 -->
-                
-            </apex:outputpanel>       
-        </div>
+	
+	    <div id="all" style="overflow:hidden;">    
+	        <!-- Header -->
+	        <apex:composition template="HeaderTemplate">
+	            <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
+	            <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
+	            <apex:define name="title">Project Detail</apex:define>
+	            <apex:define name="search">
+	                <c:Search module="Project" projectId="" label="Tasks"/>
+	                <c:Search module="Project" projectId="{!projectId}" label="Tasks"/>
+	            </apex:define>
+	        </apex:composition> 
+	    
+	         <div align="center" class="breadCrumbAndButtons">
+	            <apex:outputpanel layout="block" styleclass="breadCrumbs">
+	            	<div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
+						 <a id="projectNameBreadcrumb"  href="/apex/ProjectDetail?id={!projectId}">{!projectNameShort}</a> > 								
+						<apex:outputpanel layout="block" style="display: none;z-index:9999;" styleClass="mouseOverInfo">
+							<div class="body">{!projectName}</div>
+						</apex:outputpanel>
+					</div>
+					<div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
+						 <a id="projectNameBreadcrumb"  href="/apex/ProjectTaskDetail?id={!taskId}">{!taskNameShort}</a> > 								
+						<apex:outputpanel layout="block" style="display: none;z-index:9999;" styleClass="mouseOverInfo">
+							<div class="body">{!taskName}</div>
+						</apex:outputpanel>
+					</div>
+					<span class="breadCrumbsLast"><strong>Task Notes</strong></span>    
+	            </apex:outputpanel>       
+	
+				<!-- 	
+					<div align="center" class="buttons" >
+						<apex:commandButton value="Save" styleclass="blackbutton" action="{!SaveEdit}" onclick="saveContent();" oncomplete="refreshRecentChanges();" />
+						<apex:commandButton value="Cancel" styleclass="blackbutton" action="{!CancelEdit}"/>
+					</div> 
+				-->
 
-        
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <apex:outputPanel id="sidebarWidgets">
-                <!-- Project Quick Links -->
-                <c:ProjectDetailQuickLinks />
-    
-                <!-- Team Suscribe
-                <c:ProjectSubscribe /> 
-                -->
-    			
-                <!-- Team members -->
-                 <c:ProjectMembersWidget projectId="{!projectId}" id="ProjectMembersWidget" />   
+	
+	        </div>
+	        <!-- Sidebar -->
+	        <div class="sidebar">
+	            <apex:outputPanel id="sidebarWidgets">
+	                <!-- Project Quick Links -->
+	                <c:ProjectDetailQuickLinks />
+	    
+	                <!-- Team Suscribe
+	                <c:ProjectSubscribe /> 
+	                -->
+	    			
+	                <!-- Team members -->
+	                 <c:ProjectMembersWidget projectId="{!projectId}" id="ProjectMembersWidget" />   
+	
+	            </apex:outputPanel>
+	            <div class="clear"></div>
+	        </div>
+	   
+	    </div>
+  
+	    <!-- Main Content -->
+	    <div class="main_content">
+	
+			<apex:form id="mainContentForm" styleclass="quickMilestoneForm"  rendered="{!canAccess}">  
 
-            </apex:outputPanel>
-            <div class="clear"></div>
-        </div>
-   
-    </div>
-    <!-- 
-    <div class="informationPanel clear" id="infoToUser" style="display:none"></div>
-                
-    <div class="messageToUser successMessage" id="MessageToUser" style="display:none" ></div>      
-     -->
-    <div class="messageToUser errorMessage" id="ErrorMessage" style="display:none" ></div>     
-      
-    <!-- Main Content -->
-    <div class="main_content">
-
-                <apex:form id="mainContentForm">
-	                <!-- <apex:form onsubmit="return validateDiscussionTopic2('{!$Component.topicName}','{!$Component.topicTextArea}');" > -->
-	 
-					<!-- ====================================================================== -->
+				<!-- ====================================================================== -->
+				<div class="overlayMainContent">
 					<div class="wideHeader">
 						<h4>Task Notes</h4>
 					</div>
-					<div align="center">
-						<apex:commandButton value="Save" styleclass="saveBtn" action="{!SaveEdit}" onclick="saveContent();" oncomplete="refreshRecentChanges();" />
-						<apex:commandButton value="Cancel" styleclass="cancelBtn" action="{!CancelEdit}"/>
-					</div>
-					<div class="overlayMainContent">
-						<apex:outputPanel id="topicPanelCKEditor" layout="block">
-							<div class="overlayFormContent">
-								<table border="0" style="width:97%;">
-									<tr>
-										<td style="height: 500px; width: 1100px;">
-											<!-- CKEditor -->
-											<div id="loader" style="text-align:center;"><center><img src="{!URLFOR($Resource.ProjectResources, 'images/loaders/big-loader.gif')}" /></center><br />Loading...</div>
-										 	<textarea class="CKloader" id="CKloader" style="display:block;">{!taskNotes}</textarea>   
-										 
-											
-											<!-- CKEditor Aux -->
-	                                         <apex:inputTextarea id="ckeditor_aux"  value="{!taskNotes}" styleClass="ckeditor_aux" style="display:none;"/>
-   
-										</td>
-									</tr>
-									<tr>
-										<td colspan="2">&nbsp;
-											<span class="explain" id="warningSign">(32k character limit counting HTML tags) - Characters remaining:</span>
-											<span class="explain" id="stringSizeCounter">32000</span>
-											<!-- <span class="explain" id="newTopicMessageEmptyError">Please fill the message field</span>
-											<span class="explain classColorRed" id="numberOfCharacterExeeded">The number of characters was exceeded</span> -->
-										</td>
-									</tr>
-								</table>
-							</div>
-							
-						</apex:outputPanel>
-					</div>
-					<div align="center">
-						<apex:commandButton value="Save" styleclass="saveBtn" action="{!SaveEdit}" onclick="saveContent();" oncomplete="refreshRecentChanges();" />
-						<apex:commandButton value="Cancel" styleclass="cancelBtn" action="{!CancelEdit}"/>
-					</div>
-					<!-- ====================================================================== -->
-                </apex:form>
-
-    </div>
-
-    <!-- <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupBottom.js')}" /> -->
-        
+				</div>
+				<div class="overlayMainContent" onload="cKEditorCounter( 'CKloader' )">
+					<apex:outputPanel id="topicPanelCKEditor" layout="block" rendered="{!canAccess}">
+						<div class="overlayFormContent">
+							<table border="0" style="width:97%;">
+								<tr>
+									<td style="height: 500px; width: 1100px;">
+										<!-- CKEditor -->
+										<div id="loader" style="text-align:center;"><center><img src="{!URLFOR($Resource.ProjectResources, 'images/layout/big-loader.gif')}" /></center><br />Loading...</div>
+										<div id="saverGif" style="text-align:center; display:none"><center><img src="{!URLFOR($Resource.ProjectResources, 'images/layout/big-loader.gif')}" /></center><br />Saving...</div>
+										<div id="cancelGif" style="text-align:center; display:none"><center><img src="{!URLFOR($Resource.ProjectResources, 'images/layout/big-loader.gif')}" /></center><br />Canceling...</div>
+										<div id="divCKLoader">
+										 	<textarea class="CKloader" id="CKloader" style="display:block;" >{!taskNotes}</textarea>   
+										</div>
+									 
+										
+										<!-- CKEditor Aux -->
+	                                        <apex:inputTextarea id="ckeditor_aux"  value="{!taskNotes}" styleClass="ckeditor_aux" style="display:none !important; width:0px; heigth:0px;"/>
+	 
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">&nbsp;
+										<span class="explain" id="warningSign">(32k character limit counting HTML tags) - Html Characters remaining:</span>
+										<span class="explain" id="stringSizeCounter">32000</span>
+										<span class="explain classColorRed" id="numberOfCharacterExeeded" style="display:none;">The number of characters was exceeded</span>
+									</td>
+								</tr>
+							</table>
+						</div>
+						
+					</apex:outputPanel>
+				</div>
+				<div align="center" rendered="{!canAccess}">
+					<apex:commandButton value="Save" id="saveButton" styleclass="blackbutton" action="{!SaveEdit}" onclick="hideElements(true);saveContent();" oncomplete="refreshRecentChanges();" />
+					<apex:commandButton value="Cancel" id="cancelButton" styleclass="blackbutton"  action="{!CancelEdit}" />
+				</div>
+				<!-- ====================================================================== -->
+			</apex:form>  
+	
+	    </div>
+     
 	<script type="text/javascript">
-	$('CKloader').hide();
-	window.onload = function(){
-	   
-	    CKEDITOR.replace( 'CKloader', {
-	       
-	        resize_enabled : false,
-	        skin : 'v2',
-	        height : '380px',
-	        toolbar :
-	        [
-	            ['Source'],
-	            ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print'],
-	            ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-	            ['Bold','Italic','Underline','Strike'],
-	            '/',
-	            ['Subscript','Superscript'],
-	            ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
-	            ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-	            ['Link','Unlink','Anchor'],
-	            ['Image','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
-	            '/',
-	            ['Styles','Format','Font','FontSize'],
-	            ['TextColor','BGColor'],['Maximize', 'ShowBlocks']
-	        ]
-	       
-	    });
-	    $('loader').hide();
-	}
 	
-	function getCKContent(){
-	    try {
-	        var markup =  document.getElementById('cke_CKloader').getElementsByTagName('iframe')[0].contentWindow.document.getElementsByTagName('body')[0].innerHTML;
-	        return markup;
-	    } 
-	    catch(e){
-	    }
-	}
 	
-	function saveContent () {
-
-	    var textaux = getCKContent();
-	    
-	   // ckeditor_aux.value = textaux;
-	    $('ProjectTaskNotes:mainContentForm:ckeditor_aux').value=textaux;
-	}
+	
+		$('CKloader').hide();
+		window.onload = function(){
+		   
+		    CKEDITOR.replace( 'CKloader', {
+		       
+		        resize_enabled : false,
+		        skin : 'v2',
+		        height : '380px',
+		        toolbar :
+		        [
+		            ['Source'],
+		            ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print'],
+		            ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+		            ['Bold','Italic','Underline','Strike'],
+		            '/',
+		            ['Subscript','Superscript'],
+		            ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+		            ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+		            ['Link','Unlink','Anchor'],
+		            ['Image','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
+		            '/',
+		            ['Styles','Format','Font','FontSize'],
+		            ['TextColor','BGColor'],['Maximize', 'ShowBlocks']
+		        ]
+		       
+		    });
+		    $('loader').hide();
+		    
+		  //cKEditorCounter( 'CKloader' );
+		}
+		
+		
+		Event.observe(window, 'load', function() { cKEditorCounter( 'CKloader' ) });
+		
+		/** Hide elements
+		*@void
+		*@param boolean 		
+		*/
+		function hideElements(varBool){
+			getElementByApexID('saveButton').disabled=true;
+			getElementByApexID('cancelButton').disabled=true;
+			//$( 'ProjectTaskNotes:mainContentForm:topicPanelCKEditor:divCKLoader' ).hide();
+			
+			$( 'divCKLoader' ).hide();
+			if (varBool)
+				$('saverGif').show();
+			else
+				$('cancelGif').show();
+			$( 'stringSizeCounter' ).hide();
+			$( 'numberOfCharacterExeeded' ).hide();
+			$( 'warningSign' ).hide();
+		}
+		
+		function getCKContent(){
+		    try {
+		        var markup =  document.getElementById('cke_CKloader').getElementsByTagName('iframe')[0].contentWindow.document.getElementsByTagName('body')[0].innerHTML;
+		        return markup;
+		    } 
+		    catch(e){
+		    }
+		}
+		
+		function saveContent () {
+		    var textaux = getCKContent();
+		    $('ProjectTaskNotes:mainContentForm:ckeditor_aux').value=textaux;
+		}
+		
+		function getElementByApexID( apexId ){
+			a = document.getElementsByTagName("*");
+			e = new Array();
+			r = null;
+			for( var k = 0; k < a.length; k ++)
+				if( a[ k ].id.indexOf( ':' + apexId ) > -1)
+					e.push(a[ k ]);
+			
+			if( e.length > 1 )
+				r = e;
+			else if( e.length == 1 )
+				r = e[0];	  
+			return r;
+		}
+		
+		function cKEditorCounter( instance ){
+		
+			var counter = '';
+			var label_msg = '';
+			var id_boton = '';
+			editor = CKEDITOR.instances.CKloader;
+			counter = 'stringSizeCounter';
+			label_msg = 'numberOfCharacterExeeded';
+			id_boton = 'saveButton';
+		
+		
+			cKEditorCount( editor.getData(), counter, label_msg, id_boton);
+		
+			editor.on( 'key', function( evt ){
+				cKEditorCount( evt.editor.getData(), counter, label_msg, id_boton);
+			});
+		}
+		
+		
+		function cKEditorCount( data, counter, label_msg, id_boton  ){
+			count = 32000 - data.length; 
+			$( counter ).innerHTML = count;
+			$( label_msg )[ count < 0 ? 'show' : 'hide']();
+			count < 0 ? getElementByApexID(id_boton).disabled=true : getElementByApexID(id_boton).disabled=false;
+		}
 	
 	</script>
 
