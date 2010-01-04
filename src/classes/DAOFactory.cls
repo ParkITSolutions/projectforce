@@ -50,6 +50,8 @@ public class DAOFactory {
 	
 	//public void markCompleteTasks(String tasks){DAOTask.markComplete(tasks);}
 	
+	public List<ProjectTask__c> getTasks(String tasksIds){ return DAOTask.getTasks(tasksIds);}
+	
 	/* End of Task operations */
 	
 	/* Member operations */

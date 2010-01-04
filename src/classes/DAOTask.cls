@@ -144,4 +144,17 @@ public class DAOTask {
 	
 	*/
 	
+	public List<ProjectTask__c> getTasks(String tasksIds){
+		
+		List<String> tasksIdsList = new List<String>();
+        
+        tasksIdsList = tasksIds.split(':'); 
+        
+        List<ProjectTask__c> tasks = [select Id 
+            						  from ProjectTask__c 
+            						  where id in: tasksIdsList];
+		
+		return tasks;
+	}
+	
 }
