@@ -1,20 +1,19 @@
-/**
+/** 
 *@author Nicolas Dominguez @ 21/12/2009
 */
-
 public class ProjectTaskNotesController {
 
-	private ProjectTask__c taskVar { set; get; }
-	public String taskId { set; get; }
-	public String taskNotes { set; get; }
-	public String taskName { set; get; }
-	public String taskNameShort { set; get; }
+	private ProjectTask__c taskVar 	{ set; get; }
+	public String taskId 			{ set; get; }
+	public String taskNotes 		{ set; get; }
+	public String taskName 			{ set; get; }
+	public String taskNameShort 	{ set; get; }
+	public String projectId 		{ set; get; }
+	public String projectName 		{ set; get; }
+	public String projectNameShort 	{ set; get; }
+	public Boolean canAccess 		{ set; get; }
+	public UserPermissions userPermissions = new UserPermissions();
 
-	public String projectId { set; get; }
-	public String projectName { set; get; }
-	public String projectNameShort { set; get; }
-	public Boolean canAccess { set; get; }
-	
 	/**
     * Constructor
     * @param ApexPages.StandardController
@@ -22,11 +21,23 @@ public class ProjectTaskNotesController {
     public ProjectTaskNotesController(ApexPages.StandardController ctrl){
     	
 		this.taskVar = new ProjectTask__c();
+		
+		this.genPermissions();
 		this.obtainData();
     }
     
     /**
-    * Obtain data from the task and project
+	* Generates permissions for an especific user
+	*@return void
+	*/
+	public void genPermissions() {
+		userPermissions.setId(UserInfo.getUserId());
+		userPermissions.setObjectType('Project');
+		userPermissions.setPermissions();		
+	}
+    
+    /**
+    * Obtains data from the task and project
     * @return void	
     */
 	public void obtainData(){
@@ -35,7 +46,7 @@ public class ProjectTaskNotesController {
 		List<ProjectTask__c> taskList = new List<ProjectTask__c>();
 
 		taskList = [
-			Select p.Id,p.Project__c,p.Project__r.Name, p.Name, p.notes__c,
+			Select p.Id,p.Project__c,p.Project__r.Name, p.Name, p.notes__c, p.CreatedById,
 			(Select Id, User__c, User__r.Name, User__r.Id,PercentDedicated__c From ProjectsAssignees__r order by User__r.Name)
 			From ProjectTask__c p 
 			where p.Id =: taskId limit 1
@@ -55,19 +66,22 @@ public class ProjectTaskNotesController {
 				
 				this.taskNotes=this.taskVar.notes__c;
 				
-				
 				//Permissions
 				//I can access if it is true canAccess
 				this.canAccess = false;
-				if(((this.taskVar.ProjectsAssignees__r).size() != 0) && (this.taskVar.ProjectsAssignees__r != null)){
+				if(UserInfo.getUserId() == this.taskVar.CreatedById){
+					this.canAccess = true;	
+				}
+				else if (this.userPermissions.getCanManage()){
+					this.canAccess = true;
+				}
+				else if(((this.taskVar.ProjectsAssignees__r).size() != 0) && (this.taskVar.ProjectsAssignees__r != null)){
 					for (ProjectAssignee__c item: this.taskVar.ProjectsAssignees__r) {
 					
 						if(UserInfo.getUserId() == item.User__r.id){
 							this.canAccess = true;
-						//	System.debug('XXX Si = '+item.User__r.id+' = '+UserInfo.getUserId());
 						}
 						else{
-						//	System.debug('XXX NO = '+item.User__r.id+' = '+UserInfo.getUserId());
 						}
 					}
 				}
@@ -90,7 +104,7 @@ public class ProjectTaskNotesController {
 	* Save changes and redirect
 	* @return PageReference
 	*/
-	public PageReference SaveEdit () {
+	public PageReference SaveEditAndExit () {
 		this.taskVar.notes__c = taskNotes;
 		update this.taskVar;
 		
@@ -100,5 +114,13 @@ public class ProjectTaskNotesController {
 		return pageRef;
 	}
 	
-	
+	/**
+	* Save changes
+	* @return PageReference
+	*/
+	public PageReference SaveEdit () {
+		this.taskVar.notes__c = taskNotes;
+		update this.taskVar;
+		return null;
+	}
 }

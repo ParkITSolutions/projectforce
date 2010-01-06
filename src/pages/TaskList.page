@@ -1,4 +1,4 @@
-<apex:page id="TaskList" sidebar="false" controller="TaskListController">
+<apex:page id="TaskList" sidebar="false" controller="TaskListController" >
 
 	<c:ApplicationTop id="ApplicationTop" />
 
@@ -222,7 +222,7 @@
 				
 				<apex:column >
 					<apex:facet name="header"><apex:outputLink value="javascript:;" id="CompletedLink">% Completed</apex:outputLink></apex:facet>
-					<apex:outputText value="% completed"/>
+					<apex:outputText value="{!task.PercentCompleted__c}"/>
 				</apex:column>
 				
 				<apex:column >

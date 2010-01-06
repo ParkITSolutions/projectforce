@@ -32,7 +32,7 @@ public class DAOFactory {
 		this.DAOAssignee = new DAOAssignee();
 	}
 	
-	/* Task operations */
+	/*-------------------------------------------------- Task operations ---------------------------------------------------------*/
 	
 	public void addTask(String name, String startDate, String dueDate, String duration, String assignTo, String projectId){
 		DAOTask.add(name, startDate, dueDate, duration, assignTo, projectId);
@@ -48,34 +48,39 @@ public class DAOFactory {
 		return DAOTask.listByProject(projectId);
 	}
 	
-	//public void markCompleteTasks(String tasks){DAOTask.markComplete(tasks);}
-	
 	public List<ProjectTask__c> getTasks(String tasksIds){ return DAOTask.getTasks(tasksIds);}
 	
 	/* End of Task operations */
 	
-	/* Member operations */
+	/*--------------------------------------------------- Member operations -------------------------------------------------------*/
 	
 	public List<ProjectMember__c> getProjectMembers(String projectId){
 		return DAOProject.getMembers(projectId);
 	}
 	
+	public Boolean isCRMAdministrator(){ return DAOMember.isCRMAdministrator(); }
+	
 	/* End of Member operations */
 	
-	/* Assignee operation */
+	/*--------------------------------------------------- Assignee operation ------------------------------------------------------*/
 	
 	public void addAssignee(String taskId, String assignTo, String projectId){
 		DAOAssignee.add(taskId, assignTo, projectId);
 	}
 	
+	public Boolean isTaskAssigned(ProjectTask__c task){return DAOAssignee.isTaskAssigned(task); }
+	
 	/* End Assignee operation */
 	
-	/** Project operations */
+	/*--------------------------------------------------- Project operations ------------------------------------------------------*/
 	
 	public Project2__c getProjectInfo(String projectid){
 		return DAOProject.getInfo(projectId);
 	}
 	
-	/** End of Project operations */
+	public Boolean isProjectAdministrator(String projectId){return DAOProject.isProjectAdministrator(projectId); }
+	
+	/* End of Project operations */
+	
 
 }

@@ -26,6 +26,7 @@ public class Project {
 	* Constructor
 	*/
 	public Project(String id){
+		
 		this.id = id;
 		
 	}
@@ -51,15 +52,61 @@ public class Project {
 		this.tasks = DAOFactory.getInstance().getTasks(tasksIds);
 	}
 	
+	/**
+	* Put all this.tasks percentages in 100%
+	*/
 	public void markCompleteTasks(){
 		
-		for(ProjectTask__c task : this.tasks){
-			
-			Task taskAux = new Task();
-			
-			taskAux.id = task.id;
-			
-			taskAux.markComplete();
+		haveTasksPermissions(this.tasks);
+		
+		List<ProjectTask__c> tasks = new List<ProjectTask__c>();
+				
+		for(ProjectTask__c task: this.tasks){
+					
+			task.PercentCompleted__c = 100;
+					
+			tasks.add(task);
+		}
+				
+		ProjectUtil.setTaskDependenciesFlag(false);
+				
+		try{
+					
+			update tasks;
+					
+		}catch(Exception e){
+					 
+			throw new CustomException('Updateing error. It may be because there are tasks that have children.'); 
+					
+		}finally{
+					
+			ProjectUtil.setTaskDependenciesFlag(true);
 		}
 	}
+	
+	/**
+	* Checks if all given tasks can be modified by the current user.
+	*/
+	public void haveTasksPermissions(List<ProjectTask__c> tasks){
+		
+		List<ProjectTask__c> tasksError = new List<ProjectTask__c>();
+		
+		if(!DAOFactory.getInstance().isCRMAdministrator()){
+			
+			if(!DAOFactory.getInstance().isProjectAdministrator(this.id)){
+				
+				for(ProjectTask__c task : tasks){
+					
+					if(task.OwnerId == Userinfo.getUserId() || DAOFactory.getInstance().isTaskAssigned(task)){
+						
+						throw new CustomException('Insufficient privileges to update task(s)');
+					}
+					
+				}
+			
+			}
+			
+		}
+	}
+	
 }

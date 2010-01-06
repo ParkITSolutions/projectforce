@@ -1,6 +1,8 @@
-public class DAOMember {
+public class DAOUser {
 	
-	public Boolean isCRMAdministrator(){
+	public DAOUser(){}
+	
+	public Boolean isAdministrator(){
 		
 		User user = [select Profile.PermissionsModifyAllData
 					 from User 
@@ -9,5 +11,4 @@ public class DAOMember {
 							 
 		return user.Profile.PermissionsModifyAllData;
 	}
-
 }

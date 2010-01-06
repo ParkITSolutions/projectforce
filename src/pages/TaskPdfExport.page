@@ -23,7 +23,7 @@
 	}
 </style>
 
-    <apex:outputpanel id="detailContainer" rendered="{!detailsOk}" >
+    <apex:outputpanel id="detailContainer">
     	<!-- PDF Header -->
     	<div style="background: rgb(255, 247, 255) none repeat scroll 0% 0%; height: 40px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
         	<center>
@@ -78,7 +78,7 @@
         	<tr>
         		<td style="width:150px;font-weight:bold;text-align:right;">Status</td>
         		<td style="width:10px;"></td>
-        		<td></td>
+        		<td>{!Task.status}</td>
         	</tr>
         	<tr>
         		<td style="width:150px;font-weight:bold;text-align:right;">Percent Completed</td>

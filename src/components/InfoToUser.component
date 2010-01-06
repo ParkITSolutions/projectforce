@@ -1,31 +1,21 @@
 <apex:component id="InfoToUser" >
 
-	<apex:includeScript value="{!URLFOR($Resource.OverlayResources, 'inc/js/scriptaculous/lib/prototype.js')}" />
-	 
-	<apex:includeScript value="{!URLFOR($Resource.OverlayResources, 'inc/js/scriptaculous/src/scriptaculous.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/js/overlays.js')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" />
 	
-	<apex:includeScript value="{!URLFOR($Resource.OverlayResources, 'inc/js/js.js')}" />
-	 
-	<apex:stylesheet value="{!URLFOR($Resource.OverlayResources, 'inc/css/css.css')}" />
-
 	<script>
 	
-		infoToUser.id = '{!$Component.InfoToUserContent}'
-		
-		infoToUser.messageId = '{!$Component.MessageTouser}'
-		
-		infoToUser.successImageId = '{!$Component.SuccessImage}'
-		
-		infoToUser.errorImageId = '{!$Component.ErrorImage}'
-		
-		infoToUser.infoImageId = '{!$Component.InfoImage}'
-		
-		infoToUser.warningImageId = '{!$Component.WarningImage}'
+		infoToUser.id 				= '{!$Component.Content}'
+		infoToUser.messageId 		= '{!$Component.MessageToUser}'
+		infoToUser.successImageId 	= '{!$Component.SuccessImage}'
+		infoToUser.errorImageId 	= '{!$Component.ErrorImage}'
+		infoToUser.infoImageId 		= '{!$Component.InfoImage}'
+		infoToUser.warningImageId 	= '{!$Component.WarningImage}'
 		
 	</script>
 
 	<!-- Content -->
-	<apex:outputPanel id="InfoToUserContent"
+	<apex:outputPanel id="Content"
 		styleClass="infoToUserContent"
 		layout="block"
 		style="display:none">
@@ -40,13 +30,10 @@
 					styleClass="messageToUserPanel"
 					layout="block">
 					
-					<apex:image style="display:none" id="SuccessImage" value="{!URLFOR($Resource.OverlayResources, 'images/success.png')}" />
-					
-					<apex:image style="display:none" id="ErrorImage" value="{!URLFOR($Resource.OverlayResources, 'images/error.png')}" />
-					
-					<apex:image style="display:none" id="InfoImage" value="{!URLFOR($Resource.OverlayResources, 'images/info.png')}" />
-					
-					<apex:image style="display:none" id="WarningImage" value="{!URLFOR($Resource.OverlayResources, 'images/warning.png')}" />
+					<apex:image style="display:none" id="SuccessImage" value="{!URLFOR($Resource.Overlays, 'images/success.png')}" />
+					<apex:image style="display:none" id="ErrorImage" value="{!URLFOR($Resource.Overlays, 'images/error.png')}" />
+					<apex:image style="display:none" id="InfoImage" value="{!URLFOR($Resource.Overlays, 'images/info.png')}" />
+					<apex:image style="display:none" id="WarningImage" value="{!URLFOR($Resource.Overlays, 'images/warning.png')}" />
 			
 					<apex:outputText id="MessageToUser"
 						value="Message" 

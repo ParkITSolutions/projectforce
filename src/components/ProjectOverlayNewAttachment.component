@@ -1,6 +1,16 @@
 <apex:component controller="ProjectOverlayNewAttachmentController">
 
-	
+	<script>
+				function openAttachmentOverlay(){
+
+				   	newAttachmentFileOverlay.open(); 
+					newAttachmentToProject();
+					observeIframeUpload();
+					loadAttOverlay = true;
+					$('uploadIframe').src = $('uploadIframe').src;
+					addOverlayNewAttachmentEvents(function(){newAttachmentOverlay.close();},'UploadAttachment:Form:SaveButton');
+				}
+			</script>
 	
 	<!-- Set Attribure for project id. -->
 	<apex:attribute name="parentId" description="Parent Id" type="String" required="true" assignTo="{!parentId}" />		

@@ -23,6 +23,7 @@ public class UserDetailController{
 	
 	
 	public UserDetailController(){
+		
 		System.debug('Construnctor ' + this.order);
 		this.projectId = System.currentPageReference().getParameters().get('id');
 		this.currentUser = UserInfo.getUserId();
@@ -43,7 +44,8 @@ public class UserDetailController{
 	/**
 	*@return List<Task>
 	*/
-	public List<Task> getTasks(){		
+	public List<Task> getTasks(){	
+			
 		return this.tasks;
 	}
 	
@@ -51,6 +53,7 @@ public class UserDetailController{
 	*@param List<Task>
 	*/
 	public void setTasks( List<Task> ts ){
+		
 		this.tasks = ts;		
 	}
 
@@ -58,8 +61,9 @@ public class UserDetailController{
 	*@return String
 	*/
 	public String getAttachmentPrjId(){
+		
 		if( this.allProjects == null )
-		selectProjectBasicData();
+			selectProjectBasicData();
 		
 		return this.attachmentPrjId;
 		
@@ -69,6 +73,7 @@ public class UserDetailController{
 	*@return Integer
 	*/
 	public Integer getRows(){
+		
 		return this.rows;
 	}
 	
@@ -76,6 +81,7 @@ public class UserDetailController{
 	*@return String
 	*/
 	public String getLastPage(){
+		
 		return String.valueOf( Integer.valueOf( this.lastPage )+1);
 	}
 	
@@ -83,6 +89,7 @@ public class UserDetailController{
 	*@param String
 	*/
 	public void setLastPage( String lp){
+		
 		this.lastPage = lp;
 	}
  
@@ -90,6 +97,7 @@ public class UserDetailController{
  	*@retunr String
  	*/
 	public String getPage(){
+		
 		return String.valueOf( Integer.valueOf( this.page )+1);
 	}
 	
@@ -97,6 +105,7 @@ public class UserDetailController{
 	*@param String
 	*/
 	public void setPage( String p ){
+		
 		if( p == 'next' ){
 			this.page = String.valueOf( Math.abs(Integer.valueOf( this.page )+1));
 		}else if( p == 'previous' ){
@@ -108,6 +117,7 @@ public class UserDetailController{
 	*@return Integer
 	*/
 	public Integer getNotShowFirst(){
+		
 		return  this.rows * Integer.valueOf( this.page ); 
 	}
 	
@@ -115,6 +125,7 @@ public class UserDetailController{
 	*return Boolean
 	*/
 	public Boolean getShowDetail(){ 		
+		
 		return this.opSelected != '--None--'; 
 	} 
 
@@ -122,6 +133,7 @@ public class UserDetailController{
 	*@return ProjectMember__c
 	*/
 	public Project getCurrentProject(){
+		
 		return this.currentProject;
 	}
 
@@ -129,6 +141,7 @@ public class UserDetailController{
 	*@param ProjectMember__c
 	*/
 	public void setCurrentProject( Project p ){
+		
 		this.currentProject = p;
 	}
 
@@ -136,6 +149,7 @@ public class UserDetailController{
 	*@return List<SelectOption>
 	*/
 	public List<SelectOption> getProjectSelectOps(){
+		
 		this.selectOpsProject.clear();
 		ProjectMember__c c = this.allProjects[0].clone();		
 		this.selectOpsProject.add( new SelectOption( '--None--', 'All projects' ));
@@ -150,6 +164,7 @@ public class UserDetailController{
 	*@return String
 	*/
 	public String getOpSelected(){
+		
 		this.selectProjectBasicData();
 		return this.opSelected;
 	}
@@ -158,6 +173,7 @@ public class UserDetailController{
 	*@param String
 	*/
 	public void setOpSelected( String op ){
+		
 		this.opSelected = op;
 		this.selectProjectBasicData();
 	}
@@ -167,6 +183,7 @@ public class UserDetailController{
 	*@return void
 	*/
 	private void selectProjectBasicData(){
+		
 		List<String> d = new List<String>{'Mon', 'Thu', 'Wen', 'Thu', 'Fri', 'Sat', 'Sun'};
 		this.currentProject  = new Project();
 		ProjectMember__c tempProject = new ProjectMember__c(); 
@@ -174,11 +191,11 @@ public class UserDetailController{
 		if( this.allProjectsMap.size() > 0 && this.OpSelected != '--None--' ){
 			tempProject = this.allProjectsMap.get( this.OpSelected );
 			
-			this.AttachmentPrjId 					= tempProject.Project__r.Picture__c;
-			this.currentProject.name 				= ProjectUtil.chopWords( tempProject.Project__r.name );
-			this.currentProject.priority 			= ProjectUtil.chopWords( tempProject.Project__r.priority__c );
-			this.currentProject.displayDuration 	= ProjectUtil.chopWords( tempProject.Project__r.DisplayDuration__c );
-			this.currentProject.description 		= ProjectUtil.chopWords( tempProject.Project__r.Description__c );
+			this.AttachmentPrjId 						= tempProject.Project__r.Picture__c;
+			this.currentProject.name 					= ProjectUtil.chopWords( tempProject.Project__r.name );
+			this.currentProject.priority 				= ProjectUtil.chopWords( tempProject.Project__r.priority__c );
+			this.currentProject.displayDuration 		= ProjectUtil.chopWords( tempProject.Project__r.DisplayDuration__c );
+			this.currentProject.description 			= ProjectUtil.chopWords( tempProject.Project__r.Description__c );
 			this.currentProject.daysWorkWeekFormated 	= 'Mon - ' + d[ Integer.valueOf( tempProject.Project__r.DaysInWorkWeek__c )];
 			
 		}
@@ -188,6 +205,7 @@ public class UserDetailController{
 	*@return void
 	*/
 	private void selectAllPeojectName(){
+		
 		this.allProjects = [ SELECT Project__c, Project__r.Picture__c, Project__r.name, Project__r.Description__c, Project__r.Priority__c, Project__r.DisplayDuration__c, Project__r.DaysInWorkWeek__c FROM ProjectMember__c WHERE User__c =: this.currentUser ];
 		
 		if( this.allProjects.size() > 0 )
@@ -199,6 +217,7 @@ public class UserDetailController{
 	*@return void
 	*/
 	public void setingOrder(){
+		
 		if( this.order == 'ASC' )
 			this.order = 'DESC';
 		else 
@@ -227,22 +246,23 @@ public class UserDetailController{
 		System.debug( '[>>2] ' + this.order +'<<'+sql);
 		Task tempTask;
 		this.tasks.clear(); 
-		List<ProjectAssignee__c> chuchu = Database.query( sql );
-		for( ProjectAssignee__c t : chuchu){
+		List<ProjectAssignee__c> prjAssignee = Database.query( sql );
+		for( ProjectAssignee__c row : prjAssignee){
 			tempTask = new Task();
-			tempTask.project = t.project__c;
-			tempTask.projectName = t.project__r.name;
-			tempTask.id = t.ProjectTask__c;
-			tempTask.name =  t.ProjectTask__r.name;
-			tempTask.startDate = t.ProjectTask__r.startDate__c; 
-			tempTask.formatedStartDate = t.ProjectTask__r.startDate__c.format();
-			tempTask.endDate = t.ProjectTask__r.endDate__c;
-			tempTask.formatedEndDate = t.ProjectTask__r.endDate__c.format();
-			tempTask.status = t.ProjectTask__r.status__c;
-			tempTask.priority = t.ProjectTask__r.priority__c;
-			tempTask.isMilestone = t.ProjectTask__r.milestone__c;
-			tempTask.percentComplete = t.ProjectTask__r.percentCompleted__c;
-			tempTask.duration = String.valueOf( t.ProjectTask__r.percentCompleted__c );
+			tempTask.project = row.project__c;
+			tempTask.projectName = row.project__r.name;
+			tempTask.id = row.ProjectTask__c;
+			tempTask.name =  row.ProjectTask__r.name;
+			tempTask.startDate = row.ProjectTask__r.startDate__c; 
+			tempTask.formatedStartDate = row.ProjectTask__r.startDate__c.format();
+			tempTask.endDate = row.ProjectTask__r.endDate__c;
+			tempTask.formatedEndDate = row.ProjectTask__r.endDate__c.format();
+			tempTask.status = row.ProjectTask__r.status__c;
+			tempTask.priority = row.ProjectTask__r.priority__c;
+			tempTask.isMilestone = row.ProjectTask__r.milestone__c;
+			tempTask.percentComplete = row.ProjectTask__r.percentCompleted__c;
+			tempTask.duration = String.valueOf( row.ProjectTask__r.percentCompleted__c );
+			
 			this.tasks.add( tempTask ); 
 		}
 		

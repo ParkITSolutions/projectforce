@@ -58,7 +58,17 @@
        
        var currentTeam = '{!Task.ProjectId}';
     </script>
-    
+    <script>
+				function openAttachmentOverlay(){
+
+				   	newAttachmentFileOverlay.open(); 
+					newAttachmentToProject();
+					observeIframeUpload();
+					loadAttOverlay = true;
+					$('uploadIframe').src = $('uploadIframe').src;
+					addOverlayNewAttachmentEvents(function(){newAttachmentOverlay.close();},'UploadAttachment:Form:SaveButton');
+				}
+			</script>
     <style type = "text/css">
 	     div.swirly_overlay{
 	     	height : 100%!important;
@@ -318,7 +328,7 @@
 	                                		</a>
 	                                	</div>
 	                             	</apex:outputpanel>
-	                             	<apex:outputpanel rendered="{!!AND(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}">
+	                             	<apex:outputpanel rendered="{!NOT(OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe))}">
 	                                	<div class="DistincLink">
 	                                			Without permission to edit Notes
 	                                	</div>

@@ -1,17 +1,12 @@
 <apex:component id="ApplicationTop">
 
 	<apex:includeScript value="{!URLFOR($Resource.Lib, 'inc/js/scriptaculous/lib/prototype.js')}" />
-	 
 	<apex:includeScript value="{!URLFOR($Resource.Lib, 'inc/js/scriptaculous/src/scriptaculous.js')}" />
-	
 	<apex:includeScript value="{!URLFOR($Resource.Common, 'inc/js/common.js')}" />
-	
 	<apex:stylesheet value="{!URLFOR($Resource.Common, 'inc/css/common.css')}" /> 
 	
 	<c:InfoToUser id="InfoToUser" />
-
 	<c:PageSwirly id="PageSwirly" />
-	
 	<c:AlertOverlay id="AlertOverlay"/>
 	
 </apex:component>

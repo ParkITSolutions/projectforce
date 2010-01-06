@@ -1,13 +1,8 @@
 <apex:component id="PromptOverlay" controller="PromptOverlayController" allowDML="true">
 
-	<apex:includeScript value="{!URLFOR($Resource.OverlayResources, 'inc/js/js.js')}" />
-	 
-	<apex:includeScript value="{!URLFOR($Resource.OverlayResources, 'inc/js/scriptaculous/lib/prototype.js')}" />
-	 
-	<apex:includeScript value="{!URLFOR($Resource.OverlayResources, 'inc/js/scriptaculous/src/scriptaculous.js')}" />
-	 
-	<apex:stylesheet value="{!URLFOR($Resource.OverlayResources, 'inc/css/css.css')}" />
-					
+	<apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/js/overlays.js')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" />			
+   	
    	<apex:attribute name="includeNewTask" 
 					description="Flag to include new task component"
 					type="boolean" 
@@ -28,16 +23,13 @@
 		
 		<apex:outputPanel id="Background" styleClass="background" layout="block"> &nbsp; </apex:outputPanel>
 		
-		<!-- Form  -->
-		
-		
 			<!-- Overlay -->
 			<apex:outputPanel id="Overlay"
 				styleClass="overlay"
 				layout="block">
 			
 				<!-- Component -->
-				<apex:outputPanel id="Component"
+				<apex:outputPanel id="Components"
 					styleClass="component"
 					layout="block">
 			
@@ -50,9 +42,6 @@
 				
 			</apex:outputPanel>
 			<!-- end of Overlay -->
-		
-		
-		<!-- end of Form  -->
 		
 	</apex:outputPanel>
 	<!-- end of Content -->
