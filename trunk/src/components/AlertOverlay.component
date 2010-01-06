@@ -1,20 +1,13 @@
 <apex:component id="AlertOverlay" >
 
-	<apex:includeScript value="{!URLFOR($Resource.OverlayResources, 'inc/js/scriptaculous/lib/prototype.js')}" />
-	 
-	<apex:includeScript value="{!URLFOR($Resource.OverlayResources, 'inc/js/scriptaculous/src/scriptaculous.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/js/overlays.js')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" />
 	
-	<apex:includeScript value="{!URLFOR($Resource.OverlayResources, 'inc/js/js.js')}" />
-	 
-	<apex:stylesheet value="{!URLFOR($Resource.OverlayResources, 'inc/css/css.css')}" />
-
 	<script>
 	
-		alertOverlay.id = '{!$Component.Content}'
-		
-		alertOverlay.message = '{!$Component.Form.MessageTouser}'
-		
-		alertOverlay.title = '{!$Component.Form.Title}'
+		alertOverlay.id 		= '{!$Component.Content}'
+		alertOverlay.message 	= '{!$Component.Form.MessageTouser}'
+		alertOverlay.title 		= '{!$Component.Form.Title}'
 		
 	</script>
 
@@ -57,11 +50,10 @@
 				<!-- end of MessageToUser -->
 				
 				<!-- SubmitButtons -->
-				<apex:outputPanel id="SubmitButtons"
-					styleClass="submitButtons"
+				<apex:outputPanel styleClass="submitButtons"
 					layout="block">
 			
-					<apex:outputLink id="AcceptButton"
+					<apex:outputLink id="Accept"
 					    styleClass="submitButton"
 					    onClick="alertOverlay.close()"
 					    value="javascript:;">

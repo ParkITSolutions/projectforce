@@ -4,39 +4,19 @@
 public class TaskPdfExportController {
 
 	private String USERID = UserInfo.getUserId(); 
-	private Boolean editDeletePer = false;
-	private String projectId = '';
-	private Boolean canComment;
 	public TaskDetails taskDetail = null;
-	public TaskComment__c comment = new TaskComment__c(); 
-	public boolean detailsOk;
-	public String param = ''; 
 	public UserPermissions userPermissions = new UserPermissions();
 	public String taskId;
     
-	
 	/**
 	* Constructor
 	*/
 	public TaskPdfExportController(){
-		param = System.currentPageReference().getParameters().get('id'); 
-		getTask(param);
-		genPermissions();
-		editDeletePer = userPermissions.getCanManage();		
-		canComment = userPermissions.getCanComment();
-		taskId = System.currentPageReference().getParameters().get('id');
-		List<ProjectTask__c> task = new List<ProjectTask__c>();
-		task = [select project__c from ProjectTask__c where Id =:taskId];
 		
-		projectId = task[0].project__c;
-	}
-	
-	/**
-	* Do refresh
-	*@return void
-	*/	
-	public void doRefresh (){
-		this.getTask(param);
+		taskId = System.currentPageReference().getParameters().get('id');
+		getTask(this.taskId);
+		genPermissions();
+
 	}
 	
 	/**
@@ -44,6 +24,7 @@ public class TaskPdfExportController {
 	*@return void
 	*/
 	public void genPermissions() {
+		
 		userPermissions.setId(UserInfo.getUserId());
 		userPermissions.setObjectType('Project');
 		userPermissions.setPermissions();		
@@ -54,51 +35,29 @@ public class TaskPdfExportController {
 	*@return UserPermissions
 	*/
 	public UserPermissions getUserPermissions () {
+		
 		return userPermissions;
 	}
 	
 	/**
-	*@return task comment
-	*/
-	public TaskComment__c getComment(){
-		return comment;
-	}
-	
-	/**
-	* sets task comment
-	*@param TaskComment__c c
-	*@return void
-	*/
-	public void setComment (TaskComment__c c){
-		comment = c;
-	}
-	
-	
-	/**
 	* Set the value of task id
-	*@param String s
+	*@param String id
 	*@return void
 	*/
-	public void setTaskId(String s) {
-		param = s;
-	}
-	
-	/**
-	* Get task id
-	*@retun id
-	*/
-	public String getParam(){
-		return param;
+	public void setTaskId(String id) {
+		
+		this.taskId = id;
 	}
 	
 	/**
 	*@return list of task comments
 	*/
 	public List<TaskComment__c> getTaskComments(){
+		
 		List<TaskComment__c> taskComments = new List<TaskComment__c>(); 
 		taskComments = [select Id, Body__c, createdDate, createdBy.Name 
 							from TaskComment__c 
-							where Task__c =: param 
+							where Task__c =: this.taskId 
 							order by createdDate DESC];
 		return taskComments;	
 	}
@@ -109,12 +68,13 @@ public class TaskPdfExportController {
 	*@return boolean
 	*/
 	public Boolean getIsTaskParent(){
+		
 		try{
 			ParentTask parent = new ParentTask(); 
 			
 			ProjectTask__c myTask = [Select PercentCompleted__c, Project__c, Id 
 										From ProjectTask__c 
-										where Id =: param];
+										where Id =: this.taskId];
 										
 			BigListOfTasks bigListOfTasks = new BigListOfTasks(myTask.Project__c);	
 			return parent.taskHasChildren(myTask);
@@ -130,14 +90,13 @@ public class TaskPdfExportController {
 	*@return void
 	*/
 	public void getTask (String param){
-		if((param != null) && (param != '')){
-			detailsOk = true;
+		
 			ProjectTask__c TD = [Select p.Id,p.Project__c,p.Project__r.Name,p.StartDate__c,
 									p.Priority__c,p.PercentCompleted__c, p.Name, p.Milestone__c,
 									p.LastModifiedById,p.LastModifiedBy.Name,p.LastModifiedDate,
 									p.EndDate__c, p.Duration__c, p.Description__c,p.ParentTask__c,
 									p.ParentTask__r.Name,p.ParentTask__r.Id,p.CreatedById, 
-									p.CreatedBy.Name,p.CreatedDate,	
+									p.CreatedBy.Name,p.CreatedDate,	p.Status__c,
 									(Select Id, Name, ContentType, BodyLength From Attachments), 
 									(Select Id, User__c, User__r.Name, User__r.Id,PercentDedicated__c From ProjectsAssignees__r order by User__r.Name) 
 									From ProjectTask__c p 
@@ -146,6 +105,7 @@ public class TaskPdfExportController {
 			if(TD != null ){
 				taskDetail = new TaskDetails();
 				taskDetail.id = TD.Id;
+				taskDetail.status = TD.status__c;
 				taskDetail.IsTaskOwner = false;
 				
 				if(((TD.ProjectsAssignees__r).size() != 0) && (TD.ProjectsAssignees__r != null)){
@@ -255,34 +215,6 @@ public class TaskPdfExportController {
 					taskDetail.ShowAttachs = false;
 				}
 			} 
-		} else {
-			detailsOk = false;		
-		}	
-	}
-	
-	//returns false if the project is closed and the user is not a member
-	public boolean getAllowComments(){
-		
-		List<Project2__c> project = new List<Project2__c>();		
-		project = [select Id, Access__c from Project2__c where Id =:projectId];
-		
-		if(project.size() > 0){
-			if(project[0].Access__c.equals('Closed')){
-			
-				List<ProjectMember__c> userMember = new List<ProjectMember__c>();
-				userMember = [select id 
-							from ProjectMember__c 
-							where project__c =:projectId and User__c =:UserInfo.getUserId() 
-							limit 1];
-
-				if (userMember.size() == 0) {
-					return false;
-				}
-				
-			}
-		}
-		
-		return true;
 	}
 	
 	/**
@@ -290,6 +222,7 @@ public class TaskPdfExportController {
 	*@class
 	*/
 	public class ProjectAssignee {
+		
 		String id;
 		String AssigneeId;
 		String name;
@@ -299,6 +232,7 @@ public class TaskPdfExportController {
 		*@return String
 		*/
 		public String getId () {
+			
         	return id;
         }
         
@@ -307,12 +241,14 @@ public class TaskPdfExportController {
         *@return void
         */
         public void setAssigneeId (String AssigneeId) {
+        	
         	this.AssigneeId = AssigneeId;
         }
 		/**
 		*@return String
 		*/
 		public String getAssigneeId () {
+			
         	return AssigneeId;
         }
         
@@ -321,12 +257,14 @@ public class TaskPdfExportController {
         *@return void
         */
         public void setId (String id) {
+        	
         	this.id = id;
         }        
         /**
 		*@return String
 		*/
         public String getName() {
+        	
         	return name;
         }
 		
@@ -335,6 +273,7 @@ public class TaskPdfExportController {
         *@return void
         */
         public void setName(String name) {
+        	
        		this.name = name;
         } 
         
@@ -342,6 +281,7 @@ public class TaskPdfExportController {
 		*@return Integer
 		*/
         public Integer getPercent() {
+        	
         	return percent;
         }
         
@@ -350,6 +290,7 @@ public class TaskPdfExportController {
 		*@return void
 		*/
         public void setPercent (Integer percent) {
+        	
         	this.percent = percent;
         }
 	}
@@ -368,6 +309,7 @@ public class TaskPdfExportController {
 		*@return String
 		*/
         public String getId () {
+        	
         	return id;
         }
         
@@ -376,6 +318,7 @@ public class TaskPdfExportController {
         *@return void
         */
         public void setId (String id) {
+        	
         	this.id = id;
         }
         
@@ -383,6 +326,7 @@ public class TaskPdfExportController {
 		*@return String
 		*/
         public String getName() {
+        	
         	return name;
         }
 		
@@ -391,6 +335,7 @@ public class TaskPdfExportController {
         *@return void
         */
         public void setName(String name) {
+        	
         	this.name = name;
         }  
         
@@ -398,6 +343,7 @@ public class TaskPdfExportController {
 		*@return String
 		*/
         public String getAttachImage() {
+        	
         	return attachImage;
         }
 
@@ -406,41 +352,19 @@ public class TaskPdfExportController {
         *@return void
         */
         public void setAttachImage (String attachImage) {
+        	
         	this.attachImage = attachImage;
         }          
                                         
-	}
-	
-	
-	/**
-	*@return boolean
-	*/
-	public boolean getDetailsOk(){
-		return detailsOk;
 	}
 	
 	/**
 	*@return TaskDetails
 	*/
 	public TaskDetails getTask(){
+		
 		return taskDetail;
 	}
-	
-	/**
-	* Gets Max Assignees
-	*@return void
-	*/
-	public boolean getMaxAssignees(){
-				List <ProjectMember__c> AuxList = new List<ProjectMember__c>();
-				AuxList = [ select Id 
-								from ProjectMember__c 
-								where Project__c =: taskDetail.ProjectId  and User__r.IsActive != false];
-				if (taskDetail.CantAssignees==AuxList.size()){
-					return true;
-				}else return false;
-				
-	}
-	
 	
 	
 	/**
@@ -454,8 +378,15 @@ public class TaskPdfExportController {
 			*/
 			public String id { 
 				get; set; 
-			}		   	
-		   	
+			}		   
+				
+		   	/**
+			* Task status
+			*/
+			public String status { 
+				get; set; 
+			}	
+			
 		   	/**
 		   	* Task Asignees 
 		   	*/

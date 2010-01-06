@@ -21,4 +21,19 @@ public class DAOProject {
 		
 		return project;
 	}
+	
+	public Boolean isProjectAdministrator(String projectId){
+		
+		List<Project2__c> project = [select Id
+					       			 from Project2__c
+					                 where OwnerId =: Userinfo.getUserId()
+					                 and id =:projectId
+					       			 limit 1];
+							 
+		if(project.size() > 0){
+			return true;
+		}
+		
+		return false;
+	}
 }

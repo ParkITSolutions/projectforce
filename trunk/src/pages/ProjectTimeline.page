@@ -1,4 +1,5 @@
 <apex:page tabStyle="Project2__c" controller="ProjectTimelineController" sidebar="false">
+	
 	<embed  src="{!$Resource.Gantt}"
 	        play="true" 
 	        bgcolor="#f3f3ec" 
@@ -13,4 +14,5 @@
 	        allowScriptAccess="always"
 	        type="application/x-shockwave-flash"
 	        pluginspage="http://www.adobe.com/go/getflashplayer" /> 
+	        
 </apex:page>

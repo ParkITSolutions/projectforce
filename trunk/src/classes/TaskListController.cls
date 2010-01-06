@@ -22,6 +22,8 @@ public class TaskListController {
 		
 		this.url = ProjectUtil.getUrl();
 		
+		System.debug('### System.Userinfo.getUserType(): '+System.Userinfo.getUserType());
+		
 	}
 	
 	public void refreshTasksList(){

@@ -1,9 +1,7 @@
 <apex:component id="NewTask" controller="NewTaskController" allowDML="true">
 
 	<script>
-	
 		var newTask = '{!$Component.Content}'
-		
 	</script>
 	
 	<apex:outputPanel id="Content" style="display: none">

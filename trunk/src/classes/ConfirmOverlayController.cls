@@ -10,6 +10,7 @@ public class ConfirmOverlayController {
 	
 	public String 	postAction 	    { set; get; }
 	
+	public String 	exceptionMessage 	    { set; get; }
 	
 	/**
 	*Constructor
@@ -23,28 +24,53 @@ public class ConfirmOverlayController {
 	*/
 	public void action(){
 		
-		if(this.actionName == 'DeleteTasks'){
-			
-			DAOFactory.getInstance().removeTasks(this.actionIds);
-			
-			this.postAction = 'DeleteTasksSuccess';
-			
-		}
+		try{
 		
-		if(this.actionName == 'MarkCompleteTasks'){
+			if(this.actionName == 'DeleteTasks'){
+				
+				DAOFactory.getInstance().removeTasks(this.actionIds);
+				
+				this.postAction = 'DeleteTasksSuccess';
+				
+			}
 			
-			//DAOFactory.getInstance().markCompleteTasks(this.actionIds);
-			
-			String projectId = System.currentPageReference().getParameters().get('id');
-			
-			Project project = new Project(projectId);
-			
-			project.setTasks(this.actionIds);
-			
-			project.markCompleteTasks();
-			
-			this.postAction = 'MarkCompleteTasksSuccess';
-			
+			if(this.actionName == 'MarkCompleteTasks'){
+				
+				String projectId = System.currentPageReference().getParameters().get('id');
+				
+				Project project = new Project(projectId);
+				
+				project.setTasks(this.actionIds);
+				
+				Map<String, List<ProjectTask__c>> m = project.markCompleteTasks();
+					
+				if(m.containsKey('TasksMarkCompleteSuccess')){
+					 
+					 this.postAction = 'TasksMarkCompleteSuccess';
+					 	
+				}
+					
+				if(m.containsKey('TasksMarkCompleteNoPermissions')){
+					 
+					 this.postAction = 'TasksMarkCompleteNoPermissions';
+					 	
+				}
+					
+				if(m.containsKey('TasksMarkCompleteHaveChildren')){
+					 
+					 this.postAction = 'TasksMarkCompleteHaveChildren';
+					 	
+				}
+					
+				for(ProjectTask__c task : m.get(this.postAction)){
+					 	
+					 actionIds = actionIds + ':' + task.Id;
+				}
+				
+			}
+		}catch(CustomException e){
+					
+			this.exceptionMessage = e.getMessage();
 		}
 		
 	}

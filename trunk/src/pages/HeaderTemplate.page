@@ -8,12 +8,12 @@
                 <h2 class="arial_black"><apex:insert name="title"/></h2>
             </div>      
         </div>      
+        
         <!-- Search Box -->
         <apex:insert name="search"/><br/>
         <!-- Help for this page -->
         <div class="help">
             <div>
-				<!--<a href="javascript:;">Help for this page</a>  <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/help_icon.gif')}" alt="" />-->
 				<c:TaskQuickAccess />
 				<c:ProjectInitProfiles />
             </div>

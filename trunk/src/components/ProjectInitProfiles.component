@@ -1,6 +1,5 @@
 <apex:component controller="ProjectInitProfiles" allowDML="true">
 
-
 <apex:outputPanel rendered="{!showOverlay}">
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />
 	<div id="ProfOv" style="display: none;">
