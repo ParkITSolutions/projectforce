@@ -42,34 +42,16 @@ public class ConfirmOverlayController {
 				
 				project.setTasks(this.actionIds);
 				
-				Map<String, List<ProjectTask__c>> m = project.markCompleteTasks();
-					
-				if(m.containsKey('TasksMarkCompleteSuccess')){
-					 
-					 this.postAction = 'TasksMarkCompleteSuccess';
-					 	
-				}
-					
-				if(m.containsKey('TasksMarkCompleteNoPermissions')){
-					 
-					 this.postAction = 'TasksMarkCompleteNoPermissions';
-					 	
-				}
-					
-				if(m.containsKey('TasksMarkCompleteHaveChildren')){
-					 
-					 this.postAction = 'TasksMarkCompleteHaveChildren';
-					 	
-				}
-					
-				for(ProjectTask__c task : m.get(this.postAction)){
-					 	
-					 actionIds = actionIds + ':' + task.Id;
-				}
+				project.markCompleteTasks();
 				
+				this.postAction = 'TasksMarkCompleteSuccess';
+				 
 			}
+			
 		}catch(CustomException e){
-					
+			
+			Apexpages.addMessages(e);
+			
 			this.exceptionMessage = e.getMessage();
 		}
 		

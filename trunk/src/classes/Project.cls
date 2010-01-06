@@ -76,7 +76,7 @@ public class Project {
 					
 		}catch(Exception e){
 					 
-			throw new CustomException('Updateing error. It may be because there are tasks that have children.'); 
+			throw new CustomException('Updateing error. It may be because there are tasks that have children.');
 					
 		}finally{
 					
