@@ -1,5 +1,7 @@
 public class DAOMember {
 	
+	public DAOMember(){}
+	
 	public Boolean isCRMAdministrator(){
 		
 		User user = [select Profile.PermissionsModifyAllData

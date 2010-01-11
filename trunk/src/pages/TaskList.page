@@ -1,4 +1,4 @@
-<apex:page id="TaskList" sidebar="false" controller="TaskListController" >
+<apex:page id="TaskList" sidebar="false" controller="TaskListController" tabStyle="Project2__c">
 
 	<c:ApplicationTop id="ApplicationTop" />
 
@@ -14,16 +14,15 @@
 		actionName="MarkCompleteTasks"/>	
 	
 	<c:PromptOverlay id="PromptOverlay"
-	    includeNewTask="true"/>
-	    
-	<apex:messages />
-	
+	    includeNewTask="true"
+	    includeNewMilestone="true"/>
+	   
 	<!-- Refresh functions -->
 	
 	<apex:form >
 	
 		<apex:actionFunction name="RefreshTasksList"
-				action="{!refreshTasksList}"
+				action="{!getTasks}"
 				onComplete="swirly.hide(); infoToUser.show()" 
 				reRender="TasksList"/>
 			
@@ -98,10 +97,81 @@
 			}
 		}
 		
+		//marks all checkboxes belonging to a given class
+		//recives the "caller checkbox" and a class
+		function markAllCheckboxes(checkbox, class){
+		
+			var allChecked = true
+			
+			$$('.'+class).each(function (e){
+	              
+	          	e.checked = checkbox.checked;           
+	   
+	      	}); 
+	      	
+		}
+		
 	</script>
+	
+	<style>
+		.breadcrumbPanel{
+			background-color:olive;
+padding:10px;
+width:363px;
+		}
+		
+		.buttonsPanel{
+			background-color:red;
+margin-left:auto;
+margin-right:auto;
+padding:10px;
+width:363px;
+		}
+		
+		.paginationPanel{
+			background-color:gray;
+margin-left:auto;
+margin-right:auto;
+padding:10px;
+text-align:center;
+width:300px;
+		}
+		
+		.filterPanel{
+			background-color:green;
+padding:10px;
+text-align:right;
+width:96%;
+		}
+		
+		.exportCSVPanel{
+		background-color:lime;
+margin-left:15px;
+padding:5px;
+		}
+	</style>
+	
+	<!-- Header -->
+    <apex:composition template="HeaderTemplate">
+        <apex:define name="moduleId"><apex:variable var="moduleId" value="headerProject"/></apex:define>
+        <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
+        <apex:define name="title">Tasks & Milestones</apex:define>
+        <apex:define name="search">
+            <c:Search module="project" label="Tasks" projectId="{!ProjectId}"/>
+        </apex:define>
+    </apex:composition>
+    <!-- End Header -->
 	
 	<!-- ContentPanel -->
 	<apex:outputPanel id="ContentPanel" styleClass="contentPanel" layout="block" >
+	
+		<!-- BreadcrumbPanel -->
+		<apex:outputPanel id="BreadcrumbPanel" styleClass="breadcrumbPanel" layout="block">
+			
+			Breadcrumb Panel
+				
+		</apex:outputPanel>
+		<!-- End BreadcrumbPanel -->
 	
 		<!-- ButtonsPanel -->
 		<apex:outputPanel id="ButtonsPanel" styleClass="buttonsPanel" layout="block" >
@@ -119,6 +189,7 @@
 				
 				<apex:outputLink value="javascript:;"
 					id="NewMilestoneLink"
+					onClick="promptOverlay.open(newMilestone)"
 					styleClass="button1">
 					
 					New Milestone
@@ -167,7 +238,13 @@
 		<!-- FilterPanel -->
 		<apex:outputPanel id="FilterPanel" styleClass="filterPanel" layout="block">
 			
-			Filter Panel
+			<apex:form id="FilterForm">
+			
+				Quick filter: <apex:selectList value="{!filter}" size="1" id="FilterSelect">
+						  			<apex:selectOptions value="{!filterItems}"/>
+						  	  </apex:selectList>
+			</apex:form>
+			
 				
 		</apex:outputPanel>
 		<!-- End FilterPanel -->
@@ -175,7 +252,15 @@
 		<!-- ExportCSVPanel -->
 		<apex:outputPanel id="ExportCSVPanel" styleClass="exportCSVPanel" layout="block">
 			
-			ExportCSVPanel
+			<apex:form id="ExportCSVForm">
+			
+			 	<apex:image value="{!URLFOR($Resource.ProjectTasksList, 'images/csv.gif')}" id="ExportCSVImage" width="13"/>
+			 
+			 	<apex:commandLink action="{!generateCSV}" 
+	             		value="Export to CSV"
+	                  	title="Export to CSV file"/>
+	                  	
+	         </apex:form>
 				
 		</apex:outputPanel>
 		<!-- End ExportCSVPanel -->
@@ -192,7 +277,7 @@
 				rowClasses="odd,even">
 				
 				<apex:column id="Action">
-					<apex:facet name="header"><apex:inputCheckbox id="ActionCheckbox"/></apex:facet>
+					<apex:facet name="header"><apex:inputCheckbox id="ActionCheckbox" onClick="markAllCheckboxes(this,'actionCheckbox');"/></apex:facet>
 					<input type="checkbox" id="{!task.id}" value="{!task.id}" class="actionCheckbox"/>
 				</apex:column>
 				
@@ -203,38 +288,90 @@
 				</apex:column>
 				
 				<apex:column >
-					<apex:facet name="header"><apex:outputLink value="javascript:;" id="IdLink">Id</apex:outputLink></apex:facet>
-					<apex:outputLink value="javascript:;" id="IdTaskLink">{!task.Id}</apex:outputLink>
+					<apex:facet name="header">
+						<apex:outputpanel id="IdPanel">
+							<apex:commandLink id="IdLink" value="Id" action="{!orderById}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList"/> &nbsp;
+							<apex:image id="IdArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(orderBy == 'Id__c', orderAsc),true,false)}" />
+							<apex:image id="IdArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(orderBy == 'Id__c', NOT(orderAsc)),true, false)}"/>
+						</apex:outputpanel>
+					</apex:facet>
+					<apex:outputLink value="/apex/ProjectTaskDetail?id={!task.id}" id="IdTaskLink">{!task.idDisplay}</apex:outputLink>
 				</apex:column>
 				
 				<apex:column >
-					<apex:facet name="header"><apex:outputLink value="javascript:;" id="PriorityLink">Priority</apex:outputLink></apex:facet>
-					<apex:outputText value="img"/>
+					<apex:facet name="header">
+						<apex:outputpanel id="PriorityPanel">
+							<apex:commandLink id="PriorityLink" value="Priority" action="{!orderByPriority}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList"/> &nbsp;
+							<apex:image id="PriorityArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(orderBy == 'Priority__c', orderAsc),true,false)}" />
+							<apex:image id="PriorityArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(orderBy == 'Priority__c', NOT(orderAsc)),true, false)}"/>
+						</apex:outputpanel>
+					</apex:facet>
+					<apex:image id="PriorityImage" value="{!URLFOR($Resource.ProjectTasksList, 'images/'+task.priority+'Priority.gif')}" />
 				</apex:column>
 				
 				<apex:column >
-					<apex:facet name="header"><apex:outputLink value="javascript:;" id="NameLink">Name</apex:outputLink></apex:facet>
-					<apex:outputLink value="javascript:;" id="NameTaskLink">{!task.Name}</apex:outputLink>
+					<apex:facet name="header">&nbsp;</apex:facet>
+					<apex:image id="MilestoneImage" value="{!URLFOR($Resource.ProjectTasksList, 'images/milestone.gif')}" rendered="{!task.isMilestone}" />
+				</apex:column>
+				
+				<apex:column >
+					<apex:facet name="header">
+						<apex:outputpanel id="NamePanel">
+							<apex:commandLink id="NameLink" value="Name" action="{!orderByName}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList"/> &nbsp;
+							<apex:image id="NameArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(orderBy == 'Name', orderAsc),true,false)}" />
+							<apex:image id="NameArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(orderBy == 'Name', NOT(orderAsc)),true, false)}"/>
+						</apex:outputpanel>
+					</apex:facet>
+					<apex:outputLink value="/apex/ProjectTaskDetail?id={!task.id}" id="NameTaskLink"> {!task.name}</apex:outputLink>
 				</apex:column>
 				
 				<apex:column >
 					<apex:facet name="header"><apex:outputLink value="javascript:;" id="AssignedToLink">Assigned to</apex:outputLink></apex:facet>
-					<apex:outputLink value="javascript:;" id="AssignedToTaskLink">User name</apex:outputLink>
+					<select id="Assignees" style="width: 150px;">
+						<apex:repeat value="{!task.assignees}" var="assignee" id="Assignees">
+							<option id="{!assignee.id}">{!assignee.name}</option>
+						</apex:repeat>
+					</select>
 				</apex:column>
 				
 				<apex:column >
-					<apex:facet name="header"><apex:outputLink value="javascript:;" id="CompletedLink">% Completed</apex:outputLink></apex:facet>
-					<apex:outputText value="{!task.PercentCompleted__c}"/>
+					<apex:facet name="header">
+						<apex:outputpanel id="Completedanel">
+							<apex:commandLink id="CompletedLink" value="% Completed" action="{!orderByCompletedPercentage}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList"/> &nbsp;
+							<apex:image id="CompletedArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(orderBy == 'PercentCompleted__c', orderAsc),true,false)}" />
+							<apex:image id="CompletedArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(orderBy == 'PercentCompleted__c', NOT(orderAsc)),true, false)}"/>
+						</apex:outputpanel>
+						
+					</apex:facet>
+					
+					<apex:outputPanel styleClass="outline {!IF (task.OverdueTask > 0,'borderRed', '')}">
+						<apex:outputPanel styleClass="percentCompleted" style="width:{!task.percentCompleted}%;"/>
+					</apex:outputPanel>
+					<apex:outputText value="{!task.percentCompleted}"/>
+					&#37;{!task.OverdueTask}
 				</apex:column>
 				
 				<apex:column >
-					<apex:facet name="header"><apex:outputLink value="javascript:;" id="DurationLink">Duration (hours)</apex:outputLink></apex:facet>
-					<apex:outputText value="duration"/>
+					<apex:facet name="header">
+					<apex:outputpanel id="DurationPanel">
+							<apex:commandLink id="DurationLink" value="Duration (hours)" action="{!orderByDuration}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList"/> &nbsp;
+							<apex:image id="DurationArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(orderBy == 'Duration__c', orderAsc),true,false)}" />
+							<apex:image id="DurationArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(orderBy == 'Duration__c', NOT(orderAsc)),true, false)}"/>
+						</apex:outputpanel>
+					</apex:facet>
+					<apex:outputText value="{!task.durationDisplay}"/>
 				</apex:column>
 				
 				<apex:column >
-					<apex:facet name="header"><apex:outputLink value="javascript:;" id="DueDateLink">Due date</apex:outputLink></apex:facet>
-					<apex:outputText value="due date"/>
+					<apex:facet name="header">
+					<apex:outputpanel id="EndDatePanel">
+							<apex:commandLink id="EndDateLink" value="Due date" action="{!orderByEndDate}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList"/> &nbsp;
+							<apex:image id="EndDateArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(orderBy == 'EndDate__c', orderAsc),true,false)}" />
+							<apex:image id="EndDateArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(orderBy == 'EndDate__c', NOT(orderAsc)),true, false)}"/>
+						</apex:outputpanel>
+					</apex:facet>
+					<apex:outputText value="{!task.endDateDisplay}"/>
+					
 				</apex:column>
 				
 			</apex:dataTable>
@@ -244,5 +381,27 @@
 	
 	</apex:outputPanel>
 	<!-- End ContentPanel -->
+
+	<style>
+	.outline{
+		border:1px solid #CCCCCC;
+		float:left;
+		height:9px;
+		vertical-align:middle;
+		width:75px;	
+		margin-right: 5px;
+	}
+	.percentCompleted{
+		background-color:#90C142;
+		height:9px;
+		margin:0;
+		display:block;
+	}
+	
+	.borderRed{
+		border-color: #CC0000;
+	}
+	
+	</style>
 
 </apex:page>

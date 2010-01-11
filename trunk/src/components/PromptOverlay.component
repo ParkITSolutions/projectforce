@@ -7,7 +7,13 @@
 					description="Flag to include new task component"
 					type="boolean" 
 					assignTo="{!includeNewTask}" 
-					required="false"/>					
+					required="false"/>	
+			
+	<apex:attribute name="includeNewMilestone" 
+					description="Flag to include new milestone component"
+					type="boolean" 
+					assignTo="{!includeNewMilestone}" 
+					required="false"/>				
 								
 	<script>
 	
@@ -35,6 +41,10 @@
 			
 					<apex:outputPanel rendered="{!includeNewTask}">
 						 	<c:NewTask id="NewTask" /> 
+					</apex:outputPanel>
+					
+					<apex:outputPanel rendered="{!includeNewMilestone}">
+						 	<c:NewMilestone id="NewMilestone" /> 
 					</apex:outputPanel>
 			
 				</apex:outputPanel>

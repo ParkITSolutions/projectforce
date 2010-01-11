@@ -292,7 +292,9 @@ public class ProjectSubscribersEmailServices{
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='End date';
-			field=proj.ProjectTask__r.EndDate__c.format();
+			field='';
+			if (proj.ProjectTask__r.EndDate__c != null)
+				field=proj.ProjectTask__r.EndDate__c.format();
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='Description';
@@ -381,8 +383,11 @@ public class ProjectSubscribersEmailServices{
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='End date';
-			field=lstPT[0].EndDate__c.format();
+			field='';
+			if (lstPT[0].EndDate__c != null)
+				field=lstPT[0].EndDate__c.format();
 			htmlVar=returnVarHtml(htmlVar, title, field);
+			
 			
 			title='End Descripcion';
 			field=lstPT[0].Description__c;
@@ -456,7 +461,9 @@ public class ProjectSubscribersEmailServices{
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='End date';
-			field=lstPT[0].EndDate__c.format();
+			field='';
+			if (lstPT[0].EndDate__c != null)
+				field=lstPT[0].EndDate__c.format();
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='Description';
@@ -545,7 +552,9 @@ public class ProjectSubscribersEmailServices{
 	        htmlVar=returnVarHtml(htmlVar, title, field);
 	        
 	        title='End date';
-	        field=lstPT[0].EndDate__c.format();
+	        field='';
+			if (lstPT[0].EndDate__c != null)
+				field=lstPT[0].EndDate__c.format();
 	        htmlVar=returnVarHtml(htmlVar, title, field);
 	        
 	        title='Description';
@@ -614,7 +623,9 @@ public class ProjectSubscribersEmailServices{
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='End date';
-			field=proj.EndDate__c.format();
+			field='';
+			if (proj.EndDate__c != null)
+				field=proj.EndDate__c.format();
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='Description';
@@ -684,7 +695,9 @@ public class ProjectSubscribersEmailServices{
 					htmlVar=returnVarHtml(htmlVar, title, field);
 					
 					title='End date';
-					field=t.EndDate__c.format();
+					field='';
+					if (t.EndDate__c != null)
+						field=t.EndDate__c.format();
 					htmlVar=returnVarHtml(htmlVar, title, field);
 					
 					title='Description';

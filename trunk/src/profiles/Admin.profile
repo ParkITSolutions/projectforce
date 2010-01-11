@@ -11,6 +11,18 @@
         <visible>true</visible>
     </applicationVisibilities>
     <classAccesses>
+        <apexClass>ActivityLog</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ActivityWidgetController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AttachmentActivity</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>BigListOfTasks</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -28,6 +40,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CustomExceptionTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DAOActivity</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -87,7 +103,23 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>MemberActivity</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>MessageLog</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>NewMilestoneController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>NewTaskController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>Paginator</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -111,7 +143,7 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProjectAssignee</apexClass>
+        <apexClass>ProjectActivity</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -375,7 +407,23 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>TaskActivity</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TaskAssignee</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TaskAssigneeActivity</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>TaskComment</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TaskCommentActivity</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -525,6 +573,15 @@
     <fieldLevelSecurities>
         <editable>true</editable>
         <field>Account.Website</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>ActivityChangeType__c.ChangeType__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>ActivityChangeType__c.logId__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
@@ -1303,6 +1360,35 @@
         <field>Project2__c.WorkingHours__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>ProjectActivity__c.Access__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>ProjectActivity__c.Action__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>ProjectActivity__c.ModifiedBy__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>ProjectActivity__c.ProjectId__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>ProjectActivity__c.TimeStamp__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>ProjectActivity__c.name__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
         <editable>true</editable>
         <field>ProjectAssignee__c.Notify__c</field>
     </fieldLevelSecurities>
@@ -1553,6 +1639,9 @@
         <layout>Account-Account Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>ActivityChangeType__c-ActivityChangeType Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Asset-Asset Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -1583,6 +1672,9 @@
         <layout>Lead-Lead Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>MemberActivity__c-MemberActivity Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Opportunity-Opportunity Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -1597,6 +1689,9 @@
     <layoutAssignments>
         <layout>Project2__c-Project2 Layout</layout>
         <recordType>Project2__c.Test</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ProjectActivity__c-ProjectActivity Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ProjectAssignee__c-ProjectAssignee Layout</layout>
@@ -1629,6 +1724,15 @@
         <layout>Task-Task Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>TaskActivity__c-TaskActivity Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>TaskAssigneeActivity__c-TaskAssigneeActivity Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>TaskCommentActivity__c-TaskCommentActivity Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>TaskComment__c-TaskComment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -1644,6 +1748,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Account</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>ActivityChangeType__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -1715,6 +1828,15 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
+        <object>MemberActivity__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
         <object>Opportunity</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -1734,6 +1856,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Project2__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>ProjectActivity__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -1823,6 +1954,33 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
+        <object>TaskActivity__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>TaskAssigneeActivity__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>TaskCommentActivity__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
         <object>TaskComment__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -1841,6 +1999,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>OutputStyles</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>Paginator</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>

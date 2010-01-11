@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Object for tracking changes to task assignees</description>
+    <label>TaskAssigneeActivity</label>
+    <nameField>
+        <label>TaskAssigneeActivity Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>TaskAssigneeActivites</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

@@ -1,3 +1,4 @@
-public with sharing class DAOSubscription {
+public class DAOSubscription {
 
+	public DAOSubscription(){}
 }

@@ -2,7 +2,7 @@ public class DAOAssignee {
 	
 	public DAOAssignee(){}
 	
-	public void add(String taskId, String assignTo, String projectId){
+	public void insertAssignee(String taskId, String assignTo, String projectId){
 	
 		ProjectAssignee__c assignee = new ProjectAssignee__c();
 		
@@ -29,5 +29,29 @@ public class DAOAssignee {
 		}				
 		
 		return false;							 
+	}
+	
+	/**
+	* Returns a list with all task assingees
+	*/
+	public List<ProjectMember> getAssignees(String taskId){
+		
+		List<ProjectAssignee__c> assignees = [select Id, Name
+											  from ProjectAssignee__c
+											  where ProjectTask__c =: taskId];
+											 
+		List<ProjectMember> assigneesList = new List<ProjectMember>();
+		
+		for(ProjectAssignee__c assignee : assignees){
+			
+			ProjectMember member = new ProjectMember();
+			
+			member.id = assignee.id;
+			member.name = assignee.Name;
+			
+			assigneesList.add(member);
+		}				
+		
+		return assigneesList;							 
 	}
 }
