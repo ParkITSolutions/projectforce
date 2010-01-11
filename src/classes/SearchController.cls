@@ -127,8 +127,7 @@ public class SearchController {
 				pageRef.getParameters().put('id', this.teamId);
 			}
 			pageRef.setRedirect(true);			
-			return pageRef;
-			
+			return pageRef;			
 		}else {
 			return null;
 		}

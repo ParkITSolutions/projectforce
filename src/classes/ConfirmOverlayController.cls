@@ -28,7 +28,7 @@ public class ConfirmOverlayController {
 		
 			if(this.actionName == 'DeleteTasks'){
 				
-				DAOFactory.getInstance().removeTasks(this.actionIds);
+				DAOFactory.getInstance().deleteTasks(this.actionIds);
 				
 				this.postAction = 'DeleteTasksSuccess';
 				

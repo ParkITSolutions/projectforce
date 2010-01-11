@@ -1,0 +1,21 @@
+<apex:component id="ActivityWidget" controller="ActivityWidgetController" allowDML="true" >
+	
+	<apex:stylesheet value="{!URLFOR($Resource.ActivityWidget, 'inc/css/ActivityWidget.css')}" /> 
+	<apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/js/ActivityWidget.js')}" />
+	
+	<!-- widget header -->
+	<apex:outputPanel id="header" layout="block" style="header">
+		
+	</apex:outputPanel>
+	
+	<!-- dynamic content goes here -->
+	<apex:outputPanel id="content" layout="block" style="content">
+		
+	</apex:outputPanel>
+	
+	<!-- widget footer -->
+	<apex:outputPanel id="footer" layout="block" style="footer">
+		
+	</apex:outputPanel>
+
+</apex:component>

@@ -1,3 +1,4 @@
-public with sharing class DAOTaskPredecessor {
+public class DAOTaskPredecessor {
 
+	public DAOTaskPredecessor(){}
 }

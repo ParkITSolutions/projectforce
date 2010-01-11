@@ -20,8 +20,6 @@
 					type="String" 
 					assignTo="{!ActionName}" 
 					required="true"/>	
-					
-	
 	
 	<!-- Content -->
 	<apex:outputPanel id="Content"
@@ -78,7 +76,7 @@
 					<apex:commandButton id="Accept"
 						value="Accept"
 						action="{!action}"
-						
+						onClick="confirmOverlay.close(); swirly.show()"
 						onComplete="confirmOverlay.postAction()" 
 					    reRender="HiddenPanel" 
 					    styleClass="submitButton"/>

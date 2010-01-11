@@ -25,12 +25,14 @@
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectDetail.js')}" />
 	 
     <!-- CSS Includes -->
+    <apex:stylesheet value="{!URLFOR($Resource.TeamsResources, 'inc/css/widgets/TeamMemberWidget.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
     
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectLayout.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
+    
      
 	<script src="{!URLFOR($Resource.ckeditor, 'ckeditor/ckeditor.js')}" />
 	
@@ -109,7 +111,7 @@
 									 
 										
 										<!-- CKEditor Aux -->
-	                                        <apex:inputTextarea id="ckeditor_aux"  value="{!taskNotes}" styleClass="ckeditor_aux" style="display:none !important; width:0px; heigth:0px;"/>
+	                                    <apex:inputTextarea id="ckeditor_aux"  value="{!taskNotes}" styleClass="ckeditor_aux" style="display:none !important; width:0px; heigth:0px;"/>
 	 
 									</td>
 								</tr>

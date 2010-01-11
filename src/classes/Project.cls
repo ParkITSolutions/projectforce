@@ -35,9 +35,9 @@ public class Project {
 		
 	}
 	
-	public List<ProjectTask__c> getTasks(){
+	public List<Task> getTasks(String filter, String orderBy, Boolean orderAsc, Integer listIndex, Integer quantity){
 		
-		return DAOFactory.getInstance().listTasksByProject(this.id);
+		return DAOFactory.getInstance().getTasksByProject(this.id, filter, orderBy, orderAsc, listIndex, quantity);
 	}
 	
 	public void setInfo(){

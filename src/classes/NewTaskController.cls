@@ -34,7 +34,7 @@ public class NewTaskController {
 	
 	public void action(){
 		
-		DAOFactory.getInstance().addTask(this.name, this.startDate, this.dueDate, this.duration, this.assignTo, this.projectId);
+		DAOFactory.getInstance().insertTask(this.name, this.startDate, this.dueDate, this.duration, this.assignTo, this.projectId, false);
 		
 		if(this.currentPage.contains('TaskList')){
 			

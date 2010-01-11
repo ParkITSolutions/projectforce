@@ -1,0 +1,76 @@
+<apex:component id="NewMilestone" controller="NewMilestoneController" allowDML="true">
+
+	<script>
+	
+		var newMilestone = '{!$Component.Content}'
+		
+	</script>
+	
+	<apex:outputPanel id="Content" style="display: none">
+	
+			<!-- TitlePanel -->
+			<apex:outputPanel id="TitlePanel"
+				styleClass="titlePanel"
+				layout="block">
+			
+				Create New Milestone
+			
+			</apex:outputPanel>
+			<!-- End TitlePanel -->
+			
+			<!-- Form -->
+			<apex:form id="Form">
+			
+				<apex:outputPanel id="HiddenPanel" style="display: none">
+				
+					<apex:inputHidden value="{!postAction}" id="PostAction"/>
+					
+				</apex:outputPanel>
+			
+				<!-- ComponentBody -->
+				<apex:outputPanel id="ComponentBody"
+					styleClass="componentBody"
+					layout="block">
+			
+					Name: <apex:inputText id="Name" value="{!name}" />	<br>
+					
+					Start Date: <apex:inputText id="StartDate" value="{!startDate}" /> <br>	
+					
+					Assign To: <apex:selectList value="{!assignTo}" size="1">
+									<apex:selectOptions value="{!members}"/>
+							   </apex:selectList>	
+					
+					<!-- SubmitButtons -->
+					<apex:outputPanel id="SubmitButtons"
+						styleClass="submitButtons"
+						layout="block">
+					
+							<apex:commandButton id="AcceptButton"
+								value="Accept"
+								action="{!action}"
+								onClick="promptOverlay.close(); swirly.show();"
+								onComplete="promptOverlay.postAction();"
+								reRender="HiddenPanel"
+							    styleClass="submitButton"/>
+							    
+							<apex:outputLink id="CancelButton"
+								value="javascript:;"
+								onClick="promptOverlay.close()"
+							    styleClass="submitButton" >
+							    
+							    Cancel
+							    
+							</apex:outputLink>	
+					
+					</apex:outputPanel>
+					<!-- end of SubmitButtons -->
+					
+				</apex:outputPanel>
+				<!-- end of ComponentBody -->
+			
+			</apex:form>
+			<!-- End Form -->
+				
+	</apex:outputPanel>
+	
+</apex:component>
