@@ -269,7 +269,7 @@ padding:5px;
 				<apex:form id="PaginatorForm">
 				
 					<apex:actionFunction name="RefreshPaginator"
-						action="{!paginator.refreshPaginator}"
+						action="{!paginator.pagesListConstructor}"
 						onComplete="swirly.hide();" 
 						reRender="TasksList, PaginatorPanel"/>
 						
@@ -351,7 +351,7 @@ padding:5px;
 		<!-- TasksForm -->
 		<apex:form id="TasksForm">
 			
-			<!-- 
+			
 			<apex:dataTable value="{!tasks}" 
 				var="task" 
 				id="TasksList" 
@@ -374,7 +374,7 @@ padding:5px;
 				<apex:column >
 					<apex:facet name="header">
 						<apex:outputpanel id="IdPanel">
-							<apex:commandLink id="IdLink" value="Id" action="{!orderById}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList"/> &nbsp;
+							<apex:commandLink id="IdLink" value="Id" action="{!orderById}" onClick="swirly.show()" onComplete="RefreshPaginator()" /> &nbsp;
 							<apex:image id="IdArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(orderBy == 'Id__c', orderAsc),true,false)}" />
 							<apex:image id="IdArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(orderBy == 'Id__c', NOT(orderAsc)),true, false)}"/>
 						</apex:outputpanel>
@@ -385,7 +385,7 @@ padding:5px;
 				<apex:column >
 					<apex:facet name="header">
 						<apex:outputpanel id="PriorityPanel">
-							<apex:commandLink id="PriorityLink" value="Priority" action="{!orderByPriority}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList"/> &nbsp;
+							<apex:commandLink id="PriorityLink" value="Priority" action="{!orderByPriority}" onClick="swirly.show()" onComplete="RefreshPaginator()" reRender="TasksList"/> &nbsp;
 							<apex:image id="PriorityArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(orderBy == 'Priority__c', orderAsc),true,false)}" />
 							<apex:image id="PriorityArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(orderBy == 'Priority__c', NOT(orderAsc)),true, false)}"/>
 						</apex:outputpanel>
@@ -401,7 +401,7 @@ padding:5px;
 				<apex:column >
 					<apex:facet name="header">
 						<apex:outputpanel id="NamePanel">
-							<apex:commandLink id="NameLink" value="Name" action="{!orderByName}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList"/> &nbsp;
+							<apex:commandLink id="NameLink" value="Name" action="{!orderByName}" onClick="swirly.show()" onComplete="RefreshPaginator()" reRender="TasksList"/> &nbsp;
 							<apex:image id="NameArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(orderBy == 'Name', orderAsc),true,false)}" />
 							<apex:image id="NameArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(orderBy == 'Name', NOT(orderAsc)),true, false)}"/>
 						</apex:outputpanel>
@@ -421,7 +421,7 @@ padding:5px;
 				<apex:column >
 					<apex:facet name="header">
 						<apex:outputpanel id="Completedanel">
-							<apex:commandLink id="CompletedLink" value="% Completed" action="{!orderByCompletedPercentage}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList"/> &nbsp;
+							<apex:commandLink id="CompletedLink" value="% Completed" action="{!orderByCompletedPercentage}" onClick="swirly.show()" onComplete="RefreshPaginator()" reRender="TasksList"/> &nbsp;
 							<apex:image id="CompletedArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(orderBy == 'PercentCompleted__c', orderAsc),true,false)}" />
 							<apex:image id="CompletedArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(orderBy == 'PercentCompleted__c', NOT(orderAsc)),true, false)}"/>
 						</apex:outputpanel>
@@ -438,7 +438,7 @@ padding:5px;
 				<apex:column >
 					<apex:facet name="header">
 					<apex:outputpanel id="DurationPanel">
-							<apex:commandLink id="DurationLink" value="Duration (hours)" action="{!orderByDuration}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList"/> &nbsp;
+							<apex:commandLink id="DurationLink" value="Duration (hours)" action="{!orderByDuration}" onClick="swirly.show()" onComplete="RefreshPaginator()" reRender="TasksList"/> &nbsp;
 							<apex:image id="DurationArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(orderBy == 'Duration__c', orderAsc),true,false)}" />
 							<apex:image id="DurationArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(orderBy == 'Duration__c', NOT(orderAsc)),true, false)}"/>
 						</apex:outputpanel>
@@ -449,7 +449,7 @@ padding:5px;
 				<apex:column >
 					<apex:facet name="header">
 					<apex:outputpanel id="EndDatePanel">
-							<apex:commandLink id="EndDateLink" value="Due date" action="{!orderByEndDate}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList"/> &nbsp;
+							<apex:commandLink id="EndDateLink" value="Due date" action="{!orderByEndDate}" onClick="swirly.show()" onComplete="RefreshPaginator()" reRender="TasksList"/> &nbsp;
 							<apex:image id="EndDateArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(orderBy == 'EndDate__c', orderAsc),true,false)}" />
 							<apex:image id="EndDateArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(orderBy == 'EndDate__c', NOT(orderAsc)),true, false)}"/>
 						</apex:outputpanel>
@@ -462,8 +462,8 @@ padding:5px;
 				</apex:column>
 				
 			</apex:dataTable>
-			 -->
 			 
+			 <!-- 
 			 
 			 <apex:dataTable value="{!paginator.tasksByProject}" 
 				var="task" 
@@ -479,7 +479,7 @@ padding:5px;
 				</apex:column>
 				
 			</apex:dataTable>
-			
+			-->
 		
 		</apex:form>
 		<!-- End TasksForm -->

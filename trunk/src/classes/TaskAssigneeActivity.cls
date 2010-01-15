@@ -3,11 +3,10 @@
 */
 public class TaskAssigneeActivity extends ActivityLog{
 
-	private String assigneeName = '';
-	private String taskName 	= '';
-	private String assigneeId;
-	private String taskId;
-	
+	private String assigneeName 		= '';
+	private String taskName 			= '';
+	private ProjectAssignee__c assignee = null; 
+		
 	/**
 	* Constructor
 	* @param String projectId
@@ -17,11 +16,11 @@ public class TaskAssigneeActivity extends ActivityLog{
 	* @param String assigneeId
 	* @param String taskId
 	*/
-	public TaskAssigneeActivity( String projectId, DateTime timeStamp, String modifiedBy, String action, String assigneeId, String taskId ){
+	public TaskAssigneeActivity( String projectId, DateTime timeStamp, String modifiedBy, String action, ProjectAssignee__c assignee ){
 		
 		super( projectId, timeStamp, action );
-		this.assigneeId = assigneeId;
-		this.taskId 	= taskId;
+		this.assignee = assignee;
+		this.memberId = modifiedBy;
 	}
 	
 	/**
@@ -30,19 +29,23 @@ public class TaskAssigneeActivity extends ActivityLog{
 	*/
 	public override void log(){
 		
-		ProjectMember__c member = DAOFactory.getInstance().getMemberById( this.memberId) ;
+		ProjectMember__c member = DAOFactory.getInstance().getMemberByUserId( this.memberId ) ;
 		this.modifiedBy = member.Name;
 		
 		//Assignee added to a Task
 		if( this.action == 'insert' ){
-			this.changeType = 9;
-			this.assigneeName = '';
+			this.changeType 	= 9;
+			this.assigneeName 	= this.assignee.User__r.Name;
+			this.taskName 		= this.assignee.ProjectTask__r.Name;
+			DAOFactory.getInstance().logTaskAssigneeActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.assigneeName, this.taskName );
 		}
-		
+			
 		//Assignee removed from a Task
 		if( this.action == 'delete' ){
-			this.changeType = 10;
-			this.assigneeName = '';
+			this.changeType 	= 10;
+			this.assigneeName 	= this.assignee.User__r.Name;
+			this.taskName 		= this.assignee.ProjectTask__r.Name;
+			DAOFactory.getInstance().logTaskAssigneeActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.assigneeName, this.taskName );
 		}
 	}
 }

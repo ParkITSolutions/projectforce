@@ -20,8 +20,8 @@ public class DAOActivity {
 	* @param String name
 	* @param String access
 	*/
-	public void logProjectActivity(String projectId, DateTime timeStamp, String modifiedBy, String action, Integer changeType, String name, String access){
-		
+	public void logProjectActivity(String projectId, DateTime timeStamp, String modifiedBy, String action, String changeType, String name, String access){
+		/*
 		ProjectActivity__c prjActivity = new ProjectActivity__c(); 
 		prjActivity.ProjectId__c 	= projectId;
 		prjActivity.TimeStamp__c 	= timeStamp;
@@ -31,7 +31,7 @@ public class DAOActivity {
 		prjActivity.Access__c 		= access;
 		prjActivity.name__c 		= name;
 		
-		insert prjActivity;
+		insert prjActivity;*/
 	}
 	
 	/**
@@ -44,17 +44,17 @@ public class DAOActivity {
 	* @param String memberName
 	* @return void
 	*/
-	public void logMemberActivity(String projectId, DateTime timeStamp, String modifiedBy, String action, Integer changeType, String memberName){
-		
+	public void logMemberActivity(String projectId, DateTime timeStamp, String modifiedBy, String action, String changeType, String memberName){
+		/*
 		MemberActivity__c memActivity = new MemberActivity__c(); 
 		memActivity.ProjectId__c 	= projectId;
 		memActivity.TimeStamp__c 	= timeStamp;
 		memActivity.ModifiedBy__c 	= modifiedBy;
 		memActivity.Action__c 		= action;
 		memActivity.ChangeType__c 	= changeType;
-		memActivity.memberName__c	= memberName;
+		memActivity.MemberName__c	= memberName;
 		
-		insert memActivity;
+		insert memActivity;*/
 		
 	}
 	
@@ -68,9 +68,9 @@ public class DAOActivity {
 	* @param String taskName
 	* @return void
 	*/
-	public void logTaskCommentActivity(String projectId, DateTime timeStamp, String modifiedBy, String action, Integer changeType, String taskName){
+	public void logTaskCommentActivity(String projectId, DateTime timeStamp, String modifiedBy, String action, String changeType, String taskName){
 		
-		TaskCommentActivity__c taskCommentActivity = new TaskCommentActivity__c(); 
+		/*TaskCommentActivity__c taskCommentActivity = new TaskCommentActivity__c(); 
 		taskCommentActivity.ProjectId__c 	= projectId;
 		taskCommentActivity.TimeStamp__c 	= timeStamp;
 		taskCommentActivity.ModifiedBy__c 	= modifiedBy;
@@ -78,7 +78,7 @@ public class DAOActivity {
 		taskCommentActivity.ChangeType__c 	= changeType;
 		taskCommentActivity.TaskName__c		= taskName;
 		
-		insert taskCommentActivity;
+		insert taskCommentActivity;*/
 		
 	}
 	
@@ -93,9 +93,9 @@ public class DAOActivity {
 	* @param String taskName
 	* @return void
 	*/
-	public void logTaskAssigneeActivity(String projectId, DateTime timeStamp, String modifiedBy, String action, Integer changeType, String assigneeName, String taskName){
+	public void logTaskAssigneeActivity(String projectId, DateTime timeStamp, String modifiedBy, String action, String changeType, String assigneeName, String taskName){
 		
-		TaskAssigneeActivity__c taskAssigneeActivity = new TaskAssigneeActivity__c(); 
+		/*TaskAssigneeActivity__c taskAssigneeActivity = new TaskAssigneeActivity__c(); 
 		taskAssigneeActivity.ProjectId__c 		= projectId;
 		taskAssigneeActivity.TimeStamp__c 		= timeStamp;
 		taskAssigneeActivity.ModifiedBy__c 		= modifiedBy;
@@ -104,7 +104,7 @@ public class DAOActivity {
 		taskAssigneeActivity.AssigneeName__c	= assigneeName;
 		taskAssigneeActivity.TaskName__c		= taskName;
 		
-		insert taskAssigneeActivity;
+		insert taskAssigneeActivity;*/
 		
 	}
 	
@@ -122,9 +122,9 @@ public class DAOActivity {
 	* @param Boolean complete
 	* @return void
 	*/
-	public void logTaskActivity(String projectId, DateTime timeStamp, String modifiedBy, String action, Integer changeType, String name, String newName, String duration, String status, Boolean complete){
+	public void logTaskActivity(String projectId, DateTime timeStamp, String modifiedBy, String action, String changeType, String name, String newName, String duration, String status, Boolean complete){
 		
-		TaskActivity__c taskActivity = new TaskActivity__c(); 
+		/*TaskActivity__c taskActivity = new TaskActivity__c(); 
 		taskActivity.ProjectId__c 	= projectId;
 		taskActivity.TimeStamp__c 	= timeStamp;
 		taskActivity.ModifiedBy__c 	= modifiedBy;
@@ -136,7 +136,7 @@ public class DAOActivity {
 		taskActivity.Status__c		= status;
 		taskActivity.Complete__c	= complete;
 		
-		insert taskActivity;
+		insert taskActivity;*/
 		
 	}
 	
@@ -149,7 +149,7 @@ public class DAOActivity {
 	* @param Integer changeType
 	* @return void
 	*/
-	public void logAttachmentActivity(String projectId, DateTime timeStamp, String modifiedBy, String action, Integer changeType){
+	public void logAttachmentActivity(String projectId, DateTime timeStamp, String modifiedBy, String action, String changeType){
 		/*
 		AttachmentActivity__c attachmentActivity = new AttachmentActivity__c(); 
 		prjActivity.ProjectId__c 	= projectId;
@@ -164,9 +164,17 @@ public class DAOActivity {
 
 	/**
 	* @param 
-	* @return void
+	* @return Project2__c
 	*/
-	public void listBy(){
-	
+	public List<Project2__c> getActivityForProject( String projectId ){
+		List<Project2__c> prjActivity = [Select  p.Id, 
+						(Select Id, OwnerId, Name, Action__c, ChangeType__c, ModifiedBy__c, ProjectId__c, TimeStamp__c, TaskName__c From TaskCommentActivites__r), 
+						(Select Id, OwnerId, Name, Action__c, ChangeType__c, ModifiedBy__c, TimeStamp__c, ProjectId__c, AssigneeName__c, TaskName__c From TaskAssigneeActivites__r), 
+						(Select Id, OwnerId, Name, Action__c, ChangeType__c, ModifiedBy__c, ProjectId__c, TimeStamp__c, NewName__c, Duration__c, Status__c, Complete__c From TaskActivites__r), 
+						(Select Id, OwnerId, Name, ProjectId__c, ModifiedBy__c, TimeStamp__c, Action__c, name__c, Access__c, ChangeType__c From ProjectActivities__r), 
+						(Select Id, OwnerId, Name, MemberName__c, Action__c, ChangeType__c, ModifiedBy__c, TimeStamp__c, ProjectId__c From MemberActivities__r) 
+						From Project2__c p where p.id=:projectId ];
+		
+		return prjActivity;						
 	}
 }

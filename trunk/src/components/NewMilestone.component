@@ -99,6 +99,14 @@
 			padding:7px 7px 5px !important;
 		}
 
+		/*Particular for this overlay*/	
+		.overlayCloseNM {
+			text-decoration:none !important;
+			position: relative !important;
+			width: 13px !important;
+			padding: 0px 0px 0px 300px !important; 
+			
+		}
 		
 		
 		/*** Separate Line **/
@@ -127,7 +135,7 @@
 			
 				Create New Milestone
 				
-				<apex:outputPanel id="overlayClose" styleClass="ds" >
+				<apex:outputPanel id="overlayCloseNM" styleClass="overlayCloseNM" >
 					<apex:outputLink id="linkClose"
 								value="javascript:;"
 								onClick="promptOverlay.close();" >

@@ -3,7 +3,6 @@
 */
 public class MessageLog {
 	
-	
 	/**
 	* Constructor
 	*/
@@ -11,7 +10,7 @@ public class MessageLog {
 	}
 	
 	/**
-	*
+	* Method in charge of retrieving the message log for each activity
 	* @param sObject activity
 	* @return String
 	*/
@@ -78,7 +77,26 @@ public class MessageLog {
 	* @return String
 	*/
 	private String messageTask( TaskActivity__c activity ){
-		return '';
+		
+		String msg = '';
+		
+		if( activity.ChangeType__c == 1 ){
+			msg = '';
+		}
+		
+		if( activity.ChangeType__c == 2 ){
+			msg = '';
+		}
+		
+		if( activity.ChangeType__c == 1 ){
+			msg = '';
+		}
+		
+		if( activity.ChangeType__c == 2 ){
+			msg = '';
+		}
+		
+		return msg;
 	}
 	
 	/**
@@ -87,7 +105,18 @@ public class MessageLog {
 	* @return String
 	*/
 	private String messageAssignee( TaskAssigneeActivity__c activity ){
-		return '';
+		
+		String msg = '';
+		
+		if( activity.ChangeType__c == 1 ){
+			msg = '';
+		}
+		
+		if( activity.ChangeType__c == 2 ){
+			msg = '';
+		}
+		
+		return msg;
 	}
 	
 	/**
@@ -96,7 +125,18 @@ public class MessageLog {
 	* @return String
 	*/
 	private String messageTaskComment( TaskCommentActivity__c activity ){
-		return '';
+		
+		String msg = '';
+		
+		if( activity.ChangeType__c == 1 ){
+			msg = '';
+		}
+		
+		if( activity.ChangeType__c == 2 ){
+			msg = '';
+		}
+		
+		return msg;
 	}
 	
 	/**
@@ -105,7 +145,17 @@ public class MessageLog {
 	* @return String
 	*/
 	private String messageMember( MemberActivity__c activity ){
-		return '';
+		String msg = '';
+		
+		if( activity.ChangeType__c == 1 ){
+			msg = '';
+		}
+		
+		if( activity.ChangeType__c == 2 ){
+			msg = '';
+		}
+		
+		return msg;
 	}
 	
 	/**

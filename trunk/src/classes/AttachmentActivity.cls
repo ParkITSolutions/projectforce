@@ -16,6 +16,7 @@ public class AttachmentActivity extends ActivityLog{
 	public AttachmentActivity( String projectId, DateTime timeStamp, String modifiedBy, String action ){
 		
 		super( projectId, timeStamp, action );
+		this.memberId = modifiedBy;
 	}
 	
 	/**
@@ -24,7 +25,7 @@ public class AttachmentActivity extends ActivityLog{
 	*/
 	public override void log(){
 		
-		ProjectMember__c member = DAOFactory.getInstance().getMemberById( this.memberId );
+		ProjectMember__c member = DAOFactory.getInstance().getMemberByUserId( this.memberId );
 		this.modifiedBy = member.Name;
 	}
 }
