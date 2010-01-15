@@ -1,3 +1,6 @@
+/** 
+*@author Miguel Soares de Lima  @ 15/01/2010
+*/
 public with sharing class ProjectTaskNotesControllerTest {
 	static testMethod void myUnitTest(){
     	
@@ -14,7 +17,8 @@ public with sharing class ProjectTaskNotesControllerTest {
 		nt = new ProjectTaskNotesController( new ApexPages.StandardController( GenerateEnvironmentTest.task ));
 		nt.SaveEditAndExit();
 		
-		nt = new ProjectTaskNotesController( new ApexPages.StandardController( pt ));
+		System.currentPageReference().getParameters().put('id_task', GenerateEnvironmentTest.task.id );
+		nt = new ProjectTaskNotesController( new ApexPages.StandardController( GenerateEnvironmentTest.task ));
 		nt.SaveEdit();
 		
 

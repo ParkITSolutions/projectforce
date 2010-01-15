@@ -13,13 +13,13 @@ public class DAOMember {
 	}
 
 	/**
-	* Method for retrieving a member by Id
-	* @param String memberId
+	* Method for retrieving a member by User id
+	* @param String userId
 	* @return ProjectMember__c
 	*/
-	public ProjectMember__c getMemberById(String memberId){
+	public ProjectMember__c getMemberByUserId(String userId){
 
-		ProjectMember__c member = [Select Id, Name, CreatedDate, CreatedById, Profile__c, Project__c, User__c from ProjectMember__c where User__c=:memberId limit 1];
+		ProjectMember__c member = [Select Id, Name, CreatedDate, CreatedById, Profile__c, Project__c, User__c from ProjectMember__c where User__c=:userId limit 1];
 		return member;
 	}
 }

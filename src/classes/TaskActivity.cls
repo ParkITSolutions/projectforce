@@ -23,8 +23,9 @@ public class TaskActivity extends ActivityLog{
 	public TaskActivity( String projectId, DateTime timeStamp, String modifiedBy, String action, ProjectTask__c oldTask, ProjectTask__c newTask ){
 		
 		super( projectId, timeStamp, action );
-		this.oldTask = oldTask;
-		this.newTask = newTask;
+		this.oldTask 	= oldTask;
+		this.newTask 	= newTask;
+		this.memberId 	= modifiedBy;
 	}
 	
 	/**
@@ -47,20 +48,20 @@ public class TaskActivity extends ActivityLog{
 	*/
 	public override void log(){
 		
-		ProjectMember__c member = DAOFactory.getInstance().getMemberById( this.memberId );
+		ProjectMember__c member = DAOFactory.getInstance().getMemberByUserId( this.memberId );
 		this.modifiedBy = member.Name;
 		
 		this.newName = this.newTask.Name;
 		
 		//New task is created
 		if( this.action == 'insert' ){
-			this.changeType = 3;
+			this.changeType = '';
 			DAOFactory.getInstance().logTaskActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.name, this.newName, this.duration, this.status, this.complete );
 		}
 		
 		//Task is Removed from a project
 		if( this.action == 'delete' ){
-			this.changeType = 4;
+			this.changeType = '';
 			DAOFactory.getInstance().logTaskActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.name, this.newName, this.duration, this.status, this.complete );
 		}		
 		
@@ -68,7 +69,7 @@ public class TaskActivity extends ActivityLog{
 		if( this.action == 'update' ){
 			//Task Name is changed
 			if( this.oldTask.Name != this.newTask.Name ){
-				this.changeType = 5;
+				this.changeType = '';
 				this.name 		= this.oldTask.Name;
 				this.newName 	= this.newTask.Name;
 				DAOFactory.getInstance().logTaskActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.name, this.newName, this.duration, this.status, this.complete );
@@ -76,21 +77,21 @@ public class TaskActivity extends ActivityLog{
 
 			//Tasks Duration is changed
 			if( this.oldTask.DurationUI__c != this.newTask.DurationUI__c ){
-				this.changeType = 6;
+				this.changeType = '';
 				this.duration 	= this.newTask.DurationUI__c;
 				DAOFactory.getInstance().logTaskActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.name, this.newName, this.duration, this.status, this.complete );
 			}
 			
 			//Tasks is completed
 			if( (this.oldTask.PercentCompleted__c != this.newTask.PercentCompleted__c) && this.newTask.PercentCompleted__c == 100.0 ){
-				this.changeType = 7;
+				this.changeType = '';
 				this.complete 	= true;
 				DAOFactory.getInstance().logTaskActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.name, this.newName, this.duration, this.status, this.complete );
 			}
 			
 			//Tasks status is changed
 			if( this.oldTask.Status__c != this.newTask.Status__c ){
-				this.changeType = 8;
+				this.changeType = '';
 				this.status 	= this.newTask.Status__c; 
 				DAOFactory.getInstance().logTaskActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.name, this.newName, this.duration, this.status, this.complete );
 			}

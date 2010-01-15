@@ -109,7 +109,11 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
 				tempPTNew = duration.calculateTaskUpdate(tempPTOld, tempPTNew);
 				if(!ProjectUtil.flags.containsKey('exeParentTaskUpdate') || !ProjectUtil.flags.get('exeParentTaskUpdate'))
 					parent.parentTaskUpdate(tempPTOld, tempPTNew);
-			} 
+			}
+			
+			//Logging Changes for Project Members
+    		TaskActivity taskActivity = new TaskActivity( tempPTNew.Project__c, DateTime.now(), UserInfo.getUserId(), 'update', tempPTOld, tempPTNew );
+			taskActivity.log(); 
 		}
 		AuxMap.put( tempPTOld.id, tempPTOld ); 
     }

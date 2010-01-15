@@ -31,21 +31,21 @@ public class ProjectActivity extends ActivityLog{
 	*/
 	public override void log(){
 		
-		ProjectMember__c member = DAOFactory.getInstance().getMemberById(this.memberId);
+		ProjectMember__c member = DAOFactory.getInstance().getMemberByUserId( this.memberId );
 		this.modifiedBy = member.Name;
 		
 		if( this.action == 'update' ){
 			//Verifys change in Project Name
 			if( this.oldProject.Name != this.newProject.Name ){
-				this.name 	= this.newProject.Name;
-				this.changeType = 1;
+				this.name 		= this.newProject.Name;
+				this.changeType = '';
 				DAOFactory.getInstance().logProjectActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.name, '' );
 			}
 			
 			//Verifys change in Project Access Level
 			if( this.oldProject.Access__c != this.newProject.Access__c ){
-				this.access = this.newProject.Access__c;
-				this.changeType = 2;
+				this.access 	= this.newProject.Access__c;
+				this.changeType = '';
 				DAOFactory.getInstance().logProjectActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, '', this.access );
 			}
 		}

@@ -64,7 +64,11 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
                 //if all validations passed
                 if(triggerValidation){
                 	nTask = duration.calculateTaskInsert(nTask);
-                	nTask.Indent__c = ParentTask.setTaskIndent(nTask);                	
+                	nTask.Indent__c = ParentTask.setTaskIndent(nTask);
+                	
+                	//Logging Changes for Project Members
+                	TaskActivity taskActivity = new TaskActivity( nTask.Project__c, DateTime.now(), UserInfo.getUserId(), 'insert', nTask );
+					//taskActivity.log();                	
                 }
 		    }
 		}

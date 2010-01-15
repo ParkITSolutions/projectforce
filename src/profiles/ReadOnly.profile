@@ -1907,19 +1907,11 @@
     </objectPermissions>
     <objectPermissions>
         <allowRead>true</allowRead>
-        <object>ChangType__c</object>
-    </objectPermissions>
-    <objectPermissions>
-        <allowRead>true</allowRead>
         <object>Contact</object>
     </objectPermissions>
     <objectPermissions>
         <allowRead>true</allowRead>
         <object>Contract</object>
-    </objectPermissions>
-    <objectPermissions>
-        <allowRead>true</allowRead>
-        <object>Foo__c</object>
     </objectPermissions>
     <objectPermissions>
         <allowRead>true</allowRead>

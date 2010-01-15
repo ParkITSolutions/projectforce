@@ -24,15 +24,7 @@ public class Paginator {
 	
 	public Paginator(){
 		
-		//this.project = new Project();
-		
-		//this.paginator = new ApexPages.StandardSetController(Database.getQueryLocator([select id, Name from ProjectTask__c]));
-		
-		Project project = new Project(System.currentPageReference().getParameters().get('id'));
-		
-		this.paginator = project.getTasks('1', 'Name', true);
-		
-		setDefault();
+		this.project = new project();
 		
 	}
 	
@@ -40,19 +32,35 @@ public class Paginator {
 		
 		if(typeOf == 'Tasks'){
 			
-			//Project project = new Project(System.currentPageReference().getParameters().get('id'));
-			
-			//getTasksByProject();
-			
 		}
 		
+	}
+	
+	public void refreshTasksByProject(){
+		
+		this.paginator = project.getTasks(this.filter, this.orderBy, this.orderAsc);
+		
+		setDefault();
+	}
+	
+	public void loadTasksByProject(){
+		
+		this.paginator = project.getTasks(this.filter, this.orderBy, this.orderAsc);
+		
+		this.pageNumber = 1;
+			
+		this.paginator.setPageSize(2);//records per page
+		
+		this.resultSize = paginator.getResultSize();
+
+		this.pagesListSize = 7;
+		
+		pagesListConstructor();
 	}
 	
 	public void setDefault(){
 		
 		this.pageNumber = 1;
-		
-		this.paginator.setPageSize(2);//records per page
 		
 		this.resultSize = paginator.getResultSize();
 
@@ -170,7 +178,7 @@ public class Paginator {
 	}
 	
 	public void setPageSize(Integer value){
-	
+		
 		paginator.setPageSize(value);
 	}
 	
@@ -207,49 +215,6 @@ public class Paginator {
 		
 		pagesListConstructor();
 	}
-	
-	/*public List<Task> getTasksByProject() {
-		
-		this.paginator = project.getTasks(this.filter, this.orderBy, this.orderAsc);
-		
-		//this.paginator = project.getTasks('1', 'Name', true);
-		
-		List<Task> 	tasks = new List<Task>();
-		
-		for(ProjectTask__c task : (List<ProjectTask__c>) paginator.getRecords()){
-			
-			Task taskAux = new Task();
-			
-			taskAux.id = task.id;
-			taskAux.idDisplay = task.Id__c;
-			taskAux.name = task.Name; 
-			taskAux.isMilestone = task.Milestone__c;
-			taskAux.priority = task.Priority__c; 
-			taskAux.setPercentCompleted( task.PercentCompleted__c );
-			taskAux.durationDisplay = String.valueOf(task.Duration__c);
-		
-			if( task.Milestone__c ){
-				taskAux.endDateDisplay = String.valueOf(task.StartDate__c.format());
-				taskAux.endDate = task.StartDate__c;
-			}else{
-				taskAux.endDateDisplay = String.valueOf(task.EndDate__c.format());
-				taskAux.endDate = task.EndDate__c;
-			}
-			
-			//TODO change ProjectMember to TaskAssignee
-			List<ProjectMember> assignees = DAOFactory.getInstance().getAssignees(taskAux.id);
-			
-			taskAux.assignees = assignees;
-			
-			tasks.add(taskAux);
-		}
-		
-		setDefault();
-		
-        //return (List<ProjectTask__c>) paginator.getRecords();
-        
-        return tasks;
-    }*/
     
     public List<Task> getTasksByProject() {
     	

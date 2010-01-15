@@ -7,7 +7,7 @@ public abstract class ActivityLog {
 	protected String projectId;
 	protected String modifiedBy;
 	protected String action;
-	protected Integer changeType;
+	protected String changeType;
 	protected String memberId;
 	
 	/**	

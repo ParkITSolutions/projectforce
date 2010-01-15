@@ -1,6 +1,6 @@
 public class TaskListController {
 	
-	public List<Task> 	tasks 			{ set; get; }	
+	public List<Task> 	tasks 			;	
 	
 	public String 	projectId 			{ set; get; }
 	
@@ -48,15 +48,37 @@ public class TaskListController {
 		
 		this.paginator.orderAsc = this.orderAsc;
 		
-		//this.paginator.project.id = this.projectId;
+		this.paginator.project.id = this.projectId;
 		
-		//getTasks();
+		//refreshTasksByProject();
+		
+		paginator.loadTasksByProject();
 		
 	}
 	
-	public void getTasks(){
+	public List<Task> getTasks(){
 		
-		//this.tasks = paginator.getTasksByProject();
+		return paginator.getTasksByProject();
+	}
+	
+	public void refreshTasksByProject(){
+		
+		this.paginator.orderBy = this.orderBy;
+		
+		this.paginator.filter = this.filter;
+		
+		this.paginator.orderAsc = this.orderAsc;
+		
+		this.paginator.project.id = this.projectId;
+	
+		paginator.refreshTasksByProject();
+	}
+	
+	public void refreshPaginator(){
+		
+		paginator.refreshPaginator();
+		
+		paginator.setPageNumber(1);
 	}
 	
 	public List<SelectOption> getFilterItems() {
@@ -88,7 +110,7 @@ public class TaskListController {
 		
 		this.orderBy = 'Id__c';
 		
-		getTasks();
+		refreshTasksByProject();
 		
 	}
 	
@@ -98,7 +120,7 @@ public class TaskListController {
 		
 		this.orderBy = 'Priority__c';
 		
-		getTasks();
+		refreshTasksByProject();
 	
 	}
 	
@@ -108,7 +130,7 @@ public class TaskListController {
 		
 		this.orderBy = 'Name';
 		
-		getTasks();
+		refreshTasksByProject();
 	
 	}
 	
@@ -118,7 +140,7 @@ public class TaskListController {
 		
 		this.orderBy = 'PercentCompleted__c';
 		
-		getTasks();
+		refreshTasksByProject();
 	
 	}
 	
@@ -128,7 +150,7 @@ public class TaskListController {
 		
 		this.orderBy = 'Duration__c';
 		
-		getTasks();
+		refreshTasksByProject();
 	
 	}
 	
@@ -138,7 +160,7 @@ public class TaskListController {
 		
 		this.orderBy = 'EndDate__c';
 		
-		getTasks();
+		refreshTasksByProject();
 	
 	}
 	

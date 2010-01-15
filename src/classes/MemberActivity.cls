@@ -18,6 +18,7 @@ public class MemberActivity extends ActivityLog{
 		
 		super( projectId, timeStamp, action );
 		this.memberChanged = member;
+		this.memberId = modifiedBy;
 	}
 	
 	/**
@@ -26,7 +27,7 @@ public class MemberActivity extends ActivityLog{
 	*/
 	public override void log(){
 		
-		ProjectMember__c member = DAOFactory.getInstance().getMemberById( this.memberId );
+		ProjectMember__c member = DAOFactory.getInstance().getMemberByUserId( this.memberId );
 		this.modifiedBy = member.Name;
 		
 		this.memberName = this.memberChanged.Name;

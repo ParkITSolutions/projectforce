@@ -4,9 +4,8 @@
 public class TaskCommentActivity extends ActivityLog{
 
 	private String taskName;
-	private String commentId;
-	private String taskId;
-	
+	private TaskComment__c comment = null;
+		
 	/**
 	* Constructor
 	* @param String projectId
@@ -16,11 +15,11 @@ public class TaskCommentActivity extends ActivityLog{
 	* @param String commentId
 	* @param String taskId
 	*/
-	public TaskCommentActivity( String projectId, DateTime timeStamp, String modifiedBy, String action, String commentId, String taskId ){
+	public TaskCommentActivity( String projectId, DateTime timeStamp, String modifiedBy, String action, TaskComment__c comment ){
 		
 		super( projectId, timeStamp, action );
-		this.commentId 	= commentId;
-		this.taskId		= taskId;
+		this.comment 	= comment;
+		this.memberId 	= modifiedBy;
 	}
 	
 	/**
@@ -29,19 +28,21 @@ public class TaskCommentActivity extends ActivityLog{
 	*/
 	public override void log(){
 		
-		ProjectMember__c member = DAOFactory.getInstance().getMemberById( this.memberId) ;
+		ProjectMember__c member = DAOFactory.getInstance().getMemberByUserId( this.memberId ) ;
 		this.modifiedBy = member.Name;
 		
 		//Comment Added to a Task
 		if( this.action == 'insert' ){
 			this.changeType = 11;
-			this.taskName = '';
+			this.taskName 	= this.comment.Task__r.Name;
+			DAOFactory.getInstance().logTaskCommentActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.taskName );
 		}
 		
 		//Comment removed from a Task
 		if( this.action == 'delete' ){
 			this.changeType = 12;
-			this.taskName = '';
+			this.taskName 	= this.comment.Task__r.Name;
+			DAOFactory.getInstance().logTaskCommentActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.taskName );
 		}
 	}
 }
