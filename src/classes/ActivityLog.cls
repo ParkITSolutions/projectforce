@@ -7,24 +7,26 @@ public abstract class ActivityLog {
 	protected String projectId;
 	protected String modifiedBy;
 	protected String action;
-	protected String changeType;
+	protected Integer changeType;
+	protected String memberId;
 	
-	/**
+	/**	
 	* Constructor
+	* @param String projectId
+	* @param DateTime timeStamp
+	* @param String action
 	*/
-	public ActivityLog( String projectId, DateTime timeStamp, String modifiedBy, String action, String changeType){
+	public ActivityLog( String projectId, DateTime timeStamp, String action ){
 		
 		this.projectId 	= projectId;
 		this.timeStamp 	= timeStamp;
-		this.modifiedBy = modifiedBy;
 		this.action 	= action;
-		this.changeType = changeType;
 	}
 	
 	/**
-	* 
+	* Virtual method for logging Objects, will be overriden by sub classes
+	* @return void
 	*/
 	public virtual void log(){
-		
 	}
 }

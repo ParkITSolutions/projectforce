@@ -35,6 +35,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CopyTaskListController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CustomException</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -347,6 +351,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectTaskNotesControllerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectTimelineController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -467,16 +475,20 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>UserDetailController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>UserPermissions</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>UserPermissionsTest</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UserTasksController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UserTasksControllerTest</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <fieldLevelSecurities>
         <editable>true</editable>
@@ -1196,6 +1208,35 @@
         <field>Lead.Website</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>MemberActivity__c.Action__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>MemberActivity__c.ChangeType__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>MemberActivity__c.MemberName__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>MemberActivity__c.ModifiedBy__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>MemberActivity__c.ProjectId__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>MemberActivity__c.TimeStamp__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
         <editable>true</editable>
         <field>Opportunity.AccountId</field>
     </fieldLevelSecurities>
@@ -1361,13 +1402,17 @@
         <field>Project2__c.WorkingHours__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>ProjectActivity__c.Access__c</field>
-        <hidden>true</hidden>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>false</editable>
         <field>ProjectActivity__c.Action__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>ProjectActivity__c.ChangeType__c</field>
         <hidden>true</hidden>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
@@ -1385,9 +1430,8 @@
         <hidden>true</hidden>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>ProjectActivity__c.name__c</field>
-        <hidden>true</hidden>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
@@ -1609,6 +1653,106 @@
         <field>Task.WhoId</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>TaskActivity__c.Action__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>TaskActivity__c.ChangeType__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskActivity__c.Complete__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskActivity__c.Duration__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>TaskActivity__c.ModifiedBy__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskActivity__c.NewName__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskActivity__c.ProjectId__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskActivity__c.Status__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>TaskActivity__c.TimeStamp__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>TaskAssigneeActivity__c.Action__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskAssigneeActivity__c.AssigneeName__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>TaskAssigneeActivity__c.ChangeType__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>TaskAssigneeActivity__c.ModifiedBy__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskAssigneeActivity__c.ProjectId__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskAssigneeActivity__c.TaskName__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>TaskAssigneeActivity__c.TimeStamp__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>TaskCommentActivity__c.Action__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>TaskCommentActivity__c.ChangeType__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>TaskCommentActivity__c.ModifiedBy__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskCommentActivity__c.ProjectId__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskCommentActivity__c.TaskName__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>TaskCommentActivity__c.TimeStamp__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
         <editable>true</editable>
         <field>TaskComment__c.Body__c</field>
     </fieldLevelSecurities>
@@ -1770,6 +1914,13 @@
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
+        <object>ChangType__c</object>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
         <object>Contact</object>
     </objectPermissions>
     <objectPermissions>
@@ -1912,6 +2063,10 @@
         <object>TimelineState__c</object>
     </objectPermissions>
     <pageAccesses>
+        <apexPage>CopyTaskList</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>HeaderTemplate</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
@@ -1992,7 +2147,7 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>userDetail</apexPage>
+        <apexPage>userTasks</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <recordTypeVisibilities>

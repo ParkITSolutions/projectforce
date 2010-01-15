@@ -7,5 +7,42 @@
         <plural>true</plural>
         <value>TaskActivites</value>
     </caseValues>
+    <fields>
+        <label><!-- Action --></label>
+        <name>Action__c</name>
+    </fields>
+    <fields>
+        <label><!-- ChangeType --></label>
+        <name>ChangeType__c</name>
+    </fields>
+    <fields>
+        <label><!-- Complete --></label>
+        <name>Complete__c</name>
+    </fields>
+    <fields>
+        <label><!-- Duration --></label>
+        <name>Duration__c</name>
+    </fields>
+    <fields>
+        <label><!-- ModifiedBy --></label>
+        <name>ModifiedBy__c</name>
+    </fields>
+    <fields>
+        <label><!-- NewName --></label>
+        <name>NewName__c</name>
+    </fields>
+    <fields>
+        <label><!-- ProjectId --></label>
+        <name>ProjectId__c</name>
+        <relationshipLabel><!-- TaskActivites --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>Status__c</name>
+    </fields>
+    <fields>
+        <label><!-- TimeStamp --></label>
+        <name>TimeStamp__c</name>
+    </fields>
     <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>

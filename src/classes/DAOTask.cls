@@ -56,7 +56,7 @@ public class DAOTask {
 		return task;
 	}
 	
-	public List<Task> getByProject(String projectId, String filter, String orderBy, Boolean orderAsc, Integer listIndex, Integer quantity){
+	/*public List<ProjectTask__c> getByProject(String projectId, String filter, String orderBy, Boolean orderAsc){
 		
 		String orderWay = 'DESC';
 		
@@ -64,60 +64,46 @@ public class DAOTask {
 			
 			orderWay = 'ASC';
 		}
-		
-	    List<ProjectTask__c> tasksQuery = new List<ProjectTask__c>();
 	    
 	    String query = 'select id, ' + 
 							'Id__c, ' +
 							'Name, ' +
 							'Milestone__c, ' +
 							'Priority__c, ' +
-							'PercentCompleted__c, ' +
+							'PercentCompleted__c, ' +  
 							'Duration__c, ' +
-							'EndDate__c ' + 
+							'StartDate__c, ' + 
+							'EndDate__c ' +
 						'from ProjectTask__c  ' + 
-						'where Project__c = \''+projectId+'\' ' + 
+						'where Project__c = \''+projectId+'\' ' +   
 						'order by '+orderBy+' '+orderWay; 
 						
-		tasksQuery = Database.query(query);
+		return Database.query(query);
+	}*/
+	
+	public ApexPages.StandardSetController getByProject(String projectId, String filter, String orderBy, Boolean orderAsc){
 		
-		List<ProjectTask__c> tasksAux = new List<ProjectTask__c>();
+		String orderWay = 'DESC';
 		
-		Integer i=0;
-		
-		while(i<tasksQuery.size() && i<quantity){
-		
-			tasksAux.add(tasksQuery.get(listIndex));
+		if(orderAsc){
 			
-			listIndex++;
-			
-			i++;
-		}
-		         
-		List<Task> tasksList = new List<Task>();
-		
-		for(ProjectTask__c task : tasksAux){
-			
-			Task taskAux = new Task();
-			
-			taskAux.id = task.id;
-			taskAux.idDisplay = task.Id__c;
-			taskAux.name = task.Name;
-			taskAux.isMilestone = task.Milestone__c;
-			taskAux.priority = task.Priority__c;
-			taskAux.percentCompleted = task.PercentCompleted__c;
-			taskAux.durationDisplay = String.valueOf(task.Duration__c);
-			taskAux.endDateDisplay = String.valueOf(task.EndDate__c);
-			
-			//TODO change ProjectMember to TaskAssignee
-			List<ProjectMember> assignees = DAOAssignee.getAssignees(taskAux.id);
-			
-			taskAux.assignees = assignees;
-			
-			tasksList.add(taskAux);
+			orderWay = 'ASC';
 		}
 	    
-		return tasksList;
+	    String query = 'select id, ' + 
+							'Id__c, ' +
+							'Name, ' +
+							'Milestone__c, ' +
+							'Priority__c, ' +
+							'PercentCompleted__c, ' +  
+							'Duration__c, ' +
+							'StartDate__c, ' + 
+							'EndDate__c ' +
+						'from ProjectTask__c  ' + 
+						'where Project__c = \''+projectId+'\' ' +   
+						'order by '+orderBy+' '+orderWay; 
+						
+		return new ApexPages.StandardSetController(Database.getQueryLocator(query));
 	}
 	
 	public List<ProjectTask__c> getTasks(String tasksIds){

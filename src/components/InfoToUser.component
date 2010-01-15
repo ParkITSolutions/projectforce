@@ -5,12 +5,12 @@
 	
 	<script>
 	
-		infoToUser.id 				= '{!$Component.Content}'
-		infoToUser.messageId 		= '{!$Component.MessageToUser}'
-		infoToUser.successImageId 	= '{!$Component.SuccessImage}'
-		infoToUser.errorImageId 	= '{!$Component.ErrorImage}'
-		infoToUser.infoImageId 		= '{!$Component.InfoImage}'
-		infoToUser.warningImageId 	= '{!$Component.WarningImage}'
+		infoToUser.id 				= '{!$Component.Content}';
+		infoToUser.messageId 		= '{!$Component.MessageToUser}';
+		infoToUser.successImageId 	= '{!$Component.SuccessImage}';
+		infoToUser.errorImageId 	= '{!$Component.ErrorImage}';
+		infoToUser.infoImageId 		= '{!$Component.InfoImage}';
+		infoToUser.warningImageId 	= '{!$Component.WarningImage}';
 		
 	</script>
 

@@ -1,6 +1,6 @@
 <apex:page id="TaskList" sidebar="false" controller="TaskListController" tabStyle="Project2__c">
 
-	<c:ApplicationTop id="ApplicationTop" />
+	
 
 	<c:ConfirmOverlay id="DeleteTasksOverlay" 
 		title="Delete tasks"
@@ -111,6 +111,12 @@
 	      	
 		}
 		
+		var pageNumber = '{!$Component.PaginatorForm.PageNumber}'
+		
+		function setPageNumber(pNumber){
+			$(pageNumber).value = pNumber
+		}
+		
 	</script>
 	
 	<style>
@@ -151,6 +157,36 @@ padding:5px;
 		}
 	</style>
 	
+		<style>
+		
+		.paginatorPanel{
+			font-size:16px;
+			font-weight:bold;
+			margin-left:auto;
+			margin-right:auto;
+			padding:10px;
+			text-align:center;
+			width:1100px;
+		}
+		
+		.pagesList{
+			color: red;
+		}
+		
+		.pagesList li{
+			float: left;
+		}
+		.currentPage{
+			color:red;
+			font-size:19px;
+		}
+		
+		.linkDisable{
+			color: gray; 
+		}
+		
+	</style>
+	
 	<!-- Header -->
     <apex:composition template="HeaderTemplate">
         <apex:define name="moduleId"><apex:variable var="moduleId" value="headerProject"/></apex:define>
@@ -180,7 +216,7 @@ padding:5px;
 			
 				<apex:outputLink value="javascript:;"
 					id="NewTaskLink"
-					onClick="promptOverlay.open(newTask)"
+					onClick="promptOverlay.open(newTask);"
 					styleClass="button1">
 					
 					New Task
@@ -227,13 +263,60 @@ padding:5px;
 		</apex:outputPanel>
 		<!-- End ButtonsPanel -->
 		
-		<!-- PaginationPanel -->
-		<apex:outputPanel id="PaginationPanel" styleClass="paginationPanel" layout="block">
-			
-			Pagination Panel
+		<!-- PaginatorPanel -->
+			<apex:outputPanel id="PaginatorPanel" styleClass="paginatorPanel" layout="block" >
 				
-		</apex:outputPanel>
-		<!-- End PaginationPanel -->
+				<apex:form id="PaginatorForm">
+				
+					<apex:actionFunction name="RefreshPaginator"
+						action="{!paginator.refreshPaginator}"
+						onComplete="swirly.hide();" 
+						reRender="TasksList, PaginatorPanel"/>
+						
+					<!-- CommandsPanel -->
+					<apex:outputPanel id="CommandsPanel" styleClass="commandsPanel" layout="block" rendered="{!OR(paginator.hasNext,paginator.hasPrevious)}">
+						
+						&lt;&lt; 
+						<apex:commandLink rendered="{!paginator.hasPrevious}" value="Previous" action="{!paginator.previous}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList, PaginatorPanel"/> &nbsp;
+					
+						<apex:outputText styleClass="linkDisable" rendered="{!NOT(paginator.hasPrevious)}"  value="Previous" />
+						
+						<apex:commandLink rendered="{!paginator.hasPrevious}" value="First" action="{!paginator.first}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList, PaginatorPanel"/>  &nbsp;
+						
+						<apex:outputText styleClass="linkDisable" rendered="{!NOT(paginator.hasPrevious)}"  value="First" />
+						
+						<apex:repeat value="{!paginator.pages}" var="page" id="PagesList" > &nbsp;
+						
+							<apex:commandLink styleClass="{!IF(page == paginator.pageNumber,'currentPage', '')}" value="{!page}" action="{!paginator.goToPage}" onClick="setPageNumber('{!page}'); swirly.show()" onComplete="swirly.hide()"  reRender="TasksList, PaginatorPanel"/> 
+						
+						</apex:repeat> &nbsp;
+						
+						<apex:inputHidden value="{!paginator.pageNumber}" id="PageNumber"/>
+						
+						<apex:outputText styleClass="linkDisable" rendered="{!NOT(paginator.hasNext)}"  value="Last" />
+						
+						<apex:commandLink rendered="{!paginator.hasNext}" value="Last" action="{!paginator.last}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList, PaginatorPanel"/> &nbsp;
+						
+						<apex:outputText styleClass="linkDisable" rendered="{!NOT(paginator.hasNext)}"  value="Next" />
+						
+						<apex:commandLink rendered="{!paginator.hasNext}" value="Next" action="{!paginator.next}" onClick="swirly.show()" onComplete="swirly.hide()"  reRender="TasksList, PaginatorPanel"/> &gt;&gt; 
+						
+					</apex:outputPanel>
+					<!-- End CommandsPanel -->
+				
+					<br>Number of records: <apex:outputText value="{!paginator.resultSize}" />
+					
+					<br>Records per page: 
+					<apex:selectList value="{!paginator.pageSize}" size="1" id="PageSizeSelect" onChange="swirly.show(); RefreshPaginator();">
+					
+						<apex:selectOptions value="{!paginator.pageSizeItems}"/>
+						
+					</apex:selectList>
+				
+				</apex:form>
+					
+			</apex:outputPanel>
+			<!-- End PaginatorPanel -->
 			
 		<!-- FilterPanel -->
 		<apex:outputPanel id="FilterPanel" styleClass="filterPanel" layout="block">
@@ -267,7 +350,8 @@ padding:5px;
 		
 		<!-- TasksForm -->
 		<apex:form id="TasksForm">
-		
+			
+			<!-- 
 			<apex:dataTable value="{!tasks}" 
 				var="task" 
 				id="TasksList" 
@@ -348,7 +432,7 @@ padding:5px;
 						<apex:outputPanel styleClass="percentCompleted" style="width:{!task.percentCompleted}%;"/>
 					</apex:outputPanel>
 					<apex:outputText value="{!task.percentCompleted}"/>
-					&#37;{!task.OverdueTask}
+					&#37;
 				</apex:column>
 				
 				<apex:column >
@@ -371,10 +455,31 @@ padding:5px;
 						</apex:outputpanel>
 					</apex:facet>
 					<apex:outputText value="{!task.endDateDisplay}"/>
+					<apex:outputPanel layout="block" styleClass="DaysLateMessage" rendered="{!task.OverdueTask > 0}">
+						<apex:outputText value="{!task.OverdueTask} day late"/>
+					</apex:outputPanel>
 					
 				</apex:column>
 				
 			</apex:dataTable>
+			 -->
+			 
+			 
+			 <apex:dataTable value="{!paginator.tasksByProject}" 
+				var="task" 
+				id="TasksList" 
+				styleClass="table"
+				cellpadding="0"
+				cellspacing="0"
+				rowClasses="odd,even">
+				
+				<apex:column >
+					<apex:facet name="header"><apex:outputText id="NameLink" value="Name" /></apex:facet>
+					<apex:outputText id="TaskName" value="{!task.Name}" />
+				</apex:column>
+				
+			</apex:dataTable>
+			
 		
 		</apex:form>
 		<!-- End TasksForm -->
@@ -403,5 +508,5 @@ padding:5px;
 	}
 	
 	</style>
-
+<c:ApplicationTop id="ApplicationTop" />
 </apex:page>

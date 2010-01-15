@@ -35,9 +35,14 @@ public class Project {
 		
 	}
 	
-	public List<Task> getTasks(String filter, String orderBy, Boolean orderAsc, Integer listIndex, Integer quantity){
+	/*public List<ProjectTask__c> getTasks(String filter, String orderBy, Boolean orderAsc){
 		
-		return DAOFactory.getInstance().getTasksByProject(this.id, filter, orderBy, orderAsc, listIndex, quantity);
+		return DAOFactory.getInstance().getTasksByProject(this.id, filter, orderBy, orderAsc);
+	}*/
+	
+	public ApexPages.StandardSetController getTasks(String filter, String orderBy, Boolean orderAsc){
+		
+		return DAOFactory.getInstance().getTasksByProject(this.id, filter, orderBy, orderAsc);
 	}
 	
 	public void setInfo(){

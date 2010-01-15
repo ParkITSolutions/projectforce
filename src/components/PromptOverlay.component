@@ -20,7 +20,17 @@
 		promptOverlay.id = '{!$Component.Content}';
 		
 	</script>
-	
+	<style>
+		.overlay {
+			background:white none repeat scroll 0 0;
+			/*height:300px;*/
+			min-height:110px;
+			/*min-width:500px;*/
+			position:fixed;
+			width:500px;
+			z-index:9999;
+		}
+	</style>
 	<!-- Content -->
 	<apex:outputPanel id="Content"
 		styleClass="content"

@@ -34,5 +34,9 @@ trigger ProjectBeforeUpdate on Project2__c (before update) {
 		
 		if( projectOld.WorkingHours__c != project.WorkingHours__c )
 			project.WorkingHours__c.addError('This value can\'t be modified, restore value to ' + projectOld.WorkingHours__c);
+			
+		//Logging Changes for Project	
+		ProjectActivity prjActivity = new ProjectActivity(project.Id, DateTime.now(), UserInfo.getUserId(), 'Update', projectOld, project);
+		prjActivity.log();
 	}
 }
