@@ -149,6 +149,25 @@
 								<td class="labelTD"><label for = "ProjectSubscription:form_content:taskDeleted">When a task has been deleted </label></td>
 								<td><apex:inputCheckbox id="taskDeleted" value="{!subscription.ProjectTaskDeleted__c}"/></td>
 							</tr>
+							
+							<tr>
+								<td class="labelTD"><label for = "ProjectSubscription:form_content:taskDeleted">When a task is past its due date (Under construction) </label></td>
+								
+								<table cellpadding="0" cellspacing="0"  class="checkboxEdition">
+									<tr>
+										<td class="labelTD"><label >As this to overcome their due date</label></td>
+										<td><apex:inputCheckbox id="assignedToMe11" /></td>
+									</tr>
+									<tr>
+										<td class="labelTD"><label >Expiry day</label></td>
+										<td><apex:inputCheckbox id="assignedToMe22" /></td>
+									</tr>
+									<tr>
+										<td class="labelTD"><label >Repetitive after expiring</label></td>
+										<td><apex:inputCheckbox id="assignedToMe33" /></td>
+									</tr>
+								</table>
+							</tr>
 						</table>
 						
 					</div><!-- End Form container --> 

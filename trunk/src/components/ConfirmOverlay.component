@@ -54,7 +54,15 @@
 			
 					<apex:outputText id="Title"
 						value="{!Title}" />
-			
+					
+					<apex:outputPanel id="overlayClose" styleClass="fds" >
+						<apex:outputLink id="linkClose"
+									value="javascript:;"
+									onClick="confirmOverlay.close();" >
+									<img src="{!URLFOR($Resource.Overlays, 'images/overlayClose.gif')}" alt="Close Window" title="Close Window" />
+						</apex:outputLink>	
+		            </apex:outputPanel>
+	            
 				</apex:outputPanel>
 				<!-- End Title -->
 				
@@ -76,14 +84,14 @@
 					<apex:commandButton id="Accept"
 						value="Accept"
 						action="{!action}"
-						onClick="confirmOverlay.close(); swirly.show()"
-						onComplete="confirmOverlay.postAction()" 
+						onClick="confirmOverlay.close(); swirly.show();"
+						onComplete="confirmOverlay.postAction();" 
 					    reRender="HiddenPanel" 
 					    styleClass="submitButton"/>
 					    
 					<apex:outputLink id="Cancel"
 						value="javascript:;"
-						onClick="confirmOverlay.close()"
+						onClick="confirmOverlay.close();"
 					    styleClass="submitButton" >
 					    
 					    Cancel

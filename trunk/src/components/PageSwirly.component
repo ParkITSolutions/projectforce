@@ -5,7 +5,7 @@
 	
 	<script>
 	
-		swirly.id = '{!$Component.Content}'
+		swirly.id = '{!$Component.Content}';
 		
 	</script> 
 	 

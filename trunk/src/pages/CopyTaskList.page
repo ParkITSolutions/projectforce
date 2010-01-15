@@ -1,0 +1,300 @@
+<apex:page id="TaskList" sidebar="false" controller="CopyTaskListController" tabStyle="Project2__c">
+
+	
+
+	<c:ConfirmOverlay id="DeleteTasksOverlay" 
+		title="Delete tasks"
+		messageToUser=" Are you sure you want to continue?
+                        Once task(s) are deleted, it is not recoverable "
+		actionName="DeleteTasks"/>
+		
+	<c:ConfirmOverlay id="MarkCompleteTasksOverlay" 
+		title="Mark complete tasks"
+		messageToUser=" Are you sure you want to continue? "
+		actionName="MarkCompleteTasks"/>	
+	
+	<c:PromptOverlay id="PromptOverlay"
+	    includeNewTask="true"
+	    includeNewMilestone="true"/>
+	   
+	<!-- Refresh functions -->
+	
+	<apex:form >
+	
+		<apex:actionFunction name="RefreshTasksList"
+				action="{!getTasks}"
+				onComplete="swirly.hide(); infoToUser.show()" 
+				reRender="TasksList"/>
+			
+	</apex:form>
+	
+	<!-- End Refresh functions -->
+	
+	<script>
+	
+		var deleteTasksOverlay = new ConfirmOverlay('{!$Component.DeleteTasksOverlay}')
+		
+		var markCompleteTasksOverlay = new ConfirmOverlay('{!$Component.MarkCompleteTasksOverlay}')
+		
+		function getActionIds(){
+		
+			var actionIds = ''
+			
+			$$('.actionCheckbox').each(function(e){
+					
+					if(e.checked){
+						actionIds = actionIds+e.value+':'
+					}
+				}) 
+				
+			return actionIds
+		}
+		
+		function deleteTasks(){
+			
+			var actionIds = getActionIds()
+			
+			if(actionIds.length == 0){
+			
+				alertOverlay.open('Task list error', 'There are not tasks selected')	
+				
+			}else{
+			
+				deleteTasksOverlay.open()
+				
+				deleteTasksOverlay.setActionIds(actionIds)
+			}
+
+		}
+		
+		function deleteTask(taskId){
+		
+			$$('.actionCheckbox').each(function (e){
+	              
+	          	e.checked = false           
+	   
+	      	}); 
+		
+			$(taskId).checked = true
+			
+			deleteTasks()
+			
+		}
+		
+		function markCompleteTasks(){
+			
+			var actionIds = getActionIds()
+			
+			if(actionIds.length == 0){
+			
+				alertOverlay.open('Task list error', 'There are not tasks selected')	
+				
+			}else{
+			
+				markCompleteTasksOverlay.open()
+				
+				markCompleteTasksOverlay.setActionIds(actionIds)
+			}
+		}
+		
+		//marks all checkboxes belonging to a given class
+		//recives the "caller checkbox" and a class
+		function markAllCheckboxes(checkbox, class){
+		
+			var allChecked = true
+			
+			$$('.'+class).each(function (e){
+	              
+	          	e.checked = checkbox.checked;           
+	   
+	      	}); 
+	      	
+		}
+		
+		var pageNumber = '{!$Component.PaginatorForm.PageNumber}'
+		
+		function setPageNumber(pNumber){
+			$(pageNumber).value = pNumber
+		}
+		
+	</script>
+	
+	<style>
+		.breadcrumbPanel{
+			background-color:olive;
+padding:10px;
+width:363px;
+		}
+		
+		.buttonsPanel{
+			background-color:red;
+margin-left:auto;
+margin-right:auto;
+padding:10px;
+width:363px;
+		}
+		
+		.paginationPanel{
+			background-color:gray;
+margin-left:auto;
+margin-right:auto;
+padding:10px;
+text-align:center;
+width:300px;
+		}
+		
+		.filterPanel{
+			background-color:green;
+padding:10px;
+text-align:right;
+width:96%;
+		}
+		
+		.exportCSVPanel{
+		background-color:lime;
+margin-left:15px;
+padding:5px;
+		}
+	</style>
+	
+		<style>
+		
+		.paginatorPanel{
+			font-size:16px;
+			font-weight:bold;
+			margin-left:auto;
+			margin-right:auto;
+			padding:10px;
+			text-align:center;
+			width:1100px;
+		}
+		
+		.pagesList{
+			color: red;
+		}
+		
+		.pagesList li{
+			float: left;
+		}
+		.currentPage{
+			color:red;
+			font-size:19px;
+		}
+		
+		.linkDisable{
+			color: gray; 
+		}
+		
+	</style>
+	
+	<!-- Header -->
+    <apex:composition template="HeaderTemplate">
+        <apex:define name="moduleId"><apex:variable var="moduleId" value="headerProject"/></apex:define>
+        <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
+        <apex:define name="title">Tasks & Milestones</apex:define>
+        <apex:define name="search">
+            <c:Search module="project" label="Tasks" projectId="{!ProjectId}"/>
+        </apex:define>
+    </apex:composition>
+    <!-- End Header -->
+	
+	<!-- ContentPanel -->
+	<apex:outputPanel id="ContentPanel" styleClass="contentPanel" layout="block" >
+	
+		<!-- BreadcrumbPanel -->
+		<apex:outputPanel id="BreadcrumbPanel" styleClass="breadcrumbPanel" layout="block">
+			
+			Breadcrumb Panel
+				
+		</apex:outputPanel>
+		<!-- End BreadcrumbPanel -->
+	
+		<!-- ButtonsPanel -->
+		<apex:outputPanel id="ButtonsPanel" styleClass="buttonsPanel" layout="block" >
+			
+			<apex:form id="ButtonsForm">
+			
+				<apex:outputLink value="javascript:;"
+					id="NewTaskLink"
+					onClick="promptOverlay.open(newTask);"
+					styleClass="button1">
+					
+					New Task
+				
+				</apex:outputLink>
+				
+				<apex:outputLink value="javascript:;"
+					id="NewMilestoneLink"
+					onClick="promptOverlay.open(newMilestone)"
+					styleClass="button1">
+					
+					New Milestone
+					
+				</apex:outputLink>
+				
+				<apex:outputLink value="javascript:;"
+					id="MarkComplete"
+					onClick="markCompleteTasks()"
+					styleClass="button1">
+					
+					Mark Complete
+					
+				</apex:outputLink>
+				
+				<apex:outputLink value="javascript:;"
+					id="Timeline"
+					styleClass="button1">
+					
+					Timeline
+					
+				</apex:outputLink>
+		
+				<apex:outputLink value="javascript:;"
+					id="Delete"
+					onClick="deleteTasks()"
+					styleClass="button1">
+					
+					Delete
+					
+				</apex:outputLink>
+			
+			</apex:form>
+			
+		</apex:outputPanel>
+		<!-- End ButtonsPanel -->
+		
+		
+		
+		<!-- TasksForm -->
+		<apex:form id="TasksForm">
+			
+		
+		</apex:form>
+		<!-- End TasksForm -->
+	
+	</apex:outputPanel>
+	<!-- End ContentPanel -->
+
+	<style>
+	.outline{
+		border:1px solid #CCCCCC;
+		float:left;
+		height:9px;
+		vertical-align:middle;
+		width:75px;	
+		margin-right: 5px;
+	}
+	.percentCompleted{
+		background-color:#90C142;
+		height:9px;
+		margin:0;
+		display:block;
+	}
+	
+	.borderRed{
+		border-color: #CC0000;
+	}
+	
+	</style>
+<c:ApplicationTop id="ApplicationTop" />
+</apex:page>

@@ -56,9 +56,14 @@ public class DAOFactory {
 		return DAOTask.get(id);
 	}
 
-	public List<Task> getTasksByProject(String projectId, String filter, String orderBy, Boolean orderAsc, Integer listIndex, Integer quantity){
+	/*public List<ProjectTask__c> getTasksByProject(String projectId, String filter, String orderBy, Boolean orderAsc){
 		
-		return DAOTask.getByProject(projectId, filter, orderBy, orderAsc, listIndex, quantity);
+		return DAOTask.getByProject(projectId, filter, orderBy, orderAsc);
+	}*/
+	
+	public ApexPages.StandardSetController getTasksByProject(String projectId, String filter, String orderBy, Boolean orderAsc){
+		
+		return DAOTask.getByProject(projectId, filter, orderBy, orderAsc);
 	}
 	
 	public List<ProjectTask__c> getTasks(String tasksIds){ 
@@ -75,6 +80,11 @@ public class DAOFactory {
 	}
 	
 	public Boolean isCRMAdministrator(){ return DAOMember.isCRMAdministrator(); }
+	
+	public ProjectMember__c getMemberById(String memberId){
+		
+		return DAOMember.getMemberById(memberId);	
+	}
 	
 	/* End of Member operations */
 	
@@ -102,23 +112,28 @@ public class DAOFactory {
 	
 	/*--------------------------------------------------- Activity Log operations ------------------------------------------------------*/
 	
-	public void logProjectActivity(String projectId, DateTime timeStamp, String modifiedBy, String action, String name, String access){
-		DAOActivity.logProjectActivity(projectId, timeStamp, modifiedBy, action, name, access);
+	public void logProjectActivity( String projectId, DateTime timeStamp, String modifiedBy, String action, Integer changeType, String name, String access ){
+		DAOActivity.logProjectActivity( projectId, timeStamp, modifiedBy, action, changeType, name, access );
 	}
 	
-	public void logMemberActivity(String projectId, DateTime timeStamp, String modifiedBy, String action){
+	public void logMemberActivity( String projectId, DateTime timeStamp, String modifiedBy, String action, Integer changeType, String memberName ){
+		DAOActivity.logMemberActivity(projectId, timeStamp, modifiedBy, action, changeType, memberName);
 	}
 	
-	public void logTaskCommentActivity(String projectId, DateTime timeStamp, String modifiedBy, String action){
+	public void logTaskCommentActivity( String projectId, DateTime timeStamp, String modifiedBy, String action, Integer changeType, String taskName ){
+		DAOActivity.logTaskCommentActivity(projectId, timeStamp, modifiedBy, action, changeType, taskName);
+	}
+
+	public void logTaskAssigneeActivity( String projectId, DateTime timeStamp, String modifiedBy, String action, Integer changeType, String assigneeName, String taskName ){
+		DAOActivity.logTaskAssigneeActivity(projectId, timeStamp, modifiedBy, action, changeType, assigneeName, taskName);		
 	}
 	
-	public void logTaskAssigneeActivity(String projectId, DateTime timeStamp, String modifiedBy, String action){
-	}
+	public void logTaskActivity( String projectId, DateTime timeStamp, String modifiedBy, String action, Integer changeType, String name, String newName, String duration, String status, Boolean complete ){
+		DAOActivity.logTaskActivity(projectId, timeStamp, modifiedBy, action, changeType, name, newName, duration, status, complete);
+	} 
 	
-	public void logTaskActivity(String projectId, DateTime timeStamp, String modifiedBy, String action){
-	}
-	
-	public void logAttachmentActivity(String projectId, DateTime timeStamp, String modifiedBy, String action){
+	public void logAttachmentActivity( String projectId, DateTime timeStamp, String modifiedBy, String action, Integer changeType ){
+		DAOActivity.logAttachmentActivity(projectId, timeStamp, modifiedBy, action, changeType);
 	}
 	
 	/* End of Activity operations */

@@ -1,6 +1,6 @@
 public class TaskListController {
 	
-	public List<Task> 	tasks 			{ set; get; }
+	public List<Task> 	tasks 			{ set; get; }	
 	
 	public String 	projectId 			{ set; get; }
 	
@@ -14,11 +14,9 @@ public class TaskListController {
 	
 	public String orderBy 				{ set; get; }
 	
-	public Integer listIndex 			{ set; get; } //param to show the first page by default
-	
-	public Integer qtyPerPage 			{ set; get; } //quantity of tasks per page 
-	
 	public Boolean orderAsc 			{ set; get; }
+	
+	public Paginator paginator 			{ set; get; }
 	
 	public TaskListController(){
 		
@@ -38,19 +36,27 @@ public class TaskListController {
 		
 		this.orderBy = 'Name';
 		
-		this.listIndex = 0; 
-		
-		this.qtyPerPage = 4; 
-		
 		this.orderAsc = true;
 		
-		getTasks();
+		//this.paginator = new Paginator('Tasks');
+		
+		this.paginator = new Paginator();
+		
+		this.paginator.orderBy = this.orderBy;
+		
+		this.paginator.filter = this.filter;
+		
+		this.paginator.orderAsc = this.orderAsc;
+		
+		//this.paginator.project.id = this.projectId;
+		
+		//getTasks();
 		
 	}
 	
 	public void getTasks(){
 		
-		this.tasks = project.getTasks(this.filter, this.orderBy, this.orderAsc, this.listIndex, this.qtyPerPage);
+		//this.tasks = paginator.getTasksByProject();
 	}
 	
 	public List<SelectOption> getFilterItems() {

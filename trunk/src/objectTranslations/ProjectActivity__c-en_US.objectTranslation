@@ -16,6 +16,10 @@
         <name>Action__c</name>
     </fields>
     <fields>
+        <label><!-- ChangeType --></label>
+        <name>ChangeType__c</name>
+    </fields>
+    <fields>
         <label><!-- ModifiedBy --></label>
         <name>ModifiedBy__c</name>
     </fields>

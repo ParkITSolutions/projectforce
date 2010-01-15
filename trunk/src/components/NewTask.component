@@ -1,8 +1,117 @@
 <apex:component id="NewTask" controller="NewTaskController" allowDML="true">
-
 	<script>
-		var newTask = '{!$Component.Content}'
+		var newTask = '{!$Component.Content}';
 	</script>
+
+	<style>
+
+		.background{
+		    background:black none repeat scroll 0 0;
+		    height:100%;
+		    left:0;
+		    opacity:0.6;
+		    position:fixed;
+		    top:0;
+		    width:100%;
+		    z-index:9998;
+		    filter:alpha(opacity=60); /* IE opacity */
+		}
+		.titlePanel{
+		    background:#21637D none repeat scroll 0 0;
+		    color:white;
+		    font-size:14px;
+		    padding:8px;
+		    font-weight:bold;
+		    margin:3px;
+		}
+
+		/*** Component label, span, ... ***/
+		.componentBody{
+		    padding-bottom:2px;
+		    padding-left:20px;
+		    padding-right:20px;
+		    padding-top:10px;
+		}
+		
+		.componentBody label {
+			color:#676667;
+			font-weight:bold;
+			width: 100px;
+			margin-rigth: 5px;
+			float: left;
+			text-align:right;
+		}
+		
+		.componentBody span.desc {
+			color:#676667;
+			font-weight:bold;
+			width: auto;
+			margin-left: 5px;
+			float: left;
+		}
+		
+		.componentBody span.required {
+			background-color:#C0272D;
+			float:left;
+			height:21px;
+			margin:0 5px;
+			width:4px;
+		}
+		
+		.componentBody span.notrequired {
+			display:block;
+			float:left;
+			height:21px;
+			margin:0 5px;
+			width:4px;
+		}
+
+		/*** Buttons ***/
+		.submitButtons{
+			width: 400px !important;
+		}
+
+		.acceptButton {
+			background:#21617B none repeat scroll 0% 50%;
+			margin-left: 2px !important;
+			border:0px solid !important;
+			color:#FFFFFF !important;
+			cursor:pointer !important;
+			font-size:112% !important;
+			font-weight:bold !important;
+			height:28px !important;
+			width:63px !important;
+			position:relative !important;
+		}
+		.cancelButton {
+			background:#999999 none repeat scroll 0% 50%;
+			margin-left: 10px !important;
+			border:0px solid !important;
+			color:#FFFFFF !important;
+			cursor:pointer !important;
+			font-size:112% !important;
+			font-weight:bold !important;
+			margin:3px 2px !important;
+			text-decoration:none !important;
+			padding:7px 7px 5px !important;
+		}
+		
+		/*** Separate Line **/
+		div.overlaySeparateLine {
+			background:#999999 none repeat scroll 0 0;
+			height:1px;
+			margin:8px 0;
+		}
+		
+		span.overlayRequiredInfo {
+		    border-left: 3px solid #CC0000;
+		    color: #989999;
+		    float: right;
+		    font-size: 11px;
+		    padding: 1px 5px;
+		}
+		
+	</style>
 	
 	<apex:outputPanel id="Content" style="display: none">
 	
@@ -12,7 +121,15 @@
 				layout="block">
 			
 				Create New Task
-			
+				
+				<apex:outputPanel id="overlayClose" styleClass="fds" >
+						<apex:outputLink id="linkClose"
+									value="javascript:;"
+									onClick="promptOverlay.close();" >
+									<img src="{!URLFOR($Resource.Overlays, 'images/overlayClose.gif')}" alt="Close Window" title="Close Window" />
+						</apex:outputLink>	
+		        </apex:outputPanel>
+		        
 			</apex:outputPanel>
 			<!-- End TitlePanel -->
 			
@@ -26,43 +143,68 @@
 				</apex:outputPanel>
 			
 				<!-- ComponentBody -->
+				
+				<apex:outputPanel styleclass="required"></apex:outputPanel>
+				<apex:outputPanel styleclass="overlayRequiredInfo">= Required Information</apex:outputPanel>
+				<br />
+				
 				<apex:outputPanel id="ComponentBody"
 					styleClass="componentBody"
 					layout="block">
-			
-					Name: <apex:inputText id="Name" value="{!name}" />	<br>
 					
-					Start Date: <apex:inputText id="StartDate" value="{!startDate}" /> <br>	
-					
-					Due Date: <apex:inputText id="DueDate" value="{!dueDate}" /> <br>	
-					
-					Duration: <apex:inputText id="Duration" value="{!duration}" /> <br>	
-					
-					Assign To: <apex:selectList value="{!assignTo}" size="1">
-									<apex:selectOptions value="{!members}"/>
-							   </apex:selectList>	
-					
+						<apex:outputLabel >Name</apex:outputLabel> 
+						<apex:outputPanel styleclass="required"></apex:outputPanel>
+						<apex:inputText id="Name" value="{!name}" />
+						<br /><br />
+						
+						<apex:outputLabel >Start Date</apex:outputLabel> 
+						<apex:outputPanel styleclass="required"></apex:outputPanel>
+						<apex:inputText id="StartDate" value="{!startDate}" />
+						<!--  <div id="taskStartDate-comp" style="display:none;">{!$Component.taskStartDate}</div> --> 
+						<br /><br />
+						
+						<apex:outputLabel >Due Date</apex:outputLabel> 
+						<apex:outputPanel styleclass="notrequired"></apex:outputPanel>
+						<apex:inputText id="DueDate" value="{!dueDate}" />
+						<!-- <div id="taskDueDate-comp" style="display:none;">{!$Component.taskDueDate}</div> -->
+						<br /><br />
+						
+						<apex:outputLabel >Duration</apex:outputLabel> 
+						<apex:outputPanel styleclass="required"> </apex:outputPanel>
+						<apex:inputText id="Duration" value="{!duration}" />
+						<br /><br />
+						
+						<apex:outputLabel >Assign To</apex:outputLabel>
+						<apex:outputPanel styleclass="required"></apex:outputPanel>
+						<apex:selectList value="{!assignTo}" size="1">
+							<apex:selectOptions value="{!members}"/>
+					   </apex:selectList>
+					   <br />
+					   
+					   <apex:outputPanel styleclass="overlaySeparateLine" layout="block"></apex:outputPanel>
+					   
 					<!-- SubmitButtons -->
 					<apex:outputPanel id="SubmitButtons"
 						styleClass="submitButtons"
 						layout="block">
-					
+							
+							<!-- <apex:commandLink id="AcceptButton" -->
 							<apex:commandButton id="AcceptButton"
-								value="Accept"
+								value="Save"
 								action="{!action}"
 								onClick="promptOverlay.close(); swirly.show();"
 								onComplete="promptOverlay.postAction();"
 								reRender="HiddenPanel"
-							    styleClass="submitButton"/>
-							    
+							    styleClass="acceptButton"/>
+							
 							<apex:outputLink id="CancelButton"
 								value="javascript:;"
-								onClick="promptOverlay.close()"
-							    styleClass="submitButton" >
-							    
+								onClick="promptOverlay.close();"
+							    styleClass="cancelButton" >
 							    Cancel
-							    
 							</apex:outputLink>	
+							
+							<!-- <a href="https://{!domain}/{!taskPrefix}/e?retURL=https://{!domain}/apex/projectDetail?id={!CurrentProjectId}" onclick="addNewTaskOverlay.close(); removeOverlayEvents();">Create Full Task</a> -->
 					
 					</apex:outputPanel>
 					<!-- end of SubmitButtons -->

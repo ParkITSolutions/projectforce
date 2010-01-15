@@ -5,9 +5,9 @@
 	
 	<script>
 	
-		alertOverlay.id 		= '{!$Component.Content}'
-		alertOverlay.message 	= '{!$Component.Form.MessageTouser}'
-		alertOverlay.title 		= '{!$Component.Form.Title}'
+		alertOverlay.id 		= '{!$Component.Content}';
+		alertOverlay.message 	= '{!$Component.Form.MessageTouser}';
+		alertOverlay.title 		= '{!$Component.Form.Title}';
 		
 	</script>
 
@@ -34,7 +34,15 @@
 			
 					<apex:outputText id="Title"
 						value="Title" />
-			
+						
+					<apex:outputPanel id="overlayClose" styleClass="fds" >
+						<apex:outputLink id="linkClose"
+									value="javascript:;"
+									onClick="alertOverlay.close();" >
+									<img src="{!URLFOR($Resource.Overlays, 'images/overlayClose.gif')}" alt="Close Window" title="Close Window" />
+						</apex:outputLink>	
+		            </apex:outputPanel>
+		            
 				</apex:outputPanel>
 				<!-- end of Title -->
 				
@@ -55,7 +63,7 @@
 			
 					<apex:outputLink id="Accept"
 					    styleClass="submitButton"
-					    onClick="alertOverlay.close()"
+					    onClick="alertOverlay.close();"
 					    value="javascript:;">
 					    
 					    Accept

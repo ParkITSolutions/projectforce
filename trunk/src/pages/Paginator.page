@@ -2,183 +2,105 @@
 
 	<c:ApplicationTop id="ApplicationTop" />
 
-	<c:ConfirmOverlay id="DeleteTasksOverlay" 
-		title="Delete tasks"
-		messageToUser=" Are you sure you want to continue?
-                        Once task(s) are deleted, it is not recoverable "
-		actionName="DeleteTasks"/>
-		
-	<c:ConfirmOverlay id="MarkCompleteTasksOverlay" 
-		title="Mark complete tasks"
-		messageToUser=" Are you sure you want to continue? "
-		actionName="MarkCompleteTasks"/>	
-	
-	<c:PromptOverlay id="PromptOverlay"
-	    includeNewTask="true"
-	    includeNewMilestone="true"/>
-	   
-	<!-- Refresh functions -->
-	
-	<apex:form >
-	
-		<apex:actionFunction name="RefreshTasksList"
-				action="{!getTasks}"
-				onComplete="swirly.hide(); infoToUser.show()" 
-				reRender="TasksList"/>
-			
-	</apex:form>
-	
-	<!-- End Refresh functions -->
-	
 	<script>
-	
-		var deleteTasksOverlay = new ConfirmOverlay('{!$Component.DeleteTasksOverlay}')
 		
-		var markCompleteTasksOverlay = new ConfirmOverlay('{!$Component.MarkCompleteTasksOverlay}')
+		var pageNumber = '{!$Component.PaginatorForm.PageNumber}'
 		
-		function getActionIds(){
-		
-			var actionIds = ''
-			
-			$$('.actionCheckbox').each(function(e){
-					
-					if(e.checked){
-						actionIds = actionIds+e.value+':'
-					}
-				}) 
-				
-			return actionIds
-		}
-		
-		function deleteTasks(){
-			
-			var actionIds = getActionIds()
-			
-			if(actionIds.length == 0){
-			
-				alertOverlay.open('Task list error', 'There are not tasks selected')	
-				
-			}else{
-			
-				deleteTasksOverlay.open()
-				
-				deleteTasksOverlay.setActionIds(actionIds)
-			}
-
-		}
-		
-		function deleteTask(taskId){
-		
-			$$('.actionCheckbox').each(function (e){
-	              
-	          	e.checked = false           
-	   
-	      	}); 
-		
-			$(taskId).checked = true
-			
-			deleteTasks()
-			
-		}
-		
-		function markCompleteTasks(){
-			
-			var actionIds = getActionIds()
-			
-			if(actionIds.length == 0){
-			
-				alertOverlay.open('Task list error', 'There are not tasks selected')	
-				
-			}else{
-			
-				markCompleteTasksOverlay.open()
-				
-				markCompleteTasksOverlay.setActionIds(actionIds)
-			}
-		}
-		
-		//marks all checkboxes belonging to a given class
-		//recives the "caller checkbox" and a class
-		function markAllCheckboxes(checkbox, class){
-		
-			var allChecked = true
-			
-			$$('.'+class).each(function (e){
-	              
-	          	e.checked = checkbox.checked;           
-	   
-	      	}); 
-	      	
+		function setPageNumber(pNumber){
+			$(pageNumber).value = pNumber
 		}
 		
 	</script>
 	
 	<style>
-		.breadcrumbPanel{
-			background-color:olive;
-padding:10px;
-width:363px;
-		}
 		
-		.buttonsPanel{
-			background-color:red;
-margin-left:auto;
-margin-right:auto;
-padding:10px;
-width:363px;
-		}
-		
-		.paginationPanel{
+		.paginatorPanel{
 			font-size:16px;
-font-weight:bold;
-margin-left:auto;
-margin-right:auto;
-padding:10px;
-text-align:center;
-width:500px;
+			font-weight:bold;
+			margin-left:auto;
+			margin-right:auto;
+			padding:10px;
+			text-align:center;
+			width:1100px;
 		}
 		
-		.filterPanel{
-			background-color:green;
-padding:10px;
-text-align:right;
-width:96%;
+		.pagesList{
+			color: red;
 		}
 		
-		.exportCSVPanel{
-		background-color:lime;
-margin-left:15px;
-padding:5px;
+		.pagesList li{
+			float: left;
 		}
+		.currentPage{
+			color:red;
+			font-size:19px;
+		}
+		
+		.linkDisable{
+			color: gray; 
+		}
+		
 	</style>
-	
 	
 	<!-- ContentPanel -->
 	<apex:outputPanel id="ContentPanel" styleClass="contentPanel" layout="block" >
 	
-		<apex:form >
-	
-			<!-- PaginationPanel -->
-			<apex:outputPanel id="PaginationPanel" styleClass="paginationPanel" layout="block" >
+			<!-- PaginatorPanel -->
+			<apex:outputPanel id="PaginatorPanel" styleClass="paginatorPanel" layout="block" >
 				
-				<< <apex:commandLink rendered="{!paginator.HasPrevious}" value="Previous" action="{!paginator.previous}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList, PaginationPanel"/> &nbsp;
+				<apex:form id="PaginatorForm">
 				
-				<apex:commandLink value="Next" action="{!paginator.next}" onClick="swirly.show()" onComplete="swirly.hide()"  reRender="TasksList, PaginationPanel"/> >> &nbsp;
+					<apex:actionFunction name="RefreshPaginator"
+						action="{!refreshPaginator}"
+						onComplete="swirly.hide();" 
+						reRender="TasksList, PaginatorPanel"/>
+						
+					<apex:outputPanel id="CommandsPanel" styleClass="commandsPanel" layout="block" rendered="{!OR(paginator.HasNext,paginator.HasPrevious)}">
+						
+						&lt;&lt; <apex:commandLink rendered="{!paginator.HasPrevious}" value="Previous" action="{!previous}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList, PaginatorPanel"/> &nbsp;
+					
+						<apex:outputText styleClass="linkDisable" rendered="{!NOT(paginator.HasPrevious)}"  value="Previous" />
+						
+						<apex:commandLink rendered="{!paginator.HasPrevious}" value="First" action="{!first}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList, PaginatorPanel"/>  &nbsp;
+						
+						<apex:outputText styleClass="linkDisable" rendered="{!NOT(paginator.HasPrevious)}"  value="First" />
+						
+						<apex:repeat value="{!pages}" var="page" id="PagesList" > &nbsp;
+						
+							<apex:commandLink styleClass="{!IF(page == pageNumber,'currentPage', '')}"value="{!page}" action="{!goToPage}" onClick="setPageNumber('{!page}'); swirly.show()" onComplete="swirly.hide()"  reRender="TasksList, PaginatorPanel"/> 
+						
+						</apex:repeat> &nbsp;
+						
+						<apex:inputHidden value="{!pageNumber}" id="PageNumber"/>
+						
+						<apex:outputText styleClass="linkDisable" rendered="{!NOT(paginator.HasNext)}"  value="Last" />
+						
+						<apex:commandLink rendered="{!paginator.HasNext}" value="Last" action="{!last}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList, PaginatorPanel"/> &nbsp;
+						
+						<apex:outputText styleClass="linkDisable" rendered="{!NOT(paginator.HasNext)}"  value="Next" />
+						
+						<apex:commandLink rendered="{!paginator.HasNext}" value="Next" action="{!next}" onClick="swirly.show()" onComplete="swirly.hide()"  reRender="TasksList, PaginatorPanel"/> &gt;&gt; 
+						
+					</apex:outputPanel>
 				
-				<br>Page number: <apex:outputText value="{!pageNumber}" />
+					<br>Number of records: <apex:outputText value="{!resultSize}" />
+					
+					<br>Records per page: 
+					<apex:selectList value="{!paginator.pageSize}" size="1" id="PageSizeSelect" onChange="swirly.show(); RefreshPaginator();">
+					
+						<apex:selectOptions value="{!pageSizeItems}"/>
+						
+					</apex:selectList>
 				
-				<br>Number of records: <apex:outputText value="{!records}" />
+				</apex:form>
 					
 			</apex:outputPanel>
-			<!-- End PaginationPanel -->
-		
-		</apex:form>
-		
+			<!-- End PaginatorPanel -->
 		
 		<!-- TasksForm -->
 		<apex:form id="TasksForm">
 		
-			<apex:dataTable value="{!tasksAux}" 
+			<apex:dataTable value="{!tasksByProject}" 
 				var="task" 
 				id="TasksList" 
 				styleClass="table"
@@ -187,13 +109,8 @@ padding:5px;
 				rowClasses="odd,even">
 				
 				<apex:column >
-					<apex:facet name="header">
-						<apex:outputpanel id="IdPanel">
-							<apex:commandLink id="IdLink" value="Name" action="{!orderById}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList"/> &nbsp;
-							
-						</apex:outputpanel>
-					</apex:facet>
-					<apex:outputLink value="/apex/ProjectTaskDetail?id={!task.id}" id="IdTaskLink">{!task.Name}</apex:outputLink>
+					<apex:facet name="header"><apex:outputText id="NameLink" value="Name" /></apex:facet>
+					<apex:outputText id="TaskName" value="{!task.Name}" />
 				</apex:column>
 				
 			</apex:dataTable>

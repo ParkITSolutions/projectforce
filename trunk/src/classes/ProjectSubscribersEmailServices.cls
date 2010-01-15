@@ -725,6 +725,88 @@ public class ProjectSubscribersEmailServices{
         }
         ProjectUtil.DeleteTaskMailSent=false;
 	}
+	
+	
+	
+	//////////////////
+	/**
+    * Send mail to subscribers, for expiring task
+    *@param List<String> lstPTId
+    *@return void
+    */
+   	public  void sendMailForExpiringTasks( List<String> lstPTId ) {
+        String emailMsj = '';
+        String emailSub = '';
+
+        List<String> lstUserId = new  List<String>();  
+        
+        List<ProjectTask__c> lstPT = new  List<ProjectTask__c>();    
+        lstPT = [ SELECT Id, Project__c, Project__r.Name, Name, Description__c, EndDate__c, 
+        			StartDate__c, Priority__c 
+        			FROM ProjectTask__c 
+        			WHERE Id in : lstPTId ];
+        
+        List<String> SubAssignees = new List<String>();
+        if (lstPT.size()>0 ){
+            for (ProjectAssignee__c a :[select id, user__c 
+            								from ProjectAssignee__c 
+            								where ProjectTask__c =: lstPT[0].id]){
+        		SubAssignees.add(a.user__c);
+            }
+        
+	        String htmlVar ='';
+			String title='';
+			String field='';
+			String msjFoot='';
+			
+			title='<a style="color:#FFFFFF;" href="' + Label.sfdcHostName +'apex/ProjectDetail?id='+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a>';
+			htmlVar=returnHtmlIni(htmlVar,title);
+			
+			title='Task Name';
+			field='<a href="'+ Label.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">' + lstPT[0].Name+ '</a>';
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			title='Priority';
+			field=lstPT[0].Priority__c;
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			title='Start date';
+			field=lstPT[0].StartDate__c.format();
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			title='End date';
+			field='';
+			if (lstPT[0].EndDate__c != null)
+				field=lstPT[0].EndDate__c.format();
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			
+			title='End Descripcion';
+			field=lstPT[0].Description__c;
+			htmlVar=returnVarHtml(htmlVar, title, field);
+			
+			msjFoot='Task is past its due date';
+			htmlVar=returnHtmlFin(htmlVar,msjFoot);
+			
+			emailMsj=htmlVar;
+			
+			String Msg='Task '+ ProjectUtil.chopWords( ProjectUtil.chopPhrase( lstPT[0].Name , 35 )) + ' is past its due date';
+			emailSub=returnHtmlSubject(lstPT[0].Project__r.Name,Msg);
+
+	        if (!isTest){
+	            subscriptions = [ SELECT User__c, User__r.Id, User__r.Name, User__r.Email, Project__c, 
+	            					Project__r.Name, ProjectMemberJoinLeave__c, ProjectTaskAssignedToMe__c, 
+	            					ProjectTaskChanged__c, ProjectTaskDeleted__c 
+	            					FROM ProjectSubscription__c 
+	            					WHERE  Project__c =: lstPT[0].Project__c  and User__r.Id!=:UserInfo.getUserId() and ProjectTaskAssignToMeChanged__c = true and user__c in :SubAssignees];
+	        }
+	    	if( subscriptions.size() > 0){	
+	    	     genAddress( subscriptions, emailMsj, emailSub );
+			}        
+        }
+    }
+	
+	////////////////////
 
    /**
     *@param List<ProjectSubscription__c> subscriptions
@@ -791,4 +873,17 @@ public class ProjectSubscribersEmailServices{
             Messaging.sendEmail(new Messaging.SingleEmailMessage[]{mail});
         //ProjectSubscribersEmailServices.alreadySent = true;
     }
+    
+    
+    /** 
+    *  
+    *@return void
+    */
+    public void findForExpiringTask(){
+    		//........
+    		// under construction
+    		
+    
+    }
+    
 }
