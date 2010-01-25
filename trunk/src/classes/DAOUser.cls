@@ -1,7 +1,18 @@
+/**
+* @author Andres Canavesi
+*/
 public class DAOUser {
 	
+	/**
+	* Constructor
+	*/	
 	public DAOUser(){}
 	
+	/**
+	* 
+	*
+	*
+	*/
 	public Boolean isAdministrator(){
 		
 		User user = [select Profile.PermissionsModifyAllData

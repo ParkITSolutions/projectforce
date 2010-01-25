@@ -1,0 +1,54 @@
+<apex:component id="OverlayTemplate">
+
+	<!-- Javascript -->
+	<apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/js/overlays.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/js/overlaysTemplate.js')}" />
+	
+	<!-- CSS -->
+	<apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlayTemplate.css')}" />
+	
+	<apex:outputPanel id="Content"  styleClass="overlay" style="display: none" layout="block">
+	
+			<!-- TitlePanel -->
+			<apex:outputPanel id="TitlePanel" styleClass="titlePanel" layout="block">
+				
+				<apex:outputPanel styleClass="title">Title here</apex:outputPanel>
+				
+				<apex:outputPanel id="overlayClose" styleClass="overlayClose" layout="block">
+					<apex:outputLink id="linkClose" value="javascript:;" onClick="promptOverlay.close();" >
+						<img src="{!URLFOR($Resource.Overlays, 'images/overlayClose.gif')}" alt="Close Window" title="Close Window" />
+					</apex:outputLink>	
+	            </apex:outputPanel>
+			</apex:outputPanel>
+			<!-- End TitlePanel -->
+			
+			<!-- Form -->
+			<apex:form id="Form">
+			
+				<apex:outputPanel id="HiddenPanel" style="display: none">
+				</apex:outputPanel>
+			
+				<apex:outputPanel styleclass="required"></apex:outputPanel>
+				<apex:outputPanel styleclass="overlayRequiredInfo">= Required Information</apex:outputPanel>
+				<br />
+				
+				<!-- ComponentBody -->
+				<apex:outputPanel id="ComponentBody" styleClass="componentBody" layout="block">
+									   
+				   <apex:outputPanel styleclass="overlaySeparateLine" layout="block"></apex:outputPanel>
+					
+					<!-- SubmitButtons -->
+					<apex:outputPanel id="SubmitButtons" styleClass="submitButtons" layout="block">
+						<apex:commandLink id="AcceptButton" value="Accept" 	action="{!action}" onClick="promptOverlay.close(); swirly.show();" styleClass="Accept submitButton"/>
+						<apex:outputLink id="CancelButton" value="javascript:;" onClick="promptOverlay.close();" styleClass="Cancel submitButton" >Cancel</apex:outputLink>	
+					</apex:outputPanel>
+					<!-- end of SubmitButtons -->
+					
+				</apex:outputPanel>
+				<!-- end of ComponentBody -->
+			
+			</apex:form>
+			<!-- End Form -->
+	</apex:outputPanel>	
+</apex:component>

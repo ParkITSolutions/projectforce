@@ -1,5 +1,6 @@
 /** 
-*@author Nicolas Dominguez @ 21/12/2009
+* @author Nicolas Dominguez 
+* @dateCreated 21/12/2009
 */
 public class ProjectTaskNotesController {
 
@@ -18,7 +19,7 @@ public class ProjectTaskNotesController {
     * Constructor
     * @param ApexPages.StandardController
     */
-    public ProjectTaskNotesController(ApexPages.StandardController ctrl){
+    public ProjectTaskNotesController( ApexPages.StandardController ctrl ){
     	
 		this.taskVar = new ProjectTask__c();
 		
@@ -27,30 +28,24 @@ public class ProjectTaskNotesController {
     }
     
     /**
-	* Generates permissions for an especific user
-	*@return void
+	* generates permissions for an especific user
 	*/
 	public void genPermissions() {
-		userPermissions.setId(UserInfo.getUserId());
-		userPermissions.setObjectType('Project');
+		userPermissions.setId( UserInfo.getUserId() );
+		userPermissions.setObjectType( 'Project' );
 		userPermissions.setPermissions();		
 	}
     
     /**
-    * Obtains data from the task and project
-    * @return void	
+    * obtains data from the task and project
     */
 	public void obtainData(){
 		
-		this.taskId=System.currentPageReference().getParameters().get('id_task');
+		this.taskId=System.currentPageReference().getParameters().get( 'id_task' );
 		List<ProjectTask__c> taskList = new List<ProjectTask__c>();
 
-		taskList = [
-			Select p.Id,p.Project__c,p.Project__r.Name, p.Name, p.notes__c, p.CreatedById,
-			(Select Id, User__c, User__r.Name, User__r.Id,PercentDedicated__c From ProjectsAssignees__r order by User__r.Name)
-			From ProjectTask__c p 
-			where p.Id =: taskId limit 1
-			];
+		taskList = DAOFactory.getInstance().ProjectTaskNotesObtainData( taskId ); 
+
 		if (taskList.size() > 0 ) {
 			this.taskVar=taskList[0];
 			if (this.taskVar != null){
@@ -58,27 +53,27 @@ public class ProjectTaskNotesController {
 				this.projectName=this.taskVar.Project__r.Name;
 				
 				//I cut out the name if too long
-				this.projectNameShort=ProjectUtil.chopWords( ProjectUtil.chopPhrase( this.projectName , 20 ));
+				this.projectNameShort=ProjectUtil.chopWords( ProjectUtil.chopPhrase( this.projectName , 20 ) );
 				
 				this.taskName=this.taskVar.Name;
 				//I cut out the name if too long
-				this.taskNameShort=ProjectUtil.chopWords( ProjectUtil.chopPhrase( this.taskName , 20 ));
+				this.taskNameShort=ProjectUtil.chopWords( ProjectUtil.chopPhrase( this.taskName , 20 ) );
 				
 				this.taskNotes=this.taskVar.notes__c;
 				
 				//Permissions
 				//I can access if it is true canAccess
 				this.canAccess = false;
-				if(UserInfo.getUserId() == this.taskVar.CreatedById){
+				if( UserInfo.getUserId() == this.taskVar.CreatedById ){
 					this.canAccess = true;	
 				}
-				else if (this.userPermissions.getCanManage()){
+				else if ( this.userPermissions.getCanManage() ){
 					this.canAccess = true;
 				}
-				else if(((this.taskVar.ProjectsAssignees__r).size() != 0) && (this.taskVar.ProjectsAssignees__r != null)){
-					for (ProjectAssignee__c item: this.taskVar.ProjectsAssignees__r) {
+				else if( ( ( this.taskVar.ProjectsAssignees__r).size() != 0 ) && ( this.taskVar.ProjectsAssignees__r != null ) ){
+					for ( ProjectAssignee__c item: this.taskVar.ProjectsAssignees__r ) {
 					
-						if(UserInfo.getUserId() == item.User__r.id){
+						if( UserInfo.getUserId() == item.User__r.id ){
 							this.canAccess = true;
 						}
 						else{
@@ -90,35 +85,38 @@ public class ProjectTaskNotesController {
 	}
 
     /**
-    * Cancel Changes
-    * @return PageReference
+    * cancel changes
+    * @return pageRef a page reference
     */
     public PageReference CancelEdit () {
-		PageReference pageRef = new PageReference('/apex/ProjectTaskDetail');
-		pageRef.getParameters().put('id', this.taskId);
-        pageRef.setRedirect(true);
+    	
+		PageReference pageRef = new PageReference( '/apex/ProjectTaskDetail' );
+		pageRef.getParameters().put( 'id', this.taskId );
+        pageRef.setRedirect( true );
 		return pageRef;	
 	}
     
     /**
-	* Save changes and redirect
-	* @return PageReference
+	* saves changes and redirect
+	* @return pageRef a page reference
 	*/
 	public PageReference SaveEditAndExit () {
+		
 		this.taskVar.notes__c = taskNotes;
 		update this.taskVar;
 		
-		PageReference pageRef = new PageReference('/apex/ProjectTaskDetail');
-		pageRef.getParameters().put('id', this.taskId);
-        pageRef.setRedirect(true);
+		PageReference pageRef = new PageReference( '/apex/ProjectTaskDetail' );
+		pageRef.getParameters().put( 'id', this.taskId );
+        pageRef.setRedirect( true );
 		return pageRef;
 	}
 	
 	/**
-	* Save changes
-	* @return PageReference
+	* saves changes
+	* @return null
 	*/
 	public PageReference SaveEdit () {
+		
 		this.taskVar.notes__c = taskNotes;
 		update this.taskVar;
 		return null;

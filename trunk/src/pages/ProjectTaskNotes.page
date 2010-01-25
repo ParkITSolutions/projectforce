@@ -1,46 +1,12 @@
 <apex:page id="ProjectTaskNotes" sidebar="false" cache="true" standardController="ProjectTask__c" extensions="ProjectTaskNotesController" tabStyle="Project2__c">
 	
-    <!-- Ajax Toolkit -->
-    <apex:includeScript value="/soap/ajax/11.1/connection.js" />
-
-   <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}" />
-    
-    <!-- Script.aculo.us / Prototype -->
-    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}" />
-    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}" />
-    
-     <!-- overlays resources -->
-    <apex:includeScript value="{!URLFOR($Resource.overlaysResources, 'inc/js/js.js')}"/>
-    <apex:stylesheet value="{!URLFOR($Resource.overlaysResources, 'inc/css/css.css')}"/>
-    
-    
-    <!-- Portal Support -->
-    
-    <!-- Common JS for All Sections -->
-    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/TeamsWidgetCommon.js')}" />
-    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}" />
-    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" />
-
-    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupTop.js')}" />
-    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectDetail.js')}" />
-    
-   <!-- <apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/js/Swirly.js')}" /> -->
-	 
-    <!-- CSS Includes -->
-    <apex:stylesheet value="{!URLFOR($Resource.TeamsResources, 'inc/css/widgets/TeamMemberWidget.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
-    
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectLayout.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
-    
-     
+	<c:ApplicationTop id="ApplicationTop" />
+	
+	<script src="{!URLFOR($Resource.ProjectTaskNotes, 'inc/javascript/projectTaskNotes.js')}" />
 	<script src="{!URLFOR($Resource.ckeditor, 'ckeditor/ckeditor.js')}" />
 	
-	<c:PageSwirly id="PageSwirly" />
-	
-	    <div id="all" style="overflow:hidden;">    
+	    <div id="all" style="overflow:hidden;">
+	    
 	        <!-- Header -->
 	        <apex:composition template="HeaderTemplate">
 	            <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
@@ -70,16 +36,13 @@
 	            </apex:outputpanel>       
 	
 	        </div>
+	        
 	        <!-- Sidebar -->
 	        <div class="sidebar">
 	            <apex:outputPanel id="sidebarWidgets">
 	                <!-- Project Quick Links -->
-	                <c:ProjectDetailQuickLinks />
+	                <c:ProjectDetailQuickLinks id="quickLinks" />
 	    
-	                <!-- Team Suscribe
-	                <c:ProjectSubscribe /> 
-	                -->
-	    			
 	                <!-- Team members -->
 	                 <c:ProjectMembersWidget projectId="{!projectId}" id="ProjectMembersWidget" />   
 	
@@ -99,16 +62,15 @@
 						<h4>Task Notes</h4>
 					</div>
 				</div>
-				<div class="overlayMainContent" onload="cKEditorCounter( 'CKloader' )">
+				
+				<div class="overlayMainContent" onload="taskNotes.cKEditorCounter( 'CKloader' )">
 					<apex:outputPanel id="topicPanelCKEditor" layout="block" rendered="{!canAccess}">
 						<div class="overlayFormContent">
 							<table border="0" style="width:97%;">
 								<tr>
 									<td style="height: 500px; width: 1100px;">
+									
 										<!-- CKEditor -->
-										<div id="loader" style="text-align:center;"><center><img src="{!URLFOR($Resource.ProjectResources, 'images/layout/big-loader.gif')}" /></center><br />Loading...</div>
-										<div id="saverGif" style="text-align:center; display:none"><center><img src="{!URLFOR($Resource.ProjectResources, 'images/layout/big-loader.gif')}" /></center><br />Saving...</div>
-										<div id="cancelGif" style="text-align:center; display:none"><center><img src="{!URLFOR($Resource.ProjectResources, 'images/layout/big-loader.gif')}" /></center><br />Canceling...</div>
 										<div id="divCKLoader">
 										 	<textarea class="CKloader" id="CKloader" style="display:block;" >{!taskNotes}</textarea>   
 										</div>
@@ -131,150 +93,48 @@
 						
 					</apex:outputPanel>
 				</div>
+				
 				<div align="center" rendered="{!canAccess}">
-					<apex:commandButton value="Save" id="saveButtonOnly" styleclass="blackbutton" action="{!SaveEdit}" onclick="swirly.show();hideElements();saveContent();" oncomplete="swirly.hide();showElements();refreshRecentChanges();" />
-					<apex:commandButton value="Save & Exit" id="saveButtonExit" styleclass="blackbutton" action="{!SaveEditAndExit}" onclick="swirly.show();hideElements();saveContent();" oncomplete="swirly.hide();showElements();refreshRecentChanges();" />
+					<apex:commandButton value="Save" id="saveButtonOnly" styleclass="blackbutton" action="{!SaveEdit}" onclick="swirly.show(); taskNotes.saveContent();" oncomplete="swirly.hide(); refreshRecentChanges();" />
+					<apex:commandButton value="Save & Exit" id="saveButtonExit" styleclass="blackbutton" action="{!SaveEditAndExit}" onclick="taskNotes.saveContent();" />
 					<apex:commandButton value="Cancel" id="cancelButton" styleclass="blackbutton"  action="{!CancelEdit}" />
 				</div>
+				
 			</apex:form>  
 	
 	    </div>
      
-	<script type="text/javascript">
-	
-		$('CKloader').hide();
+     <script type="text/javascript">
+     	
+     	$('CKloader').hide();
 		window.onload = function(){
-		   
+		
 		    CKEDITOR.replace( 'CKloader', {
-		       
+		
 		        resize_enabled : false,
 		        skin : 'v2',
 		        height : '380px',
 		        toolbar :
 		        [
-		            ['Source'],
-		            ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print'],
-		            ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-		            ['Bold','Italic','Underline','Strike'],
-		            '/',
-		            ['Subscript','Superscript'],
-		            ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
-		            ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-		            ['Link','Unlink','Anchor'],
-		            ['Image','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
-		            '/',
-		            ['Styles','Format','Font','FontSize'],
-		            ['TextColor','BGColor'],['Maximize', 'ShowBlocks']
+		        ['Source'],
+		        ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print'],
+		        ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+		        ['Bold','Italic','Underline','Strike'],
+		        '/',
+		        ['Subscript','Superscript'],
+		        ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+		        ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+		        ['Link','Unlink','Anchor'],
+		        ['Image','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
+		        '/',
+		        ['Styles','Format','Font','FontSize'],
+		        ['TextColor','BGColor'],['Maximize', 'ShowBlocks']
 		        ]
-		       
+		
 		    });
-		    $('loader').hide();
 		    
-		  //cKEditorCounter( 'CKloader' );
+		    $('CKloader').show();
 		}
-		
-		Event.observe(window, 'load', function() { cKEditorCounter( 'CKloader' ) });
-		
-		/** Hide elements
-		*@void		
-		*/
-		function hideElements(){
-			/*
-				getElementByApexID('saveButtonOnly').disabled=true;
-				getElementByApexID('saveButtonExit').disabled=true;			
-				getElementByApexID('cancelButton').disabled=true;
-				
-				$( 'divCKLoader' ).hide();
-				//$('saverGif').show();
-				
-				$( 'stringSizeCounter' ).hide();
-				$( 'numberOfCharacterExeeded' ).hide();
-				$( 'warningSign' ).hide();
-			*/
-			//swirly.hide();
-		}
-		
-		/** Show elements
-		*@void		
-		*/
-		function showElements(){
-			/*
-				getElementByApexID('saveButtonOnly').disabled=false;
-				getElementByApexID('saveButtonExit').disabled=false;			
-				getElementByApexID('cancelButton').disabled=false;
-				
-				$( 'divCKLoader' ).show();
-				//$('saverGif').hide();
-				
-				$( 'stringSizeCounter' ).show();
-				$( 'numberOfCharacterExeeded' ).show();
-				$( 'warningSign' ).show();
-			*/
-			//swirly.show();
-		}
-		
-		function getCKContent(){
-		    try {
-		        var markup =  document.getElementById('cke_CKloader').getElementsByTagName('iframe')[0].contentWindow.document.getElementsByTagName('body')[0].innerHTML;
-		        return markup;
-		    } 
-		    catch(e){
-		    }
-		}
-		
-		function saveContent () {
-		    var textaux = getCKContent();
-		    $('ProjectTaskNotes:mainContentForm:ckeditor_aux').value=textaux;
-		}
-		
-		function getElementByApexID( apexId ){
-			a = document.getElementsByTagName("*");
-			e = new Array();
-			r = null;
-			for( var k = 0; k < a.length; k ++)
-				if( a[ k ].id.indexOf( ':' + apexId ) > -1)
-					e.push(a[ k ]);
-			
-			if( e.length > 1 )
-				r = e;
-			else if( e.length == 1 )
-				r = e[0];	  
-			return r;
-		}
-		
-		/**
-		* Save disable?
-		*/
-		function disableSave( value ){
-			getElementByApexID('saveButtonOnly').disabled=value;
-			getElementByApexID('saveButtonExit').disabled=value;
-		}
-		
-		function cKEditorCounter( instance ){
-		
-			var counter = '';
-			var label_msg = '';
-			var id_boton = '';
-			editor = CKEDITOR.instances.CKloader;
-			counter = 'stringSizeCounter';
-			label_msg = 'numberOfCharacterExeeded';
-			id_boton = 'saveButtonOnly';
-		
-		
-			cKEditorCount( editor.getData(), counter, label_msg, id_boton);
-		
-			editor.on( 'key', function( evt ){
-				cKEditorCount( evt.editor.getData(), counter, label_msg, id_boton);
-			});
-		}
-		
-		
-		function cKEditorCount( data, counter, label_msg, id_boton  ){
-			count = 32000 - data.length; 
-			$( counter ).innerHTML = count;
-			$( label_msg )[ count < 0 ? 'show' : 'hide']();
-			count < 0 ? disableSave(true) : disableSave(false);
-		}
-	
-	</script>
+     
+     </script>
 </apex:page>

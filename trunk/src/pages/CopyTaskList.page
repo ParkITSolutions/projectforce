@@ -1,6 +1,6 @@
-<apex:page id="TaskList" sidebar="false" controller="CopyTaskListController" tabStyle="Project2__c">
+<apex:page id="TaskList" sidebar="false" controller="TaskListController" tabStyle="Project2__c">
 
-	
+	<c:ApplicationTop id="ApplicationTop" />
 
 	<c:ConfirmOverlay id="DeleteTasksOverlay" 
 		title="Delete tasks"
@@ -16,25 +16,14 @@
 	<c:PromptOverlay id="PromptOverlay"
 	    includeNewTask="true"
 	    includeNewMilestone="true"/>
-	   
-	<!-- Refresh functions -->
-	
-	<apex:form >
-	
-		<apex:actionFunction name="RefreshTasksList"
-				action="{!getTasks}"
-				onComplete="swirly.hide(); infoToUser.show()" 
-				reRender="TasksList"/>
-			
-	</apex:form>
-	
-	<!-- End Refresh functions -->
+	    
+	<apex:stylesheet value="{!URLFOR($Resource.Paginator, 'inc/css/paginator.css')}" />
 	
 	<script>
 	
-		var deleteTasksOverlay = new ConfirmOverlay('{!$Component.DeleteTasksOverlay}')
+		var deleteTasksOverlay = new ConfirmOverlay('{!$Component.DeleteTasksOverlay}');
 		
-		var markCompleteTasksOverlay = new ConfirmOverlay('{!$Component.MarkCompleteTasksOverlay}')
+		var markCompleteTasksOverlay = new ConfirmOverlay('{!$Component.MarkCompleteTasksOverlay}');
 		
 		function getActionIds(){
 		
@@ -43,7 +32,7 @@
 			$$('.actionCheckbox').each(function(e){
 					
 					if(e.checked){
-						actionIds = actionIds+e.value+':'
+						actionIds = actionIds+e.value+':';
 					}
 				}) 
 				
@@ -52,17 +41,17 @@
 		
 		function deleteTasks(){
 			
-			var actionIds = getActionIds()
+			var actionIds = getActionIds();
 			
 			if(actionIds.length == 0){
 			
-				alertOverlay.open('Task list error', 'There are not tasks selected')	
+				alertOverlay.open('Task list error', 'There are not tasks selected');
 				
 			}else{
 			
-				deleteTasksOverlay.open()
+				deleteTasksOverlay.open();
 				
-				deleteTasksOverlay.setActionIds(actionIds)
+				deleteTasksOverlay.setActionIds(actionIds);
 			}
 
 		}
@@ -71,39 +60,39 @@
 		
 			$$('.actionCheckbox').each(function (e){
 	              
-	          	e.checked = false           
+	          	e.checked = false;           
 	   
 	      	}); 
 		
-			$(taskId).checked = true
+			$(taskId).checked = true;
 			
-			deleteTasks()
+			deleteTasks();
 			
 		}
 		
 		function markCompleteTasks(){
 			
-			var actionIds = getActionIds()
+			var actionIds = getActionIds();
 			
 			if(actionIds.length == 0){
 			
-				alertOverlay.open('Task list error', 'There are not tasks selected')	
+				alertOverlay.open('Task list error', 'There are not tasks selected');	
 				
 			}else{
 			
-				markCompleteTasksOverlay.open()
+				markCompleteTasksOverlay.open();
 				
-				markCompleteTasksOverlay.setActionIds(actionIds)
+				markCompleteTasksOverlay.setActionIds(actionIds);
 			}
 		}
 		
 		//marks all checkboxes belonging to a given class
 		//recives the "caller checkbox" and a class
-		function markAllCheckboxes(checkbox, class){
+		function markAllCheckboxes(checkbox, theClass){
 		
-			var allChecked = true
+			var allChecked = true;
 			
-			$$('.'+class).each(function (e){
+			$$('.'+theClass).each(function (e){
 	              
 	          	e.checked = checkbox.checked;           
 	   
@@ -111,10 +100,16 @@
 	      	
 		}
 		
-		var pageNumber = '{!$Component.PaginatorForm.PageNumber}'
+		var pageNumber = '{!$Component.Form.PageNumber}';
 		
 		function setPageNumber(pNumber){
-			$(pageNumber).value = pNumber
+			$(pageNumber).value = pNumber;
+		}
+		
+		var orderBy = '{!$Component.Form.OrderBy}';
+		
+		function setOrderBy(field){
+			$(orderBy).value = field;
 		}
 		
 	</script>
@@ -122,70 +117,60 @@
 	<style>
 		.breadcrumbPanel{
 			background-color:olive;
-padding:10px;
-width:363px;
+			padding:10px;
+			width:363px;
 		}
 		
 		.buttonsPanel{
 			background-color:red;
-margin-left:auto;
-margin-right:auto;
-padding:10px;
-width:363px;
+			margin-left:auto;
+			margin-right:auto;
+			padding:10px;
+			width:363px;
 		}
 		
 		.paginationPanel{
 			background-color:gray;
-margin-left:auto;
-margin-right:auto;
-padding:10px;
-text-align:center;
-width:300px;
-		}
-		
-		.filterPanel{
-			background-color:green;
-padding:10px;
-text-align:right;
-width:96%;
-		}
-		
-		.exportCSVPanel{
-		background-color:lime;
-margin-left:15px;
-padding:5px;
-		}
-	</style>
-	
-		<style>
-		
-		.paginatorPanel{
-			font-size:16px;
-			font-weight:bold;
 			margin-left:auto;
 			margin-right:auto;
 			padding:10px;
 			text-align:center;
-			width:1100px;
+			width:300px;
 		}
 		
-		.pagesList{
-			color: red;
+		.filterPanel{
+			background-color:green;
+			padding:10px;
+			text-align:right;
+			width:96%;
 		}
 		
-		.pagesList li{
-			float: left;
-		}
-		.currentPage{
-			color:red;
-			font-size:19px;
+		.exportCSVPanel{
+			background-color:lime;
+			margin-left:15px;
+			padding:5px;
 		}
 		
-		.linkDisable{
-			color: gray; 
+		.outline{
+			border:1px solid #CCCCCC;
+			float:left;
+			height:9px;
+			vertical-align:middle;
+			width:75px;	
+			margin-right: 5px;
+		}
+		.percentCompleted{
+			background-color:#90C142;
+			height:9px;
+			margin:0;
+			display:block;
 		}
 		
+		.borderRed{
+			border-color: #CC0000;
+		}
 	</style>
+	
 	
 	<!-- Header -->
     <apex:composition template="HeaderTemplate">
@@ -225,7 +210,7 @@ padding:5px;
 				
 				<apex:outputLink value="javascript:;"
 					id="NewMilestoneLink"
-					onClick="promptOverlay.open(newMilestone)"
+					onClick="promptOverlay.open(newMilestone);"
 					styleClass="button1">
 					
 					New Milestone
@@ -234,7 +219,7 @@ padding:5px;
 				
 				<apex:outputLink value="javascript:;"
 					id="MarkComplete"
-					onClick="markCompleteTasks()"
+					onClick="markCompleteTasks();"
 					styleClass="button1">
 					
 					Mark Complete
@@ -251,7 +236,7 @@ padding:5px;
 		
 				<apex:outputLink value="javascript:;"
 					id="Delete"
-					onClick="deleteTasks()"
+					onClick="deleteTasks();"
 					styleClass="button1">
 					
 					Delete
@@ -263,38 +248,212 @@ padding:5px;
 		</apex:outputPanel>
 		<!-- End ButtonsPanel -->
 		
+		<apex:form id="Form">
 		
+			<!-- PaginatorPanel -->
+			<apex:outputPanel id="PaginatorPanel" styleClass="paginatorPanel" layout="block" >
+				
+					<apex:actionFunction name="RefreshPaginator"
+						action="{!paginator.pagesListConstructor}"
+						onComplete="swirly.hide();" 
+						reRender="TasksList, PaginatorPanel"/>
+						
+						<apex:actionFunction name="RefreshTasksList"
+						action="{!paginator.loadTasksByProject}"
+						onComplete="swirly.hide();" 
+						reRender="TasksList, PaginatorPanel"/>
+						
+					<!-- CommandsPanel -->
+					<apex:outputPanel id="CommandsPanel" styleClass="commandsPanel" layout="block" rendered="{!OR(paginator.hasNext,paginator.hasPrevious)}">
+						
+						&lt;&lt; 
+						<apex:commandLink rendered="{!paginator.hasPrevious}" value="Previous" action="{!paginator.previous}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList, PaginatorPanel"/> &nbsp;
+					
+						<apex:outputText styleClass="linkDisable" rendered="{!NOT(paginator.hasPrevious)}"  value="Previous" />
+						
+						<apex:commandLink rendered="{!paginator.hasPrevious}" value="First" action="{!paginator.first}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList, PaginatorPanel"/>  &nbsp;
+						
+						<apex:outputText styleClass="linkDisable" rendered="{!NOT(paginator.hasPrevious)}"  value="First" />
+						
+						<apex:repeat value="{!paginator.pages}" var="page" id="PagesList" > &nbsp;
+						
+							<apex:commandLink styleClass="{!IF(page == paginator.pageNumber,'currentPage', '')}" value="{!page}" action="{!paginator.goToPage}" onClick="setPageNumber('{!page}'); swirly.show()" onComplete="swirly.hide()"  reRender="TasksList, PaginatorPanel"/> 
+						
+						</apex:repeat> &nbsp;
+						
+						<apex:outputText styleClass="linkDisable" rendered="{!NOT(paginator.hasNext)}"  value="Last" />
+						
+						<apex:commandLink rendered="{!paginator.hasNext}" value="Last" action="{!paginator.last}" onClick="swirly.show()" onComplete="swirly.hide()" reRender="TasksList, PaginatorPanel"/> &nbsp;
+						
+						<apex:outputText styleClass="linkDisable" rendered="{!NOT(paginator.hasNext)}"  value="Next" />
+						
+						<apex:commandLink rendered="{!paginator.hasNext}" value="Next" action="{!paginator.next}" onClick="swirly.show()" onComplete="swirly.hide()"  reRender="TasksList, PaginatorPanel"/> &gt;&gt; 
+						
+					</apex:outputPanel>
+					<!-- End CommandsPanel -->
+				
+					<br>Number of records: <apex:outputText value="{!paginator.resultSize}" />
+					
+					<br>Records per page: 
+					<apex:selectList value="{!paginator.recordsPerPage}" size="1" id="PageSizeSelect" onChange="swirly.show(); RefreshPaginator();">
+					
+						<apex:selectOptions value="{!paginator.pageSizeItems}"/>
+						
+					</apex:selectList>
+					
+					<apex:inputHidden value="{!paginator.pageNumber}" id="PageNumber"/>
+					
+					<apex:inputHidden value="{!paginator.orderBy}" id="OrderBy"/>
+					
+			</apex:outputPanel>
+			<!-- End PaginatorPanel -->
+			
+			<!-- FilterPanel -->
+			<apex:outputPanel id="FilterPanel" styleClass="filterPanel" layout="block">
+				
+					Quick filter: 
+					<apex:selectList value="{!paginator.filter}" size="1" id="FilterSelect" onChange="swirly.show(); RefreshTasksList();">
+						<apex:selectOptions value="{!filterItems}"/>
+					</apex:selectList>
+					
+			</apex:outputPanel>
+			<!-- End FilterPanel -->
+		
+		</apex:form>
+		
+		<!-- ExportCSVPanel -->
+		<apex:outputPanel id="ExportCSVPanel" styleClass="exportCSVPanel" layout="block">
+			
+			<apex:form id="ExportCSVForm">
+			
+			 	<apex:image value="{!URLFOR($Resource.ProjectTasksList, 'images/csv.gif')}" id="ExportCSVImage" width="13"/>
+			 
+			 <!-- 	<apex:commandLink action="{!generateCSV}" 
+	             		value="Export to CSV"
+	                  	title="Export to CSV file"/>
+	               -->    	
+	         </apex:form>
+				
+		</apex:outputPanel>
+		<!-- End ExportCSVPanel -->
 		
 		<!-- TasksForm -->
 		<apex:form id="TasksForm">
 			
-		
+			<apex:dataTable value="{!paginator.tasksByProject}" 
+				var="task" 
+				id="TasksList" 
+				styleClass="table"
+				cellpadding="0"
+				cellspacing="0"
+				rowClasses="odd,even">
+				
+				<apex:column id="Action">
+					<apex:facet name="header"><apex:inputCheckbox id="ActionCheckbox" onClick="markAllCheckboxes(this,'actionCheckbox');"/></apex:facet>
+					<input type="checkbox" id="{!task.id}" value="{!task.id}" class="actionCheckbox"/>
+				</apex:column>
+				
+				<apex:column >
+					<apex:facet name="header">Action</apex:facet>
+					<apex:outputLink value="/{!task.id}/e?retURL={!url}/apex/TaskList?id={!projectId}" id="EditLink">Edit | </apex:outputLink>
+					<apex:outputLink value="javascript:;" id="DeleteLink" onClick="deleteTask('{!task.id}');"> Del</apex:outputLink>
+				</apex:column>
+				
+				<apex:column >
+					<apex:facet name="header">
+						<apex:outputpanel id="IdPanel">
+							<apex:outputLink id="IdLink" value="javascript:;" onClick=" swirly.show(); setOrderBy('Id__c'); RefreshTasksList()">Id </apex:outputLink> &nbsp;
+							<apex:image id="IdArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Id__c', paginator.orderAsc),true,false)}" />
+							<apex:image id="IdArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Id__c', NOT(paginator.orderAsc)),true, false)}"/>
+						</apex:outputpanel>
+					</apex:facet>
+					<apex:outputLink value="/apex/ProjectTaskDetail?id={!task.id}" id="IdTaskLink">{!task.idDisplay}</apex:outputLink>
+				</apex:column>
+				
+				<apex:column >
+					<apex:facet name="header">
+						<apex:outputpanel id="PriorityPanel">
+							<apex:outputLink id="PriorityLink" value="javascript:;" onClick=" swirly.show(); setOrderBy('Priority__c'); RefreshTasksList()">Priority </apex:outputLink> &nbsp;
+							<apex:image id="PriorityArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Priority__c', paginator.orderAsc),true,false)}" />
+							<apex:image id="PriorityArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Priority__c', NOT(paginator.orderAsc)),true, false)}"/>
+						</apex:outputpanel>
+					</apex:facet>
+					<apex:image id="PriorityImage" value="{!URLFOR($Resource.ProjectTasksList, 'images/'+task.priority+'Priority.gif')}" />
+				</apex:column>
+				
+				<apex:column >
+					<apex:facet name="header">&nbsp;</apex:facet>
+					<apex:image id="MilestoneImage" value="{!URLFOR($Resource.ProjectTasksList, 'images/milestone.gif')}" rendered="{!task.isMilestone}" />
+				</apex:column>
+				
+				<apex:column >
+					<apex:facet name="header">
+						<apex:outputpanel id="NamePanel">
+							<apex:outputLink id="NameLink" value="javascript:;" onClick=" swirly.show(); setOrderBy('Name'); RefreshTasksList()">Name </apex:outputLink> &nbsp;
+							<apex:image id="NameArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', paginator.orderAsc),true,false)}" />
+							<apex:image id="NameArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', NOT(paginator.orderAsc)),true, false)}"/>
+						</apex:outputpanel>
+					</apex:facet>
+					<apex:outputLink value="/apex/ProjectTaskDetail?id={!task.id}" id="NameTaskLink"> {!task.name}</apex:outputLink>
+				</apex:column>
+				
+				<apex:column >
+					<apex:facet name="header"><apex:outputLink value="javascript:;" id="AssignedToLink">Assigned to</apex:outputLink></apex:facet>
+					<select id="Assignees" style="width: 150px;">
+						<apex:repeat value="{!task.assignees}" var="assignee" id="Assignees">
+							<option id="{!assignee.id}">{!assignee.name}</option>
+						</apex:repeat>
+					</select>
+				</apex:column>
+				
+				<apex:column >
+					<apex:facet name="header">
+						<apex:outputpanel id="Completedanel">
+							<apex:outputLink id="CompletedLink" value="javascript:;" onClick=" swirly.show(); setOrderBy('PercentCompleted__c'); RefreshTasksList()">% Completed </apex:outputLink> &nbsp;
+							<apex:image id="CompletedArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'PercentCompleted__c', paginator.orderAsc),true,false)}" />
+							<apex:image id="CompletedArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'PercentCompleted__c', NOT(paginator.orderAsc)),true, false)}"/>
+						</apex:outputpanel>
+						
+					</apex:facet>
+					
+					<apex:outputPanel styleClass="outline {!IF (task.OverdueTask > 0,'borderRed', '')}">
+						<apex:outputPanel styleClass="percentCompleted" style="width:{!task.percentCompleted}%;"/>
+					</apex:outputPanel>
+					<apex:outputText value="{!task.percentCompleted}"/>
+					&#37;
+				</apex:column>
+				
+				<apex:column >
+					<apex:facet name="header">
+					<apex:outputpanel id="DurationPanel">
+							<apex:outputLink id="DurationLink" value="javascript:;" onClick=" swirly.show(); setOrderBy('Duration__c'); RefreshTasksList()">Duration </apex:outputLink> &nbsp;
+							<apex:image id="DurationArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Duration__c', paginator.orderAsc),true,false)}" />
+							<apex:image id="DurationArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Duration__c', NOT(paginator.orderAsc)),true, false)}"/>
+						</apex:outputpanel>
+					</apex:facet>
+					<apex:outputText value="{!task.durationDisplay}"/>
+				</apex:column>
+				
+				<apex:column >
+					<apex:facet name="header">
+					<apex:outputpanel id="EndDatePanel">
+							<apex:outputLink id="EndDateLink" value="javascript:;" onClick=" swirly.show(); setOrderBy('EndDate__c'); RefreshTasksList()">Due date </apex:outputLink> &nbsp;
+							<apex:image id="EndDateArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'EndDate__c', paginator.orderAsc),true,false)}" />
+							<apex:image id="EndDateArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'EndDate__c', NOT(paginator.orderAsc)),true, false)}"/>
+						</apex:outputpanel>
+					</apex:facet>
+					<apex:outputText value="{!task.endDateDisplay}"/>
+					<apex:outputPanel layout="block" styleClass="DaysLateMessage" rendered="{!task.OverdueTask > 0}">
+						<apex:outputText value="{!task.OverdueTask} day late"/>
+					</apex:outputPanel>
+					
+				</apex:column>
+				
+			</apex:dataTable>
+			 
 		</apex:form>
 		<!-- End TasksForm -->
 	
 	</apex:outputPanel>
 	<!-- End ContentPanel -->
-
-	<style>
-	.outline{
-		border:1px solid #CCCCCC;
-		float:left;
-		height:9px;
-		vertical-align:middle;
-		width:75px;	
-		margin-right: 5px;
-	}
-	.percentCompleted{
-		background-color:#90C142;
-		height:9px;
-		margin:0;
-		display:block;
-	}
-	
-	.borderRed{
-		border-color: #CC0000;
-	}
-	
-	</style>
-<c:ApplicationTop id="ApplicationTop" />
 </apex:page>

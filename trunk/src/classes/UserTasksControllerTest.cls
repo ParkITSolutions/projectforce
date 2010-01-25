@@ -1,4 +1,5 @@
-@isTest private class UserTasksControllerTest {
+@isTest 
+private class UserTasksControllerTest {
 
 
 	static testMethod void myUnitTest(){

@@ -1,4 +1,12 @@
+/**
+* @author Andres Canavesi
+*/
 public class DAOTaskComment {
-
-	public DAOTaskComment(){}
+	
+	/**
+	* Constructor
+	*/
+	public DAOTaskComment(){
+	
+	}
 }

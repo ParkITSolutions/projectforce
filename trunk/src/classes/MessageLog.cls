@@ -52,7 +52,7 @@ public class MessageLog {
 	}
 	
 	/**
-	*
+	* Method for generating specific messages for the Project logs
 	* @param ProjectActivity__c activity
 	* @return String
 	*/
@@ -60,19 +60,19 @@ public class MessageLog {
 		
 		String msg = '';
 		
-		if( activity.ChangeType__c == 1 ){
-			msg = '';
+		if( activity.ChangeType__c == 'Project_Name' ){
+			msg = 'Projects Name has changed to ' + activity.name__c;
 		}
 		
-		if( activity.ChangeType__c == 2 ){
-			msg = '';
+		if( activity.ChangeType__c == 'Project_Access' ){
+			msg = 'Projects Access level has changed to '+ activity.Access__c;
 		}
 		
 		return msg;
 	}
 	
 	/**
-	*
+	* Method for generating specific messages for the Task logs
 	* @param TaskActivity__c activity
 	* @return String
 	*/
@@ -80,27 +80,35 @@ public class MessageLog {
 		
 		String msg = '';
 		
-		if( activity.ChangeType__c == 1 ){
-			msg = '';
+		if( activity.ChangeType__c == 'Task_Insert' ){
+			msg = activity.NewName__c + ' has been added to Project';
 		}
 		
-		if( activity.ChangeType__c == 2 ){
-			msg = '';
+		if( activity.ChangeType__c == 'Task_Delete' ){
+			msg = activity.NewName__c + ' has been removed from Project';
 		}
 		
-		if( activity.ChangeType__c == 1 ){
-			msg = '';
+		if( activity.ChangeType__c == 'Task_Name' ){
+			msg = 'Task ' + ProjectUtil.chopPhrase( activity.Name, 30 ) + ' has been renamed to ' + ProjectUtil.chopPhrase( activity.NewName__c, 30 );
 		}
 		
-		if( activity.ChangeType__c == 2 ){
-			msg = '';
+		if( activity.ChangeType__c == 'Task_Duration' ){
+			msg = 'Tasks ' + activity.NewName__c + ' duration changed to ' + activity.Duration__c;
+		}
+		
+		if( activity.ChangeType__c == 'Task_Complete' ){
+			msg = 'Task ' + activity.NewName__c + ' completed';
+		}
+		
+		if( activity.ChangeType__c == 'Task_Status' ){
+			msg = 'Tasks ' + activity.NewName__c + ' status changed to ' + activity.Status__c;
 		}
 		
 		return msg;
 	}
 	
 	/**
-	*
+	* Method for generating specific messages for the Task Assignee logs
 	* @param TaskAssigneeActivity__c activity
 	* @return String
 	*/
@@ -108,19 +116,19 @@ public class MessageLog {
 		
 		String msg = '';
 		
-		if( activity.ChangeType__c == 1 ){
-			msg = '';
+		if( activity.ChangeType__c == 'TaskAssignee_Insert' ){
+			msg = activity.AssigneeName__c + ' has been assigned to Task ' + ProjectUtil.chopPhrase( activity.TaskName__c, 30 );
 		}
 		
-		if( activity.ChangeType__c == 2 ){
-			msg = '';
+		if( activity.ChangeType__c == 'TaskAssignee_Delete' ){
+			msg = activity.AssigneeName__c + ' has been removed from Task ' + ProjectUtil.chopPhrase( activity.TaskName__c, 30 );
 		}
 		
 		return msg;
 	}
 	
 	/**
-	*
+	* Method for generating specific messages for the Task Comment logs
 	* @param TaskCommentActivity__c activity
 	* @return String
 	*/
@@ -128,38 +136,38 @@ public class MessageLog {
 		
 		String msg = '';
 		
-		if( activity.ChangeType__c == 1 ){
-			msg = '';
+		if( activity.ChangeType__c == 'TaskComment_Insert' ){
+			msg = 'Comment added to Task ' + ProjectUtil.chopPhrase( activity.TaskName__c, 30 );
 		}
 		
-		if( activity.ChangeType__c == 2 ){
-			msg = '';
+		if( activity.ChangeType__c == 'TaskComment_Delete' ){
+			msg = 'Comment removed from Task ' + ProjectUtil.chopPhrase( activity.TaskName__c, 30 );
 		}
 		
 		return msg;
 	}
 	
 	/**
-	*
+	* Method for generating specific messages for the Member logs
 	* @param MemberActivity__c activity
 	* @return String
 	*/
 	private String messageMember( MemberActivity__c activity ){
 		String msg = '';
 		
-		if( activity.ChangeType__c == 1 ){
-			msg = '';
+		if( activity.ChangeType__c == 'Member_Insert' ){
+			msg = activity.MemberName__c + ' has been added to Project';
 		}
 		
-		if( activity.ChangeType__c == 2 ){
-			msg = '';
+		if( activity.ChangeType__c == 'Member_Delete' ){
+			msg = activity.MemberName__c + ' has been removed  from Project';
 		}
 		
 		return msg;
 	}
 	
 	/**
-	*
+	* Method for generating specific messages for the Attachment logs
 	* @param 
 	* @return String
 	*/

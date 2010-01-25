@@ -10,8 +10,7 @@ trigger ProjectAssigneeBeforeDelete on ProjectAssignee__c (before delete) {
     	usersIdList.add( pA.User__c );
     	
     	//Logging for Task assignees
-		ProjectAssignee__c assignee = Trigger.new.get(0);
-		TaskAssigneeActivity asigneeActivity = new TaskAssigneeActivity( assignee.Project__c, DateTime.now(), UserInfo.getUserId(), 'delete', assignee );
+		TaskAssigneeActivity asigneeActivity = new TaskAssigneeActivity( pA.Project__c, DateTime.now(), UserInfo.getUserId(), 'delete', pA );
 		asigneeActivity.log();
     }
 

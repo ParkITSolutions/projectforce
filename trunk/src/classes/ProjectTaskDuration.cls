@@ -594,12 +594,9 @@ public class ProjectTaskDuration {
 	* @return String
 	*/
 	public String calculateDurationHours(String value, Double workingHours){
-		System.debug('VALOR INTERNOOOOOOOOOOOOOOO ' +value);
 		Double days = Double.valueOf(value);
-		System.debug('VALOR INTERNOOOOOOOOOOOOOOO ' +days);
 		Double hours = days * workingHours;
 		value = String.valueOf(hours);
-		System.debug('VALOR INTERNOOOOOOOOOOOOOOO ' +value);
 		return value;
 	}
 	

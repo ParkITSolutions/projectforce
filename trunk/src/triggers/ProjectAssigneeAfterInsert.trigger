@@ -35,5 +35,4 @@ trigger ProjectAssigneeAfterInsert on ProjectAssignee__c (after insert)
 		
 	} catch(Exception e) {
 	}
-
 }

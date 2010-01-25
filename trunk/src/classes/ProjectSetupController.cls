@@ -1,10 +1,13 @@
+/**
+* @author Matias Menafra
+*/
 public class ProjectSetupController {
 
-	private List<SelectOption> allProfiles   = new List<SelectOption>(); 
-	private List<SelectOption> savedProfiles = new List<SelectOption>(); 
-	public String selectedProfsStr = '';
-	private List<String> selectedProfsList = new List<String>();
-	private	List<ProjectSetup__c> savedProfilesStr = new List<ProjectSetup__c>();
+	private List<SelectOption> allProfiles   		= new List<SelectOption>(); 
+	private List<SelectOption> savedProfiles 		= new List<SelectOption>(); 
+	public String selectedProfsStr 					= '';
+	private List<String> selectedProfsList 			= new List<String>();
+	private	List<ProjectSetup__c> savedProfilesStr 	= new List<ProjectSetup__c>();
 	
 	/**
 	* Constructor
@@ -18,7 +21,7 @@ public class ProjectSetupController {
 	*@param String[] s
 	*@return void
 	*/
-	public void setSelectedProfilesList( String[] s){
+	public void setSelectedProfilesList( String[] s ){
 		String p = s[0];
 	}
 	
@@ -123,6 +126,7 @@ public class ProjectSetupController {
 	*@return void 
 	*/
 	public void stringProfiles(){
+		
 		this.savedProfilesStr = [ select Id, CanViewButtonNew__c from ProjectSetup__c limit 1 ];
 		if( this.savedProfilesStr.size() > 0 ){
 			if(savedProfilesStr[0].CanViewButtonNew__c != null )
@@ -134,6 +138,7 @@ public class ProjectSetupController {
 	*@return boolean 
 	*/
 	public Boolean canView(){		
+		
 		return  this.getIfCanModifyAllData() || (( this.savedProfilesStr.size() > 0 ) && savedProfilesStr[0].CanViewButtonNew__c.contains( UserInfo.getProfileId()));
 	}	
 
@@ -141,6 +146,7 @@ public class ProjectSetupController {
 	*@return boolean 
 	*/
 	public Boolean getIfCanModifyAllData(){
+		
 		return [Select id, Profile.PermissionsModifyAllData 
 				From User 
 				where id =: UserInfo.getUserId() 

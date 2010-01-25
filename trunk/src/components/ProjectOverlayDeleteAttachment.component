@@ -84,7 +84,7 @@
 	</div>  
 	
 	<script>
-    	deleteAttachmentOverlay = new modalOverlayClass('deleteAttachmentOverlay','modalDeleteAttachmentOverlay',  true);
+    	//deleteAttachmentOverlay = new modalOverlayClass('deleteAttachmentOverlay','modalDeleteAttachmentOverlay',  true);
     </script>                        
 	 
 </apex:component>

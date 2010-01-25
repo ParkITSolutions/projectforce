@@ -1,4 +1,11 @@
+/**
+* @author Andres Canavesi
+*/
 public class DAOTaskPredecessor {
-
-	public DAOTaskPredecessor(){}
+	
+	/**
+	* Constructor
+	*/
+	public DAOTaskPredecessor(){
+	}
 }

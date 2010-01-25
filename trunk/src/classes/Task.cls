@@ -37,27 +37,26 @@ public class Task {
 	
 	}
 	
-	public void markComplete(){}
-	
 	/**
-	*Return the number of days between today and task end date. 
-	*@return Integer
+	* Returns the number of days between today and task end date. 
+	* @return Integer
 	*/
 	public Integer getOverdueTask(){
-		return this.endDate.daysBetween(System.today());
+		return this.endDate.daysBetween( System.today() );
 	}
 	
 	/**
-	*Return task duration as Double type
-	*@Double
+	* Return task duration as Double type
+	* @return Double
 	*/
 	public Double getDuration(){
 		return this.duration;
 	}
 	
 	/**
-	*Se duration (Double) and durationDisplay (String) properties
-	*@param Double d
+	* Se duration (Double) and durationDisplay (String) properties
+	* @param Double d
+	* @return void
 	*/
 	public void setDuration( Double d ){
 		this.duration = d;
@@ -65,40 +64,42 @@ public class Task {
 	}
 
 	/**
-	*Return duration as String
+	* Return duration as String
+	* @return String
 	*/
 	public String getDurationDisplay(){
 		return this.durationDisplay;
 	}
 
 	/**
-	*Set percent completed
-	*@param Double
+	* Setter for percent completed
+	* @param Double p
+	* @return void
 	*/
 	public void setPercentCompleted( Double p ){
 		this.percentCompleted = p;
-		this.setPercentCompletedDisplay( String.valueOf( p.intValue()));
+		this.setPercentCompletedDisplay( String.valueOf( p.intValue() ) );
 	}
 	
 	/**
-	*Get percent completed
-	*@return Double
+	* Getter for percent completed
+	* @return Double
 	*/
 	public Double getPercentCompleted(){
 		return this.percentCompleted;
 	}
 	
 	/**
-	*Set percent completed
-	*@return String
+	* Setter for percent completed
+	* @return String
 	*/
 	public String getPercentCompletedDisplay(){ 
 		return PercentCompletedDisplay;
 	}
 	
 	/**
-	*Set the percent completed value for display.
-	*@param String
+	* Set the percent completed value for display.
+	* @param String
 	*/
 	public void setPercentCompletedDisplay( String d ){
 		this.percentCompletedDisplay = d;
@@ -106,8 +107,8 @@ public class Task {
 	
 	
 	/**
-	*Set the project
-	*@param String
+	* Set the project
+	* @param String
 	*/
 	public void setProjectName( String pName ){
 		this.projectName = pName;
@@ -115,16 +116,16 @@ public class Task {
 	}
 	
 	/**
-	*Return the project name
-	*@return String
+	* Return the project name
+	* @return String
 	*/
 	public String getProjectName(){
 		return this.projectName;
 	}
 	
 	/**
-	*Return the project name of the task for display.
-	*@return String
+	* Return the project name of the task for display.
+	* @return String
 	*/
 	public String getProjectNameDisplay(){
 		return this.projectNameDisplay;
@@ -132,8 +133,8 @@ public class Task {
 	
 	
 	/**
-	*Set the task name
-	*@param String
+	* Setter for the task name
+	* @param String
 	*/
 	public void setName( String name ){
 		this.name = name;
@@ -141,20 +142,18 @@ public class Task {
 	}
 	
 	/**
-	*Return the task name
-	*@@return String
+	* Return the task name
+	* @return String
 	*/
 	public String getName(){
 		return this.name;
 	}
 	
 	/**
-	*Return the tak name fot display
-	*@retur String
+	* Return the tak name for display
+	* @return String
 	*/
 	public String getNameDisplay(){
 		return this.nameDisplay;
 	}
-	
-	
 }

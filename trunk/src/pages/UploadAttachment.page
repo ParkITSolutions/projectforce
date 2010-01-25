@@ -1,4 +1,7 @@
 <apex:page id="UploadAttachment" sidebar="false" showHeader="false" controller="UploadAttachmentController">
+	
+	<c:ApplicationTop id="ApplicationTop" />
+	
 	<script type="text/javascript"> 
 		function validateFile(ele){
 			if(ele != null || ele != '')
@@ -44,7 +47,6 @@
 	
 	<apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
 	<link rel="stylesheet" media="screen" href="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />
-	<apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/prototype.js')}"/>
 	
 	<!-- Portal Support -->
 	<apex:includeScript value="{!$Resource.portalSupport}"/>	

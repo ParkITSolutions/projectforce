@@ -15,6 +15,12 @@
 					assignTo="{!includeNewMilestone}" 
 					required="false"/>				
 								
+	<apex:attribute name="includeAttachment" 
+					description="Flag to include new attachment component"
+					type="boolean" 
+					assignTo="{!includeAttachment}" 
+					required="false"/>	
+								
 	<script>
 	
 		promptOverlay.id = '{!$Component.Content}';
@@ -24,7 +30,7 @@
 
 	<!-- Content -->
 	<apex:outputPanel id="Content"
-		styleClass="content"
+		styleClass="Overlaycontainer"
 		layout="block"
 		style="display:none">
 		
@@ -40,12 +46,16 @@
 					styleClass="component"
 					layout="block">
 			
-					<apex:outputPanel rendered="{!includeNewTask}">
+					<apex:outputPanel rendered="{!includeNewTask}" layout="block" id="include1">
 						 	<c:NewTask id="NewTask" /> 
 					</apex:outputPanel>
 					
-					<apex:outputPanel rendered="{!includeNewMilestone}">
+					<apex:outputPanel rendered="{!includeNewMilestone}" layout="block" id="include2">
 						 	<c:NewMilestone id="NewMilestone" /> 
+					</apex:outputPanel>
+			
+					<apex:outputPanel rendered="{!includeAttachment}" layout="block" id="include3">
+						 	<c:NewMilestone id="Attachment" /> 
 					</apex:outputPanel>
 			
 				</apex:outputPanel>

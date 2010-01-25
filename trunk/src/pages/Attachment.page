@@ -1,0 +1,11 @@
+<apex:page id="Attachment" sidebar="false" showHeader="false" controller="AttachmentController">
+
+	<apex:form >
+		<apex:outputPanel rendered="{! parentId != null }" >
+			<apex:inputFile value="{!newAttach.Body}" id="newAttach" styleclass="newAttach" contentType="{!newAttach.ContentType}" 
+				filename="{!newAttach.Name}" fileSize="{!newAttach.BodyLength}" onChange="validateFile(this.value);" /> 	
+		</apex:outputPanel>
+		<apex:commandButton action="{!saveAttachment}"/>
+	</apex:form>
+	
+</apex:page>

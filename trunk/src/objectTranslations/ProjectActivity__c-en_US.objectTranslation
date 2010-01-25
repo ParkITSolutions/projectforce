@@ -12,25 +12,13 @@
         <name>Access__c</name>
     </fields>
     <fields>
-        <label><!-- Action --></label>
-        <name>Action__c</name>
+        <label><!-- ActivityId --></label>
+        <name>ActivityId__c</name>
+        <relationshipLabel><!-- ProjectActivities --></relationshipLabel>
     </fields>
     <fields>
         <label><!-- ChangeType --></label>
         <name>ChangeType__c</name>
-    </fields>
-    <fields>
-        <label><!-- ModifiedBy --></label>
-        <name>ModifiedBy__c</name>
-    </fields>
-    <fields>
-        <label><!-- ProjectId --></label>
-        <name>ProjectId__c</name>
-        <relationshipLabel><!-- ProjectActivities --></relationshipLabel>
-    </fields>
-    <fields>
-        <label><!-- TimeStamp --></label>
-        <name>TimeStamp__c</name>
     </fields>
     <fields>
         <label><!-- name --></label>

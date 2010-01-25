@@ -8,6 +8,18 @@
         <value>Project Subscription</value>
     </caseValues>
     <fields>
+        <label><!-- ProjectAfterOfExpiringTask --></label>
+        <name>ProjectAfterOfExpiringTask__c</name>
+    </fields>
+    <fields>
+        <label><!-- ProjectBeforeOfExpiringTask --></label>
+        <name>ProjectBeforeOfExpiringTask__c</name>
+    </fields>
+    <fields>
+        <label><!-- ProjectDayOfExpiringTask --></label>
+        <name>ProjectDayOfExpiringTask__c</name>
+    </fields>
+    <fields>
         <label><!-- ProjectMemberJoinLeave --></label>
         <name>ProjectMemberJoinLeave__c</name>
     </fields>

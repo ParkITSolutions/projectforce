@@ -11,124 +11,142 @@ public class DAOActivity {
 	}
 	
 	/**
-	*  
-	* @param String projectId
-	* @param DateTime timeStamp
-	* @param String modifiedBy
-	* @param String action
-	* @param Integer changeType
-	* @param String name
-	* @param String access
+	* @param projectId
+	* @param timeStamp
+	* @param modifiedBy
+	* @param action
+	* @param changeType
+	* @param name
+	* @param access
 	*/
 	public void logProjectActivity(String projectId, DateTime timeStamp, String modifiedBy, String action, String changeType, String name, String access){
-		/*
+		
 		ProjectActivity__c prjActivity = new ProjectActivity__c(); 
-		prjActivity.ProjectId__c 	= projectId;
-		prjActivity.TimeStamp__c 	= timeStamp;
-		prjActivity.ModifiedBy__c 	= modifiedBy;
-		prjActivity.Action__c 		= action;
+		Activity__c activity = new Activity__c();
+		
+		activity.ProjectId__c 	= projectId;
+		activity.TimeStamp__c 	= timeStamp;
+		activity.ModifiedBy__c 	= modifiedBy;
+		activity.Action__c 		= action;
+		
 		prjActivity.ChangeType__c 	= changeType;
 		prjActivity.Access__c 		= access;
 		prjActivity.name__c 		= name;
 		
-		insert prjActivity;*/
+		Database.SaveResult saveResult = Database.Insert(activity, false);
+		
+		prjActivity.ActivityId__c = saveResult.getId();
+		insert prjActivity;
 	}
 	
 	/**
-	* 
-	* @param String projectId
-	* @param DateTime timeStamp
-	* @param String modifiedBy
-	* @param String action
-	* @param Integer changeType
-	* @param String memberName
-	* @return void
+	* @param projectId
+	* @param timeStamp
+	* @param modifiedBy
+	* @param action
+	* @param changeType
+	* @param memberName
 	*/
 	public void logMemberActivity(String projectId, DateTime timeStamp, String modifiedBy, String action, String changeType, String memberName){
-		/*
+		
 		MemberActivity__c memActivity = new MemberActivity__c(); 
-		memActivity.ProjectId__c 	= projectId;
-		memActivity.TimeStamp__c 	= timeStamp;
-		memActivity.ModifiedBy__c 	= modifiedBy;
-		memActivity.Action__c 		= action;
+		Activity__c activity = new Activity__c();
+		
+		activity.ProjectId__c 	= projectId;
+		activity.TimeStamp__c 	= timeStamp;
+		activity.ModifiedBy__c 	= modifiedBy;
+		activity.Action__c 		= action;
+		
 		memActivity.ChangeType__c 	= changeType;
 		memActivity.MemberName__c	= memberName;
 		
-		insert memActivity;*/
+		Database.SaveResult saveResult = Database.Insert(activity, false);
+		
+		memActivity.ActivityId__c = saveResult.getId();
+		insert memActivity;
 		
 	}
 	
 	/**
-	* 
-	* @param String projectId
-	* @param DateTime timeStamp
-	* @param String modifiedBy
-	* @param String action
-	* @param Integer changeType
-	* @param String taskName
-	* @return void
+	* @param projectId
+	* @param timeStamp
+	* @param modifiedBy
+	* @param action
+	* @param changeType
+	* @param taskName
 	*/
 	public void logTaskCommentActivity(String projectId, DateTime timeStamp, String modifiedBy, String action, String changeType, String taskName){
 		
-		/*TaskCommentActivity__c taskCommentActivity = new TaskCommentActivity__c(); 
-		taskCommentActivity.ProjectId__c 	= projectId;
-		taskCommentActivity.TimeStamp__c 	= timeStamp;
-		taskCommentActivity.ModifiedBy__c 	= modifiedBy;
-		taskCommentActivity.Action__c 		= action;
+		TaskCommentActivity__c taskCommentActivity = new TaskCommentActivity__c(); 
+		Activity__c activity = new Activity__c();
+		
+		activity.ProjectId__c 	= projectId;
+		activity.TimeStamp__c 	= timeStamp;
+		activity.ModifiedBy__c 	= modifiedBy;
+		activity.Action__c 		= action;
+		
 		taskCommentActivity.ChangeType__c 	= changeType;
 		taskCommentActivity.TaskName__c		= taskName;
 		
-		insert taskCommentActivity;*/
+		Database.SaveResult saveResult = Database.Insert(activity, false);
+		
+		taskCommentActivity.ActivityId__c = saveResult.getId();
+		insert taskCommentActivity;
 		
 	}
 	
 	/**
-	* 
-	* @param String projectId
-	* @param DateTime timeStamp
-	* @param String modifiedBy
-	* @param String action
-	* @param Integer changeType
-	* @param String assigneeName
-	* @param String taskName
-	* @return void
+	* @param projectId
+	* @param timeStamp
+	* @param modifiedBy
+	* @param action
+	* @param changeType
+	* @param assigneeName
+	* @param taskName
 	*/
 	public void logTaskAssigneeActivity(String projectId, DateTime timeStamp, String modifiedBy, String action, String changeType, String assigneeName, String taskName){
 		
-		/*TaskAssigneeActivity__c taskAssigneeActivity = new TaskAssigneeActivity__c(); 
-		taskAssigneeActivity.ProjectId__c 		= projectId;
-		taskAssigneeActivity.TimeStamp__c 		= timeStamp;
-		taskAssigneeActivity.ModifiedBy__c 		= modifiedBy;
-		taskAssigneeActivity.Action__c 			= action;
+		TaskAssigneeActivity__c taskAssigneeActivity = new TaskAssigneeActivity__c(); 
+		Activity__c activity = new Activity__c();
+		
+		activity.ProjectId__c 		= projectId;
+		activity.TimeStamp__c 		= timeStamp;
+		activity.ModifiedBy__c 		= modifiedBy;
+		activity.Action__c 			= action;
+		
 		taskAssigneeActivity.ChangeType__c 		= changeType;
 		taskAssigneeActivity.AssigneeName__c	= assigneeName;
 		taskAssigneeActivity.TaskName__c		= taskName;
 		
-		insert taskAssigneeActivity;*/
+		Database.SaveResult saveResult = Database.Insert(activity, false);
+		
+		taskAssigneeActivity.ActivityId__c = saveResult.getId();
+		insert taskAssigneeActivity;
 		
 	}
 	
 	/**
-	* 
-	* @param String projectId
-	* @param DateTime timeStamp
-	* @param String modifiedBy
-	* @param String action
-	* @param Integer changeType
-	* @param String name
-	* @param String newName
-	* @param String duration
-	* @param String status
-	* @param Boolean complete
-	* @return void
+	* @param projectId
+	* @param timeStamp
+	* @param modifiedBy
+	* @param action
+	* @param changeType
+	* @param name
+	* @param newName
+	* @param duration
+	* @param status
+	* @param complete
 	*/
 	public void logTaskActivity(String projectId, DateTime timeStamp, String modifiedBy, String action, String changeType, String name, String newName, String duration, String status, Boolean complete){
 		
-		/*TaskActivity__c taskActivity = new TaskActivity__c(); 
-		taskActivity.ProjectId__c 	= projectId;
-		taskActivity.TimeStamp__c 	= timeStamp;
-		taskActivity.ModifiedBy__c 	= modifiedBy;
-		taskActivity.Action__c 		= action;
+		TaskActivity__c taskActivity = new TaskActivity__c(); 
+		Activity__c activity = new Activity__c();
+		
+		activity.ProjectId__c 	= projectId;
+		activity.TimeStamp__c 	= timeStamp;
+		activity.ModifiedBy__c 	= modifiedBy;
+		activity.Action__c 		= action;
+		
 		taskActivity.ChangeType__c 	= changeType;
 		taskActivity.Name 			= name;
 		taskActivity.NewName__c		= newName;
@@ -136,45 +154,82 @@ public class DAOActivity {
 		taskActivity.Status__c		= status;
 		taskActivity.Complete__c	= complete;
 		
-		insert taskActivity;*/
+		Database.SaveResult saveResult = Database.Insert(activity, false);
+		
+		taskActivity.ActivityId__c = saveResult.getId();
+		insert taskActivity;
 		
 	}
 	
 	/**
-	* 
-	* @param String projectId
-	* @param DateTime timeStamp
-	* @param String modifiedBy
-	* @param String action
-	* @param Integer changeType
-	* @return void
+	* @param projectId
+	* @param timeStamp
+	* @param modifiedBy
+	* @param action
+	* @param changeType
+	* @beta still not implemented
 	*/
 	public void logAttachmentActivity(String projectId, DateTime timeStamp, String modifiedBy, String action, String changeType){
 		/*
 		AttachmentActivity__c attachmentActivity = new AttachmentActivity__c(); 
-		prjActivity.ProjectId__c 	= projectId;
-		prjActivity.TimeStamp__c 	= timeStamp;
-		prjActivity.ModifiedBy__c 	= modifiedBy;
-		prjActivity.Action__c 		= action;
+		Activity__c activity = new Activity__c();
+		
+		activity.ProjectId__c 	= projectId;
+		activity.TimeStamp__c 	= timeStamp;
+		activity.ModifiedBy__c 	= modifiedBy;
+		activity.Action__c 		= action;
+		
 		prjActivity.ChangeType__c 	= changeType;
 		
-		insert prjActivity;
-		*/
+		Database.SaveResult saveResult = Database.Insert(activity, false);
+		
+		attachmentActivity.ActivityId__c = saveResult.getId();
+		insert prjActivity;*/
+		
 	}
 
-	/**
-	* @param 
-	* @return Project2__c
+	/** 
+	* @param projectId
+	* @return prjActivity
 	*/
-	public List<Project2__c> getActivityForProject( String projectId ){
-		List<Project2__c> prjActivity = [Select  p.Id, 
-						(Select Id, OwnerId, Name, Action__c, ChangeType__c, ModifiedBy__c, ProjectId__c, TimeStamp__c, TaskName__c From TaskCommentActivites__r), 
-						(Select Id, OwnerId, Name, Action__c, ChangeType__c, ModifiedBy__c, TimeStamp__c, ProjectId__c, AssigneeName__c, TaskName__c From TaskAssigneeActivites__r), 
-						(Select Id, OwnerId, Name, Action__c, ChangeType__c, ModifiedBy__c, ProjectId__c, TimeStamp__c, NewName__c, Duration__c, Status__c, Complete__c From TaskActivites__r), 
-						(Select Id, OwnerId, Name, ProjectId__c, ModifiedBy__c, TimeStamp__c, Action__c, name__c, Access__c, ChangeType__c From ProjectActivities__r), 
-						(Select Id, OwnerId, Name, MemberName__c, Action__c, ChangeType__c, ModifiedBy__c, TimeStamp__c, ProjectId__c From MemberActivities__r) 
-						From Project2__c p where p.id=:projectId ];
+	public List<Activity__c> getActivityForProjectWidget( String projectId ){
 		
-		return prjActivity;						
+		List<Activity__c> prjActivity = [select a.Id, a.TimeStamp__c, a.ProjectId__c, a.ModifiedBy__c, a.Action__c, 
+											(select Id, ChangeType__c, TaskName__c, ActivityId__c from TaskCommentActivites__r), 
+											(select Id, ChangeType__c, AssigneeName__c, TaskName__c, ActivityId__c from TaskAssigneeActivites__r), 
+											(select Id, Name, ChangeType__c, NewName__c, Duration__c, Status__c, Complete__c, ActivityId__c from TaskActivites__r), 
+											(select Id, name__c, Access__c, ChangeType__c, ActivityId__c from ProjectActivities__r), 
+											(select Id, MemberName__c, ChangeType__c, ActivityId__c from MemberActivities__r) 
+										 from Activity__c a 
+										 where a.ProjectId__c =:projectId 
+										 order by a.TimeStamp__c desc 
+										 limit 7];
+											
+		return prjActivity;
+	}
+	
+	/** 
+	* @param projectId
+	* @return prjActivity
+	*/
+	public ApexPages.StandardSetController getActivityForProject( String projectId ){
+		
+		ApexPages.StandardSetController prjActivity = new ApexPages.StandardSetController( Database.getQueryLocator([select a.Id, a.TimeStamp__c, a.ProjectId__c, a.ModifiedBy__c, a.Action__c, 
+																(select ChangeType__c, TaskName__c, ActivityId__c from TaskCommentActivites__r), 
+																(select ChangeType__c, AssigneeName__c, TaskName__c, ActivityId__c from TaskAssigneeActivites__r), 
+																(select Name, ChangeType__c, NewName__c, Duration__c, Status__c, Complete__c, ActivityId__c from TaskActivites__r), 
+																(select name__c, Access__c, ChangeType__c, ActivityId__c from ProjectActivities__r), 
+																(select MemberName__c, ChangeType__c, ActivityId__c from MemberActivities__r) 
+																	 from Activity__c a 
+																	 where a.ProjectId__c =:projectId 
+																	 order by a.TimeStamp__c desc 
+																	 limit 1000]) );
+		
+		if(prjActivity.getResultSize()==0){
+		
+			return new ApexPages.StandardSetController(new List<ProjectTask__c>());
+		}
+		
+		return prjActivity;	
 	}
 }

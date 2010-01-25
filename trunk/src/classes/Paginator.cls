@@ -1,91 +1,54 @@
+/**
+* This class manages all about pagination
+* @author Andres Canavesi
+* @createdAt 01/15/2010
+*/
 public class Paginator {
 	
-	public Integer pagesListSize 			{ set; get; } //MUST be odd 
+	public Integer pagesListSize 						{set; get;} //MUST be odd 
+	public Integer qPages 								{set; get;} //number of pages
+	public Integer pageNumber 							{set; get;} //current page displayed
+	private Integer resultSize; 							 		//number of records 
+	private Integer recordsPerPage; 							    //records per page
+	public List<Integer> pages 							{set; get;} //list that appears between previous and next arrows
+	public ApexPages.StandardSetController paginator 	{set; get;}
+	public String filter 								{set; get;}
+	public String orderBy 								{set; get;}
+	public Boolean orderAsc 							{set; get;} // true if the query must return the result ASC
+	public Project project 								{set; get;}
 	
-	public Integer qPages {set; get;} //number of pages
-	
-	public Integer pageNumber {set; get;} //current page displayed
-	
-	public Integer resultSize {set; get;} //number of records 
-	
-	public List<Integer> 	pages 			{ set; get; }
-	
-	public List<ProjectTask__c> 	tasksByProject;
-	
-	public ApexPages.StandardSetController paginator { set; get; }
-	
-	public String filter { set; get; }
-	
-	public String orderBy { set; get; }
-	
-	public Boolean orderAsc { set; get; }
-	
-	public Project project { set; get; }
-	
+	/**
+	* Constructor
+	*/
 	public Paginator(){
 		
-		this.project = new project();
+		this.project 			= new project();
+		this.recordsPerPage 	= 2;
+		this.resultSize 		= 0;
 		
 	}
-	
-	public Paginator(String typeOf){
 		
-		if(typeOf == 'Tasks'){
-			
-		}
-		
-	}
-	
-	public void refreshTasksByProject(){
-		
-		this.paginator = project.getTasks(this.filter, this.orderBy, this.orderAsc);
-		
-		setDefault();
-	}
-	
-	public void loadTasksByProject(){
-		
-		this.paginator = project.getTasks(this.filter, this.orderBy, this.orderAsc);
-		
-		this.pageNumber = 1;
-			
-		this.paginator.setPageSize(2);//records per page
-		
-		this.resultSize = paginator.getResultSize();
-
-		this.pagesListSize = 7;
-		
-		pagesListConstructor();
-	}
-	
-	public void setDefault(){
-		
-		this.pageNumber = 1;
-		
-		this.resultSize = paginator.getResultSize();
-
-		this.pagesListSize = 7;
-		
-		pagesListConstructor();
-	}
-	
+	/**
+	* Goes to a given page
+	*/
 	public void goToPage(){
 		
 		paginator.setPageNumber(pageNumber);
-		
 		pagesListConstructor();
 	}
 	
+	/**
+	* Constructs the list of pages that appears between previous and next arrows
+	*/
 	public void pagesListConstructor(){
 		
 		if(Math.mod(this.pagesListSize,2)==0){ //if is even
-			
 			this.pagesListSize+=1;
 		}
 		
 		this.pageNumber = paginator.getPageNumber();
 		
-		paginator.last(); //to know # of pages
+		paginator.last(); //to know number of pages
 		
 		this.qPages = paginator.getPageNumber();
 		
@@ -120,7 +83,6 @@ public class Paginator {
 				}else{
 					
 					for(Integer i=paginator.getPageNumber()-half; i<=paginator.getPageNumber()+half; i++){
-						
 						this.pages.add(i);
 					}
 				}
@@ -129,129 +91,175 @@ public class Paginator {
 		
 	}
 	
+	/**
+	* Goes to the previous page
+	*/
 	public void previous(){
 		
 		paginator.previous();
-		
 		pagesListConstructor();
 	}
 	
+	/**
+	* Goes to the last page
+	*/
 	public void last(){
 		
 		paginator.last();
-		
 		pagesListConstructor();
 	}
 	
+	/**
+	* Goes to the first page
+	*/
 	public void first(){
 		
 		paginator.first();
-		
 		pagesListConstructor();
 	}
 	
+	/**
+	* Goes to the next page
+	*/
 	public void next(){
 		
 		paginator.next();
-	
 		pagesListConstructor();
 	}
 	
+	/**
+	* @return hasNext
+	*/
 	public Boolean getHasNext(){
 		
 		return paginator.getHasNext();
 	}
 	
+	/**
+	* @return hasPrevious
+	*/
 	public Boolean getHasPrevious(){
 		
 		return paginator.getHasPrevious();
 	}
 	
+	/**
+	* @return resultSize
+	*/
 	public Integer getResultSize(){
 	
-		return paginator.getResultSize();
+		return this.resultSize;
 	}
 	
-	public Integer getPageSize(){
+	/**
+	* returns how many records must be displayed per page
+	* @return recordsPerPage
+	*/
+	public Integer getRecordsPerPage(){
 	
-		return paginator.getPageSize();
+		return this.recordsPerPage;
 	}
 	
-	public void setPageSize(Integer value){
+	/**
+	* sets how many records must be displayed per page
+	* @param recordsPerPage
+	*/
+	public void setRecordsPerPage(Integer recordsPerPage){
 		
-		paginator.setPageSize(value);
+		this.recordsPerPage = recordsPerPage;
+		paginator.setPageSize(recordsPerPage);
 	}
 	
+	/**
+	* returns the current page displayed
+	* @return pageNumber
+	*/
 	public Integer getPageNumber(){
 	
 		return paginator.getPageNumber();
 	}
 	
-	public void setPageNumber(Integer value){
+	/**
+	* sets the current page displayed
+	* @param pageNumber
+	*/
+	public void setPageNumber(Integer pageNumber){
 	
-		paginator.setPageNumber(value);
+		paginator.setPageNumber(pageNumber);
 	}
 	
+	/**
+	* returns the list of options of records per page displayed
+	* @return pageSizeItems
+	*/
 	public List<SelectOption> getPageSizeItems() {
 		
-		List<SelectOption> options = new List<SelectOption>();
+		List<SelectOption> pageSizeItems = new List<SelectOption>();
 		
-		options.add(new SelectOption('2','2'));
+		pageSizeItems.add(new SelectOption('2','2'));
+		pageSizeItems.add(new SelectOption('10','10'));
+		pageSizeItems.add(new SelectOption('25','25'));
+		pageSizeItems.add(new SelectOption('50','50'));
+		pageSizeItems.add(new SelectOption('75','75'));
+		pageSizeItems.add(new SelectOption('100','100'));
 		
-		options.add(new SelectOption('10','10'));
-		
-		options.add(new SelectOption('25','25'));
-		
-		options.add(new SelectOption('50','50'));
-		
-		options.add(new SelectOption('75','75'));
-		
-		options.add(new SelectOption('100','100'));
-		
-		return options;
+		return pageSizeItems;
 	}
 	
-	public void refreshPaginator(){
+	/**
+	* sets paginator values
+	*/
+	public void setPaginator(){
 		
-		pagesListConstructor();
+		this.resultSize = this.paginator.getResultSize();
+		
+		this.pageNumber = 1;
+		
+		this.paginator.setPageSize(recordsPerPage);//records per page by default
+		
+		this.resultSize = paginator.getResultSize();
+
+		this.pagesListSize = 7;
+		
+		this.pagesListConstructor();
 	}
-    
+	
+	/**
+	* loads the tasks list
+	*/
+	public void loadTasksByProject(){
+		
+		this.orderAsc = !this.orderAsc;
+		
+		this.paginator = project.getTasks(this.filter, this.orderBy, this.orderAsc);
+		
+		this.setPaginator();
+	}
+	
+	/**
+	* loads project activities list
+	*/
+	public void loadProjectActivities(){
+		
+		this.paginator = DAOFactory.getInstance().getActivityForProject( this.project.id );
+		this.setPaginator();
+		
+	}
+	
+	/**
+	* @return tasksByProject
+	*/
     public List<Task> getTasksByProject() {
     	
-    	List<Task> tasks = new List<Task>();
+    	return ObjectFormatter.formatTasks( (List<ProjectTask__c>) paginator.getRecords() );
+    }
+    
+    /**
+	* @return projectActivities
+	*/
+    public List<Activity> getProjectActivities() {
     	
-    	for(ProjectTask__c task : (List<ProjectTask__c>) paginator.getRecords()){
-    		
-    		Task taskAux = new Task();
-    		
-    		taskAux.id = task.id;
-			taskAux.idDisplay = task.Id__c;
-			taskAux.name = task.Name; 
-			taskAux.isMilestone = task.Milestone__c;
-			taskAux.priority = task.Priority__c; 
-			taskAux.setPercentCompleted( task.PercentCompleted__c );
-			taskAux.durationDisplay = String.valueOf(task.Duration__c);
-			
-			if( task.Milestone__c ){
-				taskAux.endDateDisplay = String.valueOf(task.StartDate__c.format());
-				taskAux.endDate = task.StartDate__c;
-			}else{
-				taskAux.endDateDisplay = String.valueOf(task.EndDate__c.format());
-				taskAux.endDate = task.EndDate__c;
-			}
-			
-			//TODO change ProjectMember to TaskAssignee
-			List<ProjectMember> assignees = DAOFactory.getInstance().getAssignees(taskAux.id);
-			
-			taskAux.assignees = assignees;
-    		
-    		tasks.add(taskAux);
-    		
-    	}
-    	
-    	//return (List<ProjectTask__c>) paginator.getRecords();
-    	
-    	return tasks;
+    	return ObjectFormatter.formatProjectActivities( (List<Activity__c>) paginator.getRecords() );
     }
     
 }

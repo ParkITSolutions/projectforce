@@ -1,18 +1,11 @@
-<apex:page controller="UserTasksController" sidebar="false" cache="true" tabStyle="Project2__c" >
+<apex:page id="userTasks" controller="UserTasksController" sidebar="false" cache="true" tabStyle="Project2__c" >
 
-    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}" />
     <apex:includeScript value="{!$Resource.portalSupport}"/> 
     <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
-        <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
-        <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
-        <apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/scriptaculous.js')}"/>
-    <apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/effects.js')}"/>
-    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}"/>
-
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
 
     <c:ApplicationTop id="ApplicationTop" />
-
-
 
     <style>
     
@@ -21,7 +14,7 @@
         margin-left: 0px;
     }
     
-    /* Paginato style*/
+    /* Paginator style*/
     
     .Paginator{
         text-align: center;
@@ -116,9 +109,11 @@
         
         width: 155px;
     }
+    
     .CSSWidthShort{
         width: 80px !important;
     }
+    
     .Loader{
         background-color:#FFFFFF;
         background-image:url(/resource/1260192796000/commonResources/images/loaders/big-loader.gif);
@@ -422,11 +417,13 @@
                     </apex:outputPanel>
                 </apex:outputPanel>
             </apex:outputPanel>
-            <apex:outputPanel rendered="{! tasksListSize == 0 }">
+            
+            <apex:outputPanel rendered="{!tasksListSize == 0 }">
                 <br />
                 <center>No tasks Assigned yet.</center>
                 <br />
             </apex:outputPanel>
+            
         </apex:form>
     </div>
 </apex:page>

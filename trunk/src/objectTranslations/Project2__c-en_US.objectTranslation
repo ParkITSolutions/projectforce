@@ -126,6 +126,14 @@ Private -  This Project will not appear in search. Membership is by invitation o
         </picklistValues>
     </fields>
     <fields>
+        <label><!-- ProjectAfterOfExpiringTask --></label>
+        <name>ProjectAfterOfExpiringTask__c</name>
+    </fields>
+    <fields>
+        <label><!-- ProjectBeforeOfExpiringTask --></label>
+        <name>ProjectBeforeOfExpiringTask__c</name>
+    </fields>
+    <fields>
         <label><!-- ProjectCreatedBy --></label>
         <name>ProjectCreatedBy__c</name>
         <relationshipLabel><!-- Projects --></relationshipLabel>
@@ -133,6 +141,10 @@ Private -  This Project will not appear in search. Membership is by invitation o
     <fields>
         <label><!-- ProjectCreatedDate --></label>
         <name>ProjectCreatedDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- ProjectDayOfExpiringTask --></label>
+        <name>ProjectDayOfExpiringTask__c</name>
     </fields>
     <fields>
         <label><!-- PublicProfile --></label>
@@ -169,6 +181,10 @@ Private -  This Project will not appear in search. Membership is by invitation o
     </layouts>
     <layouts>
         <layout>Project2 Layout</layout>
+        <sections>
+            <label><!-- Add a new email subscription when a task is past its due date --></label>
+            <section>Add a new email subscription when a task is past its due date</section>
+        </sections>
         <sections>
             <label><!-- Custom Links --></label>
             <section>Custom Links</section>

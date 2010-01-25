@@ -108,7 +108,9 @@
             <apex:outputPanel id="sidebarWidgets">
                 <!-- Project Quick Links -->
                 <c:ProjectDetailQuickLinks />
-    
+    			
+    			<c:ProjectActivityWidget id="activityWidget" />
+    			
                 <!-- Team Suscribe -->
                 <c:ProjectSubscribe /> 
     

@@ -32,19 +32,22 @@ public class TaskAssigneeActivity extends ActivityLog{
 		ProjectMember__c member = DAOFactory.getInstance().getMemberByUserId( this.memberId ) ;
 		this.modifiedBy = member.Name;
 		
+		ProjectMember__c newAssignee = DAOFactory.getInstance().getMemberByUserId( assignee.User__c );
+		ProjectTask__c task = DAOFactory.getInstance().getTask( assignee.ProjectTask__c );
+			
 		//Assignee added to a Task
 		if( this.action == 'insert' ){
-			this.changeType 	= 9;
-			this.assigneeName 	= this.assignee.User__r.Name;
-			this.taskName 		= this.assignee.ProjectTask__r.Name;
+			this.changeType 	= 'TaskAssignee_Insert';
+			this.assigneeName 	= newAssignee.Name;
+			this.taskName 		= task.Name;
 			DAOFactory.getInstance().logTaskAssigneeActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.assigneeName, this.taskName );
 		}
 			
 		//Assignee removed from a Task
 		if( this.action == 'delete' ){
-			this.changeType 	= 10;
-			this.assigneeName 	= this.assignee.User__r.Name;
-			this.taskName 		= this.assignee.ProjectTask__r.Name;
+			this.changeType 	= 'TaskAssignee_Delete';
+			this.assigneeName 	= newAssignee.Name;
+			this.taskName 		= task.Name;
 			DAOFactory.getInstance().logTaskAssigneeActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.assigneeName, this.taskName );
 		}
 	}

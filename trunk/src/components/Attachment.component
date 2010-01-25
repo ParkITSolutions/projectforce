@@ -1,0 +1,41 @@
+<apex:component id="Attachment" controller="AttachmentController" allowDML="true">
+	<!-- Javascript -->
+	<apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/js/overlays.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/js/overlaysTemplate.js')}" />
+	
+	<!-- CSS -->
+	<apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlayTemplate.css')}" />
+	<script>
+		var attachment = '{!$Component.Content}';
+	</script>	
+	<apex:outputPanel id="Content"  styleClass="overlay" style="display: none" layout="block">
+	
+			<!-- TitlePanel -->
+			<apex:outputPanel id="TitlePanel" styleClass="titlePanel" layout="block">
+				
+				<apex:outputPanel styleClass="title">Add mew attachment</apex:outputPanel>
+				
+				<apex:outputPanel id="overlayClose" styleClass="overlayClose" layout="block">
+					<apex:outputLink id="linkClose" value="javascript:;" onClick="promptOverlay.close();" >
+						<img src="{!URLFOR($Resource.Overlays, 'images/overlayClose.gif')}" alt="Close Window" title="Close Window" />
+					</apex:outputLink>	
+	            </apex:outputPanel>
+			</apex:outputPanel>
+			<!-- End TitlePanel -->
+			
+			<!-- Form -->
+			<apex:form id="Form">
+
+				<!-- ComponentBody -->
+				<apex:outputPanel id="ComponentBody" styleClass="componentBody" layout="block">
+					<apex:iframe src="/apex/Attachment?pId={!parentId}&t=1" />			   
+					
+					
+				</apex:outputPanel>
+				<!-- end of ComponentBody -->
+			
+			</apex:form>
+			<!-- End Form -->
+	</apex:outputPanel>	
+</apex:component>

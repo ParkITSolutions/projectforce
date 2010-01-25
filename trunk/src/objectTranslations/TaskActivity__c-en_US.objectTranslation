@@ -8,8 +8,9 @@
         <value>TaskActivites</value>
     </caseValues>
     <fields>
-        <label><!-- Action --></label>
-        <name>Action__c</name>
+        <label><!-- ActivityId --></label>
+        <name>ActivityId__c</name>
+        <relationshipLabel><!-- TaskActivites --></relationshipLabel>
     </fields>
     <fields>
         <label><!-- ChangeType --></label>
@@ -24,25 +25,12 @@
         <name>Duration__c</name>
     </fields>
     <fields>
-        <label><!-- ModifiedBy --></label>
-        <name>ModifiedBy__c</name>
-    </fields>
-    <fields>
         <label><!-- NewName --></label>
         <name>NewName__c</name>
     </fields>
     <fields>
-        <label><!-- ProjectId --></label>
-        <name>ProjectId__c</name>
-        <relationshipLabel><!-- TaskActivites --></relationshipLabel>
-    </fields>
-    <fields>
         <label><!-- Status --></label>
         <name>Status__c</name>
-    </fields>
-    <fields>
-        <label><!-- TimeStamp --></label>
-        <name>TimeStamp__c</name>
     </fields>
     <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>

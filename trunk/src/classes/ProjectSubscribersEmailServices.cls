@@ -59,9 +59,9 @@ public class ProjectSubscribersEmailServices{
 		varHtmlIni=varHtmlIni+'			margin: 0;';
 		varHtmlIni=varHtmlIni+'			padding: 0;';
 		varHtmlIni=varHtmlIni+'		}';
-		varHtmlIni=varHtmlIni+'		a {';
-		varHtmlIni=varHtmlIni+'			color: #FFFFFF !important;';
-		varHtmlIni=varHtmlIni+'		}';
+		//varHtmlIni=varHtmlIni+'		a {';
+		//varHtmlIni=varHtmlIni+'			color: #FFFFFF !important;';
+		//varHtmlIni=varHtmlIni+'		}';
 		varHtmlIni=varHtmlIni+'		.header_project{';
 		varHtmlIni=varHtmlIni+'			background-position: left top;';
 		varHtmlIni=varHtmlIni+'			background-repeat: repeat-x;';
@@ -819,6 +819,21 @@ public class ProjectSubscribersEmailServices{
         //Array address
         String[] address = new String[]{}; 
         Integer it = 0;
+        if(subscriptions.size() > 0 && subscriptions != null){
+        	for(Integer i =0; i <= subscriptions.size(); i++ ){   
+	            if(it < 10 && i < subscriptions.size() )
+	            {
+	                address.add(subscriptions[i].User__r.Email);
+	                it ++;
+	            }
+	            else
+	            {
+	                SendMail(address, subscriptions[0].Project__r, emailMsj, emailSub);
+	                it = 0;
+	            }
+	        }
+        }
+        /*
         if( subscriptions.size() > 10){
 	        for(Integer i =0; i < subscriptions.size(); i++ ){   
 	            if(it < 10 || i == subscriptions.size() )
@@ -838,7 +853,8 @@ public class ProjectSubscribersEmailServices{
 	            	address.add(ts.User__r.Email);
 	            }
 	            SendMail(address, subscriptions[0].Project__r, emailMsj, emailSub);
-	        }   
+	        }
+	   */   
     }
 
     
@@ -873,17 +889,239 @@ public class ProjectSubscribersEmailServices{
             Messaging.sendEmail(new Messaging.SingleEmailMessage[]{mail});
         //ProjectSubscribersEmailServices.alreadySent = true;
     }
+   
     
-    
-    /** 
-    *  
+    /** findForExpiringTask and send mail...
+    *@param void
     *@return void
     */
     public void findForExpiringTask(){
-    		//........
-    		// under construction
-    		
-    
+    	Date dNow = Date.today();
+    	// List of project with subscription
+    	for (Project2__c listOfProjects : 
+		[ 	Select p.ProjectDayOfExpiringTask__c, p.ProjectBeforeOfExpiringTask__c, p.ProjectAfterOfExpiringTask__c, p.Name, p.Id 
+			From Project2__c p
+    		where p.ProjectDayOfExpiringTask__c = true  or  p.ProjectBeforeOfExpiringTask__c = true or  p.ProjectAfterOfExpiringTask__c = true 
+    	]) {
+			//List of task  
+			for ( ProjectTask__c listOfTask : 
+			[	
+				Select p.Status__c, p.StartDate__c, p.Name, p.Milestone__c, p.Id, p.EndDate__c, p.PercentCompleted__c, p.Priority__c,
+				(Select Name, User__c From ProjectsAssignees__r) , Project__c
+				From ProjectTask__c p 
+				where p.Project__c =: listOfProjects.Id and Status__c != 'Closed' and Status__c != 'Resolved'
+			]){
+				Date dStart = listOfTask.StartDate__c;
+				Date dEnd = listOfTask.EndDate__c;
+				Date dEndMinusOne = listOfTask.EndDate__c;
+				String shippingType='';
+
+				if (listOfTask.Milestone__c){
+					//If is a MILESTONE
+					integer dNowMinusDStart = dStart.daysBetween(dNow);
+					if (dNowMinusDStart == 0){
+						shippingType='milestoneDayExpiry';
+					}
+					else if (dNowMinusDStart > 0){
+						//Repetitive after expiring, i send mail one day yes one day no
+						Integer resmod = math.mod(dNowMinusDStart, 2);
+						if (resmod == 0){
+							//Prepare to send mail
+							shippingType='milestoneAfterExpiring';
+						}
+					}
+				}
+				else{ 
+					//Is not milestone!! its a normal TASK
+					dEndMinusOne  =  dEnd.addDays(-1);
+
+					integer dNowMinusDEnd = dEnd.daysBetween(dNow);
+					if ((dNowMinusDEnd > 0)&&(listOfProjects.ProjectAfterOfExpiringTask__c)){
+						//As this to overcome their due date
+						//Repetitive after expiring, i send mail one day yes one day no
+						Integer resmod = math.mod(dNowMinusDEnd, 2);
+						if (resmod == 0){
+							//Prepare to send mail
+							shippingType='afterExpiring';
+						}
+					}
+					else if ((dNowMinusDEnd == 0)&&(listOfProjects.ProjectDayOfExpiringTask__c)){
+						//Expiry day
+						shippingType='dayExpiry';
+					}
+					else { //(dNowMinusDEnd < 0)
+						integer dEndMinusOneMinusDStart = dStart.daysBetween(dEndMinusOne);
+						integer dEndMinusOneMinusDEnd = dEndMinusOne.daysBetween(dNow);
+						if ((dEndMinusOneMinusDStart > 0 ) && (dEndMinusOneMinusDEnd == 0)&&(listOfProjects.ProjectBeforeOfExpiringTask__c)){
+							//One day for expiring...
+							shippingType='beforeExpiring';
+						}
+					}
+				} // end else mileston
+
+				if ((shippingType=='beforeExpiring')||(shippingType=='dayExpiry')||(shippingType=='afterExpiring')||(shippingType=='milestoneExpiring')){
+					if (listOfTask.ProjectsAssignees__r != null){
+						Boolean ifAccess = false;
+						
+						//Eliminar
+						String usr ='';
+						
+						
+						
+						List<String> SubAssignees = new List<String>();
+						for (ProjectAssignee__c useraux : listOfTask.ProjectsAssignees__r){
+							//Cambiarrrrr
+							usr+=useraux.User__c+',';
+							ifAccess=true;
+							SubAssignees.add(useraux.User__c);
+							
+							
+						}
+						List<User> mailUsers = new List<User>();
+						//List<String> mailUsers = new List<String>();
+						mailUsers = [Select u.Email From User u where u.Id in :SubAssignees];
+						System.debug('XXX - Users='+mailUsers);
+						//mailUsers =(User:{'Email=soares@timbasoftware.com', Id='00530000001jvrdAAA'}, User:{'Email=ndominguez@timbasoftware.com', Id='00530000001lbRJAAY'}, User:{'Email=mmenafra@timbasoftware.com', Id='00530000002S0U2AAK'}) ;
+						//mailUsers['00530000001jvrdAAA']=
+						//System.debug('XXX - Users!='+mailUsers);						
+						if (ifAccess){
+							////////////////
+							System.debug ('**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**');
+							//*
+								System.debug ('XXX - PROJECT = '+listOfProjects.Name+', id projecto ='+listOfProjects.Id);
+								if (listOfTask.Milestone__c)
+									System.debug ('XXX - MILESTONE = '+listOfTask.Name);
+								else
+									System.debug ('XXX - TASK = '+listOfTask.Name);
+								System.debug ('XXX - NOW='+dNow+', START='+dStart+', EndMinusOne='+dEndMinusOne+', END='+dEnd);
+								System.debug ('XXX - PercentCompleted = '+listOfTask.PercentCompleted__c+', Status='+listOfTask.Status__c);
+								System.debug ('XXX - Usuarios : '+usr);
+							//*/
+							/////////////////
+							String htmlVar ='';
+							String htmlVarStart='';
+							String htmlVarEnd='';
+							String titleField='';
+							String title='';
+							String field='';
+							String msjFoot='';
+							String Subject='';
+							///////TASK
+							if (shippingType=='beforeExpiring'){
+								//System.debug ('XXX - TASK - ENVIOMAIL MANIANA VENCE dEndMinusOneMinusDStart > 0 ) && (dEndMinusOneMinusDEnd < 0) -> esta entre el dia anterior del fin de task y el fin de la task...');
+								
+								Subject = 'One day left for Task "'+ProjectUtil.chopWords( ProjectUtil.chopPhrase( listOfTask.Name , 35 ))+'" to expire.';
+								Subject =  returnHtmlSubject(listOfProjects.Name,Subject);
+
+								msjFoot = 'One day left for Task to expire.';
+								htmlVarEnd=returnHtmlFin(htmlVarEnd,msjFoot);
+							}
+							///////TASK
+							else if (shippingType=='dayExpiry'){
+								//System.debug ('XXX - TASK - ENVIOMAIL DIA VENCIMIENTO now = end (now - end = 0 )');
+								
+								Subject = 'Task "'+ProjectUtil.chopWords( ProjectUtil.chopPhrase( listOfTask.Name , 35 ))+'" expires today.';
+								Subject =  returnHtmlSubject(listOfProjects.Name,Subject);
+
+								msjFoot='<label style="color:red">Task expires today.</label>';
+								htmlVarEnd=returnHtmlFin(htmlVarEnd,msjFoot);
+							}
+							///////TASK
+							else if (shippingType=='afterExpiring'){
+								//System.debug ('XXX - TASK - ENVIOMAIL VENCIDO HACE MAS DE UN DIA now > end (now - end > 0 )');
+								
+								Subject = 'Task "'+ProjectUtil.chopWords( ProjectUtil.chopPhrase( listOfTask.Name , 35 ))+'" has surpassed Due date.';
+								Subject =  returnHtmlSubject(listOfProjects.Name,Subject);
+
+								msjFoot = '<label style="color:red">Task has surpassed Due date.</label>';
+								htmlVarEnd=returnHtmlFin(htmlVarEnd,msjFoot);
+							}
+							/////MILESTONEEEE
+							else if (shippingType=='milestoneDayExpiry'){
+								//System.debug ('XXX - MILESTONEE - ENVIOMAIL POR DIA DEL VENCIMIENTO DEL  MILESTONEE');
+								
+								
+								Subject = 'Milestone "'+ProjectUtil.chopWords( ProjectUtil.chopPhrase( listOfTask.Name , 35 ))+'" expires today.';
+								Subject =  returnHtmlSubject(listOfProjects.Name,Subject);
+
+								msjFoot='<label style="color:red">Milestone expires today.</label>';
+								htmlVarEnd=returnHtmlFin(htmlVarEnd,msjFoot);
+							}
+							/////MILESTONEEEE
+							else if (shippingType=='milestoneAfterExpiring'){
+								//System.debug ('XXX - MILESTONEE - ENVIOMAIL POR MILESTONEE VENVIDOOO');
+								
+								Subject = 'Milestone "'+ProjectUtil.chopWords( ProjectUtil.chopPhrase( listOfTask.Name , 35 ))+'" has surpassed Due date.';
+								Subject =  returnHtmlSubject(listOfProjects.Name,Subject);
+
+								msjFoot='<label style="color:red">Milestone has surpassed Due date.</label>';
+								htmlVarEnd=returnHtmlFin(htmlVarEnd,msjFoot);
+							}
+
+							//Name of project
+							title='<a style="color:#FFFFFF;" href="' + Label.sfdcHostName +'apex/ProjectDetail?id='+ listOfProjects.Id + '">' + listOfProjects.Name + '</a>';
+							htmlVarStart=returnHtmlIni(htmlVarStart,title);
+							//-------------------------------------------
+
+							////Fields
+							titleField='Task Name';
+							field='<a style="color:#000000;" href="'+ Label.sfdcHostName+'apex/projecttaskdetail?id='+listOfTask.id+ '">' + listOfTask.Name+ '</a>';
+							htmlVar=returnVarHtml(htmlVar, titleField, field);
+
+							titleField='Percent Completed';
+							field= String.valueOf( listOfTask.PercentCompleted__c );
+							htmlVar=returnVarHtml(htmlVar, titleField, field);
+							
+							titleField='Status';
+							field=listOfTask.Status__c;
+							htmlVar=returnVarHtml(htmlVar, titleField, field);
+
+							titleField='Priority';
+							field=listOfTask.Priority__c;
+							htmlVar=returnVarHtml(htmlVar, titleField, field);
+							
+							titleField='Start date';
+							field=listOfTask.StartDate__c.format();
+							htmlVar=returnVarHtml(htmlVar, titleField, field);
+							
+							titleField='End date';
+							field='';
+							if (listOfTask.EndDate__c != null)
+								field=listOfTask.EndDate__c.format();
+							htmlVar=returnVarHtml(htmlVar, titleField, field);
+							
+							String emailMsj =''; 
+							emailMsj = htmlVarStart + htmlVar + htmlVarEnd;
+							
+							
+							String[] address = new String[]{}; 
+					        Integer it = 0;
+					        //Project2__c cc= new Project2__c();
+					        if (!isTest){
+						        if((mailUsers.size() > 0) && (mailUsers != null)){
+							        for(Integer i =0; i <= mailUsers.size(); i++ ){
+							            if((it < 10) && (i < mailUsers.size() )) {
+							                address.add(mailUsers[i].Email);
+							                it ++;
+							            }
+							            
+							            else { //if(it >= 10 || i >= mailUsers.size() ) {
+							            	//System.debug('XXX YYY 5');
+							                
+							                System.debug('XXX - address='+address);
+							                System.debug('XXX - Subject='+Subject);
+							                System.debug('XXX - emailMsj='+emailMsj);
+							                System.debug('XXX envio mailllllllllll');
+							                SendMail(address, null, emailMsj, Subject);
+							                it = 0;
+							            }
+							        }
+						        }
+					        }
+						}
+					}
+				}
+			}
+		}
     }
-    
 }

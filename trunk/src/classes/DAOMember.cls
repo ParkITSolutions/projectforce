@@ -1,7 +1,18 @@
+/**
+* @author Andres Canavesi 
+* @dateCreated 12/15/2009
+*/
 public class DAOMember {
 	
-	public DAOMember(){}
+	/**
+	* Constructor
+	*/
+	public DAOMember(){
+	}
 	
+	/**
+	* @return permissionsModifyAllData
+	*/
 	public Boolean isCRMAdministrator(){
 		
 		User user = [select Profile.PermissionsModifyAllData
@@ -13,13 +24,16 @@ public class DAOMember {
 	}
 
 	/**
-	* Method for retrieving a member by User id
-	* @param String userId
-	* @return ProjectMember__c
+	* retrives a member by User id
+	* @param userId
+	* @return member
 	*/
 	public ProjectMember__c getMemberByUserId(String userId){
 
-		ProjectMember__c member = [Select Id, Name, CreatedDate, CreatedById, Profile__c, Project__c, User__c from ProjectMember__c where User__c=:userId limit 1];
+		ProjectMember__c member = [select Id, Name, CreatedDate, CreatedById, Profile__c, Project__c, User__c 
+		                           from ProjectMember__c
+                                   where User__c=:userId 
+                                   limit 1];
 		return member;
 	}
 }

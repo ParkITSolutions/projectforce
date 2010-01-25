@@ -115,11 +115,17 @@
 		                            <input type="button" value="&lt;&lt;" style=".width:35px;" onclick="setSelProfs( $$('.AllProfiles')[0], $$('.SelectedProfiles')[0], 'toLeft', $('ProjectSubscription:fToSend:profileToSend'));" />
 								</span>	                        
 	                        </div>
+	                     </div>
+	                     <div>
 	                        <span>
 	                            <apex:selectList id="aqwa" multiselect="true" styleClass="SelectedProfiles" style="float:left;">
 	                                <apex:selectOptions value="{!savedProfiles}" />
 	                            </apex:selectList>                          
 	                        </span>
+	                        
+	                        <span>
+								<label>When a task is past its due date (Under construction) </label>
+							</span>
 	                    </div>
 					</div>					
 					<!-- End Form container --> 
