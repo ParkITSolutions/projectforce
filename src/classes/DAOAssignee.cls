@@ -1,12 +1,26 @@
+/**
+* @author Andres Canavesi 
+* @dataCreated 12/15/2009
+*/
 public class DAOAssignee {
 	
-	public DAOAssignee(){}
+	/**
+	* Constructor
+	*/
+	public DAOAssignee(){
+	}
 	
-	public void insertAssignee(String taskId, String assignTo, String projectId){
+	/**
+	* inserts an assignee
+	* @param taskId
+	* @param assignToId
+	* @param projetId
+	*/
+	public void insertAssignee(String taskId, String assignToId, String projectId){
 	
 		ProjectAssignee__c assignee = new ProjectAssignee__c();
 		
-		assignee.User__c = assignTo;
+		assignee.User__c = assignToId;
 		
 		assignee.ProjectTask__c = taskId;
 		
@@ -15,6 +29,11 @@ public class DAOAssignee {
 		insert assignee;
 	}
 	
+	/**
+	* @param task
+	* @return isTaskAssigned
+	*/
+	//TODO change the list for a simple ProjectAssignee__c
 	public Boolean isTaskAssigned(ProjectTask__c task){
 		
 		List<ProjectAssignee__c> assignee = [select Id
@@ -32,7 +51,9 @@ public class DAOAssignee {
 	}
 	
 	/**
-	* Returns a list with all task assingees
+	* returns a list with all task assingees
+	* @param taskId
+	* @return assigneesList
 	*/
 	public List<ProjectMember> getAssignees(String taskId){
 		

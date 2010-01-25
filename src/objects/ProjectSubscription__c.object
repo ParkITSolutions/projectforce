@@ -3,6 +3,27 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <description>The Proyect Subscription Object</description>
     <fields>
+        <fullName>ProjectAfterOfExpiringTask__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Repetitive after expiring</description>
+        <label>ProjectAfterOfExpiringTask</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ProjectBeforeOfExpiringTask__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>As this to overcome their due date</description>
+        <label>ProjectBeforeOfExpiringTask</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ProjectDayOfExpiringTask__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Expiry day</description>
+        <label>ProjectDayOfExpiringTask</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>ProjectMemberJoinLeave__c</fullName>
         <defaultValue>false</defaultValue>
         <description>If a Member join leave from Project</description>

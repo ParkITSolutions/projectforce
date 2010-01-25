@@ -23,7 +23,7 @@
 	
 	<!-- Content -->
 	<apex:outputPanel id="Content"
-		styleClass="content"
+		styleClass="Overlaycontainer"
 		layout="block"
 		style="display:none">
 		
@@ -44,22 +44,16 @@
 		
 			<!-- Overlay -->
 			<apex:outputPanel id="Overlay"
-				styleClass="overlay"
-				layout="block">
+				styleClass="overlay" layout="block">
 			
 				<!-- Title -->
-				<apex:outputPanel id="TitlePanel"
-					styleClass="titlePanel"
-					layout="block">
+				<apex:outputPanel id="TitlePanel" styleClass="titlePanel" layout="block">
 			
-					<apex:outputText id="Title"
-						value="{!Title}" />
+					<apex:outputText id="Title" styleClass="title" value="{!Title}" />
 					
-					<apex:outputPanel id="overlayClose" styleClass="fds" >
-						<apex:outputLink id="linkClose"
-									value="javascript:;"
-									onClick="confirmOverlay.close();" >
-									<img src="{!URLFOR($Resource.Overlays, 'images/overlayClose.gif')}" alt="Close Window" title="Close Window" />
+					<apex:outputPanel id="overlayClose" styleClass="overlayClose">
+						<apex:outputLink id="linkClose"	value="javascript:;" onClick="confirmOverlay.close();" >
+							<img src="{!URLFOR($Resource.Overlays, 'images/overlayClose.gif')}" alt="Close Window" title="Close Window" />
 						</apex:outputLink>	
 		            </apex:outputPanel>
 	            
@@ -67,32 +61,20 @@
 				<!-- End Title -->
 				
 				<!-- MessageToUser -->
-				<apex:outputPanel id="MessageToUserPanel"
-					styleClass="messageToUserPanel"
-					layout="block">
+				<apex:outputPanel id="MessageToUserPanel" styleClass="messageToUserPanel" layout="block">
 			
-					<apex:outputText id="MessageToUser"
-						value="{!MessageToUser}" />
+					<apex:outputText id="MessageToUser" value="{!MessageToUser}" styleClass="messageToUser"/>
 			
 				</apex:outputPanel>
 				<!-- End MessageToUser -->
 				
 				<!-- SubmitButtons -->
-				<apex:outputPanel styleClass="submitButtons"
-					layout="block">
+				<apex:outputPanel styleClass="submitButtons" layout="block">
 			
-					<apex:commandButton id="Accept"
-						value="Accept"
-						action="{!action}"
-						onClick="confirmOverlay.close(); swirly.show();"
-						onComplete="confirmOverlay.postAction();" 
-					    reRender="HiddenPanel" 
-					    styleClass="submitButton"/>
+					<apex:commandLink id="Accept" value="Accept" action="{!action}" onClick="confirmOverlay.close(); swirly.show();"
+						onComplete="confirmOverlay.postAction();" reRender="HiddenPanel" styleClass="submitButton Accept"/>
 					    
-					<apex:outputLink id="Cancel"
-						value="javascript:;"
-						onClick="confirmOverlay.close();"
-					    styleClass="submitButton" >
+					<apex:outputLink id="Cancel" value="javascript:;" onClick="confirmOverlay.close();" styleClass="submitButton Cancel" >
 					    
 					    Cancel
 					    

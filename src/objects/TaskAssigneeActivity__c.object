@@ -3,11 +3,12 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Object for tracking changes to task assignees</description>
     <fields>
-        <fullName>Action__c</fullName>
-        <label>Action</label>
-        <length>40</length>
-        <required>true</required>
-        <type>Text</type>
+        <fullName>ActivityId__c</fullName>
+        <label>ActivityId</label>
+        <referenceTo>Activity__c</referenceTo>
+        <relationshipLabel>TaskAssigneeActivites</relationshipLabel>
+        <relationshipName>TaskAssigneeActivites</relationshipName>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>AssigneeName__c</fullName>
@@ -18,37 +19,15 @@
     <fields>
         <fullName>ChangeType__c</fullName>
         <label>ChangeType</label>
-        <precision>18</precision>
-        <required>true</required>
-        <scale>0</scale>
-        <type>Number</type>
-    </fields>
-    <fields>
-        <fullName>ModifiedBy__c</fullName>
-        <label>ModifiedBy</label>
-        <length>50</length>
+        <length>40</length>
         <required>true</required>
         <type>Text</type>
-    </fields>
-    <fields>
-        <fullName>ProjectId__c</fullName>
-        <label>ProjectId</label>
-        <referenceTo>Project2__c</referenceTo>
-        <relationshipLabel>TaskAssigneeActivites</relationshipLabel>
-        <relationshipName>TaskAssigneeActivites</relationshipName>
-        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>TaskName__c</fullName>
         <label>TaskName</label>
         <length>80</length>
         <type>Text</type>
-    </fields>
-    <fields>
-        <fullName>TimeStamp__c</fullName>
-        <label>TimeStamp</label>
-        <required>true</required>
-        <type>DateTime</type>
     </fields>
     <label>TaskAssigneeActivity</label>
     <nameField>

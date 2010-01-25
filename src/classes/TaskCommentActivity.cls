@@ -31,17 +31,21 @@ public class TaskCommentActivity extends ActivityLog{
 		ProjectMember__c member = DAOFactory.getInstance().getMemberByUserId( this.memberId ) ;
 		this.modifiedBy = member.Name;
 		
+		ProjectTask__c task = DAOFactory.getInstance().getTask( this.comment.Task__c );
+
 		//Comment Added to a Task
 		if( this.action == 'insert' ){
-			this.changeType = 11;
-			this.taskName 	= this.comment.Task__r.Name;
+			this.changeType = 'TaskComment_Insert';
+			this.taskName 	= task.Name;
+			this.projectId 	= task.Project__c;
 			DAOFactory.getInstance().logTaskCommentActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.taskName );
 		}
 		
 		//Comment removed from a Task
 		if( this.action == 'delete' ){
-			this.changeType = 12;
-			this.taskName 	= this.comment.Task__r.Name;
+			this.changeType = 'TaskComment_Delete';
+			this.taskName 	= task.Name;
+			this.projectId 	= task.Project__c;
 			DAOFactory.getInstance().logTaskCommentActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.taskName );
 		}
 	}

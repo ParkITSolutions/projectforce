@@ -8,29 +8,17 @@
         <value>TaskCommentActivites</value>
     </caseValues>
     <fields>
-        <label><!-- Action --></label>
-        <name>Action__c</name>
+        <label><!-- ActivityId --></label>
+        <name>ActivityId__c</name>
+        <relationshipLabel><!-- TaskCommentActivites --></relationshipLabel>
     </fields>
     <fields>
         <label><!-- ChangeType --></label>
         <name>ChangeType__c</name>
     </fields>
     <fields>
-        <label><!-- ModifiedBy --></label>
-        <name>ModifiedBy__c</name>
-    </fields>
-    <fields>
-        <label><!-- ProjectId --></label>
-        <name>ProjectId__c</name>
-        <relationshipLabel><!-- TaskCommentActivites --></relationshipLabel>
-    </fields>
-    <fields>
         <label><!-- TaskName --></label>
         <name>TaskName__c</name>
-    </fields>
-    <fields>
-        <label><!-- TimeStamp --></label>
-        <name>TimeStamp__c</name>
     </fields>
     <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>

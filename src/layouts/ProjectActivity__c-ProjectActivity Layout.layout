@@ -10,22 +10,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>ProjectId__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>ModifiedBy__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>TimeStamp__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>Action__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>name__c</field>
             </layoutItems>
             <layoutItems>
@@ -35,6 +19,10 @@
             <layoutItems>
                 <behavior>Required</behavior>
                 <field>ChangeType__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ActivityId__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

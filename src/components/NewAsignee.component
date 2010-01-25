@@ -1,0 +1,4 @@
+<apex:component id="NewAssignee" allowDML="true">
+
+
+</apex:component>

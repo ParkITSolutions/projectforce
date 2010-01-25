@@ -1,47 +1,35 @@
-<apex:component allowDML="true" controller="ProjectSetupController">
-
-	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/projectSubscribe.css')}" /> 
-	<style>
-	.LinkManageConf{
-		background: transparent url({!URLFOR($Resource.commonResources, 'images/icons/settings.gif')}) no-repeat scroll left center;
-		padding-left: 20px;
-	}
-	</style>
-	<apex:outputPanel rendered="{!IfCanModifyAllData}" >
-	    <div class="teamWidget mySmallWidget" >
-	        <!-- Widget Title -->       
-	        <div class="thinHeader">
-	            <div>
-		            <div>
-		            	<h4>Setup</h4>
-		            </div>
-	            </div>
-	        </div>
-	         
-	        <!-- Widget Container -->          
-	        <div class="box_content">
-	            <div class="thinBodyFixed">
-	                <div style = "padding:7px;">                       
-	                    <apex:outputpanel layout="block" styleClass="suscribeTeam">
-			                <apex:outputPanel id="teamLinkSuscribe">
-			                	<a class="LinkManageConf" href="/apex/ProjectSetup">Manage Configuration</a>
-			                </apex:outputPanel>
-						</apex:outputpanel>
-	                </div>
-	            </div>               
-	        </div>
-	        
-	        <!-- Widget Holder Foot -->
-	        <div class="bottom_borders">
-	            <div>
-		            <div>
-		            </div>
-	            </div>
-	        </div>
-	        
-	    </div>
-	    
-	    <div class="clear"></div>
+<apex:component id="ProjectSetupWidget" controller="ProjectSetupController"allowDML="true" >
+	
+	<!-- TODO place in application top -->
+	<apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
+	
+	<apex:outputPanel id="widget" styleClass="widget" layout="block" rendered="{!IfCanModifyAllData}">
+	
+		<!-- widget header -->
+		<apex:outputPanel id="header" layout="block" styleClass="header">
+			<div>
+				<div>
+					<h4>Setup</h4>
+				</div>
+			</div>
+		</apex:outputPanel>
+		
+		<!-- dynamic content goes here -->
+		<apex:outputPanel id="widgetContent" layout="block" styleClass="widgetContent">
+		
+			<!-- TODO insert icon found in commonResources -->
+			<apex:outputPanel id="setupLink">
+				<a href="/apex/ProjectSetup">Manage Configuration</a>
+			</apex:outputPanel>
+		
+		</apex:outputPanel>
+		
+		<!-- widget footer -->
+		<apex:outputPanel id="footer" layout="block" styleClass="footer">
+			<div>
+				<div></div>
+			</div>
+		</apex:outputPanel>
+	
 	</apex:outputPanel>
-
 </apex:component>

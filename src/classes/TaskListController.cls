@@ -10,21 +10,20 @@ public class TaskListController {
 	
 	public Project 	exceptionMessage 	{ set; get; }
 	
-	public String filter 				{ set; get; } //param to show all tasks by default
-	
-	public String orderBy 				{ set; get; }
-	
-	public Boolean orderAsc 			{ set; get; }
-	
 	public Paginator paginator 			{ set; get; }
 	
-	public TaskListController(){
+	public String csvFileId;
+	
+	public String getcsvFileId(){return csvFileId;}
+	
+	public TaskListController(){  
 		
 		this.tasks = new List<Task>();
 		
 		this.projectId = System.currentPageReference().getParameters().get('id');
 		
 		if(this.projectId==null || this.projectId==''){
+			
 			throw new CustomException('There is not a project selected');
 		}
 		
@@ -32,136 +31,99 @@ public class TaskListController {
 		
 		this.url = ProjectUtil.getUrl();
 		
-		this.filter = '1'; 
-		
-		this.orderBy = 'Name';
-		
-		this.orderAsc = true;
-		
-		//this.paginator = new Paginator('Tasks');
-		
 		this.paginator = new Paginator();
 		
-		this.paginator.orderBy = this.orderBy;
+		this.paginator.orderBy = 'Name';
 		
-		this.paginator.filter = this.filter;
+		this.paginator.orderAsc = true;
 		
-		this.paginator.orderAsc = this.orderAsc;
+		this.paginator.filter = '1'; // Show all tasks and milestones
 		
 		this.paginator.project.id = this.projectId;
-		
-		//refreshTasksByProject();
 		
 		paginator.loadTasksByProject();
 		
-	}
-	
-	public List<Task> getTasks(){
-		
-		return paginator.getTasksByProject();
-	}
-	
-	public void refreshTasksByProject(){
-		
-		this.paginator.orderBy = this.orderBy;
-		
-		this.paginator.filter = this.filter;
-		
-		this.paginator.orderAsc = this.orderAsc;
-		
-		this.paginator.project.id = this.projectId;
-	
-		paginator.refreshTasksByProject();
-	}
-	
-	public void refreshPaginator(){
-		
-		paginator.refreshPaginator();
-		
-		paginator.setPageNumber(1);
 	}
 	
 	public List<SelectOption> getFilterItems() {
 		
 		List<SelectOption> options = new List<SelectOption>();
 		
-		options.add(new SelectOption('1','All tasks'));
+		options.add(new SelectOption('1','All'));
 		
-		options.add(new SelectOption('2','All milestones'));
+		options.add(new SelectOption('2','All tasks'));
 		
-		options.add(new SelectOption('3','My tasks'));
+		options.add(new SelectOption('3','All milestones'));
 		
-		options.add(new SelectOption('4','Completed tasks'));
+		options.add(new SelectOption('4','My tasks and milestones'));
 		
-		options.add(new SelectOption('5','Overdue tasks'));
+		options.add(new SelectOption('5','Completed tasks'));
 		
-		options.add(new SelectOption('6','Overdue milestones'));
+		options.add(new SelectOption('6','Overdue tasks'));
+		
+		options.add(new SelectOption('7','Overdue milestones'));
 		
 		return options;
 	}
 	
-	public void generateCSV(){
+   /**
+    * Export the task list into a csv file
+    */ 
+     public void generateTaskListCsv() {
+       
+        this.project = DAOFactory.getInstance().getProjectInfo( projectId );
+        String csvText = 'ID ,Type,Priority,Name,Description,Status,AssignedTo,PercentCompleted,Duration (' + project.displayDuration + '),DueDate,DaysLate\n';               
+             
+        for (Task iterTask : this.tasks) {
+           
+            csvText += iterTask.idDisplay + ',';           
+           
+            if (iterTask.isMilestone)           
+                csvText += 'Milestone,';
+            else           
+                csvText += 'Task,';
+               
+            csvText += iterTask.priority + ',';           
+            csvText += iterTask.getName() + ',';  
+           
+            String description;
+            if(iterTask.Description != null){
+                description  = iterTask.description.replaceAll('\r\n', ' ');
+                description  = description.replaceAll(',', ' ');
+            }
+           
+            csvText += description + ',';           
+            csvText += iterTask.status + ',';           
+            csvText += iterTask.assignees[0].name + ',';
+            csvText += iterTask.getPercentCompleted() + ',';
+            //csvText += iterTask.Estimate + ',';
+            csvText += iterTask.endDate + '\n';
+            //csvText += iterTask.CantDias + '\n';          
+                 
+        }
+       
+        List<Attachment> attachs =  new List<Attachment>();
+        Attachment doc = null;
+       
+        attachs = [select Id, Name from Attachment where Name = 'pf__export.csv'];
+        if(attachs.size() > 0)
+            doc = attachs[0];
+        else{
+            doc = new Attachment();
+            doc.ParentId = PROJECTID;
+            doc.Name = 'pf__export.csv';
+        }
+
+        doc.Body = Blob.valueOf(csvText);
+        doc.ContentType = 'text/csv';
+       
+        upsert doc;
+        this.csvFileId = doc.Id;
+        
+        System.debug( '>>>> ' + doc.Id );
+    }   
 	
-	}
 	
-	public void orderById(){
-		
-		this.orderAsc = !this.orderAsc;
-		
-		this.orderBy = 'Id__c';
-		
-		refreshTasksByProject();
-		
-	}
-	
-	public void orderByPriority(){
-		
-		this.orderAsc = !this.orderAsc;
-		
-		this.orderBy = 'Priority__c';
-		
-		refreshTasksByProject();
-	
-	}
-	
-	public void orderByName(){
-		
-		this.orderAsc = !this.orderAsc;
-		
-		this.orderBy = 'Name';
-		
-		refreshTasksByProject();
-	
-	}
-	
-	public void orderByCompletedPercentage(){
-		
-		this.orderAsc = !this.orderAsc;
-		
-		this.orderBy = 'PercentCompleted__c';
-		
-		refreshTasksByProject();
-	
-	}
-	
-	public void orderByDuration(){
-		
-		this.orderAsc = !this.orderAsc;
-		
-		this.orderBy = 'Duration__c';
-		
-		refreshTasksByProject();
-	
-	}
-	
-	public void orderByEndDate(){
-		
-		this.orderAsc = !this.orderAsc;
-		
-		this.orderBy = 'EndDate__c';
-		
-		refreshTasksByProject();
-	
-	}
+
 	
 }

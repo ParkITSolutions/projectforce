@@ -147,6 +147,18 @@ Private -  This Project will not appear in search. Membership is by invitation o
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>ProjectAfterOfExpiringTask__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>ProjectAfterOfExpiringTask</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ProjectBeforeOfExpiringTask__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>ProjectBeforeOfExpiringTask</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>ProjectCreatedBy__c</fullName>
         <label>ProjectCreatedBy</label>
         <referenceTo>User</referenceTo>
@@ -157,6 +169,12 @@ Private -  This Project will not appear in search. Membership is by invitation o
         <fullName>ProjectCreatedDate__c</fullName>
         <label>ProjectCreatedDate</label>
         <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>ProjectDayOfExpiringTask__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>ProjectDayOfExpiringTask</label>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>PublicProfile__c</fullName>

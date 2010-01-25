@@ -89,7 +89,7 @@
 				    <img class="imgSmallLeft" src="{!URLFOR($Resource.ProjectResources, '/images/layout/icons/star.gif')}"  />
 				    <span>
 				    	<span class="text_link_underlineColorPaddRight">
-				    	  	<a href="/apex/userdetail">All User Tasks</a>
+				    	  	<a href="/apex/usertasks">All User Tasks</a>
 				    	</span>
 				   	</span>
 				</div>

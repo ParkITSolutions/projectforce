@@ -1,9 +1,12 @@
 /**
-*@author Matias Menafra @ 12/17/2009
+* @author Matias Menafra  
+* @dataCreated 12/17/2009
 */
 public class Project {
 
-	public String 	id					{ set; get; }
+	private Integer workingHours;
+
+	public String 	id						{ set; get; }
 	public String 	access 					{ set; get; }
 	public Boolean 	allowCPU 				{ set; get; }
 	public Boolean 	allowPPU 				{ set; get; }
@@ -18,100 +21,108 @@ public class Project {
 	public String 	createdBy 				{ set; get; }
 	public Date 	createdDate 			{ set; get; }
 	public String 	prjType 				{ set; get; }
-	public Integer 	workingHours 			{ set; get; }
-	public List<ProjectTask__c> 	tasks 			{ set; get; }
+	public List<ProjectTask__c> tasks 		{ set; get; }
 			
 	
 	/**
 	* Constructor
+	* @param id
 	*/
-	public Project(String id){
-		
+	public Project( String id ){
 		this.id = id;
-		
 	}
 	
+	/**
+	* Constructor
+	*/
 	public Project(){
 		
 	}
 	
-	/*public List<ProjectTask__c> getTasks(String filter, String orderBy, Boolean orderAsc){
+	/**
+	* gets tasks for a project. Used for Listing Tasks, returns a Paginator
+	* @param filter
+	* @param orderBy
+	* @param orderAsc
+	* @return tasks
+	*/
+	public ApexPages.StandardSetController getTasks( String filter, String orderBy, Boolean orderAsc ){
 		
-		return DAOFactory.getInstance().getTasksByProject(this.id, filter, orderBy, orderAsc);
-	}*/
-	
-	public ApexPages.StandardSetController getTasks(String filter, String orderBy, Boolean orderAsc){
-		
-		return DAOFactory.getInstance().getTasksByProject(this.id, filter, orderBy, orderAsc);
+		return DAOFactory.getInstance().getTasksByProject( this.id, filter, orderBy, orderAsc );
 	}
 	
+	/**
+	* sets project info
+	*/
 	public void setInfo(){
 		
-	 	Project2__c project = DAOFactory.getInstance().getProjectInfo(this.id);
-	 	
+	 	Project project = DAOFactory.getInstance().getProjectInfo( this.id );
 	 	this.name = project.Name;
 	}
 	
-	public void setTasks(String tasksIds){
+	/**
+	* sets tasks in inner list
+	* @param tasksIds
+	*/
+	public void setTasks( String tasksIds ){
 		
-		this.tasks = DAOFactory.getInstance().getTasks(tasksIds);
+		this.tasks = DAOFactory.getInstance().getTasks( tasksIds );
 	}
 	
 	/**
-	* Put all this.tasks percentages in 100%
+	* puts all tasks percentages in 100%
 	*/
 	public void markCompleteTasks(){
 		
-		haveTasksPermissions(this.tasks);
-		
+		haveTasksPermissions( this.tasks );
 		List<ProjectTask__c> tasks = new List<ProjectTask__c>();
 				
-		for(ProjectTask__c task: this.tasks){
-					
+		for( ProjectTask__c task: this.tasks ){
 			task.PercentCompleted__c = 100;
-					
-			tasks.add(task);
+			tasks.add( task );
 		}
 				
-		ProjectUtil.setTaskDependenciesFlag(false);
+		ProjectUtil.setTaskDependenciesFlag( false );
 				
 		try{
-					
 			update tasks;
-					
-		}catch(Exception e){
-					 
+		}catch( Exception e ){
 			throw new CustomException('Updateing error. It may be because there are tasks that have children.');
-					
 		}finally{
-					
-			ProjectUtil.setTaskDependenciesFlag(true);
+			ProjectUtil.setTaskDependenciesFlag( true );
 		}
 	}
 	
 	/**
-	* Checks if all given tasks can be modified by the current user.
+	* checks if all given tasks can be modified by the current user.
+	* @param tasks a ProjectTask__c list
 	*/
-	public void haveTasksPermissions(List<ProjectTask__c> tasks){
+	public void haveTasksPermissions( List<ProjectTask__c> tasks ){
 		
 		List<ProjectTask__c> tasksError = new List<ProjectTask__c>();
-		
-		if(!DAOFactory.getInstance().isCRMAdministrator()){
-			
-			if(!DAOFactory.getInstance().isProjectAdministrator(this.id)){
-				
-				for(ProjectTask__c task : tasks){
-					
-					if(task.OwnerId == Userinfo.getUserId() || DAOFactory.getInstance().isTaskAssigned(task)){
-						
+		if( !DAOFactory.getInstance().isCRMAdministrator() ){
+			if( !DAOFactory.getInstance().isProjectAdministrator(this.id) ){
+				for( ProjectTask__c task : tasks ){
+					if( task.OwnerId == Userinfo.getUserId() || DAOFactory.getInstance().isTaskAssigned(task)){
 						throw new CustomException('Insufficient privileges to update task(s)');
 					}
-					
 				}
-			
 			}
-			
 		}
 	}
 	
+	/**
+	* @return workingHours
+	*/
+	public Integer getWorkingHours(){
+		return this.workingHours;	
+	}
+	
+	/**
+	* @param d
+	*/
+	//TODO put a better param name
+	public void setWorkingHours( Double d ){
+		this.workingHours = d.intValue();
+	}
 }

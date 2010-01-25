@@ -9,16 +9,17 @@ public class UserPermissions {
 	String objectType;
 	String ownerId;
 	
-	User projectAdmin = null;
-	List<ProjectMember__c> members = null;
-	List<Project2__c> currentProject = null;
-	ProjectProfile__c profile = null;
+	User projectAdmin 					= null;
+	List<ProjectMember__c> members 		= null;
+	List<Project2__c> currentProject 	= null;
+	ProjectProfile__c profile 			= null;
 	
 	/* Booleans */
-	Boolean canCreate = false;
-	Boolean canManage = false;
-	Boolean canComment = false;
-	Boolean canView = true;
+	Boolean canCreate 	= false;
+	Boolean canManage 	= false;
+	Boolean canComment 	= false;
+	Boolean canView 	= true;
+	
 	public static Boolean canManageStatic = false;
 
 	/**
@@ -112,7 +113,7 @@ public class UserPermissions {
 	}
 	
 	/**
-	* Get permissions for current user
+	* Gets permissions for current user
 	*@throws Exception
 	*@return void
 	*/
@@ -197,6 +198,7 @@ public class UserPermissions {
 			throw e;
 		}
 	}
+	
 	/*
 	*@return boolean
 	*/

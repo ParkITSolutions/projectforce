@@ -1,3 +1,6 @@
+/**
+* @author Miguel Soares 
+*/
 public class UserTasksController{
 
     private Boolean showDetail;
@@ -21,7 +24,9 @@ public class UserTasksController{
     public String sortBy { set; get; }
     public Project thisProject  { set; get; }
     
-    
+    /**
+    * Constructor
+    */
     public UserTasksController(){
         
         this.projectId = System.currentPageReference().getParameters().get('id');
@@ -81,23 +86,23 @@ public class UserTasksController{
     */
     public String getLastPage(){
         
-        return String.valueOf( Integer.valueOf( this.lastPage )+1);
+        return String.valueOf( Integer.valueOf( this.lastPage )+1 );
     }
     
     /**
     *@param String
     */
-    public void setLastPage( String lp){
+    public void setLastPage( String lp ){
         
         this.lastPage = lp;
     }
  
     /**
-    *@retunr String
+    *@return String
     */
     public String getPage(){
         
-        return String.valueOf( Integer.valueOf( this.page )+1);
+        return String.valueOf( Integer.valueOf( this.page )+1 );
     }
     
     /**
@@ -105,10 +110,10 @@ public class UserTasksController{
     */
     public void setPage( String p ){
         if( p == 'next' ){
-            this.page = String.valueOf( Math.abs(Integer.valueOf( this.page )+1));
+            this.page = String.valueOf( Math.abs(Integer.valueOf( this.page ) + 1 ) );
         }else if( p == 'previous' ){
-            this.page = String.valueOf( Math.abs(Integer.valueOf( this.page )-1)); 
-        }   
+            this.page = String.valueOf( Math.abs(Integer.valueOf( this.page ) - 1 ) ); 
+        }    
     }
 
     /**
@@ -149,10 +154,10 @@ public class UserTasksController{
         
         this.selectOpsProject.clear();
         ProjectMember__c c = this.allProjects[0].clone();       
-        this.selectOpsProject.add( new SelectOption( '--None--', 'All projects' ));
+        this.selectOpsProject.add( new SelectOption( '--None--', 'All projects' ) );
 
         for( ProjectMember__c p : this.allProjects )
-            this.selectOpsProject.add( new SelectOption((String)p.Project__c, p.Project__r.name ));
+            this.selectOpsProject.add( new SelectOption( (String)p.Project__c, p.Project__r.name ) );
             
         return this.selectOpsProject;
     }
@@ -243,6 +248,7 @@ public class UserTasksController{
         Task tempTask;
         this.tasks.clear(); 
         List<ProjectAssignee__c> prjAssignee = Database.query( sql );
+        
         for( ProjectAssignee__c row : prjAssignee){
             tempTask = new Task();
             tempTask.project = row.project__c;

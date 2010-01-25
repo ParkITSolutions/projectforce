@@ -10,36 +10,26 @@
 		alertOverlay.title 		= '{!$Component.Form.Title}';
 		
 	</script>
-
+	
 	<!-- Content -->
-	<apex:outputPanel id="Content"
-		styleClass="content"
-		layout="block"
-		style="display:none">
+	<apex:outputPanel id="Content" styleClass="Overlaycontainer" layout="block" style="display:none">
 		
-		<apex:outputPanel id="Background" styleClass="background" layout="block"> &nbsp; </apex:outputPanel>
+		<apex:outputPanel id="Background" styleClass="background" layout="block" > &nbsp; </apex:outputPanel>
 		
 		<!-- end of Form  -->
 		<apex:form id="Form">
 		
 			<!-- Overlay -->
-			<apex:outputPanel id="Overlay"
-				styleClass="overlay"
-				layout="block">
+			<apex:outputPanel id="Overlay" styleClass="overlay" layout="block">
 				
 				<!-- Title -->
-				<apex:outputPanel id="TitlePanel"
-					styleClass="titlePanel"
-					layout="block">
+				<apex:outputPanel id="TitlePanel" styleClass="titlePanel" layout="block">
 			
-					<apex:outputText id="Title"
-						value="Title" />
+					<apex:outputText id="Title" value="Title" styleClass="title"/>
 						
-					<apex:outputPanel id="overlayClose" styleClass="fds" >
-						<apex:outputLink id="linkClose"
-									value="javascript:;"
-									onClick="alertOverlay.close();" >
-									<img src="{!URLFOR($Resource.Overlays, 'images/overlayClose.gif')}" alt="Close Window" title="Close Window" />
+					<apex:outputPanel id="overlayClose" styleClass="overlayClose" >
+						<apex:outputLink id="linkClose" value="javascript:;" onClick="alertOverlay.close();" >
+							<img src="{!URLFOR($Resource.Overlays, 'images/overlayClose.gif')}" alt="Close Window" title="Close Window" />
 						</apex:outputLink>	
 		            </apex:outputPanel>
 		            
@@ -47,24 +37,17 @@
 				<!-- end of Title -->
 				
 				<!-- MessageToUser -->
-				<apex:outputPanel id="MessageToUserPanel"
-					styleClass="messageToUserPanel"
-					layout="block">
+				<apex:outputPanel id="MessageToUserPanel" styleClass="messageToUserPanel" layout="block">
 			
-					<apex:outputText id="MessageToUser"
-						value="Message" />
+					<apex:outputText id="MessageToUser" value="Message" styleClass="messageToUser" />
 			
 				</apex:outputPanel>
 				<!-- end of MessageToUser -->
 				
 				<!-- SubmitButtons -->
-				<apex:outputPanel styleClass="submitButtons"
-					layout="block">
+				<apex:outputPanel styleClass="submitButtons" layout="block">
 			
-					<apex:outputLink id="Accept"
-					    styleClass="submitButton"
-					    onClick="alertOverlay.close();"
-					    value="javascript:;">
+					<apex:outputLink id="Accept" styleClass="submitButton Accept" onClick="alertOverlay.close();" value="javascript:;">
 					    
 					    Accept
 					    

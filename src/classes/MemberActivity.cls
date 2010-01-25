@@ -34,14 +34,14 @@ public class MemberActivity extends ActivityLog{
 		
 		//Member has been added to a project
 		if( this.action == 'insert' ){
-			this.changeType = 3;
-			DAOFactory.getInstance().logMemberActivity(this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.memberName);
+			this.changeType = 'Member_Insert';
+			DAOFactory.getInstance().logMemberActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.memberName );
 		}
 		
 		//Member has been removed from a project
 		if( this.action == 'delete' ){
-			this.changeType = 4;
-			DAOFactory.getInstance().logMemberActivity(this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.memberName);
+			this.changeType = 'Member_Delete';
+			DAOFactory.getInstance().logMemberActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.memberName );
 		}		
 	}
 }

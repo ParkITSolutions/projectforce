@@ -38,14 +38,14 @@ public class ProjectActivity extends ActivityLog{
 			//Verifys change in Project Name
 			if( this.oldProject.Name != this.newProject.Name ){
 				this.name 		= this.newProject.Name;
-				this.changeType = '';
+				this.changeType = 'Project_Name';
 				DAOFactory.getInstance().logProjectActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.name, '' );
 			}
 			
 			//Verifys change in Project Access Level
 			if( this.oldProject.Access__c != this.newProject.Access__c ){
 				this.access 	= this.newProject.Access__c;
-				this.changeType = '';
+				this.changeType = 'Project_Access';
 				DAOFactory.getInstance().logProjectActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, '', this.access );
 			}
 		}
