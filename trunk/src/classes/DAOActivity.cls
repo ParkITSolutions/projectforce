@@ -2,7 +2,7 @@
 * @author Matias Menafra 1/6/2010
 */
 public class DAOActivity {
-	
+	 
 	/**
 	* Constructor
 	*/
@@ -29,7 +29,7 @@ public class DAOActivity {
 		activity.ModifiedBy__c 	= modifiedBy;
 		activity.Action__c 		= action;
 		
-		prjActivity.ChangeType__c 	= changeType;
+		prjActivity.ChangeType__c 	= changeType; 
 		prjActivity.Access__c 		= access;
 		prjActivity.name__c 		= name;
 		

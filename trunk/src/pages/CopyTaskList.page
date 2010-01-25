@@ -15,7 +15,8 @@
 	
 	<c:PromptOverlay id="PromptOverlay"
 	    includeNewTask="true"
-	    includeNewMilestone="true"/>
+	    includeNewMilestone="true"
+	    includeAttachment="true" />
 	    
 	<apex:stylesheet value="{!URLFOR($Resource.Paginator, 'inc/css/paginator.css')}" />
 	
