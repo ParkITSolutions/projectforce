@@ -10,13 +10,13 @@ trigger ProjectAssigneeBeforeDelete on ProjectAssignee__c (before delete) {
     	usersIdList.add( pA.User__c );
     	
     	//Logging for Task assignees
-		TaskAssigneeActivity asigneeActivity = new TaskAssigneeActivity( pA.Project__c, DateTime.now(), UserInfo.getUserId(), 'delete', pA );
-		asigneeActivity.log();
+		//TaskAssigneeActivity asigneeActivity = new TaskAssigneeActivity( pA.Project__c, DateTime.now(), UserInfo.getUserId(), 'delete', pA );
+		//asigneeActivity.log();
     }
 
 	// Send email to subscribers members
 	//ProjectSubscribersEmailServices mail = ProjectSubscribersEmailServices.getInstance();
     ProjectSubscribersEmailServices.sendMailForAssDeletedFuture( lstassId, tasksIdList, usersIdList );
-    
+  
 	
 }

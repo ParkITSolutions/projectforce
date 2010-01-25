@@ -9,8 +9,8 @@ trigger ProjectMemberBeforeDelete on ProjectMember__c (before delete){
 		    	lstPMId.add(pM.id);
 		    	
 		    	//Logging Changes for Project Members
-			    MemberActivity memberActivity = new MemberActivity( pM.Project__c, DateTime.now(), UserInfo.getUserId(), 'delete', pM );	
-				memberActivity.log();
+			    //MemberActivity memberActivity = new MemberActivity( pM.Project__c, DateTime.now(), UserInfo.getUserId(), 'delete', pM );	
+				//memberActivity.log();
 		    }
 		    
 		    mail.sendMemberJoinLeave( lstPMId, 'leave' );

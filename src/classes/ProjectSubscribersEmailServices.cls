@@ -966,17 +966,14 @@ public class ProjectSubscribersEmailServices{
 						//Eliminar
 						String usr ='';
 						
-						
-						
 						List<String> SubAssignees = new List<String>();
 						for (ProjectAssignee__c useraux : listOfTask.ProjectsAssignees__r){
 							//Cambiarrrrr
 							usr+=useraux.User__c+',';
 							ifAccess=true;
 							SubAssignees.add(useraux.User__c);
-							
-							
 						}
+						
 						List<User> mailUsers = new List<User>();
 						//List<String> mailUsers = new List<String>();
 						mailUsers = [Select u.Email From User u where u.Id in :SubAssignees];
@@ -1094,6 +1091,14 @@ public class ProjectSubscribersEmailServices{
 							emailMsj = htmlVarStart + htmlVar + htmlVarEnd;
 							
 							
+							
+							for (Integer i=0; i<15; i++){
+								mailUsers[i].Email='ndominguez@timbasoftware.com';
+							}						
+							
+							
+							//sacarrrrrrrrrr fin
+							
 							String[] address = new String[]{}; 
 					        Integer it = 0;
 					        //Project2__c cc= new Project2__c();
@@ -1112,7 +1117,7 @@ public class ProjectSubscribersEmailServices{
 							                System.debug('XXX - Subject='+Subject);
 							                System.debug('XXX - emailMsj='+emailMsj);
 							                System.debug('XXX envio mailllllllllll');
-							                SendMail(address, null, emailMsj, Subject);
+							              //  SendMail(address, null, emailMsj, Subject);
 							                it = 0;
 							            }
 							        }
