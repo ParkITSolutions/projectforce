@@ -14,31 +14,16 @@ public class DAOTask {
 	
 	/**
 	* Inserts a task
-	* @param name
-	* @param startDate
-	* @param dueDate
-	* @param duration
-	* @param assignToId
-	* @param projectId
-	* @param isMilestone
+	* @param task
+	* @param assignedTo
 	*/
-	public void insertTask(String name, String startDate, String dueDate, String duration, String assignToId, String projectId, Boolean isMilestone){
-		
-		ProjectTask__c task = new ProjectTask__c();
-		
-		task.Name = name;
-		task.StartDate__c = Date.parse(startDate);
-		task.EndDate__c = Date.parse(dueDate);
-		task.Duration__c = Double.valueOf(duration);
-		task.Project__c = projectId;
-   		task.Milestone__c = false;
+	public void insertTask( ProjectTask__c task, String assignedTo ){
 		task.PercentCompleted__c = ProjectUtil.getDefaultTaskPercentCompleted();
 		task.Priority__c = ProjectUtil.getDefaultTaskPriority();
-		task.Milestone__c = isMilestone;
 			
 		insert task; 
 
-		DAOAssignee.insertAssignee(task.Id, assignToId, projectId);
+		DAOAssignee.insertAssignee( task.Id, assignedTo, task.Project__c, 0 );
 			
 	}
 	
@@ -54,7 +39,7 @@ public class DAOTask {
 	* @param isMilestone
 	* @beta still not implemented
 	*/
-	public void updateTask(String taskId, String name, String startDate, String dueDate, String duration, String assignTo, String projectId, Boolean isMilestone){
+	public void updateTask( String taskId, String name, String startDate, String dueDate, String duration, String assignTo, String projectId, Boolean isMilestone ){
 		
 		//TODO build a ProjectTask__c object and set its attributes
 		
@@ -65,7 +50,7 @@ public class DAOTask {
 	* deletes a task
 	* @param tasks tasks ids string separated by ":"
 	*/
-	public void deleteTasks(String tasks){
+	public void deleteTasks( String tasks ){
 		
 		List<String> tasksIds = new List<String>();
         
@@ -83,7 +68,7 @@ public class DAOTask {
 	* @param id
 	* @return task a ProjectTask__c
 	*/
-	public ProjectTask__c get(String taskId){
+	public ProjectTask__c get( String taskId ){
 		
 		ProjectTask__c task = new ProjectTask__c();
 		
@@ -103,52 +88,52 @@ public class DAOTask {
 	* @param orderAsc true if order way must be ascending or descendant
 	* @return tasks a list of tasks
 	*/
-	public ApexPages.StandardSetController getByProject(String projectId, String filter, String orderBy, Boolean orderAsc){
+	public ApexPages.StandardSetController getByProject( String projectId, String filter, String orderBy, Boolean orderAsc ){
 		
 		String orderWay = 'DESC';
 		
-		if(orderAsc){
+		if( orderAsc ){
 			
 			orderWay = 'ASC';
 		}
 		
 		String condition = '';
 		
-		if(filter == '1'){ //all
+		if( filter == '1' ){ //all
 			
 			condition = '';
 		}
 		
-		if(filter == '2'){ //all tasks
+		if( filter == '2' ){ //all tasks
 			
 			condition = 'and Milestone__c = false';
 		}
 		
-		if(filter == '3'){ //all milestones
+		if( filter == '3' ){ //all milestones
 			
 			condition = 'and Milestone__c = true';
 		}
 		
-		if(filter == '4'){ //my tasks and milestones (assigned to me)
+		if( filter == '4' ){ //my tasks and milestones (assigned to me)
 			
 			condition = 'and id in (select ProjectTask__c from ProjectAssignee__c where User__c = \''+Userinfo.getUserId()+'\')'; 
 
 		}
 		
-		if(filter == '5'){ //completed tasks
+		if( filter == '5' ){ //completed tasks
 			
 			condition = 'and Milestone__c = false '+
 						'and PercentCompleted__c = 100 ';
 		}
 		
-		if(filter == '6'){ //overdue tasks
+		if( filter == '6' ){ //overdue tasks
 			
 			condition = 'and Milestone__c = false '+
 						'and PercentCompleted__c < 100 '+
 						'and EndDate__c < '+String.valueOf(System.today())+' ';
 		}
 		
-		if(filter == '7'){ //overdue milestones
+		if( filter == '7' ){ //overdue milestones
 			
 			condition = 'and Milestone__c = true '+
 						'and PercentCompleted__c < 100 '+
@@ -169,25 +154,26 @@ public class DAOTask {
 						''+condition +' ' + 
 						'order by '+orderBy+' '+orderWay; 
 		
-		ApexPages.StandardSetController tasks = new ApexPages.StandardSetController(Database.getQueryLocator(query));
+		ApexPages.StandardSetController tasks = new ApexPages.StandardSetController( Database.getQueryLocator( query ) );
 		
-		if(tasks.getResultSize()==0){
+		if( tasks.getResultSize() == 0 ){
 		
-			return new ApexPages.StandardSetController(new List<ProjectTask__c>());
+			return new ApexPages.StandardSetController( new List<ProjectTask__c>() );
 		}
 		
 		return tasks;
 	}
 	
 	/**
+	*
 	* @param tasksIds ids separated by ":"
 	* @return tasks a tasks list
 	*/
-	public List<ProjectTask__c> getTasks(String tasksIds){
+	public List<ProjectTask__c> getTasks( String tasksIds ){
 		
 		List<String> tasksIdsList = new List<String>();
         
-        tasksIdsList = tasksIds.split(':'); 
+        tasksIdsList = tasksIds.split( ':' ); 
         
         List<ProjectTask__c> tasks = [select Id, Name, Milestone__c
             						  from ProjectTask__c 
@@ -197,6 +183,7 @@ public class DAOTask {
 	}
 	
 	/**
+	* 
 	* @param taskId
 	* @return task
 	*/
@@ -209,4 +196,71 @@ public class DAOTask {
 			];
 	}
 	
+	/**
+	* 
+	* @param taskId
+	* @return task
+	*/
+	public ProjectTask__c getTaskByCustomId( String customId ){
+		
+		ProjectTask__c task = new ProjectTask__c();
+		try{
+			task = [select Id, Name, Project__c, Id__c
+		        from ProjectTask__c 
+		        where Id__c =:customId
+		        limit 1];
+		}
+		catch( Exception e ){
+			task = null;
+		}
+		
+		return task;
+	}
+	
+	/**
+	* 
+	* @param projectId
+	* @param searchTerm
+	* @param namespace
+	* @return searchResults
+	*/
+	public ApexPages.StandardSetController searchForTasksByProject( String projectId, String searchTerm, String namespace ){
+		
+		String searchQ = '%'+ searchTerm +'%';
+		//TODO Only searching in Task name field, Have to change DEscription type to textarea for it to be filterable
+		ApexPages.StandardSetController searchResults = new ApexPages.StandardSetController( Database.getQueryLocator( [Select Id, Name, Description__c, Project__c From ProjectTask__c Where Project__c =:projectId 
+																																														AND Name LIKE :searchQ	 ] ) );
+		
+		if( searchResults.getResultSize() == 0 ){
+			return new ApexPages.StandardSetController( new List<ProjectTask__c>() );
+		}
+		
+		return searchResults;	
+	}
+
+	public ApexPages.StandardSetController loadTasksByUser( String filter, String orderBy, Boolean orderAsc, String projectId ){
+		 //String sql = 'SELECT project__c, ProjectTask__c, project__r.name, ProjectTask__r.name, ProjectTask__r.startDate__c, ProjectTask__r.endDate__c, ProjectTask__r.status__c, ProjectTask__r.priority__c, ProjectTask__r.milestone__c, ProjectTask__r.percentCompleted__c, ProjectTask__r.DurationUI__c FROM ProjectAssignee__c WHERE User__c = ';
+        String sql = 'SELECT name FROM ProjectTask__c';// WHERE User__c = ';
+        //sql += '\'' +UserInfo.getUserId()+ '\'';
+
+		String orderWay = 'DESC';
+		
+		if( orderAsc ){
+			orderWay = 'ASC';
+		}
+        
+        
+        //if( this.opSelected != '--None--' ) 
+            //sql += ' AND Project__c = ' + '\'' + this.opSelected + '\'';            
+            
+        //sql += ' ORDER BY ' + orderBy + ' ' + orderWay ;
+        
+		ApexPages.StandardSetController tasks = new ApexPages.StandardSetController( Database.getQueryLocator( sql ));
+
+		if( tasks.getResultSize() == 0 ){
+			return new ApexPages.StandardSetController( new List<ProjectTask__c>() );
+		}
+		
+		return tasks;
+	}	
 }

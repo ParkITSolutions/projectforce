@@ -9,8 +9,7 @@
 		
 	</script>
 	
-	<apex:outputPanel id="Content"  styleClass="contentNewMilestone overlay" style="display: none" layout="block">
-	<!-- 	<apex:outputPanel id="Content" style="display: none" layout="block"> -->
+	<apex:outputPanel id="Content"  styleClass="contentNewMilestone overlay" style="display: none;" layout="block">
 	
 			<!-- TitlePanel -->
 			<apex:outputPanel id="TitlePanel"
@@ -24,7 +23,7 @@
 				<apex:outputPanel id="overlayClose" styleClass="overlayClose" layout="block">
 					<apex:outputLink id="linkClose" value="javascript:;" onClick="promptOverlay.close();" >
 						<img src="{!URLFOR($Resource.Overlays, 'images/overlayClose.gif')}" alt="Close Window" title="Close Window" />
-					</apex:outputLink>	
+					</apex:outputLink>	 
 	            </apex:outputPanel>
 			</apex:outputPanel>
 			<!-- End TitlePanel -->
@@ -45,23 +44,33 @@
 				<!-- ComponentBody -->
 				<apex:outputPanel id="ComponentBody" styleClass="componentBody" layout="block">
 					
-					<apex:outputLabel >Name</apex:outputLabel> 
+					<apex:outputLabel >Name</apex:outputLabel>
 					<apex:outputPanel styleclass="required"></apex:outputPanel>
-					<apex:inputText id="Name" value="{!name}" />
-					<br /><br />
+					<apex:inputText id="Name" value="{!myTask.Name}" />
+					<br />
+					<apex:outputPanel id="milestoneNameError" styleClass="milestoneErrors" style="display: none;">Error: You must enter a value</apex:outputPanel>
+					<br />
 					
 					
 					<apex:outputLabel >Start Date</apex:outputLabel> 
 					<apex:outputPanel styleclass="required"></apex:outputPanel>
-					<apex:inputText id="StartDate" value="{!startDate}" />
-					<br /><br />
+					<apex:inputField id="StartDate" value="{!myTask.StartDate__c}" />
+					<br />
+					
+					<apex:outputPanel id="milestoneDateError" styleClass="milestoneErrors" style="display: none;">Error: You must enter a value</apex:outputPanel>
+					<apex:outputPanel id="milestoneDateInvalid" styleClass="milestoneErrors" style="display: none;">Error: You must enter a valid value</apex:outputPanel>
+					
+					<br />
 					
 					<apex:outputLabel >Assign To</apex:outputLabel> 
 					<apex:outputPanel styleclass="required"></apex:outputPanel>
-					<apex:selectList value="{!assignTo}" size="1">
+					<apex:selectList value="{!assignTo}" size="1" id="memberMilestone">
 						<apex:selectOptions value="{!members}"/>
 				   </apex:selectList>
 				   <br />
+				   <apex:outputPanel id="memberErrorMilestone" styleClass="milestoneErrors" style="display: none;">Error: You must select a value</apex:outputPanel>
+				   
+				   <br/>
 				   
 				   <apex:outputPanel styleclass="overlaySeparateLine" layout="block"></apex:outputPanel>
 					
@@ -70,21 +79,23 @@
 						styleClass="submitButtons"
 						layout="block">
 					
-							<apex:commandLink id="AcceptButton"
-								value="Accept"
+							<apex:commandButton id="AcceptButton"
+								value="accept"
 								action="{!action}"
-								onClick="promptOverlay.close(); swirly.show();"
+								onClick="return MilestoneValidation.newMilestoneValidation('{!$Component.Name}','{!$Component.StartDate}','{!$Component.memberMilestone}'); promptOverlay.close(); swirly.show();"
 								onComplete="promptOverlay.postAction();"
 								reRender="HiddenPanel"
-							    styleClass="Accept submitButton"/>
+							    styleClass="Accept submitButton" 
+							    style="float: none;width: 70px !important;background:#21637D none repeat scroll 0 0 !important;"/>
 							    
 							<apex:outputLink id="CancelButton"
 								value="javascript:;"
 								onClick="promptOverlay.close();"
 							    styleClass="Cancel submitButton" >Cancel
-							</apex:outputLink>	
+							</apex:outputLink>
 							
-							<!-- <a href="https://{!domain}/{!taskPrefix}/e" onclick="addNewMilestoneOverlay.close(); removeOverlayEvents();">Create Full Task</a> -->
+																				
+							<a href="https://{!domain}/{!taskPrefix}/e" onclick="addNewMilestoneOverlay.close(); removeOverlayEvents();">Create Full Task</a>
 					
 					</apex:outputPanel>
 					<!-- end of SubmitButtons -->

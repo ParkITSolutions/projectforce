@@ -1,107 +1,119 @@
-<apex:component id="NewTask" controller="NewTaskController" allowDML="true">
+<apex:component id="NewTask" controller="NewTaskController"	allowDML="true">
 
-	<apex:stylesheet value="{!URLFOR($Resource.NewTask, 'inc/css/newTask.css')}" /> 
+	<apex:stylesheet value="{!URLFOR($Resource.NewTask, 'inc/css/newTask.css')}" />
 	<apex:includeScript value="{!URLFOR($Resource.NewTask, 'inc/js/newTask.js')}" />
-	
+
 	<script>
 		var newTask = '{!$Component.Content}';
 	</script>
-	
-	<apex:outputPanel id="Content" styleClass="contentNewTask overlay"   style="display: none" layout="block">
-	
-			<!-- TitlePanel -->
-			<apex:outputPanel id="TitlePanel" styleClass="titlePanel" layout="block">
-				
-				<apex:outputPanel styleClass="title">Create New Task</apex:outputPanel>
-				
-				<apex:outputPanel id="overlayClose" styleClass="overlayClose" layout="block">
-					<apex:outputLink id="linkClose" value="javascript:;" onClick="promptOverlay.close();" >
-						<img src="{!URLFOR($Resource.Overlays, 'images/overlayClose.gif')}" alt="Close Window" title="Close Window" />
-					</apex:outputLink>	
-		        </apex:outputPanel>
-		        
+
+	<apex:outputPanel id="Content" styleClass="contentNewTask overlay" style="display:none;" layout="block">
+
+		<!-- TitlePanel -->
+		<apex:outputPanel id="TitlePanel" styleClass="titlePanel" layout="block">
+
+			<apex:outputPanel styleClass="title">Create New Task</apex:outputPanel>
+
+			<apex:outputPanel id="overlayClose" styleClass="overlayClose"
+				layout="block">
+				<apex:outputLink id="linkClose" value="javascript:;"
+					onClick="promptOverlay.close();">
+					<img src="{!URLFOR($Resource.Overlays, 'images/overlayClose.gif')}"
+						alt="Close Window" title="Close Window" />
+				</apex:outputLink>
 			</apex:outputPanel>
-			<!-- End TitlePanel -->
-			
-			<!-- Form -->
-			<apex:form id="Form">
-			
-				<apex:outputPanel id="HiddenPanel" style="display: none">
-				
-					<apex:inputHidden value="{!postAction}" id="PostAction"/>
-					
-				</apex:outputPanel>
-			
-				<!-- ComponentBody -->
-				
+
+		</apex:outputPanel>
+		<!-- End TitlePanel -->
+
+		<!-- Form -->
+		<apex:form id="Form">
+
+			<apex:outputPanel id="HiddenPanel" style="display: none">
+
+				<apex:inputHidden value="{!postAction}" id="PostAction" />
+
+			</apex:outputPanel>
+
+			<!-- ComponentBody -->
+
+			<apex:outputPanel styleclass="required"></apex:outputPanel>
+			<apex:outputPanel styleclass="overlayRequiredInfo">= Required Information</apex:outputPanel>
+			<br />
+
+			<apex:outputPanel id="ComponentBody" styleClass="componentBody"	layout="block">
+
+				<apex:outputLabel >Name</apex:outputLabel>
 				<apex:outputPanel styleclass="required"></apex:outputPanel>
-				<apex:outputPanel styleclass="overlayRequiredInfo">= Required Information</apex:outputPanel>
+				<apex:inputText id="Name" value="{!myTask.Name}" />
 				<br />
-				
-				<apex:outputPanel id="ComponentBody" styleClass="componentBody" layout="block">
-					
-						<apex:outputLabel >Name</apex:outputLabel> 
-						<apex:outputPanel styleclass="required"></apex:outputPanel>
-						<apex:inputText id="Name" value="{!name}" />
-						<br /><br />
-						
-						<apex:outputLabel >Start Date</apex:outputLabel> 
-						<apex:outputPanel styleclass="required"></apex:outputPanel>
-						<apex:inputText id="StartDate" value="{!startDate}" />
-						<!--  <div id="taskStartDate-comp" style="display:none;">{!$Component.taskStartDate}</div> --> 
-						<br /><br />
-						
-						<apex:outputLabel >Due Date</apex:outputLabel> 
-						<apex:outputPanel styleclass="notrequired"></apex:outputPanel>
-						<apex:inputText id="DueDate" value="{!dueDate}" />
-						<!-- <div id="taskDueDate-comp" style="display:none;">{!$Component.taskDueDate}</div> -->
-						<br /><br />
-						
-						<apex:outputLabel >Duration</apex:outputLabel> 
-						<apex:outputPanel styleclass="required"> </apex:outputPanel>
-						<apex:inputText id="Duration" value="{!duration}" />
-						<br /><br />
-						
-						<apex:outputLabel >Assign To</apex:outputLabel>
-						<apex:outputPanel styleclass="required"></apex:outputPanel>
-						<apex:selectList value="{!assignTo}" size="1">
-							<apex:selectOptions value="{!members}"/>
-					   </apex:selectList>
-					   <br />
-					   
-					   <apex:outputPanel styleclass="overlaySeparateLine" layout="block"></apex:outputPanel>
-					   
-					<!-- SubmitButtons -->
-					<apex:outputPanel id="SubmitButtons"
-						styleClass="submitButtons"
-						layout="block">
-							
-							<!-- <apex:commandLink id="AcceptButton" -->
-							<apex:commandLink id="AcceptButton"
-								value="Save"
-								action="{!action}"
-								onClick="promptOverlay.close(); swirly.show();"
-								onComplete="promptOverlay.postAction();"
-								reRender="HiddenPanel"
-							    styleClass="Accept submitButton"/>
+				<apex:outputPanel id="taskNameError" styleClass="red"
+					style="display: none;">Error: You must enter a value</apex:outputPanel>
+				<br />
 
-							<apex:outputLink id="CancelButton"
-								value="javascript:;"
-								onClick="promptOverlay.close();"
-							    styleClass="Cancel submitButton" >Cancel
-							</apex:outputLink>	
+				<apex:outputLabel >Start Date</apex:outputLabel>
+				<apex:outputPanel styleclass="required"></apex:outputPanel>
+				<apex:inputField id="StartDate" value="{!myTask.StartDate__c}" />
+				<!--  <div id="taskStartDate-comp" style="display:none;">{!$Component.taskStartDate}</div> -->
+				<br />
+				<apex:outputPanel id="taskStartDateError" styleClass="red"
+					style="display: none;">Error: You must enter a value</apex:outputPanel>
+				<br />
 
-							<!-- <a href="https://{!domain}/{!taskPrefix}/e?retURL=https://{!domain}/apex/projectDetail?id={!CurrentProjectId}" onclick="addNewTaskOverlay.close(); removeOverlayEvents();">Create Full Task</a> -->
-					
-					</apex:outputPanel>
-					<!-- end of SubmitButtons -->
-					
+				<apex:outputLabel >Due Date</apex:outputLabel>
+				<apex:outputPanel styleclass="notrequired"></apex:outputPanel>
+				<apex:inputField id="DueDate" value="{!myTask.EndDate__c}" />
+				<!-- <div id="taskDueDate-comp" style="display:none;">{!$Component.taskDueDate}</div> -->
+				<br />
+				<apex:outputPanel id="taskDueDateError" styleClass="red"
+					style="display: none;">Error: You must enter a value</apex:outputPanel>
+				<br />
+
+				<apex:outputLabel >Duration</apex:outputLabel>
+				<apex:outputPanel styleclass="required">
 				</apex:outputPanel>
-				<!-- end of ComponentBody -->
-			
-			</apex:form>
-			<!-- End Form -->
-				
+				<apex:inputText id="Duration" value="{!myTask.Duration__c}" />
+				<br />
+				<apex:outputPanel id="taskDurationError" styleClass="red"
+					style="display: none;">Error: You must enter a value</apex:outputPanel>
+				<br />
+
+				<apex:outputLabel >Assign To</apex:outputLabel>
+				<apex:outputPanel styleclass="required"></apex:outputPanel>
+				<apex:selectList value="{!assignTo}" size="1">
+					<apex:selectOptions value="{!members}" />
+				</apex:selectList>
+				<br />
+				<apex:outputPanel id="taskAssignToError" styleClass="red"
+					style="display: none;">Error: You must enter a value</apex:outputPanel>
+
+				<apex:outputPanel styleclass="overlaySeparateLine" layout="block"></apex:outputPanel>
+
+				<!-- SubmitButtons -->
+				<apex:outputPanel id="SubmitButtons" styleClass="submitButtons"
+					layout="block">
+
+					<!-- <apex:commandLink id="AcceptButton" -->
+					<apex:commandLink id="AcceptButton" value="accept" action="{!action}"
+						onClick="promptOverlay.close(); swirly.show();"
+						onComplete="promptOverlay.postAction();" reRender="HiddenPanel"
+						styleClass="Accept submitButton" />
+
+					<apex:outputLink id="CancelButton" value="javascript:;"
+						onClick="promptOverlay.close();" styleClass="Cancel submitButton">Cancel
+							</apex:outputLink>
+
+					<a href="https://{!domain}/{!taskPrefix}/e?retURL=https://{!domain}/apex/projectDetail?id={!projectId}" onclick="addNewTaskOverlay.close(); removeOverlayEvents();">Create Full Task</a>
+
+				</apex:outputPanel>
+				<!-- end of SubmitButtons -->
+
+			</apex:outputPanel>
+			<!-- end of ComponentBody -->
+
+		</apex:form>
+		<!-- End Form -->
+
 	</apex:outputPanel>
-	
+
 </apex:component>

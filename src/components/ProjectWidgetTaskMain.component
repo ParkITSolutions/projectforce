@@ -46,7 +46,7 @@
 								</ul>
 							</li>
 							<li> | <a href="ProjectTimeLine?id={!TeamId}">Timeline</a>  |</li>
-							<li> <a href="ProjectTasksList?id={!TeamId}" class="topRightLinks" >See More&#187;</a></li>
+							<li> <a href="TaskList?id={!TeamId}" class="topRightLinks" >See More&#187;</a></li>
 						</ul>
 					<div class="clear" ></div>
 				</div>

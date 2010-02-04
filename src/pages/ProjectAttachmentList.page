@@ -1,123 +1,232 @@
-<apex:page sidebar="false" id="ProjectAttachmentList" controller="ProjectAttachmentListController" tabstyle="Project2__c">	
-   
-    <!-- Ajax Toolkit -->
-    <script type="text/javascript" src="/soap/ajax/11.1/connection.js" ></script>
-    <script>
-        var API_SESSION_ID = '{!$Api.Session_ID}';
-    </script>
-   
-    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}"/>
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
-   
-    <!-- Prototype / Scriptaculous Framework -->  
-    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
-    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
-    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/> 
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectLayout.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskList.css')}" />   
-    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />
-    
-     <!-- Common JS for All Sections -->
-    <script type="text/javascript" src="{!URLFOR($Resource.ProjectResources, 'inc/js/TeamsWidgetCommon.js')}" ></script>
-    <script type="text/javascript" src="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}" ></script>
-    <script type="text/javascript" src="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" ></script>
-   
-    <script type="text/javascript" src="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupTop.js')}" ></script>
-    <script type="text/javascript" src="{!URLFOR($Resource.ProjectResources, 'inc/js/projectDetail.js')}" ></script>
-   
-    <!-- Portal Support -->
-    <apex:includeScript value="{!$Resource.portalSupport}"/> 
-   
-    <!-- CSS styles for Portal Integration -->
-    <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsTable.css')}" />
-   
-    <!-- ### Styles ### -->
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgets/TeamsOverlayNewTask.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />       
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/calendarview.css')}" />       
-   
-    <!-- ProjectTaskList CSS -->
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskList.css')}" />
-    
-    <!-- overlays resources -->
-    <apex:includeScript value="{!URLFOR($Resource.overlaysResources, 'inc/js/js.js')}"/>
-    <apex:stylesheet value="{!URLFOR($Resource.overlaysResources, 'inc/css/css.css')}"/>
-   
-   	<c:ProjectOverlayDeleteAttachment id="ProjectOverlayDeleteAttachmentInclude" />
-   	 
-    <style>
-        #paginationOverlay{
-            background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat center;
-        }
-        .borderRed{
-            border-color: red;
-        }
-        .colorRed{
-            color: red;
-        }
-    </style>
-   
-    <!-- ProjectTaskList JS -->
-    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskList.js')}"/>
-    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/calendarview.js')}"/>
-    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/datepicker.js')}"/>
-   
-   
-    <c:ProjectOverlayNewTask />
-    <c:ProjectOverlayNewMilestone />
-    <c:ProjectDeleteTaskOverlay id="componentDeleteTask" />
-    <div class="confirmation" id="confirmation" style="display:none;">
-      
-    </div>
-    <!-- Projects overlay new task (quick task)  -->
-   
-   <!-- Header -->
-        <apex:composition template="HeaderTemplate">
-            <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
-            <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
-            <apex:define name="title">Project Detail</apex:define>
-            <apex:define name="search">
-                <c:Search module="project" projectId="{!teamIdParam}" label="Tasks"/>
-            </apex:define>
-        </apex:composition> 
- 
-    <!-- Main Content Div -->
-    <div class="main_content_projectList" id="main_content_projectList">
-       
-        <!-- BreadCrumb and buttons -->    
-        <div align="center" class="breadCrumbAndButtons">
-               <apex:outputpanel layout="block" styleclass="breadCrumbs">
-                 <div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
-                    <a  href="/apex/ProjectDetail?id={!teamIdParam}" title="{!ProjectName}"><apex:outputText escape="true" value="{!ProjectName}" /></a> >                                    
-                    <apex:outputpanel layout="block" rendered="{!IF(LEN(ProjectName) > 24,true,false)}"
-                    style="display: none;z-index:9999;" styleClass="mouseOverInfo">
-                        <div class="body">{!ProjectName}</div>
-                    </apex:outputpanel>
-                </div>   
-                <strong>Project attachments</strong>
-              </apex:outputpanel>
-        </div>
+<apex:page id="ProjectAttachmentList" controller="ProjectAttachmentListController" sidebar="false" cache="false" tabstyle="Project2__c">	
+  
+   	<c:ApplicationTop id="ApplicationTop" />
+	
+	<apex:styleSheet value="{!URLFOR($Resource.SearchResults, 'inc/css/searchResults.css')}" />
+	<apex:includeScript value="{!URLFOR($Resource.SearchResults, 'inc/js/searchResults.js')}" />
+	
+	<script type="text/javascript">
+	
+		var deleteAttachmentsOverlay = new ConfirmOverlay( '{!$Component.deleteAttachmentsOverlay}' );
+		
+		function getActionIds(){
 
-        <!-- Holder --> 
-        <div class="informationPanel clear" id="infoToUser" style="display:none;"></div>
-        <div id='holder' class="holder" >
-            <!-- Overlay -->
-            <div id="paginationOverlay" style="display:none;"></div> 
-            
-            <div class="swirlyDetail" style="display: none;" />
-            
-            <apex:form id="mainContentForm">
+		    var actionIds = '';
+			
+		    $$('.actionCheckbox').each(function(e){
+		        if(e.checked){
+		            actionIds = actionIds+e.value+':';
+		        }
+		    })
+				
+		    return actionIds;
+		}
+		
+		function deleteAttachments(){
+			
+		    var actionIds = getActionIds();
+			
+		    if(actionIds.length == 0){
+		        alertOverlay.open('Attachment List error', 'There are no attachments selected');
+				
+		    }else{
+		        deleteAttachmentsOverlay.open();
+		        deleteAttachmentsOverlay.setActionIds( actionIds );
+		    }
+		
+		}
+		
+		function deleteAttachment( attachmentId ){
+		
+		    $$('.actionCheckbox').each(function (e){
+		        e.checked = false;
+		    });
+		
+		    $( attachmentId ).checked = true;
+			
+		    deleteAttachments();
+			
+		}
+	</script>
+	
+	<c:PromptOverlay id="PromptOverlay" includeAttachment="true" />
+   
+	<c:ConfirmOverlay id="deleteAttachmentsOverlay" 
+		title="Delete Attachment"
+		messageToUser=" Are you sure you want to continue?
+                        Once Attachment(s) are deleted, it is not recoverable "
+		actionName="deleteAttachments" />
+		
+    <style type="text/css" >
     
-            	<!-- Project Attachments (Overlay and Widget) -->
-                <c:ProjectOverlayNewAttachment parentId="{!teamIdParam}" id="ProjectOverlayNewAttachment"/>
-                
-                <c:ProjectAttachments project="{!teamIdParam}" id="ProjectAttachmentsInclude"/>
-                    
-            </apex:form> 
-            
-        </div>  
-    </div>  
+    	.attachmentListPage{
+    		width:100%;
+    	}
+    	
+    	.attachmentListPage .top{
+    	
+    	}
+    	
+    	.attachmentListPage .attachmentMain{
+    	
+    	}
+    	
+    	.attachmentListPage .buttonsPanel{
+    	
+    	}
+    	
+    </style>
     
+	<!-- Principal Container for Search Results Page -->
+	<apex:outputpanel id="attachmentListPage" layout="block" styleClass="attachmentListPage">   
+	
+		<!-- Top Section -->
+	    <apex:outputpanel id="top" layout="block" styleClass="top">
+	    
+		   	<!-- Header -->
+		    <apex:composition template="HeaderTemplate">
+		        <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
+		        <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
+		        <apex:define name="title">Attachments</apex:define>
+		        <apex:define name="search">
+		            <c:Search module="project" projectId="{!projectId}" label="Tasks"/>
+		        </apex:define>
+		    </apex:composition> 
+		 
+		       
+		    <!-- BreadCrumb and buttons -->    
+		    <div align="center" class="breadCrumbAndButtons">
+	           <apex:outputpanel layout="block" styleclass="breadCrumbs">
+	             <div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
+	                <a  href="/apex/ProjectDetail?id={!projectId}" title="{!projectName}"><apex:outputText escape="true" value="{!ProjectName}" /></a> >                                    
+	                <apex:outputpanel layout="block" rendered="{!IF(LEN(projectName) > 24,true,false)}"
+	                style="display: none;z-index:9999;" styleClass="mouseOverInfo">
+	                    <div class="body">{!projectName}</div>
+	                </apex:outputpanel>
+	            </div>   
+	            <strong>Project attachments</strong>
+	          </apex:outputpanel>
+		    </div>
+		    
+    	</apex:outputpanel>
+    	
+    	<!-- Main Content Section -->
+	    <apex:outputpanel id="contentPanel" layout="block" styleClass="attachmentMain">
+	    	
+	    	<apex:outputpanel id="buttonsPanel" layout="block" styleClass="buttonsPanel" >
+	    	
+	    			<apex:outputLink value="javascript:;"
+						id="newAttachmentLink"
+						onClick="promptOverlay.open( attachment );"
+						styleClass="blackbutton">
+						<apex:outputPanel >
+							New Attachment
+						</apex:outputPanel>
+					</apex:outputLink>
+					
+					<apex:outputLink value="javascript:;"
+						id="deleteAttachmentLink"
+						onClick="deleteAttachments();"
+						styleClass="blackbutton">
+						<apex:outputPanel >
+							Delete
+						</apex:outputPanel>
+					</apex:outputLink>
+					
+	    	</apex:outputpanel>
+
+	    
+			
+	    	<!-- RecordsList -->
+			<apex:outputPanel id="RecordsList" layout="block" styleclass="RecordsList">
+			
+				<!-- Attachment Form -->
+				<apex:form id="attachmentForm">
+					
+					<apex:actionFunction name="RefreshAttachmentList"
+								action="{!loadAttachmentList}"
+								onComplete="swirly.hide();" 
+								reRender="attachmentList"
+					/>
+								
+					<apex:dataTable value="{!attachments}" 
+						var="att" 
+						id="attachmentList" 
+						styleClass="table"
+						cellpadding="0"
+						cellspacing="0"
+						rowClasses="odd,even" 
+						rendered="{!attachments.size > 0}" > 
+						
+						<apex:column id="Action">
+							<apex:facet name="header"><apex:inputCheckbox id="ActionCheckbox" onClick="markAllCheckboxes(this,'actionCheckbox');"/></apex:facet>
+							<input type="checkbox" id="{!att.realId}" value="{!att.realId}" class="actionCheckbox"/>
+						</apex:column>
+						
+						<apex:column >
+							<apex:facet name="header">Action</apex:facet>
+							<apex:outputLink value="javascript:;" id="DeleteLink" onClick="deleteAttachment('{!att.realId}');">Delete</apex:outputLink>
+						</apex:column>
+						
+						<apex:column >
+							<apex:facet name="header">
+								<apex:outputpanel id="namePanel">
+									<apex:outputLink id="nameLink" value="javascript:;" onClick="swirly.show();RefreshRecordsList();">Name </apex:outputLink> &nbsp;
+									<!-- <apex:image id="NameArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', paginator.orderAsc),true,false)}" />
+									<apex:image id="NameArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', NOT(paginator.orderAsc)),true, false)}"/>-->
+								</apex:outputpanel>
+							</apex:facet>
+							<apex:outputLink value="/apex/ProjectTaskDetail?id={!att.realId}" id="attachmentNameLink">{!att.name}</apex:outputLink>
+						</apex:column>
+						
+						<apex:column >
+							<apex:facet name="header">
+								<apex:outputpanel id="weightPanel">
+									<apex:outputLink id="weightLink" value="javascript:;" onClick="swirly.show(); RefreshRecordsList();">Weight </apex:outputLink> &nbsp;
+									<!--<apex:image id="weightArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', paginator.orderAsc),true,false)}" />
+									<apex:image id="weightArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', NOT(paginator.orderAsc)),true, false)}"/>-->
+								</apex:outputpanel>
+							</apex:facet>
+							{!att.weight}
+						</apex:column>
+						
+						<apex:column >
+							<apex:facet name="header">
+								<apex:outputpanel id="createdByPanel">
+									<apex:outputLink id="createdByLink" value="javascript:;" onClick="swirly.show();  RefreshRecordsList();">Created By </apex:outputLink> &nbsp;
+									<!--<apex:image id="createdByArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', paginator.orderAsc),true,false)}" />
+									<apex:image id="createdByArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', NOT(paginator.orderAsc)),true, false)}"/>-->
+								</apex:outputpanel>
+							</apex:facet>
+							{!att.createdBy}
+						</apex:column>
+						
+						<apex:column >
+							<apex:facet name="header">
+								<apex:outputpanel id="createdDatePanel">
+									<apex:outputLink id="createdDateLink" value="javascript:;" onClick="swirly.show();  RefreshRecordsList();">Created Date </apex:outputLink> &nbsp;
+									<!--<apex:image id="createdDateArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', paginator.orderAsc),true,false)}" />
+									<apex:image id="createdDateArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', NOT(paginator.orderAsc)),true, false)}"/> -->
+								</apex:outputpanel>
+							</apex:facet>
+							{!att.createdDate}
+						</apex:column>
+						
+					</apex:dataTable>
+					 
+				</apex:form>
+				<!-- End TasksForm -->
+				
+			</apex:outputPanel>
+			<!-- End RecordsList -->
+			
+			<!-- Outputpanel for when there are no results to show -->
+			<apex:outputpanel id="noResult" layout="block" rendered="{!attachments.size == 0}">
+				<apex:outputpanel styleClass="noResult" >No Attachments for this Project.</apex:outputpanel>
+			</apex:outputpanel>
+				
+	    </apex:outputpanel>
+	    
+    </apex:outputpanel>
+
 </apex:page>

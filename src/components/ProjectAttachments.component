@@ -71,7 +71,7 @@
                                             <td>
                                                 <apex:outputpanel rendered="{!userPermissions.canCreate}" layout="block">
                                                     <a href="Javascript:;" class="blackbutton" 
-                                                       onclick="openAttachmentOverlay();">
+                                                       onclick="promptOverlay.open(attachment);">
                                                        <span>New Attachment</span>
                                                     </a>
                                                 </apex:outputpanel>

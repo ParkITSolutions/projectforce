@@ -125,7 +125,7 @@
 		<div class="sidebar">
 	
 			<!-- Project Quick Links -->
-			<c:ProjectDetailQuickLinks />
+			<c:QuickLinksWidget id="quidkLinks" />
 	
 			<!-- Team Suscribe -->
 			<c:ProjectSubscribe />

@@ -3,7 +3,7 @@
 */
 public with sharing class ProjectDetailController
 {
-	Project2__c teamspace = new Project2__c();
+	Project2__c teamspace = new Project2__c(); 
     public Boolean isLastMemberAdmin = false;
     boolean noImage; 
     boolean emailTeamspace;

@@ -1,187 +1,13 @@
 <apex:page id="userTasks" controller="UserTasksController" sidebar="false" cache="true" tabStyle="Project2__c" >
 
-    <apex:includeScript value="{!$Resource.portalSupport}"/> 
-    <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.UserTasks, 'inc/css/userTasks.css')}" />
 
     <c:ApplicationTop id="ApplicationTop" />
-
-    <style>
-    
-    /* Site style */
-    .noTableFooter{
-        margin-left: 0px;
-    }
-    
-    /* Paginator style*/
-    
-    .Paginator{
-        text-align: center;
-        padding: 10px;
-        
-    }
-    
-    #paginatorCounter{
-        margin-left: 5px;
-        margin-right: 5px;
-    }
-    
-    .PaginatorEnabled, .PaginatorEnabled *{ 
-        color:#5E99AA;
-        font-size:12px;
-        font-weight:bold;
-    }
-    
-    .PaginatorDisabled, .PaginatorDisabled *{
-        color:#ADADAD;
-        font-size:12px;
-        font-weight:bold;
-    }
-    
-    .ProjectSelectot{
-        margin-top: 10px;
-        margin-left: 10px;  
-        width: 250px;
-    }
-    
-    #bodyTable{
-        height: 100%;
-    } 
-     
-    #header{
-    }
-    
-    #main{
-        float: rigth;
-    }
-    
-    .Field{
-        height: 20px;
-        text-align:left;
-        padding-left:5px;
-        float:left;
-        width:120px;
-        font-weight: bolder;
-    }
-    
-    .Value{
-        height: 20px;   
-    }
-    
-    #detailProject{
-        background:#E0E0E0 none repeat scroll 0 0;
-        width: 500px;
-        text-align:left;
-        margin-top:10px;
-        border: 1px solid #E8E8E8;
-        padding: 5px; 
-    }
-
-    #subContainer{
-        background: white;
-        height: 100px;
-    }
-
-    #detailProject img{
-        float: left;
-    }
-    
-    .TableHeader td{
-        color:#333333;
-        font-size:12px;
-        font-weight:bold;
-        text-decoration:underline;
-        
-        border-top: solid 1px;
-        border-bottom: solid 1px;
-        padding: 5px;   
-        
-        width: 155px;
-    }
-
-    .TableData td{
-        color:#333333;
-        font-size:12px;
-        font-weight:bold;
-
-        padding: 5px;   
-        
-        width: 155px;
-    }
-    
-    .CSSWidthShort{
-        width: 80px !important;
-    }
-    
-    .Loader{
-        background-color:#FFFFFF;
-        background-image:url(/resource/1260192796000/commonResources/images/loaders/big-loader.gif);
-        background-position:center center;
-        background-repeat:no-repeat;    
-        left:0;
-        opacity:0.6;
-        overflow:hidden;
-        position:absolute;
-        opacity:0.6;
-        overflow:hidden;
-        position:absolute;
-        width: 100%;
-        height: 100%;
-    }
-    
-    #labelSelectProject{
-        padding-left: 10px;
-    }
-    
-    .PercentCompleteBarExt {
-        border:1px solid #CCCCCC;
-        float:left;
-        height:9px;
-        vertical-align:middle;
-        width:100px;
-        margin-right:10px;
-    }   
-    
-    .PercentCompleteBarInn {
-        background-color:#90C142;
-        height:9px;
-        margin:0;
-        display: block;
-    }   
-    
-    .outline{
-        border:1px solid #CCCCCC;
-        float:left;
-        height:9px;
-        vertical-align:middle;
-        width:75px; 
-        margin-right: 5px;
-    }
-    .percentCompleted{
-        background-color:#90C142;
-        height:9px;
-        margin:0;
-        display:block;
-    }
-    
-    .borderRed{
-        border-color: #CC0000;
-    }
-
-    </style>
-    <script>
-        window.onload( function(){ 
-            readPortalCSSRules();
-        });
-    </script>
         
     <c:PageSwirly id="PageSwirly" />
         
-    <!-- Header -->
-    <div id="header" >
-    </div>
-    
     <!-- Main -->
     <div id="main">
         <apex:composition template="HeaderTemplate">
@@ -195,7 +21,6 @@
  
         <apex:form id="mainForm">
             <div class="Loader" style="display: none;" />
-            <apex:actionFunction action="{!selectTasks}" name="reloadAll" rerender="mainForm" oncomplete="swirly.hide();" />
             <span id="labelSelectProject" >Select Project: &nbsp;</span>
             <apex:selectList id="options" value="{!opSelected}" multiselect="false" size="1" onchange="swirly.show();reloadAll();"  styleClass="ProjectSelectot">
                 <apex:selectOptions value="{!ProjectSelectOps}" />
@@ -234,192 +59,125 @@
                     </apex:outputPanel>
                 </div>
             </div>
-            
-            
-            <apex:outputPanel rendered="{! tasksListSize > 0 }" id="allData">
-                <apex:outputPanel id="topPaginator" layout="block" styleClass="Paginator" > 
-                    <apex:outputPanel rendered="{!page != '1'}" styleClass="PaginatorEnabled" >
-                        &#9668; 
-                        <apex:commandLink value="Previous Page" rerender="allTaskData, topPaginator, bottomPaginator" action="{!selectTasks}" onclick="swirly.show();" oncomplete="swirly.hide();" >
-                            <apex:param value="previous" assignTo="{!page}" />
-                        </apex:commandLink>
-                    </apex:outputPanel>
-                    
-                    <apex:outputPanel rendered="{!page == '1'}" styleClass="PaginatorDisabled">
-                        &#9668; Previous Page
-                    </apex:outputPanel>
-                    <span id="paginatorCounter">
-                        ({!page}-{!lastPage})
-                    </span>
-                    <apex:outputPanel rendered="{!page != lastPage}" styleClass="PaginatorEnabled">
-                        <apex:commandLink value="Next Page" rerender="allTaskData, topPaginator, bottomPaginator" action="{!selectTasks}" onclick="swirly.show();" oncomplete="swirly.hide();">
-                            <apex:param value="next" assignTo="{!page}" />
-                        </apex:commandLink>
-                        &#9658;
-                    </apex:outputPanel>
-                    <apex:outputPanel rendered="{!page == lastPage}" styleClass="PaginatorDisabled">
-                        Next Page &#9658;
-                    </apex:outputPanel>
-                </apex:outputPanel>
-                
+		</apex:form>
+				<apex:form id="Form">
+
+					<!-- PaginatorPanel -->
+					<apex:outputPanel id="PaginatorPanel" styleClass="paginatorPanel" layout="block" >
+					
+							<script type="text/javascript">
+								paginator.pageNumberId 	= '{!$Component.Form.pageNumber}';
+								paginator.orderById 	= '{!$Component.Form.orderBy}';
+							</script>
+						
+							<apex:actionFunction name="RefreshPaginator"
+								action="{!paginator.pagesListConstructor}"
+								onComplete="swirly.hide();" 
+								reRender="PaginatorPanel, RecordsList"/>
+								
+								<apex:actionFunction name="RefreshRecordsList"
+								action="{!paginator.loadTasksByUser}"
+								onComplete="swirly.hide();" 
+								reRender="RecordsList"/>
+								
+							<!-- CommandsPanel -->
+							<apex:outputPanel id="CommandsPanel" styleClass="commandsPanel" layout="block" rendered="{!OR(paginator.hasNext,paginator.hasPrevious)}">
+								
+								<apex:commandLink id="FirstLink"
+									rendered="{!paginator.hasPrevious}" 
+									action="{!paginator.first}" 
+									onClick="swirly.show();" 
+									onComplete="swirly.hide();" 
+									reRender="PaginatorPanel, RecordsList"> <apex:image id="imgFirst" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_first.gif')}" /> </apex:commandLink> &nbsp; &nbsp;
+									
+								<apex:commandLink id="PreviousLinkImg"
+									rendered="{!paginator.hasPrevious}" 
+									action="{!paginator.previous}" 
+									onClick="swirly.show();" 
+									onComplete="swirly.hide();" 
+									reRender="PaginatorPanel, RecordsList" > <apex:image id="imgPrevious" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_prev.gif')}" /> </apex:commandLink> &nbsp;
+								
+								<apex:commandLink id="PreviousLink"
+									rendered="{!paginator.hasPrevious}" 
+									value="Prevoius Page"
+									styleClass="label"
+									action="{!paginator.previous}" 
+									onClick="swirly.show();" 
+									onComplete="swirly.hide();" 
+									reRender="PaginatorPanel, RecordsList" /> &nbsp;
+								
+								<!-- Renders Pagination numbers -->
+								<apex:repeat id="PagesItemsRepeat" value="{!paginator.pages}" var="page" id="PagesList" > &nbsp;
+								
+									<apex:commandLink id="PageNumberLink"
+										styleClass="{!IF(page == paginator.pageNumber,'currentPage', '')}"
+										value="{!page}" 
+										action="{!paginator.goToPage}" 
+										onClick="paginator.setPageNumber('{!page}'); swirly.show();" 
+										onComplete="swirly.hide();"  
+										reRender="PaginatorPanel, RecordsList"/> 
+								
+								</apex:repeat> &nbsp;
+								
+								<apex:commandLink id="NextLink"
+									rendered="{!paginator.hasNext}" 
+									value="Next Page"
+									styleClass="label"
+									action="{!paginator.next}" 
+									onClick="swirly.show();" 
+									onComplete="swirly.hide();" 
+									reRender="PaginatorPanel, RecordsList" /> &nbsp;
+									
+								<apex:commandLink id="NextLinkImg"
+									rendered="{!paginator.hasNext}" 
+									action="{!paginator.next}" 
+									onClick="swirly.show();" 
+									onComplete="swirly.hide();" 
+									reRender="PaginatorPanel, RecordsList">  <apex:image id="imgNext" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_next.gif')}" /> </apex:commandLink> &nbsp; &nbsp;
+								
+								<apex:commandLink id="LastLink"
+									rendered="{!paginator.hasNext}" 
+									action="{!paginator.last}" 
+									onClick="swirly.show();" 
+									onComplete="swirly.hide();" 
+									reRender="PaginatorPanel, RecordsList">  <apex:image id="imgLast" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_last.gif')}" /> </apex:commandLink> &nbsp;
+								
+							</apex:outputPanel>
+							<!-- End CommandsPanel -->
+						
+							<br>Number of records: <apex:outputText id="ResultSizeText" value="{!paginator.resultSize}" />
+							
+							<br>Records per page: 
+							<apex:selectList id="PageSizeSelect" value="{!paginator.recordsPerPage}" size="1" onChange="swirly.show(); RefreshPaginator();">
+								<apex:selectOptions id="PageSizeOption" value="{!paginator.pageSizeItems}"/>
+							</apex:selectList>
+							
+							<apex:inputHidden id="pageNumber" value="{!paginator.pageNumber}" />
+							<apex:inputHidden id="orderBy" value="{!paginator.orderBy}" />
+							
+					</apex:outputPanel>
+					<!-- End PaginatorPanel -->
                 
 
-                <apex:dataTable value="{!tasks}" var="t"  rendered="true" first="{!NotShowFirst}" rows="{!rows}" styleClass="table" rowClasses="odd,even">
+                <apex:dataTable value="{!paginator.tasksByUser}" var="t"  rendered="true" styleClass="table" rowClasses="odd,even">
                 
                     <apex:column >
                         <apex:facet name="header">
-                            <apex:commandLink action="{!setingOrder}" value="Name  " rerender="allTaskData, topPaginator, bottomPaginator, allData" onclick="swirly.show();" oncomplete="swirly.hide();">
-                                <apex:param value="projectTask__r.name" assignTo="{!sortBy}" />
+                            <apex:commandLink value="Name  " rerender="allTaskData, topPaginator, bottomPaginator, allData" onclick="swirly.show();" oncomplete="swirly.hide();">
+                                <apex:param value="name" assignTo="{!sortBy}" />
                             <apex:outputPanel rendered="{! sortBy == 'projectTask__r.name'}">
 									<apex:image value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!order == 'ASC'}"/>
 									<apex:image value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!order == 'DESC'}" />
                             </apex:outputPanel>
                             </apex:commandLink>
                         </apex:facet>           
-                        <apex:outputLink value="projecttaskdetail?id={!t.id}">{!t.nameDisplay}</apex:outputLink>       
+                        <apex:outputLink value="projecttaskdetail?id={!t.id}">{!t.name}</apex:outputLink>       
                     </apex:column>              
-                    
-                    <apex:column >
-                        <apex:facet name="header">
-                            <apex:commandLink action="{!setingOrder}" value="Project  " rerender="allTaskData, topPaginator, bottomPaginator, allData" onclick="swirly.show();" oncomplete="swirly.hide();">
-                                <apex:param value="projectTask__r.Project__r.name" assignTo="{!sortBy}" />
-                                <apex:outputPanel rendered="{! sortBy == 'projectTask__r.Project__r.name'}">
-									<apex:image value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!order == 'ASC'}"/>
-									<apex:image value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!order == 'DESC'}" />
-                                </apex:outputPanel>
-                            </apex:commandLink>
-                        </apex:facet>
-                        <apex:outputLink value="/apex/ProjectDetail?id={!t.project}">{!t.projectName}</apex:outputLink>
-                    </apex:column>
-                    
-                    <apex:column >
-                        <apex:facet name="header">
-                            <apex:commandLink value="Start date  " action="{!setingOrder}" rerender="allTaskData, topPaginator, bottomPaginator, allData" onclick="swirly.show();" oncomplete="swirly.hide();">
-                                <apex:param value="projectTask__r.StartDate__c" assignTo="{!sortBy}" />
-                                <apex:outputPanel rendered="{! sortBy == 'projectTask__r.StartDate__c'}">
-									<apex:image value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!order == 'ASC'}"/>
-									<apex:image value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!order == 'DESC'}" />
-                                </apex:outputPanel>
-                            </apex:commandLink>
-                        </apex:facet>       
-                        <apex:outputText value="{!t.startDateDisplay}" />               
-                    </apex:column>
-                    
-                    <apex:column >
-                        <apex:facet name="header">
-                            <apex:commandLink value="End date  " action="{!setingOrder}" rerender="allTaskData, topPaginator, bottomPaginator, allData" onclick="swirly.show();" oncomplete="swirly.hide();">
-                                <apex:param value="projectTask__r.EndDate__c" assignTo="{!sortBy}" />
-                                <apex:outputPanel rendered="{! sortBy == 'projectTask__r.EndDate__c'}">
-									<apex:image value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!order == 'ASC'}"/>
-									<apex:image value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!order == 'DESC'}" />
-                                </apex:outputPanel>
-                            </apex:commandLink>
-                        </apex:facet>
-                        <apex:outputText value="{!t.endDateDisplay}" />
-                    </apex:column>
-
-                    <apex:column >
-                        <apex:facet name="header">
-                            <apex:commandLink value="Status  " action="{!setingOrder}" rerender="allTaskData, topPaginator, bottomPaginator, allData" onclick="swirly.show();" oncomplete="swirly.hide();">
-                                <apex:param value="projectTask__r.Status__c" assignTo="{!sortBy}" />
-                                <apex:outputPanel rendered="{! sortBy == 'projectTask__r.Status__c'}">
-									<apex:image value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!order == 'ASC'}"/>
-									<apex:image value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!order == 'DESC'}" />
-                                </apex:outputPanel>
-                            </apex:commandLink>
-                        </apex:facet>
-                        <apex:outputText value="{!t.Status}" />
-                    </apex:column>
-                    
-                    <apex:column >
-                        <apex:facet name="header">
-                            <apex:commandLink value="Priority  " action="{!setingOrder}" rerender="allTaskData, topPaginator, bottomPaginator, allData" onclick="swirly.show();" oncomplete="swirly.hide();">
-                                <apex:param value="projectTask__r.Priority__c" assignTo="{!sortBy}" />
-                                <apex:outputPanel rendered="{! sortBy == 'projectTask__r.Priority__c'}">
-									<apex:image value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!order == 'ASC'}"/>
-									<apex:image value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!order == 'DESC'}" />
-                                </apex:outputPanel>
-                            </apex:commandLink>
-                        </apex:facet>
-                        <apex:outputText value="{!t.Priority}" />
-                    </apex:column>
-                    
-                    <apex:column >
-                        <apex:facet name="header">
-                            <apex:commandLink value="Milestone  " action="{!setingOrder}" rerender="allTaskData, topPaginator, bottomPaginator, allData" onclick="swirly.show();" oncomplete="swirly.hide();">
-                                <apex:param value="projectTask__r.Milestone__c" assignTo="{!sortBy}" />
-                                <apex:outputPanel rendered="{! sortBy == 'projectTask__r.Milestone__c'}">
-									<apex:image value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!order == 'ASC'}"/>
-									<apex:image value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!order == 'DESC'}" />
-                                </apex:outputPanel>
-                            </apex:commandLink>
-                        </apex:facet>
-                        <apex:outputText value="{!t.isMilestone}" />
-                    </apex:column>
-
-                    <apex:column >
-                        <apex:facet name="header">
-                            <apex:commandLink value="Duration  " action="{!setingOrder}" rerender="allTaskData, topPaginator, bottomPaginator, allData" onclick="swirly.show();" oncomplete="swirly.hide();">
-                                <apex:param value="projectTask__r.DurationUI__c" assignTo="{!sortBy}" />
-                                <apex:outputPanel rendered="{! sortBy == 'projectTask__r.DurationUI__c'}">
-									<apex:image value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!order == 'ASC'}"/>
-									<apex:image value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!order == 'DESC'}" />
-                                </apex:outputPanel>
-                            </apex:commandLink>
-                        </apex:facet>
-                        <apex:outputText value="{!t.duration}" />
-                    </apex:column>
-
-                    <apex:column >
-                        <apex:facet name="header">
-                            <apex:outputPanel >
-	                            <apex:commandLink value="% Completed  " action="{!setingOrder}" rerender="allTaskData, topPaginator, bottomPaginator, allData" onclick="swirly.show();" oncomplete="swirly.hide();">
-	                                <apex:param value="projectTask__r.PercentCompleted__c" assignTo="{!sortBy}" />
-	                            </apex:commandLink>
-	                            <apex:outputPanel rendered="{! sortBy == 'projectTask__r.PercentCompleted__c'}">
-									<apex:image value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!order == 'ASC'}"/>
-									<apex:image value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!order == 'DESC'}" />
-	                           </apex:outputPanel>
-	                    	</apex:outputPanel>
-                        </apex:facet>
-                        <apex:outputPanel styleClass="outline {!IF (t.OverdueTask > 0,'borderRed', '')}">
-                            <apex:outputPanel styleClass="percentCompleted" style="width:{!t.percentCompleted}%;"/>
-                        </apex:outputPanel>
-                        <apex:outputText value="{!t.PercentCompletedDisplay}%" />
-                    </apex:column>
-
+ 
                 </apex:dataTable>
-
-                
-                
-    
-                <apex:outputPanel id="bottomPaginator" layout="block" styleClass="Paginator" >  
-                    <apex:outputPanel rendered="{!page != '1'}" styleClass="PaginatorEnabled" >
-                        &#9668; 
-                        <apex:commandLink value="Previous Page" rerender="allTaskData, topPaginator, bottomPaginator" action="{!selectTasks}" onclick="swirly.show();" oncomplete="swirly.hide();">
-                            <apex:param value="previous" assignTo="{!page}" />
-                        </apex:commandLink>
-                    </apex:outputPanel>
-                    <apex:outputPanel rendered="{!page == '1'}" styleClass="PaginatorDisabled">
-                        &#9668; Previous Page
-                    </apex:outputPanel>
-                    <span id="paginatorCounter">
-                        ({!page}-{!lastPage})
-                    </span>
-                    <apex:outputPanel rendered="{!page != lastPage}" styleClass="PaginatorEnabled">
-                        <apex:commandLink value="Next Page" rerender="allTaskData, topPaginator, bottomPaginator" action="{!selectTasks}" onclick="swirly.show();" oncomplete="swirly.hide();">
-                            <apex:param value="next" assignTo="{!page}" />
-                        </apex:commandLink>
-                        &#9658;
-                    </apex:outputPanel>
-                    <apex:outputPanel rendered="{!page == lastPage}" styleClass="PaginatorDisabled">
-                        Next Page &#9658;
-                    </apex:outputPanel>
-                </apex:outputPanel>
-            </apex:outputPanel>
             
             <apex:outputPanel rendered="{!tasksListSize == 0 }">
-                <br />
+                <br /> 
                 <center>No tasks Assigned yet.</center>
                 <br />
             </apex:outputPanel>

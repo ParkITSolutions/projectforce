@@ -1,84 +1,72 @@
+/**
+* @author Andres Canavesi
+*/
 public class TaskListController {
 	
-	public List<Task> 	tasks 			;	
-	
+	public List<Task> 	tasks;	
 	public String 	projectId 			{ set; get; }
-	
 	public String 	url 				{ set; get; }
-	
 	public Project 	project 			{ set; get; }
-	
 	public Project 	exceptionMessage 	{ set; get; }
-	
 	public Paginator paginator 			{ set; get; }
+	public String csvFileId 			{ set; get; }
 	
-	public String csvFileId;
-	
-	public String getcsvFileId(){return csvFileId;}
-	
+	/**
+	* Constructor
+	*/
 	public TaskListController(){  
 		
 		this.tasks = new List<Task>();
+		this.projectId = System.currentPageReference().getParameters().get( 'id' );
 		
-		this.projectId = System.currentPageReference().getParameters().get('id');
-		
-		if(this.projectId==null || this.projectId==''){
-			
+		if( this.projectId == null || this.projectId == '' ){
 			throw new CustomException('There is not a project selected');
 		}
 		
-		this.project = new Project(projectId);
-		
+		this.project = new Project( projectId );
 		this.url = ProjectUtil.getUrl();
 		
 		this.paginator = new Paginator();
 		
-		this.paginator.orderBy = 'Name';
-		
-		this.paginator.orderAsc = true;
-		
-		this.paginator.filter = '1'; // Show all tasks and milestones
-		
-		this.paginator.project.id = this.projectId;
+		this.paginator.orderBy 		= 'Name';
+		this.paginator.orderAsc 	= true;
+		this.paginator.filter 		= '1'; // Show all tasks and milestones
+		this.paginator.project.id 	= this.projectId;
 		
 		paginator.loadTasksByProject();
-		
 	}
 	
+	/**
+	* 
+	*/
 	public List<SelectOption> getFilterItems() {
 		
 		List<SelectOption> options = new List<SelectOption>();
 		
-		options.add(new SelectOption('1','All'));
-		
-		options.add(new SelectOption('2','All tasks'));
-		
-		options.add(new SelectOption('3','All milestones'));
-		
-		options.add(new SelectOption('4','My tasks and milestones'));
-		
-		options.add(new SelectOption('5','Completed tasks'));
-		
-		options.add(new SelectOption('6','Overdue tasks'));
-		
-		options.add(new SelectOption('7','Overdue milestones'));
+		options.add(new SelectOption( '1','All' ) );
+		options.add(new SelectOption( '2','All tasks' ) );
+		options.add(new SelectOption( '3','All milestones' ) );
+		options.add(new SelectOption( '4','My tasks and milestones' ) );
+		options.add(new SelectOption( '5','Completed tasks' ) );
+		options.add(new SelectOption( '6','Overdue tasks' ) );
+		options.add(new SelectOption( '7','Overdue milestones' ) );
 		
 		return options;
 	}
 	
-   /**
+   	/**
     * Export the task list into a csv file
     */ 
-     public void generateTaskListCsv() {
+    public void generateTaskListCsv() {
        
         this.project = DAOFactory.getInstance().getProjectInfo( projectId );
         String csvText = 'ID ,Type,Priority,Name,Description,Status,AssignedTo,PercentCompleted,Duration (' + project.displayDuration + '),DueDate,DaysLate\n';               
              
-        for (Task iterTask : this.tasks) {
+        for( Task iterTask : this.tasks ) {
            
             csvText += iterTask.idDisplay + ',';           
            
-            if (iterTask.isMilestone)           
+            if( iterTask.isMilestone )           
                 csvText += 'Milestone,';
             else           
                 csvText += 'Task,';
@@ -87,18 +75,16 @@ public class TaskListController {
             csvText += iterTask.getName() + ',';  
            
             String description;
-            if(iterTask.Description != null){
-                description  = iterTask.description.replaceAll('\r\n', ' ');
-                description  = description.replaceAll(',', ' ');
+            if( iterTask.Description != null ){
+                description  = iterTask.description.replaceAll( '\r\n', ' ' );
+                description  = description.replaceAll( ',', ' ' );
             }
            
             csvText += description + ',';           
             csvText += iterTask.status + ',';           
             csvText += iterTask.assignees[0].name + ',';
             csvText += iterTask.getPercentCompleted() + ',';
-            //csvText += iterTask.Estimate + ',';
             csvText += iterTask.endDate + '\n';
-            //csvText += iterTask.CantDias + '\n';          
                  
         }
        
@@ -106,7 +92,7 @@ public class TaskListController {
         Attachment doc = null;
        
         attachs = [select Id, Name from Attachment where Name = 'pf__export.csv'];
-        if(attachs.size() > 0)
+        if( attachs.size() > 0 )
             doc = attachs[0];
         else{
             doc = new Attachment();
@@ -120,10 +106,5 @@ public class TaskListController {
         upsert doc;
         this.csvFileId = doc.Id;
         
-        System.debug( '>>>> ' + doc.Id );
-    }   
-	
-	
-
-	
+    }   	
 }

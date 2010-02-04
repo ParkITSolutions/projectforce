@@ -59,7 +59,7 @@
 	<div class="sidebar" style="height: 330px;_height: 345px;">
 		
 		<!-- Project Quick Links -->
-		<c:ProjectDetailQuickLinks />
+		<c:QuickLinksWidget id="quickLinks" />
 
         <div class="clear"></div>	
 	

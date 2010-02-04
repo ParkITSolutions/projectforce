@@ -13,7 +13,7 @@ public class ProjectTaskNotesController {
 	public String projectName 		{ set; get; }
 	public String projectNameShort 	{ set; get; }
 	public Boolean canAccess 		{ set; get; }
-	public UserPermissions userPermissions = new UserPermissions();
+	public UserPermissions userPermissions;
 
 	/**
     * Constructor
@@ -21,7 +21,8 @@ public class ProjectTaskNotesController {
     */
     public ProjectTaskNotesController( ApexPages.StandardController ctrl ){
     	
-		this.taskVar = new ProjectTask__c();
+		this.taskVar 			= new ProjectTask__c();
+		this.userPermissions 	= new UserPermissions();
 		
 		this.genPermissions();
 		this.obtainData();
@@ -93,8 +94,22 @@ public class ProjectTaskNotesController {
 		PageReference pageRef = new PageReference( '/apex/ProjectTaskDetail' );
 		pageRef.getParameters().put( 'id', this.taskId );
         pageRef.setRedirect( true );
+        
 		return pageRef;	
 	}
+    
+    /**
+    * 
+    * 
+    */
+    private Boolean sizeAllowed(){
+    	
+    	Boolean result= false;
+    	if ( taskNotes.length() <= 32000 )
+    		result=true;
+    		
+    	return result;
+    }
     
     /**
 	* saves changes and redirect
@@ -102,13 +117,18 @@ public class ProjectTaskNotesController {
 	*/
 	public PageReference SaveEditAndExit () {
 		
-		this.taskVar.notes__c = taskNotes;
-		update this.taskVar;
+		if ( this.sizeAllowed() ){
+			this.taskVar.notes__c = taskNotes;
+			
+			update this.taskVar;
 		
-		PageReference pageRef = new PageReference( '/apex/ProjectTaskDetail' );
-		pageRef.getParameters().put( 'id', this.taskId );
-        pageRef.setRedirect( true );
-		return pageRef;
+			PageReference pageRef = new PageReference( '/apex/ProjectTaskDetail' );
+			pageRef.getParameters().put( 'id', this.taskId );
+	        pageRef.setRedirect( true );
+			return pageRef;
+		}
+		else
+			return null;
 	}
 	
 	/**
@@ -116,9 +136,10 @@ public class ProjectTaskNotesController {
 	* @return null
 	*/
 	public PageReference SaveEdit () {
-		
-		this.taskVar.notes__c = taskNotes;
-		update this.taskVar;
+		if (this.sizeAllowed()){
+			this.taskVar.notes__c = taskNotes;
+			update this.taskVar;
+		}
 		return null;
 	}
 }

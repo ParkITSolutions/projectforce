@@ -1,0 +1,29 @@
+<apex:page id="ProjectDetailNico" sidebar="false" cache="true" standardController="Project2__c" tabStyle="Project2__c">
+	
+	<c:ApplicationTop />
+    <!-- Ajax Toolkit -->
+    <apex:includeScript value="/soap/ajax/11.1/connection.js" />
+    <script>
+        var API_SESSION_ID = '{!$Api.Session_ID}';
+    </script>
+    
+
+
+
+	
+	
+	<c:PromptOverlay id="PromptOverlay"
+	    includeNewMember="true"
+	/>
+	   
+	   
+		<apex:outputPanel >
+    
+                <!-- Team members XXX  NICO DESCOMENTAR ESTOOO--> 
+              <!--   <c:ProjectMembersWidget projectId="{!teamIdParam}" id="ProjectMembersWidget" />    -->
+                
+                <apex:outputLink value="javascript:;" id="NewMemberLink" onClick="promptOverlay.open(newMember);"> NewMember</apex:outputLink>
+            
+        </apex:outputPanel>
+
+</apex:page>

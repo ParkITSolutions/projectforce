@@ -75,9 +75,7 @@
 						onComplete="confirmOverlay.postAction();" reRender="HiddenPanel" styleClass="submitButton Accept"/>
 					    
 					<apex:outputLink id="Cancel" value="javascript:;" onClick="confirmOverlay.close();" styleClass="submitButton Cancel" >
-					    
 					    Cancel
-					    
 					</apex:outputLink>
 			
 				</apex:outputPanel>

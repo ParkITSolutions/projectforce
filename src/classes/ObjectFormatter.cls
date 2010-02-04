@@ -7,9 +7,9 @@ public class ObjectFormatter {
 	/**
 	* Constructor
 	*/
-	//public ObjectFormatter(){
+	public ObjectFormatter(){
 	
-	//}
+	}
 	
 	/**
 	* 
@@ -93,13 +93,82 @@ public class ObjectFormatter {
     		* @todo Change ProjectMember to TaskAssignee.
     		*/
 			List<ProjectMember> assignees = DAOFactory.getInstance().getAssignees(taskAux.id);
-			
 			taskAux.assignees = assignees;
-    		
     		tasks.add(taskAux);
-    		
     	}
     	
     	return tasks;
 	}
+	
+	/**
+	*
+	* @param resultList
+	* @param objectType
+	* @return resultList
+	*/
+	public static List<SearchResults> formatSearchResults( String searchTerm, List<Sobject> resultList, String objectType ){
+		
+		List<SearchResults> results 		= new List<SearchResults>();	
+		List<Project2__c> resultsProjects 	= new List<Project2__c>();
+		List<ProjectTask__c> resultsTasks 	= new List<ProjectTask__c>();
+		
+		if( objectType == 'project' ){
+			
+			resultsProjects = (List<Project2__c>) resultList;
+			
+			for( Project2__c iter: resultsProjects ){
+				SearchResults currentResult = new SearchResults();
+				
+				currentResult.setName( iter.Name, searchTerm );
+				currentResult.realName 		= iter.Name ;
+				currentResult.iD 			= iter.Id;
+				currentResult.resultType 	= 'Project';
+				currentResult.setMatches( iter.Description__c, searchTerm );
+				
+				results.add( currentResult );
+			}
+		}
+		
+		if( objectType == 'projectTask' ){
+			
+			resultsTasks = (List<ProjectTask__c>) resultList;
+			
+			for( ProjectTask__c iter: resultsTasks ){
+				SearchResults currentResult = new SearchResults();
+				
+				currentResult.setName( iter.Name, searchTerm );
+				currentResult.realName 		= iter.Name ;
+				currentResult.iD 			= iter.Id;
+				currentResult.resultType 	= 'Project';
+				currentResult.setMatches( iter.Description__c, searchTerm );
+				
+				results.add( currentResult );
+			}
+		}
+		
+		return results;
+	}
+	
+	/**
+	* 
+	*
+	*/
+	public static List<AttachmentObj> formatAttachments( List<Attachment> attachments ){
+		
+		List<AttachmentObj> formattedAttachments = new List<AttachmentObj>();
+		
+		for( Attachment iter: attachments ){
+			AttachmentObj att = new AttachmentObj();
+			
+			att.realId			= iter.Id;
+			att.name 			= iter.Name;
+			att.weight 			= String.valueOf( iter.BodyLength / 128 );
+			att.createdBy 		= iter.CreatedBy.Name;
+			att.createdDate 	= iter.CreatedDate;
+			
+			formattedAttachments.add( att );
+		}
+		
+		return formattedAttachments;
+	} 
 }

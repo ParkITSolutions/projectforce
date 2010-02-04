@@ -4,10 +4,13 @@
 */
 public class DAOMember {
 	
+	private DAOAssignee DAOAssignee;
+	
 	/**
 	* Constructor
 	*/
 	public DAOMember(){
+		this.DAOAssignee = new DAOAssignee();
 	}
 	
 	/**
@@ -36,4 +39,24 @@ public class DAOMember {
                                    limit 1];
 		return member;
 	}
+	
+	/**
+	* @return a list of members candidates to be assigned
+	*/
+	public List<ProjectMember__c> getCandidatesToAssign(String taskId){
+		List<ProjectMember> assignees = DAOAssignee.getAssignees(taskId);
+		List<String> assigned = new List<String>();
+		for(ProjectMember assignee: assignees){
+			assigned.add(assignee.id);
+		}
+		ProjectTask__c task = DAOFactory.getInstance().getTask(taskId);
+		
+		return [select Id, Name, User__c
+		        from ProjectMember__c 
+			    where Project__c =: task.Project__c
+			    and User__r.IsActive != false 
+				and User__c not in: assigned ];
+		
+	}
+	
 }

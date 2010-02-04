@@ -192,6 +192,8 @@ public with sharing class ProjectMembersWidgetController {
 	*@return List<TeamMember>
 	*/
 	public List<TeamMember> getTeamspaceMembers() {
+		
+		System.debug('XXXX - getTeamspaceMembers');
 		List<ProjectMember__c> temp = new List<ProjectMember__c>();
       	
         if(typeList == 'adminList') {

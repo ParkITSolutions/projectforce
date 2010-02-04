@@ -1,5 +1,7 @@
-<apex:page sidebar="false" tabStyle="Project2__c" controller="ProjectOverviewController"  >
-
+<apex:page id="projectOverview" sidebar="false" tabStyle="Project2__c" controller="ProjectOverviewController"  >
+	
+	<c:ApplicationTop id="ApplicationTop" />
+	
 	<!-- Prototype / Scriptaculous Framework -->
 	<apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/prototype.js')}"/>
 	<apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/scriptaculous.js')}"/>
@@ -36,7 +38,6 @@
 	<script>
 	
 		var API_SESSION_ID = '{!$Api.Session_ID}';
-		document.observe('dom:loaded', footerBug);
   
 	</script>
 	<style>
@@ -47,6 +48,9 @@
 			background-position:center;
 		}
 	</style>	
+  
+
+	    
 	<!-- Initialize the overlay box for modal.js -->
 	<a href="#modal_container" id="initializeModal" style="display:none;"></a>
 	<div id="modal_container"></div>
@@ -57,7 +61,7 @@
 	    <apex:define name="module">{!$ObjectType.Project2__c.labelPlural}</apex:define>
 	    <apex:define name="title">Overview</apex:define>
 	    <apex:define name="search">
-	    	<c:Search module="project" label="Projects" />
+	    	<c:Search id="searchBox" module="project" label="Projects" />
 	    </apex:define>
     </apex:composition>
 	<!-- Sidebar -->
@@ -234,9 +238,9 @@
 										<h4><a href="/apex/ProjectDetail?id={!t.Id}" >{!t.Name}</a></h4>
 										<div>
 											<span>{!t.tasks}</span>
-											<a href="/apex/ProjectTasksList?id={!t.Id}&filter=all">Tasks</a> |
+											<a href="/apex/TaskList?id={!t.Id}&filter=all">Tasks</a> |
 											<span>{!t.milestones}</span> 
-											<a href="/apex/ProjectTasksList?id={!t.Id}&filter=allMilestones">Milestones</a> |
+											<a href="/apex/TaskList?id={!t.Id}&filter=allMilestones">Milestones</a> |
 											<span>{!t.members}</span>
 											<a href="/apex/ProjectMembersList?id={!t.Id}">Members</a> 
 											<br/>

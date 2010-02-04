@@ -12,7 +12,6 @@ public class UserTasksController{
     private List<Task> tasks = new List<Task>();
     private List<SelectOption> selectOpsProject;
 
-    public String page = '0';
     public String lastPage;
     private Integer rows = 20; 
 
@@ -23,6 +22,11 @@ public class UserTasksController{
     public String order {set; get;} 
     public String sortBy { set; get; }
     public Project thisProject  { set; get; }
+    
+    
+    // PAAA ... ginator
+    public Paginator paginator 	{ set; get; }
+    
     
     /**
     * Constructor
@@ -40,6 +44,15 @@ public class UserTasksController{
         this.tasks = new List<Task>();
         this.allProjectsMap = new Map<id,ProjectMember__c>();
         this.selectOpsProject = new List<SelectOption>(); 
+        
+		this.paginator = new Paginator();
+		
+		this.paginator.orderBy 		= 'Name';
+		this.paginator.orderAsc 	= true;
+		this.paginator.filter 		= '1'; // Show all tasks and milestones
+		//this.paginator.project.id 	= this.projectId;
+        paginator.loadTasksByUser();
+        
         
         this.selectAllPeojectName();
         this.selectTasks();
@@ -97,31 +110,6 @@ public class UserTasksController{
         this.lastPage = lp;
     }
  
-    /**
-    *@return String
-    */
-    public String getPage(){
-        
-        return String.valueOf( Integer.valueOf( this.page )+1 );
-    }
-    
-    /**
-    *@param String
-    */
-    public void setPage( String p ){
-        if( p == 'next' ){
-            this.page = String.valueOf( Math.abs(Integer.valueOf( this.page ) + 1 ) );
-        }else if( p == 'previous' ){
-            this.page = String.valueOf( Math.abs(Integer.valueOf( this.page ) - 1 ) ); 
-        }    
-    }
-
-    /**
-    *@return Integer
-    */
-    public Integer getNotShowFirst(){
-        return  this.rows * Integer.valueOf( this.page ); 
-    }
     
     /**
     *return Boolean
@@ -215,19 +203,6 @@ public class UserTasksController{
             this.allProjectsMap.put( m.Project__c, m );
     }
     
-    /**
-    *@return void
-    */
-    public void setingOrder(){
-        
-        if( this.order == 'ASC' )
-            this.order = 'DESC';
-        else 
-            this.order = 'ASC';     
-        
-        this.page = '0';
-        this.selectTasks();
-    }
         
     /**
     *@return void

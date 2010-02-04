@@ -12,7 +12,7 @@
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
-    	
+    	/*
     	System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
     	SearchController sc = new SearchController();
     	
@@ -32,7 +32,7 @@
     	//TODO Pagereference pr = sc.searchKey();
     	//myUnitTest();
 		Boolean retVal1 = sc.getIsCriteriaLengthProperly();
-   		
+   		*/
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     } 

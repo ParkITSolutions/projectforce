@@ -42,6 +42,7 @@
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskDetail.js')}" />
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskList.js')}" />
     
+    
  	<apex:form >
  		<apex:actionFunction name="reloadIframe" action="{!dummyRefresh}" rerender="iframeWrapperPanel" />
  	</apex:form>
@@ -75,7 +76,8 @@
 	     }
 	    
     </style>
-                       
+    
+
    	<div class="confirmation" id="confirmation" style="display:none;">
            This task has been marked complete
     </div>
@@ -87,6 +89,10 @@
     
      <!-- Upload Attachment -->
     <c:ProjectOverlayNewAttachment parentId="{!Task.Id}" />
+    <c:ApplicationTop id="ApplicationTop" />
+	<c:PromptOverlay id="PromptOverlay"
+		includeAttachment="true" 
+		includeNewAssignee="true"/>                       
     
     <!-- Header -->
     <apex:composition template="HeaderTemplate">
@@ -123,7 +129,7 @@
 				
 				
 				
-				<a  href="/apex/ProjectTasksList?id={!Task.ProjectId}">Tasks</a> >	
+				<a  href="/apex/TaskList?id={!Task.ProjectId}">Tasks</a> >	
 				
 				<!-- <div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
 					<span style = "font-weight:bold;" id="taskNameBreadcrumb">{!Task.Name}</span>									
@@ -213,7 +219,12 @@
                      <apex:actionFunction name="detailListPanel" 
                     	action="{!doRefresh}" 
                     	rerender="detailListPanel" 
-                    	oncomplete="$('sw_o').hide(); $('sw_all2').hide();"/>
+                    	oncomplete="$('sw_o').hide(); $('sw_all2').hide();swirly.hide();"/>
+                    	
+                     <apex:actionFunction name="RefreshTaskAssignedList" 
+                    	action="{!doRefresh}" 
+                    	rerender="detailListPanel" 
+                    	oncomplete="swirly.hide(); infoToUser.show();"/>
                     	
                 </apex:form>
                
@@ -246,13 +257,14 @@
 	                                    
 	                                    <div class="DistincLink">
 		                                    <a href="Javascript:;" 
-		                                       onclick="openAttachmentOverlay();">
+		                                       onclick="promptOverlay.open(attachment);">
 		                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add Attachment" title="Add Attachment" />
 		                                        Add New Attachment
 		                                    </a>
 	                                    </div>
 	                                </apex:outputPanel>
-		                			<apex:form >
+		                			<apex:form id="attachmentList">
+		                				<apex:actionFunction name="reloadAttachmentList" rerender="attachmentList" />
 	                                    <apex:repeat value="{!Task.Files}" var="item" >
 	                                        <div class="height20px">
 	                                        	<div id="AttachContent"> 
@@ -284,15 +296,12 @@
                               	<td class="dataCol">
 	                            	<apex:outputpanel rendered="{!AND(NOT(MaxAssignees), OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe))}">
 	                                	<div class="DistincLink">
-	                                      	<a id="lnkAddAssignee" 
-	                                      	   href="javascript:;" 
-	                                      	   onclick="addNewAssigneeOverlay.open(); 
-	                                      	            refreshPercentList(); $('sw_o').show(); 
-	                                      	            addOverlayEvents(function(){addNewAssigneeOverlay.close();},'ProjectTaskDetail:ProjectOverlayNewAssignee:ProjectOverlayNewAssignee:newMemberForm:SaveButton');
-	                                      	            refreshMembers2()" >
-	                                      		<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}" alt="Add assignee" title="Add assignee" />
-	                                          	New assignee
-	                                      	</a>
+	                                      	<apex:image id="assignToImage" value="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}"/>
+	                                      	<apex:outputLink id="assignToLink"
+												onClick="swirly.show(); loadCandidates();"
+												value="javascript:;">
+													New assignee
+											</apex:outputLink>
 	                                	</div>
 	                             	</apex:outputpanel>
 	                                <apex:outputpanel rendered="{!Task.HasAsignee}" id="assList">

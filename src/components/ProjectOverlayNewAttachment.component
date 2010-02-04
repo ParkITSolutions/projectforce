@@ -37,7 +37,7 @@
 			</div>
 		</div>                                                               
 		<apex:outputpanel layout="block" id="iframeWrapperPanel" styleclass="overlayMainContent">
-			<iframe name="uploadIframe" id="uploadIframe" src="/apex/UploadAttachment?pId={!parentId}&t=1" height="154px"
+			<iframe name="uploadIframe" id="uploadIframe" src="/apex/OldUploadAttachment?pId={!parentId}&t=1" height="154px"
 					width="100%" style="border: 0px;" frameborder="0" marginheight="0"
 					marginwidth="0"></iframe>
 		</apex:outputpanel>

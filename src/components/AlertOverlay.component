@@ -4,11 +4,9 @@
 	<apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" />
 	
 	<script>
-	
 		alertOverlay.id 		= '{!$Component.Content}';
 		alertOverlay.message 	= '{!$Component.Form.MessageTouser}';
 		alertOverlay.title 		= '{!$Component.Form.Title}';
-		
 	</script>
 	
 	<!-- Content -->
@@ -38,9 +36,7 @@
 				
 				<!-- MessageToUser -->
 				<apex:outputPanel id="MessageToUserPanel" styleClass="messageToUserPanel" layout="block">
-			
 					<apex:outputText id="MessageToUser" value="Message" styleClass="messageToUser" />
-			
 				</apex:outputPanel>
 				<!-- end of MessageToUser -->
 				
@@ -48,9 +44,7 @@
 				<apex:outputPanel styleClass="submitButtons" layout="block">
 			
 					<apex:outputLink id="Accept" styleClass="submitButton Accept" onClick="alertOverlay.close();" value="javascript:;">
-					    
 					    Accept
-					    
 					</apex:outputLink>
 			
 				</apex:outputPanel>

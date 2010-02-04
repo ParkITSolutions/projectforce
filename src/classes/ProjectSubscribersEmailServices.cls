@@ -830,31 +830,35 @@ public class ProjectSubscribersEmailServices{
 	            {
 	                SendMail(address, subscriptions[0].Project__r, emailMsj, emailSub);
 	                it = 0;
+	                address = new String[]{};
 	            }
 	        }
         }
-        /*
-        if( subscriptions.size() > 10){
-	        for(Integer i =0; i < subscriptions.size(); i++ ){   
-	            if(it < 10 || i == subscriptions.size() )
-	            {
-	                address.add(subscriptions[i].User__r.Email);
-	                it ++;
-	            }
-	            else
-	            {
-	                SendMail(address, subscriptions[0].Project__r, emailMsj, emailSub);
-	                it = 0;
-	            }
-	        }
-        }else if(subscriptions.size() > 0 && subscriptions != null)
-	        {   
-	            for( ProjectSubscription__c ts : subscriptions ){
-	            	address.add(ts.User__r.Email);
-	            }
-	            SendMail(address, subscriptions[0].Project__r, emailMsj, emailSub);
-	        }
-	   */   
+    }
+    
+    /**Generate address and send mails
+    *@param List<User> subscriptions
+    *@param String emailMsj
+    *@param String Subject
+    *@return void
+    */
+    private void genAddress2 (List<User> mailUsers ,String emailMsj, String Subject ){
+    	String[] address = new String[]{}; 
+		Integer it = 0;
+		if((mailUsers.size() > 0) && (mailUsers != null)){
+		    for(Integer i =0; i <= mailUsers.size(); i++ ){
+		        if((it < 10) && (i < mailUsers.size() )) {
+		            address.add(mailUsers[i].Email);
+		            it++;
+		        }
+		        else { //if(it >= 10 || i >= mailUsers.size() ) 
+		            //Sent Mail
+		            SendMail(address, null, emailMsj, Subject);
+		            it = 0;
+		            address = new String[]{};
+		        }
+		    }
+		}
     }
 
     
@@ -890,13 +894,73 @@ public class ProjectSubscribersEmailServices{
         //ProjectSubscribersEmailServices.alreadySent = true;
     }
    
+	/** Looking for the type of shipping
+    *@param Boolean isMilestone
+    *@param Date dStart
+    *@param Date dEnd
+    *@param Boolean ProjectBeforeOfExpiringTask
+    *@param Boolean ProjectDayOfExpiringTask
+    *@param Boolean ProjectAfterOfExpiringTask
+    *@return String
+    */   	
+    private String typeOfTask (Boolean isMilestone, Date dStart, Date dEnd, Boolean ProjectBeforeOfExpiringTask, Boolean ProjectDayOfExpiringTask, Boolean ProjectAfterOfExpiringTask){
+		Date dEndMinusOne = dEnd;
+		String shippingType='';
+		Date dNow = Date.today();
+
+
+		if (isMilestone){
+			//If is a MILESTONE
+			integer dNowMinusDStart = dStart.daysBetween(dNow);
+			if (dNowMinusDStart == 0){
+				shippingType='milestoneDayExpiry';
+			}
+			else if (dNowMinusDStart > 0){
+				//Repetitive after expiring, i send mail one day yes one day no
+				Integer resmod = math.mod(dNowMinusDStart, 2);
+				if (resmod == 0){
+					//Prepare to send mail
+					shippingType='milestoneAfterExpiring';
+				}
+			}
+		}
+		else{
+			//Is not milestone!! its a normal TASK
+			dEndMinusOne  =  dEnd.addDays(-1);
+
+			integer dNowMinusDEnd = dEnd.daysBetween(dNow);
+			if ((dNowMinusDEnd > 0)&&(ProjectAfterOfExpiringTask)){
+				//As this to overcome their due date
+				//Repetitive after expiring, i send mail one day yes one day no
+				Integer resmod = math.mod(dNowMinusDEnd, 2);
+				if (resmod == 0){
+					//Prepare to send mail
+					shippingType='afterExpiring';
+				}
+			}
+			else if ((dNowMinusDEnd == 0)&&(ProjectDayOfExpiringTask)){
+				//Expiry day
+				shippingType='dayExpiry';
+			}
+			else { //(dNowMinusDEnd < 0)
+				integer dEndMinusOneMinusDStart = dStart.daysBetween(dEndMinusOne);
+				integer dEndMinusOneMinusDEnd = dEndMinusOne.daysBetween(dNow);
+				if ((dEndMinusOneMinusDStart > 0 ) && (dEndMinusOneMinusDEnd == 0)&&(ProjectBeforeOfExpiringTask)){
+					//One day for expiring...
+					shippingType='beforeExpiring';
+				}
+			}
+		} // end else mileston
+		return shippingType;
+    }
+    
     
     /** findForExpiringTask and send mail...
     *@param void
     *@return void
     */
     public void findForExpiringTask(){
-    	Date dNow = Date.today();
+    	
     	// List of project with subscription
     	for (Project2__c listOfProjects : 
 		[ 	Select p.ProjectDayOfExpiringTask__c, p.ProjectBeforeOfExpiringTask__c, p.ProjectAfterOfExpiringTask__c, p.Name, p.Id 
@@ -911,90 +975,23 @@ public class ProjectSubscribersEmailServices{
 				From ProjectTask__c p 
 				where p.Project__c =: listOfProjects.Id and Status__c != 'Closed' and Status__c != 'Resolved'
 			]){
-				Date dStart = listOfTask.StartDate__c;
-				Date dEnd = listOfTask.EndDate__c;
-				Date dEndMinusOne = listOfTask.EndDate__c;
-				String shippingType='';
 
-				if (listOfTask.Milestone__c){
-					//If is a MILESTONE
-					integer dNowMinusDStart = dStart.daysBetween(dNow);
-					if (dNowMinusDStart == 0){
-						shippingType='milestoneDayExpiry';
-					}
-					else if (dNowMinusDStart > 0){
-						//Repetitive after expiring, i send mail one day yes one day no
-						Integer resmod = math.mod(dNowMinusDStart, 2);
-						if (resmod == 0){
-							//Prepare to send mail
-							shippingType='milestoneAfterExpiring';
-						}
-					}
-				}
-				else{ 
-					//Is not milestone!! its a normal TASK
-					dEndMinusOne  =  dEnd.addDays(-1);
+				String shippingType = this.typeOfTask(listOfTask.Milestone__c, listOfTask.StartDate__c, listOfTask.EndDate__c, listOfProjects.ProjectBeforeOfExpiringTask__c, listOfProjects.ProjectDayOfExpiringTask__c, listOfProjects.ProjectAfterOfExpiringTask__c);
 
-					integer dNowMinusDEnd = dEnd.daysBetween(dNow);
-					if ((dNowMinusDEnd > 0)&&(listOfProjects.ProjectAfterOfExpiringTask__c)){
-						//As this to overcome their due date
-						//Repetitive after expiring, i send mail one day yes one day no
-						Integer resmod = math.mod(dNowMinusDEnd, 2);
-						if (resmod == 0){
-							//Prepare to send mail
-							shippingType='afterExpiring';
-						}
-					}
-					else if ((dNowMinusDEnd == 0)&&(listOfProjects.ProjectDayOfExpiringTask__c)){
-						//Expiry day
-						shippingType='dayExpiry';
-					}
-					else { //(dNowMinusDEnd < 0)
-						integer dEndMinusOneMinusDStart = dStart.daysBetween(dEndMinusOne);
-						integer dEndMinusOneMinusDEnd = dEndMinusOne.daysBetween(dNow);
-						if ((dEndMinusOneMinusDStart > 0 ) && (dEndMinusOneMinusDEnd == 0)&&(listOfProjects.ProjectBeforeOfExpiringTask__c)){
-							//One day for expiring...
-							shippingType='beforeExpiring';
-						}
-					}
-				} // end else mileston
 
-				if ((shippingType=='beforeExpiring')||(shippingType=='dayExpiry')||(shippingType=='afterExpiring')||(shippingType=='milestoneExpiring')){
+				if ((shippingType=='beforeExpiring')||(shippingType=='dayExpiry')||(shippingType=='afterExpiring')||(shippingType=='milestoneDayExpiry')||(shippingType=='milestoneAfterExpiring')){
 					if (listOfTask.ProjectsAssignees__r != null){
 						Boolean ifAccess = false;
 						
-						//Eliminar
-						String usr ='';
-						
 						List<String> SubAssignees = new List<String>();
 						for (ProjectAssignee__c useraux : listOfTask.ProjectsAssignees__r){
-							//Cambiarrrrr
-							usr+=useraux.User__c+',';
 							ifAccess=true;
 							SubAssignees.add(useraux.User__c);
 						}
 						
 						List<User> mailUsers = new List<User>();
-						//List<String> mailUsers = new List<String>();
 						mailUsers = [Select u.Email From User u where u.Id in :SubAssignees];
-						System.debug('XXX - Users='+mailUsers);
-						//mailUsers =(User:{'Email=soares@timbasoftware.com', Id='00530000001jvrdAAA'}, User:{'Email=ndominguez@timbasoftware.com', Id='00530000001lbRJAAY'}, User:{'Email=mmenafra@timbasoftware.com', Id='00530000002S0U2AAK'}) ;
-						//mailUsers['00530000001jvrdAAA']=
-						//System.debug('XXX - Users!='+mailUsers);						
 						if (ifAccess){
-							////////////////
-							System.debug ('**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**--**');
-							//*
-								System.debug ('XXX - PROJECT = '+listOfProjects.Name+', id projecto ='+listOfProjects.Id);
-								if (listOfTask.Milestone__c)
-									System.debug ('XXX - MILESTONE = '+listOfTask.Name);
-								else
-									System.debug ('XXX - TASK = '+listOfTask.Name);
-								System.debug ('XXX - NOW='+dNow+', START='+dStart+', EndMinusOne='+dEndMinusOne+', END='+dEnd);
-								System.debug ('XXX - PercentCompleted = '+listOfTask.PercentCompleted__c+', Status='+listOfTask.Status__c);
-								System.debug ('XXX - Usuarios : '+usr);
-							//*/
-							/////////////////
 							String htmlVar ='';
 							String htmlVarStart='';
 							String htmlVarEnd='';
@@ -1005,8 +1002,6 @@ public class ProjectSubscribersEmailServices{
 							String Subject='';
 							///////TASK
 							if (shippingType=='beforeExpiring'){
-								//System.debug ('XXX - TASK - ENVIOMAIL MANIANA VENCE dEndMinusOneMinusDStart > 0 ) && (dEndMinusOneMinusDEnd < 0) -> esta entre el dia anterior del fin de task y el fin de la task...');
-								
 								Subject = 'One day left for Task "'+ProjectUtil.chopWords( ProjectUtil.chopPhrase( listOfTask.Name , 35 ))+'" to expire.';
 								Subject =  returnHtmlSubject(listOfProjects.Name,Subject);
 
@@ -1015,8 +1010,6 @@ public class ProjectSubscribersEmailServices{
 							}
 							///////TASK
 							else if (shippingType=='dayExpiry'){
-								//System.debug ('XXX - TASK - ENVIOMAIL DIA VENCIMIENTO now = end (now - end = 0 )');
-								
 								Subject = 'Task "'+ProjectUtil.chopWords( ProjectUtil.chopPhrase( listOfTask.Name , 35 ))+'" expires today.';
 								Subject =  returnHtmlSubject(listOfProjects.Name,Subject);
 
@@ -1025,8 +1018,6 @@ public class ProjectSubscribersEmailServices{
 							}
 							///////TASK
 							else if (shippingType=='afterExpiring'){
-								//System.debug ('XXX - TASK - ENVIOMAIL VENCIDO HACE MAS DE UN DIA now > end (now - end > 0 )');
-								
 								Subject = 'Task "'+ProjectUtil.chopWords( ProjectUtil.chopPhrase( listOfTask.Name , 35 ))+'" has surpassed Due date.';
 								Subject =  returnHtmlSubject(listOfProjects.Name,Subject);
 
@@ -1035,9 +1026,6 @@ public class ProjectSubscribersEmailServices{
 							}
 							/////MILESTONEEEE
 							else if (shippingType=='milestoneDayExpiry'){
-								//System.debug ('XXX - MILESTONEE - ENVIOMAIL POR DIA DEL VENCIMIENTO DEL  MILESTONEE');
-								
-								
 								Subject = 'Milestone "'+ProjectUtil.chopWords( ProjectUtil.chopPhrase( listOfTask.Name , 35 ))+'" expires today.';
 								Subject =  returnHtmlSubject(listOfProjects.Name,Subject);
 
@@ -1046,8 +1034,6 @@ public class ProjectSubscribersEmailServices{
 							}
 							/////MILESTONEEEE
 							else if (shippingType=='milestoneAfterExpiring'){
-								//System.debug ('XXX - MILESTONEE - ENVIOMAIL POR MILESTONEE VENVIDOOO');
-								
 								Subject = 'Milestone "'+ProjectUtil.chopWords( ProjectUtil.chopPhrase( listOfTask.Name , 35 ))+'" has surpassed Due date.';
 								Subject =  returnHtmlSubject(listOfProjects.Name,Subject);
 
@@ -1089,39 +1075,11 @@ public class ProjectSubscribersEmailServices{
 							
 							String emailMsj =''; 
 							emailMsj = htmlVarStart + htmlVar + htmlVarEnd;
-							
-							
-							
-							for (Integer i=0; i<15; i++){
-								mailUsers[i].Email='ndominguez@timbasoftware.com';
-							}						
-							
-							
-							//sacarrrrrrrrrr fin
-							
-							String[] address = new String[]{}; 
-					        Integer it = 0;
-					        //Project2__c cc= new Project2__c();
+					        
+					        //String[] address = new String[]{}; 
+					        //Integer it = 0;
 					        if (!isTest){
-						        if((mailUsers.size() > 0) && (mailUsers != null)){
-							        for(Integer i =0; i <= mailUsers.size(); i++ ){
-							            if((it < 10) && (i < mailUsers.size() )) {
-							                address.add(mailUsers[i].Email);
-							                it ++;
-							            }
-							            
-							            else { //if(it >= 10 || i >= mailUsers.size() ) {
-							            	//System.debug('XXX YYY 5');
-							                
-							                System.debug('XXX - address='+address);
-							                System.debug('XXX - Subject='+Subject);
-							                System.debug('XXX - emailMsj='+emailMsj);
-							                System.debug('XXX envio mailllllllllll');
-							              //  SendMail(address, null, emailMsj, Subject);
-							                it = 0;
-							            }
-							        }
-						        }
+					        	this.genAddress2(mailUsers ,emailMsj, Subject );
 					        }
 						}
 					}

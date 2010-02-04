@@ -1,21 +1,26 @@
-<apex:component controller="TaskQuickAccessController">
+<apex:component id="taskQuickAccess" controller="TaskQuickAccessController" >
     
-    <apex:styleSheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/TaskQuickAccess.css')}" />
-	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/TaskQuickAccess.js')}" />
+    <apex:styleSheet value="{!URLFOR($Resource.TaskQuickAccess, 'inc/css/taskQuickAccess.css')}" />
+	<apex:includeScript value="{!URLFOR($Resource.TaskQuickAccess, 'inc/js/taskQuickAccess.js')}" />
 	
-	<div class="quickAccessTask">
-        <apex:form id="quickAccessForm" onsubmit="return verif();" >
-            <span>Task ID:</span>
-            <span id="taskIdInputSpan">
-            	 <apex:inputText value="{!taskId}" onkeyup="handleKeyPress(event)" />
-            </span>
-        	<apex:actionFunction name="quickAccessToTask" action="{!go}" rerender="quickAccessForm" />
-            <span class="taskIdInputWrapper">
-            	<a href="Javascript:;" class="actionQuickAccess" onclick="quickAccessEnter = true;hideQuickAccessError(); quickAccessToTask(this);">Go</a>
-            </span>
-            <apex:outputPanel styleClass="quickAccessError" rendered="{!error}">
-            	<br/>Error: Task does not exist
+	<apex:outputPanel id="taskSearch" layout="block" styleClass="taskSearch" >
+	
+		<apex:form id="quickAccessForm" >
+			
+            <apex:outputPanel id="label" >Task ID:</apex:outputPanel>&nbsp;
+            
+           	<apex:inputText id="taskInput" value="{!taskCustomId}" />&nbsp; 
+        	
+            <apex:outputPanel id="goLinkPanel" styleClass="dummyStyle">
+            	<apex:commandLink id="goLink" action="{!goToTaskDetail}" onclick="taskQuickAccess.loading();" rerender="quickAccessForm" >Go </apex:commandLink>
             </apex:outputPanel>
+            
+            <apex:outputPanel id="errorMsg" rendered="{!error}" styleClass="error">
+            	<br/>Task does not exist!
+            </apex:outputPanel>
+            
         </apex:form>
-    </div>  
+        
+	</apex:outputPanel>
+	
 </apex:component>

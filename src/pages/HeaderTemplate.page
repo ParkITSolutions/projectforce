@@ -1,23 +1,48 @@
-<apex:page >
+<apex:page id="projectHeader" cache="true" >
+	
+	<apex:styleSheet value="{!URLFOR($Resource.ProjectHeader, 'inc/css/projectHeader.css')}" />
+	
 	<apex:insert name="moduleId"/>
-	<div class="header_portal" id={!moduleId}>
-        <!-- Page Section -->
-        <div class="page_section" >
-            <div>
-                <h1 class="arial_black"><apex:insert name="module"/></h1>
-                <h2 class="arial_black"><apex:insert name="title"/></h2>
-            </div>      
-        </div>      
-        
-        <!-- Search Box -->
-        <apex:insert name="search"/><br/>
-        <!-- Help for this page -->
-        <div class="help">
-            <div>
-				<c:TaskQuickAccess />
-				<c:ProjectInitProfiles />
-            </div>
-        </div>
-		<div class="gray_border"></div>
-    </div>
+	
+	<!-- Main Header Content Panel -->
+	<apex:outputpanel id="content" layout="block" styleClass="projectHeader">
+	
+		<apex:outputpanel id="titles" layout="block" styleClass="titles">
+		
+			<apex:image id="icon" value="{!URLFOR($Resource.ProjectHeader, 'images/section_icon.gif')}" />
+			<apex:outputpanel id="innerTitle" styleClass="innerTitles" layout="block">
+				<h4><apex:insert name="module"/></h4>
+	            <h4><apex:insert name="title"/></h4>
+            </apex:outputpanel>
+            
+		</apex:outputpanel>
+		
+		<!-- Main Search Panel -->
+		<apex:outputpanel id="center" layout="block" styleClass="center">
+		
+			<!-- Search Box -->
+        	<apex:insert name="search"/><br/>
+        	
+		</apex:outputpanel>
+		
+		<apex:outputpanel id="right" layout="block" styleClass="right">
+		
+			<!-- Quick Task Access panel -->
+	        <apex:outputpanel id="taskAccessPanel" layout="block">
+	        
+            	<!-- Component for task Search -->
+				<c:TaskQuickAccess id="taskQuickAccess" />
+				
+	        </apex:outputpanel>
+	        
+		</apex:outputpanel>
+		
+		<!-- Simple gray Line below Header -->
+		<apex:outputpanel id="backgroundGray" styleClass="bottomBorder" layout="block" ></apex:outputpanel>
+		
+		<!-- Component for initializing Profile on a new install -->
+		<c:ProjectInitProfiles />
+					
+	</apex:outputpanel>
+	
 </apex:page>
