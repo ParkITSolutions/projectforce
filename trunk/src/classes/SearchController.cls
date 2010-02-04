@@ -1,77 +1,40 @@
 /**
-*@author Alvaro Scuccimarra @ 03/16/2009
+* @author Matias Menafra
 */
 public class SearchController {
 	
-	// Parameter with action
-	private String module = null;
-	// Parameter with search string
-	private String key = null;
-	// Parameter for seach in team
-	private String teamId = System.currentPageReference().getParameters().get('id');
-	// Text of search label
-	private String labelName = null;
-	// Default input field text value
-	private String defText = '';
-	
-	private boolean isCriteriaLengthProperly = true;
-	
-	// Map with action=>PageReference
-	private Map<String, PageReference> searchIn = new Map<String, PageReference>{
-		'project' => Page.ProjectSearchResult
-	};
+	public String module 					{ set; get; }
+	public String key 						{ set; get; }
+	public String projectId 				{ set; get; }
+	public String labelName; 					
+	public String defaultText 				{ set; get; }
+	public boolean isProperQueryLength 		{ set; get; }
 	
 	/**
-	*@param String mod
-	*@return void
+	* Constructor
 	*/
-	public void setModule(String mod){
-		this.module = mod;
+	public SearchController(){
+		
+		this.projectId 		= System.currentPageReference().getParameters().get( 'id' );
+		this.defaultText 	= getDefaultText();	
+		
+		if( System.currentPageReference().getParameters().get( 'key' ) != null ){
+			this.key = System.currentPageReference().getParameters().get( 'key' );
+		}
+		else{
+			this.key = getDefaultText();	
+		}
+		
+		this.isProperQueryLength = true;					
 	}
 	
 	/**
-	*@return String
-	*/
-	public String getModule(){
-		return this.module;
-	}
-	
-	/**
-	*@return String
-	*/
-	public String getKey(){
-		return this.key;
-	}
-	
-	/**
-	*@param String k
-	*@return void
-	*/
-	public void setKey(String k){
-		this.key = k;
-	}
-	
-	/**
-	*@return String
-	*/
-	public String getTeamId(){
-		return this.teamId;
-	}
-	
-	/**
-	*@param String id
-	*@return void
-	*/
-	public void setTeamId(String id){
-		this.teamId = id;
-	}
-	
-	/**
-	* Get value of label
-	*@return String
+	* Gets value for the label
+	* @return String
 	*/ 
 	public String getLabelName(){
-		if(System.currentPageReference().getParameters().get('id') == null){
+		
+		if( System.currentPageReference().getParameters().get( 'id' ) == null ){
 			return 'Projects';
 		}
 		else{
@@ -80,64 +43,64 @@ public class SearchController {
 	}
 	
 	/**
-	* Set value of label
-	*@param String s
-	*@return void
+	* Sets the value for the label
+	* @param value
 	*/
-	public void setLabelName(String s){
-		this.labelName = s;
+	public void setLabelName( String value ){
+		this.labelName = value;
 	}
 	
 	/**
-	* Get value of default input field value
-	* @return String 
+	* Gets value of default input field value
+	* @return defaultText 
 	*/
 	public String getDefaultText(){
-		if(this.getLabelName() == 'Projects'){
-			this.defText = 'Enter Project name...';
-			return this.defText;
+		
+		if( this.getLabelName() == 'Projects' ){
+			this.defaultText = 'Enter Project name...';
+			return this.defaultText;
 		}
 		else{
-			this.defText = 'Enter Task name...';
-			return this.defText;
+			this.defaultText = 'Enter Task name...';
+			return this.defaultText;
 		}
 	}
 		
 	/**
-	* Redirect to the specific result
-	*@return PageReference
+	* Performs validation on search term
+	* Redirect results page
+	* @return PageReference
 	*/
 	public PageReference searchKey(){
 		
-		isCriteriaLengthProperly = true;
+		this.isProperQueryLength = true;
 		
-		if(this.key.length() < 2){
+		if( this.key.length() < 2 ){
 			
-			isCriteriaLengthProperly = false;
+			this.isProperQueryLength = false;
 			
 			PageReference pageRef = Page.projectOverview;
-			pageRef.setRedirect(true);			
+			pageRef.setRedirect( true );
+						
 			return pageRef;
 		}
 		
-		if(this.module != null && this.module != '' && this.key != null ){
-			PageReference pageRef = searchIn.get(module);
-			pageRef.getParameters().put('key', this.key );
-			if(this.teamId != null || this.teamId != ''){
-				pageRef.getParameters().put('id', this.teamId);
+		if( this.module != null && this.module != '' && this.key != null ){
+			
+			PageReference pageRef = Page.SearchResults;
+			pageRef.getParameters().put( 'key', this.key );
+			
+			if( this.projectId != null || this.projectId != '' ){
+				pageRef.getParameters().put( 'id', this.projectId) ;
 			}
-			pageRef.setRedirect(true);			
-			return pageRef;			
+			
+			pageRef.setRedirect( true );	
+					
+			return pageRef;
+						
 		}else {
+			
 			return null;
 		}
-	}
-	
-	/**
-	*@return boolean
-	*/	
-	public boolean getIsCriteriaLengthProperly() {
-			
-		return isCriteriaLengthProperly;
 	}
 }

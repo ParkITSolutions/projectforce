@@ -3,25 +3,32 @@
 */
 public class NewMilestoneController {
 	
-	public String 	name 	    { set; get; }
-	public String 	startDate 	{ set; get; }
 	public String 	assignTo 	{ set; get; }
 	public String 	projectId 	{ set; get; }
+	
 	private List<ProjectMember__c> projectMembers;
+	public ProjectTask__c myTask {set; get;}
 	public String currentPage 	{set; get;}
 	public String postAction 	{set; get;}
+	public String  taskPrefix = Schema.SObjectType.Projecttask__c.getKeyPrefix();
+	
+	public String domain;
+     
+    
 	
 	/**
 	* Constructor
 	*/
 	public NewMilestoneController(){
 		
+		myTask = new ProjectTask__c();
+		domain = ProjectUtil.getDomain();
 		this.projectId 			= System.currentPageReference().getParameters().get( 'id' );
-		this.projectMembers 	= DAOFactory.getInstance().getProjectMembers( projectId );
+		this.projectMembers 	= DAOFactory.getInstance().getProjectMembers( this.projectId );
 		this.currentPage		= Apexpages.currentPage().getUrl();
 		this.postAction 		= '';
-		this.assignTo 			= '';
-		
+		//this.assignTo 			= '';
+
 	}
 	
 	/**
@@ -30,8 +37,10 @@ public class NewMilestoneController {
 	*/
 	public void action(){
 		
+		myTask.Project__c = this.projectId;
+		myTask.Milestone__c = true;
 		//Milestones have not due date neither duration
-		DAOFactory.getInstance().insertTask( this.name, this.startDate, this.startDate, '0', this.assignTo, this.projectId, true );
+		DAOFactory.getInstance().insertTask( myTask, this.assignTo );
 		
 		if( this.currentPage.contains( 'TaskList' ) ){
 			this.postAction = 'MilestoneCreatedSuccess';
@@ -53,4 +62,18 @@ public class NewMilestoneController {
 		
 		return options;
 	}
+	
+	/**
+	*@return String
+	*/
+	public String getDomain(){
+		return this.domain;
+	}
+	
+	/**
+   	*@return taskPrefix
+   	*/
+   	public String getTaskPrefix(){
+   		return taskPrefix;
+   	}
 }

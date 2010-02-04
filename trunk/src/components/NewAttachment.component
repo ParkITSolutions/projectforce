@@ -1,0 +1,31 @@
+<apex:component id="newAttachment" controller="AttachmentController" allowDML="true">
+
+    <script>
+        var attachment = '{!$Component.Content}';
+    </script>  
+     
+    <apex:form >
+    	<apex:actionFunction name="reloadPanelAction" oncomplete="{!postAction}();" rerender="{!postAction}" />
+    </apex:form>
+    
+    <apex:outputPanel id="Content"  styleClass="overlay" style="display: none;" layout="block">
+    
+            <!-- TitlePanel -->
+            <apex:outputPanel id="TitlePanel" styleClass="titlePanel" layout="block">
+                
+                <apex:outputPanel styleClass="title">Add New Attachment</apex:outputPanel>
+                
+                <apex:outputPanel id="overlayClose" styleClass="overlayClose" layout="block"> 
+                    <apex:outputLink id="linkClose" value="javascript:;" onClick="promptOverlay.close();" >
+                        <img src="{!URLFOR($Resource.Overlays, 'images/overlayClose.gif')}" alt="Close Window" title="Close Window" />
+                    </apex:outputLink>  
+                </apex:outputPanel>
+            </apex:outputPanel>
+            <!-- End TitlePanel -->
+            
+            <!-- Contents Inlcudes inner Page -->
+            <apex:iframe id="attachmentIframe" src="/apex/UploadAttachment?pId={!parentId}&p={!currentPage}&t=1"  height="120px"/>            
+
+    </apex:outputPanel>
+    
+</apex:component>

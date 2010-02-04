@@ -4,6 +4,7 @@
 	<apex:attribute name="type" description="The list type" type="String" required="false" assignTo="{!typeList}" />
  
 	<!-- ### JavaScript ### -->
+
 	<script src="{!URLFOR($Resource.ProjectResources, 'inc/js/autocomplete.js')}" />
 	
 	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamMembersWidget.css')}" />
@@ -11,6 +12,7 @@
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/TeamsWidgetCommon.js')}" />
 
 	<!-- Common CSS Styling  -->
+
 	<apex:stylesheet value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/css/autocomplete.css')}"/>
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamOverlyInviteNewMember.css')}" />
 
@@ -207,8 +209,13 @@
 				</apex:form>
 			</div>
 		</div>
+		
+		
+	
 	</apex:outputpanel>
-
+	<!-- ************************  END NEW MEMBER OVERLAY  ********************************* -->
+		
+		
 	<!-- On Hover Bubble team member -->
 	<div id="bubble" class="bubble" style="display: none">
 		<div class="top_border">&nbsp;</div>
@@ -269,6 +276,8 @@
 					<div class="linkAction" >
 						<apex:outputpanel rendered="{!userPermissions.canManage}">
 							<a onclick="addMembersOverlay.open();addOverlayEvents(function(){addMembersOverlay.close();},'ProjectDetail:ProjectMembersWidget:ProjectMembersWidget:newMemberForm:SaveButton')" href="javascript:;">New</a> |  
+							
+							<apex:outputLink value="javascript:;" id="NewMemberLink" onClick="promptOverlay.open(newMember);"> NewMember</apex:outputLink> |
 						</apex:outputpanel>
 						<a href="/apex/ProjectMembersList?id={!team}#" class="topRightLinks">See More&#187;</a>
 					</div>

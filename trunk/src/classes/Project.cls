@@ -1,6 +1,6 @@
 /**
 * @author Matias Menafra  
-* @dataCreated 12/17/2009
+* @dateCreated 12/17/2009
 */
 public class Project {
 
@@ -22,7 +22,7 @@ public class Project {
 	public Date 	createdDate 			{ set; get; }
 	public String 	prjType 				{ set; get; }
 	public List<ProjectTask__c> tasks 		{ set; get; }
-			
+	public List<AttachmentObj> attachments  { set; get; }			
 	
 	/**
 	* Constructor
@@ -121,8 +121,49 @@ public class Project {
 	/**
 	* @param d
 	*/
-	//TODO put a better param name
-	public void setWorkingHours( Double d ){
-		this.workingHours = d.intValue();
+	public void setWorkingHours( Double value ){
+		this.workingHours = value.intValue();
+	}
+
+	/**
+	* Set avatar for the project 
+	*@param Attacment
+	*/	
+	public void setAvatar( Attachment avatar ){
+		
+		avatar.ParentId = this.id;
+		insert avatar;
+		
+		Project2__c pr = [ SELECT Id, Picture__c FROM Project2__c WHERE Id =: this.id LIMIT 1 ];
+		pr.Picture__c = avatar.id;
+		update pr;
+	}
+	
+	/**
+	* Add an attachment 
+	* @param attachment
+	*/	
+	public void addAttachment( Attachment att ){
+		att.ParentId = this.id;
+		insert att;
+		
+	}
+	
+	/**
+	* @return workingHours
+	*/
+	public ProjectTask__c getTaskByCustomId( String customId ){
+		return DAOFactory.getInstance().getTaskByCustomId( customId );
+	}
+	
+	/**
+	* 
+	* @return attachments
+	*/
+	public List<AttachmentObj> getAttachments(){
+		
+		this.attachments = DAOFactory.getInstance().getAttachments( this.id );
+		
+		return this.attachments;
 	}
 }

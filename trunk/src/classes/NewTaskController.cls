@@ -3,27 +3,29 @@
 */
 public class NewTaskController {
 	
-	public String 	name 	    { set; get; }
-	public String 	startDate 	{ set; get; }
-	public String 	dueDate 	{ set; get; }
-	public String 	duration 	{ set; get; }
 	public String 	assignTo 	{ set; get; }
 	public String 	projectId 	{ set; get; }
 	private List<ProjectMember__c> projectMembers;
+	public ProjectTask__c myTask {set; get;}
 	public String currentPage 	{set; get;}
 	public String postAction 	{set; get;}
+	public String  taskPrefix = Schema.SObjectType.Projecttask__c.getKeyPrefix();
+	
+	public String domain;
 	
 	/**
 	* Constructor
 	*/
 	public NewTaskController(){
 		
+		myTask = new  ProjectTask__c();
+		domain = ProjectUtil.getDomain();
 		this.projectId 			= System.currentPageReference().getParameters().get( 'id' );
-		this.projectMembers 	= DAOFactory.getInstance().getProjectMembers( projectId );
+		this.projectMembers 	= DAOFactory.getInstance().getProjectMembers( this.projectId );
 		this.currentPage 		= Apexpages.currentPage().getUrl();
 		this.postAction 		= '';
 		this.assignTo 			= '';
-		
+	
 	}
 	
 	/**
@@ -32,7 +34,9 @@ public class NewTaskController {
 	*/
 	public void action(){
 		
-		DAOFactory.getInstance().insertTask( this.name, this.startDate, this.dueDate, this.duration, this.assignTo, this.projectId, false );
+		myTask.Project__c = this.projectId;
+		
+		DAOFactory.getInstance().insertTask( myTask, this.assignTo );
 		
 		if( this.currentPage.contains( 'TaskList' ) ){
 			this.postAction = 'TaskCreatedSuccess';
@@ -54,4 +58,18 @@ public class NewTaskController {
 		
 		return options;
 	}
+	
+	/**
+	*@return String
+	*/
+	public String getDomain(){
+		return this.domain;
+	}
+	
+	/**
+   	*@return taskPrefix
+   	*/
+   	public String getTaskPrefix(){
+   		return taskPrefix;
+   	}
 }

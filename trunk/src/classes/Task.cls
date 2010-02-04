@@ -154,6 +154,17 @@ public class Task {
 	* @return String
 	*/
 	public String getNameDisplay(){
-		return this.nameDisplay;
+		return this.nameDisplay; 
 	}
+	
+	/**
+	* Add an attachment 
+	*@param Attacment 
+	*/
+	public void addAttachment( Attachment att ){ 
+		//att.parentId = this.id;
+		System.debug('[[[[>>>]]]] ' + this.id) ;
+		DAOFactory.getInstance().insertAttachment( att, this.id );	
+	}
+		
 }

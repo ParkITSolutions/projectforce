@@ -22,7 +22,6 @@ public class DAOFactory {
 	public static DAOFactory getInstance(){
 		
 		if(instance == null){
-			
 			instance = new DAOFactory();
 		}
 		
@@ -33,6 +32,7 @@ public class DAOFactory {
 	* Constructor
 	*/
 	private DAOFactory(){
+		
 		this.DAOTask 				= new DAOTask();
 		this.DAOMember 				= new DAOMember();
 		this.DAOProject 			= new DAOProject();
@@ -48,17 +48,12 @@ public class DAOFactory {
 	
 	/**
 	* Inserts a task
-	* @param name
-	* @param startDate
-	* @param dueDate
-	* @param duration
-	* @param assignToId
-	* @param projectId
-	* @param isMilestone
+	* @param task
+	* @param assignedTo
 	*/
-	public void insertTask(String name, String startDate, String dueDate, String duration, String assignTo, String projectId, Boolean isMilestone){
+	public void insertTask( ProjectTask__c task, String assignedTo){
 		
-		DAOTask.insertTask(name, startDate, dueDate, duration, assignTo, projectId, isMilestone);
+		DAOTask.insertTask( task, assignedTo);
 	}
 	
 	/**
@@ -72,18 +67,18 @@ public class DAOFactory {
 	* @param projectId
 	* @param isMilestone
 	*/
-	public void updateTask(String taskId, String name, String startDate, String dueDate, String duration, String assignTo, String projectId, Boolean isMilestone){
+	public void updateTask( String taskId, String name, String startDate, String dueDate, String duration, String assignTo, String projectId, Boolean isMilestone ){
 		
-		DAOTask.updateTask(taskId, name, startDate, dueDate, duration, assignTo, projectId, isMilestone);
+		DAOTask.updateTask( taskId, name, startDate, dueDate, duration, assignTo, projectId, isMilestone );
 	}
 	
 	/**
 	* deletes a task
 	* @param tasks tasks ids string separated by ":"
 	*/
-	public void deleteTasks(String tasks){
+	public void deleteTasks( String tasks ){
 		
-		DAOTask.deleteTasks(tasks);
+		DAOTask.deleteTasks( tasks );
 	}
 	
 	/**
@@ -91,9 +86,9 @@ public class DAOFactory {
 	* @param id
 	* @return task a ProjectTask__c
 	*/
-	public ProjectTask__c getTask(Id id){
+	public ProjectTask__c getTask( Id id ){
 		
-		return DAOTask.get(id);
+		return DAOTask.get( id );
 	}
 
 	/**
@@ -104,18 +99,27 @@ public class DAOFactory {
 	* @param orderAsc true if order way must be ascending or descendant
 	* @return tasks a list of tasks
 	*/
-	public ApexPages.StandardSetController getTasksByProject(String projectId, String filter, String orderBy, Boolean orderAsc){
+	public ApexPages.StandardSetController getTasksByProject( String projectId, String filter, String orderBy, Boolean orderAsc ){
 		
-		return DAOTask.getByProject(projectId, filter, orderBy, orderAsc);
+		return DAOTask.getByProject( projectId, filter, orderBy, orderAsc );
 	}
 	
 	/**
 	* @param tasksIds ids separated by ":"
 	* @return tasks a tasks list
 	*/
-	public List<ProjectTask__c> getTasks(String tasksIds){ 
+	public List<ProjectTask__c> getTasks( String tasksIds ){ 
 		
-		return DAOTask.getTasks(tasksIds);
+		return DAOTask.getTasks( tasksIds );
+	}
+	
+	/**
+	* @param 
+	* @return 
+	*/
+	public ProjectTask__c getTaskByCustomId( String customId ){ 
+		
+		return DAOTask.getTaskByCustomId( customId );
 	}
 	
 	/**
@@ -124,6 +128,14 @@ public class DAOFactory {
 	*/
 	public List<ProjectTask__c> ProjectTaskNotesObtainData( Id taskId ){
 		return DAOTask.getInfoTaskById( taskId );
+	}
+	
+	public ApexPages.StandardSetController searchForTaskByProject( String projectId, String searchTerm, String namespace ){
+		return DAOTask.searchForTasksByProject( projectId, searchTerm, namespace );
+	}
+
+	public ApexPages.StandardSetController loadTasksByUser( String filter, String orderBy, Boolean orderAsc, String projectId ){
+		return this.DAOTask.loadTasksByUser( filter, orderBy, orderAsc, projectId );
 	}
 	
 	/*-----------------------------------------------------------------------------------------------------------------------------*/
@@ -143,9 +155,16 @@ public class DAOFactory {
 	* @param userId
 	* @return member
 	*/
-	public ProjectMember__c getMemberByUserId(String userId){
+	public ProjectMember__c getMemberByUserId( String userId ){
 		
-		return DAOMember.getMemberByUserId(userId);	
+		return DAOMember.getMemberByUserId( userId );	
+	}
+	
+	/**
+	*@return a list of members candidates to be assigned
+	*/
+	public List<ProjectMember__c> getCandidatesToAssign(String taskId){
+		return DAOMember.getCandidatesToAssign(taskId);
 	}
 	
 	/*-----------------------------------------------------------------------------------------------------------------------------*/
@@ -158,18 +177,18 @@ public class DAOFactory {
 	* @param assignToId
 	* @param projetId
 	*/
-	public void insertAssignee(String taskId, String assignTo, String projectId){
+	public void insertAssignee( String taskId, String assignTo, String projectId, Integer percentageDedicated ){
 		
-		DAOAssignee.insertAssignee(taskId, assignTo, projectId);
+		DAOAssignee.insertAssignee( taskId, assignTo, projectId, percentageDedicated );
 	}
 	
 	/**
 	* @param task
 	* @return isTaskAssigned
 	*/
-	public Boolean isTaskAssigned(ProjectTask__c task){
+	public Boolean isTaskAssigned( ProjectTask__c task ){
 		
-		return DAOAssignee.isTaskAssigned(task); 
+		return DAOAssignee.isTaskAssigned( task ); 
 	}
 	
 	/**
@@ -177,9 +196,9 @@ public class DAOFactory {
 	* @param taskId
 	* @return assigneesList
 	*/
-	public List<ProjectMember> getAssignees(String taskId){
+	public List<ProjectMember> getAssignees( String taskId ){
 		
-		return DAOAssignee.getAssignees(taskId); 
+		return DAOAssignee.getAssignees( taskId ); 
 	}
 	
 	/*-----------------------------------------------------------------------------------------------------------------------------*/
@@ -190,27 +209,31 @@ public class DAOFactory {
 	* @param projectId
 	* @return members
 	*/
-	public List<ProjectMember__c> getProjectMembers(String projectId){
+	public List<ProjectMember__c> getProjectMembers( String projectId ){
 		
-		return DAOProject.getMembers(projectId);
+		return DAOProject.getMembers( projectId );
 	}
 	
 	/**
 	* @param projectId
 	* @param project
 	*/
-	public Project getProjectInfo(String projectid){
+	public Project getProjectInfo( String projectid ){
 		
-		return DAOProject.getInfo(projectId);
+		return DAOProject.getInfo( projectId );
 	}
 	
 	/**
 	* @param projectId
 	* @return isProjectAdministrator
 	*/
-	public Boolean isProjectAdministrator(String projectId){
+	public Boolean isProjectAdministrator( String projectId ){
 		
-		return DAOProject.isProjectAdministrator(projectId); 
+		return DAOProject.isProjectAdministrator( projectId ); 
+	}
+	
+	public ApexPages.StandardSetController searchForProjects( String searchTerm, String namespace ){
+		return DAOProject.searchForProjects( searchTerm, namespace );
 	}
 	
 	/*-----------------------------------------------------------------------------------------------------------------------------*/
@@ -317,6 +340,23 @@ public class DAOFactory {
 	public List<Activity__c> getActivityForProjectWidget( String projectId ){
 		
 		return DAOActivity.getActivityForProjectWidget( projectId );
+	}
+	
+	/*-----------------------------------------------------------------------------------------------------------------------------*/
+	
+	/*--------------------------------------------------- Attachment operations ------------------------------------------------------*/
+	
+	public List<AttachmentObj> getAttachments( String id ){
+		
+		return DAOAttachment.getAttachments( id );
+	}
+	
+	public void insertAttachment( Attachment att, id idAtt ){
+		this.DAOAttachment.insertAttachment( att, idAtt );
+	}
+	
+	public void deleteAttachments( String attachments ){
+		DAOAttachment.deleteAttachment( attachments );
 	}
 	
 	/*-----------------------------------------------------------------------------------------------------------------------------*/

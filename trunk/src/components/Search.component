@@ -1,48 +1,45 @@
-<apex:component controller="SearchController"> 
-    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/search.js')}" />
-    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/searchComponent.js')}" />
-    <apex:includeScript value="{!URLFOR($Resource.SearchResources, 'inc/js/search.js')}" />
-    <apex:attribute name="module" description="Type of search" type="String" required="true" assignTo="{!module}" />    
-    <apex:attribute name="projectId" description="Id for project detail search" type="String" required="false" assignTo="{!teamId}" />
+<apex:component id="searchControl" controller="SearchController"> 
+	
+	<apex:styleSheet value="{!URLFOR($Resource.SearchControl, 'inc/css/searchControl.css')}" />
+	<apex:includeScript value="{!URLFOR($Resource.SearchControl, 'inc/js/searchControl.js')}" />
+	
+    <apex:attribute name="module" description="Type of search (Project or Task)" type="String" required="true" assignTo="{!module}" />    
+    <apex:attribute name="projectId" description="Id for project detail search" type="String" required="false" assignTo="{!projectId}" />
     <apex:attribute name="label" description="Label to show on the search box" type="String" required="false" assignTo="{!labelName}" />
    
-   <apex:stylesheet value="{!URLFOR($Resource.SearchResources, 'inc/css/search.css')}" />
-
-    <div class="searchBox">
-        <div>
-            <div>
-                <div class="center_gray">
-                    <apex:form onsubmit="return chkForm(); " >
-                        <div class="search_box_input f_left" >
-                            <div class="legend_portal">
-                                <span><img class="f_left" alt="" src="{!URLFOR($Resource.ProjectResources, 'images/layout/magnifier.gif')}" />Find {!labelName}</span>
-                            </div>
-                          	<apex:inputText value="{!key}" id="searchQuery" styleClass="key_imput" onfocus="changeInputValue('focus'); " onblur="changeInputValue('blur');" onclick="hideError();" onkeypress="hideError();"/>
-                        </div>
-                        
-                        <apex:commandButton value="Search" action="{!searchKey}" id="searchBtn" styleClass="search_btn f_left" style="background-image: none !important;" />
-                          
-                    </apex:form>
-                  
-                </div> 
-            </div>
-        </div>
-    </div> 
-    
+   	<!-- Variables used within the javascript for the Search Input -->
+   	<script type="text/javascript" >
+   		searchControl.searchInputId = '{!$Component.frmSearch.searchQuery}';
+   	</script>
+   	
+   	<apex:outputPanel id="leftBorder" layout="block" styleClass="leftBorder" >
    
-    
-    <script>
-			
-        var btnSearch = '{!$Component.searchBtn}';
-    	function auxMeth(){
-	        var keyImput = $$('.key_imput')[0];
-	        keyImput.value = "{!$CurrentPage.parameters.key}";
-	    }
-    	auxMeth();
-    	
-    	decodeCriteria()
-    	
-    </script>
-    
+   		<apex:outputPanel id="rightBorder" layout="block" styleClass="rightBorder" >
+   			
+   			<apex:outputPanel id="innerContent" layout="block" styleClass="innerContent" >
+   				
+	            <apex:form id="frmSearch" >
+	                <apex:outputPanel id="findLeft" layout="block" styleClass="findLeft" >
+
+	                    <apex:outputPanel id="innerFind" layout="block" styleClass="innerFind" >
+	                    
+	                        <apex:outputPanel id="label" layout="block" styleClass="label" >
+	                        	<img alt="Find" src="{!URLFOR($Resource.SearchControl, 'images/magnifier.gif')}" />&nbsp;
+	                        	<apex:outputPanel >Find {!labelName}</apex:outputPanel> 
+	                        </apex:outputPanel>
+	                  		
+	                  		<apex:inputText value="{!key}" id="searchQuery" styleClass="searchQuery" onclick="searchControl.clearInput();" />
+	                  		
+	                  	 </apex:outputPanel>
+	                </apex:outputPanel>
+	                
+	                <apex:commandLink value="Search" action="{!searchKey}" id="searchBtn" styleClass="searchBtn" onclick="return searchControl.validateQuery();" />
+	            </apex:form>
+   				
+   			</apex:outputPanel>
+   			
+   		</apex:outputPanel>
+   
+   	</apex:outputPanel>
    
 </apex:component>

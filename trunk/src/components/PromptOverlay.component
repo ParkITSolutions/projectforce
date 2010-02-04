@@ -7,20 +7,32 @@
 					description="Flag to include new task component"
 					type="boolean" 
 					assignTo="{!includeNewTask}" 
-					required="false"/>	
+					required="false"/>
 			
 	<apex:attribute name="includeNewMilestone" 
 					description="Flag to include new milestone component"
 					type="boolean" 
 					assignTo="{!includeNewMilestone}" 
-					required="false"/>				
+					required="false"/>
 								
 	<apex:attribute name="includeAttachment" 
 					description="Flag to include new attachment component"
 					type="boolean" 
 					assignTo="{!includeAttachment}" 
-					required="false"/>	
-								
+					required="false"/>
+	
+	<apex:attribute name="includeNewAssignee" 
+					description="Flag to include new assignee component"
+					type="boolean" 
+					assignTo="{!includeNewAssignee}" 
+					required="false"/>
+
+	<apex:attribute name="includeNewMember" 
+					description="Flag to include new member component"
+					type="boolean" 
+					assignTo="{!includeNewMember}" 
+					required="false"/>
+					
 	<script>
 	
 		promptOverlay.id = '{!$Component.Content}';
@@ -55,7 +67,15 @@
 					</apex:outputPanel>
 			
 					<apex:outputPanel rendered="{!includeAttachment}" layout="block" id="include3">
-						 	<c:NewMilestone id="Attachment" /> 
+						 	<c:NewAttachment id="Attachment" /> 
+					</apex:outputPanel>
+					
+					<apex:outputPanel rendered="{!includeNewAssignee}" layout="block" id="include4">
+						 	<c:NewAssignee id="NewAssignee" /> 
+					</apex:outputPanel>
+					
+					<apex:outputPanel rendered="{!includeNewMember}" layout="block" id="include5">
+						 	<c:NewMember id="NewMember" /> 
 					</apex:outputPanel>
 			
 				</apex:outputPanel>

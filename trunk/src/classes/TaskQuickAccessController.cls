@@ -1,59 +1,59 @@
+/**
+* @author Matias Menafra 
+*/
 public class TaskQuickAccessController {
 
-	public String taskId = '';
-	public Boolean error = false;
+	public String taskCustomId;
+	public Boolean error { set; get; }
 	
 	/**
-	* sets task auto ID
-	*@param String s
-	*@return void
+	* Constructor
 	*/
-	public void setTaskId(String s){
-		taskId = '';
-		if(!s.startsWith('#')){
-			taskId = '#';
+	public TaskQuickAccessController(){
+		
+		this.error = false;
+	}
+	
+	/**
+	* setter for Task id 
+	* @param value
+	*/
+	public void setTaskCustomId( String value ){
+		
+		this.taskCustomId = '';
+		if( !value.startsWith( '#' ) ){
+			this.taskCustomId = '#';
 		}
-		taskId += s;
+		this.taskCustomId += value;
 	}
 	
 	/**
-	* gets task auto id
-	*@return String
+	* getter for Task  Id
+	* @return taskId
 	*/
-	public String getTaskId(){
-		return taskId;
-	}
-	
-	/**
-	*@return boolean error
-	*/
-	public Boolean getError(){
-		return error;
-	}
-	
-	/**
-	*@param bolean b 
-	*@return void
-	*/
-	public void setError(Boolean b){
-		error = b;
+	public String getTaskCustomId(){
+		return this.taskCustomId;
 	}
 	
 	/**
 	* returns page Reference to task detail
-	*@return PageReference 
+	* @return taskDetail 
 	*/
-	public PageReference go(){
-		List<ProjectTask__c> tasks = new List<ProjectTask__c>();
-		tasks = [select Id from ProjectTask__c where Id__c =: taskId];
+	public PageReference goToTaskDetail(){
 		
-		if(tasks.size() > 0){
-			PageReference forward = new PageReference('/apex/ProjectTaskDetail?id=' + tasks[0].Id);
-			forward.setRedirect(true);
-			return forward;
+		Project prj = new Project();
+		
+		ProjectTask__c task = prj.getTaskByCustomId( this.taskCustomId );
+		
+		if( task != null ){
+			
+			PageReference taskDetail = new PageReference( '/apex/ProjectTaskDetail?id=' + task.Id );
+			return taskDetail;
+			
 		}else{
-			error = true;
+			this.error = true;
 		}
+		
 		return null;
 	}
 }

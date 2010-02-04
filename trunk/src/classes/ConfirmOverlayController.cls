@@ -1,19 +1,17 @@
+/**
+* @author Andres Canavesi
+*/
 public class ConfirmOverlayController {
 	
-	public String 	title 	        { set; get; }
-	
-	public String 	messageToUser 	{ set; get; }
-	
-	public String 	actionIds 	    { set; get; }
-	
-	public String 	actionName 	    { set; get; }
-	
-	public String 	postAction 	    { set; get; }
-	
-	public String 	exceptionMessage 	    { set; get; }
+	public String 	title 	        	{ set; get; }
+	public String 	messageToUser 		{ set; get; }
+	public String 	actionIds 	    	{ set; get; }
+	public String 	actionName 	    	{ set; get; }
+	public String 	postAction 	    	{ set; get; }
+	public String 	exceptionMessage	{ set; get; }
 	
 	/**
-	*Constructor
+	* Constructor
 	*/
 	public ConfirmOverlayController(){
 		
@@ -25,36 +23,32 @@ public class ConfirmOverlayController {
 	public void action(){
 		
 		try{
-		
-			if(this.actionName == 'DeleteTasks'){
+			if( this.actionName == 'DeleteTasks' ){
 				
-				DAOFactory.getInstance().deleteTasks(this.actionIds);
-				
+				DAOFactory.getInstance().deleteTasks( this.actionIds );
 				this.postAction = 'DeleteTasksSuccess';
-				
 			}
 			
-			if(this.actionName == 'MarkCompleteTasks'){
+			if( this.actionName == 'MarkCompleteTasks' ){
 				
-				String projectId = System.currentPageReference().getParameters().get('id');
+				String projectId 	= System.currentPageReference().getParameters().get( 'id' );
+				Project project 	= new Project( projectId );
 				
-				Project project = new Project(projectId);
-				
-				project.setTasks(this.actionIds);
-				
+				project.setTasks( this.actionIds );
 				project.markCompleteTasks();
 				
 				this.postAction = 'TasksMarkCompleteSuccess';
-				 
 			}
 			
-		}catch(CustomException e){
+			if( this.actionName == 'deleteAttachments' ){
+				
+				DAOFactory.getInstance().deleteAttachments( this.actionIds );
+				this.postAction = 'DeleteAttachmentsSuccess';
+			}
 			
-			Apexpages.addMessages(e);
-			
+		}catch( CustomException e ){
+			Apexpages.addMessages( e );
 			this.exceptionMessage = e.getMessage();
 		}
-		
 	}
-	
 }

@@ -7,25 +7,26 @@
     <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>  
+    <!--  
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectLayout.css')}" />
 	
     <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" /> 
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetailEdit.css')}" />    
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetailEdit.css')}" />    -->
 
     <!-- Portal Support -->
     <apex:includeScript value="{!$Resource.portalSupport}"/>  
     
-    <!-- CSS styles for Portal Integration -->
+    <!-- CSS styles for Portal Integration 
     <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsTable.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsTable.css')}" />-->
     
-    <!-- ### Styles ### -->
+    <!-- ### Styles ### 
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgets/TeamsOverlayNewTask.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />        
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" /> -->       
     
-    <!-- ProjectTaskList CSS -->
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/adminMainSetup.css')}" />
+    <!-- ProjectTaskList CSS 
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/adminMainSetup.css')}" />-->
     
     <!-- ProjectTaskList JS -->
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskList.js')}"/>

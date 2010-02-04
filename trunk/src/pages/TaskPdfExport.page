@@ -1,27 +1,27 @@
-<apex:page renderAs="pdf" sidebar="false" tabStyle="Project2__c" controller="TaskPdfExportController" id="taskPdfExport">
+<apex:page id="taskPdfExport" renderAs="pdf" sidebar="false" tabStyle="Project2__c" controller="TaskPdfExportController" >
 
-<style type="text/css">
-	body {
-		margin: 0;
-		padding: 0;
-	}
-	a {
-		color: #FFFFFF !important;
-	}
-	.header_project{
-		background-image: url(/img/bgTop.gif);
-		background-position: left top;
-		background-repeat: repeat-x;
-	}
-	.header_portal {
-		background:#004D6B none repeat scroll 0 0;
-		height: 58px;
-		position:relative;
-		width:100%;
-		display: block;
-		overflow: hidden;
-	}
-</style>
+	<style type="text/css">
+		body {
+			margin: 0;
+			padding: 0;
+		}
+		a {
+			color: #FFFFFF !important;
+		}
+		.header_project{
+			background-image: url(/img/bgTop.gif);
+			background-position: left top;
+			background-repeat: repeat-x;
+		}
+		.header_portal {
+			background:#004D6B none repeat scroll 0 0;
+			height: 58px;
+			position:relative;
+			width:100%;
+			display: block;
+			overflow: hidden;
+		}
+	</style>
 
     <apex:outputpanel id="detailContainer">
     	<!-- PDF Header -->

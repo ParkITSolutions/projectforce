@@ -47,10 +47,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>CopyTaskListController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>CustomException</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -131,6 +127,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>NewAssigneeController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>NewMemberController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>NewMilestoneController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -140,6 +144,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ObjectFormatter</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>OldUploadAttachmentController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -251,10 +259,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProjectNicoTestControler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ProjectOverlayDeleteAssigneeController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -308,14 +312,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectOverviewControllerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectSearchResultController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectSearchResultControllerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -423,11 +419,23 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>QuickLinksWidgetController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>SearchController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>SearchControllerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SearchResults</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SearchResultsController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -496,10 +504,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>TriggersTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>UploadAttachmentController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -2128,15 +2132,11 @@
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <pageAccesses>
-        <apexPage>Attachment</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>CopyTaskList</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>HeaderTemplate</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>OldUploadAttachment</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
@@ -2156,6 +2156,10 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>ProjectDetailNico</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>ProjectMembersList</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
@@ -2165,14 +2169,6 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectMembersRemove</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>ProjectNicoTest</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>ProjectSearchResult</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
@@ -2197,6 +2193,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectTimeline</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>SearchResults</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>

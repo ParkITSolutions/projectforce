@@ -15,12 +15,10 @@ public class SuggestController {
 	*@Constructor
 	*/
 	public SuggestController(){
-		
 		 String inputValue = System.currentPageReference().getParameters().get('input').trim();
 		 paramInput = '%' + inputValue + '%';
 		 paramClass = System.currentPageReference().getParameters().get('class');		
 		 paramTeamId = System.currentPageReference().getParameters().get('teamId');
-		
 		// Add Suggestion objects to bind as an if there
 		// Suggestion for competency object
 		if (paramClass == 'Competency'){

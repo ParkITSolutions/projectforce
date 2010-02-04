@@ -13,7 +13,7 @@ public class DAOProject {
 	* @param projectId
 	* @return members
 	*/
-	public List<ProjectMember__c> getMembers(String projectId){
+	public List<ProjectMember__c> getMembers( String projectId ){
 		
 		List<ProjectMember__c> members = new List<ProjectMember__c>();
 		
@@ -30,7 +30,7 @@ public class DAOProject {
 	* @param projectId
 	* @param project
 	*/
-	public Project getInfo(String projectId){
+	public Project getInfo( String projectId ){
 		
 		Project2__c project2 = new Project2__c();
 		Project project = new Project();
@@ -55,7 +55,7 @@ public class DAOProject {
 	* @param projectId
 	* @return isProjectAdministrator
 	*/
-	public Boolean isProjectAdministrator(String projectId){
+	public Boolean isProjectAdministrator( String projectId ){
 		
 		List<Project2__c> project = [select Id
 					       			 from Project2__c
@@ -69,4 +69,23 @@ public class DAOProject {
 		
 		return false;
 	}
+	
+	/**
+	* 
+	* @param taskId
+	* @return task
+	*/
+	public ApexPages.StandardSetController searchForProjects( String searchTerm, String namespace ){
+		
+		String searchQ = '%'+ searchTerm +'%';
+		
+		ApexPages.StandardSetController searchResults = new ApexPages.StandardSetController( Database.getQueryLocator( [Select Id, Name, Description__c From Project2__c Where Name LIKE :searchQ OR Description__c LIKE :searchQ ] ) );
+		
+		if( searchResults.getResultSize() == 0 ){
+			return new ApexPages.StandardSetController( new List<Project2__c>() );
+		}
+		
+		return searchResults;	
+	}
+	
 }
