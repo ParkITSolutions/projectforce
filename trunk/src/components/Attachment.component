@@ -20,7 +20,7 @@
 			<!-- End TitlePanel -->
 			
 			<!-- Contents Inlcudes inner Page -->
-			<apex:iframe id="attachmentIframe" src="/apex/Attachment?pId={!parentId}&p={!actualPage}&t=1"  height="120px"/>			   
+			<apex:iframe id="attachmentIframe" src="/apex/Attachment?pId={!parentId}&p={!currentPage}&t=1"  height="120px"/>			   
 
 	</apex:outputPanel>	
 </apex:component>
