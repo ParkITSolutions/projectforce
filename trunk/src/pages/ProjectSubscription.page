@@ -1,200 +1,200 @@
 <apex:page id="ProjectSubscription" sidebar="false" tabStyle="Project2__c" controller="ProjectSubscriptionController">
-	<apex:includeScript value="/soap/ajax/11.1/connection.js"/>
-	<script>
-		var API_SESSION_ID = '{!$Api.Session_ID}';
-		//Common Resource URL  
-		var globalCommonResourcesPath = '{!URLFOR($Resource.commonResources)}';
-	</script>
-	<!-- Prototype + Scriptaculous -->
-	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
-	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
-	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>
-	<!-- Portal Support -->
-	<apex:includeScript value="{!$Resource.portalSupport}"/>	
-	<!-- Common Js for All Sections -->
-	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/admin.js')}"/>
-	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}"/>
-	<!-- CSS de TS -->
-	<link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />	
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />
-	<link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/profileEdition.css')}" />
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetail.css')}" />
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgets/TeamMemberWidget.css')}" />	
+    <apex:includeScript value="/soap/ajax/11.1/connection.js"/>
+    <script>
+        var API_SESSION_ID = '{!$Api.Session_ID}';
+        //Common Resource URL  
+        var globalCommonResourcesPath = '{!URLFOR($Resource.commonResources)}';
+    </script>
+    <!-- Prototype + Scriptaculous -->
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>
+    <!-- Portal Support -->
+    <apex:includeScript value="{!$Resource.portalSupport}"/>    
+    <!-- Common Js for All Sections -->
+    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/admin.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}"/>
+    <!-- CSS de TS -->
+    <link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />    
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />
+    <link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/profileEdition.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetail.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgets/TeamMemberWidget.css')}" />   
     <!-- CSS styles for Portal Integration -->
     <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
-	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />   
-	
-	
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsSubscription.css')}" />
-	
-	<style>
-		body{
-			background:#FFF!important;
-		}
-		.inputButton{
-			background:transparent url({!URLFOR($Resource.ProjectResources, 'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right bottom;
-		}
-		.bPageHeader, .bPageHeader td.left {
-			background-color:#FFF!important;
-		}	
-		
-	    .blackbutton {
-			background:transparent url({!URLFOR($Resource.ProjectResources,'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right top;
-			color:#FFFFFF !important;
-			display:block;
-			font-family:Verdana,Arial;
-			font-size:10px;
-			font-weight:bold;
-			line-height:10px;
-			margin-left:3px;
-			padding:5px 10px 8px 5px;
-			white-space:nowrap;
-			border: 0px none;
-		}		
-		
-	</style>
-	
-	<!-- Header -->
-	<apex:composition template="HeaderTemplate">
-		<apex:define name="moduleId">
-			<apex:variable var="moduleId" value="headerTeams"/>
-		</apex:define>
-	    <apex:define name="module">{!$ObjectType.Project2__c.labelPlural}</apex:define>
-	    <apex:define name="title">Subscriptions</apex:define>
-	    <apex:define name="search">
-	    	<c:Search module="team" />
-	    </apex:define>
+    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />   
+    
+    
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsSubscription.css')}" />
+    
+    <style>
+        body{
+            background:#FFF!important;
+        }
+        .inputButton{
+            background:transparent url({!URLFOR($Resource.ProjectResources, 'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right bottom;
+        }
+        .bPageHeader, .bPageHeader td.left {
+            background-color:#FFF!important;
+        }   
+        
+        .blackbutton {
+            background:transparent url({!URLFOR($Resource.ProjectResources,'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right top;
+            color:#FFFFFF !important;
+            display:block;
+            font-family:Verdana,Arial;
+            font-size:10px;
+            font-weight:bold;
+            line-height:10px;
+            margin-left:3px;
+            padding:5px 10px 8px 5px;
+            white-space:nowrap;
+            border: 0px none;
+        }       
+        
+    </style>
+    
+    <!-- Header -->
+    <apex:composition template="HeaderTemplate">
+        <apex:define name="moduleId">
+            <apex:variable var="moduleId" value="headerTeams"/>
+        </apex:define>
+        <apex:define name="module">{!$ObjectType.Project2__c.labelPlural}</apex:define>
+        <apex:define name="title">Subscriptions</apex:define>
+        <apex:define name="search">
+            <c:Search module="team" />
+        </apex:define>
     </apex:composition>
     
-	<div class="sidebar" style="height: 250px;_height: 265px;">
-		
-		<!-- Project Quick Links -->
-		<c:QuickLinksWidget id="quidkLinks" />
+    <div class="sidebar" style="height: 250px;_height: 265px;">
+        
+        <!-- Project Quick Links -->
+        <c:QuickLinksWidget id="quidkLinks" />
 
-        <div class="clear"></div>	
-	
-	</div>
-	
-	<!-- BreadCrumbs -->
-	<apex:form id="form_content" onsubmit="getInputValue(); if(!isCloneAction){if(validator('{!$Component.form_content}', 'warning_to_user'))return false;};">
-		<div align="center"  class="breadCrumbAndButtons" style="height: 30px!important;">
-			<div class="breadcrumbs"  align="center">
-	        	<div class="breadCrumbs" style="float: left;">
-	            	<a  href="/apex/ProjectDetail?id={!idProject}" title="{!NameProject}"><apex:outputText escape="true" value="{!NameProject}" /> </a> > <span class="breadCrumbsLast">Subscriptions</span>
-	            </div>
-	            
-	            <table align="center" cellpadding="0" cellspacing="0">
-	            	<tr>
-	            		<td>
-							<apex:outputpanel rendered="{!IF(subscriptionCount == 0, true, false)}">
-								<apex:commandLink action="{!saveSubscription}" styleClass="blackbutton" >
-									<span>Save</span>
-								</apex:commandLink>
-							</apex:outputpanel>
-						</td>
-						<td>
-							<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}" >
-								<apex:commandLink action="{!saveSubscription}"  styleClass="blackbutton" >
-									<span>Update</span>
-								</apex:commandLink>
-							</apex:outputpanel>
-						</td>
-						<td>
-							<apex:commandLink action="{!cancelSubscription}" styleClass="blackbutton">
-								<span>Cancel</span>
-							</apex:commandLink>
-						</td>
-						<td>
-							<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}">
-								<apex:commandLink action="{!deleteSubscription}"  styleClass="blackbutton" >
-									<span>Unsubscribe</span>
-								</apex:commandLink>
-							</apex:outputpanel>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		<!-- Main Content Div -->
-		<div class="main_content" id="main_content">		
-			<div class="holder">
-			<!-- Start Main Content -->
-				<!-- Section Title -->
-				<div class="teamsTitleBlue" id="titleSection">
-					Manage {!$ObjectType.Project2__c.label} Subscriptions
-				</div>
-				<!-- Form Begin -->
-					<div class="formContainer">
-						
-						<!-- Project Checkboxes Section -->
-						<div class="fieldSection clear">
-							Alert me via email in the following scenarios
-						</div>
-						<table cellpadding="0" cellspacing="0"  class="checkboxEdition">
-							<tr>
-								<td class="labelTD"><label for = "ProjectSubscription:form_content:assignedToMe">When a task has been (un)assigned to me </label></td>
-								<td><apex:inputCheckbox id="assignedToMe" value="{!subscription.ProjectTaskAssignedToMe__c}"/></td>
-							</tr>
-							<tr>
-								<td class="labelTD"><label for = "ProjectSubscription:form_content:assignedToMeChanged">When a percent of a task assigned to me has been changed by another </label></td>
-								<td><apex:inputCheckbox id="assignedToMeChanged" value="{!subscription.ProjectTaskAssignToMeChanged__c}"/></td>
-							</tr>
-							<tr>
-								<td class="labelTD"><label for = "ProjectSubscription:form_content:taskChanged">All task status or percent complete changes within a {!$ObjectType.Project2__c.label}</label></td>
-								<td><apex:inputCheckbox id="taskChanged" value="{!subscription.ProjectTaskChanged__c}"/></td>
-							</tr>
-							<tr>
-								<td class="labelTD"><label for = "ProjectSubscription:form_content:taskDeleted">When a task has been deleted </label></td>
-								<td><apex:inputCheckbox id="taskDeleted" value="{!subscription.ProjectTaskDeleted__c}"/></td>
-							</tr>
-							
-							
-							
-						</table>
-						
-					</div><!-- End Form container --> 
-			</div><!-- End Main Content -->
-		</div>
-		
-		<!-- BreadCrumbs -->
-		<div class="breadcrumbs" style="padding-bottom: 10px;" align="center">
-			<br>
+        <div class="clear"></div>   
+    
+    </div>
+    
+    <!-- BreadCrumbs -->
+    <apex:form id="form_content" onsubmit="getInputValue(); if(!isCloneAction){if(validator('{!$Component.form_content}', 'warning_to_user'))return false;};">
+        <div align="center"  class="breadCrumbAndButtons" style="height: 30px!important;">
+            <div class="breadcrumbs"  align="center">
+                <div class="breadCrumbs" style="float: left;">
+                    <a  href="/apex/ProjectDetail?id={!idProject}" title="{!NameProject}"><apex:outputText escape="true" value="{!NameProject}" /> </a> > <span class="breadCrumbsLast">Subscriptions</span>
+                </div>
+                
+                <table align="center" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td>
+                            <apex:outputpanel rendered="{!IF(subscriptionCount == 0, true, false)}">
+                                <apex:commandLink action="{!saveSubscription}" styleClass="blackbutton" >
+                                    <span>Save</span>
+                                </apex:commandLink>
+                            </apex:outputpanel>
+                        </td>
+                        <td>
+                            <apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}" >
+                                <apex:commandLink action="{!saveSubscription}"  styleClass="blackbutton" >
+                                    <span>Update</span>
+                                </apex:commandLink>
+                            </apex:outputpanel>
+                        </td>
+                        <td>
+                            <apex:commandLink action="{!cancelSubscription}" styleClass="blackbutton">
+                                <span>Cancel</span>
+                            </apex:commandLink>
+                        </td>
+                        <td>
+                            <apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}">
+                                <apex:commandLink action="{!deleteSubscription}"  styleClass="blackbutton" >
+                                    <span>Unsubscribe</span>
+                                </apex:commandLink>
+                            </apex:outputpanel>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!-- Main Content Div -->
+        <div class="main_content" id="main_content">        
+            <div class="holder">
+            <!-- Start Main Content -->
+                <!-- Section Title -->
+                <div class="teamsTitleBlue" id="titleSection">
+                    Manage {!$ObjectType.Project2__c.label} Subscriptions
+                </div>
+                <!-- Form Begin -->
+                    <div class="formContainer">
+                        
+                        <!-- Project Checkboxes Section -->
+                        <div class="fieldSection clear">
+                            Alert me via email in the following scenarios
+                        </div>
+                        <table cellpadding="0" cellspacing="0"  class="checkboxEdition">
+                            <tr>
+                                <td class="labelTD"><label for = "ProjectSubscription:form_content:assignedToMe">When a task has been (un)assigned to me </label></td>
+                                <td><apex:inputCheckbox id="assignedToMe" value="{!subscription.ProjectTaskAssignedToMe__c}"/></td>
+                            </tr>
+                            <tr>
+                                <td class="labelTD"><label for = "ProjectSubscription:form_content:assignedToMeChanged">When a percent of a task assigned to me has been changed by another </label></td>
+                                <td><apex:inputCheckbox id="assignedToMeChanged" value="{!subscription.ProjectTaskAssignToMeChanged__c}"/></td>
+                            </tr>
+                            <tr>
+                                <td class="labelTD"><label for = "ProjectSubscription:form_content:taskChanged">All task status or percent complete changes within a {!$ObjectType.Project2__c.label}</label></td>
+                                <td><apex:inputCheckbox id="taskChanged" value="{!subscription.ProjectTaskChanged__c}"/></td>
+                            </tr>
+                            <tr>
+                                <td class="labelTD"><label for = "ProjectSubscription:form_content:taskDeleted">When a task has been deleted </label></td>
+                                <td><apex:inputCheckbox id="taskDeleted" value="{!subscription.ProjectTaskDeleted__c}"/></td>
+                            </tr>
+                            
+                            
+                            
+                        </table>
+                        
+                    </div><!-- End Form container --> 
+            </div><!-- End Main Content -->
+        </div>
+        
+        <!-- BreadCrumbs -->
+        <div class="breadcrumbs" style="padding-bottom: 10px;" align="center">
+            <br>
             <table align="center" cellpadding="0" cellspacing="0">
-            	<tr>
-            		<td>
-						<apex:outputpanel rendered="{!IF(subscriptionCount == 0, true, false)}">
-							<apex:commandLink action="{!saveSubscription}" styleClass="blackbutton" >
-								<span>Save</span>
-							</apex:commandLink>
-						</apex:outputpanel>
-					</td>
-					<td>
-						<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}" >
-							<apex:commandLink action="{!saveSubscription}"  styleClass="blackbutton" >
-								<span>Update</span>
-							</apex:commandLink>
-						</apex:outputpanel>
-					</td>
-					<td>
-						<apex:commandLink action="{!cancelSubscription}" styleClass="blackbutton">
-							<span>Cancel</span>
-						</apex:commandLink>
-					</td>
-					<td>
-						<apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}">
-							<apex:commandLink action="{!deleteSubscription}"  styleClass="blackbutton" >
-								<span>Unsubscribe</span>
-							</apex:commandLink>
-						</apex:outputpanel>
-					</td>
-				</tr>
-			</table>
-		</div>
-	
-	</apex:form>
-	<script type="text/javascript">
-		readPortalCSSRules();
-	</script>	
+                <tr>
+                    <td>
+                        <apex:outputpanel rendered="{!IF(subscriptionCount == 0, true, false)}">
+                            <apex:commandLink action="{!saveSubscription}" styleClass="blackbutton" >
+                                <span>Save</span>
+                            </apex:commandLink>
+                        </apex:outputpanel>
+                    </td>
+                    <td>
+                        <apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}" >
+                            <apex:commandLink action="{!saveSubscription}"  styleClass="blackbutton" >
+                                <span>Update</span>
+                            </apex:commandLink>
+                        </apex:outputpanel>
+                    </td>
+                    <td>
+                        <apex:commandLink action="{!cancelSubscription}" styleClass="blackbutton">
+                            <span>Cancel</span>
+                        </apex:commandLink>
+                    </td>
+                    <td>
+                        <apex:outputpanel rendered="{!IF(subscriptionCount == 0, false, true)}">
+                            <apex:commandLink action="{!deleteSubscription}"  styleClass="blackbutton" >
+                                <span>Unsubscribe</span>
+                            </apex:commandLink>
+                        </apex:outputpanel>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    
+    </apex:form>
+    <script type="text/javascript">
+        readPortalCSSRules();
+    </script>   
 </apex:page>

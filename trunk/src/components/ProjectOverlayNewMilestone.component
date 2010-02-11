@@ -8,111 +8,111 @@
     itself.
      -->
      
-	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsOverlayNewMilestone.css')}" />
-	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamsOverlayNewMilestone.js')}" />
-	
-	<!-- ### Initialize Overlay ### -->
-	<div id="modalAddMilestoneOverlay" class="backgroundOverlay" style="display:none;"></div>
-	
+    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsOverlayNewMilestone.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamsOverlayNewMilestone.js')}" />
+    
+    <!-- ### Initialize Overlay ### -->
+    <div id="modalAddMilestoneOverlay" class="backgroundOverlay" style="display:none;"></div>
+    
     <script>
-		var globalUserLocale = "{!UserLocale}";		
-		var globalCountry = "{!$Organization.Country}";
-		document.observe('dom:loaded',newMilestoneLoad);
-		
-		
-	</script>
-	
-	<!-- Overlay Styles --> 
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />
-	<div id="newMilestone" style="display:none;" >	
-		<!-- Overlay Title -->
-		<div class="overlayTitleContent">
-			<div class="overlayTitle">Create New Milestone</div>
-			<div class="overlayCloseEvent" id="overlayCloseEventNewMilestone">
-				<a href="Javascript:;" onclick="resetFormNewMilestone();addNewMilestoneOverlay.close(); removeOverlayEvents();">
-					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
-				</a>
-			</div>
-		</div>
-		<apex:form >
-			<apex:actionFunction name="refreshAssignToMilestone" action="{!dummyRefresh}" rerender="assignToMilestone" oncomplete="enabDisbMile('on')" />
-		</apex:form>
-		<div class="overlayMainContent">
-			<!-- Required Information -->
-			<span class="overlayRequiredInfo">= Required Information</span>
-			<div class="overlay_form">
-				<apex:form id="quickMilestoneForm" onSubmit="return checkFormNewMilestoneOverlay('{!$Component.nameMilestone}','{!$Component.dueDateMilestone}','{!$Component.memberMilestone}')" >
-					<div id="formID" style="display:none;">{!$Component.quickMilestoneForm}</div>
-					<apex:outputPanel id="milestoneRefresh" style="display:none;"></apex:outputPanel>
-					<apex:actionStatus id="MilestoneStatus">
-						<apex:facet name="start"><apex:outputText value="Saving Milestone..." /></apex:facet>
-		                <apex:facet name="stop">	
-			                <apex:outputPanel id="MilestonePanel" layout="block">
-				                <div class="overlayFormContent">
-									<label>Milestone Name</label><span class="required"></span>
-									<apex:inputField id="nameMilestone" value="{!Task.name}" required="true" style="" styleClass="medium" />
-									<br>
-									<div id="milestoneNameError" class="red" style="display: none;"><strong>Error:</strong> You must enter a value</div>
-									<div class="red" style="display: none;margin-left:120px;_margin-left:60px;" id="instantM"><strong>Warning:</strong> Max length reached (80).</div>
-									<br/>
-									<label>Start Date</label><span class="required"></span>
-									<apex:inputField id="dueDateMilestone" styleClass="medium" required="true" value="{!Task.StartDate__c}" />
-									<br>
-									<div id="milestoneDueDate-comp-milestone" style="display:none;">{!$Component.milestoneDueDate}</div>
+        var globalUserLocale = "{!UserLocale}";     
+        var globalCountry = "{!$Organization.Country}";
+        document.observe('dom:loaded',newMilestoneLoad);
+        
+        
+    </script>
+    
+    <!-- Overlay Styles --> 
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />
+    <div id="newMilestone" style="display:none;" >  
+        <!-- Overlay Title -->
+        <div class="overlayTitleContent">
+            <div class="overlayTitle">Create New Milestone</div>
+            <div class="overlayCloseEvent" id="overlayCloseEventNewMilestone">
+                <a href="Javascript:;" onclick="resetFormNewMilestone();addNewMilestoneOverlay.close(); removeOverlayEvents();">
+                    <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
+                </a>
+            </div>
+        </div>
+        <apex:form >
+            <apex:actionFunction name="refreshAssignToMilestone" action="{!dummyRefresh}" rerender="assignToMilestone" oncomplete="enabDisbMile('on')" />
+        </apex:form>
+        <div class="overlayMainContent">
+            <!-- Required Information -->
+            <span class="overlayRequiredInfo">= Required Information</span>
+            <div class="overlay_form">
+                <apex:form id="quickMilestoneForm" onSubmit="return checkFormNewMilestoneOverlay('{!$Component.nameMilestone}','{!$Component.dueDateMilestone}','{!$Component.memberMilestone}')" >
+                    <div id="formID" style="display:none;">{!$Component.quickMilestoneForm}</div>
+                    <apex:outputPanel id="milestoneRefresh" style="display:none;"></apex:outputPanel>
+                    <apex:actionStatus id="MilestoneStatus">
+                        <apex:facet name="start"><apex:outputText value="Saving Milestone..." /></apex:facet>
+                        <apex:facet name="stop">    
+                            <apex:outputPanel id="MilestonePanel" layout="block">
+                                <div class="overlayFormContent">
+                                    <label>Milestone Name</label><span class="required"></span>
+                                    <apex:inputField id="nameMilestone" value="{!Task.name}" required="true" style="" styleClass="medium" />
+                                    <br>
+                                    <div id="milestoneNameError" class="red" style="display: none;"><strong>Error:</strong> You must enter a value</div>
+                                    <div class="red" style="display: none;margin-left:120px;_margin-left:60px;" id="instantM"><strong>Warning:</strong> Max length reached (80).</div>
+                                    <br/>
+                                    <label>Start Date</label><span class="required"></span>
+                                    <apex:inputField id="dueDateMilestone" styleClass="medium" required="true" value="{!Task.StartDate__c}" />
+                                    <br>
+                                    <div id="milestoneDueDate-comp-milestone" style="display:none;">{!$Component.milestoneDueDate}</div>
                                     <div id="milestoneDateError" class="red" style="display: none;"><strong>Error:</strong> You must enter a value</div>
                                     <div id="milestoneDateInvalid" class="red" style="display: none;"><strong>Error:</strong> You must enter a valid value</div>
-									<br/>
-									<label>Assign to</label><span class="required"></span>
-									<apex:outputpanel id="assignToMilestone">
-										<apex:selectList value="{!projectMember.User__c}" id="memberMilestone" multiselect="false" size="1" styleClass="comBxNewMile">
-				        					<apex:selectOptions value="{!projectMembers}" />
-				               			</apex:selectList>
-				               			&nbsp;&nbsp;<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/small_loader.gif')}" id="swrNewMile" />
-				               			<br>
-				               			<div id="memberErrorMilestone" class="red" style="display: none;"><strong>Error:</strong> You must select a value</div>
-				               		</apex:outputpanel>
-				               	</div>
-								<div class="overlaySeparateLine"></div>
-								<!-- Saven and Cancel Buttons -->
-								<div class="overlayFromButtons" align="center">
-									<apex:commandButton id="SaveButton"
-										action="{!insertMilestone}" 										 										
-										rerender="quickMilestoneForm"
-										status="MilestoneStatus" 
-										style="float: none;width: 70px !important;background:#21637D none repeat scroll 0 0 !important;"
-										value="Save" 
-										styleclass="btn allButtons"
-										oncomplete="reloadMilestoneList();
-										            $('overlayCloseEventNewMilestone').show();
-										            showInformationMessage('Created new milestone', 'success');
-										            ">
-									</apex:commandButton>
-										
-									<apex:commandButton styleClass="btn allButtons" style="float: none;width: 70px !important;background:#989999 none repeat scroll 0 0 !important;" value="Cancel" onclick="try{showSelect();}catch(e){}resetFormNewMilestone();addNewMilestoneOverlay.close(); removeOverlayEvents(); return false; "  />
-									<a href="https://{!domain}/{!taskPrefix}/e" onclick="addNewMilestoneOverlay.close(); removeOverlayEvents();">Create Full Task</a>
-									<div id="quickMilestoneFormId" style="display:none;">{!$Component.quickMilestoneForm}</div>			
-								</div>
-							</apex:outputPanel>
-						</apex:facet>
-					</apex:actionStatus> 
-				</apex:form>
-			</div>
-			<!-- The hidden form to send partial data to edit -->
-			<div style="display:none;">
-				<form id="hiddenFormQuickMilestone" action="ProjectCreateNewTask" method="get">
+                                    <br/>
+                                    <label>Assign to</label><span class="required"></span>
+                                    <apex:outputpanel id="assignToMilestone">
+                                        <apex:selectList value="{!projectMember.User__c}" id="memberMilestone" multiselect="false" size="1" styleClass="comBxNewMile">
+                                            <apex:selectOptions value="{!projectMembers}" />
+                                        </apex:selectList>
+                                        &nbsp;&nbsp;<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/small_loader.gif')}" id="swrNewMile" />
+                                        <br>
+                                        <div id="memberErrorMilestone" class="red" style="display: none;"><strong>Error:</strong> You must select a value</div>
+                                    </apex:outputpanel>
+                                </div>
+                                <div class="overlaySeparateLine"></div>
+                                <!-- Saven and Cancel Buttons -->
+                                <div class="overlayFromButtons" align="center">
+                                    <apex:commandButton id="SaveButton"
+                                        action="{!insertMilestone}"                                                                                 
+                                        rerender="quickMilestoneForm"
+                                        status="MilestoneStatus" 
+                                        style="float: none;width: 70px !important;background:#21637D none repeat scroll 0 0 !important;"
+                                        value="Save" 
+                                        styleclass="btn allButtons"
+                                        oncomplete="reloadMilestoneList();
+                                                    $('overlayCloseEventNewMilestone').show();
+                                                    showInformationMessage('Created new milestone', 'success');
+                                                    ">
+                                    </apex:commandButton>
+                                        
+                                    <apex:commandButton styleClass="btn allButtons" style="float: none;width: 70px !important;background:#989999 none repeat scroll 0 0 !important;" value="Cancel" onclick="try{showSelect();}catch(e){}resetFormNewMilestone();addNewMilestoneOverlay.close(); removeOverlayEvents(); return false; "  />
+                                    <a href="https://{!domain}/{!taskPrefix}/e" onclick="addNewMilestoneOverlay.close(); removeOverlayEvents();">Create Full Task</a>
+                                    <div id="quickMilestoneFormId" style="display:none;">{!$Component.quickMilestoneForm}</div>         
+                                </div>
+                            </apex:outputPanel>
+                        </apex:facet>
+                    </apex:actionStatus> 
+                </apex:form>
+            </div>
+            <!-- The hidden form to send partial data to edit -->
+            <div style="display:none;">
+                <form id="hiddenFormQuickMilestone" action="ProjectCreateNewTask" method="get">
                     <input id="tempProjectid" type="text" value="{!CurrentProjectId}" name="id" />
-					<input id="tempQuickMilestoneName" type="text" name="qmname" />
-					<input id="tempQuickMilestoneDueDate" type="text" name="qmdd"/>
-					<input id="tempQuickMilestoneAsigneeId" type="text" name="qmaid"/>
-					<input name="ed" value="true" />
-					<input type="submit" value="tempSend" />
-				</form>
-			</div>
-		</div>
-	</div>
-	
-	<script>
-    	addNewMilestoneOverlay = new modalOverlayClass('newMilestone','modalAddMilestoneOverlay',  true);
-    	
+                    <input id="tempQuickMilestoneName" type="text" name="qmname" />
+                    <input id="tempQuickMilestoneDueDate" type="text" name="qmdd"/>
+                    <input id="tempQuickMilestoneAsigneeId" type="text" name="qmaid"/>
+                    <input name="ed" value="true" />
+                    <input type="submit" value="tempSend" />
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        addNewMilestoneOverlay = new modalOverlayClass('newMilestone','modalAddMilestoneOverlay',  true);
+        
     </script>
 </apex:component>

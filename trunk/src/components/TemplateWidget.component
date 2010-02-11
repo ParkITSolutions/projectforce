@@ -1,36 +1,36 @@
 <apex:component allowDML="true" >
-	
-	<!-- Corresponding CSS and JS for particular Widget-->
-	<apex:stylesheet value="{!URLFOR($Resource.ActivityWidget, 'inc/css/activityWidget.css')}" /> 
-	<apex:includeScript value="{!URLFOR($Resource.ActivityWidget, 'inc/js/activityWidget.js')}" />
-	
-	<!-- TODO place in application top -->
-	<apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
-	
-	<apex:outputPanel id="widget" styleClass="widget" layout="block" >
-	
-		<!-- widget header -->
-		<apex:outputPanel id="header" layout="block" styleClass="header">
-			<div>
-				<div>
-					<h4>Template Widget</h4>
-				</div>
-			</div>
-		</apex:outputPanel>
-		
-		<!-- dynamic content goes here -->
-		<apex:outputPanel id="widgetContent" layout="block" styleClass="widgetContent">
-			
-			<!-- Body of Widget goes here -->
-			
-		</apex:outputPanel>
-		
-		<!-- widget footer -->
-		<apex:outputPanel id="footer" layout="block" styleClass="footer">
-			<div>
-				<div></div>
-			</div>
-		</apex:outputPanel>
-	
-	</apex:outputPanel>
+    
+    <!-- Corresponding CSS and JS for particular Widget-->
+    <apex:stylesheet value="{!URLFOR($Resource.ActivityWidget, 'inc/css/activityWidget.css')}" /> 
+    <apex:includeScript value="{!URLFOR($Resource.ActivityWidget, 'inc/js/activityWidget.js')}" />
+    
+    <!-- TODO place in application top -->
+    <apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
+    
+    <apex:outputPanel id="widget" styleClass="widget" layout="block" >
+    
+        <!-- widget header -->
+        <apex:outputPanel id="header" layout="block" styleClass="header">
+            <div>
+                <div>
+                    <h5>Template Widget</h5>
+                </div>
+            </div>
+        </apex:outputPanel>
+        
+        <!-- dynamic content goes here -->
+        <apex:outputPanel id="widgetContent" layout="block" styleClass="widgetContent">
+            
+            <!-- Body of Widget goes here -->
+            
+        </apex:outputPanel>
+        
+        <!-- widget footer -->
+        <apex:outputPanel id="footer" layout="block" styleClass="footer">
+            <div>
+                <div></div>
+            </div>
+        </apex:outputPanel>
+    
+    </apex:outputPanel>
 </apex:component>

@@ -1,90 +1,85 @@
 <apex:component id="PromptOverlay" controller="PromptOverlayController" allowDML="true">
 
-	<apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/js/overlays.js')}" />
-	<apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" />			
-   	
-   	<apex:attribute name="includeNewTask" 
-					description="Flag to include new task component"
-					type="boolean" 
-					assignTo="{!includeNewTask}" 
-					required="false"/>
-			
-	<apex:attribute name="includeNewMilestone" 
-					description="Flag to include new milestone component"
-					type="boolean" 
-					assignTo="{!includeNewMilestone}" 
-					required="false"/>
-								
-	<apex:attribute name="includeAttachment" 
-					description="Flag to include new attachment component"
-					type="boolean" 
-					assignTo="{!includeAttachment}" 
-					required="false"/>
+    <apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/js/overlays.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" />           
+    
+    <apex:attribute name="includeNewTask" 
+                    description="Flag to include new task component"
+                    type="boolean" 
+                    assignTo="{!includeNewTask}" 
+                    required="false"/>
+            
+    <apex:attribute name="includeNewMilestone" 
+                    description="Flag to include new milestone component"
+                    type="boolean" 
+                    assignTo="{!includeNewMilestone}" 
+                    required="false"/>
+                                
+    <apex:attribute name="includeAttachment" 
+                    description="Flag to include new attachment component"
+                    type="boolean" 
+                    assignTo="{!includeAttachment}" 
+                    required="false"/>
+    
+    <apex:attribute name="includeNewAssignee" 
+                    description="Flag to include new assignee component"
+                    type="boolean" 
+                    assignTo="{!includeNewAssignee}" 
+                    required="false"/>
+
+    <apex:attribute name="includeNewMember" 
+                    description="Flag to include new member component"
+                    type="boolean" 
+                    assignTo="{!includeNewMember}" 
+                    required="false"/>
+                    
+    <apex:attribute name="idValue" 
+                    description="Project Id to pass on to dependent modules who need it."
+                    type="string" 
+                    required="false"/>             
+                    
+    <script>
+        promptOverlay.id = '{!$Component.Content}';
+    </script>
 	
-	<apex:attribute name="includeNewAssignee" 
-					description="Flag to include new assignee component"
-					type="boolean" 
-					assignTo="{!includeNewAssignee}" 
-					required="false"/>
-
-	<apex:attribute name="includeNewMember" 
-					description="Flag to include new member component"
-					type="boolean" 
-					assignTo="{!includeNewMember}" 
-					required="false"/>
-					
-	<script>
-	
-		promptOverlay.id = '{!$Component.Content}';
-		
-	</script>
-
-
-	<!-- Content -->
-	<apex:outputPanel id="Content"
-		styleClass="Overlaycontainer"
-		layout="block"
-		style="display:none">
-		
-		<apex:outputPanel id="Background" styleClass="background" layout="block"> &nbsp; </apex:outputPanel>
-		
-			<!-- Overlay -->
-			<apex:outputPanel id="Overlay"
-				styleClass="overlay"
-				layout="block">
-			
-				<!-- Component -->
-				<apex:outputPanel id="Components"
-					styleClass="component"
-					layout="block">
-			
-					<apex:outputPanel rendered="{!includeNewTask}" layout="block" id="include1">
-						 	<c:NewTask id="NewTask" /> 
-					</apex:outputPanel>
-					
-					<apex:outputPanel rendered="{!includeNewMilestone}" layout="block" id="include2">
-						 	<c:NewMilestone id="NewMilestone" /> 
-					</apex:outputPanel>
-			
-					<apex:outputPanel rendered="{!includeAttachment}" layout="block" id="include3">
-						 	<c:NewAttachment id="Attachment" /> 
-					</apex:outputPanel>
-					
-					<apex:outputPanel rendered="{!includeNewAssignee}" layout="block" id="include4">
-						 	<c:NewAssignee id="NewAssignee" /> 
-					</apex:outputPanel>
-					
-					<apex:outputPanel rendered="{!includeNewMember}" layout="block" id="include5">
-						 	<c:NewMember id="NewMember" /> 
-					</apex:outputPanel>
-			
-				</apex:outputPanel>
-				<!-- end of Component -->
-				
-			</apex:outputPanel>
-			<!-- end of Overlay -->
-		
-	</apex:outputPanel>
-	<!-- end of Content -->
+    <!-- Content -->
+    <apex:outputPanel id="Content" styleClass="Overlaycontainer" layout="block" style="display:none">
+        
+        <apex:outputPanel id="Background" styleClass="background" layout="block"> &nbsp; </apex:outputPanel>
+        
+            <!-- Overlay -->
+            <apex:outputPanel id="Overlay" styleClass="overlay" layout="block">
+            
+                <!-- Component -->
+                <apex:outputPanel id="Components" styleClass="component" layout="block">
+            
+                    <apex:outputPanel rendered="{!includeNewTask}" layout="block" id="include1">
+                            <c:NewTask id="NewTask" /> 
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel rendered="{!includeNewMilestone}" layout="block" id="include2">
+                            <c:NewMilestone id="NewMilestone" /> 
+                    </apex:outputPanel>
+            
+                    <apex:outputPanel rendered="{!includeAttachment}" layout="block" id="include3">
+                            <c:NewAttachment id="Attachment" /> 
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel rendered="{!includeNewAssignee}" layout="block" id="include4">
+                            <c:NewAssignee id="NewAssignee" /> 
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel rendered="{!includeNewMember}" layout="block" id="include5">
+                    		<c:NewMember id="NewMember" projectId="{!idValue}"/>
+                    </apex:outputPanel>
+            
+                </apex:outputPanel>
+                <!-- end of Component -->
+                
+            </apex:outputPanel>
+            <!-- end of Overlay -->
+        
+    </apex:outputPanel>
+    <!-- end of Content -->
 
 </apex:component>

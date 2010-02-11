@@ -1,50 +1,50 @@
 <apex:component controller="ProjectOverlayNewAttachmentController">
 
-	<script>
-				function openAttachmentOverlay(){
+    <script>
+                function openAttachmentOverlay(){
 
-				   	newAttachmentFileOverlay.open(); 
-					newAttachmentToProject();
-					observeIframeUpload();
-					loadAttOverlay = true;
-					$('uploadIframe').src = $('uploadIframe').src;
-					addOverlayNewAttachmentEvents(function(){newAttachmentOverlay.close();},'UploadAttachment:Form:SaveButton');
-				}
-			</script>
-	
-	<!-- Set Attribure for project id. -->
-	<apex:attribute name="parentId" description="Parent Id" type="String" required="true" assignTo="{!parentId}" />		
-	
-	<!-- ProjectOverlayNewAttachment Common JS -->
-	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/ProjectOverlayNewAttachment.js')}"/>
-	
-	<!-- ### Initialize fixed Overlay ### -->
-	<div id="modalNewAttachmentOverlay" class="backgroundOverlay" style="display:none; z-index:9998;"></div>
-	
-	<!-- Overlay Styles --> 
-	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsOverlayAddAttachment.css')}" />
-	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamsOverlayNewMilestone.js')}" />
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />
-	
-	<div id="newAttachmentOverlay" style="display:none;" class="overlayForm">
-		<!-- Overlay Title -->
-		<div class="overlayTitleContent">
-			<div class="overlayTitle">Add Attachment</div>
-			<div class="overlayCloseEvent">
-				<a href="Javascript:;" onclick="newAttachmentFileOverlay.close();" id="modalCloseButton">
-					<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
-				</a>                                                                                      
-			</div>
-		</div>                                                               
-		<apex:outputpanel layout="block" id="iframeWrapperPanel" styleclass="overlayMainContent">
-			<iframe name="uploadIframe" id="uploadIframe" src="/apex/OldUploadAttachment?pId={!parentId}&t=1" height="154px"
-					width="100%" style="border: 0px;" frameborder="0" marginheight="0"
-					marginwidth="0"></iframe>
-		</apex:outputpanel>
-	</div>
-	<script>
-		
-		newAttachmentFileOverlay = new modalOverlayClass('newAttachmentOverlay','modalNewAttachmentOverlay',  true);
-	
-	</script>	         
+                    newAttachmentFileOverlay.open(); 
+                    newAttachmentToProject();
+                    observeIframeUpload();
+                    loadAttOverlay = true;
+                    $('uploadIframe').src = $('uploadIframe').src;
+                    addOverlayNewAttachmentEvents(function(){newAttachmentOverlay.close();},'UploadAttachment:Form:SaveButton');
+                }
+            </script>
+    
+    <!-- Set Attribure for project id. -->
+    <apex:attribute name="parentId" description="Parent Id" type="String" required="true" assignTo="{!parentId}" />     
+    
+    <!-- ProjectOverlayNewAttachment Common JS -->
+    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/ProjectOverlayNewAttachment.js')}"/>
+    
+    <!-- ### Initialize fixed Overlay ### -->
+    <div id="modalNewAttachmentOverlay" class="backgroundOverlay" style="display:none; z-index:9998;"></div>
+    
+    <!-- Overlay Styles --> 
+    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/teamsOverlayAddAttachment.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamsOverlayNewMilestone.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverlaysTemplate.css')}" />
+    
+    <div id="newAttachmentOverlay" style="display:none;" class="overlayForm">
+        <!-- Overlay Title -->
+        <div class="overlayTitleContent">
+            <div class="overlayTitle">Add Attachment</div>
+            <div class="overlayCloseEvent">
+                <a href="Javascript:;" onclick="newAttachmentFileOverlay.close();" id="modalCloseButton">
+                    <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/genericClose.gif')}" alt="Close Window" title="Close Window" />
+                </a>                                                                                      
+            </div>
+        </div>                                                               
+        <apex:outputpanel layout="block" id="iframeWrapperPanel" styleclass="overlayMainContent">
+            <iframe name="uploadIframe" id="uploadIframe" src="/apex/OldUploadAttachment?pId={!parentId}&t=1" height="154px"
+                    width="100%" style="border: 0px;" frameborder="0" marginheight="0"
+                    marginwidth="0"></iframe>
+        </apex:outputpanel>
+    </div>
+    <script>
+        
+        newAttachmentFileOverlay = new modalOverlayClass('newAttachmentOverlay','modalNewAttachmentOverlay',  true);
+    
+    </script>            
 </apex:component>

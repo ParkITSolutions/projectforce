@@ -13,6 +13,7 @@ public class ProjectTaskNotesController {
 	public String projectName 		{ set; get; }
 	public String projectNameShort 	{ set; get; }
 	public Boolean canAccess 		{ set; get; }
+	public Boolean rend		 		{ set; get; }
 	public UserPermissions userPermissions;
 
 	/**
@@ -23,9 +24,9 @@ public class ProjectTaskNotesController {
     	
 		this.taskVar 			= new ProjectTask__c();
 		this.userPermissions 	= new UserPermissions();
-		
 		this.genPermissions();
 		this.obtainData();
+		this.rend = true;
     }
     
     /**
@@ -36,7 +37,7 @@ public class ProjectTaskNotesController {
 		userPermissions.setObjectType( 'Project' );
 		userPermissions.setPermissions();		
 	}
-    
+
     /**
     * obtains data from the task and project
     */
@@ -120,7 +121,9 @@ public class ProjectTaskNotesController {
 		if ( this.sizeAllowed() ){
 			this.taskVar.notes__c = taskNotes;
 			
-			update this.taskVar;
+			//update this.taskVar;
+			//update Task Notes;
+			DAOFactory.getInstance().updateTask( this.taskVar );
 		
 			PageReference pageRef = new PageReference( '/apex/ProjectTaskDetail' );
 			pageRef.getParameters().put( 'id', this.taskId );
@@ -138,7 +141,10 @@ public class ProjectTaskNotesController {
 	public PageReference SaveEdit () {
 		if (this.sizeAllowed()){
 			this.taskVar.notes__c = taskNotes;
-			update this.taskVar;
+			
+			//update this.taskVar;
+			//update Task Notes;
+			DAOFactory.getInstance().updateTask( this.taskVar ); 
 		}
 		return null;
 	}

@@ -1,199 +1,193 @@
 <apex:page id="ProjectActivity" controller="ProjectActivityController" sidebar="false" cache="true" tabStyle="Project2__c">
 
-	<c:ApplicationTop id="ApplicationTop" />
-	
-	<style type="text/css">
-	
-		.projectActivityPage{
-			background:#E0E0E0 none repeat scroll 0 0;
-		}
-		
-		.projectActivityPage .sideBar{
-			background:#E0E0E0 none repeat scroll 0 0;	
-			width:200px;
-			float:left;
-		}
-		
-		.projectActivityPage .activityMain{
-			background-color:white;
-			float:left;
-			padding:10px;
-		}
-		
-	</style>
-	
-	<!-- Principal Container for Activity Page -->
-	 <apex:outputpanel id="projectActivityPage" layout="block" styleClass="projectActivityPage">
-	 	
-	 	<!-- Top Section -->
-	    <apex:outputpanel id="top" layout="block" styleClass="top">
-	    
-	    	<!-- Header -->
-		    <apex:composition template="HeaderTemplate">
-		        <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
-		        <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
-		        <apex:define name="title">Project Activity</apex:define>
-		        <apex:define name="search">
-		            <c:Search module="project" projectId="{!projectId}" label="Tasks"/>
-		        </apex:define>
-		    </apex:composition> 
-		    
-		    <!-- Bread Crumb section and Buttons -->
-		    <div align="center" class="breadCrumbAndButtons">
-	            <apex:outputpanel layout="block" styleclass="breadCrumbs">
-	                <div class="mouseOverInfoOuter">
-					<a id="projectNameBreadcrumb"  href="#"><apex:outputText escape="true" value="fdfs" /></a> &gt;										
-						<apex:outputpanel layout="block" style="display: none;z-index:9999;" styleClass="mouseOverInfo">
-							<div class="body">fdsa</div>
-						</apex:outputpanel>
-					</div>	
-	                <span class="breadCrumbsLast"><strong>Detail</strong></span>     
-	            </apex:outputpanel>
-	        </div>
-	        
-	    </apex:outputpanel>
-	    
-	    <!-- Sidebar Section Contains Widgets -->
-	    <apex:outputpanel id="sideBar" layout="block" styleClass="sideBar">
-	    
-	    	<!-- Project Quick Links -->
-	        <c:ProjectDetailQuickLinks id="quickLinks"/>
-	     	
-	     	<!-- Team members -->
-	     	<c:ProjectMembersWidget projectId="{!projectId}" id="projectMembersWidget" />   
-	            
-	    </apex:outputpanel>
-	    
-	    <!-- Main Content Section -->
-	    <apex:outputpanel id="ContentPanel" layout="block" styleClass="activityMain">
-					
-			<apex:form id="Form">
-		
-			<!-- PaginatorPanel -->
-			<apex:outputPanel id="PaginatorPanel" styleClass="paginatorPanel" layout="block" >
-			
-					<script type="text/javascript">
-						paginator.pageNumberId 	= '{!$Component.Form.pageNumber}';
-					</script>
-				
-					<apex:actionFunction name="RefreshPaginator"
-						action="{!paginator.pagesListConstructor}"
-						onComplete="swirly.hide();" 
-						reRender="PaginatorPanel, RecordsList"/>
-						
-					<apex:actionFunction name="RefreshRecordsList"
-						action="{!paginator.loadProjectActivities}"
-						onComplete="swirly.hide();" 
-						reRender="RecordsList"/>
-						
-					<!-- CommandsPanel -->
-					<apex:outputPanel id="CommandsPanel" styleClass="commandsPanel" layout="block" rendered="{!OR(paginator.hasNext,paginator.hasPrevious)}">
-						
-						<apex:commandLink id="FirstLink"
-							rendered="{!paginator.hasPrevious}" 
-							action="{!paginator.first}" 
-							onClick="swirly.show();" 
-							onComplete="swirly.hide();" 
-							reRender="PaginatorPanel, RecordsList"> <apex:image id="imgFirst" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_first.gif')}" /> </apex:commandLink> &nbsp; &nbsp;
-							
-						<apex:commandLink id="PreviousLinkImg"
-							rendered="{!paginator.hasPrevious}" 
-							action="{!paginator.previous}" 
-							onClick="swirly.show();" 
-							onComplete="swirly.hide();" 
-							reRender="PaginatorPanel, RecordsList" > <apex:image id="imgPrevious" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_prev.gif')}" /> </apex:commandLink> &nbsp;
-						
-						<apex:commandLink id="PreviousLink"
-							rendered="{!paginator.hasPrevious}" 
-							value="Prevoius Page"
-							styleClass="label"
-							action="{!paginator.previous}" 
-							onClick="swirly.show();" 
-							onComplete="swirly.hide();" 
-							reRender="PaginatorPanel, RecordsList" /> &nbsp;
-						
-						<!-- Renders Pagination numbers -->
-						<apex:repeat id="PagesItemsRepeat" value="{!paginator.pages}" var="page" id="PagesList" > &nbsp;
-						
-							<apex:commandLink id="PageNumberLink"
-								styleClass="{!IF(page == paginator.pageNumber,'currentPage', '')}" 
-								value="{!page}" 
-								action="{!paginator.goToPage}" 
-								onClick="paginator.setPageNumber('{!page}'); swirly.show();" 
-								onComplete="swirly.hide();"  
-								reRender="PaginatorPanel, RecordsList"/> 
-						
-						</apex:repeat> &nbsp;
-						
-						<apex:commandLink id="NextLink"
-							rendered="{!paginator.hasNext}" 
-							value="Next Page"
-							styleClass="label"
-							action="{!paginator.next}" 
-							onClick="swirly.show();" 
-							onComplete="swirly.hide();" 
-							reRender="PaginatorPanel, RecordsList" /> &nbsp;
-							
-						<apex:commandLink id="NextLinkImg"
-							rendered="{!paginator.hasNext}" 
-							action="{!paginator.next}" 
-							onClick="swirly.show();" 
-							onComplete="swirly.hide();" 
-							reRender="PaginatorPanel, RecordsList">  <apex:image id="imgNext" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_next.gif')}" /> </apex:commandLink> &nbsp; &nbsp;
-						
-						<apex:commandLink id="LastLink"
-							rendered="{!paginator.hasNext}" 
-							action="{!paginator.last}" 
-							onClick="swirly.show();" 
-							onComplete="swirly.hide();" 
-							reRender="PaginatorPanel, RecordsList">  <apex:image id="imgLast" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_last.gif')}" /> </apex:commandLink> &nbsp;
-						
-					</apex:outputPanel>
-					<!-- End CommandsPanel -->
-				
-					<apex:outputPanel id="ResultSizeText" >Number of records: {!paginator.resultSize}</apex:outputPanel>
-					
-					<br>
-					<apex:outputPanel id="recordPerPage" >Records per page:</apex:outputpanel> 
-					<apex:selectList id="PageSizeSelect" value="{!paginator.recordsPerPage}" size="1" onChange="swirly.show(); RefreshPaginator();">
-						<apex:selectOptions id="PageSizeOption" value="{!paginator.pageSizeItems}"/>
-					</apex:selectList>
-					
-					<!--  hidden fields to pass params to pagintor Controller for Sort, Filter, etc... -->
-					<apex:inputHidden id="pageNumber" value="{!paginator.pageNumber}" />
-					
-			</apex:outputPanel>
-			<!-- End PaginatorPanel -->
-		
-		</apex:form>
-			
-			<apex:outputpanel id="RecordsList" layout="block">
-			
-				<!--  Dynamic Content generated here -->
-				<apex:repeat value="{!paginator.projectActivities}" var="activity" id="activityRepeat">
-				
-					<apex:outputpanel id="activity" layout="block" styleClass="activity">
-						
-						<apex:outputpanel id="leftColumn" layout="block" styleClass="leftColumn">
-							<apex:outputpanel id="image" layout="block" styleClass="image">
-								<apex:image id="icon" value="{!URLFOR($Resource.ActivityWidget, 'images/')}{!activity.imagePath}"  height="16"  title="{!activity.header}" />
-							</apex:outputpanel>
-							<apex:outputpanel id="timeStamp" styleClass="timeStamp">{!activity.timestamp}</apex:outputpanel>
-						</apex:outputpanel>
-						
-						<apex:outputpanel id="rightColumn" layout="block" styleClass="rightColumn">
-							<apex:outputpanel id="action" styleClass="action">{!activity.header}</apex:outputpanel>
-							<apex:outputpanel id="messageLog" layout="block" styleClass="messageLog">{!activity.message}</apex:outputpanel>
-							<apex:outputpanel id="modifiedBy" styleClass="modifiedBy">{!activity.modifiedBy}</apex:outputpanel>
-						</apex:outputpanel>
-						
-					</apex:outputpanel>
-					
-				</apex:repeat>
-				
-			</apex:outputpanel>
-			
-	    </apex:outputpanel>
+    <c:ApplicationTop id="ApplicationTop" />
+    
+    <style type="text/css">
+    
+        .projectActivityPage{
+            background:#E0E0E0 none repeat scroll 0 0;
+        }
+        
+        .projectActivityPage .sideBar{
+            background:#E0E0E0 none repeat scroll 0 0;  
+            width:200px;
+            float:left;
+        }
+        
+        .projectActivityPage .activityMain{
+            background-color:white;
+            float:left;
+            padding:10px;
+        }
+        
+    </style>
+    
+    <c:PromptOverlay id="PromptOverlay"
+        includeNewMember="true"
+        idValue="{!projectId}"
+       />
+    
+    <!-- Principal Container for Activity Page -->
+     <apex:outputpanel id="projectActivityPage" layout="block" styleClass="projectActivityPage">
+        
+        <!-- Top Section -->
+        <apex:outputpanel id="top" layout="block" styleClass="top">
+        
+            <!-- Header -->
+            <apex:composition template="HeaderTemplate">
+                <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
+                <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
+                <apex:define name="title">Project Activity</apex:define>
+                <apex:define name="search">
+                    <c:Search module="Project" projectId="{!projectId}" label="Tasks"/>
+                </apex:define>
+            </apex:composition> 
+            <
+            <!-- Bread Crumb section and Buttons -->
+            <div align="center" class="breadCrumbAndButtons">
+            	<c:Breadcrum />
+            </div>
+            
+        </apex:outputpanel>
+        
+        <!-- Sidebar Section Contains Widgets -->
+        <apex:outputpanel id="sideBar" layout="block" styleClass="sideBar">
+        
+            <!-- Project Quick Links -->
+            <c:QuickLinksWidget id="quickLinks"/>
+               
+        </apex:outputpanel>
+        
+        <!-- Main Content Section -->
+        <apex:outputpanel id="ContentPanel" layout="block" styleClass="activityMain">
+                    
+            <apex:form id="Form">
+        
+            <!-- PaginatorPanel -->
+            <apex:outputPanel id="PaginatorPanel" styleClass="paginatorPanel" layout="block" >
+            
+                    <script type="text/javascript">
+                        paginator.pageNumberId  = '{!$Component.Form.pageNumber}';
+                    </script>
+                
+                    <apex:actionFunction name="RefreshPaginator"
+                        action="{!paginator.pagesListConstructor}"
+                        onComplete="swirly.hide();" 
+                        reRender="PaginatorPanel, RecordsList"/>
+                        
+                    <apex:actionFunction name="RefreshRecordsList"
+                        action="{!paginator.loadProjectActivities}"
+                        onComplete="swirly.hide();" 
+                        reRender="RecordsList"/>
+                        
+                    <!-- CommandsPanel -->
+                    <apex:outputPanel id="CommandsPanel" styleClass="commandsPanel" layout="block" rendered="{!OR(paginator.hasNext,paginator.hasPrevious)}">
+                        
+                        <apex:commandLink id="FirstLink"
+                            rendered="{!paginator.hasPrevious}" 
+                            action="{!paginator.first}" 
+                            onClick="swirly.show();" 
+                            onComplete="swirly.hide();" 
+                            reRender="PaginatorPanel, RecordsList"> <apex:image id="imgFirst" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_first.gif')}" /> </apex:commandLink> &nbsp; &nbsp;
+                            
+                        <apex:commandLink id="PreviousLinkImg"
+                            rendered="{!paginator.hasPrevious}" 
+                            action="{!paginator.previous}" 
+                            onClick="swirly.show();" 
+                            onComplete="swirly.hide();" 
+                            reRender="PaginatorPanel, RecordsList" > <apex:image id="imgPrevious" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_prev.gif')}" /> </apex:commandLink> &nbsp;
+                        
+                        <apex:commandLink id="PreviousLink"
+                            rendered="{!paginator.hasPrevious}" 
+                            value="Prevoius Page"
+                            styleClass="label"
+                            action="{!paginator.previous}" 
+                            onClick="swirly.show();" 
+                            onComplete="swirly.hide();" 
+                            reRender="PaginatorPanel, RecordsList" /> &nbsp;
+                        
+                        <!-- Renders Pagination numbers -->
+                        <apex:repeat id="PagesItemsRepeat" value="{!paginator.pages}" var="page" id="PagesList" > &nbsp;
+                        
+                            <apex:commandLink id="PageNumberLink"
+                                styleClass="{!IF(page == paginator.pageNumber,'currentPage', '')}" 
+                                value="{!page}" 
+                                action="{!paginator.goToPage}" 
+                                onClick="paginator.setPageNumber('{!page}'); swirly.show();" 
+                                onComplete="swirly.hide();"  
+                                reRender="PaginatorPanel, RecordsList"/> 
+                        
+                        </apex:repeat> &nbsp;
+                        
+                        <apex:commandLink id="NextLink"
+                            rendered="{!paginator.hasNext}" 
+                            value="Next Page"
+                            styleClass="label"
+                            action="{!paginator.next}" 
+                            onClick="swirly.show();" 
+                            onComplete="swirly.hide();" 
+                            reRender="PaginatorPanel, RecordsList" /> &nbsp;
+                            
+                        <apex:commandLink id="NextLinkImg"
+                            rendered="{!paginator.hasNext}" 
+                            action="{!paginator.next}" 
+                            onClick="swirly.show();" 
+                            onComplete="swirly.hide();" 
+                            reRender="PaginatorPanel, RecordsList">  <apex:image id="imgNext" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_next.gif')}" /> </apex:commandLink> &nbsp; &nbsp;
+                        
+                        <apex:commandLink id="LastLink"
+                            rendered="{!paginator.hasNext}" 
+                            action="{!paginator.last}" 
+                            onClick="swirly.show();" 
+                            onComplete="swirly.hide();" 
+                            reRender="PaginatorPanel, RecordsList">  <apex:image id="imgLast" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_last.gif')}" /> </apex:commandLink> &nbsp;
+                        
+                    </apex:outputPanel>
+                    <!-- End CommandsPanel -->
+                
+                    <apex:outputPanel id="ResultSizeText" >Number of records: {!paginator.resultSize}</apex:outputPanel>
+                    
+                    <br>
+                    <apex:outputPanel id="recordPerPage" >Records per page:</apex:outputpanel> 
+                    <apex:selectList id="PageSizeSelect" value="{!paginator.recordsPerPage}" size="1" onChange="swirly.show(); RefreshPaginator();">
+                        <apex:selectOptions id="PageSizeOption" value="{!paginator.pageSizeItems}"/>
+                    </apex:selectList>
+                    
+                    <!--  hidden fields to pass params to pagintor Controller for Sort, Filter, etc... -->
+                    <apex:inputHidden id="pageNumber" value="{!paginator.pageNumber}" />
+                    
+            </apex:outputPanel>
+            <!-- End PaginatorPanel -->
+        
+        </apex:form>
+            
+            <apex:outputpanel id="RecordsList" layout="block">
+            
+                <!--  Dynamic Content generated here -->
+                <apex:repeat value="{!paginator.projectActivities}" var="activity" id="activityRepeat">
+                
+                    <apex:outputpanel id="activity" layout="block" styleClass="activity">
+                        
+                        <apex:outputpanel id="leftColumn" layout="block" styleClass="leftColumn">
+                            <apex:outputpanel id="image" layout="block" styleClass="image">
+                                <apex:image id="icon" value="{!URLFOR($Resource.ActivityWidget, 'images/')}{!activity.imagePath}"  height="16"  title="{!activity.header}" />
+                            </apex:outputpanel>
+                            <apex:outputpanel id="timeStamp" styleClass="timeStamp">{!activity.timestamp}</apex:outputpanel>
+                        </apex:outputpanel>
+                        
+                        <apex:outputpanel id="rightColumn" layout="block" styleClass="rightColumn">
+                            <apex:outputpanel id="action" styleClass="action">{!activity.header}</apex:outputpanel>
+                            <apex:outputpanel id="messageLog" layout="block" styleClass="messageLog">{!activity.message}</apex:outputpanel>
+                            <apex:outputpanel id="modifiedBy" styleClass="modifiedBy">{!activity.modifiedBy}</apex:outputpanel>
+                        </apex:outputpanel>
+                        
+                    </apex:outputpanel>
+                    
+                </apex:repeat>
+                
+            </apex:outputpanel>
+            
+        </apex:outputpanel>
     
     </apex:outputpanel>
 </apex:page>

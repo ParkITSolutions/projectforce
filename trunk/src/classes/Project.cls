@@ -44,11 +44,25 @@ public class Project {
 	* @param filter
 	* @param orderBy
 	* @param orderAsc
+	* @param letter letter to filter
 	* @return tasks
 	*/
-	public ApexPages.StandardSetController getTasks( String filter, String orderBy, Boolean orderAsc ){
+	public ApexPages.StandardSetController getTasks( String filter, String orderBy, Boolean orderAsc, String letter ){
 		
-		return DAOFactory.getInstance().getTasksByProject( this.id, filter, orderBy, orderAsc );
+		return DAOFactory.getInstance().getTasksByProject( this.id, filter, orderBy, orderAsc, letter );
+	}
+	
+	/**
+	* gets members for a project. Used for Listing members, returns a Paginator
+	* @param filter
+	* @param orderBy
+	* @param orderAsc
+	* @param letter letter to filter
+	* @return tasks
+	*/
+	public ApexPages.StandardSetController getMembers( String filter, String orderBy, Boolean orderAsc, String letter ){
+		
+		return DAOFactory.getInstance().getMembersByProject( this.id, filter, orderBy, orderAsc, letter );
 	}
 	
 	/**

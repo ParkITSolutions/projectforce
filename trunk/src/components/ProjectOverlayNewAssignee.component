@@ -13,25 +13,25 @@
      </script>
      
      <style>
-	     #addAssigneeOverlay{
-			background-attachment:scroll;
-			background-color:white;
-			background-image:none;
-			background-position:0 0;
-			background-repeat:repeat;
-			height:180px;
-			left:30%;
-			opacity:1;
-			position:fixed;
-			top:20%;
-			width:400px;
-			z-index:9999;
-		}
+         #addAssigneeOverlay{
+            background-attachment:scroll;
+            background-color:white;
+            background-image:none;
+            background-position:0 0;
+            background-repeat:repeat;
+            height:180px;
+            left:30%;
+            opacity:1;
+            position:fixed;
+            top:20%;
+            width:400px;
+            z-index:9999;
+        }
      </style>
 
-	<!-- ### Initialize fixed Overlay ### -->
-	<div id="modalAddNewAssigneeOverlay" class="backgroundOverlay" style="display:none; z-index:9998;"></div>
-	
+    <!-- ### Initialize fixed Overlay ### -->
+    <div id="modalAddNewAssigneeOverlay" class="backgroundOverlay" style="display:none; z-index:9998;"></div>
+    
     <!-- Content  -->
     <div id="addAssigneeOverlay" style="display: none;" class="overlayForm">
 
@@ -50,13 +50,13 @@
         <div class="overlayMainContent">
         <!-- Required Information -->
         
-        	<apex:form >
-        		<apex:actionFunction name="refreshMembers2" 
-                    	action="{!createMemList}"
-                    	rerender="membersComBox,membersComBoxCont"   
-                    	oncomplete="$('sw_o').hide();$('{!$Component.scaleComBox}').value=0;refreshDetail(); " />
+            <apex:form >
+                <apex:actionFunction name="refreshMembers2" 
+                        action="{!createMemList}"
+                        rerender="membersComBox,membersComBoxCont"   
+                        oncomplete="$('sw_o').hide();$('{!$Component.scaleComBox}').value=0;refreshDetail(); " />
                     
-        	</apex:form>
+            </apex:form>
 
             <span class="overlayRequiredInfo">= Required Information</span>
                 <apex:form id="newMemberForm" onSubmit="return validateFormNewAss();">
@@ -105,17 +105,17 @@
                             <apex:commandButton id="SaveButton"
                                 action="{!saveAssignee}" 
                                 styleClass="allButtons" 
-                            	rerender="newMemberForm"
-                            	value="Save" oncomplete="refreshMembers2();addNewAssigneeOverlay.close(); removeOverlayEvents();" 
-                            	onClick="$('sw_o').show()" 
-                            	onComplete="detailListPanel(); addNewAssigneeOverlay.close(); $('sw_all2').show(); removeOverlayEvents();"/>
-                            	
+                                rerender="newMemberForm"
+                                value="Save" oncomplete="refreshMembers2();addNewAssigneeOverlay.close(); removeOverlayEvents();" 
+                                onClick="$('sw_o').show()" 
+                                onComplete="detailListPanel(); addNewAssigneeOverlay.close(); $('sw_all2').show(); removeOverlayEvents();"/>
+                                
                             <apex:commandButton action="{!saveAssignee}" 
-                            	styleClass="allButtons" 
-                            	value="Save and new" 
-                            	onclick="$('sw_o').show()" 
-                            	oncomplete="refreshMembers2(); detailListPanel();{!IF( MoreMembers , '', 'addNewAssigneeOverlay.close(); removeOverlayEvents();')}" /> 
-                            	
+                                styleClass="allButtons" 
+                                value="Save and new" 
+                                onclick="$('sw_o').show()" 
+                                oncomplete="refreshMembers2(); detailListPanel();{!IF( MoreMembers , '', 'addNewAssigneeOverlay.close(); removeOverlayEvents();')}" /> 
+                                
                             <input id="cancelBtn" class="allButtons" type="button" value="Cancel" onclick="addNewAssigneeOverlay.close();stopFunction(); removeOverlayEvents()" />
                     </div>
                 </apex:form>
@@ -125,7 +125,7 @@
     </div>
 
     <script>
-    	addNewAssigneeOverlay = new modalOverlayClass('addAssigneeOverlay','modalAddNewAssigneeOverlay',  true);
+        addNewAssigneeOverlay = new modalOverlayClass('addAssigneeOverlay','modalAddNewAssigneeOverlay',  true);
     </script>
 
 </apex:component>

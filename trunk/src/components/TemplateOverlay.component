@@ -1,8 +1,8 @@
 <apex:component id="OverlayTemplate">
 
-	<script>
-		var overlayTemplate = '{!$Component.Content}';
-	</script>
+    <script>
+        var overlayTemplate = '{!$Component.Content}';
+    </script>
 
     <apex:outputPanel id="Content"  styleClass="overlay" style="display: none;" layout="block">
     

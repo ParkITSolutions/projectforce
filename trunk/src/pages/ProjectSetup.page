@@ -1,160 +1,160 @@
 <apex:page id="ProjectSubscription" sidebar="false" tabStyle="Project2__c" controller="ProjectSetupController">
-	<apex:includeScript value="/soap/ajax/11.1/connection.js"/>
-	
-	<script>
-		var API_SESSION_ID = '{!$Api.Session_ID}';
-		//Common Resource URL  
-		var globalCommonResourcesPath = '{!URLFOR($Resource.commonResources)}';
-	</script>
-	
-	<!-- Prototype + Scriptaculous -->
-	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
-	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
-	<apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>
-	
-	<!-- Portal Support -->
-	<apex:includeScript value="{!$Resource.portalSupport}" />	
-	
-	<!-- Common Js for All Sections -->
-	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/admin.js')}"/>
-	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}"/>
-	
-	<!-- CSS de TS -->
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />	
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/profileEdition.css')}" />
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetail.css')}" />
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgets/TeamMemberWidget.css')}" />	
+    <apex:includeScript value="/soap/ajax/11.1/connection.js"/>
+    
+    <script>
+        var API_SESSION_ID = '{!$Api.Session_ID}';
+        //Common Resource URL  
+        var globalCommonResourcesPath = '{!URLFOR($Resource.commonResources)}';
+    </script>
+    
+    <!-- Prototype + Scriptaculous -->
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>
+    
+    <!-- Portal Support -->
+    <apex:includeScript value="{!$Resource.portalSupport}" />   
+    
+    <!-- Common Js for All Sections -->
+    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/admin.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}"/>
+    
+    <!-- CSS de TS -->
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />  
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/commonLayout.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, '/inc/css/profileEdition.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetail.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgets/TeamMemberWidget.css')}" />   
     
     <!-- CSS styles for Portal Integration -->
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
-	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />   
-	
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsSubscription.css')}" />
-	
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectSetup.css')}" /> 
-	
-	<style>
-		.inputButton{
-			background:transparent url({!URLFOR($Resource.ProjectResources, 'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right bottom;
-		}
-	    .blackbutton {
-			background:transparent url({!URLFOR($Resource.ProjectResources,'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right top;
-		}		
-	</style>
-	
-	<!-- Header -->
-	<apex:composition template="HeaderTemplate">
-		<apex:define name="moduleId">
-			<apex:variable var="moduleId" value="headerTeams"/>
-		</apex:define>
-	    <apex:define name="module">{!$ObjectType.Project2__c.labelPlural}</apex:define>
-	    <apex:define name="title">Settings</apex:define>
-	    <apex:define name="search">
-	    	<c:Search module="team" />
-	    </apex:define>
+    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />   
+    
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsSubscription.css')}" />
+    
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectSetup.css')}" /> 
+    
+    <style>
+        .inputButton{
+            background:transparent url({!URLFOR($Resource.ProjectResources, 'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right bottom;
+        }
+        .blackbutton {
+            background:transparent url({!URLFOR($Resource.ProjectResources,'images/layout/buttons/button_right_bkg.gif')}) no-repeat scroll right top;
+        }       
+    </style>
+    
+    <!-- Header -->
+    <apex:composition template="HeaderTemplate">
+        <apex:define name="moduleId">
+            <apex:variable var="moduleId" value="headerTeams"/>
+        </apex:define>
+        <apex:define name="module">{!$ObjectType.Project2__c.labelPlural}</apex:define>
+        <apex:define name="title">Settings</apex:define>
+        <apex:define name="search">
+            <c:Search module="team" />
+        </apex:define>
     </apex:composition>
     
-	<div class="sidebar" style="height: 330px;_height: 345px;">
-		
-		<!-- Project Quick Links -->
-		<c:QuickLinksWidget id="quickLinks" />
+    <div class="sidebar" style="height: 330px;_height: 345px;">
+        
+        <!-- Project Quick Links -->
+        <c:QuickLinksWidget id="quickLinks" />
 
-        <div class="clear"></div>	
-	
-	</div>
-	
-	<!-- BreadCrumbs -->
-	<apex:form id="form_content" onsubmit="return false;">
-		<div align="center"  class="breadCrumbAndButtons" style="height: 30px!important;">
-			<div class="breadcrumbs"  align="center">
-	        	<div class="breadCrumbs" style="float: left;">
-	            	<a  href="/apex/projectOverview">Overview</a> > <span class="breadCrumbsLast">Settings</span>
-	            </div>
-	            
-	            <table align="center" cellpadding="0" cellspacing="0">
-	            	<tr>
-	            		<td>
-				            <apex:commandButton value="Save"  onclick="toSendF();" /> 
-						</td>
-						<td>
-				            <apex:commandButton value="Cancel" />
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		<!-- Main Content Div -->
-		<div class="main_content" id="main_content">		
-			<div class="holder">
-			<!-- Start Main Content -->
-				<!-- Section Title -->
-				<div class="teamsTitleBlue" id="titleSection">
+        <div class="clear"></div>   
+    
+    </div>
+    
+    <!-- BreadCrumbs -->
+    <apex:form id="form_content" onsubmit="return false;">
+        <div align="center"  class="breadCrumbAndButtons" style="height: 30px!important;">
+            <div class="breadcrumbs"  align="center">
+                <div class="breadCrumbs" style="float: left;">
+                    <a  href="/apex/projectOverview">Overview</a> > <span class="breadCrumbsLast">Settings</span>
+                </div>
+                
+                <table align="center" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td>
+                            <apex:commandButton value="Save"  onclick="toSendF();" /> 
+                        </td>
+                        <td>
+                            <apex:commandButton value="Cancel" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!-- Main Content Div -->
+        <div class="main_content" id="main_content">        
+            <div class="holder">
+            <!-- Start Main Content -->
+                <!-- Section Title -->
+                <div class="teamsTitleBlue" id="titleSection">
                         Show "Create New Project" button to Profiles
-				</div>
-				
-					<!-- Form Begin -->
-					<div class="formContainer"> 
-						<div>
-	                        <span class="Titles">All Profiles</span>
-	                        <span class="Sep">&nbsp;</span>
-	                        <span class="Titles" style=".margin-left: 3px;">Selected profiles</span>
-	                    </div>
-	                    <br />
-	                    <div>
-	                        <span>
-	                            <apex:selectList multiselect="true" styleClass="AllProfiles"  style="float:left;">
-	                                <apex:selectOptions value="{!allProfiles}" />
-	                            </apex:selectList>
-	                        </span>
-	                        <div class="sep">
-	                        	<span class="ToLeftToRightBts">
-		                            <input type="button" value="&gt;&gt;" style=".width:35px;" onclick="setSelProfs( $$('.AllProfiles')[0], $$('.SelectedProfiles')[0], 'toRight',$('ProjectSubscription:fToSend:profileToSend'));" />
-		                            <br />
-		                            <input type="button" value="&lt;&lt;" style=".width:35px;" onclick="setSelProfs( $$('.AllProfiles')[0], $$('.SelectedProfiles')[0], 'toLeft', $('ProjectSubscription:fToSend:profileToSend'));" />
-								</span>	                        
-	                        </div>
-	                     </div>
-	                     <div>
-	                        <span>
-	                            <apex:selectList id="aqwa" multiselect="true" styleClass="SelectedProfiles" style="float:left;">
-	                                <apex:selectOptions value="{!savedProfiles}" />
-	                            </apex:selectList>                          
-	                        </span>
-	                        
-	                        <span>
-								<label>When a task is past its due date (Under construction) </label>
-							</span>
-	                    </div>
-					</div>					
-					<!-- End Form container --> 
-			</div>
-			<!-- End Main Content -->
-		</div>
-		
-		<!-- BreadCrumbs -->
-		<div class="breadcrumbs" style="padding-bottom: 10px;" align="center">
-			<br>
+                </div>
+                
+                    <!-- Form Begin -->
+                    <div class="formContainer"> 
+                        <div>
+                            <span class="Titles">All Profiles</span>
+                            <span class="Sep">&nbsp;</span>
+                            <span class="Titles" style=".margin-left: 3px;">Selected profiles</span>
+                        </div>
+                        <br />
+                        <div>
+                            <span>
+                                <apex:selectList multiselect="true" styleClass="AllProfiles"  style="float:left;">
+                                    <apex:selectOptions value="{!allProfiles}" />
+                                </apex:selectList>
+                            </span>
+                            <div class="sep">
+                                <span class="ToLeftToRightBts">
+                                    <input type="button" value="&gt;&gt;" style=".width:35px;" onclick="setSelProfs( $$('.AllProfiles')[0], $$('.SelectedProfiles')[0], 'toRight',$('ProjectSubscription:fToSend:profileToSend'));" />
+                                    <br />
+                                    <input type="button" value="&lt;&lt;" style=".width:35px;" onclick="setSelProfs( $$('.AllProfiles')[0], $$('.SelectedProfiles')[0], 'toLeft', $('ProjectSubscription:fToSend:profileToSend'));" />
+                                </span>                         
+                            </div>
+                         </div>
+                         <div>
+                            <span>
+                                <apex:selectList id="aqwa" multiselect="true" styleClass="SelectedProfiles" style="float:left;">
+                                    <apex:selectOptions value="{!savedProfiles}" />
+                                </apex:selectList>                          
+                            </span>
+                            
+                            <span>
+                                <label>When a task is past its due date (Under construction) </label>
+                            </span>
+                        </div>
+                    </div>                  
+                    <!-- End Form container --> 
+            </div>
+            <!-- End Main Content -->
+        </div>
+        
+        <!-- BreadCrumbs -->
+        <div class="breadcrumbs" style="padding-bottom: 10px;" align="center">
+            <br>
             <table align="center" cellpadding="0" cellspacing="0">
-            	<tr>
-            		<td>
-			            <apex:commandButton value="Save"  onclick="toSendF();" /> 
-					</td>
-					<td>
-			            <apex:commandButton value="Cancel" />
-					</td>
-				</tr>
-			</table>
-		</div>
-	
-	</apex:form>
+                <tr>
+                    <td>
+                        <apex:commandButton value="Save"  onclick="toSendF();" /> 
+                    </td>
+                    <td>
+                        <apex:commandButton value="Cancel" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    
+    </apex:form>
     <apex:form id="fToSend">
         <apex:actionFunction name="toSendF" action="{!saveAdmSettings}" rerender="form_content" />
         <apex:inputHidden value="{!SelectedProfsStr}" id="profileToSend" />
     </apex:form>
-	<script type="text/javascript">
-		readPortalCSSRules();
+    <script type="text/javascript">
+        readPortalCSSRules();
         function setSelProfs( multiSelLeft, multiSelRight, direction, hiddenField ){
         
             mSelLeft  = multiSelLeft.options;
@@ -192,6 +192,6 @@
             
             hiddenField.value = toSend.join( '#' );
             
-        } 		
-	</script>	
+        }       
+    </script>   
 </apex:page>

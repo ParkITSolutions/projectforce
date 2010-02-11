@@ -5,7 +5,7 @@ public class ProjectTaskDetailController {
 	
 	private String USERID = UserInfo.getUserId(); 
 	private Boolean editDeletePer = false;
-	private String projectId = '';
+	public String projectId { set; get;}
 	private Boolean canComment;
 	public TaskDetails taskDetail = null;
 	public TaskComment__c comment = new TaskComment__c(); 
@@ -23,6 +23,8 @@ public class ProjectTaskDetailController {
 	* Constructor
 	*/
 	public ProjectTaskDetailController(ApexPages.StandardController ctrl){
+				                 BreadcrumController b =  new BreadcrumController();  
+		
 		param = System.currentPageReference().getParameters().get('id'); 
 		getTask(param);
 		genPermissions();
@@ -33,7 +35,7 @@ public class ProjectTaskDetailController {
 		task = [select project__c from ProjectTask__c where Id =:taskId];
 		
 		projectId = task[0].project__c;
-
+		System.debug('====================== Task DEtail: ' +projectId);
 	}
 	
 	/**

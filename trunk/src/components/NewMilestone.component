@@ -1,111 +1,101 @@
 <apex:component id="NewMilestone" controller="NewMilestoneController" allowDML="true">
 
-	<apex:stylesheet value="{!URLFOR($Resource.NewMilestone, 'inc/css/newMilestone.css')}" /> 
-	<apex:includeScript value="{!URLFOR($Resource.NewMilestone, 'inc/js/newMilestone.js')}" />
-	
-	<script>
-	
-		var newMilestone = '{!$Component.Content}';
-		
-	</script>
-	
-	<apex:outputPanel id="Content"  styleClass="contentNewMilestone overlay" style="display: none;" layout="block">
-	
-			<!-- TitlePanel -->
-			<apex:outputPanel id="TitlePanel"
-				styleClass="titlePanel"
-				layout="block">
-				
-				<apex:outputPanel styleClass="title">
-					Create New Milestone
-				</apex:outputPanel>
-				
-				<apex:outputPanel id="overlayClose" styleClass="overlayClose" layout="block">
-					<apex:outputLink id="linkClose" value="javascript:;" onClick="promptOverlay.close();" >
-						<img src="{!URLFOR($Resource.Overlays, 'images/overlayClose.gif')}" alt="Close Window" title="Close Window" />
-					</apex:outputLink>	 
-	            </apex:outputPanel>
-			</apex:outputPanel>
-			<!-- End TitlePanel -->
-			
-			<!-- Form -->
-			<apex:form id="Form">
-			
-				<apex:outputPanel id="HiddenPanel" style="display: none">
-				
-					<apex:inputHidden value="{!postAction}" id="PostAction"/>
-					
-				</apex:outputPanel>
-			
-				<apex:outputPanel styleclass="required"></apex:outputPanel>
-				<apex:outputPanel styleclass="overlayRequiredInfo">= Required Information</apex:outputPanel>
-				<br />
-				
-				<!-- ComponentBody -->
-				<apex:outputPanel id="ComponentBody" styleClass="componentBody" layout="block">
-					
-					<apex:outputLabel >Name</apex:outputLabel>
-					<apex:outputPanel styleclass="required"></apex:outputPanel>
-					<apex:inputText id="Name" value="{!myTask.Name}" />
-					<br />
-					<apex:outputPanel id="milestoneNameError" styleClass="milestoneErrors" style="display: none;">Error: You must enter a value</apex:outputPanel>
-					<br />
-					
-					
-					<apex:outputLabel >Start Date</apex:outputLabel> 
-					<apex:outputPanel styleclass="required"></apex:outputPanel>
-					<apex:inputField id="StartDate" value="{!myTask.StartDate__c}" />
-					<br />
-					
-					<apex:outputPanel id="milestoneDateError" styleClass="milestoneErrors" style="display: none;">Error: You must enter a value</apex:outputPanel>
-					<apex:outputPanel id="milestoneDateInvalid" styleClass="milestoneErrors" style="display: none;">Error: You must enter a valid value</apex:outputPanel>
-					
-					<br />
-					
-					<apex:outputLabel >Assign To</apex:outputLabel> 
-					<apex:outputPanel styleclass="required"></apex:outputPanel>
-					<apex:selectList value="{!assignTo}" size="1" id="memberMilestone">
-						<apex:selectOptions value="{!members}"/>
-				   </apex:selectList>
-				   <br />
-				   <apex:outputPanel id="memberErrorMilestone" styleClass="milestoneErrors" style="display: none;">Error: You must select a value</apex:outputPanel>
-				   
-				   <br/>
-				   
-				   <apex:outputPanel styleclass="overlaySeparateLine" layout="block"></apex:outputPanel>
-					
-					<!-- SubmitButtons -->
-					<apex:outputPanel id="SubmitButtons"
-						styleClass="submitButtons"
-						layout="block">
-					
-							<apex:commandButton id="AcceptButton"
-								value="accept"
-								action="{!action}"
-								onClick="return MilestoneValidation.newMilestoneValidation('{!$Component.Name}','{!$Component.StartDate}','{!$Component.memberMilestone}'); promptOverlay.close(); swirly.show();"
-								onComplete="promptOverlay.postAction();"
-								reRender="HiddenPanel"
-							    styleClass="Accept submitButton" 
-							    style="float: none;width: 70px !important;background:#21637D none repeat scroll 0 0 !important;"/>
-							    
-							<apex:outputLink id="CancelButton"
-								value="javascript:;"
-								onClick="promptOverlay.close();"
-							    styleClass="Cancel submitButton" >Cancel
-							</apex:outputLink>
-							
-																				
-							<a href="https://{!domain}/{!taskPrefix}/e" onclick="addNewMilestoneOverlay.close(); removeOverlayEvents();">Create Full Task</a>
-					
-					</apex:outputPanel>
-					<!-- end of SubmitButtons -->
-					
-				</apex:outputPanel>
-				<!-- end of ComponentBody -->
-			
-			</apex:form>
-			<!-- End Form -->
-				
-	</apex:outputPanel>
-	
+    <apex:stylesheet value="{!URLFOR($Resource.NewMilestone, 'inc/css/newMilestone.css')}" /> 
+    <apex:includeScript value="{!URLFOR($Resource.NewMilestone, 'inc/js/newMilestone.js')}" />
+    
+    <script>
+        var newMilestone = '{!$Component.Content}';
+    </script>
+    
+    <apex:outputPanel id="Content"  styleClass="contentNewMilestone overlay" style="display:none;" layout="block">
+    
+            <!-- TitlePanel -->
+            <apex:outputPanel id="TitlePanel" styleClass="titlePanel" layout="block">
+                
+                <apex:outputPanel styleClass="title">
+                    Create New Milestone
+                </apex:outputPanel>
+                
+                <apex:outputPanel id="overlayClose" styleClass="overlayClose" layout="block">
+                    <apex:outputLink id="linkClose" value="javascript:;" onClick="promptOverlay.close(); milestone.clear('{!$Component.Form.Name}','{!$Component.Form.StartDate}','{!$Component.Form.memberMilestone}');" >
+                        <img src="{!URLFOR($Resource.Overlays, 'images/overlayClose.gif')}" alt="Close Window" title="Close Window" />
+                    </apex:outputLink>   
+                </apex:outputPanel>
+            </apex:outputPanel>
+            <!-- End TitlePanel -->
+            
+            <!-- Form -->
+            <apex:form id="Form">
+            
+                <apex:outputPanel id="HiddenPanel" style="display: none">
+                    <apex:inputHidden value="{!postAction}" id="PostAction"/>
+                </apex:outputPanel>
+            
+                <apex:outputPanel styleclass="required"></apex:outputPanel>
+                <apex:outputPanel styleclass="overlayRequiredInfo">= Required Information</apex:outputPanel>
+                <br />
+                
+                <!-- ComponentBody -->
+                <apex:outputPanel id="ComponentBody" styleClass="componentBody" layout="block">
+                    
+                    <apex:outputLabel >Name</apex:outputLabel>
+                    <apex:outputPanel styleclass="required"></apex:outputPanel>
+                    <apex:inputField id="Name" value="{!myTask.Name}" />
+                    
+                   	<br />
+                    <apex:outputPanel id="milestoneNameError" styleClass="milestoneErrors" style="display: none;" >Error: You must enter a value</apex:outputPanel>
+                    <br />
+                    
+                    <apex:outputLabel >Start Date</apex:outputLabel> 
+                    <apex:outputPanel styleclass="required"></apex:outputPanel>
+                    <apex:inputField id="StartDate" value="{!myTask.StartDate__c}" />
+                    
+                    <br />
+                    <apex:outputPanel id="milestoneDateInvalid" styleClass="milestoneErrors" style="display:none;" >Error: You must enter a valid value</apex:outputPanel>
+                    <br />
+                    
+                    <apex:outputLabel >Assign To</apex:outputLabel> 
+                    <apex:outputPanel styleclass="required"></apex:outputPanel>
+                    <apex:selectList id="memberMilestone" value="{!assignees}" size="3" multiSelect="true" >
+                        <apex:selectOptions value="{!members}"/>
+                   </apex:selectList>
+
+                   <br />
+                   <apex:outputPanel id="memberErrorMilestone" styleClass="milestoneErrors" style="display:none;">Error: You must select a value</apex:outputPanel>
+                   <br/>
+                   
+                   <apex:outputPanel styleclass="overlaySeparateLine" layout="block"></apex:outputPanel>
+                    
+                    <!-- SubmitButtons -->
+                    <apex:outputPanel id="SubmitButtons" styleClass="submitButtons" layout="block">
+                    
+                            <apex:commandLink id="AcceptButton"
+                                value="Accept"
+                                action="{!action}"
+                                onClick="return milestone.validate('{!$Component.Name}','{!$Component.StartDate}','{!$Component.memberMilestone}'); promptOverlay.close(); swirly.show();"
+                                onComplete="promptOverlay.postAction(); milestone.validate('{!$Component.Name}','{!$Component.StartDate}','{!$Component.memberMilestone}');"
+                                reRender="HiddenPanel"
+                                styleClass="Accept submitButton" 
+                                style=""/>
+                                
+                            <apex:outputLink id="CancelButton"
+                                value="javascript:;"
+                                onClick="promptOverlay.close(); milestone.clear('{!$Component.Name}','{!$Component.StartDate}','{!$Component.memberMilestone}');"
+                                styleClass="Cancel submitButton" >Cancel
+                            </apex:outputLink>
+                                                                                
+                            <a href="https://{!domain}/{!taskPrefix}/e?retURL=https://{!domain}/apex/projectDetail?id={!projectId}" class="fullTaskLink">
+                            Create Full Task</a>
+                    
+                    </apex:outputPanel>
+                    <!-- end of SubmitButtons -->
+                    
+                </apex:outputPanel>
+                <!-- end of ComponentBody -->
+            
+            </apex:form>
+            <!-- End Form -->
+                
+    </apex:outputPanel>
+    
 </apex:component>

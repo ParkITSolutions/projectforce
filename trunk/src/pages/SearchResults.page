@@ -1,169 +1,169 @@
-<apex:page id="searchResults" sidebar="false" controller="SearchResultsController" tabStyle="Project2__c" action="{!search}">	
-	
-	<c:ApplicationTop id="ApplicationTop" />
-	
-	<apex:styleSheet value="{!URLFOR($Resource.SearchResults, 'inc/css/searchResults.css')}" />
-	<apex:includeScript value="{!URLFOR($Resource.SearchResults, 'inc/js/searchResults.js')}" />
-	
-	<!-- Principal Container for Search Results Page -->
-	<apex:outputpanel id="searchResultsPage" layout="block" styleClass="searchResultsPage">
-	
-		<!-- Top Section -->
-	    <apex:outputpanel id="top" layout="block" styleClass="top">
-			<!-- Header -->
-		    <apex:composition template="HeaderTemplate">
-				<apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
-			    <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
-			    <apex:define name="title">Search</apex:define>
-			    <apex:define name="search">
-			   		<c:Search id="search" module="project" label="" projectId="{!projectId}"  />
-			    </apex:define>
-		 	</apex:composition>
-	
-		</apex:outputpanel>
-		
-		<!-- Sidebar Section Contains Widgets -->
-	    <apex:outputpanel id="sideBar" layout="block" styleClass="sideBar">
-	
-			<c:ProjectsWidgetMyTasks />
-			
-			<c:ProjectsWidgetMyMilestones />
-			
-			<c:ProjectSetupWidget /> 
-		
-		</apex:outputpanel>
-		
-	 	<!-- Main Content Section -->
-	    <apex:outputpanel id="ContentPanel" layout="block" styleClass="searchMain">
-	
-			<apex:form id="Form">
-		
-				<!-- PaginatorPanel -->
-				<apex:outputPanel id="PaginatorPanel" styleClass="paginatorPanel" layout="block" >
-				
-						<script type="text/javascript">
-							paginator.pageNumberId 	= '{!$Component.Form.pageNumber}';
-						</script>
-					
-						<apex:actionFunction name="RefreshPaginator"
-							action="{!paginator.pagesListConstructor}"
-							onComplete="swirly.hide();" 
-							reRender="PaginatorPanel, RecordsList"/>
-							
-						<!-- CommandsPanel -->
-						<apex:outputPanel id="CommandsPanel" styleClass="commandsPanel" layout="block" rendered="{!OR(paginator.hasNext,paginator.hasPrevious)}">
-							
-							<apex:commandLink id="FirstLink"
-								rendered="{!paginator.hasPrevious}" 
-								action="{!paginator.first}" 
-								onClick="swirly.show();" 
-								onComplete="swirly.hide();" 
-								reRender="PaginatorPanel, RecordsList"> <apex:image id="imgFirst" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_first.gif')}" /> </apex:commandLink> &nbsp; &nbsp;
-								
-							<apex:commandLink id="PreviousLinkImg"
-								rendered="{!paginator.hasPrevious}" 
-								action="{!paginator.previous}" 
-								onClick="swirly.show();" 
-								onComplete="swirly.hide();" 
-								reRender="PaginatorPanel, RecordsList" > <apex:image id="imgPrevious" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_prev.gif')}" /> </apex:commandLink> &nbsp;
-							
-							<apex:commandLink id="PreviousLink"
-								rendered="{!paginator.hasPrevious}" 
-								value="Prevoius Page"
-								styleClass="label"
-								action="{!paginator.previous}" 
-								onClick="swirly.show();" 
-								onComplete="swirly.hide();" 
-								reRender="PaginatorPanel, RecordsList" /> &nbsp;
-							
-							<!-- Renders Pagination numbers -->
-							<apex:repeat id="PagesItemsRepeat" value="{!paginator.pages}" var="page" id="PagesList" > &nbsp;
-							
-								<apex:commandLink id="PageNumberLink"
-									styleClass="{!IF(page == paginator.pageNumber,'currentPage', '')}" 
-									value="{!page}" 
-									action="{!paginator.goToPage}" 
-									onClick="paginator.setPageNumber('{!page}'); swirly.show();" 
-									onComplete="swirly.hide();"  
-									reRender="PaginatorPanel, RecordsList"/> 
-							
-							</apex:repeat> &nbsp;
-							
-							<apex:commandLink id="NextLink"
-								rendered="{!paginator.hasNext}" 
-								value="Next Page"
-								styleClass="label"
-								action="{!paginator.next}" 
-								onClick="swirly.show();" 
-								onComplete="swirly.hide();" 
-								reRender="PaginatorPanel, RecordsList" /> &nbsp;
-								
-							<apex:commandLink id="NextLinkImg"
-								rendered="{!paginator.hasNext}" 
-								action="{!paginator.next}" 
-								onClick="swirly.show();" 
-								onComplete="swirly.hide();" 
-								reRender="PaginatorPanel, RecordsList">  <apex:image id="imgNext" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_next.gif')}" /> </apex:commandLink> &nbsp; &nbsp;
-							
-							<apex:commandLink id="LastLink"
-								rendered="{!paginator.hasNext}" 
-								action="{!paginator.last}" 
-								onClick="swirly.show();" 
-								onComplete="swirly.hide();" 
-								reRender="PaginatorPanel, RecordsList">  <apex:image id="imgLast" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_last.gif')}" /> </apex:commandLink> &nbsp;
-							
-						</apex:outputPanel>
-						<!-- End CommandsPanel -->
-					
-						<apex:outputPanel id="ResultSizeText" >Number of records: {!paginator.resultSize}</apex:outputPanel>
-						
-						<br>
-						<apex:outputPanel id="recordPerPage" >Records per page:</apex:outputpanel> 
-						<apex:selectList id="PageSizeSelect" value="{!paginator.recordsPerPage}" size="1" onChange="swirly.show(); RefreshPaginator();">
-							<apex:selectOptions id="PageSizeOption" value="{!paginator.pageSizeItems}"/>
-						</apex:selectList>
-						
-						<!--  hidden fields to pass params to pagintor Controller for Sort, Filter, etc... -->
-						<apex:inputHidden id="pageNumber" value="{!paginator.pageNumber}" />
-						
-				</apex:outputPanel>
-				<!-- End PaginatorPanel -->
-			
-			</apex:form>
-			
-			<!-- Outputpanel for when there are no results to show -->
-			<apex:outputpanel id="noResult" layout="block" rendered="{!IF(paginator.resultSize == 0, true, false)}">
-				<apex:outputpanel styleClass="noResult" >No results for '{!searchTerm}'</apex:outputpanel>
-			</apex:outputpanel>
-				
-			<apex:outputpanel id="RecordsList" rendered="{!IF(paginator.resultSize > 0, true, false)}">
+<apex:page id="searchResults" sidebar="false" controller="SearchResultsController" tabStyle="Project2__c" action="{!search}">   
+    
+    <c:ApplicationTop id="ApplicationTop" />
+    
+    <apex:styleSheet value="{!URLFOR($Resource.SearchResults, 'inc/css/searchResults.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.SearchResults, 'inc/js/searchResults.js')}" />
+    
+    <!-- Principal Container for Search Results Page -->
+    <apex:outputpanel id="searchResultsPage" layout="block" styleClass="searchResultsPage">
+    
+        <!-- Top Section -->
+        <apex:outputpanel id="top" layout="block" styleClass="top">
+            <!-- Header -->
+            <apex:composition template="HeaderTemplate">
+                <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
+                <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
+                <apex:define name="title">Search</apex:define>
+                <apex:define name="search">
+                    <c:Search id="search" module="Project" label="" projectId="{!projectId}"  />
+                </apex:define>
+            </apex:composition>
+    
+        </apex:outputpanel>
+        
+        <!-- Sidebar Section Contains Widgets -->
+        <apex:outputpanel id="sideBar" layout="block" styleClass="sideBar">
+    		
+    		<c:QuickLinksWidget id="quickLinks" />
+    		
+            <!--  <c:ProjectsWidgetMyTasks id="myTasksWidget"/>
+            
+            <c:ProjectsWidgetMyMilestones id="myMilestonesWidget"/>-->
+            
+        </apex:outputpanel>
+        
+        <!-- Main Content Section -->
+        <apex:outputpanel id="ContentPanel" layout="block" styleClass="searchMain">
+    
+            <apex:form id="Form">
+        
+                <!-- PaginatorPanel -->
+                <apex:outputPanel id="PaginatorPanel" styleClass="paginatorPanel" layout="block" >
+                
+                        <script type="text/javascript">
+                            paginator.pageNumberId  = '{!$Component.Form.pageNumber}';
+                        </script>
+                    
+                        <apex:actionFunction name="RefreshPaginator"
+                            action="{!paginator.pagesListConstructor}"
+                            onComplete="swirly.hide();" 
+                            reRender="PaginatorPanel, RecordsList"/>
+                            
+                        <!-- CommandsPanel -->
+                        <apex:outputPanel id="CommandsPanel" styleClass="commandsPanel" layout="block" rendered="{!OR(paginator.hasNext,paginator.hasPrevious)}">
+                            
+                            <apex:commandLink id="FirstLink"
+                                rendered="{!paginator.hasPrevious}" 
+                                action="{!paginator.first}" 
+                                onClick="swirly.show();" 
+                                onComplete="swirly.hide();" 
+                                reRender="PaginatorPanel, RecordsList"> <apex:image id="imgFirst" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_first.gif')}" /> </apex:commandLink> &nbsp; &nbsp;
+                                
+                            <apex:commandLink id="PreviousLinkImg"
+                                rendered="{!paginator.hasPrevious}" 
+                                action="{!paginator.previous}" 
+                                onClick="swirly.show();" 
+                                onComplete="swirly.hide();" 
+                                reRender="PaginatorPanel, RecordsList" > <apex:image id="imgPrevious" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_prev.gif')}" /> </apex:commandLink> &nbsp;
+                            
+                            <apex:commandLink id="PreviousLink"
+                                rendered="{!paginator.hasPrevious}" 
+                                value="Prevoius Page"
+                                styleClass="label"
+                                action="{!paginator.previous}" 
+                                onClick="swirly.show();" 
+                                onComplete="swirly.hide();" 
+                                reRender="PaginatorPanel, RecordsList" /> &nbsp;
+                            
+                            <!-- Renders Pagination numbers -->
+                            <apex:repeat id="PagesItemsRepeat" value="{!paginator.pages}" var="page" id="PagesList" > &nbsp;
+                            
+                                <apex:commandLink id="PageNumberLink"
+                                    styleClass="{!IF(page == paginator.pageNumber,'currentPage', '')}" 
+                                    value="{!page}" 
+                                    action="{!paginator.goToPage}" 
+                                    onClick="paginator.setPageNumber('{!page}'); swirly.show();" 
+                                    onComplete="swirly.hide();"  
+                                    reRender="PaginatorPanel, RecordsList"/> 
+                            
+                            </apex:repeat> &nbsp;
+                            
+                            <apex:commandLink id="NextLink"
+                                rendered="{!paginator.hasNext}" 
+                                value="Next Page"
+                                styleClass="label"
+                                action="{!paginator.next}" 
+                                onClick="swirly.show();" 
+                                onComplete="swirly.hide();" 
+                                reRender="PaginatorPanel, RecordsList" /> &nbsp;
+                                
+                            <apex:commandLink id="NextLinkImg"
+                                rendered="{!paginator.hasNext}" 
+                                action="{!paginator.next}" 
+                                onClick="swirly.show();" 
+                                onComplete="swirly.hide();" 
+                                reRender="PaginatorPanel, RecordsList">  <apex:image id="imgNext" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_next.gif')}" /> </apex:commandLink> &nbsp; &nbsp;
+                            
+                            <apex:commandLink id="LastLink"
+                                rendered="{!paginator.hasNext}" 
+                                action="{!paginator.last}" 
+                                onClick="swirly.show();" 
+                                onComplete="swirly.hide();" 
+                                reRender="PaginatorPanel, RecordsList">  <apex:image id="imgLast" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_last.gif')}" /> </apex:commandLink> &nbsp;
+                            
+                        </apex:outputPanel>
+                        <!-- End CommandsPanel -->
+                    
+                        <apex:outputPanel id="ResultSizeText" >Number of records: {!paginator.resultSize}</apex:outputPanel>
+                        
+                        <br>
+                        <apex:outputPanel id="recordPerPage" >Records per page:</apex:outputpanel> 
+                        <apex:selectList id="PageSizeSelect" value="{!paginator.recordsPerPage}" size="1" onChange="swirly.show(); RefreshPaginator();">
+                            <apex:selectOptions id="PageSizeOption" value="{!paginator.pageSizeItems}"/>
+                        </apex:selectList>
+                        
+                        <!--  hidden fields to pass params to pagintor Controller for Sort, Filter, etc... -->
+                        <apex:inputHidden id="pageNumber" value="{!paginator.pageNumber}" />
+                        
+                </apex:outputPanel>
+                <!-- End PaginatorPanel -->
+            
+            </apex:form>
+            
+            <!-- Outputpanel for when there are no results to show -->
+            <apex:outputpanel id="noResult" layout="block" rendered="{!IF(paginator.resultSize == 0, true, false)}">
+                <apex:outputpanel styleClass="noResult" >No results for '{!searchTerm}'</apex:outputpanel>
+            </apex:outputpanel>
+                
+            <apex:outputpanel id="RecordsList" rendered="{!IF(paginator.resultSize > 0, true, false)}">
 
-				<apex:repeat var="item" value="{!paginator.searchResults}" >
-				
-					<apex:outputpanel id="searchResultItem" layout="block" styleClass="searchResultItem">
-					
-						<!-- Project PAGE LINK -->
-						<apex:outputpanel id="projectResult" layout="block" rendered="{!IF(item.resultType == 'Project',true, false)}">
-							<a class="title" href="/apex/ProjectDetail?id={!item.id}"><apex:outputtext id="projectName" value="{!item.name}" escape="false" /></a>
-						</apex:outputpanel>
+                <apex:repeat var="item" value="{!paginator.searchResults}" >
+                
+                    <apex:outputpanel id="searchResultItem" layout="block" styleClass="searchResultItem">
+                    
+                        <!-- Project PAGE LINK -->
+                        <apex:outputpanel id="projectResult" layout="block" rendered="{!IF(item.resultType == 'Project',true, false)}">
+                            <a class="title" href="/apex/ProjectDetail?id={!item.id}"><apex:outputtext id="projectName" value="{!item.name}" escape="false" /></a>
+                        </apex:outputpanel>
 
-						<!-- PROJECT TASK LINK -->
-						<apex:outputpanel id="taskResult" layout="block" rendered="{!IF(item.resultType == 'Project Task',true, false)}">
-							<a class="title" href="/apex/ProjectTaskDetail?id={!item.id}"><apex:outputtext id="taskName" value="{!item.name}" escape="false" /></a>
-						</apex:outputpanel>
+                        <!-- PROJECT TASK LINK -->
+                        <apex:outputpanel id="taskResult" layout="block" rendered="{!IF(item.resultType == 'Project Task',true, false)}">
+                            <a class="title" href="/apex/ProjectTaskDetail?id={!item.id}"><apex:outputtext id="taskName" value="{!item.name}" escape="false" /></a>
+                        </apex:outputpanel>
 
-						<apex:outputpanel id="description" layout="block" styleClass="matches">
-							<apex:outputText escape="false" value="{!item.matches}" />
-						</apex:outputpanel>
-						
-					</apex:outputpanel>
-					
-				</apex:repeat>
+                        <apex:outputpanel id="description" layout="block" styleClass="matches">
+                            <apex:outputText escape="false" value="{!item.matches}" />
+                        </apex:outputpanel>
+                        
+                    </apex:outputpanel>
+                    
+                </apex:repeat>
 
-			</apex:outputpanel>
-			
-		</apex:outputpanel>
-		
-	</apex:outputpanel>
-	
+            </apex:outputpanel>
+            
+        </apex:outputpanel>
+        
+    </apex:outputpanel>
+    
 </apex:page>

@@ -1,16 +1,19 @@
 <apex:component id="NewAssignee" allowDML="true" controller="NewAssigneeController">
 
-	<apex:stylesheet value="{!URLFOR($Resource.NewAssignee, 'inc/css/newAssignee.css')}" />
-	
-	<script>
-		var newAssignee = '{!$Component.Content}';
-	</script>
-
-	<apex:outputPanel id="Content"  styleClass="contentNewAssignee overlay" style="display: none" layout="block">
+    <apex:stylesheet value="{!URLFOR($Resource.NewAssignee, 'inc/css/newAssignee.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.NewAssignee, 'inc/js/newAssignee.js')}" />
+    
+    <script>
+        var newAssignee 					= '{!$Component.Content}';
+        newAssigneeOverlay.assignedSelect 	= '{!$Component.Form.assignedSelect}';
+        newAssigneeOverlay.miniSwirly 		= '{!$Component.Form:miniSwirly}';
+        newAssigneeOverlay.acceptButton 	= '{!$Component.Form:AcceptButton}';
+    </script>
+    
+    <apex:outputPanel id="Content"  styleClass="contentNewAssignee overlay" style="display: none" layout="block">
     
             <!-- TitlePanel -->
             <apex:outputPanel id="TitlePanel" styleClass="titlePanel" layout="block">
-                
                 <apex:outputPanel styleClass="title">Add new assignee</apex:outputPanel>
                 
                 <apex:outputPanel id="overlayClose" styleClass="overlayClose" layout="block">
@@ -18,19 +21,20 @@
                         <img src="{!URLFOR($Resource.Overlays, 'images/overlayClose.gif')}" alt="Close Window" title="Close Window" />
                     </apex:outputLink>  
                 </apex:outputPanel>
+                
             </apex:outputPanel>
             <!-- End TitlePanel -->
             
             <!-- Form -->
             <apex:form id="Form">
             
-            <apex:actionFunction name="loadCandidates" 
-				action="{!loadCandidates}" 
-				rerender="assignedSelect" 
-				oncomplete="swirly.hide(); promptOverlay.open( newAssignee );" />
+            	<apex:actionFunction name="loadCandidates"
+            		action="{!loadCandidates}"
+            		onComplete="newAssigneeOverlay.onComplete()"
+            		reRender="assignedSelect"/>
             
                 <apex:outputPanel id="HiddenPanel" style="display: none">
-                	<apex:inputHidden value="{!postAction}" id="PostAction" />
+                    <apex:inputHidden value="{!postAction}" id="PostAction" />
                 </apex:outputPanel>
             
                 <apex:outputPanel styleclass="required"></apex:outputPanel>
@@ -40,31 +44,25 @@
                 <!-- ComponentBody -->
                 <apex:outputPanel id="ComponentBody" styleClass="componentBody" layout="block">
                    
-                   	<apex:outputLabel >Member</apex:outputLabel>
-					<apex:outputPanel styleclass="required"></apex:outputPanel>
-					<apex:selectList id="assignedSelect" value="{!assignedToId}" multiselect="false" size="1">
-						<apex:selectOptions id="candidate" value="{!candidatesToAssign}"/>
-					</apex:selectList>
-					<br/><br />
-					<apex:outputLabel >Percentage dedicated</apex:outputLabel>
-					<apex:outputPanel styleclass="notrequired"></apex:outputPanel>
-					<apex:selectList id="percentageSelect" value="{!percentage}" multiselect="false" size="1">
-						<apex:selectOptions id="percentage" value="{!percentages}"/>
-					</apex:selectList>
-					
-					<apex:outputPanel styleclass="overlaySeparateLine" layout="block"></apex:outputPanel>
+                    <apex:outputLabel >Members</apex:outputLabel>
+                    <apex:outputPanel styleclass="required"></apex:outputPanel>
+                    <apex:selectList id="assignedSelect" value="{!assignees}" multiselect="true" size="3" disabled="true" styleClass="assignedSelect">
+                        <apex:selectOptions id="candidate" value="{!candidatesToAssign}"/>
+                    </apex:selectList>
+                    <apex:image id="miniSwirly" style="display:inline" value="{!URLFOR($Resource.Swirly, 'images/bigLoader.gif')}" width="50" height="50" styleClass="miniSwirly"/>
+                    <br/><br />
+                    
+                    <apex:outputPanel styleclass="overlaySeparateLine" layout="block"></apex:outputPanel>
                     
                     <!-- SubmitButtons -->
                     <apex:outputPanel id="SubmitButtons" styleClass="submitButtons" layout="block">
-                    
-                        <apex:commandLink id="AcceptButton" 
-                        	value="Accept"  
-                        	action="{!action}" 
-                        	onClick="promptOverlay.close(); swirly.show();" 
-                        	styleClass="Accept submitButton"
-                        	onComplete="promptOverlay.postAction();" 
-                        	reRender="HiddenPanel"/>
-                        	
+                    	<apex:commandLink id="AcceptButton" 
+                            value="Accept"  
+                            action="{!action}" 
+                            onClick="promptOverlay.close(); swirly.show();"
+                            styleClass="Accept submitButton"
+                            onComplete="promptOverlay.postAction();" 
+                            reRender="HiddenPanel"/>   
                         <apex:outputLink id="CancelButton" value="javascript:;" onClick="promptOverlay.close();" styleClass="Cancel submitButton" >Cancel</apex:outputLink> 
                     </apex:outputPanel>
                     <!-- end of SubmitButtons -->

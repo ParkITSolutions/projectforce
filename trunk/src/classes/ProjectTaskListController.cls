@@ -96,16 +96,12 @@ public with sharing class ProjectTaskListController {
         //Read current user profile
         getUserProfile();
        
-       
-        //dynFilterList = this.dynFilter.getFieldList();
-       
     }   
     
     public Set<Id> idsToDelSet = new Set<Id>();
     public String idsToDel = ':';
  
     public void setIdsToDel( String ids ){ 
-    	System.debug('+>>>>>>' + 'FOOdevug');
   		idsToDel = ids;
 
 		this.idsToDelSet.clear();
@@ -307,9 +303,6 @@ public with sharing class ProjectTaskListController {
     *@return List<TaskDetails>
     */
     public List<TaskDetails> getTaskList(){
-    	for( TaskDetails t : taskList)
-    	if( this.idsToDelSet.contains(t.id))
-    		System.debug( ']=[ ' + t.highliteTask);
     	
         return taskList;
     }
@@ -602,8 +595,6 @@ public with sharing class ProjectTaskListController {
                    
         //Execute query
         resultTaskList = Database.query( query );
-        System.debug( '>>>' + query );
-        //System.debug( '\n/n>>>' + this.getFilterValues() );
         /* ### Apply Sort ### */
          
         // Sorting by priority or assignee name can't be implemented in the SOQL query
@@ -832,7 +823,6 @@ public with sharing class ProjectTaskListController {
             	//TaskDetail.highliteTask = true;
             if (this.idsToDelSet.contains( resultTaskList[i].id )){
             	TaskDetail.highliteTask = true;
-            	system.debug('+>>>>>>' + 'devug' + this.idsToDelSet + '][' + resultTaskList[i].id+ '][' + TaskDetail.highliteTask);
             }else
             	TaskDetail.highliteTask = false;
            

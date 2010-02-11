@@ -1,0 +1,294 @@
+<apex:page id="MembersList" sidebar="false" controller="MembersListController" cache="false" tabStyle="Project2__c">
+
+    <c:ApplicationTop id="ApplicationTop" />
+    
+    <apex:includeScript value="{!URLFOR($Resource.MembersList, 'inc/javascript/membersList.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.MembersList, 'inc/css/membersList.css')}" />
+    
+    <script type="text/javascript">
+        var deleteMembersOverlay = new ConfirmOverlay( '{!$Component.DeleteMembersOverlay}' );
+    </script>
+    
+    <c:ConfirmOverlay id="deleteMembersOverlay" 
+        title="Delete members"
+        messageToUser=" Are you sure you want to continue?"
+        actionName="DeleteMembers" />
+    
+    <c:PromptOverlay id="PromptOverlay"
+        includeNewMember="true" 
+        idValue="{!projectId}"
+        />
+        
+    <!-- Header -->
+    <apex:composition template="HeaderTemplate">
+        <apex:define name="moduleId"><apex:variable var="moduleId" value="headerProject"/></apex:define>
+        <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
+        <apex:define name="title">Tasks & Milestones</apex:define>
+        <apex:define name="search">
+            <c:Search module="Project" label="Tasks" projectId="{!ProjectId}"/>
+        </apex:define>
+    </apex:composition>
+    <!-- End Header -->
+    
+    <!-- ContentPanel -->
+    <apex:outputPanel id="contentPanelMembersList" styleClass="contentPanelMembersList" layout="block" >
+    
+        <!-- breadcrumbPanel -->
+        <apex:outputPanel id="breadcrumbPanel" styleClass="breadcrumbPanel" layout="block">
+            <c:Breadcrum />
+        </apex:outputPanel>
+        <!-- End breadcrumbPanel -->
+    
+        <!-- ButtonsPanel -->
+        <apex:outputPanel id="ButtonsPanel" styleClass="buttonsPanel" layout="block" >
+            
+            <apex:outputLink value="javascript:;"
+                id="NewMemberLink"
+                onClick="promptOverlay.open( newMember );"
+                styleClass="blackbutton">
+                <apex:outputPanel >
+                    New Member
+                </apex:outputPanel>
+            </apex:outputLink>
+    
+            <apex:outputLink value="javascript:;"
+                id="DeleteMemberLink"
+                onClick="deleteMembers();"
+                styleClass="blackbutton">
+                <apex:outputPanel >
+                    Delete
+                </apex:outputPanel>
+            </apex:outputLink>
+            
+        </apex:outputPanel>
+        <!-- End ButtonsPanel -->
+
+        <apex:outputPanel styleClass="topPanelExt" layout="block" >
+            <apex:outputPanel styleClass="topPanel" layout="block" >
+                <apex:form id="Form">
+                
+                    <!-- PaginatorPanel -->
+                    <apex:outputPanel id="PaginatorPanel" styleClass="paginatorPanel" layout="block" >
+                    
+                            <script type="text/javascript">
+                                paginator.pageNumberId  = '{!$Component.Form.pageNumber}';
+                                paginator.orderById     = '{!$Component.Form.orderBy}';
+                                paginator.letterChoosen = '{!$Component.Form.letterChoosen}';
+                            </script>
+                        
+                            <apex:actionFunction name="RefreshPaginator"
+                                action="{!paginator.pagesListConstructor}"
+                                onComplete="swirly.hide();" 
+                                reRender="PaginatorPanel, RecordsList, letterFilter"/>
+                                
+                            <apex:actionFunction name="RefreshRecordsList"
+                                action="{!paginator.loadMembersByProject}"
+                                onComplete="swirly.hide();" 
+                                reRender="PaginatorPanel,RecordsList, letterFilter"/>
+                                
+                            <!-- CommandsPanel -->
+                            <apex:outputPanel id="CommandsPanel" styleClass="commandsPanel" layout="block" rendered="{!OR(paginator.hasNext,paginator.hasPrevious)}">
+                                
+                                <apex:commandLink id="FirstLink"
+                                    rendered="{!paginator.hasPrevious}" 
+                                    action="{!paginator.first}" 
+                                    onClick="swirly.show();" 
+                                    onComplete="swirly.hide();" 
+                                    reRender="PaginatorPanel, RecordsList"> <apex:image id="imgFirst" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_first.gif')}" /> </apex:commandLink> &nbsp; &nbsp;
+                                    
+                                <apex:commandLink id="PreviousLinkImg"
+                                    rendered="{!paginator.hasPrevious}" 
+                                    action="{!paginator.previous}" 
+                                    onClick="swirly.show();" 
+                                    onComplete="swirly.hide();" 
+                                    reRender="PaginatorPanel, RecordsList" > <apex:image id="imgPrevious" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_prev.gif')}" /> </apex:commandLink> &nbsp;
+                                
+                                <apex:commandLink id="PreviousLink"
+                                    rendered="{!paginator.hasPrevious}" 
+                                    value="Prevoius Page"
+                                    styleClass="label"
+                                    action="{!paginator.previous}" 
+                                    onClick="swirly.show();" 
+                                    onComplete="swirly.hide();" 
+                                    reRender="PaginatorPanel, RecordsList" /> &nbsp;
+                                
+                                <!-- Renders Pagination numbers -->
+                                <apex:repeat id="PagesItemsRepeat" value="{!paginator.pages}" var="page" > &nbsp;
+                                
+                                    <apex:commandLink id="PageNumberLink"
+                                        styleClass="{!IF(page == paginator.pageNumber,'currentPage', '')}" 
+                                        value="{!page}" 
+                                        action="{!paginator.goToPage}" 
+                                        onClick="paginator.setPageNumber('{!page}'); swirly.show();" 
+                                        onComplete="swirly.hide();"  
+                                        reRender="PaginatorPanel, RecordsList"/> 
+                                
+                                </apex:repeat> &nbsp;
+                                
+                                <apex:commandLink id="NextLink"
+                                    rendered="{!paginator.hasNext}" 
+                                    value="Next Page"
+                                    styleClass="label"
+                                    action="{!paginator.next}" 
+                                    onClick="swirly.show();" 
+                                    onComplete="swirly.hide();" 
+                                    reRender="PaginatorPanel, RecordsList" /> &nbsp;
+                                    
+                                <apex:commandLink id="NextLinkImg"
+                                    rendered="{!paginator.hasNext}" 
+                                    action="{!paginator.next}" 
+                                    onClick="swirly.show();" 
+                                    onComplete="swirly.hide();" 
+                                    reRender="PaginatorPanel, RecordsList">  <apex:image id="imgNext" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_next.gif')}" /> </apex:commandLink> &nbsp; &nbsp;
+                                
+                                <apex:commandLink id="LastLink"
+                                    rendered="{!paginator.hasNext}" 
+                                    action="{!paginator.last}" 
+                                    onClick="swirly.show();" 
+                                    onComplete="swirly.hide();" 
+                                    reRender="PaginatorPanel, RecordsList">  <apex:image id="imgLast" value="{!URLFOR($Resource.Paginator, 'images/pagination_arrow_last.gif')}" /> </apex:commandLink> &nbsp;
+                                
+                            </apex:outputPanel>
+                            <!-- End CommandsPanel -->
+                        
+                            <br>Number of records: <apex:outputText id="ResultSizeText" value="{!paginator.resultSize}" />
+                            
+                            <br>Records per page: 
+                            <apex:selectList id="PageSizeSelect" value="{!paginator.recordsPerPage}" size="1" onChange="paginator.setLetterChoosen('All'); swirly.show(); RefreshPaginator();">
+                                <apex:selectOptions id="PageSizeOption" value="{!paginator.pageSizeItems}"/>
+                            </apex:selectList>
+                            
+                            <apex:inputHidden id="pageNumber" value="{!paginator.pageNumber}" />
+                            <apex:inputHidden id="orderBy" value="{!paginator.orderBy}" />
+                            
+                    </apex:outputPanel>
+                    <!-- End PaginatorPanel -->
+                    
+                    <!-- letterFilter -->
+                    <apex:outputPanel id="letterFilter" styleClass="letterFilter" layout="block">
+                        <apex:outputLink id="allLink"
+                            value="javascript:;"
+                            styleClass="letterCurrencies {!IF(paginator.letterChoosen == 'All', 'letterChoosen', '')}"
+                            onClick="paginator.setLetterChoosen('All'); swirly.show(); RefreshRecordsList();">
+                                ALL
+                        </apex:outputLink> 
+                        <apex:repeat id="lettersRepeat" value="{!paginator.letters}" var="letter" > &nbsp;
+                            <apex:outputLink id="letterLink"
+                                value="javascript:;"
+                                rendered="{!letter.hasCurrencies}"
+                                styleClass="letterCurrencies {!IF(paginator.letterChoosen == letter.name, 'letterChoosen', '')}"
+                                onClick="paginator.setLetterChoosen('{!letter.name}'); swirly.show(); RefreshRecordsList();">
+                                    {!letter.name}
+                            </apex:outputLink>  
+                            <apex:outputText id="letterText"
+                                value="{!letter.name}"
+                                rendered="{!NOT(letter.hasCurrencies)}" />
+                        </apex:repeat> 
+                        <apex:inputHidden id="letterChoosen" value="{!paginator.letterChoosen}" />
+                    </apex:outputPanel>
+                    <!-- end letterFilter -->
+                    
+                    <!-- filterPanel -->
+                    <apex:outputPanel id="filterPanel" styleClass="filterPanel" layout="block">
+                        Quick filter: 
+                        <apex:selectList id="filterSelect" value="{!paginator.filter}" size="1" onChange="paginator.setLetterChoosen('All'); swirly.show(); RefreshRecordsList();">
+                            <apex:selectOptions id="filterOption" value="{!filterItems}"/>
+                        </apex:selectList>
+                    </apex:outputPanel>
+                    <!-- End filterPanel -->
+                
+                </apex:form>
+                <!-- End Form -->
+            
+            </apex:outputPanel>
+            <!--End paginatorPanelAndExport -->
+            
+            <!-- RecordsList -->
+            <apex:outputPanel id="RecordsList" layout="block" styleClass="RecordsList">
+            
+                <!-- TasksForm -->
+                <apex:form id="MembersForm">
+                    
+                    <apex:dataTable value="{!paginator.membersByProject}" 
+                        var="member" 
+                        id="membersListTable" 
+                        styleClass="table"
+                        cellpadding="0"
+                        cellspacing="0"
+                        rendered="{!paginator.membersByProject.size > 0}"> 
+                        
+                        <apex:column id="Action">
+                            <apex:facet name="header"><apex:inputCheckbox id="ActionCheckbox" onClick="markAllCheckboxes(this,'actionCheckbox');"/></apex:facet>
+                            <input type="checkbox" id="{!member.id}" value="{!member.id}" class="actionCheckbox"/>
+                        </apex:column>
+                        
+                        <apex:column >
+                            <apex:facet name="header">Action</apex:facet>
+                            <apex:outputLink value="javascript:;" id="DeleteLink" onClick="deleteMember('{!member.id}');">Delete</apex:outputLink>
+                        </apex:column>
+                        
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:outputpanel id="NamePanel">
+                                    <apex:outputLink id="NameLink" value="javascript:;" onClick=" swirly.show(); paginator.setOrderBy('name'); RefreshRecordsList();">Name </apex:outputLink> &nbsp;
+                                    <apex:image id="NameArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'name', paginator.orderAsc),true,false)}" />
+                                    <apex:image id="NameArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'name', NOT(paginator.orderAsc)),true, false)}"/>
+                                </apex:outputpanel>
+                            </apex:facet>
+                            <apex:outputLink value="/{!member.id}" id="NameMemberLink"> {!member.name}</apex:outputLink>
+                        </apex:column>
+                        
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:outputpanel id="companyPanel">
+                                    <apex:outputLink id="companyLink" value="javascript:;" onClick=" swirly.show(); paginator.setOrderBy('company'); RefreshRecordsList();">Company </apex:outputLink> &nbsp;
+                                    <apex:image id="companyArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'company', paginator.orderAsc),true,false)}" />
+                                    <apex:image id="companyArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'company', NOT(paginator.orderAsc)),true, false)}"/>
+                                </apex:outputpanel>
+                            </apex:facet>
+                            <apex:outputLink value="/{!member.id}" id="memberCompanyLink"> {!member.User__r.CompanyName}</apex:outputLink>
+                        </apex:column>
+                        
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:outputpanel id="titlePanel">
+                                    <apex:outputLink id="titleLink" value="javascript:;" onClick=" swirly.show(); paginator.setOrderBy('title'); RefreshRecordsList();">Title</apex:outputLink> &nbsp;
+                                    <apex:image id="titleArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'title', paginator.orderAsc),true,false)}" />
+                                    <apex:image id="titleArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'title', NOT(paginator.orderAsc)),true, false)}"/>
+                                </apex:outputpanel>
+                            </apex:facet>
+                            <apex:outputLink value="/{!member.id}" id="memberTitleLink"> {!member.User__r.Title}</apex:outputLink>
+                        </apex:column>
+                        
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:outputpanel id="projectProfilePanel">
+                                    <apex:outputLink id="projectProfileLink" value="javascript:;" onClick=" swirly.show(); paginator.setOrderBy('projectProfile'); RefreshRecordsList();">Project profile</apex:outputLink> &nbsp;
+                                    <apex:image id="projectProfileArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'projectProfile', paginator.orderAsc),true,false)}" />
+                                    <apex:image id="projectProfileArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'projectProfile', NOT(paginator.orderAsc)),true, false)}"/>
+                                </apex:outputpanel>
+                            </apex:facet>
+                            <apex:outputLink value="/{!member.id}" id="memberProfileLink"> {!member.Profile__r.Name}</apex:outputLink>
+                        </apex:column>
+                        
+                    </apex:dataTable>
+                     
+                </apex:form>
+                <!-- End TasksForm -->
+                
+                <!-- NoTasksPanel -->
+                <apex:outputPanel id="NomembersPanel" rendered="{!paginator.resultSize  == 0}" styleClass="noMembers" layout="block">
+                
+                    No members
+                
+                </apex:outputPanel>
+                <!-- End NoTasksPanel -->
+                
+            </apex:outputPanel>
+            <!-- End RecordsList -->
+            
+        </apex:outputPanel>
+        <!-- end paginatorPanelAndExportExt -->
+    </apex:outputPanel>
+    <!-- End ContentPanel -->
+</apex:page>
