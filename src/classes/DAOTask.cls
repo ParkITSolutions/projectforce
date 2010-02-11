@@ -17,33 +17,21 @@ public class DAOTask {
 	* @param task
 	* @param assignedTo
 	*/
-	public void insertTask( ProjectTask__c task, String assignedTo ){
+	public void insertTask( ProjectTask__c task, String[] assignees ){
 		task.PercentCompleted__c = ProjectUtil.getDefaultTaskPercentCompleted();
 		task.Priority__c = ProjectUtil.getDefaultTaskPriority();
 			
 		insert task; 
 
-		DAOAssignee.insertAssignee( task.Id, assignedTo, task.Project__c, 0 );
+		DAOAssignee.insertAssignees( task.Id, assignees, task.Project__c );
 			
 	}
 	
-	/**
-	* Updates a tasks 
-	* @param taskId
-	* @param name
-	* @param startDate
-	* @param dueDate
-	* @param duration
-	* @param assignToId
-	* @param projectId
-	* @param isMilestone
-	* @beta still not implemented
+	/** Update task
+	*@param ProjectTask__c
 	*/
-	public void updateTask( String taskId, String name, String startDate, String dueDate, String duration, String assignTo, String projectId, Boolean isMilestone ){
-		
-		//TODO build a ProjectTask__c object and set its attributes
-		
-		//update task;
+	public void updateTask (ProjectTask__c task){
+		update task;
 	}
 	
 	/**
@@ -86,9 +74,14 @@ public class DAOTask {
 	* @param filter a filter criteria
 	* @param orderBy column name
 	* @param orderAsc true if order way must be ascending or descendant
+	* @letter letter to filter
 	* @return tasks a list of tasks
 	*/
-	public ApexPages.StandardSetController getByProject( String projectId, String filter, String orderBy, Boolean orderAsc ){
+	public ApexPages.StandardSetController getByProject( String projectId, String filter, String orderBy, Boolean orderAsc, String letter ){
+		
+		if(letter=='All'){
+			letter='';
+		}
 		
 		String orderWay = 'DESC';
 		
@@ -151,6 +144,7 @@ public class DAOTask {
 							'EndDate__c ' +
 						'from ProjectTask__c  ' + 
 						'where Project__c = \''+projectId+'\' ' +  
+						'and Name like \''+letter+'%\'' +  
 						''+condition +' ' + 
 						'order by '+orderBy+' '+orderWay; 
 		
@@ -239,9 +233,9 @@ public class DAOTask {
 	}
 
 	public ApexPages.StandardSetController loadTasksByUser( String filter, String orderBy, Boolean orderAsc, String projectId ){
-		 //String sql = 'SELECT project__c, ProjectTask__c, project__r.name, ProjectTask__r.name, ProjectTask__r.startDate__c, ProjectTask__r.endDate__c, ProjectTask__r.status__c, ProjectTask__r.priority__c, ProjectTask__r.milestone__c, ProjectTask__r.percentCompleted__c, ProjectTask__r.DurationUI__c FROM ProjectAssignee__c WHERE User__c = ';
-        String sql = 'SELECT name FROM ProjectTask__c';// WHERE User__c = ';
-        //sql += '\'' +UserInfo.getUserId()+ '\'';
+		String sql = 'SELECT project__c, ProjectTask__c, project__r.name, ProjectTask__r.name, ProjectTask__r.startDate__c, ProjectTask__r.endDate__c, ProjectTask__r.status__c, ProjectTask__r.priority__c, ProjectTask__r.milestone__c, ProjectTask__r.percentCompleted__c, ProjectTask__r.DurationUI__c FROM ProjectAssignee__c WHERE User__c = ';
+       
+        sql += '\'' +UserInfo.getUserId()+ '\'';
 
 		String orderWay = 'DESC';
 		
@@ -250,17 +244,16 @@ public class DAOTask {
 		}
         
         
-        //if( this.opSelected != '--None--' ) 
-            //sql += ' AND Project__c = ' + '\'' + this.opSelected + '\'';            
+        if( projectId != '' )
+        	sql += ' AND Project__c = ' + '\'' + projectId + '\'';            
             
-        //sql += ' ORDER BY ' + orderBy + ' ' + orderWay ;
-        
+        sql += ' ORDER BY ' + orderBy + ' ' + orderWay ;
 		ApexPages.StandardSetController tasks = new ApexPages.StandardSetController( Database.getQueryLocator( sql ));
 
 		if( tasks.getResultSize() == 0 ){
 			return new ApexPages.StandardSetController( new List<ProjectTask__c>() );
 		}
 		
-		return tasks;
+		return tasks; 
 	}	
 }

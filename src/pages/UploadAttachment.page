@@ -1,12 +1,8 @@
-<apex:page id="Attachment" sidebar="false" showHeader="false" controller="AttachmentController">
+<apex:page id="Attachment" sidebar="false" showHeader="false" cache="false" controller="AttachmentController">
     
     <apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" />
-	<apex:includeScript value="{!URLFOR($Resource.Lib, 'inc/js/scriptaculous/lib/prototype.js')}" />
-	<apex:includeScript value="{!URLFOR($Resource.Lib, 'inc/js/scriptaculous/src/scriptaculous.js')}" />
-	
-	<apex:includeScript value="{!URLFOR($Resource.Common, 'inc/js/common.js')}" />
-	<apex:stylesheet value="{!URLFOR($Resource.Common, 'inc/css/common.css')}" />
-
+    <apex:includeScript value="{!URLFOR($Resource.Lib, 'inc/js/scriptaculous/lib/prototype.js')}" />
+    
     <apex:stylesheet value="{!URLFOR($Resource.NewAttachment, 'inc/css/newAttachment.css')}" />
     <apex:includeScript value="{!URLFOR($Resource.NewAttachment, 'inc/js/newAttachment.js')}" />
     
@@ -14,6 +10,7 @@
     
         <apex:outputPanel id="Overlay" styleClass="overlay" layout="block">     
             <apex:outputPanel id="ComponentBody" styleClass="componentBody" layout="block">
+            
                 <apex:outputText value="Select the file to upload." styleclass="label nonFloat"/>
                 <br />
                 <apex:inputFile value="{!newAttach.Body}" id="newAttach" styleclass="newAttach" contentType="{!newAttach.ContentType}" 
@@ -22,13 +19,14 @@
                 <apex:outputPanel styleclass="overlaySeparateLine" layout="block"></apex:outputPanel>
     
                 <apex:outputPanel styleClass="submitButtons" layout="block">
-                    <apex:commandLink id="Accept" styleClass="submitButton Accept" action="{!action}" onclick="parent.promptOverlay.close();parent.swirly.show(); return Attachment.verify();">
+                    <apex:commandLink id="Accept" styleClass="submitButton Accept" action="{!action}" onclick="parent.promptOverlay.close(); parent.swirly.show(); return Attachment.verify();">
                         Accept
                     </apex:commandLink>
-                    <apex:outputLink id="Cancel" value="javascript:;" onClick="parent.promptOverlay.close();Attachment.clearForm();" styleClass="submitButton Cancel" >
+                    <apex:outputLink id="Cancel" value="javascript:;" onClick="parent.promptOverlay.close(); Attachment.clearForm();" styleClass="submitButton Cancel" >
                         Cancel                  
                     </apex:outputLink>
                 </apex:outputPanel>
+                
             </apex:outputPanel>
         </apex:outputPanel>
         
@@ -52,7 +50,7 @@
      
     <style>
     /*
-    	this style class must be generalize for all overlays 
+     this style class must be generalize for all overlays 
     */
     .overlay .componentBody .label{
         color:#676667;

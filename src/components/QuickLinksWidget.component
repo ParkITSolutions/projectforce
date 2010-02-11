@@ -1,65 +1,65 @@
 <apex:component id="quickLinksWidget" controller="QuickLinksWidgetController" allowDML="true">
 
-	<!-- Corresponding CSS and JS for particular Widget -->
-	<apex:stylesheet value="{!URLFOR($Resource.QuickLinksWidget, 'inc/css/quickLinksWidget.css')}" />
-	
-	<!-- TODO place in application top -->
-	<apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
-	
-	<apex:outputPanel id="widget" styleClass="widget" layout="block" >
-	
-		<!-- widget header -->
-		<apex:outputPanel id="header" layout="block" styleClass="header">
-			<div>
-				<div>
-					<h4>Project Quick Links</h4>
-				</div>
-			</div>
-		</apex:outputPanel>
-	
-		<!-- dynamic content goes here -->
-		<apex:outputPanel id="QuickLinksWidget" layout="block" styleClass="quickLinksWidget">
-		
-			<!-- Body of Widget goes here -->
-		    <apex:outputPanel id="newTaskPanel" layout="block" styleclass="textQuickLink"  rendered="{!userPermission.canCreate}">
-		    	<apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
-	    	  	<apex:outputLink id="newTaskLink" value="javascript:;" onClick="promptOverlay.open(newTask);">New Task</apex:outputLink>
-		    </apex:outputPanel>
-			
-			<apex:outputPanel id="newmilestonPanel" layout="block" styleclass="textQuickLink"  rendered="{!userPermission.canCreate}">
-			    <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
-	    	  	<apex:outputLink id="newMilestoneLink" value="javascript:;" onClick="promptOverlay.open(newMilestone);">New Milestone</apex:outputLink>
-			</apex:outputPanel>
-			
-			<apex:outputPanel id="timelinePanel" layout="block" styleclass="textQuickLink">
-			    <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
-			    <apex:outputLink id="timelineLink" value="ProjectTimeline?id={!idProject}" >Timeline</apex:outputLink>
-			</apex:outputPanel>
-			
-			<apex:outputPanel id="taskListPanel" layout="block" styleclass="textQuickLink">
-			    <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
-	    		<apex:outputLink id="taskListLink" value="/apex/TaskList?id={!idProject}#">Task List</apex:outputLink>
-			</apex:outputPanel>
-		
-			<apex:outputPanel id="memberPanel" layout="block" styleclass="textQuickLink">
-			    <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
-	    	  	<apex:outputLink id="memberLink" value="/apex/ProjectMembersList?id={!idProject}#">Member List</apex:outputLink>
-			</apex:outputPanel>
-			
-			<apex:outputPanel id="userTaskPanel" layout="block" styleclass="textQuickLink">
-			    <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
-	    	  	<apex:outputLink id="userTasksLink" value="/apex/userTasks">All User Tasks</apex:outputLink>
-			</apex:outputPanel>
-				
-		</apex:outputPanel>
-		<!-- End dynamic -->
-		
-		<!-- widget footer -->
-		<apex:outputPanel id="footer" layout="block" styleClass="footer">
-			<div>
-				<div></div>
-			</div>
-		</apex:outputPanel>
-	
-	</apex:outputPanel>
+    <!-- Corresponding CSS and JS for particular Widget -->
+    <apex:stylesheet value="{!URLFOR($Resource.QuickLinksWidget, 'inc/css/quickLinksWidget.css')}" />
+    
+    <!-- TODO place in application top -->
+    <apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
+    
+    <apex:outputPanel id="widget" styleClass="widget" layout="block" >
+    
+        <!-- widget header -->
+        <apex:outputPanel id="header" layout="block" styleClass="header">
+            <div>
+                <div>
+                    <h5>Project Quick Links</h5>
+                </div>
+            </div>
+        </apex:outputPanel>
+    
+        <!-- dynamic content goes here -->
+        <apex:outputPanel id="QuickLinksWidget" layout="block" styleClass="quickLinksWidget">
+        
+            <!-- Body of Widget goes here -->
+            <apex:outputPanel id="newTaskPanel" layout="block" styleclass="textQuickLink"  rendered="{!userPermission.canCreate}">
+                <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
+                <apex:outputLink id="newTaskLink" value="javascript:;" onClick="promptOverlay.open(newTask);">New Task</apex:outputLink>
+            </apex:outputPanel>
+            
+            <apex:outputPanel id="newmilestonPanel" layout="block" styleclass="textQuickLink"  rendered="{!userPermission.canCreate}">
+                <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
+                <apex:outputLink id="newMilestoneLink" value="javascript:;" onClick="promptOverlay.open(newMilestone);">New Milestone</apex:outputLink>
+            </apex:outputPanel>
+            
+            <apex:outputPanel id="timelinePanel" layout="block" styleclass="textQuickLink">
+                <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
+                <apex:outputLink id="timelineLink" value="ProjectTimeline?id={!idProject}" >Timeline</apex:outputLink>
+            </apex:outputPanel>
+            
+            <apex:outputPanel id="taskListPanel" layout="block" styleclass="textQuickLink">
+                <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
+                <apex:outputLink id="taskListLink" value="/apex/TaskList?id={!idProject}">Task List</apex:outputLink>
+            </apex:outputPanel>
+        
+            <apex:outputPanel id="memberPanel" layout="block" styleclass="textQuickLink">
+                <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
+                <apex:outputLink id="memberLink" value="/apex/ProjectMembersList?id={!idProject}">Member List</apex:outputLink>
+            </apex:outputPanel>
+            
+            <apex:outputPanel id="userTaskPanel" layout="block" styleclass="textQuickLink">
+                <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
+                <apex:outputLink id="userTasksLink" value="/apex/userTasks">All User Tasks</apex:outputLink>
+            </apex:outputPanel>
+                
+        </apex:outputPanel>
+        <!-- End dynamic -->
+        
+        <!-- widget footer -->
+        <apex:outputPanel id="footer" layout="block" styleClass="footer">
+            <div>
+                <div></div>
+            </div>
+        </apex:outputPanel>
+    
+    </apex:outputPanel>
 </apex:component>

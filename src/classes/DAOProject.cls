@@ -20,10 +20,22 @@ public class DAOProject {
 		members = [select t.Project__c, t.User__r.Name, t.User__r.IsActive, t.Name, t.User__c, t.Id 
 	  	 		   from ProjectMember__c t 
 	  	 		   where t.Project__c =: projectId 
-	  	 		   and t.User__r.IsActive != false]; 
+	  	 		   and t.User__r.IsActive != false];
 	  	 		   
 	    return members;
 		
+	}
+	
+	/** Return project members, order by CreateDate
+	* @param projectId
+	* @return members
+	*/
+	public List<ProjectMember__c> getMembersToWidget (String idProject){
+		List<ProjectMember__c> members = new List<ProjectMember__c>();
+		members = [Select Id, OwnerId,  Name, CreatedDate, Profile__c, Project__c, User__c,  Profile__r.Name 
+					from ProjectMember__c where Project__c =: idProject and User__r.IsActive != false
+					Order By CreatedDate desc limit 10];
+		return members;
 	}
 	
 	/**
@@ -86,6 +98,20 @@ public class DAOProject {
 		}
 		
 		return searchResults;	
+	}
+	
+	
+	/**
+	* @param void
+	* @return Map<String,Id>
+	*/
+	public Map<String,Id> idProjectProfile(){
+		Map<String,Id> projectProfile= new Map<String,Id>();
+		for (ProjectProfile__c projectMember : [SELECT Name,Id FROM ProjectProfile__c 
+								WHERE Name = 'Project Administrator' or Name = 'Member Profile']) {
+			projectProfile.put(projectMember.Name,projectMember.Id);
+		}
+		return projectProfile;
 	}
 	
 }

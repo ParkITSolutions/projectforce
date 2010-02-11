@@ -1,5 +1,5 @@
 /**
-*@author Juan Bessonart @ 07/22/2008
+* @author Juan Bessonart 
 */
 public class UserPermissions {
 
@@ -25,112 +25,112 @@ public class UserPermissions {
 	/**
 	* Constructor
 	*/
-	public UserPermissions (){
+	public UserPermissions(){
 		
 	}
 	
 	/**
-	*@return String
+	* @return String
 	*/
-	public String getId () {
+	public String getId(){
 		return id;
 	}
 
 	
 	/**
-	*@return String
+	* @return String
 	*/
-	public String getProject () {
+	public String getProject(){
 		return this.project;
 	}
 	
 	/**
-	*@return String
+	* @return String
 	*/
-	public String getObjectType () {
+	public String getObjectType(){
 		return this.objectType;
 	}
 	
 	/**
-	*@return Boolean
+	* @return Boolean
 	*/
-	public Boolean getCanCreate () {
+	public Boolean getCanCreate(){
 		return this.canCreate;
 	}
 	
 	
 	/**
-	*@return Boolean
+	* @return Boolean
 	*/
-	public Boolean getCanManage () {
+	public Boolean getCanManage(){
 		return this.canManage;
 	}
 	
 	/**
-	*@return Boolean
+	* @return Boolean
 	*/
-	public Boolean getCanComment () {
+	public Boolean getCanComment(){
 		return this.canComment;
 	}
 	
 	/**
-	*@return Boolean
+	* @return Boolean
 	*/
-	public Boolean getCanView () {
+	public Boolean getCanView(){
 		return this.canView;
 	}
 	
 	/**
-	*@param String id
-	*@return void
+	* @param String id
+	* @return void
 	*/
-	public void setId (String id) {
+	public void setId( String id ){
 		this.id = id;
 	}
 	
 	/**
-	*@param String ownerId
-	*@return void
+	* @param String ownerId
+	* @return void
 	*/ 	
- 	public void setOwnerId (String ownerId) {
+ 	public void setOwnerId( String ownerId ){
 		this.ownerId = ownerId;
 	}
 	
 	/**
-	*@param String project
-	*@return void
+	* @param String project
+	* @return void
 	*/	
-	public void setProject (String project) {
+	public void setProject( String project ){
 		this.project = project;
 	}
 	
 	/**
-	*@param String objectType
-	*@return void
+	* @param String objectType
+	* @return void
 	*/	
-	public void setObjectType (String objectType) {
+	public void setObjectType( String objectType ){
 		this.objectType = objectType;
 	}
 	
 	/**
 	* Gets permissions for current user
-	*@throws Exception
-	*@return void
+	* @throws Exception
+	* @return void
 	*/
-	public void setPermissions () {
+	public void setPermissions(){
 		try{
 			canManage = false;
 			canCreate = false;
 			canComment = false;
 			Boolean isAdmin = false;			
 			
-			if(projectAdmin == null || projectAdmin.Id != UserInfo.getUserId())
+			if( projectAdmin == null || projectAdmin.Id != UserInfo.getUserId() )
 				projectAdmin = [Select id, Profile.PermissionsModifyAllData, ProfileId, Name 
 									From User 
 									where id =: id 
 									limit 1];
 			
-			if(projectAdmin.Profile.PermissionsModifyAllData){
+			if( projectAdmin.Profile.PermissionsModifyAllData ){
 				canManage = true;
 				canCreate = true;
 				canView = true;
@@ -138,7 +138,7 @@ public class UserPermissions {
 				isAdmin = true;
 			}
 			
-			if(!isAdmin){
+			if( !isAdmin ){
 					members = new List<ProjectMember__c>();
 					
 					members = [select
@@ -152,7 +152,7 @@ public class UserPermissions {
 							  limit 1];
 				
 				// If the user is a member of the project we should use the profile assigned to that user
-				if (members.size() > 0) {
+				if ( members.size() > 0 ) {
 					profile = members[0].Profile__r;
 				
 				// If the user is not a member of the project then we have to go to the public profile of the project
@@ -168,18 +168,18 @@ public class UserPermissions {
 										  FROM Project2__c
 										  WHERE Id =: Project];
 					
-					if(currentProject.size() > 0) 
+					if( currentProject.size() > 0 ) 
 						profile = currentProject[0].PublicProfile__r;
 						
 				}				
-				if (profile != null) {
+				if( profile != null ){
 					/*		PROJECT		*/
-					if (objectType == 'Project') {
+					if( objectType == 'Project' ){
 						
-						if(profile.CreateProjectTasks__c)
+						if( profile.CreateProjectTasks__c )
 							canCreate = true;	
 						
-						if (profile.ManageProjectTasks__c){
+						if( profile.ManageProjectTasks__c ){
 							canManage = true; 
 							canCreate = true;
 						}
@@ -190,19 +190,19 @@ public class UserPermissions {
 			
 			String canManageStr = (canManage) ? 'true' : 'false';
 			
-			if(ownerId == id) 
+			if( ownerId == id ) 
 				canManage = true;  // Shouldnt this be called user UserId?
 			
 			canManageStatic = canManage;
-		}catch(Exception e){
+		}catch( Exception e ){
 			throw e;
 		}
 	}
 	
 	/*
-	*@return boolean
+	* @return boolean
 	*/
-	public static Boolean getCanManageStatic () {
+	public static Boolean getCanManageStatic(){
 		return canManageStatic;
 	}
 }

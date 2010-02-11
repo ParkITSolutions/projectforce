@@ -1,115 +1,115 @@
 <apex:page id="taskPdfExport" renderAs="pdf" sidebar="false" tabStyle="Project2__c" controller="TaskPdfExportController" >
 
-	<style type="text/css">
-		body {
-			margin: 0;
-			padding: 0;
-		}
-		a {
-			color: #FFFFFF !important;
-		}
-		.header_project{
-			background-image: url(/img/bgTop.gif);
-			background-position: left top;
-			background-repeat: repeat-x;
-		}
-		.header_portal {
-			background:#004D6B none repeat scroll 0 0;
-			height: 58px;
-			position:relative;
-			width:100%;
-			display: block;
-			overflow: hidden;
-		}
-	</style>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        a {
+            color: #FFFFFF !important;
+        }
+        .header_project{
+            background-image: url(/img/bgTop.gif);
+            background-position: left top;
+            background-repeat: repeat-x;
+        }
+        .header_portal {
+            background:#004D6B none repeat scroll 0 0;
+            height: 58px;
+            position:relative;
+            width:100%;
+            display: block;
+            overflow: hidden;
+        }
+    </style>
 
     <apex:outputpanel id="detailContainer">
-    	<!-- PDF Header -->
-    	<div style="background: rgb(255, 247, 255) none repeat scroll 0% 0%; height: 40px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
-        	<center>
-        		<span style="color:#004D63;font-style:italic;font-size:30px;">Project</span>
-        		<span style="color:#9C928C;font-style:italic;font-size:30px;">force</span>
-        	</center>
+        <!-- PDF Header -->
+        <div style="background: rgb(255, 247, 255) none repeat scroll 0% 0%; height: 40px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+            <center>
+                <span style="color:#004D63;font-style:italic;font-size:30px;">Project</span>
+                <span style="color:#9C928C;font-style:italic;font-size:30px;">force</span>
+            </center>
         </div>
         <div style="background: #004D6B none repeat scroll 0% 0%; height: 40px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
-			<center>
-				<div style="color:#FFFFFF;font-size: 22px;">{!Task.Name}</div>
-			</center>
-		</div>
-		<br />
+            <center>
+                <div style="color:#FFFFFF;font-size: 22px;">{!Task.Name}</div>
+            </center>
+        </div>
+        <br />
 
-		<!-- Task Detail Information -->
+        <!-- Task Detail Information -->
         <table>
-        	<tr>
-        		<td style="width:150px;font-weight:bold;text-align:right;">Id</td>
-        		<td style="width:10px;"></td>
-        		<td>{!Task.Id}</td>
-        	</tr>
-        	<tr>
-        		<td style="width:150px;font-weight:bold;text-align:right;">Task Name</td>
-        		<td style="width:10px;"></td>
-        		<td>{!Task.Name}</td>
-        	</tr>
-        	<tr>
-        		<td style="width:150px;font-weight:bold;text-align:right;">Description</td>
-        		<td style="width:10px;"></td>
-        		<td>{!Task.Description}</td>
-        	</tr>
-        	<tr>
-        		<td style="width:150px;font-weight:bold;text-align:right;">Project</td>
-        		<td style="width:10px;"></td>
-        		<td>{!Task.ProjectName}</td>
-        	</tr>
-        	<tr>
-        		<td style="width:150px;font-weight:bold;text-align:right;">Start Date</td>
-        		<td style="width:10px;"></td>
-        		<td>{!Task.StartDate}</td>
-        	</tr>
-        	<tr>
-        		<td style="width:150px;font-weight:bold;text-align:right;">End Date</td>
-        		<td style="width:10px;"></td>
-        		<td>{!Task.DueDate}</td>
-        	</tr>
-        	<tr>
-        		<td style="width:150px;font-weight:bold;text-align:right;">Duration</td>
-        		<td style="width:10px;"></td>
-        		<td>{!Task.Estimate}</td>
-        	</tr>
-        	<tr>
-        		<td style="width:150px;font-weight:bold;text-align:right;">Status</td>
-        		<td style="width:10px;"></td>
-        		<td>{!Task.status}</td>
-        	</tr>
-        	<tr>
-        		<td style="width:150px;font-weight:bold;text-align:right;">Percent Completed</td>
-        		<td style="width:10px;"></td>
-        		<td>{!Task.PercentCompleted}%</td>
-        	</tr>
-        	<tr>
-        		<td style="width:150px;font-weight:bold;text-align:right;">Parent Task</td>
-        		<td style="width:10px;"></td>
-        		<td>{!Task.ParentTaskName}</td>
-        	</tr>
-        	<tr>
-        		<td style="width:150px;font-weight:bold;text-align:right;">Priority</td>
-        		<td style="width:10px;"></td>
-        		<td>{!Task.Priority}</td>
-        	</tr>
-        	<tr>
-        		<td style="width:150px;font-weight:bold;text-align:right;">Milestone</td>
-        		<td style="width:10px;"></td>
-        		<td>{!Task.Milestone}</td>
-        	</tr>
-        	<tr>
-        		<td style="width:150px;font-weight:bold;text-align:right;">Created By</td>
-        		<td style="width:10px;"></td>
-        		<td><i>{!Task.CreatedByName}</i>, {!Task.CreatedDate}</td>
-        	</tr>
-        	<tr>
-        		<td style="width:150px;font-weight:bold;text-align:right;">Last Modified By</td>
-        		<td style="width:10px;"></td>
-        		<td><i>{!Task.LastModifiedByName}</i>, {!Task.LastModifiedDate}</td>
-        	</tr>
+            <tr>
+                <td style="width:150px;font-weight:bold;text-align:right;">Id</td>
+                <td style="width:10px;"></td>
+                <td>{!Task.Id}</td>
+            </tr>
+            <tr>
+                <td style="width:150px;font-weight:bold;text-align:right;">Task Name</td>
+                <td style="width:10px;"></td>
+                <td>{!Task.Name}</td>
+            </tr>
+            <tr>
+                <td style="width:150px;font-weight:bold;text-align:right;">Description</td>
+                <td style="width:10px;"></td>
+                <td>{!Task.Description}</td>
+            </tr>
+            <tr>
+                <td style="width:150px;font-weight:bold;text-align:right;">Project</td>
+                <td style="width:10px;"></td>
+                <td>{!Task.ProjectName}</td>
+            </tr>
+            <tr>
+                <td style="width:150px;font-weight:bold;text-align:right;">Start Date</td>
+                <td style="width:10px;"></td>
+                <td>{!Task.StartDate}</td>
+            </tr>
+            <tr>
+                <td style="width:150px;font-weight:bold;text-align:right;">End Date</td>
+                <td style="width:10px;"></td>
+                <td>{!Task.DueDate}</td>
+            </tr>
+            <tr>
+                <td style="width:150px;font-weight:bold;text-align:right;">Duration</td>
+                <td style="width:10px;"></td>
+                <td>{!Task.Estimate}</td>
+            </tr>
+            <tr>
+                <td style="width:150px;font-weight:bold;text-align:right;">Status</td>
+                <td style="width:10px;"></td>
+                <td>{!Task.status}</td>
+            </tr>
+            <tr>
+                <td style="width:150px;font-weight:bold;text-align:right;">Percent Completed</td>
+                <td style="width:10px;"></td>
+                <td>{!Task.PercentCompleted}%</td>
+            </tr>
+            <tr>
+                <td style="width:150px;font-weight:bold;text-align:right;">Parent Task</td>
+                <td style="width:10px;"></td>
+                <td>{!Task.ParentTaskName}</td>
+            </tr>
+            <tr>
+                <td style="width:150px;font-weight:bold;text-align:right;">Priority</td>
+                <td style="width:10px;"></td>
+                <td>{!Task.Priority}</td>
+            </tr>
+            <tr>
+                <td style="width:150px;font-weight:bold;text-align:right;">Milestone</td>
+                <td style="width:10px;"></td>
+                <td>{!Task.Milestone}</td>
+            </tr>
+            <tr>
+                <td style="width:150px;font-weight:bold;text-align:right;">Created By</td>
+                <td style="width:10px;"></td>
+                <td><i>{!Task.CreatedByName}</i>, {!Task.CreatedDate}</td>
+            </tr>
+            <tr>
+                <td style="width:150px;font-weight:bold;text-align:right;">Last Modified By</td>
+                <td style="width:10px;"></td>
+                <td><i>{!Task.LastModifiedByName}</i>, {!Task.LastModifiedDate}</td>
+            </tr>
         </table>
         <!-- Line Break -->
         <br/>
@@ -118,25 +118,25 @@
          
         <!-- Task Additional Information -->
         <table>
-        	<tr >
-            	<td style="vertical-align:top;text-align:right;"><b>Files</b>
-              	</td>
-              	<td style="width:10px;"></td>
-               	<td>
-		            <apex:repeat value="{!Task.Files}" var="item" >
-		                <div> 
-		                    <div id="AttachContent">
-		                        <img src="{!URLFOR($Resource.FileTypeIcons, item.attachImage)}"/> &nbsp;
-		                        {!item.Name}
-		                    </div>
-		                </div>
-		            </apex:repeat>	
-           		</td>       
+            <tr >
+                <td style="vertical-align:top;text-align:right;"><b>Files</b>
+                </td>
+                <td style="width:10px;"></td>
+                <td>
+                    <apex:repeat value="{!Task.Files}" var="item" >
+                        <div> 
+                            <div id="AttachContent">
+                                <img src="{!URLFOR($Resource.FileTypeIcons, item.attachImage)}"/> &nbsp;
+                                {!item.Name}
+                            </div>
+                        </div>
+                    </apex:repeat>  
+                </td>       
             </tr>
             <tr></tr>
             <tr>
                 <td style="vertical-align:top;text-align:right;">
-                	<b>Assigned To</b>
+                    <b>Assigned To</b>
                 </td>
                 <td style="width:10px;"></td>
                 <td>
@@ -151,7 +151,7 @@
                 </table>
             </apex:outputpanel>
             <apex:outputpanel rendered="{!IF(!Task.HasAsignee,true,false)}" >
-                      	Nobody Asigned to this task.
+                        Nobody Asigned to this task.
             </apex:outputpanel>
             </td>
             </tr>
@@ -164,14 +164,14 @@
             <apex:repeat value="{!taskComments}" var="comment">
                 <div >
                     <span >
-						Created By <b>{!comment.createdBy.Name}</b>, {!comment.createdDate}
+                        Created By <b>{!comment.createdBy.Name}</b>, {!comment.createdDate}
                     </span>
                     <div>{!comment.Body__c}</div>
                 </div>
                 <br/>
                 <hr>
-            </apex:repeat>							
-            </td>								
+            </apex:repeat>                          
+            </td>                               
             </tr>
         </table>
             

@@ -3,11 +3,11 @@
 */
 public class TaskListController {
 	
-	public List<Task> 	tasks;	
-	public String 	projectId 			{ set; get; }
-	public String 	url 				{ set; get; }
-	public Project 	project 			{ set; get; }
-	public Project 	exceptionMessage 	{ set; get; }
+	public List<Task> tasks;	
+	public String projectId 			{ set; get; }
+	public String url 					{ set; get; }
+	public Project project 				{ set; get; }
+	public Project exceptionMessage 	{ set; get; }
 	public Paginator paginator 			{ set; get; }
 	public String csvFileId 			{ set; get; }
 	
@@ -16,17 +16,17 @@ public class TaskListController {
 	*/
 	public TaskListController(){  
 		
-		this.tasks = new List<Task>();
-		this.projectId = System.currentPageReference().getParameters().get( 'id' );
+		this.tasks 		= new List<Task>();
+		this.projectId 	= System.currentPageReference().getParameters().get( 'id' );
 		
 		if( this.projectId == null || this.projectId == '' ){
-			throw new CustomException('There is not a project selected');
+			throw new CustomException( 'There is not a project selected' );
 		}
 		
-		this.project = new Project( projectId );
-		this.url = ProjectUtil.getUrl();
+		this.project 	= new Project( projectId );
+		this.url 		= ProjectUtil.getUrl();
 		
-		this.paginator = new Paginator();
+		this.paginator 	= new Paginator();
 		
 		this.paginator.orderBy 		= 'Name';
 		this.paginator.orderAsc 	= true;
@@ -105,6 +105,5 @@ public class TaskListController {
        
         upsert doc;
         this.csvFileId = doc.Id;
-        
     }   	
 }

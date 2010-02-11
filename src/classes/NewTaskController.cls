@@ -3,28 +3,28 @@
 */
 public class NewTaskController {
 	
-	public String 	assignTo 	{ set; get; }
-	public String 	projectId 	{ set; get; }
-	private List<ProjectMember__c> projectMembers;
-	public ProjectTask__c myTask {set; get;}
-	public String currentPage 	{set; get;}
-	public String postAction 	{set; get;}
-	public String  taskPrefix = Schema.SObjectType.Projecttask__c.getKeyPrefix();
-	
-	public String domain;
+	private transient List<ProjectMember__c> projectMembers;
+	public transient String[] assignees 		{ set; get; }
+	public transient String projectId 			{ set; get; }
+	public transient ProjectTask__c myTask 		{ set; get; }
+	public transient String currentPage 		{ set; get; }
+	public transient String postAction 			{ set; get; }
+	public transient String taskPrefix 			{ set; get; }
+	public transient String domain				{ set; get; }
 	
 	/**
 	* Constructor
 	*/
 	public NewTaskController(){
 		
-		myTask = new  ProjectTask__c();
-		domain = ProjectUtil.getDomain();
+		this.myTask 			= new  ProjectTask__c();
+		this.domain 			= ProjectUtil.getDomain();
 		this.projectId 			= System.currentPageReference().getParameters().get( 'id' );
 		this.projectMembers 	= DAOFactory.getInstance().getProjectMembers( this.projectId );
 		this.currentPage 		= Apexpages.currentPage().getUrl();
+		this.taskPrefix			= Schema.SObjectType.Projecttask__c.getKeyPrefix();
 		this.postAction 		= '';
-		this.assignTo 			= '';
+		this.assignees 			= new String[]{};
 	
 	}
 	
@@ -35,8 +35,7 @@ public class NewTaskController {
 	public void action(){
 		
 		myTask.Project__c = this.projectId;
-		
-		DAOFactory.getInstance().insertTask( myTask, this.assignTo );
+		DAOFactory.getInstance().insertTask( myTask, this.assignees );
 		
 		if( this.currentPage.contains( 'TaskList' ) ){
 			this.postAction = 'TaskCreatedSuccess';
@@ -50,7 +49,6 @@ public class NewTaskController {
 	public List<SelectOption> getMembers() {
 		
 		List<SelectOption> options = new List<SelectOption>();
-		options.add( new SelectOption( '-1', 'Choose a project Member' ) );
 		
 		for( ProjectMember__c member: projectMembers ) {
     		options.add( new SelectOption( member.User__c, member.User__r.Name ) ); 
@@ -58,18 +56,4 @@ public class NewTaskController {
 		
 		return options;
 	}
-	
-	/**
-	*@return String
-	*/
-	public String getDomain(){
-		return this.domain;
-	}
-	
-	/**
-   	*@return taskPrefix
-   	*/
-   	public String getTaskPrefix(){
-   		return taskPrefix;
-   	}
 }

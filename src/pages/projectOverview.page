@@ -1,324 +1,325 @@
 <apex:page id="projectOverview" sidebar="false" tabStyle="Project2__c" controller="ProjectOverviewController"  >
-	
-	<c:ApplicationTop id="ApplicationTop" />
-	
-	<!-- Prototype / Scriptaculous Framework -->
-	<apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/prototype.js')}"/>
-	<apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/scriptaculous.js')}"/>
-	<apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/effects.js')}"/>
-	<apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}"/>
-	
-	<!-- Portal Support -->
-	<apex:includeScript value="{!$Resource.portalSupport}"/>
-	
-	<!-- Common Js to all people Sections -->
-	<apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/common.js')}"/>
-	
-	<!-- CSS de TS -->
-	<link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/teamOverlyManage.css')}" />
-	
-	<!-- Common CSS Styling  -->
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
-	<apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />
-	<link rel="stylesheet" media="screen" href="{!URLFOR($Resource.commonResources, 'inc/css/modal.css')}" />
-	
-	<!-- Overview CSS Styling  -->
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamOverview.css')}" />
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/miniFeeds.css')}" />	
+    
+    <c:ApplicationTop id="ApplicationTop" />
+    
+    <!-- Prototype / Scriptaculous Framework -->
+    <apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/prototype.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/scriptaculous.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/effects.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}"/>
+    
+    <!-- Portal Support -->
+    <apex:includeScript value="{!$Resource.portalSupport}"/>
+    
+    <!-- Common Js to all people Sections -->
+    <apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/common.js')}"/>
+    
+    <!-- CSS de TS -->
+    <link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/teamOverlyManage.css')}" />
+    
+    <!-- Common CSS Styling  -->
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />
+    <link rel="stylesheet" media="screen" href="{!URLFOR($Resource.commonResources, 'inc/css/modal.css')}" />
+    
+    <!-- Overview CSS Styling  -->
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamOverview.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/miniFeeds.css')}" />  
     
     <!-- CSS styles for Portal Integration -->
     <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
-	
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverview.css')}" />
-	
-	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/teamOverview.js')}" />
-		
-	<script>
-	
-		var API_SESSION_ID = '{!$Api.Session_ID}';
+    
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverview.css')}" />
+    
+    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/teamOverview.js')}" />
+        
+    <script>
+    
+        var API_SESSION_ID = '{!$Api.Session_ID}';
   
-	</script>
-	<style>
-		#holderNew div.loader {
-			background-image:url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')});
-			background-repeat:no-repeat;
-			background-color: #FFFFFF;
-			background-position:center;
-		}
-	</style>	
+    </script>
+    <style>
+        #holderNew div.loader {
+            background-image:url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')});
+            background-repeat:no-repeat;
+            background-color: #FFFFFF;
+            background-position:center;
+        }
+    </style>    
   
 
-	    
-	<!-- Initialize the overlay box for modal.js -->
-	<a href="#modal_container" id="initializeModal" style="display:none;"></a>
-	<div id="modal_container"></div>
-	<script>createOverlay('initializeModal')</script>
-	<!-- Header -->
-	<apex:composition template="HeaderTemplate">
-		<apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
-	    <apex:define name="module">{!$ObjectType.Project2__c.labelPlural}</apex:define>
-	    <apex:define name="title">Overview</apex:define>
-	    <apex:define name="search">
-	    	<c:Search id="searchBox" module="project" label="Projects" />
-	    </apex:define>
+        
+    <!-- Initialize the overlay box for modal.js -->
+    <a href="#modal_container" id="initializeModal" style="display:none;"></a>
+    <div id="modal_container"></div>
+    <script>createOverlay('initializeModal')</script>
+    <!-- Header -->
+    <apex:composition template="HeaderTemplate">
+        <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
+        <apex:define name="module">{!$ObjectType.Project2__c.labelPlural}</apex:define>
+        <apex:define name="title">Overview</apex:define>
+        <apex:define name="search">
+            <c:Search id="searchBox" module="Project" label="Projects" />
+        </apex:define>
     </apex:composition>
-	<!-- Sidebar -->
-	<div class="sidebar">
-		<c:ProjectsWidgetMyTasks />
-		<c:ProjectsWidgetMyMilestones />
-		<c:ProjectSetupWidget />  
-	</div>
-	<!-- Main Content Div --> 
-	<div class="main_content" > 
-		
-		<div class="RightOverview">
-			<!-- Tabs -->
-			<div class="tabContainer">
-				<apex:form >
-					<ul class="tabsgray">
-						<li class="selected" id="myProjects">
-							<apex:commandLink value="My {!$ObjectType.Project2__c.labelPlural}" 
-												onclick="newSwitchTab('myProjects');"
-												rerender="content_teams, filter" 
-												action="{!projectsForTabs}"
-												onComplete="finish(true);"
-												>								
-								<apex:param name="filter" value="myProjects" />
-							</apex:commandLink>
-							<b>&nbsp;</b>
-						</li>
-						<li id="newProjects">
-							<apex:commandLink value="New {!$ObjectType.Project2__c.labelPlural}" 
-											  onclick="newSwitchTab('newProjects');" 
-											  rerender="content_teams, filter" 
-											  action="{!projectsForTabs}" 
-											  onComplete="finish(true);" >
-								<apex:param name="filter" value="newProjects" />
-							</apex:commandLink>
-							<b>&nbsp;</b>
-						</li>
-						<li id="allProjects">
-							<apex:commandLink value="All {!$ObjectType.Project2__c.labelPlural}" 
-											  onclick="newSwitchTab('allProjects');" 
-											  rerender="content_teams, filter" 
-											  action="{!projectsForTabs}" 
-											  onComplete="finish(true); ">
-								<apex:param name="filter" value="allProjects" />
-							</apex:commandLink>
-							<b>&nbsp;</b>
-						</li>
-						<li id="CreateNewProjectContainer">
-							<apex:outputPanel rendered="{!CanViewCreateNewProject}">
-								<!-- /apex/projectRedirect?sO=Project2__c&attr=project&page=ProjectCreateNew&rR=NewProjectFormContainer&oC=true -->
-								<a href="https://{!domain}/{!objectPrefix}/e?retURL=https://{!domain}/apex/projectOverview">
-									<div id="left">
-									</div>
-									<div id="middle">
-										Create New Project
-									</div>
-									<div id="right">
-									</div>
-								</a>
-							</apex:outputPanel>
-						</li>
-					</ul>
-				</apex:form>
-			</div>
-			<div class="tabBorderBlue">&nbsp;</div>
-			<!-- Content Projects -->  
-			<div id="holderNew">              
-				<div class="loader" style="display:none;" id="load_"></div>                    
-				<apex:outputPanel id="content_teams" layout="block" styleClass="content_teams">
-					<!-- FILTER -->
-					<apex:outputPanel layout="block" id="filter" rendered="{!isAllProjects}">
-						<div class="filter" id="filterDiv"  style="">
-							<div class="letterFilterWrapper">
-								<apex:form id="filterForm">
-									<div class="letterFilterTitle">Filter</div>
-									<div class="letterFilterContainer">
-										<ul class="letterFilter">
-											<li>
-												<apex:commandLink id="ALL" action="{!filterProjects}" value="ALL" onclick="showLoaderForTabs(); setFilterLetter(this);" oncomplete="markSelectedLetter();" rerender="content_teams" styleClass="AllBtnSet">
-													<apex:param name="ltr" value="ALL" />
-												</apex:commandLink>
-											</li>
-											<apex:repeat id="letterFilterRepeat" value="{!letterFilter}" var="item">
-												<li>
-													<apex:outputpanel rendered="{!item.containSites}">
-														<apex:commandLink styleclass="contains"
-															onclick="showLoaderForTabs(); setFilterLetter(this);"
-															oncomplete="markSelectedLetter();"
-															action="{!filterProjects}"
-															value="{!item.letter}"
-															rerender="content_teams">
-															<apex:param name="ltr" value="{!item.letter}" />
-														</apex:commandLink>
-													</apex:outputpanel>
-													<apex:outputpanel rendered="{!NOT(item.containSites)}">
-														{!item.letter}
-													</apex:outputpanel>
-												</li>
-											</apex:repeat>
-										</ul>
-									</div><br style="clear:both; font-size:3px;" />
-								</apex:form>
-							</div>
-						</div>
-						<hr class="filterHR" style="color: #E1E1E2;"/>
-					</apex:outputPanel>
-					<!-- PAGINATION    -->
-					<apex:outputPanel layout="block" id="pagination" rendered="{!isAllProjects}" styleClass="navigatorContainer">				
-						<div class="navigation">
-							<apex:form >
-								<ul align="center">
-								<!--  first page  -->
-								<li>
-									<apex:commandLink action="{!paginator.firstPage}" rerender="content_teams" rendered="{!paginator.prevPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);" >
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_first.gif')}" alt="<<" title="<<first"/>
-									</apex:commandLink>
-									<apex:outputPanel rendered="{!paginator.prevPageShow}">
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_first_disabled.gif')}" alt="<<"/>
-									</apex:outputPanel>	
-								</li>
-								<!--  previous page -->
-								<li class="prev">
-									<apex:commandLink action="{!paginator.prevPage}" value="" rerender="content_teams" rendered="{!paginator.prevPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);">
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_prev.gif')}" alt="<" border="0" />
-									</apex:commandLink>
-									<apex:commandLink action="{!paginator.prevPage}" value="Previous Page" rerender="content_teams" rendered="{!paginator.prevPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);" />
-									<apex:outputPanel rendered="{!paginator.prevPageShow}">
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_prev_disabled.gif')}" alt="<" border="0" />
-										<apex:outputText value="Previous Page" />
-									</apex:outputPanel>	
-								</li>
-								<!--  actual page  -->								
-								<li> ({!paginator.currentPagination} - {!paginator.cntPagination}) </li>
-								<!-- next page  -->
-								<li class="next">
-									<apex:commandLink action="{!paginator.nextPage}" value="Next Page" rerender="content_teams" rendered="{!paginator.nextPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);"/>
-									<apex:commandLink action="{!paginator.nextPage}" value="" rerender="content_teams" rendered="{!paginator.nextPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);">
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_next.gif')}" alt=">" border="0" />
-									</apex:commandLink>										
-									<apex:outputText value="" rendered="{!NOT paginator.nextPageLinkShow}">
-										<apex:outputText value="Next Page" />
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_next_disabled.gif')}" alt=">" border="0" />
-									</apex:outputText>
-								</li>
-								<!--  last page  -->	
-								<li> 
-									<apex:commandLink action="{!paginator.lastPage}" rerender="content_teams" rendered="{!(paginator.currentPagination < paginator.cntPagination)}" onclick="showLoaderForTabs();" oncomplete="finish(false);" >
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_last.gif')}" alt=">>" title="<<first"/>
-									</apex:commandLink>
-									<apex:outputPanel rendered="{!(paginator.currentPagination == paginator.cntPagination)}">
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_last_disabled.gif')}" alt=">>"/>
-									</apex:outputPanel>	
-								</li>								</ul>
-							</apex:form>				
-						</div> 
-						<hr class="filterHR" style="color: #E1E1E2;"/>	
-					</apex:outputPanel>		
-					<!-- /PAGINATION -->	    										
-					<!-- TEAMS LIST -->
-					<div class="content_teams">
-						<div style="{!IF(projectsForTabsSize > 0, 'display:none', '')}; ">
-							<div class="grayColor noitems" style="height:250px;" >No {!$ObjectType.Project2__c.labelPlural} Yet</div>
-						</div>
-						<div style="{!IF(projectsForTabsSize > 0, '', 'display:none')}; ">
-							<apex:repeat value="{!projectsForTabs}" var="t" first="{!paginator.firstItem}" rows="{!paginator.numberOfItemsToShow}">	
-								<!-- item -->		
-								<div class="item">
-									<div class="imageTeams">
-										<a href="/apex/TeamsRedirect?id={!t.Id}">
-											<img alt="" width="47" height="47" src="{!IF( t.image == 'null',(URLFOR($Resource.commonResources, '/images/placeholders/default_team_100x100.png')) ,t.image)}"  />
-										</a>
-									</div>
-									<div class="detailTeams">
-										<h4><a href="/apex/ProjectDetail?id={!t.Id}" >{!t.Name}</a></h4>
-										<div>
-											<span>{!t.tasks}</span>
-											<a href="/apex/TaskList?id={!t.Id}&filter=all">Tasks</a> |
-											<span>{!t.milestones}</span> 
-											<a href="/apex/TaskList?id={!t.Id}&filter=allMilestones">Milestones</a> |
-											<span>{!t.members}</span>
-											<a href="/apex/ProjectMembersList?id={!t.Id}">Members</a> 
-											<br/>
-											{!t.createDate}
-										</div>
-									</div>
-									<div class="clear"></div>
-								</div>
-							</apex:repeat>
-						</div> 
-					</div>	
-					
-					<!-- PAGINATION    -->
-					<apex:outputPanel layout="block" id="paginationBottom" rendered="{!isAllProjects}" styleClass="navigatorContainerBottom">				
-						<div class="navigation">
-							<apex:form >
-								<ul align="center">
-								<!--  first page  -->
-								<li>
-									<apex:commandLink action="{!paginator.firstPage}" rerender="content_teams" rendered="{!paginator.prevPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);" >
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_first.gif')}" alt="<<" title="<<first"/>
-									</apex:commandLink>
-									<apex:outputPanel rendered="{!paginator.prevPageShow}">
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_first_disabled.gif')}" alt="<<"/>
-									</apex:outputPanel>	
-								</li>
-								<!--  previous page -->
-								<li class="prev">
-									<apex:commandLink action="{!paginator.prevPage}" value="" rerender="content_teams" rendered="{!paginator.prevPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);">
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_prev.gif')}" alt="<" border="0" />
-									</apex:commandLink>
-									<apex:commandLink action="{!paginator.prevPage}" value="Previous Page" rerender="content_teams" rendered="{!paginator.prevPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);" />
-									<apex:outputPanel rendered="{!paginator.prevPageShow}">
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_prev_disabled.gif')}" alt="<" border="0" />
-										<apex:outputText value="Previous Page" />
-									</apex:outputPanel>	
-								</li>
-								<!--  actual page  -->								
-								<li> ({!paginator.currentPagination} - {!paginator.cntPagination}) </li>
-								<!-- next page  -->
-								<li class="next">
-									<apex:commandLink action="{!paginator.nextPage}" value="Next Page" rerender="content_teams" rendered="{!paginator.nextPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);"/>
-									<apex:commandLink action="{!paginator.nextPage}" value="" rerender="content_teams" rendered="{!paginator.nextPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);">
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_next.gif')}" alt=">" border="0" />
-									</apex:commandLink>										
-									<apex:outputText value="" rendered="{!NOT paginator.nextPageLinkShow}">
-										<apex:outputText value="Next Page" />
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_next_disabled.gif')}" alt=">" border="0" />
-									</apex:outputText>
-								</li>
-								<!--  last page  -->	
-								<li> 
-									<apex:commandLink action="{!paginator.lastPage}" rerender="content_teams" rendered="{!(paginator.currentPagination < paginator.cntPagination)}" onclick="showLoaderForTabs();" oncomplete="finish(false);" >
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_last.gif')}" alt=">>" title="<<first"/>
-									</apex:commandLink>
-									<apex:outputPanel rendered="{!(paginator.currentPagination == paginator.cntPagination)}">
-										<img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_last_disabled.gif')}" alt=">>"/>
-									</apex:outputPanel>	
-								</li>								</ul>
-							</apex:form>				
-						</div> 
-						<hr class="filterHR" style="color: #E1E1E2;"/>	
-					</apex:outputPanel>		
-					<!-- /PAGINATION -->  
-					
-					
-										
-				</apex:outputPanel> 
-			</div>
-			
-  	
-			
-			
-			<!-- Widget Col -->
-					
-		</div>
-	</div>
-	<script>
-		readPortalCSSRules();
-	</script>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <c:ProjectsWidgetMyTasks />
+        <c:ProjectsWidgetMyMilestones />
+        <c:ProjectSetupWidget />  
+    </div>
+    <!-- Main Content Div --> 
+    <div class="main_content" > 
+        
+        <div class="RightOverview">
+            <!-- Tabs -->
+            <div class="tabContainer">
+                <apex:form >
+                    <ul class="tabsgray">
+                        <li class="selected" id="myProjects">
+                            <apex:commandLink value="My {!$ObjectType.Project2__c.labelPlural}" 
+                                                onclick="newSwitchTab('myProjects');"
+                                                rerender="content_teams, filter" 
+                                                action="{!projectsForTabs}"
+                                                onComplete="finish(true);"
+                                                >                               
+                                <apex:param name="filter" value="myProjects" />
+                            </apex:commandLink>
+                            <b>&nbsp;</b>
+                        </li>
+                        <li id="newProjects">
+                            <apex:commandLink value="New {!$ObjectType.Project2__c.labelPlural}" 
+                                              onclick="newSwitchTab('newProjects');" 
+                                              rerender="content_teams, filter" 
+                                              action="{!projectsForTabs}" 
+                                              onComplete="finish(true);" >
+                                <apex:param name="filter" value="newProjects" />
+                            </apex:commandLink>
+                            <b>&nbsp;</b>
+                        </li>
+                        <li id="allProjects">
+                            <apex:commandLink value="All {!$ObjectType.Project2__c.labelPlural}" 
+                                              onclick="newSwitchTab('allProjects');" 
+                                              rerender="content_teams, filter" 
+                                              action="{!projectsForTabs}" 
+                                              onComplete="finish(true); ">
+                                <apex:param name="filter" value="allProjects" />
+                            </apex:commandLink>
+                            <b>&nbsp;</b>
+                        </li>
+                        <li id="CreateNewProjectContainer">
+                            <apex:outputPanel rendered="{!CanViewCreateNewProject}">
+                                <!-- /apex/projectRedirect?sO=Project2__c&attr=project&page=ProjectCreateNew&rR=NewProjectFormContainer&oC=true -->
+                                <a href="https://{!domain}/{!objectPrefix}/e?retURL=https://{!domain}/apex/projectOverview">
+                                    <div id="left">
+                                    </div>
+                                    <div id="middle">
+                                        Create New Project
+                                    </div>
+                                    <div id="right">
+                                    </div>
+                                </a>
+                            </apex:outputPanel>
+                        </li>
+                    </ul>
+                </apex:form>
+            </div>
+            <div class="tabBorderBlue">&nbsp;</div>
+            <!-- Content Projects -->  
+            <div id="holderNew">              
+                <div class="loader" style="display:none;" id="load_"></div>                    
+                <apex:outputPanel id="content_teams" layout="block" styleClass="content_teams">
+                    <!-- FILTER -->
+                    <apex:outputPanel layout="block" id="filter" rendered="{!isAllProjects}">
+                        <div class="filter" id="filterDiv"  style="">
+                            <div class="letterFilterWrapper">
+                                <apex:form id="filterForm">
+                                    <div class="letterFilterTitle">Filter</div>
+                                    <div class="letterFilterContainer">
+                                        <ul class="letterFilter">
+                                            <li>
+                                                <apex:commandLink id="ALL" action="{!filterProjects}" value="ALL" onclick="showLoaderForTabs(); setFilterLetter(this);" oncomplete="markSelectedLetter();" rerender="content_teams" styleClass="AllBtnSet">
+                                                    <apex:param name="ltr" value="ALL" />
+                                                </apex:commandLink>
+                                            </li>
+                                            <apex:repeat id="letterFilterRepeat" value="{!letterFilter}" var="item">
+                                                <li>
+                                                    <apex:outputpanel rendered="{!item.containSites}">
+                                                        <apex:commandLink styleclass="contains"
+                                                            onclick="showLoaderForTabs(); setFilterLetter(this);"
+                                                            oncomplete="markSelectedLetter();"
+                                                            action="{!filterProjects}"
+                                                            value="{!item.letter}"
+                                                            rerender="content_teams">
+                                                            <apex:param name="ltr" value="{!item.letter}" />
+                                                        </apex:commandLink>
+                                                    </apex:outputpanel>
+                                                    <apex:outputpanel rendered="{!NOT(item.containSites)}">
+                                                        {!item.letter}
+                                                    </apex:outputpanel>
+                                                </li>
+                                            </apex:repeat>
+                                        </ul>
+                                    </div><br style="clear:both; font-size:3px;" />
+                                </apex:form>
+                            </div>
+                        </div>
+                        <hr class="filterHR" style="color: #E1E1E2;"/>
+                    </apex:outputPanel>
+                    <!-- PAGINATION    -->
+                    <apex:outputPanel layout="block" id="pagination" rendered="{!isAllProjects}" styleClass="navigatorContainer">               
+                        <div class="navigation">
+                            <apex:form >
+                                <ul align="center">
+                                <!--  first page  -->
+                                <li>
+                                    <apex:commandLink action="{!paginator.firstPage}" rerender="content_teams" rendered="{!paginator.prevPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);" >
+                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_first.gif')}" alt="<<" title="<<first"/>
+                                    </apex:commandLink>
+                                    <apex:outputPanel rendered="{!paginator.prevPageShow}">
+                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_first_disabled.gif')}" alt="<<"/>
+                                    </apex:outputPanel> 
+                                </li>
+                                <!--  previous page -->
+                                <li class="prev">
+                                    <apex:commandLink action="{!paginator.prevPage}" value="" rerender="content_teams" rendered="{!paginator.prevPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);">
+                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_prev.gif')}" alt="<" border="0" />
+                                    </apex:commandLink>
+                                    <apex:commandLink action="{!paginator.prevPage}" value="Previous Page" rerender="content_teams" rendered="{!paginator.prevPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);" />
+                                    <apex:outputPanel rendered="{!paginator.prevPageShow}">
+                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_prev_disabled.gif')}" alt="<" border="0" />
+                                        <apex:outputText value="Previous Page" />
+                                    </apex:outputPanel> 
+                                </li>
+                                <!--  actual page  -->                              
+                                <li> ({!paginator.currentPagination} - {!paginator.cntPagination}) </li>
+                                <!-- next page  -->
+                                <li class="next">
+                                    <apex:commandLink action="{!paginator.nextPage}" value="Next Page" rerender="content_teams" rendered="{!paginator.nextPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);"/>
+                                    <apex:commandLink action="{!paginator.nextPage}" value="" rerender="content_teams" rendered="{!paginator.nextPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);">
+                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_next.gif')}" alt=">" border="0" />
+                                    </apex:commandLink>                                     
+                                    <apex:outputText value="" rendered="{!NOT paginator.nextPageLinkShow}">
+                                        <apex:outputText value="Next Page" />
+                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_next_disabled.gif')}" alt=">" border="0" />
+                                    </apex:outputText>
+                                </li>
+                                <!--  last page  -->    
+                                <li> 
+                                    <apex:commandLink action="{!paginator.lastPage}" rerender="content_teams" rendered="{!(paginator.currentPagination < paginator.cntPagination)}" onclick="showLoaderForTabs();" oncomplete="finish(false);" >
+                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_last.gif')}" alt=">>" title="<<first"/>
+                                    </apex:commandLink>
+                                    <apex:outputPanel rendered="{!(paginator.currentPagination == paginator.cntPagination)}">
+                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_last_disabled.gif')}" alt=">>"/>
+                                    </apex:outputPanel> 
+                                </li>                               </ul>
+                            </apex:form>                
+                        </div> 
+                        <hr class="filterHR" style="color: #E1E1E2;"/>  
+                    </apex:outputPanel>     
+                    <!-- /PAGINATION -->                                                
+                    <!-- TEAMS LIST -->
+                    <div class="content_teams">
+                        <div style="{!IF(projectsForTabsSize > 0, 'display:none', '')}; ">
+                            <div class="grayColor noitems" style="height:250px;" >No {!$ObjectType.Project2__c.labelPlural} Yet</div>
+                        </div>
+                        <div style="{!IF(projectsForTabsSize > 0, '', 'display:none')}; ">
+                            <apex:repeat value="{!projectsForTabs}" var="t" first="{!paginator.firstItem}" rows="{!paginator.numberOfItemsToShow}"> 
+                                <!-- item -->       
+                                <div class="item">
+                                    <div class="imageTeams">
+                                        <a href="/apex/TeamsRedirect?id={!t.Id}">
+                                            <img alt="" width="47" height="47" src="{!IF( t.image == 'null',(URLFOR($Resource.commonResources, '/images/placeholders/default_team_100x100.png')) ,t.image)}"  />
+                                        </a>
+                                    </div>
+                                    <div class="detailTeams">
+                                        <h4><a href="/apex/ProjectDetail?id={!t.Id}" >{!t.Name}</a></h4>
+                                        <div>
+                                            <span>{!t.tasks}</span>
+                                            <a href="/apex/TaskList?id={!t.Id}">Tasks</a> |
+                                            <span>{!t.milestones}</span> 
+                                            <a href="/apex/TaskList?id={!t.Id}&filter=allMilestones">Milestones</a> |
+                                            <span>{!t.members}</span>
+                                            <a href="/apex/ProjectMembersList?id={!t.Id}">Members</a> 
+                                            <br/>
+                                            {!t.createDate}
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </apex:repeat>
+                        </div> 
+                    </div>  
+                    
+                    <!-- PAGINATION    -->
+                    <apex:outputPanel layout="block" id="paginationBottom" rendered="{!isAllProjects}" styleClass="navigatorContainerBottom">               
+                        <div class="navigation">
+                            <apex:form >
+                                <ul align="center">
+                                <!--  first page  -->
+                                <li>
+                                    <apex:commandLink action="{!paginator.firstPage}" rerender="content_teams" rendered="{!paginator.prevPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);" >
+                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_first.gif')}" alt="<<" title="<<first"/>
+                                    </apex:commandLink>
+                                    <apex:outputPanel rendered="{!paginator.prevPageShow}">
+                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_first_disabled.gif')}" alt="<<"/>
+                                    </apex:outputPanel> 
+                                </li>
+                                <!--  previous page -->
+                                <li class="prev">
+                                    <apex:commandLink action="{!paginator.prevPage}" value="" rerender="content_teams" rendered="{!paginator.prevPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);">
+                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_prev.gif')}" alt="<" border="0" />
+                                    </apex:commandLink>
+                                    <apex:commandLink action="{!paginator.prevPage}" value="Previous Page" rerender="content_teams" rendered="{!paginator.prevPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);" />
+                                    <apex:outputPanel rendered="{!paginator.prevPageShow}">
+                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_prev_disabled.gif')}" alt="<" border="0" />
+                                        <apex:outputText value="Previous Page" />
+                                    </apex:outputPanel> 
+                                </li>
+                                <!--  actual page  -->                              
+                                <li> ({!paginator.currentPagination} - {!paginator.cntPagination}) </li>
+                                <!-- next page  -->
+                                <li class="next">
+                                    <apex:commandLink action="{!paginator.nextPage}" value="Next Page" rerender="content_teams" rendered="{!paginator.nextPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);"/>
+                                    <apex:commandLink action="{!paginator.nextPage}" value="" rerender="content_teams" rendered="{!paginator.nextPageLinkShow}" onclick="showLoaderForTabs();" oncomplete="finish(false);">
+                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_next.gif')}" alt=">" border="0" />
+                                    </apex:commandLink>                                     
+                                    <apex:outputText value="" rendered="{!NOT paginator.nextPageLinkShow}">
+                                        <apex:outputText value="Next Page" />
+                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_next_disabled.gif')}" alt=">" border="0" />
+                                    </apex:outputText>
+                                </li>
+                                <!--  last page  -->    
+                                <li> 
+                                    <apex:commandLink action="{!paginator.lastPage}" rerender="content_teams" rendered="{!(paginator.currentPagination < paginator.cntPagination)}" onclick="showLoaderForTabs();" oncomplete="finish(false);" >
+                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_last.gif')}" alt=">>" title="<<first"/>
+                                    </apex:commandLink>
+                                    <apex:outputPanel rendered="{!(paginator.currentPagination == paginator.cntPagination)}">
+                                        <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_last_disabled.gif')}" alt=">>"/>
+                                    </apex:outputPanel> 
+                                </li>                               </ul>
+                            </apex:form>                
+                        </div> 
+                        <hr class="filterHR" style="color: #E1E1E2;"/>  
+                    </apex:outputPanel>     
+                    <!-- /PAGINATION -->  
+                    
+                    
+                                        
+                </apex:outputPanel> 
+            </div>
+            
+    
+            
+            
+            <!-- Widget Col -->
+                    
+        </div>
+    </div>
+    
+    <script>
+        readPortalCSSRules();
+    </script>
 </apex:page>

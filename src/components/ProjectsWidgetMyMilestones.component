@@ -11,7 +11,7 @@
         <div class="box_content">
             <div class="thinBodyFixed">
             	<div style="float:right;">
-            			<a style="font-size:9px !important;" href="/apex/userdetail">View All Tasks</a>
+            			<a style="font-size:9px !important;" href="/apex/usertasks">View All Tasks</a>
             	</div>
                 <div style="{!IF(milestonesListSize > 0, 'display:none', '')}; ">
                     <div class="grayColor noitems" >You have no upcoming Milestones</div>

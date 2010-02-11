@@ -2,20 +2,24 @@
 * This class manages all pagination
 * @author Andres Canavesi
 * @createdAt 01/15/2010
+* @group Auxiliary Classes
 */
 public class Paginator {
 	
 	public Integer pagesListSize 						{ set; get; } //MUST be odd 
 	public Integer qPages 								{ set; get; } //number of pages
 	public Integer pageNumber 							{ set; get; } //current page displayed
-	private Integer resultSize; 							 		//number of records 
-	private Integer recordsPerPage; 							    //records per page
+	private Integer resultSize; 							 		  //number of records 
+	private Integer recordsPerPage; 							      //records per page
 	public List<Integer> pages 							{ set; get; } //list that appears between previous and next arrows
 	public ApexPages.StandardSetController paginator 	{ set; get; }
 	public String filter 								{ set; get; }
 	public String orderBy 								{ set; get; }
+	public String letterChoosen 						{ set; get; }
 	public Boolean orderAsc 							{ set; get; } // true if the query must return the result ASC
 	public Project project 								{ set; get; }
+	public List<Letter> letters 						{ set; get; }
+	private List<String> lettersList;
 	
 	//Only for use when searching Projects and Tasks
 	private String searchTerm;
@@ -24,10 +28,11 @@ public class Paginator {
 	* Constructor
 	*/
 	public Paginator(){
-		
 		this.project 			= new project();
 		this.recordsPerPage 	= 2;
 		this.resultSize 		= 0;
+		this.lettersList        = new List<String>{'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+		this.letterChoosen      = 'All'; //value by default
 	}
 	
 	/**----------------------------------------------- Paginator functions -------------------------------------------------------*/
@@ -46,7 +51,7 @@ public class Paginator {
 	*/
 	public void pagesListConstructor(){
 		
-		if( Math.mod( this.pagesListSize,2 ) == 0 ){ //if is even
+		if( Math.mod( this.pagesListSize,2 ) == 0 ){ //if is even, it makes odd
 			this.pagesListSize+=1;
 		}
 		
@@ -223,14 +228,90 @@ public class Paginator {
 	
 	/**----------------------------------------------- End paginator functions -------------------------------------------------------*/
 	
+	/**----------------------------------------------- Letter filter functions -------------------------------------------------------*/
+	
+	/**
+	* Constructs the list of letters and highlights letters that have currencies
+	* @param records list
+	*/
+	private void letterCurrenciesConstructor(List<String> records){
+		this.letters = new List<Letter>();
+		Map<String,Boolean> letterCurrencies = new Map<String, Boolean>();
+		String firstLetter;
+		//goes through the records and marks letters that have currencies
+		for(String record: records){
+			firstLetter = record.substring(0,1).toUpperCase();
+			if(!letterCurrencies.containsKey(firstLetter)){
+				letterCurrencies.put(firstLetter, true);
+			}
+		}
+		for(String letter:this.lettersList){
+			if(letterCurrencies.containsKey(letter)){
+				Letter l = new Letter(letter,true);
+				this.letters.add(l);
+			}else{
+				Letter l = new Letter(letter,false);
+				this.letters.add(l);
+			}
+		}
+	}
+	
+	/**
+	* loads letter currencies
+	* @param load type
+	*/
+	private void loadLetterCurrencies(String loadType){
+		Integer recordsPerPageAux = this.recordsPerPage;
+		this.recordsPerPage=0; //this in order to bring all data
+		List<String> records = new List<String>();
+		if(loadType == 'TasksByProject'){
+			this.paginator = project.getTasks( this.filter, this.orderBy, this.orderAsc, 'All' ); //'All' means letterChoosen='All'
+			List<ProjectTask__c> tasks = (List<ProjectTask__c>) paginator.getRecords();
+			for(ProjectTask__c task:tasks){
+				records.add(task.Name);
+			}
+		}
+		if(loadType == 'MembersByProject'){
+			this.paginator = project.getMembers( this.filter, this.orderBy, this.orderAsc, 'All'); //'All' means letterChoosen='All'
+			//List<ProjectMember__c> members = (List<ProjectMember__c>) paginator.getRecords();
+			for(ProjectMember__c member:(List<ProjectMember__c>) paginator.getRecords()){
+				records.add(member.Name);
+			}
+		}
+		letterCurrenciesConstructor(records);
+		this.recordsPerPage = recordsPerPageAux;
+	}
+	
+	/**----------------------------------------------- End letter filter functions -------------------------------------------------------*/
+	
+	/**----------------------------------------------- Data loaders functions ------------------------------------------------------------*/
+	
 	/**
 	* loads the tasks list
 	*/
 	public void loadTasksByProject(){
 		
+		loadLetterCurrencies('TasksByProject');
+		
 		this.orderAsc = !this.orderAsc;
-		this.paginator = project.getTasks( this.filter, this.orderBy, this.orderAsc );
+		this.paginator = project.getTasks( this.filter, this.orderBy, this.orderAsc, this.letterChoosen );
 		this.setPaginator();
+		
+		pagesListConstructor();
+	}
+	
+	/**
+	* loads members by project
+	*/
+	public void loadMembersByProject(){
+		
+		loadLetterCurrencies('MembersByProject');
+		
+		this.orderAsc = !this.orderAsc;
+		this.paginator = project.getMembers( this.filter, this.orderBy, this.orderAsc, this.letterChoosen );
+		this.setPaginator();
+		
+		pagesListConstructor();
 	}
 	
 	/**
@@ -244,7 +325,7 @@ public class Paginator {
 	}
 	
 	/**
-	* loads 
+	* loads tasks search result
 	*/
 	public void loadTaskSearchResults( String searchTerm, String namespace  ){
 		
@@ -255,7 +336,7 @@ public class Paginator {
 	}
 	
 	/**
-	* loads
+	* loads project search result
 	*/
 	public void loadProjectSearchResults( String searchTerm, String namespace  ){
 		
@@ -266,7 +347,22 @@ public class Paginator {
 	}
 	
 	/**
-	* @return
+	* loads the tasks list by user
+	*/
+	public void loadTasksByUser(){
+		
+		this.orderAsc = !this.orderAsc;
+		this.paginator = DAOFactory.getInstance().loadTasksByUser( this.filter, this.orderBy, this.orderAsc, this.project.id ); 
+		
+		this.setPaginator();
+	}
+	
+	/**----------------------------------------------- End data loaders functions ------------------------------------------------------------*/
+	
+	/**----------------------------------------------- Data getters functions ----------------------------------------------------------------*/
+	
+	/**
+	* @return search result
 	*/
 	public List<SearchResults> getSearchResults (){
 
@@ -279,13 +375,20 @@ public class Paginator {
 		
 	}
 	
-	
 	/**
-	* @return tasksByProject
+	* @return tasks by project
 	*/
     public List<Task> getTasksByProject() {
     	
     	return ObjectFormatter.formatTasks( (List<ProjectTask__c>) paginator.getRecords() );
+    }
+    
+    /**
+	* @return members by project
+	*/
+    public List<ProjectMember__c> getMembersByProject() {
+    	
+    	return (List<ProjectMember__c>) paginator.getRecords();
     }
     
     /**
@@ -296,22 +399,13 @@ public class Paginator {
     	return ObjectFormatter.formatProjectActivities( (List<Activity__c>) paginator.getRecords() );
     }
     
-    /**
-	* loads the tasks list
-	*/
-	public void loadTasksByUser(){
-		
-		this.orderAsc = !this.orderAsc;
-		this.paginator = DAOFactory.getInstance().loadTasksByUser( this.filter, this.orderBy, this.orderAsc, '' ); 
-		this.setPaginator();
-	}
-	
-	  /**
+	/**
 	* @return projectActivities
 	*/
-    public  List<ProjectTask__c> getTasksByUser() {
-    	
-    	return  (List<ProjectTask__c>) paginator.getRecords();
+    public  List<Task> getTasksByUser(){
+    	return  ObjectFormatter.formatAssigneeTask(( List<ProjectAssignee__c>) paginator.getRecords());
     }
+    
+    /**----------------------------------------------- End data getters functions ----------------------------------------------------------------*/
     
 }

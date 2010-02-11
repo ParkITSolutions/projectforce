@@ -15,6 +15,7 @@ public class DAOFactory {
 	private DAOAttachment DAOAttachment;
 	private DAOAssignee DAOAssignee;
 	private DAOActivity DAOActivity;
+	private DAOUser DAOUser;
 	
 	/**
 	* @return an instance of this class
@@ -42,6 +43,7 @@ public class DAOFactory {
 		this.DAOAttachment 			= new DAOAttachment();
 		this.DAOAssignee 			= new DAOAssignee();
 		this.DAOActivity 			= new DAOActivity();
+		this.DAOUser	 			= new DAOUser();
 	}
 	
 	/*-------------------------------------------------- Task operations ---------------------------------------------------------*/
@@ -51,9 +53,9 @@ public class DAOFactory {
 	* @param task
 	* @param assignedTo
 	*/
-	public void insertTask( ProjectTask__c task, String assignedTo){
+	public void insertTask( ProjectTask__c task, String[] assignees){
 		
-		DAOTask.insertTask( task, assignedTo);
+		DAOTask.insertTask( task, assignees);
 	}
 	
 	/**
@@ -67,10 +69,17 @@ public class DAOFactory {
 	* @param projectId
 	* @param isMilestone
 	*/
+	/*
 	public void updateTask( String taskId, String name, String startDate, String dueDate, String duration, String assignTo, String projectId, Boolean isMilestone ){
 		
 		DAOTask.updateTask( taskId, name, startDate, dueDate, duration, assignTo, projectId, isMilestone );
+	}*/
+	
+	
+	public void updateTask(ProjectTask__c task){
+		DAOTask.updateTask( task );
 	}
+	
 	
 	/**
 	* deletes a task
@@ -97,11 +106,12 @@ public class DAOFactory {
 	* @param filter a filter criteria
 	* @param orderBy column name
 	* @param orderAsc true if order way must be ascending or descendant
+	* @param letter letter to filter
 	* @return tasks a list of tasks
 	*/
-	public ApexPages.StandardSetController getTasksByProject( String projectId, String filter, String orderBy, Boolean orderAsc ){
+	public ApexPages.StandardSetController getTasksByProject( String projectId, String filter, String orderBy, Boolean orderAsc, String letter ){
 		
-		return DAOTask.getByProject( projectId, filter, orderBy, orderAsc );
+		return DAOTask.getByProject( projectId, filter, orderBy, orderAsc, letter );
 	}
 	
 	/**
@@ -143,6 +153,16 @@ public class DAOFactory {
 	/*--------------------------------------------------- Member operations -------------------------------------------------------*/
 	
 	/**
+	* deletes members
+	* @param members members ids string separated by ":"
+	* @param projectId
+	*/
+	public void deleteMembers( String members, String projectId ){
+		
+		DAOMember.deleteMembers( members, projectId );
+	}
+	
+	/**
 	* @return permissionsModifyAllData
 	*/
 	public Boolean isCRMAdministrator(){ 
@@ -166,6 +186,36 @@ public class DAOFactory {
 	public List<ProjectMember__c> getCandidatesToAssign(String taskId){
 		return DAOMember.getCandidatesToAssign(taskId);
 	}
+
+	/**
+	*@return List<ProjectMember__c>
+	*/
+	public List<ProjectMember__c> getProjetsInfoByMember( Id us ){
+		return DAOMember.getProjetsInfoByMember( us ); 
+	}
+	
+	/**
+	* gets all members of a given project
+	* @param projectId
+	* @param filter a filter criteria
+	* @param orderBy column name
+	* @param orderAsc true if order way must be ascending or descendant
+	* @param letter letter to filter
+	* @return members a list of members
+	*/
+	public ApexPages.StandardSetController getMembersByProject( String projectId, String filter, String orderBy, Boolean orderAsc, String letter ){
+		
+		return DAOMember.getByProject( projectId, filter, orderBy, orderAsc, letter );
+	}
+	
+	/** 
+	* Inserts new users member
+	* @param newMemberList
+	*/
+	public void newMemberList(List<ProjectMember__c> newMemberList){
+		DAOMember.newMemberList(newMemberList);
+	}
+	
 	
 	/*-----------------------------------------------------------------------------------------------------------------------------*/
 	
@@ -177,9 +227,9 @@ public class DAOFactory {
 	* @param assignToId
 	* @param projetId
 	*/
-	public void insertAssignee( String taskId, String assignTo, String projectId, Integer percentageDedicated ){
+	public void insertAssignees( String taskId, String[] assignees, String projectId ){
 		
-		DAOAssignee.insertAssignee( taskId, assignTo, projectId, percentageDedicated );
+		DAOAssignee.insertAssignees( taskId, assignees, projectId );
 	}
 	
 	/**
@@ -214,12 +264,19 @@ public class DAOFactory {
 		return DAOProject.getMembers( projectId );
 	}
 	
+	/** Return project members, order by CreateDate
+	* @param projectId
+	* @return members
+	*/
+	public List<ProjectMember__c> getMembersToWidget (String idProject){
+		return DAOProject.getMembersToWidget( idProject );
+	}
+	
 	/**
 	* @param projectId
 	* @param project
 	*/
 	public Project getProjectInfo( String projectid ){
-		
 		return DAOProject.getInfo( projectId );
 	}
 	
@@ -234,6 +291,14 @@ public class DAOFactory {
 	
 	public ApexPages.StandardSetController searchForProjects( String searchTerm, String namespace ){
 		return DAOProject.searchForProjects( searchTerm, namespace );
+	}
+	
+	/**
+	* @param void
+	* @return Map<String,Id>
+	*/
+	public Map<String,Id> idProjectProfile(){
+		return DAOProject.idProjectProfile();
 	}
 	
 	/*-----------------------------------------------------------------------------------------------------------------------------*/
@@ -360,4 +425,17 @@ public class DAOFactory {
 	}
 	
 	/*-----------------------------------------------------------------------------------------------------------------------------*/
+	
+	/*--------------------------------------------------- User operations ------------------------------------------------------*/
+
+	public Boolean isAdministrator(){
+		return DAOUser.isAdministrator();
+	}
+	
+	public List<User> findUserNotMember (List<String> newMembers, String idProject){
+		return DAOUser.findUserNotMember (newMembers, idProject);
+	}
+
+	/*-----------------------------------------------------------------------------------------------------------------------------*/
+	
 }

@@ -162,7 +162,7 @@ public class ObjectFormatter {
 			
 			att.realId			= iter.Id;
 			att.name 			= iter.Name;
-			att.weight 			= String.valueOf( iter.BodyLength / 128 );
+			att.weight 			= String.valueOf( iter.BodyLength / 1024 ) + ' Kb';
 			att.createdBy 		= iter.CreatedBy.Name;
 			att.createdDate 	= iter.CreatedDate;
 			
@@ -171,4 +171,37 @@ public class ObjectFormatter {
 		
 		return formattedAttachments;
 	} 
+	
+	/**
+	* 
+	*
+	*/
+	public static List<Task> formatAssigneeTask( List<ProjectAssignee__c> listOfAssignees ){
+	
+        Task tempTask;
+        List<Task> tasks = new List<Task>(); 
+        
+        for( ProjectAssignee__c row : listOfAssignees ){ 
+            
+            tempTask = new Task();
+            
+            tempTask.project 			= row.project__c;
+            tempTask.projectName 		= projectUtil.chopWord( row.project__r.name );
+            tempTask.id 				= row.ProjectTask__c;
+            tempTask.setName( ProjectUtil.chopWord( row.ProjectTask__r.name ));
+            tempTask.startDate 			= row.ProjectTask__r.startDate__c; 
+            tempTask.startDateDisplay 	= row.ProjectTask__r.startDate__c == null ? null : row.ProjectTask__r.startDate__c.format();
+            tempTask.endDate 			= row.ProjectTask__r.endDate__c;
+            tempTask.endDateDisplay 	= row.ProjectTask__r.endDate__c == null ? null : row.ProjectTask__r.endDate__c.format();
+            tempTask.status 			= row.ProjectTask__r.status__c;
+            tempTask.priority 			= row.ProjectTask__r.priority__c;
+            tempTask.isMilestone 		= row.ProjectTask__r.milestone__c;
+            tempTask.setPercentCompleted( row.ProjectTask__r.percentCompleted__c );
+            tempTask.duration 			= Double.valueOf(row.ProjectTask__r.durationUI__c); 
+            
+            tasks.add( tempTask ); 
+        }
+ 	
+		return tasks;
+	}
 }

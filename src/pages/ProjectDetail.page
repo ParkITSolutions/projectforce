@@ -1,5 +1,5 @@
 <apex:page id="ProjectDetail" sidebar="false" cache="true" standardController="Project2__c" extensions="ProjectDetailController" tabStyle="Project2__c">
-	
+    
     <!-- Ajax Toolkit -->
     <apex:includeScript value="/soap/ajax/11.1/connection.js" />
     <script>
@@ -44,14 +44,15 @@
         var globalCheckNew = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}';
         var userIsManager = '{!isManager}';
 
-	</script>
-	
-	
-	<c:PromptOverlay id="PromptOverlay"
-	    includeNewMember="true"
-	   />
-	   
-	   
+    </script>
+    
+    
+   	<c:PromptOverlay id="PromptOverlay"
+        includeNewMember="true"
+        idValue="{!teamIdParam}"
+       />
+       
+       
     <div id="all" style="overflow:hidden;">
         
         <!-- Header -->
@@ -60,19 +61,19 @@
             <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
             <apex:define name="title">Project Detail</apex:define>
             <apex:define name="search">
-                <c:Search module="project" projectId="{!teamIdParam}" label="Tasks"/>
+                <c:Search module="Project" projectId="{!teamIdParam}" label="Tasks"/>
             </apex:define>
         </apex:composition> 
        
          <div align="center" class="breadCrumbAndButtons">
             <apex:outputpanel layout="block" styleclass="breadCrumbs">
                 <div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
-				<a id="projectNameBreadcrumb"  href="#"><apex:outputText escape="true" value="{!projectName}" /></a> &gt;										
-					<apex:outputpanel layout="block" rendered="{!IF(LEN(Teamspace.Name) > 24,true,false)}" 
-					style="display: none;z-index:9999;" styleClass="mouseOverInfo">
-						<div class="body">{!Teamspace.Name}</div>
-					</apex:outputpanel>
-				</div>	
+                <a id="projectNameBreadcrumb"  href="#"><apex:outputText escape="true" value="{!projectName}" /></a> &gt;                                       
+                    <apex:outputpanel layout="block" rendered="{!IF(LEN(Teamspace.Name) > 24,true,false)}" 
+                    style="display: none;z-index:9999;" styleClass="mouseOverInfo">
+                        <div class="body">{!Teamspace.Name}</div>
+                    </apex:outputpanel>
+                </div>  
                 <span class="breadCrumbsLast"><strong>Detail</strong></span>     
             </apex:outputpanel>
             
@@ -115,18 +116,18 @@
             <apex:outputPanel id="sidebarWidgets">
                 <!-- Project Quick Links  
                 <c:ProjectDetailQuickLinks />
-    			--> 
-    			<c:QuickLinksWidget />
-    			
-    			<c:ProjectActivityWidget id="activityWidget" />
-    			
+                --> 
+                <c:QuickLinksWidget />
+                
+                <c:ProjectActivityWidget id="activityWidget" />
+                
                 <!-- Team Suscribe -->
                 <c:ProjectSubscribe /> 
     
-                <!-- Team members XXX  NICO DESCOMENTAR ESTOOO  -->
-                <c:ProjectMembersWidget projectId="{!teamIdParam}" id="ProjectMembersWidget" />   
+                <!-- Team members -->
+                <c:MembersWidget idProject="{!teamIdParam}" id="MembersWidget" />
                 
-                <apex:outputLink value="javascript:;" id="NewMemberLink" onClick="promptOverlay.open(newMember);"> NewMember</apex:outputLink>
+                <!-- <apex:outputLink value="javascript:;" id="NewMemberLink" onClick="promptOverlay.open(newMember);"> NewMember</apex:outputLink> --> 
             
             </apex:outputPanel>
             <div class="clear"></div>
@@ -144,7 +145,7 @@
     <div class="main_content">
         <div class="centerCol">
            <div class="holder">
-           		<div id="swirlyDetail" class="swirlyDetail" style="display: none;" />
+                <div id="swirlyDetail" class="swirlyDetail" style="display: none;" />
                 <apex:form id="mainContentForm">
                     
                     <!-- sfdc detail -->
@@ -181,8 +182,8 @@
     /*
         readPortalCSSRules();
         function insertSwirly(){
-        	$$( '.sfdcDetailFormated' )[0].insert('<div class="swirlyDetail" style="display: none;" />', 'top'); 
-        	$$( '.swirlyDetail' )[0].show();        	
+            $$( '.sfdcDetailFormated' )[0].insert('<div class="swirlyDetail" style="display: none;" />', 'top'); 
+            $$( '.swirlyDetail' )[0].show();            
         }
         */
         var userIsManager = '{!isManager}';

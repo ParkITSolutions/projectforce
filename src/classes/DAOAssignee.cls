@@ -16,14 +16,21 @@ public class DAOAssignee {
 	* @param assignToId
 	* @param projetId
 	*/
-	public void insertAssignee(String taskId, String assignToId, String projectId, Integer percentageDedicated){
-		ProjectAssignee__c assignee = new ProjectAssignee__c();
-		assignee.User__c = assignToId;
-		assignee.ProjectTask__c = taskId;
-		assignee.Project__c = projectId;
-		assignee.PercentDedicated__c = percentageDedicated;
+	public void insertAssignees(String taskId, String[] assignees, String projectId){
 		
-		insert assignee;
+		List<ProjectAssignee__c> assigneesList = new List<ProjectAssignee__c>();
+		
+		for(String assigneeId: assignees){
+			
+			ProjectAssignee__c assignee = new ProjectAssignee__c();
+			assignee.User__c = assigneeId;
+			assignee.ProjectTask__c = taskId;
+			assignee.Project__c = projectId;
+			
+			assigneesList.add(assignee);
+		}
+		
+		insert assigneesList;
 	}
 	
 	/**

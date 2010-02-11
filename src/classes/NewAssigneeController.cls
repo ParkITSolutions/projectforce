@@ -3,8 +3,7 @@
 */
 public class NewAssigneeController{
 	
-	public String 	assignedToId 	{ set; get; }
-	public Integer 	percentage 		{ set; get; }
+	public String[] assignees		{ set; get; }
 	public String   postAction 	    { set; get; }
 	public String   taskId 	    	{ set; get; }
 	public String   projectId 	    { set; get; }
@@ -17,6 +16,7 @@ public class NewAssigneeController{
 		
 		this.taskId 	= System.currentPageReference().getParameters().get( 'id' ); 
 		this.candidates = new List<ProjectMember__c>();
+		this.assignees 	= new String[]{};
 	}
 
 	/**
@@ -25,10 +25,10 @@ public class NewAssigneeController{
 	public void action(){
 		
 		ProjectTask__c task = DAOFactory.getInstance().getTask( this.taskId );
-		DAOFactory.getInstance().insertAssignee( this.taskId, this.assignedToId, task.project__c, this.percentage );
-	
-		this.postAction = 'MemberAssignedSuccess';
+		DAOFactory.getInstance().insertAssignees( this.taskId, this.assignees, task.project__c );
 		
+		this.postAction = 'MemberAssignedSuccess';
+	
 	}
 	
 	/**
@@ -43,20 +43,6 @@ public class NewAssigneeController{
 		}
 		
 		return members;
-	}
-	
-	/**
-	* @return percentages list
-	*/
-	public List<SelectOption> getPercentages(){
-		
-		List<SelectOption> percentages = new List<SelectOption>();
-		
-		for( Integer i=0; i<=100; i+=5 ){
-			percentages.add( new SelectOption( i.format(), i.format() + '%' ) );
-		}
-	
-		return percentages;
 	}
 	
 	public void loadCandidates(){

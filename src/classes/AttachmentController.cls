@@ -27,7 +27,7 @@ public class AttachmentController {
 		this.parentId = System.currentPageReference().getParameters().get( 'Id' );
     
 		this.newAttach = new Attachment();
-		this.location();
+		this.location(); 
 	}
 	
 	

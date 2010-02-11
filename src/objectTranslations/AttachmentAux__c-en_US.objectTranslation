@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <value>AttachmentAux</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>AttachmentAuxs</value>
+    </caseValues>
+    <fields>
+        <label><!-- createdBy --></label>
+        <name>createdBy__c</name>
+    </fields>
+    <fields>
+        <label><!-- createdDate --></label>
+        <name>createdDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- realId --></label>
+        <name>realId__c</name>
+    </fields>
+    <fields>
+        <label><!-- weight --></label>
+        <name>weight__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

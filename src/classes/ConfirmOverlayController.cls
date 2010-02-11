@@ -1,5 +1,6 @@
 /**
 * @author Andres Canavesi
+* @dateCreated 12/01/2009
 */
 public class ConfirmOverlayController {
 	
@@ -21,6 +22,8 @@ public class ConfirmOverlayController {
 	* Action for accept button
 	*/
 	public void action(){
+		
+		this.postAction = '';
 		
 		try{
 			if( this.actionName == 'DeleteTasks' ){
@@ -44,6 +47,11 @@ public class ConfirmOverlayController {
 				
 				DAOFactory.getInstance().deleteAttachments( this.actionIds );
 				this.postAction = 'DeleteAttachmentsSuccess';
+			}
+			
+			if( this.actionName == 'DeleteMembers' ){
+				DAOFactory.getInstance().deleteMembers( this.actionIds, System.currentPageReference().getParameters().get( 'id' ) );
+				this.postAction = 'DeleteMembersSuccess';
 			}
 			
 		}catch( CustomException e ){

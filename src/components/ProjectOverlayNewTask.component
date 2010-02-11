@@ -20,28 +20,28 @@
         document.observe('dom:loaded',newTaskLoad);
         
        function resetFormCreateTask(){
-        	
-        	$('memberError').hide();
-        	$('estimateError').hide();
-        	$('taskNameError').hide();
-        	$('startDateError').hide();
-			$('startDateInvalid').hide();
-			$('startDateLower1990').hide();
-        	$('dueDateInvalid').hide();
-			$('dueDateError').hide();
-        	$('overlayCloseEvent').hide();
-        	
+            
+            $('memberError').hide();
+            $('estimateError').hide();
+            $('taskNameError').hide();
+            $('startDateError').hide();
+            $('startDateInvalid').hide();
+            $('startDateLower1990').hide();
+            $('dueDateInvalid').hide();
+            $('dueDateError').hide();
+            $('overlayCloseEvent').hide();
+            
         }
         
     </script>
     
     <style>
-	    
+        
      </style>
    
-   	<!-- ### Initialize Overlay ### -->
-	<div id="modalAddTaskOverlay" class="backgroundOverlay" style="display:none; z-index:9998;"></div>
-	
+    <!-- ### Initialize Overlay ### -->
+    <div id="modalAddTaskOverlay" class="backgroundOverlay" style="display:none; z-index:9998;"></div>
+    
     <!-- ### Initialize fixed Overlay ### -->
     <div id="newTaskOverlay" class="fixedModalOverlay" style="display:none;"></div>
    
@@ -150,7 +150,7 @@
     </div>
     
     <script>
-    	addNewTaskOverlay = new modalOverlayClass('newTask','modalAddTaskOverlay',  true);
+        addNewTaskOverlay = new modalOverlayClass('newTask','modalAddTaskOverlay',  true);
     </script>
     
 </apex:component>

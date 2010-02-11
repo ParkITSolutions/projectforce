@@ -5,7 +5,7 @@
     </script>  
      
     <apex:form >
-    	<apex:actionFunction name="reloadPanelAction" oncomplete="{!postAction}();" rerender="{!postAction}" />
+        <apex:actionFunction name="reloadPanelAction" oncomplete="{!postAction}();" rerender="{!postAction}" />
     </apex:form>
     
     <apex:outputPanel id="Content"  styleClass="overlay" style="display: none;" layout="block">

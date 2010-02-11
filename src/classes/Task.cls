@@ -1,5 +1,5 @@
 /**
-*@author Matias Menafra @ 12/17/2009
+* @author Matias Menafra @ 12/17/2009
 */
 public class Task {
 
@@ -12,22 +12,26 @@ public class Task {
 	public String 	name;
 	public String 	nameDisplay;
 	
-	public Date 	startDate 			{ set; get; }
-	public String 	startDateDisplay 	{ set; get; }
-	public Date 	endDate 			{ set; get; }
-	public String 	endDateDisplay 	    { set; get; }
-	public String 	description 		{ set; get; }
-	public String 	id 					{ set; get; }
-	public String 	idDisplay 			{ set; get; }
-	public Integer 	indent 				{ set; get; }
-	public Boolean 	isExpanded 			{ set; get; }
-	public Boolean 	isMilestone 		{ set; get; }
-	public String 	parentTask 			{ set; get; }
-	public String 	priority 			{ set; get; }
-	public String 	project 			{ set; get; }
-	public Integer 	rawDuration 		{ set; get; }
-	public String 	status 				{ set; get; }
-	public Double 	taskPosition 		{ set; get; }
+	public Boolean isOwner;
+	public Boolean canDelete;
+	public boolean canUpdate;
+	
+	public Date 	startDate 				{ set; get; }
+	public String 	startDateDisplay 		{ set; get; }
+	public Date 	endDate 				{ set; get; }
+	public String 	endDateDisplay 	    	{ set; get; }
+	public String 	description 			{ set; get; }
+	public String 	id 						{ set; get; }
+	public String 	idDisplay 				{ set; get; }
+	public Integer 	indent 					{ set; get; }
+	public Boolean 	isExpanded 				{ set; get; }
+	public Boolean 	isMilestone 			{ set; get; }
+	public String 	parentTask 				{ set; get; }
+	public String 	priority 				{ set; get; }
+	public String 	project 				{ set; get; }
+	public Integer 	rawDuration 			{ set; get; }
+	public String 	status 					{ set; get; }
+	public Double 	taskPosition 			{ set; get; }
 	public List<ProjectMember> 	assignees 	{ set; get; }
 	
 	/**
@@ -105,7 +109,6 @@ public class Task {
 		this.percentCompletedDisplay = d;
 	}
 	
-	
 	/**
 	* Set the project
 	* @param String
@@ -159,12 +162,9 @@ public class Task {
 	
 	/**
 	* Add an attachment 
-	*@param Attacment 
+	* @param att 
 	*/
 	public void addAttachment( Attachment att ){ 
-		//att.parentId = this.id;
-		System.debug('[[[[>>>]]]] ' + this.id) ;
 		DAOFactory.getInstance().insertAttachment( att, this.id );	
 	}
-		
 }

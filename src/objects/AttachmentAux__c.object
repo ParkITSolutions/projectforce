@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>This Object has been solely created because of a bug in the FrameWork which didnt enable Native Attachment Objects to be iterated using the Apex.StandardSetController funcionality.</description>
+    <fields>
+        <fullName>createdBy__c</fullName>
+        <label>createdBy</label>
+        <length>50</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>createdDate__c</fullName>
+        <label>createdDate</label>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>realId__c</fullName>
+        <label>realId</label>
+        <length>50</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>weight__c</fullName>
+        <label>weight</label>
+        <length>40</length>
+        <type>Text</type>
+    </fields>
+    <label>AttachmentAux</label>
+    <nameField>
+        <label>AttachmentObj Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>AttachmentAuxs</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

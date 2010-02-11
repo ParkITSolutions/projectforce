@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>16.0</apiVersion>
+    <description>Project Activity Page, Displays a list of all project activity with pagination and filters</description>
     <label>ProjectActivity</label>
 </ApexPage>

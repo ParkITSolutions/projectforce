@@ -1,16 +1,16 @@
 <apex:component id="projectAttachments" controller="ProjectDetailAttachmentController" allowDML="true">
-	<!-- Set Attribute for project id. -->
-	<apex:attribute name="project" description="Project Id" type="String" required="true" assignTo="{!project}" />	
-	
-	<!-- ProjectDetailAttachmentOverlay Common JS -->
-	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectDetailAttachment.js')}"/>
-	<apex:includeScript value="{!URLFOR($Resource.Attachments, 'inc/js/attachments.js')}"/>
-	
-	<style>
-		div.wideBody div.swirlyAttachment{
-			height:100% !important;
-		}
-		#paginationOverlay{
+    <!-- Set Attribute for project id. -->
+    <apex:attribute name="project" description="Project Id" type="String" required="true" assignTo="{!project}" />  
+    
+    <!-- ProjectDetailAttachmentOverlay Common JS -->
+    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectDetailAttachment.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Attachments, 'inc/js/attachments.js')}"/>
+    
+    <style>
+        div.wideBody div.swirlyAttachment{
+            height:100% !important;
+        }
+        #paginationOverlay{
             background: #fff url({!URLFOR($Resource.commonResources, 'images/loaders/big-loader.gif')}) no-repeat center;
             opacity: 0.6;
             height: 100%;
@@ -25,47 +25,47 @@
             color: red;
         }
         .swirlyAttachment {
-		    background: #FFFFFF url('{!URLFOR($Resource.ProjectResources, 'images/layout/small_loader.gif')}')  no-repeat center;
-		    opacity: 0.6;
-		    filter: alpha(opacity=60);
-		    overflow: hidden;
-		    position: absolute;
-		    -moz-opacity: 0.6;
-		    margin: 0px 1px 0px 1px;
-		    width: 100%;
-		    z-index: 9999;
-		    top: 0;
-		    left: 0pt;
-		    
-		}
-	</style>	
-	
-			<script>
-				function openAttachmentOverlay(){
+            background: #FFFFFF url('{!URLFOR($Resource.ProjectResources, 'images/layout/small_loader.gif')}')  no-repeat center;
+            opacity: 0.6;
+            filter: alpha(opacity=60);
+            overflow: hidden;
+            position: absolute;
+            -moz-opacity: 0.6;
+            margin: 0px 1px 0px 1px;
+            width: 100%;
+            z-index: 9999;
+            top: 0;
+            left: 0pt;
+            
+        }
+    </style>    
+    
+            <script>
+                function openAttachmentOverlay(){
 
-				   	newAttachmentFileOverlay.open(); 
-					newAttachmentToProject();
-					observeIframeUpload();
-					loadAttOverlay = true;
-					$('uploadIframe').src = $('uploadIframe').src;
-					addOverlayNewAttachmentEvents(function(){newAttachmentOverlay.close();},'UploadAttachment:Form:SaveButton');
-				}
-			</script>
-	
-	 <!-- Holder --> 
-        			<div class="informationPanel clear" id="infoToUser" style="display:none;"></div>
-        			<div id='holder' class="holder" >
-        				<!-- Overlay -->
-    					<div id="paginationOverlay" style="display:none;"></div>
-    					
+                    newAttachmentFileOverlay.open(); 
+                    newAttachmentToProject();
+                    observeIframeUpload();
+                    loadAttOverlay = true;
+                    $('uploadIframe').src = $('uploadIframe').src;
+                    addOverlayNewAttachmentEvents(function(){newAttachmentOverlay.close();},'UploadAttachment:Form:SaveButton');
+                }
+            </script>
+    
+     <!-- Holder --> 
+                    <div class="informationPanel clear" id="infoToUser" style="display:none;"></div>
+                    <div id='holder' class="holder" >
+                        <!-- Overlay -->
+                        <div id="paginationOverlay" style="display:none;"></div>
+                        
 
-	<!-- Generic Refresh Attachment Method -->
-	<apex:actionFunction name="refreshAttachmentList" 
-						 action="{!readAttachments}" 
-						 rerender="generalPanel" 
-						 oncomplete="hideSwirly('swirlyAttachment'); $('paginationOverlay').hide();" />
-		
-								<apex:outputpanel styleClass="buttons"  layout="block" style="width: 98%">
+    <!-- Generic Refresh Attachment Method -->
+    <apex:actionFunction name="refreshAttachmentList" 
+                         action="{!readAttachments}" 
+                         rerender="generalPanel" 
+                         oncomplete="hideSwirly('swirlyAttachment'); $('paginationOverlay').hide();" />
+        
+                                <apex:outputpanel styleClass="buttons"  layout="block" style="width: 98%">
                                     <table align="center" cellpadding="0" cellspacing="0">
                                         <tr>
                                             <td>
@@ -78,15 +78,15 @@
                                             </td>
                                             <td>
                                                 <apex:outputpanel layout="block">
-	                                            	
-	                                                <a class="blackbutton"  
-	                                                   href="javascript:;" 
-	                                                   onclick="deleteAttachmentOverlay.open();
-	                                                            setAttachmentsChecked();
-	                                                            addOverlayEvents(function(){deleteAttachmentOverlay.close();}, 'ProjectAttachmentList:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn')" >
-	                                                	<span>Delete</span>
-	                                                </a>
-	                                                 
+                                                    
+                                                    <a class="blackbutton"  
+                                                       href="javascript:;" 
+                                                       onclick="deleteAttachmentOverlay.open();
+                                                                setAttachmentsChecked();
+                                                                addOverlayEvents(function(){deleteAttachmentOverlay.close();}, 'ProjectAttachmentList:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn')" >
+                                                        <span>Delete</span>
+                                                    </a>
+                                                     
                                                 </apex:outputpanel>
                                             </td>
                                         </tr>
@@ -96,11 +96,11 @@
                                 
                     <apex:outputpanel id="generalPanel">
                                 
-                         		   <!-- Pagination -->
+                                   <!-- Pagination -->
                                    <apex:outputpanel id="paginationLinks" 
-                                   					 styleClass="pagination" 
-                                   					 layout="block" 
-                                   					 rendered="{!IF(totalItemsNumber > numberOfItemsToShow, true,false)}">
+                                                     styleClass="pagination" 
+                                                     layout="block" 
+                                                     rendered="{!IF(totalItemsNumber > numberOfItemsToShow, true,false)}">
                                     <div class="pages">
                                         <ul>
                                             <li class="prev {!IF(prevPageShow,'prev_disabled','')}">
@@ -116,10 +116,10 @@
                                     </div>
                                 </apex:outputpanel>
                              
-						<div class="wideBody">
-							<div id="swirlyAttachment" class="swirlyAttachment" style="display:none;"></div>	
-						
-						<!-- Attachment List Table -->
+                        <div class="wideBody">
+                            <div id="swirlyAttachment" class="swirlyAttachment" style="display:none;"></div>    
+                        
+                        <!-- Attachment List Table -->
                         <apex:outputPanel id="projectAttachmentWidget" rendered="{!IF(totalItemsNumber > 0,true, false)}">                
                             
                             <table id="attachmentTable" class="pageList" >
@@ -154,7 +154,7 @@
                                     <!-- item START -->          
                                     <apex:repeat var="attachment" value="{!attachments}" rows="{!numberOfItemsToShow}" first="{!firstRow}" id="taskList">
                                         <tr>
-                                        	<td align="center" id="chkAttach">
+                                            <td align="center" id="chkAttach">
                                                  <input type="checkbox" value="{!attachment.Id}" />
                                             </td>
                                             <td align="center">
@@ -167,7 +167,7 @@
                                             </td>
                                             <td align="center">
                                                 <img style="vertical-align:bottom;" src="https://{!domain}{!URLFOR($Resource.FileTypeIcons, attachment.attachImage)}"/> &nbsp;
-												<a href="#" onclick="window.open('https://{!domain}/servlet/servlet.FileDownload?file={!attachment.Id}')" > {!attachment.Name} </a>
+                                                <a href="#" onclick="window.open('https://{!domain}/servlet/servlet.FileDownload?file={!attachment.Id}')" > {!attachment.Name} </a>
                                             </td>
                                             <td align="center">
                                                  <apex:outputField value="{!attachment.Attachment.BodyLength}"/>
@@ -187,13 +187,13 @@
                             </table>
                            
                         </apex:outputPanel><!-- End Attachment List Table -->
-						</div> <!-- end wideBody -->
-						
-						 <!-- Pagination -->
+                        </div> <!-- end wideBody -->
+                        
+                         <!-- Pagination -->
                                    <apex:outputpanel id="paginationLinksBottoms" 
-                                   					 styleClass="pagination" 
-                                   					 layout="block" 
-                                   					 rendered="{!IF(totalItemsNumber > numberOfItemsToShow, true,false)}">
+                                                     styleClass="pagination" 
+                                                     layout="block" 
+                                                     rendered="{!IF(totalItemsNumber > numberOfItemsToShow, true,false)}">
                                     <div class="pages">
                                         <ul>
                                             <li class="prev {!IF(prevPageShow,'prev_disabled','')}">
@@ -208,8 +208,8 @@
                                         </ul>                              
                                     </div>
                                 </apex:outputpanel>
-						
-						<apex:outputpanel styleClass="buttons"  layout="block" style="width: 98%">
+                        
+                        <apex:outputpanel styleClass="buttons"  layout="block" style="width: 98%">
                                     <table align="center" cellpadding="0" cellspacing="0">
                                         <tr>
                                             <td>
@@ -221,23 +221,23 @@
                                             </td>
                                             <td>
                                                 <apex:outputpanel layout="block">
-	                                            	
-	                                                <a class="blackbutton"  
-	                                                   href="javascript:;" 
-	                                                   onclick="deleteAttachmentOverlay.open();
-	                                                            setAttachmentsChecked();
-	                                                            addOverlayEvents(function(){deleteAttachmentOverlay.close();}, 'ProjectAttachmentList:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn')" >
-	                                                	<span>Delete</span>
-	                                                </a>
-	                                                 
+                                                    
+                                                    <a class="blackbutton"  
+                                                       href="javascript:;" 
+                                                       onclick="deleteAttachmentOverlay.open();
+                                                                setAttachmentsChecked();
+                                                                addOverlayEvents(function(){deleteAttachmentOverlay.close();}, 'ProjectAttachmentList:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn')" >
+                                                        <span>Delete</span>
+                                                    </a>
+                                                     
                                                 </apex:outputpanel>
                                             </td>
                                         </tr>
                                         <tr><td>&nbsp;</td></tr>
                                     </table>
                                 </apex:outputpanel>
-						
-					</apex:outputpanel> <!-- end general panel -->
-					</div><!-- holder -->
-	
+                        
+                    </apex:outputpanel> <!-- end general panel -->
+                    </div><!-- holder -->
+    
 </apex:component>

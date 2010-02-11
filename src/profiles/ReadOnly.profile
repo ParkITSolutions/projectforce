@@ -43,6 +43,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>BreadcrumController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>BreadcrumNode</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ConfirmOverlayController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -119,7 +127,19 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>Letter</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>MemberActivity</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>MembersListController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>MembersWidgetController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -1341,6 +1361,11 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>false</editable>
+        <field>OpportunityLineItem.Discount</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
         <field>OpportunityLineItem.ListPrice</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
@@ -1350,6 +1375,11 @@
     <fieldLevelSecurities>
         <editable>true</editable>
         <field>OpportunityLineItem.ServiceDate</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>OpportunityLineItem.Subtotal</field>
+        <hidden>true</hidden>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
@@ -1996,6 +2026,10 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>MembersList</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>OldUploadAttachment</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
@@ -2021,14 +2055,6 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectMembersList</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>ProjectMembersMassiveRemove</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>ProjectMembersRemove</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>

@@ -1,0 +1,60 @@
+<apex:component id="MembersWidget" allowDML="true" controller="MembersWidgetController">
+    
+    <!-- Corresponding CSS and JS for particular Widget-->
+    <apex:stylesheet value="{!URLFOR($Resource.MembersWidget, 'inc/css/membersWidget.css')}" /> 
+    
+    <!-- TODO place in application top -->
+    <apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
+
+	<!-- 
+	finalizar XXXX
+	<apex:actionFunction name="RefreshTaskAssignedList" 
+                        action="{!doRefresh}" 
+                        rerender="" 
+                        oncomplete="swirly.hide(); infoToUser.show();"/>
+	-->
+    
+    <!-- Attribute Definitions -->
+    <apex:attribute name="idProject" description="The project ID" type="String" required="true" assignTo="{!idProject}" />
+    
+    <apex:outputPanel id="widget" styleClass="widget" layout="block" >
+    
+        <!-- widget header -->
+        <apex:outputPanel id="header" layout="block" styleClass="header">
+            <div>
+                <div>
+                    <h5>Members Widget</h5>
+                </div>
+            </div>
+        </apex:outputPanel>
+        
+        <!-- dynamic content goes here -->
+        <apex:outputPanel id="membersWidgetContent" layout="block" styleClass="membersWidgetContent">
+            
+            <!-- Body of Widget goes here -->
+            
+            <apex:outputpanel id="linksTop" layout="block" styleclass="panelLinksTop"  rendered="{!isManager}" >                        
+                <apex:outputLink id="NewMemberLink" styleclass="linksTop" value="javascript:;" onClick="promptOverlay.open(newMember);"> NewMember</apex:outputLink> |
+                <apex:outputLink id="SeeMoreLink" styleclass="linksTop" value="/apex/MembersList?id={!idProject}#" > See More&#187;</apex:outputLink>
+            </apex:outputpanel>
+            
+            <apex:repeat value="{!ProjectMembers}" var="member" id="projectMembers">
+                <apex:outputPanel id="lineMember" styleclass="lineMember" layout="block">
+	                <apex:image id="imageMember" styleclass="imageMember" value="{!URLFOR($Resource.MembersWidget, 'images/no_image_small.gif')}" />
+	                <apex:outputLink id="usrLink" value="/{!member.Id}" styleclass="{!IF(member.isAdmin, 'usrAdmin', 'usrStandar')}">        
+	                    {!member.Name}
+	                </apex:outputLink>
+                </apex:outputPanel>
+            </apex:repeat>
+            
+        </apex:outputPanel>
+        
+        <!-- widget footer -->
+        <apex:outputPanel id="footer" layout="block" styleClass="footer">
+            <div>
+                <div></div>
+            </div>
+        </apex:outputPanel>
+    
+    </apex:outputPanel>
+</apex:component>

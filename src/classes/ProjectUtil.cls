@@ -241,6 +241,14 @@ public class ProjectUtil {
  		   	
     }
     
+	public static String chopWord( String word ){
+		if( word != null && word.length() > ProjectUtil.maxLongWord )
+			return word.substring( 0, ProjectUtil.maxLongWord -1 ) + '...';
+			
+		return word;
+	}
+    
+    
 	public static String chopWords( String words ){
     	return ProjectUtil.chopWords( words, ProjectUtil.maxLongWord );
     }
