@@ -1,26 +1,33 @@
+/**
+ * Implements the breadcrum feature
+ * @author Miguel Soares de Lima
+ * @createdDate 02/01/2010
+ * @group Controller
+ */
 public class BreadcrumController {
 
-	private Set<String> infoOfProject = new Set<String>{ 'projectDetail', 'ProjectActivity', 'MembersList', 'projectAttachmentList', 'tasklist' };
-	private Set<String> infoOfTaskAndProject =  new Set<String>{ 'ProjectTaskDetail', 'ProjectTaskNotes' };
-
-	public String currentPage { set; get; }
-	public String projectId { set; get; }
-	public String projectName { set; get; }
-	public String taskId { set; get; }
-	public String taskName { set; get; }
+	private Set<String> infoOfProject;
+	private Set<String> infoOfTaskAndProject;
+	private String projectId;
+	private String projectName;
+	private String taskId;
+	private String taskName;
+	private Map<String, BreadcrumNode> listNodes;
 	
-	public Map<String, BreadcrumNode> listNodes;
 	public List<BreadcrumNode> breadcrum { set; get; }
-	public String actualPage { set; get; }
+	public String currentPage { set; get; }
+	public String lastLinkPage { set; get; }
 	
-	
-	
-	
+	/**
+	*Constructor
+	*/
 	public BreadcrumController(){ 
+		infoOfProject = new Set<String>{ 'projectDetail', 'ProjectActivity', 'MembersList', 'projectAttachmentList', 'tasklist' };
+		infoOfTaskAndProject =  new Set<String>{ 'ProjectTaskDetail', 'ProjectTaskNotes' };
 
-		this.currentPage = ApexPages.currentPage().getUrl().split('/apex/').get(1).split('[?]').get(0).toLowercase();
+		this.currentPage = ApexPages.currentPage().getUrl().split('/apex/').get(1).split('[?]').get(0);
 		
-		this.setInfo( this.currentPage );
+		this.setInfo();
 		this.createMapOfNodes();
 		
 		this.breadcrum = new List<BreadcrumNode>();
@@ -29,38 +36,41 @@ public class BreadcrumController {
 
 	}
 	
-	
+	/**
+	*Create the breadcrum 
+	*/
 	private void buildBreadcrumb(){
 
 		BreadcrumNode b = new BreadcrumNode();
 		List<BreadcrumNode> breadcrumAux = new List<BreadcrumNode>(); 
 		
-		b = this.listNodes.get( this.currentPage );
+		b = this.listNodes.get( this.currentPage.toLowercase() );
 		breadcrumAux.add( b );
 		
 		while( b.topName != 'root' ){
-				b = this.listNodes.get( b.topName );
+				b = this.listNodes.get( b.topName.toLowercase() );
 				breadcrumAux.add( b );	
 		}
-		
-		this.actualPage = breadcrumAux[ 0 ].urlDisplay; 
+	
+		this.lastLinkPage = breadcrumAux[ 0 ].urlDisplay; 
 		for( Integer k = breadcrumAux.size()-1; k > 0; k-- )
-			this.breadcrum.add(  breadcrumAux[ k ]);
-		
+			this.breadcrum.add(  breadcrumAux[ k ]);	
 	}
 	
-	private void setInfo( String pageName ){
-		
-		if( this.infoOfProject.contains( pageName )){
+	/**
+	*Get the infomarion needed depending the name of the page
+	*/
+	private void setInfo(){
+		if( this.infoOfProject.contains( this.currentPage )){
 			Project project = new Project();
 			id pId = System.currentPageReference().getParameters().get( 'id' );
 			project = DAOFactory.getInstance().getProjectInfo( pId ); 
 			this.projectId = project.id;
 			this.projectName = project.name;
-		}else if( this.infoOfTaskAndProject.contains( pageName )){
+		}else if( this.infoOfTaskAndProject.contains( this.currentPage )){
 			ProjectTask__c task = new ProjectTask__c();
-			id taskId = System.currentPageReference().getParameters().get( 'id' );
-			task = DAOFactory.getInstance().ProjectTaskNotesObtainData( taskId )[0]; 
+			id taskId = System.currentPageReference().getParameters().get( 'id_task' );
+			task = DAOFactory.getInstance().taskInfoWithProjectRel( taskId ); 
 			this.projectId = task.project__c;
 			this.projectName = task.project__r.name;
 			this.taskId = task.id;
@@ -68,7 +78,10 @@ public class BreadcrumController {
 		}
 	}
 	
-	
+	/**
+	*Create the map of nodes (tree), this methos call to addNode( String String String String )
+	*for each node to create.
+	*/
 	private void createMapOfNodes(){
 		this.listNodes = new Map<String, BreadcrumNode>();
 		this.addNode( '/apex/projectOverview', 'Overview', 'overview', 'root');
@@ -80,8 +93,15 @@ public class BreadcrumController {
 		this.addNode( '/apex/MembersList?id=' + this.projectId, 'Members List', 'MembersList', 'projectDetail');
 		this.addNode( '/apex/ProjectActivity?id=' + this.projectId, 'Project Activity', 'ProjectActivity', 'projectDetail');
 		this.addNode( '/apex/ProjectTaskNotes?id=' + this.taskId, 'Project Task Notes', 'ProjectTaskNotes', 'ProjectTaskDetail');
-	} 
+	}
 	 
+	/**
+	*Aux method for formated and add a new node on the tree.
+	*@param url  relative page url without any param value. Examples /apex/projectOverview or /apex/projectDetail?id=
+	*@param urlDispaly label to display in the page. Examples Overview or Project Detail
+	*@param name the name of the node. Examples overview, pDetail, projectdetail.
+	*@param topName the name od the parent node. Examples overview, pDetail, projectdetail.
+	*/ 
 	private  void addNode( String url, String urlDisplay, String name, String topName ){
 		BreadcrumNode node = new BreadcrumNode();
 		node.url = url;

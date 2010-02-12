@@ -475,7 +475,7 @@ public without sharing class ProjectMembersListController {
 	public PageReference editMemberAction () {	
 		editMember.Profile__c = editMemberProfile;
 		update editMember;
-		PageReference pageRef = Page.ProjectMembersList;
+		PageReference pageRef = Page.MembersList;
 		pageRef.getParameters().put('id', idProject);
 		pageRef.setRedirect(true);
 		return pageRef;
