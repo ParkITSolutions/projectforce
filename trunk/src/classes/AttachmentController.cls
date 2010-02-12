@@ -41,11 +41,9 @@ public class AttachmentController {
 		this.cleanErrors();
 		if( this.allValidations() ){ 
 			if( this.currentPage == 'taskdetail' ){
-		System.debug( '###>### ' + this.currentPage ) ;
 				Task t = new Task();
 				t.id = this.parentId;
 				t.addAttachment( newAttach ); 
-		System.debug( '###2>### ' + this.currentPage ) ;
 				
 			}else if( this.currentPage == 'projectetail' ){
 				

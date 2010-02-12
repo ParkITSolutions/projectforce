@@ -4,18 +4,15 @@
 public class UserTasksController{
 
     private Boolean showDetail;
-    public id projectId;
     public id currentUser;
     public Project currentProject { set; get; }
     public List<ProjectMember__c> allProjects;
     public Map<id,ProjectMember__c> allProjectsMap;
-    public List<Task> tasks {set; get;}
     public List<SelectOption> selectOpsProject;
 
     public String opSelected;   
     public String attachmentPrjId;
     
-    // Paginator 
     public Paginator paginator 	{ set; get; }
     
     
@@ -24,13 +21,11 @@ public class UserTasksController{
     */
     public UserTasksController(){
         
-        this.projectId 		= System.currentPageReference().getParameters().get('id');
         this.currentUser 	= UserInfo.getUserId();
         this.opSelected 	= 'none'; 
         this.showDetail 	= false;
 
         this.allProjects 		= new List<ProjectMember__c>();
-        this.tasks 				= new List<Task>();
         this.allProjectsMap 	= new Map<id,ProjectMember__c>();
         this.selectOpsProject 	= new List<SelectOption>(); 
         
@@ -43,12 +38,12 @@ public class UserTasksController{
 		
         paginator.loadTasksByUser();
         
-        this.selectAllPeojectName();
+        this.selectAllProjectsName();
     }
 
 
     /**
-    *@return String
+    *@return attachmentPrjId
     */
     public String getAttachmentPrjId(){
         
@@ -82,7 +77,7 @@ public class UserTasksController{
     }
 
     /**
-    * @return String
+    * @return opSelected
     */
     public String getOpSelected(){
         
@@ -91,12 +86,12 @@ public class UserTasksController{
     }
     
     /**
-    * @param String
+    * @param option
     */
-    public void setOpSelected( String op ){
+    public void setOpSelected( String option ){
         
-        this.opSelected = op;
-        this.paginator.project.id = op == 'none' ? '' : op;
+        this.opSelected = option;
+        this.paginator.project.id = option == 'none' ? '' : option;
         this.selectProjectBasicData();
     }
     
@@ -105,7 +100,7 @@ public class UserTasksController{
     */
     public void selectProjectBasicData(){
         
-        List<String> d 					= new List<String>{'Mon', 'Thu', 'Wen', 'Thu', 'Fri', 'Sat', 'Sun'};
+        List<String> days				= new List<String>{'Mon', 'Thu', 'Wen', 'Thu', 'Fri', 'Sat', 'Sun'};
         this.currentProject  			= new Project();
         ProjectMember__c tempProject 	= new ProjectMember__c(); 
         
@@ -117,14 +112,14 @@ public class UserTasksController{
             this.currentProject.priority                = ProjectUtil.chopWords( tempProject.Project__r.priority__c );
             this.currentProject.displayDuration         = ProjectUtil.chopWords( tempProject.Project__r.DisplayDuration__c );
             this.currentProject.description             = ProjectUtil.chopWords( tempProject.Project__r.Description__c );
-            this.currentProject.daysWorkWeekFormated    = 'Mon - ' + d[ Integer.valueOf( tempProject.Project__r.DaysInWorkWeek__c )]; 
+            this.currentProject.daysWorkWeekFormated    = 'Mon - ' + days[ Integer.valueOf( tempProject.Project__r.DaysInWorkWeek__c )]; 
         }
     }
     
     /**
-    * @return void
+    *
     */
-    public void selectAllPeojectName(){
+    public void selectAllProjectsName(){
          this.allProjects = DAOFactory.getInstance().getProjetsInfoByMember( this.currentUser );   
          
          for( ProjectMember__c p : this.allProjects)
