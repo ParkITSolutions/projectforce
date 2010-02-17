@@ -19,6 +19,8 @@ public class Task {
 	public Date 	startDate 				{ set; get; }
 	public String 	startDateDisplay 		{ set; get; }
 	public Date 	endDate 				{ set; get; }
+	public String  	daysOverdue				{ set; get; }
+	public Boolean 	overdue		 	    	{ set; get{ return settningDaysOverdue();}}
 	public String 	endDateDisplay 	    	{ set; get; }
 	public String 	description 			{ set; get; }
 	public String 	id 						{ set; get; }
@@ -33,7 +35,7 @@ public class Task {
 	public String 	status 					{ set; get; }
 	public Double 	taskPosition 			{ set; get; }
 	public List<ProjectMember> 	assignees 	{ set; get; }
-	
+
 	/**
 	* Constructor 
 	*/
@@ -167,4 +169,14 @@ public class Task {
 	public void addAttachment( Attachment att ){ 
 		DAOFactory.getInstance().insertAttachment( att, this.id );	
 	}
+	
+	/**
+	* Setting overdue flag and days overdue message.
+	*/
+	private Boolean settningDaysOverdue(){
+		Integer localDaysOverdue = this.endDate.daysBetween( Date.today());
+		this.daysOverdue = localDaysOverdue + 'day(s) overdue.';
+		return localDaysOverdue > 0;
+	}
+	
 }

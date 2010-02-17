@@ -110,6 +110,7 @@
                                 paginator.pageNumberId  = '{!$Component.Form.pageNumber}';
                                 paginator.orderById     = '{!$Component.Form.orderBy}';
                                 paginator.letterChoosen = '{!$Component.Form.letterChoosen}';
+                                paginator.orderByRequest= '{!$Component.Form.orderByRequest}';
                             </script>
                         
                             <apex:actionFunction name="RefreshPaginator"
@@ -196,6 +197,7 @@
                             
                             <apex:inputHidden id="pageNumber" value="{!paginator.pageNumber}" />
                             <apex:inputHidden id="orderBy" value="{!paginator.orderBy}" />
+                            <apex:inputHidden id="orderByRequest" value="{!paginator.orderByRequest}" />
                             
                     </apex:outputPanel>
                     <!-- End PaginatorPanel -->

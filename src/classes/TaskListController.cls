@@ -29,7 +29,6 @@ public class TaskListController {
 		this.paginator 	= new Paginator();
 		
 		this.paginator.orderBy 		= 'Name';
-		this.paginator.orderAsc 	= true;
 		this.paginator.filter 		= '1'; // Show all tasks and milestones
 		this.paginator.project.id 	= this.projectId;
 		
