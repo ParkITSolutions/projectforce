@@ -43,7 +43,7 @@
         
             <apex:outputPanel id="memberPanel" layout="block" styleclass="textQuickLink">
                 <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
-                <apex:outputLink id="memberLink" value="/apex/ProjectMembersList?id={!idProject}">Member List</apex:outputLink>
+                <apex:outputLink id="memberLink" value="/apex/MembersList?id={!idProject}">Member List</apex:outputLink>
             </apex:outputPanel>
             
             <apex:outputPanel id="userTaskPanel" layout="block" styleclass="textQuickLink">

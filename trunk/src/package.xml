@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>AttachmentController</members>
+        <members>BreadcrumController</members>
+        <members>BreadcrumNode</members>
+        <members>ProjectMembersListController</members>
+        <members>UserTasksController</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>Attachment</members>
+        <members>Breadcrum</members>
+        <members>ProjectAttachments</members>
+        <members>QuickLinksWidget</members>
+        <name>ApexComponent</name>
+    </types>
+    <types>
+        <members>HeaderTemplate</members>
+        <members>ProjectActivity</members>
+        <members>ProjectAttachmentList</members>
+        <members>projectOverview</members>
+        <members>userTasks</members>
+        <name>ApexPage</name>
+    </types>
     <version>16.0</version>
 </Package>
