@@ -28,7 +28,6 @@ public class MembersListController {
 		
 		this.paginator 	= new Paginator();
 		this.paginator.orderBy 		= 'name';
-		this.paginator.orderAsc 	= true;
 		this.paginator.project.id 	= this.projectId;
 		
 		paginator.loadMembersByProject();

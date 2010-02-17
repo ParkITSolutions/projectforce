@@ -147,6 +147,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>MyTasksAndMilestonesController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>NewAssigneeController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -2194,10 +2198,6 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>ProjectMembersList</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>ProjectSetup</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
@@ -2211,10 +2211,6 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectTaskNotes</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>ProjectTasksList</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
@@ -2239,6 +2235,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>UploadAttachment</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>miguel</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>

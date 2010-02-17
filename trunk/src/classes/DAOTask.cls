@@ -256,4 +256,21 @@ public class DAOTask {
 		
 		return tasks; 
 	}	
+	
+	/**
+	*Get task and project info with ProjectTask__c objetc
+	*param id id of the task
+	*return task data of the task
+	*/
+	public ProjectTask__c getTaskInfoWithProjectRel( id idTask ){
+		ProjectTask__c task = new ProjectTask__c();
+		try{
+			task = [ SELECT id, name, project__c, project__r.name FROM ProjectTask__c WHERE id =: idTask LIMIT 1 ];
+		}catch( QueryException e){
+			task = null;
+		}
+		
+		return task;
+	}
+	
 }

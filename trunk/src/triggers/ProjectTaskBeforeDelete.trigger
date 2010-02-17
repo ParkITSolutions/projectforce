@@ -6,8 +6,8 @@ trigger ProjectTaskBeforeDelete on ProjectTask__c (before delete)
         lstTasksId.add( pT.id );
         
         //Logging Changes for Project Members
-    	//TaskActivity taskActivity = new TaskActivity( pT.Project__c, DateTime.now(), UserInfo.getUserId(), 'delete', pT );
-		//taskActivity.log();
+        //TaskActivity taskActivity = new TaskActivity( pT.Project__c, DateTime.now(), UserInfo.getUserId(), 'delete', pT );
+        //taskActivity.log();
     }
      
     ProjectSubscribersEmailServices mail = ProjectSubscribersEmailServices.getInstance();

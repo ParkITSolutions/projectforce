@@ -148,6 +148,10 @@ public class DAOFactory {
 		return this.DAOTask.loadTasksByUser( filter, orderBy, orderAsc, projectId );
 	}
 	
+	public ProjectTask__c taskInfoWithProjectRel( id idTask ){
+		 return this.DAOTask.getTaskInfoWithProjectRel( idTask );
+	}
+	
 	/*-----------------------------------------------------------------------------------------------------------------------------*/
 	
 	/*--------------------------------------------------- Member operations -------------------------------------------------------*/
@@ -434,6 +438,42 @@ public class DAOFactory {
 	
 	public List<User> findUserNotMember (List<String> newMembers, String idProject){
 		return DAOUser.findUserNotMember (newMembers, idProject);
+	}
+
+	/*-----------------------------------------------------------------------------------------------------------------------------*/
+	
+	/*--------------------------------------------------- Project Subscription operations ------------------------------------------------------*/
+	
+	/** Return list of project subscriptions
+	*@param String idProject
+	*@return List<ProjectSubscription__c>
+	*/
+	public List<ProjectSubscription__c> subscriptionProjectList(String idProject){
+		return DAOSubscription.subscriptionProjectList(idProject);
+	}
+	
+	/** Insert project subscription
+	*@param ProjectSubscription__c subs
+	*@return void
+	*/
+	public void insertProjectsubscription(ProjectSubscription__c subs){
+		DAOSubscription.insertProjectsubscription(subs);
+	}
+	
+	/** Updtate project subscription
+	*@param ProjectSubscription__c subs
+	*@return void
+	*/
+	public void updateProjectsubscription(ProjectSubscription__c subs){
+		DAOSubscription.updateProjectsubscription(subs);
+	}
+	
+	/** Delete project subscription
+	*@param ProjectSubscription__c subs
+	*@return void
+	*/
+	public void deleteProjectsubscription(ProjectSubscription__c subs){
+		DAOSubscription.deleteProjectsubscription(subs);
 	}
 
 	/*-----------------------------------------------------------------------------------------------------------------------------*/

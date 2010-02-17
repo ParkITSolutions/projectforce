@@ -1,0 +1,115 @@
+<apex:component controller="MyTasksAndMilestonesController" allowDML="true" >
+
+	<c:ApplicationTop />
+
+    <!-- Corresponding CSS and JS for particular Widget-->
+    <apex:stylesheet value="{!URLFOR($Resource.ActivityWidget, 'inc/css/activityWidget.css')}" /> 
+    <apex:includeScript value="{!URLFOR($Resource.ActivityWidget, 'inc/js/activityWidget.js')}" />
+    
+    <!-- TODO place in application top -->
+    <apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
+    
+    <style>
+    .probando, .tabsContainer{
+    	font-size: 10px;
+    }
+    .tasksList, .milestonesList{
+    	padding: 0px;
+    	min-height:210px;
+    }
+    .taskName{
+    	font-weight: bolder;
+    }
+    .tabsContainer{
+   		margin-left: 1px;
+   		margin-right: 1px;
+    }
+    .tabSelected{
+    	background: #004F6D;
+    	color: white;
+    }
+    .tabNonSelected{
+    	background: white;
+    }
+    .tabTasks:hover, .tabMilestones:hover {
+    	text-decoration: underline;
+    }
+    .tabTasks, .tabMilestones{
+    	padding-left: 3px;
+    	padding-right: 3px;
+    	cursor: pointer;
+    }
+    </style>
+    
+    <apex:outputPanel id="widget" styleClass="widget" layout="block" >
+    
+        <!-- widget header -->
+        <apex:outputPanel id="header" layout="block" styleClass="header">
+            <div>
+                <div>
+                    <h5>My Tasks And Milestones</h5>
+                </div>
+            </div>
+        </apex:outputPanel>
+        
+        <!-- dynamic content goes here -->
+        <apex:outputPanel id="widgetContent" layout="block" styleClass="widgetContent">
+        	<apex:outputPanel styleClass="tabsContainer" layout="block">
+	        	<apex:outputPanel onclick="MyTaskAndMiletones.showTask( this );" styleClass="tabTasks tabSelected">Tasks</apex:outputPanel>
+	        	<apex:outputPanel onclick="MyTaskAndMiletones.showMilestones( this );" styleClass="tabMilestones">Milestones</apex:outputPanel>
+	        	<apex:outputLink value="/apex/userTasks" > See More &gt;&gt;&gt; </apex:outputLink>
+        	</apex:outputPanel>
+			<apex:datalist value="{!tasks}" var="t" styleClass="tasksList">
+				<apex:outputPanel layout="block" styleClass="probando" >
+					<apex:outputText value="{!t.name}" styleClass="taskName"/> 
+					<br />
+					<apex:outputText value="{!t.status}/" />
+					<apex:outputText value="{!t.PercentCompleted}%/" />
+					<apex:outputText value="{!t.priority}/" />
+					<apex:outputPanel rendered="{!t.overdue}" >
+						<apex:outputText value="{!t.daysOverdue}" />
+					</apex:outputPanel>
+					<apex:outputPanel rendered="{!NOT(t.overdue)}" >
+						<apex:outputText value="{!t.endDateDisplay}" />
+					</apex:outputPanel>
+				</apex:outputPanel>
+			</apex:datalist>
+
+			<apex:datalist value="{!milestones}" var="t" styleClass="milestonesList" style="display: none;" rendered="{!milestones!=null}">
+				<apex:outputPanel layout="block" styleClass="probando" >
+					<apex:outputText value="{!t.name}" styleClass="taskName" />
+				</apex:outputPanel>
+			</apex:datalist>
+			<apex:outputPanel rendered="{!milestones==null}">
+				No milestones yet.
+			</apex:outputPanel>
+
+        </apex:outputPanel>
+        
+        <!-- widget footer --> 
+        <apex:outputPanel id="footer" layout="block" styleClass="footer">
+            <div>
+                <div></div>
+            </div>
+        </apex:outputPanel>
+    
+    </apex:outputPanel>
+    <script>
+	    MyTaskAndMiletones = {
+	    	showTask: function( ){
+		    	$$('.tasksList')[0].show();
+		    	$$('.milestonesList')[0].hide();
+
+		    	$$('.tabMilestones')[0].removeClassName( 'tabSelected' );
+		    	$$('.tabTasks')[0].addClassName( 'tabSelected' );
+	    	},
+	    	showMilestones: function(){
+		    	$$('.milestonesList')[0].show();
+		    	$$('.tasksList')[0].hide();
+
+		    	$$('.tabTasks')[0].removeClassName( 'tabSelected' );
+		    	$$('.tabMilestones')[0].addClassName( 'tabSelected' );
+	    	}
+	    }
+    </script>
+</apex:component>

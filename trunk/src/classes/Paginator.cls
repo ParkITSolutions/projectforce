@@ -20,6 +20,8 @@ public class Paginator {
 	public Project project 								{ set; get; }
 	public List<Letter> letters 						{ set; get; }
 	private List<String> lettersList;
+	private String orderByOld;
+	public Boolean orderByRequest 						{ set; get; } //tells if user did click on a column to sort
 	
 	//Only for use when searching Projects and Tasks
 	private String searchTerm;
@@ -33,6 +35,9 @@ public class Paginator {
 		this.resultSize 		= 0;
 		this.lettersList        = new List<String>{'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 		this.letterChoosen      = 'All'; //value by default
+		this.orderByOld = null;
+		this.orderAsc = true;
+		this.orderByRequest = false;
 	}
 	
 	/**----------------------------------------------- Paginator functions -------------------------------------------------------*/
@@ -226,6 +231,29 @@ public class Paginator {
 		this.pagesListConstructor();
 	}
 	
+	/**
+	* sets sorting criteria
+	*/
+	private void setSorting(){
+		if(this.orderByRequest){
+			//user did click on a column to sort
+			if(this.orderByOld == this.orderBy){
+				//user pressed on the same order by link
+				this.orderAsc = !this.orderAsc;
+			}
+		}
+	}
+	
+	/**
+	* sets some variables after loading
+	*/
+	private void postLoad(){
+		this.setPaginator();
+		pagesListConstructor();
+		this.orderByOld = this.orderBy;
+		this.orderByRequest = false;
+	}
+	
 	/**----------------------------------------------- End paginator functions -------------------------------------------------------*/
 	
 	/**----------------------------------------------- Letter filter functions -------------------------------------------------------*/
@@ -290,28 +318,20 @@ public class Paginator {
 	* loads the tasks list
 	*/
 	public void loadTasksByProject(){
-		
 		loadLetterCurrencies('TasksByProject');
-		
-		this.orderAsc = !this.orderAsc;
+		setSorting();
 		this.paginator = project.getTasks( this.filter, this.orderBy, this.orderAsc, this.letterChoosen );
-		this.setPaginator();
-		
-		pagesListConstructor();
+		postLoad();
 	}
 	
 	/**
 	* loads members by project
 	*/
 	public void loadMembersByProject(){
-		
 		loadLetterCurrencies('MembersByProject');
-		
-		this.orderAsc = !this.orderAsc;
+		setSorting();
 		this.paginator = project.getMembers( this.filter, this.orderBy, this.orderAsc, this.letterChoosen );
-		this.setPaginator();
-		
-		pagesListConstructor();
+		postLoad();
 	}
 	
 	/**
@@ -350,11 +370,9 @@ public class Paginator {
 	* loads the tasks list by user
 	*/
 	public void loadTasksByUser(){
-		
-		this.orderAsc = !this.orderAsc;
+		setSorting();
 		this.paginator = DAOFactory.getInstance().loadTasksByUser( this.filter, this.orderBy, this.orderAsc, this.project.id ); 
-		
-		this.setPaginator();
+		postLoad();
 	}
 	
 	/**----------------------------------------------- End data loaders functions ------------------------------------------------------------*/

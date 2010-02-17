@@ -3,99 +3,57 @@
 */
 public class ProjectSubscriptionController {
 	
-	public String idProject = System.currentPageReference().getParameters().get('id');
-	public Integer subscriptionCount; 
-	public ProjectSubscription__c subscription = new ProjectSubscription__c();
+	public String idProject							{ set; get; } 
+	public Integer subscriptionCount				{ set; get; } 
+	public ProjectSubscription__c subscription		{ set; get; }
+	public String ProjectName						{ set; get; }
+	public String postAction 	    				{ set; get; }
 	
 	
 	/**
 	* Constructor
 	*/
 	public ProjectSubscriptionController () {
-		constructMethods(); 
+		this.idProject = System.currentPageReference().getParameters().get('id');
+		this.subscription = new ProjectSubscription__c();
+		this.ProjectName=ProjectUtil.chopWords( ProjectUtil.chopPhrase( DAOFactory.getInstance().getProjectInfo(this.idProject).name , 20 ) );
+		
+		loadProjectSubscription();
 	}
 	
-	
-	/**
-	*@return String
-	*/
-	public String getNameProject(){
-		String pName = [ select Id, Name from Project2__c where Id =: idProject limit 1 ].Name;
-		if( pName.length() > 24 )
-		pName = pName.substring( 0, 23 );
-		return pName;	
-	}
-	
-	/**
-	*@return Integer
-	*/
-	public Integer getSubscriptionCount () {
-		return subscriptionCount;
-	}
-	
-	/**
-	*@return ProjectSubscription__c
-	*/
-	public ProjectSubscription__c getSubscription () {
-		return subscription;
-	}
-	
-	/**
-	*@param String idProject
-	*@return void
-	*/
-	public void setIdProject (String idProject) {
-		this.idProject = idProject; 
-	}
-	
-	/**
-	*@return String
-	*/
-	public String getIdProject () {
-		return idProject;
-	}
-
 	/**
 	* Execute on Construct
 	*@return void
 	*/
-	public void constructMethods () {
-		if (idProject != null) {
-			List<ProjectSubscription__c> teamSubList = new List<ProjectSubscription__c>();
-			teamSubList = [select id,
-							ProjectTaskAssignedToMe__c,
-							ProjectTaskAssignToMeChanged__c,
-							ProjectTaskChanged__c,
-							ProjectTaskDeleted__c,
-							Project__c,
-							User__c
-						from ProjectSubscription__c 
-						where User__c =:UserInfo.getUserId() and Project__c =: idProject 
-						limit 1];
-						
-			if (teamSubList.size() > 0 ) {
-				subscription = teamSubList[0];
+	public void loadProjectSubscription () {
+		if (this.idProject != null) {
+			List<ProjectSubscription__c> subProjList = new List<ProjectSubscription__c>();
+
+			subProjList = DAOFactory.getInstance().subscriptionProjectList(this.idProject);		
+			if (subProjList.size() > 0 ) {
+				this.subscription = subProjList[0];
 			}	
-			subscriptionCount = teamSubList.size();
+			this.subscriptionCount = subProjList.size();
 		}
 	}
 	
 	/**
 	* Save suscription
-	*@return PageReference
+	*@return Void 
 	*/
-	public PageReference saveSubscription () {
+	//public PageReference saveSubscription () {
+	public void saveSubscription () {
+		
 		if (subscriptionCount > 0) {
-			update 	subscription;	
+			//Update the subscription;
+			DAOFactory.getInstance().updateProjectsubscription(subscription);
 		}else {
-			subscription.Project__c = idProject;
-			subscription.User__c = UserInfo.getUserId();
-			insert subscription;
+			this.subscription.Project__c = this.idProject;
+			this.subscription.User__c = UserInfo.getUserId();
+			//Insert the subscription;
+			DAOFactory.getInstance().insertProjectsubscription(this.subscription);
 		}
-		PageReference pageRef = Page.ProjectDetail;
-		pageRef.getParameters().put('id', idProject);
-		pageRef.setRedirect(true);
-		return pageRef;
+		loadProjectSubscription();
 	}
 	
 	/**
@@ -104,22 +62,23 @@ public class ProjectSubscriptionController {
 	*/
 	public PageReference cancelSubscription () {
 		PageReference pageRef = Page.ProjectDetail;
-		pageRef.getParameters().put('id', idProject);
+		pageRef.getParameters().put('id', this.idProject);
 		pageRef.setRedirect(true);
 		return pageRef;
 	}
 	
 	/**
 	* Delete subscription
-	*@return PageReference
+	*@return Void
 	*/
-	public PageReference deleteSubscription () {
-		if (subscription != null && subscriptionCount > 0 ) 
-			delete subscription;
-		
-		PageReference pageRef = Page.ProjectDetail;
-		pageRef.getParameters().put('id', idProject);
-		pageRef.setRedirect(true);
-		return pageRef;
+	
+	//public PageReference deleteSubscription () {
+	public void deleteSubscription () {
+		if (this.subscription != null && this.subscriptionCount > 0 ){ 
+			//delete the subscription;
+			DAOFactory.getInstance().deleteProjectsubscription(subscription);
+			
+			loadProjectSubscription();
+		}
 	}
 }
