@@ -2,30 +2,7 @@
 
     <c:ApplicationTop id="ApplicationTop" />
     
-    <style type="text/css">
-    
-        .projectActivityPage{
-            background:#E0E0E0 none repeat scroll 0 0;
-        }
-        
-        .projectActivityPage .sideBar{
-            background:#E0E0E0 none repeat scroll 0 0;  
-            width:200px;
-            float:left;
-        }
-        
-        .projectActivityPage .activityMain{
-            background-color:white;
-            float:left;
-            padding:10px;
-        }
-        
-    </style>
-    
-    <c:PromptOverlay id="PromptOverlay"
-        includeNewMember="true"
-        idValue="{!projectId}"
-       />
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectActivity, 'inc/css/projectActivity.css')}" />
     
     <!-- Principal Container for Activity Page -->
      <apex:outputpanel id="projectActivityPage" layout="block" styleClass="projectActivityPage">
@@ -42,11 +19,11 @@
                     <c:Search module="Project" projectId="{!projectId}" label="Tasks"/>
                 </apex:define>
             </apex:composition> 
-            <
+            
             <!-- Bread Crumb section and Buttons -->
-            <div align="center" class="breadCrumbAndButtons">
+            <apex:outputpanel id="breadcrumPanel" styleClass="breadCrumbAndButtons" layout="block">
             	<c:Breadcrum />
-            </div>
+            </apex:outputpanel>
             
         </apex:outputpanel>
         

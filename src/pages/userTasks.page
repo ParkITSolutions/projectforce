@@ -3,15 +3,9 @@
 	<c:ApplicationTop id="ApplicationTop" />
 	
     <apex:stylesheet value="{!URLFOR($Resource.UserTasks, 'inc/css/userTasks.css')}"/>
- 
-    <style>
-	    .avatarDetailProject{
-	    	float: left;
-	    }
-    </style>
 
-    <!-- Main -->
-    <div id="main">
+    <!-- Main Content-->
+    <apex:outputPanel id="main" layout="block" styleClass="userTasks">
     
         <apex:composition template="HeaderTemplate">
             <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
@@ -21,14 +15,51 @@
                 <c:Search module="Project" label="Tasks"/>
             </apex:define>
         </apex:composition> 
-
-        	<apex:form id="Form">
-        		          <br />
-        		  
-		          <span id="labelSelectProject" >Select Project: &nbsp;</span>
-		          <apex:selectList id="options" value="{!opSelected}" multiselect="false" size="1" onchange="swirly.show();RefreshRecordsList();"  styleClass="ProjectSelectot">
-		              <apex:selectOptions value="{!ProjectSelectOps}" />
-		          </apex:selectList>
+        
+		<c:Breadcrum id="breadCrum"/>
+        
+        <apex:form id="Form">
+        	<apex:actionFunction name="refreshProjectDetail" rerender="projectDetail" />
+   		         
+   		          <br />
+        		  <apex:outputpanel id="selectProjectPanel" layout="block" styleClass="selectProjectPanel">
+			          <span id="labelSelectProject" >Select Project: &nbsp;</span>
+			          <apex:selectList id="options" value="{!opSelected}" multiselect="false" size="1" onchange="swirly.show(); RefreshPaginator();"  styleClass="ProjectSelector">
+			              <apex:selectOptions value="{!ProjectSelectOps}" />
+			          </apex:selectList>
+		          </apex:outputpanel>
+		          
+		            <apex:outputPanel layout="block" id="projectDetail" >                   
+		                <apex:outputPanel layout="block" styleClass="FieldValue" >
+		                    
+		                    <apex:outputPanel rendered="{!ShowDetail}">
+		                        <center>
+		                            <apex:outputPanel layout="block" id="detailProject" styleClass="DetailProject">
+		                                <apex:outputPanel layout="block" id="subContainer" styleClass="SubContainer">
+	                                        <apex:image id="avatarDetailProject" styleClass="avatarDetailProject" rendered="{!AttachmentPrjId!=''}" value="/servlet/servlet.FileDownload?file={!AttachmentPrjId}" width="100" height="100"/>  
+	                                        <apex:image id="avatarDetailProjectDefault" styleClass="avatarDetailProject" rendered="{!AttachmentPrjId==''}" value="{!URLFOR($Resource.Common, '/images/defaults/default_project_100x100.png')}" width="100" height="100"/>  
+		                                    
+		                                    <apex:outputPanel layout="block" styleClass="Field" id="projectNameFiled">Name</apex:outputPanel>
+		                                    <apex:outputPanel layout="block" styleClass="Value"  id="projectNameValue">{!currentProject.name}</apex:outputPanel>
+		                                    
+		                                    <apex:outputPanel layout="block" styleClass="Field" id="descriptionFiled">Description</apex:outputPanel>
+		                                    <apex:outputPanel layout="block" styleClass="Value" id="descriptionValue">{!currentProject.Description}</apex:outputPanel>
+		                                                                
+		                                    <apex:outputPanel layout="block" styleClass="Field" id="driorityFiled">Priority</apex:outputPanel>
+		                                    <apex:outputPanel layout="block" styleClass="Value" id="driorityValue">{!currentProject.Priority}</apex:outputPanel>
+		                                    
+		                                    <apex:outputPanel layout="block" styleClass="Field" id="durationFiled">Duration</apex:outputPanel>
+		                                    <apex:outputPanel layout="block" styleClass="Value" id="durationValue">{!currentProject.DisplayDuration}</apex:outputPanel>
+		                                    
+		                                    <apex:outputPanel layout="block" styleClass="Field" id="daysIinWorkWeekFiled">Days in work week</apex:outputPanel>
+		                                    <apex:outputPanel layout="block" styleClass="Value" id="daysInWorkWeekNameValue">{!currentProject.daysWorkWeekFormated}</apex:outputPanel>
+		                                </apex:outputPanel>
+		                            </apex:outputPanel> 
+		                        </center>
+		                    </apex:outputPanel>
+		                    
+		                </apex:outputPanel>
+		            </apex:outputPanel>
 		
 		                <!-- PaginatorPanel -->
 		                <apex:outputPanel id="PaginatorPanel" styleClass="paginatorPanel" layout="block" >
@@ -36,12 +67,13 @@
 		                        <script type="text/javascript">
 		                            paginator.pageNumberId  = '{!$Component.Form.pageNumber}';
 		                            paginator.orderById     = '{!$Component.Form.orderBy}';
+		                            paginator.orderByRequest= '{!$Component.Form.orderByRequest}';
 		                        </script>
 		                    
 		                        <apex:actionFunction name="RefreshPaginator"
 		                            action="{!paginator.pagesListConstructor}"
 		                            onComplete="swirly.hide();" 
-		                            reRender="PaginatorPanel, RecordsList"/>
+		                            reRender="PaginatorPanel, RecordsList, projectDetail "/>
 		                            
 		                            <apex:actionFunction name="RefreshRecordsList"
 		                            action="{!paginator.loadTasksByUser}"
@@ -122,45 +154,14 @@
 		                        
 		                        <apex:inputHidden id="pageNumber" value="{!paginator.pageNumber}" />
 		                        <apex:inputHidden id="orderBy" value="{!paginator.orderBy}" />
+		                        <apex:inputHidden id="orderByRequest" value="{!paginator.orderByRequest}" />
 		                        
 		                </apex:outputPanel>
 		                <!-- End PaginatorPanel -->
                 
 				<apex:outputPanel id="RecordsList" > 
 
-		            <apex:outputPanel layout="block" id="projectDetail" >                   
-		                <apex:outputPanel layout="block" styleClass="FieldValue" >
-		                    <apex:outputPanel rendered="{!ShowDetail}">
-		                        <center>
-		                            <apex:outputPanel layout="block" id="detailProject" styleClass="DetailProject">
-		                                <apex:outputPanel layout="block" id="subContainer" styleClass="SubContainer">
-	                                        <apex:image id="avatarDetailProject" styleClass="avatarDetailProject" rendered="{!AttachmentPrjId!=''}" value="/servlet/servlet.FileDownload?file={!AttachmentPrjId}" width="100" height="100"/>  
-		                                    <apex:outputPanel rendered="{!AttachmentPrjId==''}" >
-		                                        <img src="{!URLFOR($Resource.Common, '/images/defaults/default_project_100x100.png')}" />
-		                                    </apex:outputPanel>
-		                                    
-		                                    <apex:outputPanel layout="block" styleClass="Field" id="projectNameFiled">Name</apex:outputPanel>
-		                                    <apex:outputPanel layout="block" styleClass="Value"  id="projectNameValue">{!currentProject.name}</apex:outputPanel>
-		                                    
-		                                    <apex:outputPanel layout="block" styleClass="Field" id="descriptionFiled">Description</apex:outputPanel>
-		                                    <apex:outputPanel layout="block" styleClass="Value" id="descriptionValue">{!currentProject.Description}</apex:outputPanel>
-		                                                                
-		                                    <apex:outputPanel layout="block" styleClass="Field" id="driorityFiled">Priority</apex:outputPanel>
-		                                    <apex:outputPanel layout="block" styleClass="Value" id="driorityValue">{!currentProject.Priority}</apex:outputPanel>
-		                                    
-		                                    <apex:outputPanel layout="block" styleClass="Field" id="durationFiled">Duration</apex:outputPanel>
-		                                    <apex:outputPanel layout="block" styleClass="Value" id="durationValue">{!currentProject.DisplayDuration}</apex:outputPanel>
-		                                    
-		                                    <apex:outputPanel layout="block" styleClass="Field" id="daysIinWorkWeekFiled">Days in work week</apex:outputPanel>
-		                                    <apex:outputPanel layout="block" styleClass="Value" id="daysInWorkWeekNameValue">{!currentProject.daysWorkWeekFormated}</apex:outputPanel>
-		                                </apex:outputPanel>
-		                            </apex:outputPanel> 
-		                        </center>
-		                    </apex:outputPanel>
-		                </apex:outputPanel>
-		            </apex:outputPanel>
-
-	                <apex:dataTable value="{!paginator.tasksByUser}" var="t"  id="tableHeader" rendered="true" styleClass="tableOfTasks" >
+	                <apex:dataTable id="tableHeader" value="{!paginator.tasksByUser}" var="t" rendered="true" styleClass="tableOfTasks" >
 	                
 	                    <apex:column >
 	                        <apex:facet name="header">
@@ -288,6 +289,7 @@
 	                </apex:dataTable>
 	        	</apex:outputPanel>
             
+            <!-- Panel displays when no there are no tasks -->
             <apex:outputPanel rendered="{!paginator.resultSize == 0 }">
                 <br /> 
                 <center>No tasks Assigned yet.</center>
@@ -295,5 +297,7 @@
             </apex:outputPanel>
             
         </apex:form>
-    </div>
+        
+    </apex:outputPanel>
+    
 </apex:page>

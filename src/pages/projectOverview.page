@@ -242,7 +242,7 @@
                                             <span>{!t.milestones}</span> 
                                             <a href="/apex/TaskList?id={!t.Id}&filter=allMilestones">Milestones</a> |
                                             <span>{!t.members}</span>
-                                            <a href="/apex/ProjectMembersList?id={!t.Id}">Members</a> 
+                                            <a href="/apex/MembersList?id={!t.Id}">Members</a> 
                                             <br/>
                                             {!t.createDate}
                                         </div>

@@ -13,7 +13,7 @@ public class UserTasksController{
     public String opSelected;   
     public String attachmentPrjId;
     
-    public Paginator paginator 	{ set; get; }
+    public Paginator paginator  { set; get; }
     
     
     /**
@@ -21,21 +21,21 @@ public class UserTasksController{
     */
     public UserTasksController(){
         
-        this.currentUser 	= UserInfo.getUserId();
-        this.opSelected 	= 'none'; 
-        this.showDetail 	= false;
+        this.currentUser    = UserInfo.getUserId();
+        this.opSelected     = 'none'; 
+        this.showDetail     = false;
 
-        this.allProjects 		= new List<ProjectMember__c>();
-        this.allProjectsMap 	= new Map<id,ProjectMember__c>();
-        this.selectOpsProject 	= new List<SelectOption>(); 
+        this.allProjects        = new List<ProjectMember__c>();
+        this.allProjectsMap     = new Map<id,ProjectMember__c>();
+        this.selectOpsProject   = new List<SelectOption>(); 
         
-		this.paginator = new Paginator();
-		
-		this.paginator.orderBy 		= 'Name';
-		this.paginator.orderAsc 	= true;
-		this.paginator.filter 		= '1'; // Show all tasks and milestones
-		this.paginator.project.id 	= this.opSelected == 'none' ? '' : this.opSelected; 
-		
+        this.paginator = new Paginator();
+        
+        this.paginator.orderBy      = 'Name';
+        this.paginator.orderAsc     = true;
+        this.paginator.filter       = '1'; // Show all tasks and milestones
+        this.paginator.project.id   = this.opSelected == 'none' ? '' : this.opSelected; 
+        
         paginator.loadTasksByUser();
         
         this.selectAllProjectsName();
@@ -100,9 +100,9 @@ public class UserTasksController{
     */
     public void selectProjectBasicData(){
         
-        List<String> days				= new List<String>{'Mon', 'Thu', 'Wen', 'Thu', 'Fri', 'Sat', 'Sun'};
-        this.currentProject  			= new Project();
-        ProjectMember__c tempProject 	= new ProjectMember__c(); 
+        List<String> days               = new List<String>{'Mon', 'Thu', 'Wen', 'Thu', 'Fri', 'Sat', 'Sun'};
+        this.currentProject             = new Project();
+        ProjectMember__c tempProject    = new ProjectMember__c(); 
         
         if( this.allProjectsMap.size() > 0 && this.OpSelected != 'none' ){
             tempProject = this.allProjectsMap.get( this.OpSelected );
@@ -123,6 +123,6 @@ public class UserTasksController{
          this.allProjects = DAOFactory.getInstance().getProjetsInfoByMember( this.currentUser );   
          
          for( ProjectMember__c p : this.allProjects)
-         	this.allProjectsMap.put( p.project__c, p );
+            this.allProjectsMap.put( p.project__c, p );
     }
 }

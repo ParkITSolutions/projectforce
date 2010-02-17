@@ -4,7 +4,6 @@
     
     <!-- ProjectDetailAttachmentOverlay Common JS -->
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectDetailAttachment.js')}"/>
-    <apex:includeScript value="{!URLFOR($Resource.Attachments, 'inc/js/attachments.js')}"/>
     
     <style>
         div.wideBody div.swirlyAttachment{

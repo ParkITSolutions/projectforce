@@ -1,27 +1,12 @@
-<apex:component controller="BreadcrumController" allowDML="true">
+<apex:component id="breadCrum" controller="BreadcrumController" allowDML="true">
+    
+    <apex:styleSheet value="{!URLFOR($Resource.Breadcrum, 'inc/css/breadcrum.css')}" />
 
-	<style>
-	
-	span.BreadsrumContainer{
-		/*float: left;*/
-		margin-left:10px;
-	}
-	
-    span.BreadsrumContainer a.BredcrumLink{
-		font-weight: normal !important;
-	}
-	
-	span.BreadsrumContainer span.BreadcrumActualPage{
-		font-weight: bold !important;
-	}
-	
-	</style>
-	
-	<apex:outputPanel styleClass="BreadsrumContainer"> 
-		<apex:repeat value="{!breadcrum}" var="b" >
+	<apex:outputPanel styleClass="BreadsrumContainer" id="breadsrumContainer">
+		<apex:repeat value="{!breadcrum}" var="b">
 			<apex:outputLink value="{!b.url}" styleClass="BredcrumLink">{!b.urlDisplay}</apex:outputLink> &nbsp; &gt; &nbsp; 
 		</apex:repeat>
-		<apex:outputText styleClass="BreadcrumActualPage" Value="{!actualPage}" /> 
+		<apex:outputText styleClass="BreadcrumActualPage" id="breadcrumActualPage"	Value="{!lastLinkPage}" />
 	</apex:outputPanel>
 
 </apex:component>
