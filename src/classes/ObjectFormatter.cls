@@ -193,9 +193,9 @@ public class ObjectFormatter {
             tempTask.projectName 		= projectUtil.chopWord( row.project__r.name );
             tempTask.id 				= row.ProjectTask__c;
             tempTask.setName( ProjectUtil.chopWord( row.ProjectTask__r.name ));
-            tempTask.startDate 			= row.ProjectTask__r.startDate__c; 
+            tempTask.startDate 			= row.ProjectTask__r.startDate__c == null ? null : row.ProjectTask__r.startDate__c; 
             tempTask.startDateDisplay 	= row.ProjectTask__r.startDate__c == null ? null : row.ProjectTask__r.startDate__c.format();
-            tempTask.endDate 			= row.ProjectTask__r.endDate__c;
+            tempTask.endDate 			= row.ProjectTask__r.endDate__c == null ? null : row.ProjectTask__r.startDate__c;
             tempTask.endDateDisplay 	= row.ProjectTask__r.endDate__c == null ? null : row.ProjectTask__r.endDate__c.format();
             tempTask.status 			= row.ProjectTask__r.status__c;
             tempTask.priority 			= row.ProjectTask__r.priority__c;

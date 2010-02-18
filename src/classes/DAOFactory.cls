@@ -467,14 +467,6 @@ public class DAOFactory {
 	public void updateProjectsubscription(ProjectSubscription__c subs){
 		DAOSubscription.updateProjectsubscription(subs);
 	}
-	
-	/** Delete project subscription
-	*@param ProjectSubscription__c subs
-	*@return void
-	*/
-	public void deleteProjectsubscription(ProjectSubscription__c subs){
-		DAOSubscription.deleteProjectsubscription(subs);
-	}
 
 	/*-----------------------------------------------------------------------------------------------------------------------------*/
 	

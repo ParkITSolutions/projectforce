@@ -1728,6 +1728,11 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>false</editable>
+        <field>ProjectSetup__c.CanViewButton__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
         <field>ProjectSubscription__c.ProjectAfterOfExpiringTask__c</field>
         <hidden>true</hidden>
     </fieldLevelSecurities>

@@ -4,7 +4,11 @@
     <apex:includeScript value="{!URLFOR($Resource.NewMilestone, 'inc/js/newMilestone.js')}" />
     
     <script>
-        var newMilestone = '{!$Component.Content}';
+        var newMilestone 		= '{!$Component.Content}';
+        milestone.name 			= '{!$Component.Form.Name}'
+        milestone.startDate 	= '{!$Component.Form.StartDate}'
+        milestone.assignee 		= '{!$Component.Form.memberMilestone}'
+        milestone.errorClass 	= '.milestoneErrors';
     </script>
     
     <apex:outputPanel id="Content"  styleClass="contentNewMilestone overlay" style="display:none;" layout="block">
@@ -17,7 +21,7 @@
                 </apex:outputPanel>
                 
                 <apex:outputPanel id="overlayClose" styleClass="overlayClose" layout="block">
-                    <apex:outputLink id="linkClose" value="javascript:;" onClick="promptOverlay.close(); milestone.clear('{!$Component.Form.Name}','{!$Component.Form.StartDate}','{!$Component.Form.memberMilestone}');" >
+                    <apex:outputLink id="linkClose" value="javascript:;" onClick="promptOverlay.close(); milestone.clear();" >
                         <img src="{!URLFOR($Resource.Overlays, 'images/overlayClose.gif')}" alt="Close Window" title="Close Window" />
                     </apex:outputLink>   
                 </apex:outputPanel>
@@ -25,7 +29,7 @@
             <!-- End TitlePanel -->
             
             <!-- Form -->
-            <apex:form id="Form">
+            <apex:form id="Form" onSubmit="return milestone.validate();">
             
                 <apex:outputPanel id="HiddenPanel" style="display: none">
                     <apex:inputHidden value="{!postAction}" id="PostAction"/>
@@ -72,16 +76,15 @@
                             <apex:commandLink id="AcceptButton"
                                 value="Accept"
                                 action="{!action}"
-                                onClick="return milestone.validate('{!$Component.Name}','{!$Component.StartDate}','{!$Component.memberMilestone}'); promptOverlay.close(); swirly.show();"
-                                onComplete="promptOverlay.postAction(); milestone.validate('{!$Component.Name}','{!$Component.StartDate}','{!$Component.memberMilestone}');"
+                                onComplete="promptOverlay.postAction(); milestone.clear();"
                                 reRender="HiddenPanel"
-                                styleClass="Accept submitButton" 
-                                style=""/>
+                                styleClass="Accept submitButton"/>
                                 
                             <apex:outputLink id="CancelButton"
                                 value="javascript:;"
-                                onClick="promptOverlay.close(); milestone.clear('{!$Component.Name}','{!$Component.StartDate}','{!$Component.memberMilestone}');"
-                                styleClass="Cancel submitButton" >Cancel
+                                onClick="promptOverlay.close(); milestone.clear();"
+                                styleClass="Cancel submitButton" >
+                                	Cancel
                             </apex:outputLink>
                                                                                 
                             <a href="https://{!domain}/{!taskPrefix}/e?retURL=https://{!domain}/apex/projectDetail?id={!projectId}" class="fullTaskLink">

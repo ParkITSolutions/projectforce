@@ -69,7 +69,7 @@ public class BreadcrumController {
 			this.projectName = project.name;
 		}else if( this.infoOfTaskAndProject.contains( this.currentPage )){
 			ProjectTask__c task = new ProjectTask__c();
-			id taskId = System.currentPageReference().getParameters().get( 'id_task' );
+			id taskId = System.currentPageReference().getParameters().get( 'id' );
 			task = DAOFactory.getInstance().taskInfoWithProjectRel( taskId ); 
 			this.projectId = task.project__c;
 			this.projectName = task.project__r.name;

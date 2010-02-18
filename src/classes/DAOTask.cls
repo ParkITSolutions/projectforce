@@ -20,11 +20,10 @@ public class DAOTask {
 	public void insertTask( ProjectTask__c task, String[] assignees ){
 		task.PercentCompleted__c = ProjectUtil.getDefaultTaskPercentCompleted();
 		task.Priority__c = ProjectUtil.getDefaultTaskPriority();
-			
+		
+		System.debug('### start date: '+task);
 		insert task; 
-
 		DAOAssignee.insertAssignees( task.Id, assignees, task.Project__c );
-			
 	}
 	
 	/** Update task

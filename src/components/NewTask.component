@@ -4,7 +4,13 @@
     <apex:includeScript value="{!URLFOR($Resource.NewTask, 'inc/js/newTask.js')}" />
 
     <script>
-        var newTask = '{!$Component.Content}';
+        var newTask 	= '{!$Component.Content}';
+        task.name 		= '{!$Component.Form.name}'; 
+        task.startDate	= '{!$Component.Form.startDate}';
+		task.dueDate	= '{!$Component.Form.dueDate}';
+		task.duration	= '{!$Component.Form.duration}';
+		task.assignee	= '{!$Component.Form.membersTask}';
+		task.errorClass = '.taskErrors'
     </script>
 
     <apex:outputPanel id="Content" styleClass="contentNewTask overlay" style="display:none;" layout="block">
@@ -15,7 +21,7 @@
             <apex:outputPanel styleClass="title">Create New Task</apex:outputPanel>
 
             <apex:outputPanel id="overlayClose" styleClass="overlayClose" layout="block">
-                <apex:outputLink id="linkClose" value="javascript:;" onClick="promptOverlay.close(); task.clear( '{!$Component.name}','{!$Component.startDate}','{!$Component.dueDate}','{!$Component.duration}','{!$Component.membersTask}' );">
+                <apex:outputLink id="linkClose" value="javascript:;" onClick="promptOverlay.close(); task.clear();">
                     <img src="{!URLFOR($Resource.Overlays, 'images/overlayClose.gif')}" alt="Close Window" title="Close Window" />
                 </apex:outputLink>
             </apex:outputPanel>
@@ -24,7 +30,7 @@
         <!-- End TitlePanel -->
 
         <!-- Form -->
-        <apex:form id="Form">
+        <apex:form id="Form" onSubmit="return task.validate();">
 
             <apex:outputPanel id="HiddenPanel" style="display:none;">
                 <apex:inputHidden value="{!postAction}" id="PostAction" />
@@ -66,7 +72,7 @@
                 <apex:outputLabel >Duration</apex:outputLabel>
                 <apex:outputPanel styleclass="required">
                 </apex:outputPanel>
-                <apex:inputField id="duration" value="{!myTask.Duration__c}" />
+                <apex:inputField id="duration" value="{!myTask.DurationUI__c}" />
                 
                 <br />
                 <apex:outputPanel id="taskDurationError" styleClass="taskErrors" style="display:none;">Error: You must enter a value</apex:outputPanel>
@@ -79,21 +85,23 @@
                 </apex:selectList>
                 
                 <br />
-                <apex:outputPanel id="taskAssignToError" styleClass="taskErrors" style="display:none;">Error: You must enter a value</apex:outputPanel>
+                <apex:outputPanel id="taskAssignToError" styleClass="taskErrors" style="display:none;">Error: You must enter at least one member to assign</apex:outputPanel>
 
                 <apex:outputPanel styleclass="overlaySeparateLine" layout="block"></apex:outputPanel>
 
                 <!-- SubmitButtons -->
                 <apex:outputPanel id="SubmitButtons" styleClass="submitButtons" layout="block">
 
-                    <apex:commandLink id="AcceptButton" value="Accept" action="{!action}"
-                        onClick="return task.validate('{!$Component.name}','{!$Component.startDate}','{!$Component.dueDate}','{!$Component.duration}','{!$Component.membersTask}'); promptOverlay.close(); swirly.show();"
-                        onComplete="promptOverlay.postAction(); task.validate('{!$Component.name}','{!$Component.startDate}','{!$Component.dueDate}','{!$Component.duration}','{!$Component.membersTask}'); promptOverlay.close();" reRender="HiddenPanel"
+                    <apex:commandLink id="AcceptButton" 
+                    	value="Accept" 
+                    	action="{!action}"
+                        onComplete="promptOverlay.postAction(); task.clear();" 
+                        reRender="HiddenPanel"
                         styleClass="Accept submitButton" />
 
 					<apex:outputLink id="CancelButton"
                         value="javascript:;"
-                        onClick="promptOverlay.close(); task.clear( '{!$Component.name}','{!$Component.startDate}','{!$Component.dueDate}','{!$Component.duration}','{!$Component.membersTask}' );"
+                        onClick="promptOverlay.close(); task.clear();"
                         styleClass="Cancel submitButton" >Cancel
                     </apex:outputLink>
                     
