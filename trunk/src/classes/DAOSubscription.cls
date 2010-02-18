@@ -43,13 +43,5 @@ public class DAOSubscription {
 	public void updateProjectsubscription(ProjectSubscription__c subs){
 		update subs;
 	}
-	
-	/** Delete project subscription
-	*@param ProjectSubscription__c subs
-	*@return void
-	*/
-	public void deleteProjectsubscription(ProjectSubscription__c subs){
-		delete subs;
-	}
-	
+
 }

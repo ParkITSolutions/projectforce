@@ -1634,6 +1634,10 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
+        <field>ProjectSetup__c.CanViewButton__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
         <field>ProjectSubscription__c.ProjectAfterOfExpiringTask__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>

@@ -1,12 +1,14 @@
-public with sharing class MyTasksAndMilestonesController {
+public with sharing class MyTasksAndMilestonesController { 
 	
 	private id currentUser;
 	private id currentProject;
 	
-	public List<Task> tasks { set; get; }
-	public List<Task> milestones { set; get; }
+	public List<Task> tasks 		 { set; get; }
+	public Boolean    showTasks		 { set; get; } 
+	public List<Task> milestones 	 { set; get; }
+	public Boolean    showMilestones { set; get; }
 
-	public MyTasksAndMilestonesController(){
+	public MyTasksAndMilestonesController(){ 
 		this.tasks 			= new List<Task>();
 		this.milestones 	= new List<Task>();
 		this.currentUser 	= UserInfo.getUserId();
@@ -25,10 +27,17 @@ public with sharing class MyTasksAndMilestonesController {
 		
 		localMilestones = [  SELECT id, project__c, project__r.name, projectTask__r.name, projectTask__r.status__c, projectTask__r.priority__c, projectTask__r.startDate__c, projectTask__r.endDate__c, projectTask__r.percentCompleted__c, projectTask__r.milestone__c, ProjectTask__r.DurationUI__c
 								FROM ProjectAssignee__c 
-								WHERE projectTask__r.milestone__c = true AND User__c =: this.currentUser AND projectTask__r.status__c != 'Close'
+								WHERE projectTask__r.milestone__c = true AND User__c =: this.currentUser AND projectTask__r.status__c != 'Close' 
 								ORDER BY projectTask__r.endDate__c DESC  LIMIT 5];
-								
+							
+							
+		this.showTasks = localTasks != null || localTasks.size() > 0;
+		this.showMilestones = localMilestones != null || localMilestones.size() > 0;
+		
+		if( this.showTasks ) 
 		this.tasks = ObjectFormatter.formatAssigneeTask( localTasks );
+		
+		if( this.showMilestones )
 		this.milestones = ObjectFormatter.formatAssigneeTask( localMilestones );
 	}
 }

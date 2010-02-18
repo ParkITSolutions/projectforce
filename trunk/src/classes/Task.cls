@@ -174,7 +174,10 @@ public class Task {
 	* Setting overdue flag and days overdue message.
 	*/
 	private Boolean settningDaysOverdue(){
-		Integer localDaysOverdue = this.endDate.daysBetween( Date.today());
+		Integer localDaysOverdue;
+		if( this.endDate != null )
+		localDaysOverdue = this.endDate.daysBetween( Date.today());
+		 
 		this.daysOverdue = localDaysOverdue + 'day(s) overdue.';
 		return localDaysOverdue > 0;
 	}

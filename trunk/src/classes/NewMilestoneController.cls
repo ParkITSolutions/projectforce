@@ -3,14 +3,14 @@
 */
 public class NewMilestoneController {
 	
-	private transient List<ProjectMember__c> projectMembers;
-	public transient String[] assignees 	{ set; get; }
-	public transient String projectId 		{ set; get; }
-	public transient ProjectTask__c myTask 	{ set; get; }
-	public transient String currentPage 	{ set; get; }
-	public transient String postAction 		{ set; get; }
-	public transient String taskPrefix 		{ set; get; }
-	public transient String domain			{ set; get; }
+	private List<ProjectMember__c> projectMembers;
+	public  String[] assignees 						{ set; get; }
+	public  String projectId 						{ set; get; }
+	public  ProjectTask__c myTask 					{ set; get; }
+	public  transient String currentPage 			{ set; get; }
+	public  String postAction 						{ set; get; }
+	public  transient String taskPrefix 			{ set; get; }
+	public  transient String domain					{ set; get; }
      
 	/**
 	* Constructor
@@ -33,15 +33,11 @@ public class NewMilestoneController {
 	* @return void
 	*/
 	public void action(){
-		
 		myTask.Project__c 	= this.projectId;
 		myTask.Milestone__c = true;
-
 		DAOFactory.getInstance().insertTask( myTask, this.assignees );
-		
-		if( this.currentPage.contains( 'TaskList' ) ){
-			this.postAction = 'MilestoneCreatedSuccess';
-		}
+		this.postAction = 'MilestoneCreatedSuccess';
+		this.myTask 			= new ProjectTask__c();
 	}
 	
 	/**

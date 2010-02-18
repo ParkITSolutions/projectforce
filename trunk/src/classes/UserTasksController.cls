@@ -71,6 +71,7 @@ public class UserTasksController{
         this.selectOpsProject.add( new SelectOption( 'none', 'All projects' ) );
 
         for( ProjectMember__c p : this.allProjects )
+        	if( p.Project__c != null )
             this.selectOpsProject.add( new SelectOption( (String)p.Project__c, p.Project__r.name ) );
             
         return this.selectOpsProject;

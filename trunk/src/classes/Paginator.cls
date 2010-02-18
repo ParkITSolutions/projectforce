@@ -421,7 +421,10 @@ public class Paginator {
 	* @return projectActivities
 	*/
     public  List<Task> getTasksByUser(){
-    	return  ObjectFormatter.formatAssigneeTask(( List<ProjectAssignee__c>) paginator.getRecords());
+		if( paginator.getRecords() != null && paginator.getRecords().size() == 0 )
+    		return  ObjectFormatter.formatAssigneeTask( new List<ProjectAssignee__c>() );
+    	else
+    		return  ObjectFormatter.formatAssigneeTask(( List<ProjectAssignee__c>) paginator.getRecords());
     }
     
     /**----------------------------------------------- End data getters functions ----------------------------------------------------------------*/

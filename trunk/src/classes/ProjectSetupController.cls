@@ -3,16 +3,20 @@
 */
 public class ProjectSetupController {
 
-	private List<SelectOption> allProfiles   		= new List<SelectOption>(); 
-	private List<SelectOption> savedProfiles 		= new List<SelectOption>(); 
-	public String selectedProfsStr 					= '';
-	private List<String> selectedProfsList 			= new List<String>();
-	private	List<ProjectSetup__c> savedProfilesStr 	= new List<ProjectSetup__c>();
+	public List<SelectOption> allProfiles   		{ set; get; }
+	public List<SelectOption> savedProfiles 		{ set; get; }
+	public String selectedProfsStr 					{ set; get; }
+	private List<String> selectedProfsList 			{ set; get; }
+	private	List<ProjectSetup__c> savedProfilesStr 	{ set; get; }
 	
 	/**
 	* Constructor
 	*/
-	public ProjectSetupController(){		
+	public ProjectSetupController(){
+		allProfiles = new List<SelectOption>();
+		this.savedProfiles = new List<SelectOption>();
+		selectedProfsList = new List<String>();
+		savedProfilesStr = new List<ProjectSetup__c>();
 		this.setingAllProfiles();
 	}
 	
@@ -20,29 +24,17 @@ public class ProjectSetupController {
 	*
 	*@param String[] s
 	*@return void
-	*/
+	*//*
 	public void setSelectedProfilesList( String[] s ){
 		String p = s[0];
 	}
-	
-	/**
-	*@return String[]
 	*/
-	public String[] getSelectedProfilesList(){
-		String[] p = new String[]{};
-		return p;
-	}
 	
-	/**
-	*@return List<SelectOption>
-	*/
-	public List<SelectOption> getAllProfiles(){
-		return this.allProfiles;
-	}
+
 
 	/**
 	*@return List<SelectOption>
-	*/
+	*//*
 	public List<SelectOption> getSavedProfiles(){
 		this.setingAllProfiles();
 		return this.savedProfiles;
@@ -67,21 +59,6 @@ public class ProjectSetupController {
 		PageReference pr = new PageReference( '/apex/ProjectOverview');
 		pr.setRedirect( true );
 		return pr;
-	}
-	
-	/**
-	*@param String s
-	*@return void
-	*/
-	public void setSelectedProfsStr( String s ){
-		this.selectedProfsStr = s; 
-	}
-
-	/**
-	*@return string selectedProfsStr
-	*/
-	public String getSelectedProfsStr(){
-		return this.selectedProfsStr;
 	}
 
 	/**

@@ -93,7 +93,7 @@
         includeAttachment="true" 
         includeNewAssignee="true"
         includeNewMember="true"
-	    idValue="{!projectId}"
+        idValue="{!projectId}"
    />                     
          
          
@@ -114,7 +114,7 @@
     
         <!-- BreadCrumb and buttons -->    
         <div align="center" class="breadCrumbAndButtons">
-	    	<c:Breadcrum />
+            <c:Breadcrum />
 
         
         <div class="buttons" style="{!IF(Task.IsTaskOwner,'width:340px;','')}">

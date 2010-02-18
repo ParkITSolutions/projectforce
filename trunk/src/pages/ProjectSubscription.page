@@ -1,11 +1,10 @@
-<apex:page id="ProjectSubscription" sidebar="false" tabStyle="Project2__c" controller="ProjectSubscriptionController">
+<apex:page id="ProjectSubscription" cache="false" sidebar="false" tabStyle="Project2__c" controller="ProjectSubscriptionController">
 
     <c:ApplicationTop id="ApplicationTop" />
-	
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectSubscription, 'inc/css/projectSubscription.css')}" />
-	<!-- <apex:includeScript value="{!URLFOR($Resource.ProjectSubscription, 'inc/javascript/projectSubscription.js')}" /> -->
 
 	<apex:outputPanel id="contentProjectSubscription" styleclass="contentProjectSubscription" layout="block">   
+	
 		<!-- Header -->
 		<apex:composition template="HeaderTemplate">
 			<apex:define name="moduleId">
@@ -30,22 +29,18 @@
 			<c:QuickLinksWidget id="quidkLinks" />
 		</apex:outputPanel>
 
-				
-                
 		<!-- Main Content -->
 		<apex:outputPanel id="mainContent" styleclass="mainContent" layout="block">
-			<!-- <apex:form id="form_content" onsubmit="getInputValue(); if(!isCloneAction){if(validator('{!$Component.form_content}', 'warning_to_user'))return false;};"> -->
 			<apex:form id="form_content">
 		
 				<apex:actionFunction name="RefreshPage"
                         action="{!loadProjectSubscription}"
-                        onComplete="swirly.hide(); infoToUser.open('success', 'Uploaded OK');" 
-                        reRender="mainContent, checkboxesSection, groupButtons"/>
+                        onComplete="swirly.hide(); infoToUser.open('success', '{!message}');" 
+                        reRender="contentProjectSubscription, groupButtons, checkboxesSection"/>
                 
                 
 				<apex:outputPanel id="title" styleclass="title" layout="block">
 					Manage Project "{!projectName}" Subscriptions
-					<!-- <h4>Manage Project "{!projectName}" Subscriptions</h4> -->
 				</apex:outputPanel>
 				
 				<!-- Project Checkboxes Section -->
@@ -80,17 +75,14 @@
 					<apex:commandLink id="saveSubscription" 
 							action="{!saveSubscription}"
 							onClick="swirly.show();"
-							reRender="HiddenPanel, contentProjectSubscription"  
 							oncomplete="RefreshPage();"
 							styleClass="blackbutton">
 						{!IF(subscriptionCount == 0, "Save", "Update")}
 					</apex:commandLink>
-					<!-- swirly.hide(); infoToUser.open('success', 'Updated OK'); -->
 					<apex:commandLink id="deleteSubscription" 
 							action="{!deleteSubscription}"
 							onClick="swirly.show();"  
 							styleClass="blackbutton"
-							reRender="HiddenPanel, contentProjectSubscription"
 							oncomplete=" RefreshPage();"
 							rendered="{!IF(subscriptionCount == 0, false, true)}">
 						Unsubscribe
@@ -105,11 +97,5 @@
 			</apex:form>
 		</apex:outputPanel>
 	</apex:outputPanel>
-    
-    <!-- XXX VER PA QUE ESTA!!! -->
-   <!--  
-    <script type="text/javascript">
-        readPortalCSSRules();
-    </script>
-     -->   
+ 
 </apex:page>

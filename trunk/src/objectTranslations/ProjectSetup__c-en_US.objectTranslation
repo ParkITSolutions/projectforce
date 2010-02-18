@@ -11,5 +11,65 @@
         <label><!-- CanViewButtonNew --></label>
         <name>CanViewButtonNew__c</name>
     </fields>
+    <fields>
+        <label><!-- CanViewButton --></label>
+        <name>CanViewButton__c</name>
+        <picklistValues>
+            <masterLabel>Contract Manager</masterLabel>
+            <translation><!-- Contract Manager --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Custom: Marketing Profile</masterLabel>
+            <translation><!-- Custom: Marketing Profile --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Custom: Sales Profile</masterLabel>
+            <translation><!-- Custom: Sales Profile --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Custom: Support Profile</masterLabel>
+            <translation><!-- Custom: Support Profile --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Customer Portal Manager</masterLabel>
+            <translation><!-- Customer Portal Manager --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Marketing User</masterLabel>
+            <translation><!-- Marketing User --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Package License Manager</masterLabel>
+            <translation><!-- Package License Manager --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Partner Network</masterLabel>
+            <translation><!-- Partner Network --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Partner User</masterLabel>
+            <translation><!-- Partner User --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Read Only</masterLabel>
+            <translation><!-- Read Only --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Solution Manager</masterLabel>
+            <translation><!-- Solution Manager --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Standard Platform User</masterLabel>
+            <translation><!-- Standard Platform User --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Standard User</masterLabel>
+            <translation><!-- Standard User --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>System Administrator</masterLabel>
+            <translation><!-- System Administrator --></translation>
+        </picklistValues>
+    </fields>
     <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>
