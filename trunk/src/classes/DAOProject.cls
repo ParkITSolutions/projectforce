@@ -64,22 +64,25 @@ public class DAOProject {
 	}
 	
 	/**
+	* 
 	* @param projectId
 	* @return isProjectAdministrator
 	*/
 	public Boolean isProjectAdministrator( String projectId ){
 		
-		List<Project2__c> project = [select Id
-					       			 from Project2__c
-					                 where OwnerId =: Userinfo.getUserId() 
-					                 and id =:projectId
-					       			 limit 1];
-							 
-		if(project.size() > 0){
-			return true;
-		}
+		ProjectMember__c prjMember = [ Select p.User__c, p.Project__c, p.Profile__r.Name, p.Profile__c, p.Name, p.Id From ProjectMember__c p Where Project__c =:projectId AND User__c =: Userinfo.getUserId() ];
 		
-		return false;
+		if( prjMember != null ){
+			if( prjMember.Profile__r.Name == 'ProjectAdministrator' ){
+				return true;
+			}
+			else{
+				return false;
+			}	
+		}
+		else{
+			return false;
+		}
 	}
 	
 	/**

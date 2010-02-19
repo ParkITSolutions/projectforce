@@ -5,7 +5,7 @@
 public class MembersWidgetController {
 	
 	public UserPermissions userPermissions	 	{ set; get; }
-	public String idProject   					{ set; get; }
+	public String projectId   					{ set; get; }
 	public Boolean isManager   					{ set; get; }
 	
 	/**
@@ -13,8 +13,6 @@ public class MembersWidgetController {
     */
 	public MembersWidgetController(){
 		this.userPermissions 	= new UserPermissions();
-	//	this.idProject 			= System.currentPageReference().getParameters().get( 'id' );
-		
 		genPermissions();
 	}
 
@@ -23,7 +21,7 @@ public class MembersWidgetController {
 	*/
 	public void genPermissions() {
 		this.userPermissions.setId( UserInfo.getUserId() );
-		this.userPermissions.setProject( this.idProject );
+		this.userPermissions.setProject( this.projectId );
 		this.userPermissions.setObjectType( 'Project' );
 		this.userPermissions.setPermissions();
 		this.isManager = userPermissions.getCanManage();
@@ -36,7 +34,7 @@ public class MembersWidgetController {
 	public List<ProjectMember> getProjectMembers() {
 		List<ProjectMember> listProjectMember = new List<ProjectMember>();
 
-		for (ProjectMember__c projMember :	DAOFactory.getInstance().getMembersToWidget( idProject )){
+		for (ProjectMember__c projMember :	DAOFactory.getInstance().getMembersToWidget( projectId )){
 			ProjectMember projAux = new ProjectMember();
 			projAux.id 				= projMember.Id;
 			projAux.name 			= projMember.Name;

@@ -5,17 +5,21 @@
     
     <!-- TODO place in application top -->
     <apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
+    
+    <!-- Attribute Definitions -->
+    <apex:attribute name="projectId" 
+                     description="Project id"
+                     type="String" 
+                     assignTo="{!projectId}" 
+                     required="true"/>
 
 	<!-- 
-	finalizar XXXX
+	TODO finalizar XXXX
 	<apex:actionFunction name="RefreshTaskAssignedList" 
                         action="{!doRefresh}" 
                         rerender="" 
                         oncomplete="swirly.hide(); infoToUser.show();"/>
 	-->
-    
-    <!-- Attribute Definitions -->
-    <apex:attribute name="idProject" description="The project ID" type="String" required="true" assignTo="{!idProject}" />
     
     <apex:outputPanel id="widget" styleClass="widget" layout="block" >
     
@@ -35,7 +39,7 @@
             
             <apex:outputpanel id="linksTop" layout="block" styleclass="panelLinksTop"  rendered="{!isManager}" >                        
                 <apex:outputLink id="NewMemberLink" styleclass="linksTop" value="javascript:;" onClick="promptOverlay.open(newMember);"> NewMember</apex:outputLink> |
-                <apex:outputLink id="SeeMoreLink" styleclass="linksTop" value="/apex/MembersList?id={!idProject}#" > See More&#187;</apex:outputLink>
+                <apex:outputLink id="SeeMoreLink" styleclass="linksTop" value="/apex/MembersList?id={!projectId}#" > See More&#187;</apex:outputLink>
             </apex:outputpanel>
             
             <apex:repeat value="{!ProjectMembers}" var="member" id="projectMembers">

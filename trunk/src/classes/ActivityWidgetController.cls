@@ -3,7 +3,7 @@
 */
 public class ActivityWidgetController {
 	
-	private String projectId;
+	public String projectId 			{ set; get; }
 	private MessageLog messageObj = null;
 	private List<Activity> resultActivities = null;
 	
@@ -14,7 +14,6 @@ public class ActivityWidgetController {
 		
 		this.messageObj 		= new MessageLog();
 		this.resultActivities 	= new List<Activity>();
-		this.projectId 			= System.currentPageReference().getParameters().get('id');
 		
 		//call to method for getting and parsing all activities for a project
 		this.parseActivities();

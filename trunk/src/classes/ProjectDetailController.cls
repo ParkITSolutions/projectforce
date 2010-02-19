@@ -13,9 +13,9 @@ public with sharing class ProjectDetailController
 	private Boolean isPublic;
     public ProjectMembersListController pmc = new ProjectMembersListController(); 
     private String projectType = '';	
-    String teamIdParam = System.currentPageReference().getParameters().get('id');
     public boolean isManager = false;
     public String USERID =  UserInfo.getUserId();
+    public String projectId 			{ set; get; }
     
     public static ProjectTask__c taskT;
     public static UserPermissions userPermission = new UserPermissions();
@@ -24,12 +24,13 @@ public with sharing class ProjectDetailController
     * Constructor
     */
     public ProjectDetailController(ApexPages.StandardController ctrl){
-       genPermissions();   	   
-   	   getTeamDetail();
-       genTeamData();
-       this.isManager = userPermission.getCanManage();
-       this.projectType = getTeamspace().Type__c;
-    }   
+    	this.projectId = System.currentPageReference().getParameters().get('id');
+       	genPermissions();   	   
+   	   	getTeamDetail();
+       	genTeamData();
+       	this.isManager = userPermission.getCanManage();
+       	this.projectType = getTeamspace().Type__c;
+     }   
     
     /**
     * Empty Constructor
@@ -62,7 +63,7 @@ public with sharing class ProjectDetailController
 		ApexPages.StandardController sc = new ApexPages.StandardController(p);		
 		String projectName = ((Project2__c)sc.getRecord()).name;
 		*/
-		String pName = [Select Id, Name from Project2__c where id =: teamIdParam].Name;    	
+		String pName = [Select Id, Name from Project2__c where id =: this.projectId].Name;    	
 		if( pName.length() > 24 )
 			pName = pName.substring( 0, 23 );
 				
@@ -75,20 +76,6 @@ public with sharing class ProjectDetailController
     public boolean getIsManager(){
     	return this.isManager;
     }  
-
-    /**
-    *@param String team id
-    */
-    public void setTeamIdParam (String idTeam){ 
-        this.teamIdParam = idTeam;
-    }
-    
-    /**
-    * @return String teamIdParam The Id of the team
-    */
-    public String getTeamIdParam(){
-        return this.teamIdParam;
-    } 
     
     /**
     *@param Boolean isp
@@ -137,7 +124,7 @@ public with sharing class ProjectDetailController
     */
  	public void genPermissions () {
         userPermission.setId(UserInfo.getUserId());
-        userPermission.setProject(teamIdParam);
+        userPermission.setProject(this.projectId);
         userPermission.setObjectType('Project');
         userPermission.setPermissions();
     }
@@ -153,7 +140,7 @@ public with sharing class ProjectDetailController
            	teamspace = [Select t.OwnerId, t.Name, t.LastModifiedDate, t.LastModifiedById, 
            					t.IsDeleted, t.Id, t.Description__c, t.CreatedDate, t.CreatedById, t.Type__c 
            					from Project2__c t 
-           					where id =: teamIdParam];
+           					where id =: this.projectId];
            					
         } catch(Exception e ){
             throw e;
@@ -166,10 +153,10 @@ public with sharing class ProjectDetailController
     *@return void
     */
   	public void genTeamData(){
-		if(this.teamIdParam != null){
+		if(this.projectId != null){
 			this.teamspace = [select Id, Name, PublicProfile__c 
 								from Project2__c 
-								where id =: teamIdParam 
+								where id =: this.projectId 
 								limit 1];
 			if(teamspace.PublicProfile__c != null){
 				this.setIsPublic(true);
@@ -181,7 +168,7 @@ public with sharing class ProjectDetailController
    			
 			List<ProjectMember__c> member = [select Id, User__c 
 												from ProjectMember__c 
-												where Project__c =: teamIdParam and User__c =: UserInfo.getUserId() 
+												where Project__c =: this.projectId and User__c =: UserInfo.getUserId() 
 												limit 1];
 			if(member.size() > 0){
 				this.setIsMember(true);
@@ -244,7 +231,7 @@ public with sharing class ProjectDetailController
     	
          teamspace = [select name, description__c, Type__c 
          				from Project2__c
-                     	where id=: teamIdParam];
+                     	where id=: this.projectId];
                      	
          if(teamspace == null) {
             return null;

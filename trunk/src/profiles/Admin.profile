@@ -247,6 +247,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProjectDetailNicoController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectDynamicFilter</apexClass>
         <enabled>true</enabled>
     </classAccesses>
