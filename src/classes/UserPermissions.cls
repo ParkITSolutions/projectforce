@@ -1,5 +1,5 @@
 /**
-* @author Juan Bessonart 
+* @author Matias Menafra 
 */
 public class UserPermissions {
 
@@ -35,7 +35,6 @@ public class UserPermissions {
 	public String getId(){
 		return id;
 	}
-
 	
 	/**
 	* @return String
@@ -57,7 +56,6 @@ public class UserPermissions {
 	public Boolean getCanCreate(){
 		return this.canCreate;
 	}
-	
 	
 	/**
 	* @return Boolean
@@ -82,7 +80,6 @@ public class UserPermissions {
 	
 	/**
 	* @param String id
-	* @return void
 	*/
 	public void setId( String id ){
 		this.id = id;
@@ -90,7 +87,6 @@ public class UserPermissions {
 	
 	/**
 	* @param String ownerId
-	* @return void
 	*/ 	
  	public void setOwnerId( String ownerId ){
 		this.ownerId = ownerId;
@@ -98,7 +94,6 @@ public class UserPermissions {
 	
 	/**
 	* @param String project
-	* @return void
 	*/	
 	public void setProject( String project ){
 		this.project = project;
@@ -106,7 +101,6 @@ public class UserPermissions {
 	
 	/**
 	* @param String objectType
-	* @return void
 	*/	
 	public void setObjectType( String objectType ){
 		this.objectType = objectType;
@@ -115,7 +109,6 @@ public class UserPermissions {
 	/**
 	* Gets permissions for current user
 	* @throws Exception
-	* @return void
 	*/
 	public void setPermissions(){
 		try{
@@ -205,4 +198,50 @@ public class UserPermissions {
 	public static Boolean getCanManageStatic(){
 		return canManageStatic;
 	}
+	
+	public boolean isUserSystemAdministrator( String userId ){
+		return null;
+	}
+	
+	public boolean isUserMemberOfProject( String userId ){
+		return null;
+	}	
+	/*
+	*
+	* @param taskList
+	* @return resultTasks
+	*/
+	public List<Task> generateTaskPermissions( List<Task> taskList ){
+	
+		String userId 			= Userinfo.getUserId();
+		List<Task> resultTasks 	= new List<Task>();
+		
+		if( taskList.size() > 0 ){
+			Boolean isAdmin			= DAOFactory.getInstance().isAdministrator();
+			Boolean isProjectMember	= DAOFactory.getInstance().isProjectMember( taskList.get(0).project );
+			
+			//asks if user is System Administrator of CRM
+			if( !isAdmin ){
+				//ask if user belongs to project
+				if( !isProjectMember ){
+					for( Task task : taskList ){
+						//ask if user is the owner of the task
+						if( task.OwnerId != userId ){
+							if( task.assignees.size() > 0){
+								for( TaskAssignee assignee : task.assignees ){
+									if( assignee.user == userId ){
+										
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		//return resultTasks;
+		return taskList;
+	}
+	
 }

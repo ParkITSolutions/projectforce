@@ -3,23 +3,102 @@
 */
 public class ProjectSetupController {
 
-	public List<SelectOption> allProfiles   		{ set; get; }
-	public List<SelectOption> savedProfiles 		{ set; get; }
-	public String selectedProfsStr 					{ set; get; }
-	private List<String> selectedProfsList 			{ set; get; }
-	private	List<ProjectSetup__c> savedProfilesStr 	{ set; get; }
+	public String messageInfoToUsr 					{ set; get; }
+	public ProjectSetup__c ProjSetup 				{ set; get; }
+	private Boolean insertProjSetup;					
+	public String typeMessage						{ set; get; }
 	
 	/**
 	* Constructor
 	*/
+	public ProjectSetupController(){
+		ProjSetup = new ProjectSetup__c();
+		insertProjSetup=true;
+		stringProfiles();
+		this.messageInfoToUsr='';
+	}
+	
+	/** StringProfiles
+	*@return void 
+	*/
+	public void stringProfiles(){
+		List<ProjectSetup__c> ListAux = [ select Id, CanViewButtonNew__c, CanViewButton__c from ProjectSetup__c limit 1 ];
+		
+		if( ListAux.size() > 0 ){
+			this.ProjSetup = ListAux[0];
+			insertProjSetup=false;
+				
+		}
+		else{
+			this.ProjSetup = new ProjectSetup__c();
+			insertProjSetup = true;
+		}
+	}
+	
+	public void save(){
+		System.debug('XXX' + ProjSetup);
+		try{
+			if (insertProjSetup){
+				insert ProjSetup;
+				insertProjSetup=false;
+			}
+			else{
+				update ProjSetup;
+			}
+			this.messageInfoToUsr = 'Project Setup Saved Successfully.';
+			this.typeMessage = 'success';
+		}
+		catch (Exception e) {
+			this.messageInfoToUsr = 'Error: Please Reload the Page. ';
+			this.typeMessage = 'error';
+		}
+	}
+	
+	
+	
+	
+	
+		/**
+	*@return boolean 
+	*/
+	public Boolean getIfCanModifyAllData(){
+		
+		return [Select id, Profile.PermissionsModifyAllData 
+				From User 
+				where id =: UserInfo.getUserId() 
+				limit 1].Profile.PermissionsModifyAllData; 		
+	}
+		
+	public Boolean canView(){
+		
+		return true;
+	}
+	////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////
+	/*public List<SelectOption> allProfiles   		{ set; get; }
+	public List<SelectOption> savedProfiles 		{ set; get; }
+	public String selectedProfsStr 					{ set; get; }
+	private List<String> selectedProfsList 			{ set; get; }
+	private List<ProjectSetup__c> savedProfilesStr 	{ set; get; }
+	public ProjectSetup__c ProjSetup 				{ set; get; }
+	public String messageInfoToUsr 					{ set; get; }
+*/
+	/**
+	* Constructor
+	*//*
 	public ProjectSetupController(){
 		allProfiles = new List<SelectOption>();
 		this.savedProfiles = new List<SelectOption>();
 		selectedProfsList = new List<String>();
 		savedProfilesStr = new List<ProjectSetup__c>();
 		this.setingAllProfiles();
+		System.debug('XXX dentro controlador...');
 	}
-	
+
 	/**
 	*
 	*@param String[] s
@@ -29,7 +108,6 @@ public class ProjectSetupController {
 		String p = s[0];
 	}
 	*/
-	
 
 
 	/**
@@ -42,7 +120,7 @@ public class ProjectSetupController {
 
 	/**
 	*@return PageReference
-	*/	
+	*/	/*
 	public PageReference saveAdmSettings(){
 		
 		if( this.savedProfilesStr.size() > 0 ){
@@ -60,10 +138,10 @@ public class ProjectSetupController {
 		pr.setRedirect( true );
 		return pr;
 	}
-
+*/
 	/**
 	*@return void 
-	*/
+	*//*
 	private void setingAllProfiles(){
 
 		this.allProfiles.clear();
@@ -101,19 +179,21 @@ public class ProjectSetupController {
 	
 	/**
 	*@return void 
-	*/
+	*//*
 	public void stringProfiles(){
 		
-		this.savedProfilesStr = [ select Id, CanViewButtonNew__c from ProjectSetup__c limit 1 ];
+		this.savedProfilesStr = [ select Id, CanViewButtonNew__c, CanViewButton__c from ProjectSetup__c limit 1 ];
 		if( this.savedProfilesStr.size() > 0 ){
-			if(savedProfilesStr[0].CanViewButtonNew__c != null )
+			if(savedProfilesStr[0].CanViewButtonNew__c != null ){
 				this.selectedProfsList = savedProfilesStr[0].CanViewButtonNew__c.split( '#' );
+				Picklist=savedProfilesStr[0];
+			}
 		}
 	}
 	
 	/**
 	*@return boolean 
-	*/
+	*//*
 	public Boolean canView(){		
 		
 		return  this.getIfCanModifyAllData() || (( this.savedProfilesStr.size() > 0 ) && savedProfilesStr[0].CanViewButtonNew__c.contains( UserInfo.getProfileId()));
@@ -121,7 +201,7 @@ public class ProjectSetupController {
 
 	/**
 	*@return boolean 
-	*/
+	*//*
 	public Boolean getIfCanModifyAllData(){
 		
 		return [Select id, Profile.PermissionsModifyAllData 
@@ -129,4 +209,6 @@ public class ProjectSetupController {
 				where id =: UserInfo.getUserId() 
 				limit 1].Profile.PermissionsModifyAllData; 		
 	}	
+	*/
+
 }

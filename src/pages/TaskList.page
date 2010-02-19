@@ -4,12 +4,40 @@
     
     <apex:includeScript value="{!URLFOR($Resource.TaskList, 'inc/javascript/taskList.js')}" />
     <apex:stylesheet value="{!URLFOR($Resource.TaskList, 'inc/css/taskList.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/css/border-radius-ie8.htc')}" />
     
     <script type="text/javascript">
         var deleteTasksOverlay          = new ConfirmOverlay( '{!$Component.DeleteTasksOverlay}' );
         var markCompleteTasksOverlay    = new ConfirmOverlay( '{!$Component.MarkCompleteTasksOverlay}' );
         
     </script>
+    
+    <style>
+    .infoToUserContent{
+    	background:#E0E0E0 none repeat scroll 0 0;
+    	/*display: block !important;*/
+    	position: fixed !important;
+    	top: 0px !important;
+		padding-bottom:5px;
+		padding-top:5px;    	
+		left:50%;
+		width:400px;
+		margin-left: -200px; 
+		z-index: 9999;
+	-moz-border-radius:10px;
+-webkit-border-radius:10px;
+behavior:url({!URLFOR($Resource.Overlays, 'inc/css/border-radius-ie8.htc')});
+    }
+    .overlayInfoToUser{
+    }
+    .messageToUserPanel img {
+		float:left;
+		margin-left:5px;
+		margin-right:5px;    
+    }
+    .messageToUserPanel .messageToUser{
+    }
+    </style>
     
     <c:ConfirmOverlay id="DeleteTasksOverlay" 
         title="Delete tasks"

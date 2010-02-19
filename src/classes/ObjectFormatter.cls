@@ -78,6 +78,7 @@ public class ObjectFormatter {
     		taskAux.id = task.id;
 			taskAux.idDisplay = task.Id__c;
 			taskAux.name = task.Name; 
+			taskAux.ownerId = task.OwnerId;
 			taskAux.isMilestone = task.Milestone__c;
 			taskAux.priority = task.Priority__c; 
 			taskAux.setPercentCompleted( task.PercentCompleted__c );
@@ -91,15 +92,40 @@ public class ObjectFormatter {
 				taskAux.endDate = task.EndDate__c;
 			}
 			
-			/*
-    		* @todo Change ProjectMember to TaskAssignee.
-    		*/
-			List<ProjectMember> assignees = DAOFactory.getInstance().getAssignees(taskAux.id);
-			taskAux.assignees = assignees;
-    		tasks.add(taskAux);
+			taskAux.assignees = DAOFactory.getInstance().getAssignees( taskAux.id );
+			
+    		tasks.add( taskAux );
     	}
     	
+    	UserPermissions permissions = new UserPermissions();
+    	tasks = permissions.generateTaskPermissions( tasks );
+    	
     	return tasks;
+	}
+	
+	
+	/**
+	* 
+	* @param assignees
+	* @return resultAssignees
+	*/
+	public static List<TaskAssignee> formatTaskAssignees( List<ProjectAssignee__c> assignees ){
+		
+		List<TaskAssignee> resultAssignees = new List<TaskAssignee>();
+		
+		for( ProjectAssignee__c row : assignees ){
+			
+			TaskAssignee assignee = new TaskAssignee();
+			assignee.id				= row.Id;
+			assignee.name	 		= row.User__r.Name;
+			assignee.project 		= row.Project__c;
+			assignee.user 			= row.User__c;
+			assignee.projectTask 	= row.ProjectTask__c;
+			
+			resultAssignees.add( assignee );
+		}		
+		
+		return resultAssignees;
 	}
 	
 	/**

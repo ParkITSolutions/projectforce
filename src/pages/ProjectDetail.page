@@ -49,7 +49,7 @@
     
    	<c:PromptOverlay id="PromptOverlay"
         includeNewMember="true"
-        idValue="{!teamIdParam}"
+        idValue="{!projectId}"
        />
        
        
@@ -61,7 +61,7 @@
             <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
             <apex:define name="title">Project Detail</apex:define>
             <apex:define name="search">
-                <c:Search module="Project" projectId="{!teamIdParam}" label="Tasks"/>
+                <c:Search module="Project" projectId="{!projectId}" label="Tasks"/>
             </apex:define>
         </apex:composition> 
        
@@ -86,7 +86,7 @@
                             <span> Delete </span>
                         </a>
                         
-                        <a class="blackbutton" href="/{!teamIdParam}/e?retURL=/{!teamIdParam}">
+                        <a class="blackbutton" href="/{!projectId}/e?retURL=/{!projectId}">
                             <span> Edit </span>
                         </a>
                     </apex:outputPanel>         
@@ -119,13 +119,13 @@
                 --> 
                 <c:QuickLinksWidget />
                 
-                <c:ProjectActivityWidget id="activityWidget" />
+                <c:ProjectActivityWidget id="activityWidget" projectId="{!projectId}"/>
                 
                 <!-- Team Suscribe -->
                 <c:ProjectSubscribe /> 
     
                 <!-- Team members -->
-                <c:MembersWidget idProject="{!teamIdParam}" id="MembersWidget" />
+                <c:MembersWidget projectId="{!projectId}" id="MembersWidget" />
                 
                 <!-- <apex:outputLink value="javascript:;" id="NewMemberLink" onClick="promptOverlay.open(newMember);"> NewMember</apex:outputLink> --> 
             
@@ -151,21 +151,21 @@
                     <!-- sfdc detail -->
                     
                     <div style="display:none;" class="sfdcDetail">
-                        <apex:detail subject="{!teamIdParam}" relatedList="false" title="false" />
+                        <apex:detail subject="{!projectId}" relatedList="false" title="false" />
                     </div>
                     <div class="sfdcDetailFormated"></div>
                     
                     <apex:actionFunction name="reloadMainContent" rerender="mainContentForm" oncomplete="projectDetail();swirlyDetail();"/>
                     
                     <!-- Project Tasks -->
-                    <c:ProjectWidgetTaskMain team="{!teamIdParam}" id="ProjectWidgetTaskMain"/>             
+                    <c:ProjectWidgetTaskMain team="{!projectId}" id="ProjectWidgetTaskMain"/>             
     
                     <!-- Project Milestones -->
-                    <c:ProjectDetailMilestones team="{!teamIdParam}" id="ProjectDetailMilestones"/> 
+                    <c:ProjectDetailMilestones team="{!projectId}" id="ProjectDetailMilestones"/> 
     
                     <!-- Project Attachments (Overlay and Widget) -->
-                    <c:ProjectOverlayNewAttachment parentId="{!teamIdParam}" id="ProjectOverlayNewAttachment"/>
-                    <c:ProjectDetailAttachment project="{!teamIdParam}" id="ProjectDetailAttachment"/>
+                    <c:ProjectOverlayNewAttachment parentId="{!projectId}" id="ProjectOverlayNewAttachment"/>
+                    <c:ProjectDetailAttachment project="{!projectId}" id="ProjectDetailAttachment"/>
                     
                 </apex:form> 
             </div>

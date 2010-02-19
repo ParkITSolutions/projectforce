@@ -22,7 +22,7 @@ public class UserTasksController{
     public UserTasksController(){
         
         this.currentUser    = UserInfo.getUserId();
-        this.opSelected     = 'none'; 
+        this.opSelected     = ''; 
         this.showDetail     = false;
 
         this.allProjects        = new List<ProjectMember__c>();
@@ -34,7 +34,8 @@ public class UserTasksController{
         this.paginator.orderBy      = 'Name';
         this.paginator.orderAsc     = true;
         this.paginator.filter       = '1'; // Show all tasks and milestones
-        this.paginator.project.id   = this.opSelected == 'none' ? '' : this.opSelected; 
+        //this.paginator.project.id   = this.opSelected == 'none' ? '' : this.opSelected; 
+        this.paginator.project.id = '';
         
         paginator.loadTasksByUser();
         
@@ -58,7 +59,7 @@ public class UserTasksController{
     */
     public Boolean getShowDetail(){         
         
-        return this.opSelected != 'none'; 
+        return this.opSelected != ''; 
     } 
 
     /**
@@ -68,10 +69,10 @@ public class UserTasksController{
         
         this.selectOpsProject.clear();
         ProjectMember__c c = this.allProjects[0].clone();       
-        this.selectOpsProject.add( new SelectOption( 'none', 'All projects' ) );
+        this.selectOpsProject.add( new SelectOption( '', 'All projects' ) );
 
         for( ProjectMember__c p : this.allProjects )
-        	if( p.Project__c != null )
+            if( p.Project__c != null )
             this.selectOpsProject.add( new SelectOption( (String)p.Project__c, p.Project__r.name ) );
             
         return this.selectOpsProject;
@@ -92,7 +93,7 @@ public class UserTasksController{
     public void setOpSelected( String option ){
         
         this.opSelected = option;
-        this.paginator.project.id = option == 'none' ? '' : option;
+        this.paginator.project.id = option == '' ? '' : option;
         this.selectProjectBasicData();
     }
     
@@ -105,7 +106,7 @@ public class UserTasksController{
         this.currentProject             = new Project();
         ProjectMember__c tempProject    = new ProjectMember__c(); 
         
-        if( this.allProjectsMap.size() > 0 && this.OpSelected != 'none' ){
+        if( this.allProjectsMap.size() > 0 && this.OpSelected != '' ){
             tempProject = this.allProjectsMap.get( this.OpSelected );
             
             this.AttachmentPrjId                        = tempProject.Project__r.Picture__c;

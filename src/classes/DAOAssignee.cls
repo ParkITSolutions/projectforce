@@ -59,18 +59,27 @@ public class DAOAssignee {
 	* @param taskId
 	* @return assigneesList
 	*/
-	public List<ProjectMember> getAssignees(String taskId){
-		List<ProjectAssignee__c> assignees = [select Id, User__r.Name, User__c
+	public List<TaskAssignee> getAssignees( String taskId ){
+		List<ProjectAssignee__c> assignees = [select Id, User__r.Name, User__c, ProjectTask__c, Project__c
 											  from ProjectAssignee__c
 											  where ProjectTask__c =: taskId];
-		List<ProjectMember> assigneesList = new List<ProjectMember>();
-		for(ProjectAssignee__c assignee : assignees){
-			ProjectMember member = new ProjectMember();
-			member.id = assignee.User__c;
-			member.name = assignee.User__r.Name;
-			assigneesList.add(member);
-		}				
 		
+		List<TaskAssignee> assigneesList = ObjectFormatter.formatTaskAssignees( assignees );					  
 		return assigneesList;							 
+	}
+	
+	/**
+	*Return a list of tasks or milestones by user
+	*@param taskOrMilestone a boolean flag
+	*@return a List of task
+	*/
+	public List<ProjectAssignee__c> taskOrMilestoneByUser( Boolean taskOrMilestone ){
+		List<ProjectAssignee__c> localTasks = new List<ProjectAssignee__c>(); 
+		
+		localTasks = [ SELECT id, project__c, project__r.name, projectTask__r.name, projectTask__r.status__c, projectTask__r.priority__c, projectTask__r.startDate__c, projectTask__r.endDate__c, projectTask__r.percentCompleted__c, projectTask__r.milestone__c, ProjectTask__r.DurationUI__c
+					   FROM ProjectAssignee__c 
+					   WHERE projectTask__r.milestone__c =: taskOrMilestone AND User__c =: UserInfo.getUserId() AND projectTask__r.status__c != 'Close'
+					   ORDER BY projectTask__r.endDate__c DESC  LIMIT 5];
+		return localTasks;	 
 	}
 }

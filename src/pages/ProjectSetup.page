@@ -1,89 +1,7 @@
 <apex:page id="ProjectSetup" cache="false" sidebar="false" tabStyle="Project2__c" controller="ProjectSetupController">
 
     <c:ApplicationTop id="ApplicationTop" />
-	
-	<style>
-		
-		.contentProjectSetup .mainContent{
-			float:left;
-			padding:25px;
-			width:75%;
-		}
-		.contentProjectSetup .selectBoxList{
-			height:250px !important;
-			width:200px !important;
-		}
-		.contentProjectSetup .boxSelectBox{
-			height:300px !important;
-			width:200px !important;
-			float:left;
-		}
-		.contentProjectSetup .toLeftToRightBts{
-			float:left;
-			height:150px;
-			padding:100px 20px 15px 15px;
-			width:30px;
-		}
-		
-		.contentProjectSetup .sidebar{
-			float:left;
-			min-height:500px;
-			padding-right:9px;
-			background:#E0E0E0 none repeat scroll 0 0;
-		}
-		
-		.contentProjectSetup .commentTitle {
-			background:#EFEFEF none repeat scroll 0 0;
-			font-size:13px;
-			font-weight:bold;
-			height:18px;
-			/*margin:10px 0;*/
-			margin-top:10px;
-			padding:4px 4px 4px 14px;
-		}
-	</style>
-	
-	<script type="text/javascript">
-       
-        function setSelProfs( multiSelLeft, multiSelRight, direction, hiddenField ){
-        
-            mSelLeft  = multiSelLeft.options;
-            mSelRight = multiSelRight.options;
-            
-            toRemove = new Array();
-            toAdd    = new Array();
-            toSend   = new Array();
-                
-            if( direction == "toRight"){
-                for( var p = 0; p < mSelLeft.length; p++ )
-                if( mSelLeft[p].selected ){
-                    toAdd.push( mSelLeft[ p ]);
-                    toRemove.push( p )
-                }
-                for( var r = 0; r < toRemove.length; r++ )
-                    mSelRight[ mSelRight.length ] = toAdd[ r ];
-        
-                //if( mSelRight[0].value == "") mSelRight[0].remove();
-            }else if( direction == "toLeft"){
-                
-                for( var p = 0; p < mSelRight.length; p++ )
-                if( mSelRight[p].selected ){
-                    toAdd.push( mSelRight[ p ]);
-                    toRemove.push( p )
-                }
-                for( var r = 0; r < toRemove.length; r++ )
-                    mSelLeft[ mSelLeft.length ] = toAdd[ r ];
-        
-                //if( mSelLeft[0].value == "") mSelLeft[0].remove();
-            }
-            
-            for( var p = 0; p < mSelRight.length; p++ )
-            toSend.push( mSelRight[ p ].value );
-            
-            hiddenField.value = toSend.join( '#' );
-            
-        }       
-    </script>
+
 	
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectSetup, 'inc/css/projectSetup.css')}" />
 	<!-- <apex:includeScript value="{!URLFOR($Resource.ProjectSetup, 'inc/javascript/projectSetup.js')}" /> -->
@@ -113,59 +31,47 @@
 			<c:QuickLinksWidget id="quidkLinks" />
 		</apex:outputPanel>
 
-				
-                
 		<!-- Main Content -->
 		<apex:outputPanel id="mainContent" styleclass="mainContent" layout="block">
-
 			<apex:form id="form_content">
 		
-				<!-- <apex:actionFunction name="RefreshPage"
-                        action=""
-                        onComplete="swirly.hide(); infoToUser.open('success', '{!message}');" 
-                        reRender="contentProjectSubscription, groupButtons, checkboxesSection"/> -->
-                
-                
+				<!-- <apex:actionFunction name="afterSave"
+                        onComplete="swirly.hide(); infoToUser.open('{!typeMessage}', '{!messageInfoToUsr}');"
+                        rerender="{!IF(typeMessage == 'error','contentProjectSetup','')}"
+				/> -->
+                <!-- Title -->
 				<apex:outputPanel id="title" styleclass="title" layout="block">
 					Show "Create New Project" button to Profiles
 				</apex:outputPanel>
 				
 
-	                      
-				<apex:outputPanel id="formContainer" styleclass="formContainer" layout="block"> 
-					<!-- Unselected Profiles -->
-					<apex:outputPanel id="boxSelectBoxLeft" styleclass="boxSelectBox" layout="block">
-						<apex:outputPanel styleclass="commentTitle" layout="block">
-							Unselected Profiles
-						</apex:outputPanel>
-						<apex:outputPanel layout="block">
-							<apex:selectList id="selectBoxListLeft" multiselect="true" styleclass="selectBoxList">
-								<apex:selectOptions value="{!allProfiles}" />
-							</apex:selectList>
-						</apex:outputPanel>    
-					</apex:outputPanel>
-					
-					<!-- middle buttons -->	
-					<apex:outputPanel styleclass="toLeftToRightBts" layout="block">
-						<apex:commandLink value='>>' onclick="setSelProfs( $$('.AllProfiles')[0], $$('.SelectedProfiles')[0], 'toRight',$('ProjectSubscription:fToSend:profileToSend'));" />
-						<!-- <input type="button" value=">>" style=".width:35px;" onclick="setSelProfs( $$('.AllProfiles')[0], $$('.SelectedProfiles')[0], 'toRight',$('ProjectSubscription:fToSend:profileToSend'));" />
-						<input type="button" value="<<" style=".width:35px;" onclick="setSelProfs( $$('.AllProfiles')[0], $$('.SelectedProfiles')[0], 'toLeft', $('ProjectSubscription:fToSend:profileToSend'));" /> -->
-						<apex:commandLink value="<<" onclick="setSelProfs( $$('.AllProfiles')[0], $$('.SelectedProfiles')[0], 'toLeft', $('ProjectSubscription:fToSend:profileToSend'));" />
-					</apex:outputPanel>
-					
-					<!-- Selected Profiles -->
-					<apex:outputPanel id="boxSelectBoxRight" styleclass="boxSelectBox" layout="block">
-						<apex:outputPanel styleclass="commentTitle" layout="block">
-							Selected Profiles
-						</apex:outputPanel>
-						<apex:outputPanel layout="block">
-							<apex:selectList id="selectBoxListRight" multiselect="true" styleclass="selectBoxList">
-								<apex:selectOptions value="{!savedProfiles}" />
-							</apex:selectList>
-						</apex:outputPanel>                          
-					</apex:outputPanel>
-				</apex:outputPanel>     
+				<!-- Pick List -->
+				<apex:outputPanel id="formContainer1" styleclass="formContainer" layout="block">
+					<apex:inputField value="{!ProjSetup.CanViewButton__c}" /> 
+				</apex:outputPanel>
 				
+				<!-- Buttons -->
+				<apex:outputPanel styleclass="groupButtons" layout="block" id="buttonsPanel">
+                        <apex:commandButton styleclass="blackbutton"
+                        	action="{!save}" 
+                        	value="Save" 
+                        	oncomplete="swirly.hide(); infoToUser.open('{!typeMessage}', '{!messageInfoToUsr}');"
+                        	onClick="swirly.show();"
+                        	rerender="buttonsPanel"
+                        /> 
+                         
+                        <!-- <apex:commandButton styleclass="blackbutton"
+                        	action="{!save}" 
+                        	value="Save" 
+                        	oncomplete="swirly.hide(); infoToUser.open('{!typeMessage}', '{!messageInfoToUsr}');"
+                        	onClick="swirly.show();"
+                        	rerender="buttonsPanel"
+                        />  -->
+                        <apex:commandButton styleclass="blackbutton" 
+                        	value="Cancel" 
+                        />
+		        </apex:outputPanel>
+		        
 			</apex:form>
 		</apex:outputPanel>
 	</apex:outputPanel>  

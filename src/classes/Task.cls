@@ -1,26 +1,30 @@
 /**
 * @author Matias Menafra @ 12/17/2009
 */
-public class Task {
+public class Task{
 
-	public Double 	duration;
-	public String 	durationDisplay;
-	public Double 	percentCompleted;
-	public String 	percentCompletedDisplay;
-	public String 	projectName;
-	public String 	projectNameDisplay;
-	public String 	name;
-	public String 	nameDisplay;
+	public Double duration;
+	public String durationDisplay;
+	public Double percentCompleted;
+	public String percentCompletedDisplay;
+	public String projectName;
+	public String projectNameDisplay;
+	public String name;
+	public String nameDisplay;
 	
-	public Boolean isOwner;
+	public Boolean canUpdate;
 	public Boolean canDelete;
-	public boolean canUpdate;
+	public Boolean canRead;
+	public Boolean canCreateAttachments;
+	public Boolean canDeleteAttachments;
+	public Boolean canCreateAssignees;
+	public Boolean canDeleteAssignees;
 	
 	public Date 	startDate 				{ set; get; }
 	public String 	startDateDisplay 		{ set; get; }
 	public Date 	endDate 				{ set; get; }
 	public String  	daysOverdue				{ set; get; }
-	public Boolean 	overdue		 	    	{ set; get{ return settningDaysOverdue();}}
+	public Boolean 	overdue		 	    	{ set; get{ return settingDaysOverdue();}}
 	public String 	endDateDisplay 	    	{ set; get; }
 	public String 	description 			{ set; get; }
 	public String 	id 						{ set; get; }
@@ -34,7 +38,8 @@ public class Task {
 	public Integer 	rawDuration 			{ set; get; }
 	public String 	status 					{ set; get; }
 	public Double 	taskPosition 			{ set; get; }
-	public List<ProjectMember> 	assignees 	{ set; get; }
+	public String 	ownerId		 			{ set; get; }
+	public List<TaskAssignee> assignees 	{ set; get; }
 
 	/**
 	* Constructor 
@@ -83,8 +88,8 @@ public class Task {
 	* @return void
 	*/
 	public void setPercentCompleted( Double p ){
-		this.percentCompleted = p;
-		this.setPercentCompletedDisplay( String.valueOf( p.intValue() ) );
+		this.percentCompleted = p == null ? 0.0 : p;
+		this.setPercentCompletedDisplay( String.valueOf( this.percentCompleted.intValue()));
 	}
 	
 	/**
@@ -173,7 +178,7 @@ public class Task {
 	/**
 	* Setting overdue flag and days overdue message.
 	*/
-	private Boolean settningDaysOverdue(){
+	private Boolean settingDaysOverdue(){
 		Integer localDaysOverdue;
 		if( this.endDate != null )
 		localDaysOverdue = this.endDate.daysBetween( Date.today());

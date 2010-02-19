@@ -1,5 +1,5 @@
 /**
-*@author Matias Menafra @ 12/17/2009
+*@author Matias Menafra 
 */
 public class ProjectMember {
 
@@ -13,12 +13,9 @@ public class ProjectMember {
 	public Boolean isAdmin		{ set; get; }
 	public DateTime CreatedDate	{ set; get; }
 	
-	
 	/**
 	* Constructor
 	*/
 	public ProjectMember(){
-	
-	
 	}
 }
