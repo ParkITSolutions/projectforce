@@ -1,0 +1,18 @@
+<apex:component id="projectNewsWidget" controller="ProjectNewsWidgetController" allowDML="true">
+	
+	<apex:stylesheet value="{!URLFOR($Resource.ProjectNewsWidget, 'inc/css/projectNewsWidget.css')}" /> 
+    <apex:includeScript value="{!URLFOR($Resource.ProjectNewsWidget, 'inc/js/projectNewsWidget.js')}" />
+    <!-- 
+    <apex:attribute name="projectId" 
+                    description="Project id"
+                    type="String" 
+                    assignTo="{!projectId}" 
+                    required="true"/>
+     -->                
+	<!-- widgetContent -->
+	<apex:outputPanel id="widgetContent">
+	
+	</apex:outputPanel>
+	<!-- end widgetContent -->
+	                    
+</apex:component>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>It stores news about a project</description>
+    <fields>
+        <fullName>NewsText__c</fullName>
+        <description>This is the news text</description>
+        <label>NewsText</label>
+        <required>true</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Project__c</fullName>
+        <label>Project</label>
+        <referenceTo>Project2__c</referenceTo>
+        <relationshipLabel>ProjectNews</relationshipLabel>
+        <relationshipName>ProjectNews</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Username__c</fullName>
+        <description>username that wrote the news</description>
+        <label>Username</label>
+        <length>40</length>
+        <required>true</required>
+        <type>Text</type>
+    </fields>
+    <label>ProjectNews</label>
+    <nameField>
+        <label>ProjectNews Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>ProjectNews</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>
