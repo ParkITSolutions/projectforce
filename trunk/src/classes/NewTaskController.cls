@@ -36,6 +36,9 @@ public class NewTaskController {
 		myTask.Project__c = this.projectId;
 		DAOFactory.getInstance().insertTask( myTask, this.assignees );
 		this.postAction = 'TaskCreatedSuccess';
+		if(System.currentPageReference().getUrl().contains('ProjectDetail')){
+			this.postAction = 'ProjectDetail-TaskCreatedSuccess';
+		}
 		this.myTask 			= new ProjectTask__c();
 	}
 	

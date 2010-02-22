@@ -37,6 +37,9 @@ public class NewMilestoneController {
 		myTask.Milestone__c = true;
 		DAOFactory.getInstance().insertTask( myTask, this.assignees );
 		this.postAction = 'MilestoneCreatedSuccess';
+		if(System.currentPageReference().getUrl().contains('ProjectDetail')){
+			this.postAction = 'ProjectDetail-MilestoneCreatedSuccess';
+		}
 		this.myTask 			= new ProjectTask__c();
 	}
 	

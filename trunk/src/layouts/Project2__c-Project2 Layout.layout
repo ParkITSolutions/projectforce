@@ -119,4 +119,8 @@
         <fields>NAME</fields>
         <relatedList>Activity__c.ProjectId__c</relatedList>
     </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>ProjectNews__c.Project__c</relatedList>
+    </relatedLists>
 </Layout>

@@ -5,7 +5,7 @@
 	<!-- ### Javascript ### -->
 	<apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/TeamsWidgetTasksMain.js')}"/>	
 		<!-- ### Wide Widget ################/////////////////// --> 
-		<apex:outputPanel layout="block" rendered="{!IF(!sidebar, true, false)}">
+		<apex:outputPanel layout="block" rendered="{!IF(!sidebar, true, false)}" id="container">
 			<div class="teamWidgetmyBigWidget">
 				<div class="wideHeader">
 					<h4 class="tasks">All Tasks</h4>
@@ -13,18 +13,14 @@
 				<!-- Widget Links Holder -->
 				<div class="linkAction">
 						<!--### Rerender Method ###-->
-						<apex:actionFunction name="reloadProjectTask" action="{!getAllProjectTasks}" rerender="noTopicList,TaskWidgetFull" onComplete="hideLoader('results_task_loader');" />
+						<apex:actionFunction name="reloadProjectTask" action="{!getAllProjectTasks}" rerender="container" onComplete="swirly.hide();" />
 						
 						<ul class="links_sup">
 							<apex:outputpanel rendered="{!userPermissions.canCreate}"> 
 								<li>
 									<a class="topRightLinks" 
 									   href="javascript:;" 
-									   onclick="addNewTaskOverlay.open();
-									            refreshAssignToTask();
-									            enabDisbTask('off');
-									            hideNewTaskOverlayErrors();
-										        addOverlayEvents(function(){addNewTaskOverlay.close();},'ProjectDetail:ProjectOverlayNewTask:overNewTask:quickTaskForm:taskSaveBtn');">
+									   onclick="promptOverlay.open(newTask);">
 									   New</a> |
 							    </li>
 							</apex:outputpanel>
@@ -61,11 +57,7 @@
 									No Tasks
 									<br/>
 									<apex:outputpanel rendered="{!userPermissions.canCreate}"> 
-										<a onclick="addNewTaskOverlay.open();
-										            refreshAssignToTask();
-										            enabDisbTask('off');
-										            hideNewTaskOverlayErrors();
-										            addOverlayEvents(function(){addNewTaskOverlay.close();},'ProjectDetail:ProjectOverlayNewTask:overNewTask:quickTaskForm:taskSaveBtn');" 
+										<a onclick="promptOverlay.open(newTask);" 
 										   href="javascript:;" >Create New Task</a>
 									</apex:outputpanel>
 								</li>

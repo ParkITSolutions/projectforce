@@ -23,18 +23,14 @@
 			<!-- Widget Links Holder -->
 			<div class="linkAction">
 					<!--### Rerender Method ###-->
-					<apex:actionFunction name="reloadProjectMilestones" action="{!genAllProjectTasks}" rerender="noTopicList,milestoneWidget" onComplete="hideLoader('milestoneLoadDiv');" />
+					<apex:actionFunction name="reloadProjectMilestones" action="{!genAllProjectTasks}" rerender="noTopicList,milestoneWidget" onComplete="swirly.hide();" />
 					
 					<ul class="links_sup">
 						<apex:outputpanel rendered="{!userPermissions.canCreate}"> 
 							<li>
 								<a class="topRightLinks" 
 								   href="javascript:;" 
-								   onclick="addNewMilestoneOverlay.open();
-								            hideErrors();
-								            refreshAssignToMilestone();
-								           
-								            enabDisbMile('off');" >
+								   onclick="promptOverlay.open(newMilestone);" >
 								   New
 								</a> | 
 							</li>
@@ -73,11 +69,7 @@
 											No Milestones<br/>
 											<apex:outputpanel rendered="{!userPermissions.canCreate}"  > 
 												<a  href="javascript:;" 
-												    onclick="addNewMilestoneOverlay.open();
-												             refreshAssignToMilestone();
-												             enabDisbMile('off');
-												             addOverlayEvents(function(){addNewMilestoneOverlay.close();},'ProjectDetail:ProjectOverlayNewMilestone:milestoneOverlay:quickMilestoneForm:SaveButton');
-												             hideErrors();">
+												    onclick="promptOverlay.open(newMilestone);">
 												    Create New Milestone
 												</a>
 											</apex:outputpanel>

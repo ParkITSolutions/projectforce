@@ -35,7 +35,7 @@
     
         <!-- breadcrumbPanel -->
         <apex:outputPanel id="breadcrumbPanel" styleClass="breadcrumbPanel" layout="block">
-            <c:Breadcrum />
+            <c:Breadcrum id="Breadcrum"/>
         </apex:outputPanel>
         <!-- End breadcrumbPanel -->
     

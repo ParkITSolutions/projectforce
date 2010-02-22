@@ -34,7 +34,7 @@ public class UserTasksController{
         this.paginator.orderBy      = 'Name';
         this.paginator.orderAsc     = true;
         this.paginator.filter       = '1'; // Show all tasks and milestones
-        //this.paginator.project.id   = this.opSelected == 'none' ? '' : this.opSelected; 
+        this.paginator.project.id   = this.opSelected == '' ? '' : this.opSelected; 
         this.paginator.project.id = '';
         
         paginator.loadTasksByUser();

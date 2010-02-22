@@ -9,8 +9,8 @@
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
-        <fullName>CanViewButton__c</fullName>
-        <label>CanViewButton</label>
+        <fullName>ListSavedProfiles__c</fullName>
+        <label>ListSavedProfiles</label>
         <picklist>
             <picklistValues>
                 <fullName>System Administrator</fullName>

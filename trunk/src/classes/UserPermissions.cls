@@ -219,29 +219,50 @@ public class UserPermissions {
 		if( taskList.size() > 0 ){
 			Boolean isAdmin			= DAOFactory.getInstance().isAdministrator();
 			Boolean isProjectMember	= DAOFactory.getInstance().isProjectMember( taskList.get(0).project );
-			
-			//asks if user is System Administrator of CRM
-			if( !isAdmin ){
-				//ask if user belongs to project
-				if( !isProjectMember ){
-					for( Task task : taskList ){
+			System.debug('######## Sys Admin : ' +isAdmin + '  projectmemeber :' + isProjectMember);
+			for( Task task : taskList ){
+				if( !isAdmin ){
+					if( isProjectMember ){
 						//ask if user is the owner of the task
 						if( task.OwnerId != userId ){
 							if( task.assignees.size() > 0){
 								for( TaskAssignee assignee : task.assignees ){
 									if( assignee.user == userId ){
-										
+										task.canDelete 				= false;
+										task.canUpdate 				= true;
+										task.canCreateAssignees 	= true;
+										task.canCreateAttachments 	= true;
+										task.canDeleteAssignees 	= true;
+										task.canDeleteAttachments 	= true;
 									}
 								}
 							}
 						}
-					}
+						else{
+							task.canDelete 				= true;
+							task.canUpdate 				= true;
+							task.canCreateAssignees 	= true;
+							task.canCreateAttachments 	= true;
+							task.canDeleteAssignees 	= true;
+							task.canDeleteAttachments 	= true;
+						}
+					}	
 				}
+				else{
+					task.canDelete 				= true;
+					task.canUpdate 				= true;
+					task.canCreateAssignees 	= true;
+					task.canCreateAttachments 	= true;
+					task.canDeleteAssignees 	= true;
+					task.canDeleteAttachments 	= true;
+				}
+				System.debug('======' + task);
+				resultTasks.add( task );
 			}
 		}
 		
-		//return resultTasks;
-		return taskList;
+		return resultTasks;
+		//return taskList;
 	}
 	
 }

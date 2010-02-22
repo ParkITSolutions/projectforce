@@ -18,11 +18,11 @@ public class BreadcrumController {
 	public String currentPage { set; get; }
 	public String lastLinkPage { set; get; }
 	
-	/**
+	/** 
 	*Constructor
 	*/
 	public BreadcrumController(){ 
-		infoOfProject = new Set<String>{ 'projectDetail', 'ProjectActivity', 'MembersList', 'projectAttachmentList', 'tasklist' };
+		infoOfProject = new Set<String>{ 'projectDetail', 'ProjectActivity', 'MembersList', 'projectAttachmentList', 'tasklist', 'ProjectSubscription' };
 		infoOfTaskAndProject =  new Set<String>{ 'ProjectTaskDetail', 'ProjectTaskNotes' };
 
 		this.currentPage = ApexPages.currentPage().getUrl().split('/apex/').get(1).split('[?]').get(0);
@@ -93,6 +93,7 @@ public class BreadcrumController {
 		this.addNode( '/apex/MembersList?id=' + this.projectId, 'Members List', 'MembersList', 'projectDetail');
 		this.addNode( '/apex/ProjectActivity?id=' + this.projectId, 'Project Activity', 'ProjectActivity', 'projectDetail');
 		this.addNode( '/apex/ProjectTaskNotes?id=' + this.taskId, 'Project Task Notes', 'ProjectTaskNotes', 'ProjectTaskDetail');
+		this.addNode( '/apex/ProjectSubscription?id=' + this.taskId, 'Manage Subscription', 'ProjectSubscription', 'ProjectTaskDetail' );
 	}
 	 
 	/**

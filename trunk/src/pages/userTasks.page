@@ -16,7 +16,11 @@
             </apex:define>
         </apex:composition> 
         
-        <c:Breadcrum id="breadCrum"/>
+        <!-- breadcrumbPanel -->
+        <apex:outputPanel id="breadcrumbPanel" styleClass="breadcrumbPanel" layout="block">
+            <c:Breadcrum id="BreadCrum"/>
+        </apex:outputPanel>
+        <!-- End breadcrumbPanel -->
         
         <apex:form id="Form">
             <apex:actionFunction name="refreshProjectDetail" rerender="projectDetail" />
@@ -24,7 +28,7 @@
                   <br />
                   <apex:outputpanel id="selectProjectPanel" layout="block" styleClass="selectProjectPanel">
                       <span id="labelSelectProject" >Select Project: &nbsp;</span>
-                      <apex:selectList id="options" value="{!paginator.project.id}" multiselect="false" size="1" onChange="paginator.setLetterChoosen('All'); swirly.show(); RefreshRecordsList();"  styleClass="ProjectSelector">
+                      <apex:selectList id="options" value="{!opSelected}" multiselect="false" size="1" onChange="paginator.setLetterChoosen('All'); swirly.show(); RefreshPaginator();"  styleClass="ProjectSelector">
                           <apex:selectOptions value="{!ProjectSelectOps}" />
                       </apex:selectList>
                   </apex:outputpanel>
@@ -32,7 +36,7 @@
                     <apex:outputPanel layout="block" id="projectDetail" >                   
                         <apex:outputPanel layout="block" styleClass="FieldValue" >
                             
-                            <apex:outputPanel rendered="{!IF(paginator.project.id!='',true,false)}">
+                            <apex:outputPanel rendered="{!ShowDetail}">
                                 <center>
                                     <apex:outputPanel layout="block" id="detailProject" styleClass="DetailProject">
                                         <apex:outputPanel layout="block" id="subContainer" styleClass="SubContainer">

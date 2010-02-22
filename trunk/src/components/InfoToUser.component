@@ -35,7 +35,15 @@
                 
             </apex:outputPanel>
             <!-- end of Overlay -->
-        
+	        <apex:outputPanel styleClass="footer" id="footer" layout="block">
+	        	<apex:outputPanel styleClass="footerLeftCorner" id="footerLeftCorner" layout="block">
+	        		<apex:image value="{!URLFOR($Resource.Overlays, 'images/infoLeftBottomCorner.png')}" />
+	        	</apex:outputPanel>
+	        	<apex:outputPanel styleClass="footerMiddle" id="footerMiddle" layout="block" />
+	        	<apex:outputPanel styleClass="footerRightCorner" id="footerRightCorner" layout="block">
+		        	<apex:image value="{!URLFOR($Resource.Overlays, 'images/infoRigthBottomCorner.png')}" />
+	        	</apex:outputPanel>
+	        </apex:outputPanel>
     </apex:outputPanel>
     <!-- end of Content -->
 
