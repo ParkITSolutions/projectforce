@@ -4,7 +4,6 @@
     
     <apex:includeScript value="{!URLFOR($Resource.TaskList, 'inc/javascript/taskList.js')}" />
     <apex:stylesheet value="{!URLFOR($Resource.TaskList, 'inc/css/taskList.css')}" />
-    <apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/css/border-radius-ie8.htc')}" />
     
     <script type="text/javascript">
         var deleteTasksOverlay          = new ConfirmOverlay( '{!$Component.DeleteTasksOverlay}' );
@@ -12,32 +11,6 @@
         
     </script>
     
-    <style>
-    .infoToUserContent{
-    	background:#E0E0E0 none repeat scroll 0 0;
-    	/*display: block !important;*/
-    	position: fixed !important;
-    	top: 0px !important;
-		padding-bottom:5px;
-		padding-top:5px;    	
-		left:50%;
-		width:400px;
-		margin-left: -200px; 
-		z-index: 9999;
-	-moz-border-radius:10px;
--webkit-border-radius:10px;
-behavior:url({!URLFOR($Resource.Overlays, 'inc/css/border-radius-ie8.htc')});
-    }
-    .overlayInfoToUser{
-    }
-    .messageToUserPanel img {
-		float:left;
-		margin-left:5px;
-		margin-right:5px;    
-    }
-    .messageToUserPanel .messageToUser{
-    }
-    </style>
     
     <c:ConfirmOverlay id="DeleteTasksOverlay" 
         title="Delete tasks"
@@ -60,22 +33,22 @@ behavior:url({!URLFOR($Resource.Overlays, 'inc/css/border-radius-ie8.htc')});
         <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
         <apex:define name="title">Tasks & Milestones</apex:define>
         <apex:define name="search">
-            <c:Search module="Project" label="Tasks" projectId="{!ProjectId}"/>
+            <c:Search id="Search" module="Project" label="Tasks" projectId="{!ProjectId}"/>
         </apex:define>
     </apex:composition>
     <!-- End Header -->
     
+	
+        
     <!-- ContentPanel -->
     <apex:outputPanel id="contentPanelTaskList" styleClass="contentPanelTaskList" layout="block" >
     <!-- <apex:outputPanel id="ContentPanel" styleClass="contentPanel" layout="block" > -->
     
-        <!-- BreadcrumbPanel -->
-        <apex:outputPanel id="BreadcrumbPanel" styleClass="breadcrumbPanel" layout="block">
-            
-            <c:Breadcrum />
-                
-        </apex:outputPanel>
-        <!-- End BreadcrumbPanel -->
+    	<!-- BreadcrumbPanel -->
+		<apex:outputPanel id="BreadcrumbPanel" styleClass="breadcrumbPanel" layout="block">
+			<c:Breadcrum id="Breadcrum" />
+		</apex:outputPanel>
+		<!-- End BreadcrumbPanel -->    
     
         <!-- ButtonsPanel -->
         <apex:outputPanel id="ButtonsPanel" styleClass="buttonsPanel" layout="block" >
@@ -301,7 +274,7 @@ behavior:url({!URLFOR($Resource.Overlays, 'inc/css/border-radius-ie8.htc')});
                         
                         <apex:column >
                             <apex:facet name="header">Action</apex:facet>
-                            <apex:outputLink value="/{!task.id}/e?retURL={!url}/apex/TaskList?id={!projectId}" id="EditLink">Edit | </apex:outputLink>
+                            <apex:outputLink value="/{!task.id}/e?retURL={!url}/apex/TaskList?id={!projectId}" id="EditLink" rendered="{!task.canUpdate}">Edit | </apex:outputLink>
                             <apex:outputLink value="javascript:;" id="DeleteLink" onClick="deleteTask('{!task.id}');"> Del</apex:outputLink>
                         </apex:column>
                         

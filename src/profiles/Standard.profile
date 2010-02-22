@@ -12,7 +12,7 @@
     </applicationVisibilities>
     <classAccesses>
         <apexClass>Activity</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ActivityLog</apexClass>
@@ -28,11 +28,11 @@
     </classAccesses>
     <classAccesses>
         <apexClass>AttachmentController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>AttachmentObj</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>BigListOfTasks</apexClass>
@@ -44,11 +44,11 @@
     </classAccesses>
     <classAccesses>
         <apexClass>BreadcrumController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>BreadcrumNode</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ConfirmOverlayController</apexClass>
@@ -87,6 +87,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>DAOSetup</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>DAOSubscription</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -104,7 +108,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>DAOUser</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>DeleteProjectController</apexClass>
@@ -128,7 +132,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>Letter</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>MemberActivity</apexClass>
@@ -136,11 +140,11 @@
     </classAccesses>
     <classAccesses>
         <apexClass>MembersListController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>MembersWidgetController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>MessageLog</apexClass>
@@ -148,15 +152,15 @@
     </classAccesses>
     <classAccesses>
         <apexClass>MyTasksAndMilestonesController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>NewAssigneeController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>NewMemberController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>NewMilestoneController</apexClass>
@@ -168,7 +172,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ObjectFormatter</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>OldUploadAttachmentController</apexClass>
@@ -204,7 +208,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectActivityController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectAttachmentListController</apexClass>
@@ -285,6 +289,10 @@
     <classAccesses>
         <apexClass>ProjectMembersWidgetControllerTest</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProjectNewsWidgetController</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectOverlayDeleteAssigneeController</apexClass>
@@ -376,7 +384,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectSubscriptionWidgetController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectTaskDetailController</apexClass>
@@ -448,7 +456,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>QuickLinksWidgetController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>SearchController</apexClass>
@@ -460,11 +468,11 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SearchResults</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>SearchResultsController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>Subscription</apexClass>
@@ -1539,6 +1547,20 @@
         <field>ProjectMember__c.User__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>ProjectNews__c.NewsText__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>ProjectNews__c.Project__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>ProjectNews__c.Username__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
         <editable>true</editable>
         <field>ProjectProfile__c.CreateProjectTasks__c</field>
     </fieldLevelSecurities>
@@ -1556,7 +1578,7 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
-        <field>ProjectSetup__c.CanViewButton__c</field>
+        <field>ProjectSetup__c.ListSavedProfiles__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
@@ -1883,6 +1905,9 @@
         <layout>ProjectMember__c-ProjectMember Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>ProjectNews__c-ProjectNews Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>ProjectProfile__c-ProjectProfile Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -2032,6 +2057,9 @@
         <object>ProjectMember__c</object>
     </objectPermissions>
     <objectPermissions>
+        <object>ProjectNews__c</object>
+    </objectPermissions>
+    <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
@@ -2107,12 +2135,16 @@
         <object>TimelineState__c</object>
     </objectPermissions>
     <pageAccesses>
+        <apexPage>Andres</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>HeaderTemplate</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>MembersList</apexPage>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>OldUploadAttachment</apexPage>
@@ -2124,7 +2156,7 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectActivity</apexPage>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectAttachmentList</apexPage>
@@ -2160,7 +2192,7 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>SearchResults</apexPage>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>SuggestDispatcher</apexPage>
@@ -2176,7 +2208,7 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>UploadAttachment</apexPage>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>miguel</apexPage>

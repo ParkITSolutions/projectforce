@@ -9,14 +9,14 @@
     <apex:outputPanel id="widget" styleClass="widget" layout="block" >
     
         <!-- widget header -->
-        <apex:outputPanel id="header" layout="block" styleClass="header">
+       <apex:outputPanel id="header" layout="block" styleClass="header">
             <div>
                 <div>
                     <h5>Project Quick Links</h5>
                 </div>
             </div>
         </apex:outputPanel>
-    
+
         <!-- dynamic content goes here -->
         <apex:outputPanel id="QuickLinksWidget" layout="block" styleClass="quickLinksWidget">
         
@@ -60,6 +60,5 @@
                 <div></div>
             </div>
         </apex:outputPanel>
-    
     </apex:outputPanel>
 </apex:component>

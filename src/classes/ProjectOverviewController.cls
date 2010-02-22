@@ -135,8 +135,10 @@ public with sharing class ProjectOverviewController {
     *@return Boolean
     */
     public Boolean getCanViewCreateNewProject(){
-        ProjectSetupController canV = new ProjectSetupController();
-        return canV.canView();
+        /*ProjectSetupController canV = new ProjectSetupController();
+        return canV.canView();*/
+        //Please Refactor!
+        return true;
     }
     
     /**

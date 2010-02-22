@@ -3,7 +3,7 @@
 	<!-- TODO place in application top -->
 	<apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
 	
-	<apex:outputPanel id="widget" styleClass="widget" layout="block" rendered="{!IfCanModifyAllData}">
+	<apex:outputPanel id="widget" styleClass="widget" layout="block" >
 	
 		<!-- widget header -->
 		<apex:outputPanel id="header" layout="block" styleClass="header">

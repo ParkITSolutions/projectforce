@@ -12,13 +12,13 @@ public class Task{
 	public String name;
 	public String nameDisplay;
 	
-	public Boolean canUpdate;
-	public Boolean canDelete;
-	public Boolean canRead;
-	public Boolean canCreateAttachments;
-	public Boolean canDeleteAttachments;
-	public Boolean canCreateAssignees;
-	public Boolean canDeleteAssignees;
+	public Boolean canUpdate 			{ set; get; }
+	public Boolean canDelete 			{ set; get; }
+	public Boolean canRead 				{ set; get; }
+	public Boolean canCreateAttachments { set; get; }
+	public Boolean canDeleteAttachments { set; get; }
+	public Boolean canCreateAssignees 	{ set; get; }
+	public Boolean canDeleteAssignees 	{ set; get; }
 	
 	public Date 	startDate 				{ set; get; }
 	public String 	startDateDisplay 		{ set; get; }
@@ -45,7 +45,13 @@ public class Task{
 	* Constructor 
 	*/
 	public Task(){
-	
+		this.canUpdate 				= false;			
+		this.canDelete 				= false;		
+		this.canRead 				= false;				
+		this.canCreateAttachments 	= false;	
+		this.canDeleteAttachments 	= false;	
+		this.canCreateAssignees 	= false;	
+		this.canDeleteAssignees 	= false;	
 	}
 	
 	/**
@@ -53,7 +59,7 @@ public class Task{
 	* @return Integer
 	*/
 	public Integer getOverdueTask(){
-		return this.endDate.daysBetween( System.today() );
+		return this.endDate == null ? 0 : this.endDate.daysBetween( System.today() );
 	}
 	
 	/**

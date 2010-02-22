@@ -87,6 +87,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>DAOSetup</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>DAOSubscription</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -284,6 +288,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProjectMembersWidgetControllerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProjectNewsWidgetController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -1543,6 +1551,20 @@
         <field>ProjectMember__c.User__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>ProjectNews__c.NewsText__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>ProjectNews__c.Project__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>ProjectNews__c.Username__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
         <editable>true</editable>
         <field>ProjectProfile__c.CreateProjectTasks__c</field>
     </fieldLevelSecurities>
@@ -1560,7 +1582,7 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
-        <field>ProjectSetup__c.CanViewButton__c</field>
+        <field>ProjectSetup__c.ListSavedProfiles__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
@@ -1887,6 +1909,9 @@
         <layout>ProjectMember__c-ProjectMember Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>ProjectNews__c-ProjectNews Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>ProjectProfile__c-ProjectProfile Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -2034,6 +2059,9 @@
         <object>ProjectMember__c</object>
     </objectPermissions>
     <objectPermissions>
+        <object>ProjectNews__c</object>
+    </objectPermissions>
+    <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
@@ -2108,6 +2136,10 @@
         <allowRead>true</allowRead>
         <object>TimelineState__c</object>
     </objectPermissions>
+    <pageAccesses>
+        <apexPage>Andres</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
     <pageAccesses>
         <apexPage>HeaderTemplate</apexPage>
         <enabled>false</enabled>

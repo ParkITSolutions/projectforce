@@ -16,6 +16,8 @@ public class DAOFactory {
     private DAOAssignee DAOAssignee;
     private DAOActivity DAOActivity;
     private DAOUser DAOUser;
+    private DAOSetup DAOSetup;
+    
     
     /**
     * @return an instance of this class
@@ -44,6 +46,7 @@ public class DAOFactory {
         this.DAOAssignee            = new DAOAssignee();
         this.DAOActivity            = new DAOActivity();
         this.DAOUser                = new DAOUser();
+        this.DAOSetup				= new DAOSetup();
     }
     
     /*-------------------------------------------------- Task operations ---------------------------------------------------------*/
@@ -481,6 +484,34 @@ public class DAOFactory {
         DAOSubscription.updateProjectsubscription(subs);
     }
 
+	/*-----------------------------------------------------------------------------------------------------------------------------*/
+    
+    /*--------------------------------------------------- Project Setup operations ------------------------------------------------------*/
+	
+	/**
+	* Get ListSavedProfiles from ProjectSetup 
+	* @return List<ProjectSetup__c>
+	*/
+	public List<ProjectSetup__c> getListSavedProfilesProjectSetup(){ 
+		return DAOSetup.getListSavedProfiles();
+	}
+	
+	/** 
+	* Insert project setup
+	* @param ProjectSetup__c 
+	*/
+	public void insertProjectSetup( ProjectSetup__c projectSetup ){
+		DAOSetup.insertProjectSetup( projectSetup );
+	}
+	
+	/** 
+	* Updtate project setup
+	* @param ProjectSetup__c
+	*/
+	public void updateProjectSetup(ProjectSetup__c projectSetup){
+		DAOSetup.updateProjectSetup( projectSetup );
+	}
+	
     /*-----------------------------------------------------------------------------------------------------------------------------*/
     
 }

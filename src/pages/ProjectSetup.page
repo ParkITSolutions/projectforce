@@ -1,10 +1,8 @@
 <apex:page id="ProjectSetup" cache="false" sidebar="false" tabStyle="Project2__c" controller="ProjectSetupController">
 
     <c:ApplicationTop id="ApplicationTop" />
-
 	
 	<apex:stylesheet value="{!URLFOR($Resource.ProjectSetup, 'inc/css/projectSetup.css')}" />
-	<!-- <apex:includeScript value="{!URLFOR($Resource.ProjectSetup, 'inc/javascript/projectSetup.js')}" /> -->
 
 	<apex:outputPanel id="contentProjectSetup" styleclass="contentProjectSetup" layout="block">   
 		<!-- Header -->
@@ -35,10 +33,6 @@
 		<apex:outputPanel id="mainContent" styleclass="mainContent" layout="block">
 			<apex:form id="form_content">
 		
-				<!-- <apex:actionFunction name="afterSave"
-                        onComplete="swirly.hide(); infoToUser.open('{!typeMessage}', '{!messageInfoToUsr}');"
-                        rerender="{!IF(typeMessage == 'error','contentProjectSetup','')}"
-				/> -->
                 <!-- Title -->
 				<apex:outputPanel id="title" styleclass="title" layout="block">
 					Show "Create New Project" button to Profiles
@@ -47,26 +41,19 @@
 
 				<!-- Pick List -->
 				<apex:outputPanel id="formContainer1" styleclass="formContainer" layout="block">
-					<apex:inputField value="{!ProjSetup.CanViewButton__c}" /> 
+					<apex:inputField value="{!ProjectSetup.ListSavedProfiles__c}" /> 
 				</apex:outputPanel>
 				
 				<!-- Buttons -->
 				<apex:outputPanel styleclass="groupButtons" layout="block" id="buttonsPanel">
                         <apex:commandButton styleclass="blackbutton"
-                        	action="{!save}" 
+                        	action="{!saveSetup}" 
                         	value="Save" 
                         	oncomplete="swirly.hide(); infoToUser.open('{!typeMessage}', '{!messageInfoToUsr}');"
                         	onClick="swirly.show();"
                         	rerender="buttonsPanel"
                         /> 
                          
-                        <!-- <apex:commandButton styleclass="blackbutton"
-                        	action="{!save}" 
-                        	value="Save" 
-                        	oncomplete="swirly.hide(); infoToUser.open('{!typeMessage}', '{!messageInfoToUsr}');"
-                        	onClick="swirly.show();"
-                        	rerender="buttonsPanel"
-                        />  -->
                         <apex:commandButton styleclass="blackbutton" 
                         	value="Cancel" 
                         />

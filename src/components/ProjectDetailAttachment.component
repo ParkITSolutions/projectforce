@@ -28,7 +28,7 @@
 			<div class="linkAction">
 				<apex:outputpanel rendered="{!userPermissions.canCreate}">
 					
-				  	<a href="javascript:;" onclick="openAttachmentOverlay();">
+				  	<a href="javascript:;" onclick="promptOverlay.open(attachment)">
 				  		New Attachment
 				  	</a>
 				  	
@@ -96,7 +96,7 @@
 							<li>
 								No Attachments Yet<br/>
 								<apex:outputpanel rendered="{!userPermissions.canCreate}"  > 
-									<a  href="javascript:;" onclick="openAttachmentOverlay();">Attach a new file</a>
+									<a  href="javascript:;" onclick="promptOverlay.open(attachment)">Attach a file</a>
 								</apex:outputpanel>
 							</li>
 						</ul>

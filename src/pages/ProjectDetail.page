@@ -1,4 +1,6 @@
 <apex:page id="ProjectDetail" sidebar="false" cache="true" standardController="Project2__c" extensions="ProjectDetailController" tabStyle="Project2__c">
+
+    <c:ApplicationTop id="ApplicationTop" />
     
     <!-- Ajax Toolkit -->
     <apex:includeScript value="/soap/ajax/11.1/connection.js" />
@@ -47,10 +49,12 @@
     </script>
     
     
-   	<c:PromptOverlay id="PromptOverlay"
+    <c:PromptOverlay id="PromptOverlay"
         includeNewMember="true"
-        idValue="{!projectId}"
-       />
+        includeNewTask="true"
+        includeNewMilestone="true" 
+        includeAttachment="true" 
+        idValue="{!projectId}" />
        
        
     <div id="all" style="overflow:hidden;">
@@ -65,8 +69,14 @@
             </apex:define>
         </apex:composition> 
        
+       <!-- breadcrumbPanel -->
+        <apex:outputPanel id="breadcrumbPanel" styleClass="breadcrumbPanel" layout="block">
+            <c:Breadcrum id="BreadCrum"/>
+        </apex:outputPanel>
+        <!-- End breadcrumbPanel -->
+       
          <div align="center" class="breadCrumbAndButtons">
-            <apex:outputpanel layout="block" styleclass="breadCrumbs">
+            <!-- <apex:outputpanel layout="block" styleclass="breadCrumbs">
                 <div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
                 <a id="projectNameBreadcrumb"  href="#"><apex:outputText escape="true" value="{!projectName}" /></a> &gt;                                       
                     <apex:outputpanel layout="block" rendered="{!IF(LEN(Teamspace.Name) > 24,true,false)}" 
@@ -75,7 +85,7 @@
                     </apex:outputpanel>
                 </div>  
                 <span class="breadCrumbsLast"><strong>Detail</strong></span>     
-            </apex:outputpanel>
+            </apex:outputpanel> -->
             
             <div id="btnDiv">
                 <apex:form id="thisForm" >

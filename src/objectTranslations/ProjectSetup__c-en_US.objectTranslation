@@ -12,8 +12,8 @@
         <name>CanViewButtonNew__c</name>
     </fields>
     <fields>
-        <label><!-- CanViewButton --></label>
-        <name>CanViewButton__c</name>
+        <label><!-- ListSavedProfiles --></label>
+        <name>ListSavedProfiles__c</name>
         <picklistValues>
             <masterLabel>Contract Manager</masterLabel>
             <translation><!-- Contract Manager --></translation>
