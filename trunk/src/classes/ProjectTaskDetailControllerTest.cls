@@ -25,8 +25,8 @@
         
         ProjectTaskDetailController.TaskDetails a = taskDetailController.getTask();
          
-        if(a.StartDate == null )
-            System.assert(true, 'List has no rows assigned to project task'); 
+        //if(a.StartDate == null )
+        //    System.assert(true, 'List has no rows assigned to project task'); 
         if(taskDetailController.getDetailsOk() == null)
             System.assert(true, 'boolean detailsok not defined'); 
         
