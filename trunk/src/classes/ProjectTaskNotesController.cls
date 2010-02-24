@@ -43,7 +43,7 @@ public class ProjectTaskNotesController {
     */
 	public void obtainData(){
 		
-		this.taskId=System.currentPageReference().getParameters().get( 'id_task' );
+		this.taskId=System.currentPageReference().getParameters().get( 'id' );
 		List<ProjectTask__c> taskList = new List<ProjectTask__c>();
 
 		taskList = DAOFactory.getInstance().ProjectTaskNotesObtainData( taskId ); 

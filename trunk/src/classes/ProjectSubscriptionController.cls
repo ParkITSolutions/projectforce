@@ -3,7 +3,7 @@
 */
 public class ProjectSubscriptionController {
 	
-	public String idProject							{ set; get; } 
+	public String projectId							{ set; get; } 
 	public Integer subscriptionCount				{ set; get; } 
 	public ProjectSubscription__c subscription		{ set; get; }
 	public String ProjectName						{ set; get; }
@@ -15,9 +15,9 @@ public class ProjectSubscriptionController {
 	* Constructor
 	*/
 	public ProjectSubscriptionController(){
-		this.idProject = System.currentPageReference().getParameters().get('id');
+		this.projectId = System.currentPageReference().getParameters().get('id');
 		this.subscription = new ProjectSubscription__c();
-		this.ProjectName=ProjectUtil.chopWords( ProjectUtil.chopPhrase( DAOFactory.getInstance().getProjectInfo(this.idProject).name , 20 ) );
+		this.ProjectName=ProjectUtil.chopWords( ProjectUtil.chopPhrase( DAOFactory.getInstance().getProjectInfo(this.projectId).name , 20 ) );
 		
 		loadProjectSubscription();
 	}
@@ -26,10 +26,10 @@ public class ProjectSubscriptionController {
 	* Execute on Construct
 	*/
 	public void loadProjectSubscription(){
-		if( this.idProject != null ) {
+		if( this.projectId != null ) {
 			List<ProjectSubscription__c> subProjList = new List<ProjectSubscription__c>();
 
-			subProjList = DAOFactory.getInstance().subscriptionProjectList(this.idProject);		
+			subProjList = DAOFactory.getInstance().subscriptionProjectList(this.projectId);		
 			if( subProjList.size() > 0 ){
 				this.subscription = subProjList[0];
 			}	
@@ -48,7 +48,7 @@ public class ProjectSubscriptionController {
 			DAOFactory.getInstance().updateProjectsubscription( this.subscription );
 		}
 		else{
-			this.subscription.Project__c 	= this.idProject;
+			this.subscription.Project__c 	= this.projectId;
 			this.subscription.User__c 		= UserInfo.getUserId();
 			
 			//Insert the subscription;
@@ -64,7 +64,7 @@ public class ProjectSubscriptionController {
 	*/
 	public PageReference cancelSubscription(){
 		PageReference pageRef = Page.ProjectDetail;
-		pageRef.getParameters().put( 'id', this.idProject );
+		pageRef.getParameters().put( 'id', this.projectId );
 		pageRef.setRedirect( true );
 		return pageRef;
 	}

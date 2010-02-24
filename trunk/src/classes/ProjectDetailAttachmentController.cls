@@ -1,5 +1,6 @@
 /**
 *@author Nicolas Gunther - 03/23/2009
+*@modify : Sebastian Munoz (smunoz@timbasoftware.com)
 */   
 public class ProjectDetailAttachmentController {
 
@@ -20,6 +21,7 @@ public class ProjectDetailAttachmentController {
 	public Set<Id> idsToDelSet = new Set<Id>();
    
     public String idsToDel = ':';
+
     
 	 /**
     * Set of Integers to control pagination
@@ -271,10 +273,11 @@ public class ProjectDetailAttachmentController {
 	}	
                           
 	/**
-	*
+	*readAttachments();
 	*@return void
 	*/
 	public void readAttachments(){
+		
 		List<Attachment> attachmentsList = new List<Attachment>();
 		this.project = System.currentPageReference().getParameters().get('id');
 		if(project != null){
@@ -284,6 +287,9 @@ public class ProjectDetailAttachmentController {
 								where parentid =: project
 								order by LastModifiedDate desc];
 		}
+		
+		
+		
 		loadAttachmentList(attachmentsList);
 		
 		totalItemsNumber = attachments.size();
@@ -319,6 +325,7 @@ public class ProjectDetailAttachmentController {
 	            info.setName(item.Name);
 	            info.setAttachment(item);
 	            info.setIsOwner(item.CreatedById == UserInfo.getUserId());
+	            info.setBodyWeight(item.BodyLength);
 	            
 	            String ContentType = item.ContentType;
 	            String image = '';
@@ -427,6 +434,7 @@ public class ProjectDetailAttachmentController {
         String attachImage;
 		String id;
 		Attachment attach;
+		String bodyWeight;
 		Boolean isOwner = false;
 		
 		public String shortName {
@@ -446,7 +454,7 @@ public class ProjectDetailAttachmentController {
         */
         public String getId () {
         	return id;
-        }
+        }        
         
         /**
         *@param String Attach id
@@ -470,6 +478,32 @@ public class ProjectDetailAttachmentController {
         public void setName(String name) {
                 this.name = name;
         }  
+        
+        
+        /*
+        *@Return String Attach bodyWeight
+        */
+        public String getBodyWeight(){
+        	return bodyWeight;
+        }
+        
+        /**
+        *@param String attach type icon
+        *@return void
+        */
+        public void setBodyWeight (Integer attachWeight) {
+        	if((attachWeight / 1024) > 0)
+        	{
+				this.bodyWeight = String.valueOf( attachWeight / 1024 ) + ' Kb' ; 
+        	}
+        	else
+        	{
+        		this.bodyWeight = String.valueOf( attachWeight ) + ' b';
+        	}
+        	
+        }     
+        
+        
         
 		/**
 		*@return String attach type icon

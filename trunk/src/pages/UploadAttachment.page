@@ -1,47 +1,64 @@
 <apex:page id="Attachment" sidebar="false" showHeader="false" cache="false" controller="AttachmentController">
-    
-    <apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" />
     <apex:includeScript value="{!URLFOR($Resource.Lib, 'inc/js/scriptaculous/lib/prototype.js')}" />
     
     <apex:stylesheet value="{!URLFOR($Resource.NewAttachment, 'inc/css/newAttachment.css')}" />
     <apex:includeScript value="{!URLFOR($Resource.NewAttachment, 'inc/js/newAttachment.js')}" />
-    
-    <apex:form id="uploadAttachment">
-    
+     <apex:form id="uploadAttachment">
+    	
         <apex:outputPanel id="Overlay" styleClass="overlay" layout="block">     
             <apex:outputPanel id="ComponentBody" styleClass="componentBody" layout="block">
             
                 <apex:outputText value="Select the file to upload." styleclass="label nonFloat"/>
                 <br />
                 <apex:inputFile value="{!newAttach.Body}" id="newAttach" styleclass="newAttach" contentType="{!newAttach.ContentType}" 
-                    filename="{!newAttach.Name}" fileSize="{!newAttach.BodyLength}" />  
+                    filename="{!newAttach.Name}" fileSize="{!newAttach.BodyLength}" />
+                <apex:inputHidden id="avatarTypeFlag" value="{!avatarTypeFlag}" />  
 
                 <apex:outputPanel styleclass="overlaySeparateLine" layout="block"></apex:outputPanel>
     
                 <apex:outputPanel styleClass="submitButtons" layout="block">
-                    <apex:commandLink id="Accept" styleClass="submitButton Accept" action="{!action}" onclick="parent.promptOverlay.close(); parent.swirly.show(); return Attachment.verify();">
+                    <apex:commandLink id="Accept" styleClass="submitButton Accept" action="{!action}"
+                    >
                         Accept
                     </apex:commandLink>
                     <apex:outputLink id="Cancel" value="javascript:;" onClick="parent.promptOverlay.close(); Attachment.clearForm();" styleClass="submitButton Cancel" >
-                        Cancel                  
+                        Cancel-{!endAction }-{! error == '' }-{!postAction}-{!currentPage}                  
                     </apex:outputLink>
                 </apex:outputPanel>
                 
             </apex:outputPanel>
         </apex:outputPanel>
         
-    </apex:form>
-    
+    </apex:form>    
+
     <apex:outputPanel id="errors">  
         <apex:outputPanel rendered="{!endAction && error == '' }">
-            <script>
-                parent.infoToUser.open('success', 'File uploaded.');
-                parent.reloadPanelAction();
-            </script> 
+	        <apex:outputPanel rendered="{!postAction == 'taskdetail'}">
+	            <script type="text/javascript">
+	                parent.infoToUser.open('success', 'File uploaded.');
+	                parent.reloadPanelAction();
+	            </script>
+	        </apex:outputPanel>
+
+	        <apex:outputPanel rendered="{!postAction == 'reloadMainContent'}">
+	            <script type="text/javascript">          
+	                parent.infoToUser.open('success', 'File uploaded.');
+	                parent.swirlyDetail();
+	                parent.reloadMainContent();
+	            </script>
+	        </apex:outputPanel>
+
+	        <apex:outputPanel rendered="{!postAction == 'ReloadAttachmentList'}">
+	            <script type="text/javascript">          
+	                parent.infoToUser.open('success', 'File uploaded.');
+	                parent.RefreshAttachmentList();
+	            </script>
+	        </apex:outputPanel>
         </apex:outputPanel>
     
         <apex:outputPanel id="error"  rendered="{!error != ''}">
-            <script>
+            <script type="text/javascript">
                 parent.swirly.hide();
                 parent.infoToUser.open('error', '{!error}');
             </script>
@@ -61,4 +78,52 @@
     }   
     </style>
     
+    <script type="text/javascript">
+    Attachment = {
+
+	objFile : '',
+	sendFlag : false,
+	avatarTypeFlagValue : document.getElementById( 'Attachment:uploadAttachment:avatarTypeFlag' ).value,
+
+	verify : function(){
+		if( Attachment.objFile == '' )
+			Attachment.objFile = $$('.newAttach')[0];
+		Attachment.verifyNameLength();
+		return Attachment.send();
+	},
+	
+	send : function(){
+		return this.sendFlag;
+	},
+	
+	verifyNameLength : function(){
+		Attachment.sendFlag = Attachment.objFile.value.length < 71;
+		
+		if( !Attachment.sendFlag ){
+			
+			Attachment.clearForm();
+			parent.infoToUser.open( 'error', 'File name too large, 70 characters max.' );
+		}else{
+			parent.promptOverlay.close();
+			parent.swirly.show();
+		} 
+	},
+	
+	clearForm : function(){
+		if( Attachment.objFile == '' )
+			Attachment.objFile = $$('.newAttach')[0]; 
+		Attachment.objFile.value = '';
+	}, 
+	
+	postAction: function(){
+		parent.infoToUser.open( 'success', 'post action executed.' );
+		parent.RefreshAttachmentList();
+	},
+	
+	uploadAsAvatar: function(){
+		document.getElementById( 'Attachment:uploadAttachment:avatarTypeFlag' ).value = "avatar";
+	}
+}
+    </script>
+
 </apex:page>

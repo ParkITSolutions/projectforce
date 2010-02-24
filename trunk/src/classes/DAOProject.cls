@@ -117,4 +117,16 @@ public class DAOProject {
 		return projectProfile;
 	}
 	
+	/**
+	* Delete a Project
+	* @param Project2__c projectToDelete
+	*/
+	public void deleteProject(String projectId){
+		List<Project2__c> projectToDelete = new List<Project2__c>();		
+		projectToDelete = [select Id from Project2__c where Id =: projectId limit 1];
+		if ( projectToDelete.size() > 0 ){
+			delete projectToDelete[0];
+		}
+	}
+	
 }

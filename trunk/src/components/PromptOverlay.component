@@ -38,7 +38,7 @@
                     type="string" 
                     required="false"/>             
                     
-    <script>
+    <script type="text/javascript">
         promptOverlay.id = '{!$Component.Content}';
     </script>
 	

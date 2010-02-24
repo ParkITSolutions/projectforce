@@ -18,10 +18,11 @@ public class AttachmentController {
 	public String 		typeOfAttachment 	{ set; get; }
 	public String		currentPage			{ set; get; }
 	public String 		postAction 			{ set; get; }
+	public String		avatarTypeFlag		{ set; get; }
 	
 	/**
 	* Class constructor
-	*/
+	*/ 
 	public AttachmentController(){
 		
 		this.parentId = System.currentPageReference().getParameters().get( 'Id' );
@@ -34,10 +35,10 @@ public class AttachmentController {
 	/**
 	* Uploads the file
 	*/
-	public void action(){
+	public PageReference action(){
 		
-		this.parentId = System.currentPageReference().getParameters().get( 'pId' );
-		this.typeOfAttachment = System.currentPageReference().getParameters().get( 'avatar' );
+		this.parentId = System.currentPageReference().getParameters().get( 'pid' );
+		this.typeOfAttachment = this.avatarTypeFlag;//System.currentPageReference().getParameters().get( 'avatar' );
 		this.cleanErrors();
 		if( this.allValidations() ){ 
 			if( this.currentPage == 'taskdetail' ){
@@ -45,20 +46,18 @@ public class AttachmentController {
 				t.id = this.parentId;
 				t.addAttachment( newAttach ); 
 				
-			}else if( this.currentPage == 'projectetail' ){
+			}else if( this.currentPage == 'projectdetail' ){
 				
 				Project p = new Project( this.parentId );
 				
 				if( this.typeOfAttachment == 'avatar')
 					p.setAvatar( newAttach );
-				else
+				else{
 					p.addAttachment( newAttach );
+				}
 					
 			}else if( this.currentPage == 'attachmentlist' ){
-				
-				this.postAction = 'ReloasAttachmentList';
 				newAttach.parentId = this.parentId;
-				
 				insert newAttach;
 			} 
 		
@@ -66,8 +65,11 @@ public class AttachmentController {
 			this.parentId = null;
 		}
 		
+	System.debug('2[[[>>>>]]] ' + this.currentPage);
 		this.newAttach = new Attachment();
 		this.endAction = true;
+		
+		return Page.UploadAttachment;
 	}
 
 	/**
@@ -126,18 +128,17 @@ public class AttachmentController {
 	*/
 	private void location(){
 		
-		String url = ApexPages.currentPage().getUrl();
+		String url = ApexPages.currentPage().getUrl().toLowerCase();
 		
-		if( url.toLowerCase().contains( 'taskdetail' ) ){
-			
+		if( url.contains( 'taskdetail' )){
 			this.postAction = 'detailListPanel';
 			this.currentPage = 'taskdetail';
-			
-		}else if( url.toLowerCase().contains( 'projectdetail' ) ){
+		}else if( url.contains( 'projectdetail' )){
 			this.currentPage = 'projectdetail';
-		}else if( url.toLowerCase().contains( 'projectattachmentlist' ) ){
+			this.postAction = 'reloadMainContent';
+		}else if( url.contains( 'projectattachmentlist' )){
 			this.currentPage = 'attachmentlist';
-			this.postAction = 'RelodAttachmentList';
+			this.postAction = 'ReloadAttachmentList';
 		}
 	}
 }

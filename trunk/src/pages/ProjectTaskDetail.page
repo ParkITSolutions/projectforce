@@ -57,6 +57,14 @@
        );
        
        var currentTeam = '{!Task.ProjectId}';
+       
+       
+       var deleteTaskOverlay          = new ConfirmOverlay( '{!$Component.DeleteTaskOverlay}' );
+       
+       function DeleteDetailTask(){
+    	    deleteTaskOverlay.open();
+    	    deleteTaskOverlay.setActionIds('{!param}');	
+		}
     </script>
     <script>
                 function openAttachmentOverlay(){
@@ -81,8 +89,6 @@
            This task has been marked complete
     </div>
    
-    <!-- Delete Task Overlay -->
-    <c:ProjectDeleteTaskOverlay id="projectDeleteComponent"/>
     <c:ProjectOverlayDeleteAssignee id="projectDeleteAssigneeComponent"/>
     <c:ProjectOverlayDeleteAttachment id="ProjectOverlayDeleteAttachmentInclude" />
     
@@ -94,7 +100,15 @@
         includeNewAssignee="true"
         includeNewMember="true"
         idValue="{!projectId}"
-   />                     
+   />        
+   
+   <!-- Delete Task Overlay -->
+	<c:ConfirmOverlay id="DeleteTaskOverlay" 
+		title="Delete Task"
+		messageToUser=" Are you sure you want to delete this project? 
+		Once a project is deleted, tasks and milestones are not recoverable"
+		actionName="DeleteDetailTask" 
+	/>               
          
          
     <!-- includeNewMember="true" -->
@@ -111,11 +125,28 @@
     <!-- Main Content Div -->
     <!-- <div class="main_content_projectList" style="overflow:hidden"> -->
     <div class="main_content_projectList">
-    
+    	
+    	<!-- breadcrumbPanel -->
+        <apex:outputPanel id="breadcrumbPanel" styleClass="breadcrumbPanel" layout="block">
+            <c:Breadcrum id="BreadCrum"/>
+        </apex:outputPanel>
+        <!-- End breadcrumbPanel -->
         <!-- BreadCrumb and buttons -->    
-        <div align="center" class="breadCrumbAndButtons">
-            <c:Breadcrum />
+       
 
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <apex:outputPanel id="sidebarWidgets">
+                <!-- Team members -->
+               <c:MembersWidget projectId="{!projectId}"  id="MembersWidget" />
+            </apex:outputPanel>
+            <div class="clear"></div>
+        </div>
+        
+        <c:ProjectOverlayNewAssignee id="ProjectOverlayNewAssignee"/>
+        <!-- Holder -->     
+        <div class="holder" style="overflow:hidden;clear:both;margin:0px;margin-left:200px;margin-bottom:0px;" id="holder">
+             <div align="center" class="breadCrumbAndButtons">
         
         <div class="buttons" style="{!IF(Task.IsTaskOwner,'width:340px;','')}">
             <apex:outputpanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}" layout="block">
@@ -143,9 +174,19 @@
                     </apex:actionStatus>
                 </apex:form>                   
                 <apex:outputPanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner)}">
-                    <a class="blackbutton" href="Javascript:;" onclick="showDeleteEvent('{!Task.id}', 'Detail','{!Task.name}');">
+              <!--      <a class="blackbutton" href="Javascript:;" onclick="showDeleteEvent('{!Task.id}', 'Detail','{!Task.name}');">
                         <span>Delete</span>
-                    </a>
+                    </a>-->
+                    
+                    <apex:outputLink value="javascript:;"
+		                id="Delete"
+		                onClick="DeleteDetailTask();"
+		                styleClass="blackbutton">
+		                <apex:outputPanel >
+		                    Delete
+		                </apex:outputPanel>
+		            </apex:outputLink>
+                    
                 </apex:outputPanel>  
                 <apex:outputPanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner)}">
                     <a class="blackbutton" href="/apex/TaskPdfExport?id={!Task.id}">
@@ -155,20 +196,6 @@
             </apex:outputpanel>
           </div>
         </div>      
-
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <apex:outputPanel id="sidebarWidgets">
-                <!-- Team members -->
-               <c:MembersWidget idProject="{!projectId}"  id="MembersWidget" />
-            </apex:outputPanel>
-            <div class="clear"></div>
-        </div>
-        
-        <c:ProjectOverlayNewAssignee id="ProjectOverlayNewAssignee"/>
-        <!-- Holder -->     
-        <div class="holder" style="overflow:hidden;clear:both;margin:0px;margin-left:200px;margin-bottom:0px;" id="holder">
-            
             <apex:outputpanel rendered="{!IF(!detailsOk,true,false)}"  layout="block">
                 <p>No Id given , no id to look for</p>
             </apex:outputpanel>
@@ -301,7 +328,7 @@
                                 <td class="dataCol">
                                     <apex:outputpanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}">
                                         <div class="DistincLink">
-                                            <a href="ProjectTaskNotes?id_task={!Task.id}">
+                                            <a href="ProjectTaskNotes?id={!Task.id}">
                                                 <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/task_edit.png')}" alt="Add assignee" title="Add assignee" />
                                                 Edit Notes
                                             </a>
@@ -353,10 +380,8 @@
                 </div><br style="clear:both;" />               
             </apex:outputpanel>
             <br style="clear:both;" />
-        </div>
-        </div>
-        
-        <div align="center" class="breadCrumbAndButtons" style="padding-top:15px;">
+            
+            <div align="center" class="breadCrumbAndButtons" style="padding-top:15px;">
             <div class="buttons" style="{!IF(Task.IsTaskOwner,'width:340px;','')}">
                 <apex:outputpanel rendered="{!OR(userPermissions.canManage,Task.IsTaskOwner)}" layout="block">
                    <!--   <a class="blackbutton" href="/apex/projectRedirect?sO=ProjectTask__c&attr=task&page=ProjectCreateNewTask&rR=NewProjectFormContainer&oC=true&eid={!Task.ProjectId}&task={!Task.id}"><span>Edit Task</span></a>-->
@@ -389,21 +414,20 @@
                 </apex:outputpanel>
             </div>
         </div>
-    </div>
- <div id="modal_overlay5" style="position: fixed; top: 0pt; left: 0pt; width: 100%; height: 100%; z-index: 9998; display: none; background-color:black; opacity:0.6;"/>
-    <script>        
-         clearTableDetail();         
-     </script>
-     <script>
-     function refreshAttachmentList(){
-        refreshDetail();
-     }
-     
-   
-    
-  
         
-  
-</script>
+        </div>
+        </div>
+        
+        
+        
+ <div id="modal_overlay5" style="position: fixed; top: 0pt; left: 0pt; width: 100%; height: 100%; z-index: 9998; display: none; background-color:black; opacity:0.6;"/>
+    <script type="text/javascript">        
+         clearTableDetail();         
+     
+	     function refreshAttachmentList(){
+	        refreshDetail();
+	     }
+	  
+	</script>
 
 </apex:page>

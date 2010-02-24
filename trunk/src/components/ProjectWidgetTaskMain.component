@@ -52,7 +52,7 @@
 					<div id="results_task_loader" style="display: none;"></div>
 					<apex:outputpanel id="TaskWidgetFull" layout="block" >
 						<div style="{!IF(listSize > 0, 'display:none', '')};" class="empty">
-							<ul class="notasks">
+							<ul class="notasks" style="text-align:center;">
 								<li>
 									No Tasks
 									<br/>

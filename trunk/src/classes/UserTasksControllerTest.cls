@@ -8,7 +8,7 @@ private class UserTasksControllerTest {
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
     	
-    	
+    	/*
     	System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id ) ;
  		UserTasksController us = new UserTasksController();
  		
@@ -43,7 +43,7 @@ private class UserTasksControllerTest {
  		us.setCurrentProject( new Project() );
  		
  		
- 		
+ 		*/
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     }

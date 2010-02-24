@@ -285,5 +285,14 @@ public class ProjectUtil {
 	    		rPhrase = phrase;
     	}
     	return rPhrase;
+    }
+    
+    
+    public  static Set<String> objOfSetTolowerCase( Set<String> s ){
+    	Set<String> auxSet = new Set<String>();
+    	for( String  e : s)
+    		auxSet.add( e.toLowercase());
+    		
+    	return auxSet;
     } 
 }

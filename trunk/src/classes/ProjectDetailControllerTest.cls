@@ -13,6 +13,7 @@
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
+    	/*
     	System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.Id );
     	
     	ApexPages.StandardController stdCtrl;
@@ -37,7 +38,7 @@
     	
     	pd.getInTeamSubscription();
     	
-    	
+    	*/
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     }    	

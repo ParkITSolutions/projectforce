@@ -8,6 +8,7 @@ public class SuggestController {
 	public String paramInput;
 	public String paramClass;
 	public String paramProjectId;
+	public List<String> selectedMembers {get; set;}
 	
 	/**
 	* Constructor
@@ -15,11 +16,16 @@ public class SuggestController {
 	public SuggestController(){
 		
 		this.suggestionList 	= new List<Suggestions>();
+		this.selectedMembers 	= new List<String>();
 		String inputValue 		= System.currentPageReference().getParameters().get( 'input' ).trim();
 		this.paramInput 		= '%' + inputValue + '%';
 		this.paramClass 		= System.currentPageReference().getParameters().get( 'class' );		
 		this.paramProjectId 	= System.currentPageReference().getParameters().get( 'teamId' );
-		 
+		this.selectedMembers	= System.currentPageReference().getParameters().get( 'selectedMembers' ).split(',');
+		
+		System.debug('\n\n\n\n\n'+ selectedMembers +'\n\n\n\n\n');
+		
+		
 		if ( this.paramClass == 'Competency' ){
 			List<ProjectMember__c> s = [select User__r.Name, Id 
 											from ProjectMember__c 
@@ -44,7 +50,7 @@ public class SuggestController {
 				teamMemberMap.put(iterMember.User__c, iterMember );
 			} 
 			
-			for( User c : [select Name, Id from User where IsActive != false and Name like : this.paramInput order by Name] ){
+			for( User c : [select Name, Id from User where IsActive != false and Name like : this.paramInput and Name not in: selectedMembers  order by Name] ){
 				if ( teamMemberMap.get( c.Id ) == null ) {
 					
 					Suggestions suggest = new Suggestions();

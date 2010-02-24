@@ -19,15 +19,8 @@
 		
 		<!-- BreaCrumbs -->
         <apex:outputPanel id="breadCrumb" styleclass="breadCrumb" layout="block">
-            <!-- <c:Breadcrum /> -->
-            Breadcrum / Breadcrum / Breadcrum / Breadcrum  
+            <c:Breadcrum id="BreadCrum" />
         </apex:outputPanel>
-
-		<!-- Sidebar -->
-		<apex:outputPanel id="sidebar" styleclass="sidebar" layout="block">        		    
-			<!-- Project Quick Links -->
-			<c:QuickLinksWidget id="quidkLinks" />
-		</apex:outputPanel>
 
 		<!-- Main Content -->
 		<apex:outputPanel id="mainContent" styleclass="mainContent" layout="block">

@@ -12,7 +12,7 @@
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
-    	
+    	/*
     	System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
     	ProjectSubscriptionController ps = new ProjectSubscriptionController();
     	
@@ -40,7 +40,7 @@
     	System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
     	ps = new ProjectSubscriptionController();
     	ps.cancelSubscription();
-
+*/
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     }     	

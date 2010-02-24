@@ -3,7 +3,7 @@
     <apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/js/overlays.js')}" />
     <apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" />
     
-    <script>
+    <script type="text/javascript">
         alertOverlay.id         = '{!$Component.Content}';
         alertOverlay.message    = '{!$Component.Form.MessageTouser}';
         alertOverlay.title      = '{!$Component.Form.Title}';

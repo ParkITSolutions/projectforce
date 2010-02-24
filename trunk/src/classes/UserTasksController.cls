@@ -3,14 +3,14 @@
 */
 public class UserTasksController{
 
-    private Boolean showDetail;
+    public Boolean showDetail { set; get; }
     public id currentUser;
     public Project currentProject { set; get; }
     public List<ProjectMember__c> allProjects;
     public Map<id,ProjectMember__c> allProjectsMap;
     public List<SelectOption> selectOpsProject;
 
-    public String opSelected;   
+    public String opSelected;
     public String attachmentPrjId;
     
     public Paginator paginator  { set; get; }
@@ -22,7 +22,7 @@ public class UserTasksController{
     public UserTasksController(){
         
         this.currentUser    = UserInfo.getUserId();
-        this.opSelected     = ''; 
+        //this.opSelected     = 'none'; 
         this.showDetail     = false;
 
         this.allProjects        = new List<ProjectMember__c>();
@@ -34,8 +34,12 @@ public class UserTasksController{
         this.paginator.orderBy      = 'Name';
         this.paginator.orderAsc     = true;
         this.paginator.filter       = '1'; // Show all tasks and milestones
-        this.paginator.project.id   = this.opSelected == '' ? '' : this.opSelected; 
-        this.paginator.project.id = '';
+        if( this.opSelected == null || this.opSelected == 'none' )
+        	this.paginator.project.id   = '';
+       // else 
+        	//this.paginator.project.id   = this.opSelected;
+        //this.opSelected == 'none' ? '' : this.opSelected; 
+        //this.paginator.project.id = 'none';
         
         paginator.loadTasksByUser();
         
@@ -54,13 +58,7 @@ public class UserTasksController{
         return this.attachmentPrjId;
     }
 
-    /**
-    * @return Boolean
-    */
-    public Boolean getShowDetail(){         
-        
-        return this.opSelected != ''; 
-    } 
+
 
     /**
     * @return List<SelectOption>
@@ -69,7 +67,7 @@ public class UserTasksController{
         
         this.selectOpsProject.clear();
         ProjectMember__c c = this.allProjects[0].clone();       
-        this.selectOpsProject.add( new SelectOption( '', 'All projects' ) );
+        this.selectOpsProject.add( new SelectOption( 'none', 'All projects' ) );
 
         for( ProjectMember__c p : this.allProjects )
             if( p.Project__c != null )
@@ -92,8 +90,13 @@ public class UserTasksController{
     */
     public void setOpSelected( String option ){
         
+        System.debug( '[>>>] ' + option );
+        
         this.opSelected = option;
-        this.paginator.project.id = option == '' ? '' : option;
+        this.paginator.project.id = option == 'none' ? '' : option;
+        this.showDetail = option != 'none';
+                paginator.loadTasksByUser();
+        
         this.selectProjectBasicData();
     }
     
@@ -106,7 +109,7 @@ public class UserTasksController{
         this.currentProject             = new Project();
         ProjectMember__c tempProject    = new ProjectMember__c(); 
         
-        if( this.allProjectsMap.size() > 0 && this.OpSelected != '' ){
+        if( this.allProjectsMap.size() > 0 && this.OpSelected != 'none' ){
             tempProject = this.allProjectsMap.get( this.OpSelected );
             
             this.AttachmentPrjId                        = tempProject.Project__r.Picture__c;
@@ -114,7 +117,10 @@ public class UserTasksController{
             this.currentProject.priority                = ProjectUtil.chopWords( tempProject.Project__r.priority__c );
             this.currentProject.displayDuration         = ProjectUtil.chopWords( tempProject.Project__r.DisplayDuration__c );
             this.currentProject.description             = ProjectUtil.chopWords( tempProject.Project__r.Description__c );
-            this.currentProject.daysWorkWeekFormated    = 'Mon - ' + days[ Integer.valueOf( tempProject.Project__r.DaysInWorkWeek__c )]; 
+            if( tempProject.Project__r.DaysInWorkWeek__c == null )
+            	this.currentProject.daysWorkWeekFormated = '-';
+            else
+            	this.currentProject.daysWorkWeekFormated    = 'Mon - ' + days[ Integer.valueOf( tempProject.Project__r.DaysInWorkWeek__c )-1]; 
         }
     }
     

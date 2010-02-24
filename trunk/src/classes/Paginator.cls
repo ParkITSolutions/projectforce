@@ -107,7 +107,7 @@ public class Paginator {
     */
     public void previous(){
         
-        paginator.previous();
+        paginator.setPageNumber(pageNumber-1);
         pagesListConstructor();
     }
     
@@ -134,8 +134,9 @@ public class Paginator {
     */
     public void next(){
         
-        paginator.next();
+        paginator.setPageNumber(pageNumber+1);
         pagesListConstructor();
+        
     }
     
     /**

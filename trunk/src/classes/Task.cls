@@ -71,7 +71,7 @@ public class Task{
 	}
 	
 	/**
-	* Se duration (Double) and durationDisplay (String) properties
+	* Set duration (Double) and durationDisplay (String) properties
 	* @param Double d
 	* @return void
 	*/

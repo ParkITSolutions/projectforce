@@ -13,13 +13,6 @@
                      assignTo="{!projectId}" 
                      required="true"/>
 
-	<!-- 
-	TODO finalizar XXXX
-	<apex:actionFunction name="RefreshTaskAssignedList" 
-                        action="{!doRefresh}" 
-                        rerender="" 
-                        oncomplete="swirly.hide(); infoToUser.show();"/>
-	-->
     
     <apex:outputPanel id="widget" styleClass="widget" layout="block" >
     

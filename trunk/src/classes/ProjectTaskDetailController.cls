@@ -154,19 +154,21 @@ public class ProjectTaskDetailController {
 	}
 	
 	/**
-	* Update the task's percent to 100
+	*Update the task's percent to 100
 	*@return void
+	*@last modificate : Sebastian Munoz ( smunoz@sebastianm.com ) 2/23/2010
 	*/
 	public void markComplete(){
 		try{
-			ParentTask parent = new ParentTask(); 
+			Project project = new Project(projectId);
+			//We need re-factorize this code, all controller in order to discard the SOQL Select in the follow line
+			project.tasks = [Select Id, PercentCompleted__c from ProjectTask__c where Id =: param];
 			
-			ProjectTask__c myTask = [Select PercentCompleted__c, Project__c, Id 
-										From ProjectTask__c 
-										where Id =: param];
-										
-			myTask.PercentCompleted__c = 100;
-			update myTask;
+			if(project.tasks.size() > 0)
+			{
+				project.markCompleteTasks();
+			}
+			
 		}catch(Exception e){
 			throw e;
 		}

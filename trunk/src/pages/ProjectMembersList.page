@@ -123,7 +123,9 @@
         <div class="sidebar">
     
             <!-- Project Quick Links -->
-            <c:QuickLinksWidget id="quidkLinks" />
+            <c:QuickLinksWidget id="quidkLinks" 
+            	projectId="{!projectId}"
+            />
     
             <!-- Team Suscribe -->
             <c:ProjectSubscribe />

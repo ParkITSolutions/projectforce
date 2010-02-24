@@ -128,7 +128,7 @@ public with sharing class ProjectAttachmentListController {
 	    	this.totalItemsNumber		= 0;
 		    this.jumpPage 				= 1;
 		   	
-		    this.numberOfItemsToShow 	= 10; 
+		    this.numberOfItemsToShow 	= 2; 
 		    this.currentPagination 		= 1;
 		    this.firstRow 				= 0;
 		    
