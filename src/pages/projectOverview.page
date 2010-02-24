@@ -66,9 +66,9 @@
     </apex:composition>
     <!-- Sidebar -->
     <div class="sidebar">
-        <c:ProjectsWidgetMyTasks />
-        <c:ProjectsWidgetMyMilestones />
-        <c:ProjectSetupWidget />  
+        <c:ProjectsWidgetMyTasks id="myTasks"/>
+        <c:ProjectsWidgetMyMilestones id="myMilestones"/>
+        <c:ProjectSetupWidget id="projectSetup"/>  
     </div>
     <!-- Main Content Div --> 
     <div class="main_content" > 
@@ -252,10 +252,12 @@
                             </apex:repeat>
                         </div> 
                     </div>  
-                    
+                      
                     <!-- PAGINATION    -->
                     <apex:outputPanel layout="block" id="paginationBottom" rendered="{!isAllProjects}" styleClass="navigatorContainerBottom">               
+                         <hr class="filterHR" style="color: #E1E1E2;"/>
                         <div class="navigation">
+                       
                             <apex:form >
                                 <ul align="center">
                                 <!--  first page  -->

@@ -25,7 +25,9 @@
         <!-- Sidebar Section Contains Widgets -->
         <apex:outputpanel id="sideBar" layout="block" styleClass="sideBar">
     		
-    		<c:QuickLinksWidget id="quickLinks" />
+    		<c:QuickLinksWidget id="quickLinks" 
+    			projectId="{!projectId}"
+    		/>
     		
             <!--  <c:ProjectsWidgetMyTasks id="myTasksWidget"/>
             

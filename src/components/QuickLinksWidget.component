@@ -6,6 +6,22 @@
     <!-- TODO place in application top -->
     <apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
     
+    
+    <!-- Attribute Definitions -->
+    <apex:attribute name="viewNewLinks" 
+                     description="When is false, dont view the new links"
+                     type="Boolean" 
+                     required="false"
+                     default="true" />
+
+	    
+    <apex:attribute name="projectId"
+                     description="Project id"
+                     type="String" 
+                     assignTo="{!projectId}" 
+                     required="true"/>
+    <!--------------------------->
+   	             
     <apex:outputPanel id="widget" styleClass="widget" layout="block" >
     
         <!-- widget header -->
@@ -18,32 +34,34 @@
         </apex:outputPanel>
 
         <!-- dynamic content goes here -->
-        <apex:outputPanel id="QuickLinksWidget" layout="block" styleClass="quickLinksWidget">
+        <apex:outputPanel id="QuickLinksWidget" layout="block" styleClass="quickLinksWidget" >
         
-            <!-- Body of Widget goes here -->
-            <apex:outputPanel id="newTaskPanel" layout="block" styleclass="textQuickLink"  rendered="{!userPermission.canCreate}">
+            <!-- Body of Widget goes here --> 
+            <apex:outputPanel id="newTaskPanel" layout="block" styleclass="textQuickLink"  rendered="{!IF(AND(userPermission.canCreate, viewNewLinks),true, false)}">
+            <!-- <apex:outputPanel id="newTaskPanel" layout="block" styleclass="textQuickLink"  rendered="{!userPermission.canCreate and viewNewLinks}"> -->
                 <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
                 <apex:outputLink id="newTaskLink" value="javascript:;" onClick="promptOverlay.open(newTask);">New Task</apex:outputLink>
             </apex:outputPanel>
             
-            <apex:outputPanel id="newmilestonPanel" layout="block" styleclass="textQuickLink"  rendered="{!userPermission.canCreate}">
+            <apex:outputPanel id="newmilestonPanel" layout="block" styleclass="textQuickLink"  rendered="{!IF(AND(userPermission.canCreate, viewNewLinks),true, false)}">
+            <!-- <apex:outputPanel id="newmilestonPanel" layout="block" styleclass="textQuickLink"  rendered="{!userPermission.canCreate and viewNewLinks}"> -->
                 <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
                 <apex:outputLink id="newMilestoneLink" value="javascript:;" onClick="promptOverlay.open(newMilestone);">New Milestone</apex:outputLink>
             </apex:outputPanel>
             
             <apex:outputPanel id="timelinePanel" layout="block" styleclass="textQuickLink">
                 <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
-                <apex:outputLink id="timelineLink" value="ProjectTimeline?id={!idProject}" >Timeline</apex:outputLink>
+                <apex:outputLink id="timelineLink" value="ProjectTimeline?id={!projectId}" >Timeline</apex:outputLink>
             </apex:outputPanel>
             
             <apex:outputPanel id="taskListPanel" layout="block" styleclass="textQuickLink">
                 <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
-                <apex:outputLink id="taskListLink" value="/apex/TaskList?id={!idProject}">Task List</apex:outputLink>
+                <apex:outputLink id="taskListLink" value="/apex/TaskList?id={!projectId}">Task List</apex:outputLink>
             </apex:outputPanel>
         
             <apex:outputPanel id="memberPanel" layout="block" styleclass="textQuickLink">
                 <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
-                <apex:outputLink id="memberLink" value="/apex/MembersList?id={!idProject}">Member List</apex:outputLink>
+                <apex:outputLink id="memberLink" value="/apex/MembersList?id={!projectId}">Member List</apex:outputLink>
             </apex:outputPanel>
             
             <apex:outputPanel id="userTaskPanel" layout="block" styleclass="textQuickLink">

@@ -65,8 +65,7 @@
 										<a href="#" onclick="window.open('https://{!domain}/servlet/servlet.FileDownload?file={!attachment.Id}')" title="{!attachment.Name}" > {!attachment.shortName} </a>
 									</td>  
 									<td>
-										<apex:outputField value="{!attachment.Attachment.BodyLength}"/>
-										Kb
+										<apex:outputText value="{!attachment.bodyWeight}"/>
 									</td>
 									<td>
 										<apex:outputField value="{!attachment.Attachment.LastModifiedDate}"/>
@@ -92,7 +91,7 @@
 						</apex:outputPanel>
 					
 					<apex:outputPanel rendered="{!IF(attachmentCount, false, true)}">
-						<ul class="noattachment">
+						<ul class="noattachment" style="text-align:center;">
 							<li>
 								No Attachments Yet<br/>
 								<apex:outputpanel rendered="{!userPermissions.canCreate}"  > 

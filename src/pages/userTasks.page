@@ -35,7 +35,6 @@
                   
                     <apex:outputPanel layout="block" id="projectDetail" >                   
                         <apex:outputPanel layout="block" styleClass="FieldValue" >
-                            
                             <apex:outputPanel rendered="{!ShowDetail}">
                                 <center>
                                     <apex:outputPanel layout="block" id="detailProject" styleClass="DetailProject">
@@ -65,7 +64,7 @@
                         </apex:outputPanel>
                     </apex:outputPanel>
         
-                        <!-- PaginatorPanel -->
+                    <!-- PaginatorPanel -->
                     <apex:outputPanel id="PaginatorPanel" styleClass="paginatorPanel" layout="block" >
                     
                             <script type="text/javascript">

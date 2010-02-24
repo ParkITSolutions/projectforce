@@ -317,6 +317,13 @@ public class DAOFactory {
         return DAOProject.idProjectProfile();
     }
     
+    /**
+	* Delete a Project
+	* @param Project2__c projectToDelete
+	*/
+	public void deleteProject( String projectId ){
+		DAOProject.deleteProject( projectId );
+	}
     /*-----------------------------------------------------------------------------------------------------------------------------*/
     
     /*--------------------------------------------------- Activity Log operations ------------------------------------------------------*/

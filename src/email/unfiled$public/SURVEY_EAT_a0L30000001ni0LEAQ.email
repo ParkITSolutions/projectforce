@@ -1,1 +1,0 @@
-Please complete this survey at:{!IF(Contact.Id != null,'https://timbasurveys.na1.visual.force.com/apex/Survey?id=a0L30000001ni0LEAQ&cId='+Contact.Id,'')}{!IF(Receiving_User.Id != null,'https://timbasurveys.na1.visual.force.com/apex/Survey?id=a0L30000001ni0LEAQ&cId='+Receiving_User.Id,'')}

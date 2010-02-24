@@ -1,6 +1,6 @@
 <apex:component id="Attachment" controller="AttachmentController" allowDML="true">
 
-	<script>
+	<script type="text/javascript">
 		var attachment = '{!$Component.Content}';
 	</script>	
 	

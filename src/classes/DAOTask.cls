@@ -119,14 +119,16 @@ public class DAOTask {
         if( filter == '6' ){ //overdue tasks
             
             condition = 'and Milestone__c = false '+
-                        'and PercentCompleted__c < 100 '+
+                        'and Status__c != \'Resolved\' '+
+                        'and Status__c != \'Closed\' '+
                         'and EndDate__c < '+String.valueOf(System.today())+' ';
         }
         
         if( filter == '7' ){ //overdue milestones
             
             condition = 'and Milestone__c = true '+
-                        'and PercentCompleted__c < 100 '+
+                        'and Status__c != \'Resolved\' '+
+                        'and Status__c != \'Closed\' '+
                         'and StartDate__c < '+String.valueOf(System.today())+' ';
         }
         
@@ -135,7 +137,8 @@ public class DAOTask {
                             'Name, ' +
                             'Milestone__c, ' +
                             'Priority__c, ' +
-                            'PercentCompleted__c, ' +  
+                            'PercentCompleted__c, ' + 
+                            'Status__c,' + 
                             'Duration__c, ' +
                             'StartDate__c, ' + 
                             'EndDate__c, ' +
@@ -146,7 +149,7 @@ public class DAOTask {
                         'and Name like \''+letter+'%\'' +  
                         ''+condition +' ' + 
                         'order by '+orderBy+' '+orderWay; 
-        
+        System.debug( '###>>> ' + query );
         ApexPages.StandardSetController tasks = new ApexPages.StandardSetController( Database.getQueryLocator( query ) );
         
         if( tasks.getResultSize() == 0 ){

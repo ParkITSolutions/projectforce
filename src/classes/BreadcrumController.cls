@@ -22,8 +22,9 @@ public class BreadcrumController {
 	*Constructor
 	*/
 	public BreadcrumController(){ 
-		infoOfProject = new Set<String>{ 'projectDetail', 'ProjectActivity', 'MembersList', 'projectAttachmentList', 'tasklist', 'ProjectSubscription' };
-		infoOfTaskAndProject =  new Set<String>{ 'ProjectTaskDetail', 'ProjectTaskNotes' };
+		// WARNING: the name og the page must be exact as appears in the url
+		infoOfProject = ProjectUtil.objOfSetTolowerCase( new Set<String>{ 'projectDetail', 'ProjectActivity', 'MembersList', 'projectAttachmentList', 'TaskList', 'ProjectSubscription', 'ProjectSetup' });
+		infoOfTaskAndProject =  ProjectUtil.objOfSetTolowerCase( new Set<String>{ 'ProjectTaskDetail', 'ProjectTaskNotes' });
 
 		this.currentPage = ApexPages.currentPage().getUrl().split('/apex/').get(1).split('[?]').get(0);
 		
@@ -61,13 +62,14 @@ public class BreadcrumController {
 	*Get the infomarion needed depending the name of the page
 	*/
 	private void setInfo(){
-		if( this.infoOfProject.contains( this.currentPage )){
+		if( this.infoOfProject.contains( this.currentPage.toLowercase() )){
 			Project project = new Project();
 			id pId = System.currentPageReference().getParameters().get( 'id' );
+			if( pId != null )
 			project = DAOFactory.getInstance().getProjectInfo( pId ); 
 			this.projectId = project.id;
 			this.projectName = project.name;
-		}else if( this.infoOfTaskAndProject.contains( this.currentPage )){
+		}else if( this.infoOfTaskAndProject.contains( this.currentPage.toLowercase() )){
 			ProjectTask__c task = new ProjectTask__c();
 			id taskId = System.currentPageReference().getParameters().get( 'id' );
 			task = DAOFactory.getInstance().taskInfoWithProjectRel( taskId ); 
@@ -85,7 +87,7 @@ public class BreadcrumController {
 	private void createMapOfNodes(){
 		this.listNodes = new Map<String, BreadcrumNode>();
 		this.addNode( '/apex/projectOverview', 'Overview', 'overview', 'root');
-		this.addNode( '/apex/projectDetail?id=' + this.projectId, 'Project Detail', 'projectDetail', 'overview');
+		this.addNode( '/apex/projectDetail?id=' + this.projectId, this.projectName, 'projectDetail', 'overview');
 		this.addNode( '/apex/tasklist?id=' + this.projectId, 'Tasks List', 'tasklist', 'projectDetail');
 		this.addNode( '/apex/projectTaskDetail?id=' + this.taskId, this.taskName, 'ProjectTaskDetail', 'tasklist');
 		this.addNode( '/apex/userTasks', 'User Tasks', 'userTasks', 'overview');
@@ -93,7 +95,8 @@ public class BreadcrumController {
 		this.addNode( '/apex/MembersList?id=' + this.projectId, 'Members List', 'MembersList', 'projectDetail');
 		this.addNode( '/apex/ProjectActivity?id=' + this.projectId, 'Project Activity', 'ProjectActivity', 'projectDetail');
 		this.addNode( '/apex/ProjectTaskNotes?id=' + this.taskId, 'Project Task Notes', 'ProjectTaskNotes', 'ProjectTaskDetail');
-		this.addNode( '/apex/ProjectSubscription?id=' + this.taskId, 'Manage Subscription', 'ProjectSubscription', 'ProjectTaskDetail' );
+		this.addNode( '/apex/ProjectSubscription?id=' + this.taskId, 'Manage Subscription', 'ProjectSubscription', 'ProjectDetail' );
+		this.addNode( '/apex/ProjectSetup', 'Project Setup', 'ProjectSetup', 'overview');
 	}
 	 
 	/**

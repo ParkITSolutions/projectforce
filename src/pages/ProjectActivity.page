@@ -22,7 +22,7 @@
             
             <!-- Bread Crumb section and Buttons -->
             <apex:outputpanel id="breadcrumPanel" styleClass="breadCrumbAndButtons" layout="block">
-            	<c:Breadcrum />
+            	<c:Breadcrum id="Breadcrum"/>
             </apex:outputpanel>
             
         </apex:outputpanel>
@@ -30,8 +30,10 @@
         <!-- Sidebar Section Contains Widgets -->
         <apex:outputpanel id="sideBar" layout="block" styleClass="sideBar">
         
-            <!-- Project Quick Links -->
-            <c:QuickLinksWidget id="quickLinks"/>
+            <!-- Project Quick Links --> 
+            <c:QuickLinksWidget id="quickLinks"
+            	projectId="{!projectId}"
+            />
                
         </apex:outputpanel>
         

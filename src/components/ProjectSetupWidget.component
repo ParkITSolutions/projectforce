@@ -1,7 +1,13 @@
-<apex:component id="ProjectSetupWidget" controller="ProjectSetupController"allowDML="true" >
+<apex:component id="ProjectSetupWidget" controller="ProjectSetupController" allowDML="true" >
 	
 	<!-- TODO place in application top -->
 	<apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
+	
+	<style type="text/css">
+		.prjSetupLink{
+			margin-left:10px;
+		}
+	</style>
 	
 	<apex:outputPanel id="widget" styleClass="widget" layout="block" >
 	
@@ -9,7 +15,7 @@
 		<apex:outputPanel id="header" layout="block" styleClass="header">
 			<div>
 				<div>
-					<h4>Setup</h4>
+					<h5>Setup</h5>
 				</div>
 			</div>
 		</apex:outputPanel>
@@ -18,7 +24,8 @@
 		<apex:outputPanel id="widgetContent" layout="block" styleClass="widgetContent">
 		
 			<!-- TODO insert icon found in commonResources -->
-			<apex:outputPanel id="setupLink">
+			<apex:outputPanel id="setupLink" layout="block" styleClass="prjSetupLink">
+				<apex:image id="icon" value="{!URLFOR($Resource.commonResources, '/images/icons/settings.gif')}" />
 				<a href="/apex/ProjectSetup">Manage Configuration</a>
 			</apex:outputPanel>
 		

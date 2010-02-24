@@ -1,6 +1,6 @@
 <apex:component id="OverlayTemplate">
 
-    <script>
+    <script type="text/javascript">
         var overlayTemplate = '{!$Component.Content}';
     </script>
 

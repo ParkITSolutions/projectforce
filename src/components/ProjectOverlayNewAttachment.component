@@ -45,6 +45,6 @@
     <script>
         
         newAttachmentFileOverlay = new modalOverlayClass('newAttachmentOverlay','modalNewAttachmentOverlay',  true);
-    
+		function openAvatarUploader(){}    
     </script>            
 </apex:component>

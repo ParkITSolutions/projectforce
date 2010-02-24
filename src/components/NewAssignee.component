@@ -3,7 +3,7 @@
     <apex:stylesheet value="{!URLFOR($Resource.NewAssignee, 'inc/css/newAssignee.css')}" />
     <apex:includeScript value="{!URLFOR($Resource.NewAssignee, 'inc/js/newAssignee.js')}" />
     
-    <script>
+    <script type="text/javascript">
         var newAssignee 					= '{!$Component.Content}';
         newAssigneeOverlay.assignedSelect 	= '{!$Component.Form.assignedSelect}';
         newAssigneeOverlay.miniSwirly 		= '{!$Component.Form:miniSwirly}';

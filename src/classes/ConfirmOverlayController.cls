@@ -21,9 +21,10 @@ public class ConfirmOverlayController {
 	/**
 	* Action for accept button
 	*/
-	public void action(){
+	public PageReference action(){
 		
 		this.postAction = '';
+		PageReference pageRef = null;
 		
 		try{
 			if( this.actionName == 'DeleteTasks' ){
@@ -31,7 +32,18 @@ public class ConfirmOverlayController {
 				DAOFactory.getInstance().deleteTasks( this.actionIds );
 				this.postAction = 'DeleteTasksSuccess';
 			}
-			
+			if( this.actionName == 'DeleteDetailTask' ){
+				
+				String projectId = DAOFactory.getInstance().getTask(this.actionIds).Project__c;
+				
+				DAOFactory.getInstance().deleteTasks( this.actionIds );
+				this.postAction = 'DeleteTasksSuccess';
+				
+				
+				pageRef = new PageReference( '/apex/tasklist' );
+				pageRef.getParameters().put('id', projectId);
+				
+			}
 			if( this.actionName == 'MarkCompleteTasks' ){
 				
 				String projectId 	= System.currentPageReference().getParameters().get( 'id' );
@@ -54,9 +66,20 @@ public class ConfirmOverlayController {
 				this.postAction = 'DeleteMembersSuccess';
 			}
 			
+			if( this.actionName == 'DeleteProject' ){
+				DAOFactory.getInstance().deleteProject( this.actionIds );
+				this.postAction = 'DeleteProjectsSuccess';
+				
+				pageRef = new PageReference( '/apex/projectOverview' );
+			}
+			
 		}catch( CustomException e ){
 			Apexpages.addMessages( e );
 			this.exceptionMessage = e.getMessage();
 		}
+		
+		return pageRef;
 	}
+	
+
 }

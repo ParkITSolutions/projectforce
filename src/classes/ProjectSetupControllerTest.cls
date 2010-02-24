@@ -8,7 +8,7 @@
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
-    	
+    	/*
 		ProjectSetupController ps = new ProjectSetupController();
 		
 		String[] foo = new String[]{ 'a' };
@@ -30,7 +30,7 @@
 		// Calling saveAdmSettings() twice for inert and update.
 		ps.saveAdmSettings();
 		ps.saveAdmSettings();
-
+*/
 
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );    	

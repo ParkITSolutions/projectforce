@@ -334,7 +334,7 @@
                                 </apex:outputpanel>
                             </apex:facet>
                             
-                            <apex:outputPanel styleClass="outline {!IF (task.OverdueTask > 0,'borderRed', '')}">
+                            <apex:outputPanel styleClass="outline {!IF(AND(task.OverdueTask > 0,AND(task.status != 'Resolved', task.status != 'Closed')),'borderRed','')}">
                                 <apex:outputPanel styleClass="percentCompleted" style="width:{!task.percentCompleted}%;"/>
                             </apex:outputPanel>
                             <apex:outputText value="{!task.percentCompleted}"/>
@@ -361,7 +361,7 @@
                                 </apex:outputpanel>
                             </apex:facet>
                             <apex:outputText value="{!task.endDateDisplay}"/>
-                            <apex:outputPanel layout="block" styleClass="DaysLateMessage" rendered="{!task.OverdueTask > 0}">
+                            <apex:outputPanel layout="block" styleClass="DaysLateMessage" rendered="{!IF(AND(task.OverdueTask > 0,AND(task.status != 'Resolved', task.status != 'Closed')),true,false)}">
                                 <apex:outputText value="{!task.OverdueTask} day late"/>
                             </apex:outputPanel>
                             

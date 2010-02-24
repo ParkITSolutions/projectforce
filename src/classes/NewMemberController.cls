@@ -18,6 +18,8 @@ public class NewMemberController {
 	public NewMemberController(){
 		this.mailList = null;
 	}
+	
+	
 
 	public void action(){
 		
@@ -31,12 +33,14 @@ public class NewMemberController {
 			
 			Map<String,Id> projectProfile = DAOFactory.getInstance().idProjectProfile();
 
-			if( !userList.isEmpty() ){
+			if( !userList.isEmpty() )
+			{
+				
 				Map<String,String> auxMap = new Map<String,String>{};
+
 				for( User user : userList ){
-					
 					ProjectMember__c newMember = new ProjectMember__c();
-					newMember.User__c 		= user.id;
+					newMember.User__c 		= user.Id;
 					newMember.Name 			= user.Name;
 					newMember.Project__c 	= this.projectId;
 					
@@ -44,8 +48,11 @@ public class NewMemberController {
 		
 					Id idProfile = null;
 					if( isAdministrator )
+					{
 						idProfile = projectProfile.get( 'Project Administrator' );
-					else{
+					}
+					else
+					{
 						idProfile = projectProfile.get( 'Member Profile' );
 					}
 		

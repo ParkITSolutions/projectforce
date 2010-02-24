@@ -2066,6 +2066,10 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>Attachment</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>HeaderTemplate</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
@@ -2095,6 +2099,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ProjectDetailNico</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>ProjectMembersList</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>

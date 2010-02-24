@@ -78,12 +78,14 @@ public class ObjectFormatter {
     		taskAux.id = task.id;
 			taskAux.idDisplay = task.Id__c;
 			taskAux.name = task.Name; 
+			taskAux.status = task.Status__c;
 			taskAux.ownerId = task.OwnerId;
 			taskAux.isMilestone = task.Milestone__c;
 			taskAux.priority = task.Priority__c; 
 			taskAux.setPercentCompleted( task.PercentCompleted__c );
 			taskAux.durationDisplay = String.valueOf(task.Duration__c);
 			
+			//TODO learn about the latest milestone because no final date
 			if( task.Milestone__c ){
 				taskAux.endDateDisplay = String.valueOf(task.StartDate__c.format());
 				taskAux.endDate = task.StartDate__c;
@@ -191,7 +193,7 @@ public class ObjectFormatter {
 			
 			att.realId			= iter.Id;
 			att.name 			= iter.Name;
-			att.weight 			= String.valueOf( iter.BodyLength / 1024 ) + ' Kb';
+			att.weight 			= ((iter.BodyLength / 1024) > 0) ? String.valueOf( iter.BodyLength / 1024 ) + ' Kb' : String.valueOf(iter.BodyLength) + ' b';
 			att.createdBy 		= iter.CreatedBy.Name;
 			att.createdDate 	= iter.CreatedDate;
 			

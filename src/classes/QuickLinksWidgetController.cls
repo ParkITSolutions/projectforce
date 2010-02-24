@@ -3,9 +3,9 @@
 */
 public class QuickLinksWidgetController {
 	
-	public String idProject   				{ set; get; }
+	//public String idProject   				{ set; get; }
 	public UserPermissions userPermission 	{ set; get; }
-	
+	public String projectId   				{ set; get; }
 
     /**
     * Constructor
@@ -13,9 +13,10 @@ public class QuickLinksWidgetController {
     public QuickLinksWidgetController(){
     	
     	this.userPermission = new UserPermissions();
-		this.idProject 		= System.currentPageReference().getParameters().get( 'id' );
+		//this.idProject 		= System.currentPageReference().getParameters().get( 'id' );
 		
 		this.genPermissions();
+		
     }
     
     /**
@@ -24,7 +25,9 @@ public class QuickLinksWidgetController {
  	private void genPermissions(){
  		
         userPermission.setId(UserInfo.getUserId());
-        userPermission.setProject(idProject);
+        
+        userPermission.setProject(this.projectId);
+        //userPermission.setProject(idProject);
         userPermission.setObjectType('Project');
         userPermission.setPermissions();
     }

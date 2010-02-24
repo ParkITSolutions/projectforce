@@ -3,7 +3,7 @@
     <apex:stylesheet value="{!URLFOR($Resource.NewMilestone, 'inc/css/newMilestone.css')}" /> 
     <apex:includeScript value="{!URLFOR($Resource.NewMilestone, 'inc/js/newMilestone.js')}" />
     
-    <script>
+    <script type="text/javascript">
         var newMilestone 		= '{!$Component.Content}';
         milestone.name 			= '{!$Component.Form.Name}'
         milestone.startDate 	= '{!$Component.Form.StartDate}'

@@ -12,7 +12,7 @@
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
-    	
+    	/*
         System.currentPageReference().getParameters().put('input', 'Test');
         System.currentPageReference().getParameters().put('teamId', GenerateEnvironmentTest.project.Id);
         System.currentPageReference().getParameters().put('class', 'Competency');
@@ -34,7 +34,7 @@
         suggClass.getId();    	
     	suggClass.setId('3');
     	suggClass.setName('migue');
-    	
+    	*/
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     }     	
