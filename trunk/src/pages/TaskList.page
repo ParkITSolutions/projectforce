@@ -241,7 +241,7 @@
                 <!-- ExportCSVPanel -->
                 <apex:outputPanel id="ExportCSVPanel" styleClass="exportCSVPanel" layout="block">
                     
-	                <apex:image value="{!URLFOR($Resource.ProjectTasksList, 'images/csv.gif')}" id="ExportCSVImage" width="13"/>
+	                <apex:image value="{!URLFOR($Resource.TaskList, 'images/csv.gif')}" id="ExportCSVImage" width="13"/>
 	                <apex:commandLink action="{!generateTaskListCsv}" value="Export to CSV" title="Export to CSV file" rerender="ExportCSVPanel" />
 	                <apex:iframe src="/servlet/servlet.FileDownload?file={!csvFileId}" rendered="{!csvFileId != null}" id="fileCSV" height="0px" width="0px"/>
                          
@@ -297,12 +297,12 @@
                                     <apex:image id="PriorityArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Priority__c', NOT(paginator.orderAsc)),true, false)}"/>
                                 </apex:outputpanel>
                             </apex:facet>
-                            <apex:image id="PriorityImage" value="{!URLFOR($Resource.ProjectTasksList, 'images/'+task.priority+'Priority.gif')}" />
+                            <apex:image id="PriorityImage" value="{!URLFOR($Resource.TaskList, 'images/'+task.priority+'Priority.gif')}" />
                         </apex:column>
                         
                         <apex:column >
                             <apex:facet name="header">&nbsp;</apex:facet>
-                            <apex:image id="MilestoneImage" value="{!URLFOR($Resource.ProjectTasksList, 'images/milestone.gif')}" rendered="{!task.isMilestone}" />
+                            <apex:image id="MilestoneImage" value="{!URLFOR($Resource.TaskList, 'images/milestone.gif')}" rendered="{!task.isMilestone}" />
                         </apex:column>
                         
                         <apex:column >
