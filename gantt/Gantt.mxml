@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:controller="com.salesforce.gantt.controller.*"
+    xmlns:view="com.salesforce.gantt.view.*" 
+    width="100%" height="100%" layout="absolute" backgroundColor="#f3f3ec"
+    applicationComplete="onComplete()"  >
+   
+	<mx:Script>
+		<![CDATA[
+			import mx.modules.ModuleLoader;
+			import com.salesforce.gantt.controller.Constants;
+			import com.salesforce.IModule;
+			import mx.events.ModuleEvent;
+			
+			// waiting for event of swirling hidden,
+			// only the first time to load the test module
+			private function onComplete() : void{  
+				if(Application.application.parameters.testname){
+					addEventListener(Constants.TESTING,initTest);
+				}
+			}
+			
+			
+			var moduleLoader : ModuleLoader = new ModuleLoader();
+			
+			private function initTest(event : Event = null) : void{
+				trace("testing...");
+				removeEventListener(Constants.TESTING,initTest);
+				
+				moduleLoader.url = "GanttTestModule.swf";new XMLDocument()
+            	moduleLoader.addEventListener(ModuleEvent.ERROR, testModuleError);
+            	moduleLoader.addEventListener(ModuleEvent.READY, delay);
+            	moduleLoader.loadModule();
+            	
+			}
+			
+        	private function testModuleError(event:ModuleEvent):void {
+            	trace("Module not loaded: " + event.toString());
+            	fscommand("quit");
+            }
+			
+			private function delay(e:Event = null) : void{
+				var timer : Timer = new Timer(50,1);
+				timer.addEventListener(TimerEvent.TIMER_COMPLETE,test);
+				timer.start();
+			}
+			
+			private function test(e:Event = null) : void {	
+				var testName : String = Application.application.parameters.testname;
+				(moduleLoader.child as IModule).runTestSuite(testName);
+          		
+			}
+		]]>
+	</mx:Script>
+
+	<!-- Top level View -->
+	<view:MainView id="mainView" width="100%" height="100%"/>
+	
+	<!--
+	LEVELS: 
+	ALL (0)  Designates that messages of all logging levels should be logged.
+	DEBUG (2)  Logs internal Flex activities. This is most useful when debugging an application.
+	INFO (4)  Logs general information.
+	WARN (6)  Logs a message when the application encounters a problem. These problems do not cause the application to stop running, but could lead to further errors.
+	ERROR (8)  Logs a message when a critical service is not available or a situation has occurred that restricts the use of the application.
+	FATAL (1000)  Logs a message when an event occurs that results in the failure of the application.
+	--> 
+    <mx:TraceTarget level="6" includeDate="true" includeTime="true" includeCategory="true" includeLevel="true">
+        <mx:filters>
+            <mx:Array>
+                <mx:String>*</mx:String>
+            </mx:Array>
+        </mx:filters>
+    </mx:TraceTarget>    
+</mx:Application> 

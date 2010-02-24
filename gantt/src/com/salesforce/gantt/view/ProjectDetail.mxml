@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx = "http://www.adobe.com/2006/mxml" 
+	xmlns:form="com.salesforce.gantt.view.components.form.*"
+	borderThickness="0" borderThicknessBottom="0" borderThicknessLeft="0" 
+	borderThicknessRight="0" borderThicknessTop="0" headerHeight="0"
+	height="100%" width="100%" dropShadowEnabled="false"	
+	xmlns:validator="com.salesforce.gantt.view.validator.*"
+	creationComplete="overrideImageComponent(event)">
+	<mx:Script>
+			<![CDATA[
+				import mx.core.UIComponent;
+				import com.salesforce.gantt.controller.SOTaskConstants;
+				import com.salesforce.gantt.view.components.form.scomponent.SComponent;
+				import com.salesforce.gantt.view.components.form.SFormItem;
+				import com.salesforce.results.DescribeLayoutRow;
+				import mx.events.FlexEvent;
+				import com.salesforce.gantt.model.Project;
+				import mx.collections.ArrayCollection;
+				import com.salesforce.gantt.controller.SMetadataController;
+				
+				[Bindable]	
+				private var rows : ArrayCollection;
+				
+				[Bindable]
+				public var project : Project;
+				
+				/**
+				 * TODO very ugly, think in another solution.
+				 */
+				private function overrideImageComponent(event : Event) : void{
+					var sformItem : SFormItem = projectDetail.getChildByName(SFormItem.SFORM_PREFIX+SOTaskConstants.IMAGE)as SFormItem;
+					projectDetail.removeChild(sformItem);
+				}
+				
+			]]>
+	</mx:Script>
+	<mx:Style  source="assets/css/DynamicForm.css"/>
+	<mx:Binding source="SMetadataController.instance.detailLayoutSectionRows(SMetadataController.PROJECT_CUSTOM_OBJECT);" 
+				destination="rows" />
+	<mx:VBox width="100%" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10" horizontalAlign="center">
+		<mx:Label text="Project Information" styleName="headerlabel" color="#000000"/>	
+		<mx:Grid verticalAlign="middle">
+			<mx:GridRow>
+				<mx:GridItem verticalAlign="middle" horizontalAlign="center" colSpan="2">
+					<mx:Image width="100%" source="@Embed(source='assets/imgs/line_hr.png')" />	
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow>
+				<mx:GridItem>
+					<mx:Form width="95%" id='projectDetail' styleName="sForm"
+						height="100%" dropShadowEnabled="false"  verticalScrollPolicy="auto" horizontalScrollPolicy="off">	
+						<mx:Repeater 
+							id="projectDetailRepeater" 
+							dataProvider="{rows}" 
+							recycleChildren="false">
+							<form:SFormItem data="{[projectDetailRepeater.currentItem,project]}" />
+						</mx:Repeater>
+						<form:SFormItem label="Image">
+							<mx:Image source="{project.attachment.source}" height="70" width="70"/>
+						</form:SFormItem> 
+					</mx:Form>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow>
+				<mx:GridItem verticalAlign="middle" horizontalAlign="center" colSpan="2">
+					<mx:Image width="100%" source="@Embed(source='assets/imgs/line_hr.png')" />	
+				</mx:GridItem>					
+			</mx:GridRow>
+		</mx:Grid>
+	</mx:VBox>
+</mx:Panel>

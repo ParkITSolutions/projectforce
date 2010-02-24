@@ -1,0 +1,27 @@
+@font-face {
+	src : local("Arial");
+	font-family : ctnFont;
+	font-weight : bold;
+}
+
+.tabNavigator{
+	font-family : ctnFont;
+	color : #000000;
+	letter-spacing : 1;
+	corner-radius : 5;
+	text-roll-over-color : #000000;
+}
+
+.selectedTabNavigator{
+	font-family : ctnFont;
+	color : #ffffff;
+	letter-spacing : 1;
+	corner-radius : 5;
+	text-roll-over-color : #ffffff;
+}	
+.container{
+	background-color : #0D4E6B;
+	background-alpha : 1;
+	selected-tab-text-style-name : "selectedTabNavigator";
+}	
+	

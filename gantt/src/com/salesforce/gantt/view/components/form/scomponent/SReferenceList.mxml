@@ -1,0 +1,87 @@
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" 
+	borderThickness="0" 
+	borderThicknessBottom="0" 
+	borderThicknessLeft="0" 
+	borderThicknessRight="0" 
+	borderThicknessTop="0" 
+	headerHeight="0"
+	horizontalScrollPolicy="off" 
+	dropShadowEnabled="false" 
+	verticalScrollPolicy="off"
+	layout="vertical" 
+	paddingBottom="3"
+	paddingLeft="3"
+	paddingRight="3"
+	paddingTop="3"
+	horizontalAlign="center" verticalAlign="middle">
+	<mx:Script>
+		<![CDATA[
+			import mx.utils.ObjectUtil;
+			import mx.events.DataGridEvent;
+			import mx.controls.Text;
+			import mx.events.ListEvent;
+			import mx.logging.Log;
+		
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			
+			public  function init(title : String , columnName : String) : void{
+				sReferenceListTitle.text = title;
+				sReferenceListDataGridColumn.headerText = columnName;
+			}
+			
+			public  function set dataProvider (list : ArrayCollection) : void{
+				sReferenceListDataGrid.dataProvider = list;
+			}
+					
+			public function addEventListenerWhenSelectItem(listener : Function) : void{
+				sReferenceListDataGrid.addEventListener(ListEvent.ITEM_CLICK,listener);
+			}
+			
+			public function selectedItem(): Object{
+				return ObjectUtil.copy(sReferenceListDataGrid.selectedItem);
+			}
+			
+			private function closeDialog() : void {
+				PopUpManager.removePopUp(this);
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:VBox paddingBottom="0" paddingTop="0">
+		<mx:Grid paddingBottom="0" verticalGap="0" horizontalGap="0" id="tabbedOverlayGrid" width="200"  verticalScrollPolicy="off" horizontalScrollPolicy="off">
+		 	<mx:GridRow width="100%"  backgroundColor="0x21637D">
+			 	<mx:GridItem  verticalAlign="middle"  verticalScrollPolicy="off" horizontalScrollPolicy="off">
+			 		<mx:Grid  verticalGap="0" horizontalGap="0" height="30" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+			 			<mx:GridRow  borderThickness="1" borderColor="0x21637D" 	width="207">
+			 				<mx:GridItem height="25" verticalAlign="middle"  width="50%">
+					 			<mx:Label id="sReferenceListTitle" styleName="headerlabel" />						 			
+					 		</mx:GridItem>
+					 		<mx:GridItem backgroundColor="0x21637D" textAlign="right"  width="50%" horizontalAlign="right" paddingTop="10" paddingRight="15">									 			
+					 			<mx:Image source="@Embed(source='assets/imgs/close_overlay.gif')" buttonMode="true" click="closeDialog()" useHandCursor="true"  />									 			
+					 		</mx:GridItem>									 			
+			 			</mx:GridRow>
+			 		</mx:Grid>
+			 	</mx:GridItem>						 		 			
+		 	</mx:GridRow>
+		 </mx:Grid>
+		<mx:DataGrid id="sReferenceListDataGrid" 
+			selectable="true"
+			width="100%" 
+			height="100%" 
+			editable="false" 
+			resizableColumns="false" 
+			sortableColumns="false"
+			>
+		<mx:columns>
+			<mx:DataGridColumn id="sReferenceListDataGridColumn" dataField="name" textAlign="center" width="100">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Label textAlign="left" truncateToFit="true"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+		</mx:columns>
+		</mx:DataGrid>
+	</mx:VBox>
+</mx:Panel>

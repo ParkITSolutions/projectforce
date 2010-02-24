@@ -1,0 +1,94 @@
+.sForm
+{	
+	font-family : Arial Narrow, Arial, Trebuchet MS;	
+	padding-Left : 0; 
+	padding-Right : 0;  
+	padding-Bottom : 0;
+	padding-Top : 10;
+	top : 0;
+}
+
+.sFormItem
+{
+	font-weight : bold;
+	font-size : 12pt;
+	font-family : Arial Narrow, Arial, Trebuchet MS;
+	color : #999999;
+	label-width : "Calculated";
+	indicator-skin : Embed(source="assets/imgs/required_block.png");
+	
+}
+
+.sFormItemError
+{
+	font-weight : normal;
+	color : #CC0000;
+}
+
+.sComboBox
+{
+	border-color : #CBCBCB;
+	border-style : solid;
+	color : #000000;
+	skin : Embed(source='../imgs/drop_down_skin.png');
+	down-skin : Embed(source='../imgs/drop_down_skin.png');
+	font-weight : normal;
+	font-family : verdana, arial;
+	font-size : 10pt;
+	
+}
+
+.sDateField
+{
+	border-color : #CBCBCB;
+	border-style : solid;
+	font-weight : normal;
+	font-size : 10pt;
+	font-family : verdana, arial;
+	color : #000000;
+}
+
+.sTextInput
+{
+	border-color : #CBCBCB;
+	border-style : solid;
+	font-weight : normal;
+	font-size : 10pt;
+	font-family : verdana, arial;
+	color : #000000;
+}
+
+.sLabel
+{
+	font-weight : normal;
+	font-size : 10pt;
+	font-family : verdana, arial;
+	color : #000000;
+}
+
+.sTextArea
+{
+	border-color : #CBCBCB;
+	border-style : solid;
+	font-weight : normal;
+	font-size : 10pt;
+	font-family : verdana, arial;
+	color : #000000;
+}
+	
+.sReference
+{
+	text-field-width : 80;
+	font-weight : normal;
+	font-size : 10pt;
+	font-family : verdana, arial;
+	color : #000000;
+}	
+	
+.requiredLabel
+{
+	font-size : 10;
+	color : #999999;
+	padding-right : 10;
+}	
+

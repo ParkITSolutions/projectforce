@@ -1,0 +1,324 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<mx:Panel xmlns:mx = "http://www.adobe.com/2006/mxml"	  
+	width="470"	horizontalGap="0" headerHeight="0" height="350"
+	horizontalAlign="left"
+	borderThicknessTop="0" borderThicknessLeft="0" borderThicknessRight="0" borderThicknessBottom="0"
+	dropShadowEnabled="false" >
+<mx:Script>
+	<![CDATA[
+	import mx.formatters.Formatter;
+	import com.salesforce.gantt.controller.Constants;
+	import mx.events.CalendarLayoutChangeEvent;
+	import mx.controls.Alert;
+	import com.salesforce.gantt.model.Dependency;
+	import com.salesforce.gantt.model.Task;
+	import com.salesforce.gantt.model.UiTask;
+	import com.salesforce.gantt.controller.Components;
+	import com.salesforce.gantt.model.UiTask;
+	import mx.collections.ArrayCollection;
+	import mx.managers.PopUpManager;
+	import com.salesforce.gantt.model.Dependency;
+	import com.salesforce.gantt.controller.Constants;
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	
+	
+	[Bindable]
+	public var selectedTask : UiTask;
+	[Bindable]
+	public var parentTasks : ArrayCollection = new ArrayCollection();
+
+   /*  [Bindable]
+    public var selectedTaskDependenciesUpdated : ArrayCollection = new ArrayCollection(); */
+    
+   
+   /*
+	* Returns the array of the posible lagUnit
+	*/
+	public function lagUnitLabel() : Array
+	{
+		//return ['Hours', 'Days', 'Weeks'];
+		return ['Days'];
+	}
+	/*
+	* Returns the array of the posible lagType
+	*/
+	public function lagTypeLabel() : Array
+	{
+		//return ['start to finish', 'finish to start', 'start to start', 'finish to finish'];
+		return ['finish to start'];
+	}
+	
+	/*
+	* Edits a dependency of a task
+	*/
+	public function updateDependency(event : Event, object : Object, option : String) : void
+	{
+		var newDependency : Dependency = Dependency(object);
+		
+		switch(option)
+		{
+			case 'lagType':
+				newDependency.lagType = event.currentTarget.selectedIndex + 1;
+				break;
+			case 'lagTime':
+			 	newDependency.lagTime = event.currentTarget.value ;
+				break;
+			case 'lagUnit':
+				newDependency.lagUnits = event.currentTarget.selectedIndex + 1;
+				break;
+			case Constants.PARENT:
+				var taskID : String = event.currentTarget.selectedItem.id;
+				var notFound : Boolean = false;
+				var dependency : Dependency;
+				for(var i:int=0; !notFound && i<selectedTask.dependencies.length; i++){
+					dependency = Dependency(selectedTask.dependencies.getItemAt(i));
+					if(dependency.task && taskID == dependency.task.id && parentGrid.selectedIndex != i){
+						event.currentTarget.selectedIndex = -1;
+						event.currentTarget.text = Constants.MESSAGE_CHOOSE_TASK;
+						Alert.show(Constants.MESSAGE_CHOOSE_ANOTHER_TASK);
+						notFound = true;
+					}
+				}
+				if(!notFound){
+					newDependency.task = event.currentTarget.selectedItem;
+				}
+				break;
+		}				
+		//setParentTasks();
+	}
+	
+	
+	/*
+	* Deletes a dependency of a task
+	*/
+	public function deleteDependency(object : Object,event : Event = null) : void
+	{
+		var dependency : Dependency = Dependency(object);
+		var deleted : Boolean = false;
+		for (var i : int = 0; !deleted && i < selectedTask.dependencies.length; i++)
+		{
+			var oldDependency : Dependency = ((Dependency)(selectedTask.dependencies.getItemAt(i)));
+			if (oldDependency == dependency)
+			{
+				selectedTask.dependencies.removeItemAt(i);
+				deleted = true;
+			}
+		}
+		//dependenciesAddDependecyButton.enabled = deleted;
+		//selectedTaskDependenciesUpdated.refresh();
+	  	//saveBtn.enabled = true;
+	}
+	
+	/**
+	* Adds a new row to the grid
+	*/
+	function addNewDependency() : void
+	{	
+		var dependency : Dependency = new Dependency(null,Dependency.FS,0);	
+		selectedTask.addDependency(dependency);
+	}
+		
+	/**
+	 * Sets up the initial array of dependencies
+	 * */	
+	
+	public function buildDependencies() : void{
+		//selectedTaskDependenciesUpdated = selectedTask.dependencies;
+		parentGrid.dataProvider=selectedTask.dependencies;  
+		parentTasks = Components.instance.tasks.possibleTaskDependencies(Task(selectedTask));
+		//dependenciesAddDependecyButton.enabled = selectedTask.dependencies.length < parentTasks.length;
+	}
+		
+	/**
+	* Deletes the dependencies
+	*/
+	private function deleteDependencies() : void
+	{
+		selectedTask.dependencies.removeItemAt(parentGrid.selectedIndex);
+	}
+	/**
+	* Updates or adds dependencies after clicking on save button
+	*/
+	public function removeFakeData() : void
+	{
+		selectedTask.dependencies.filterFunction = removeFakeItem;
+		selectedTask.dependencies.refresh();					        
+	}
+	
+	function updateIndexTask(item : Object,combo : Object): int{
+		var index : int = -1;
+		var dependency : Dependency = Dependency(item);
+		if(dependency){
+			if(dependency.task){
+				var task : Task;
+				for(var i:int =0;i<parentTasks.length;i++){
+					task = Task(parentTasks.getItemAt(i));
+					if(task.id == dependency.task.id){
+					index = i;	
+					}
+				}	
+			}else{
+				combo.text = Constants.MESSAGE_CHOOSE_TASK;	
+			}
+		}		
+		return index;
+	}
+	
+	function removeFakeItem(item : Dependency) : Boolean{
+		return (item.task != null);
+	}
+	
+	function addRow() : void{
+		if(selectedTask.dependencies.length < parentTasks.length){
+			addNewDependency();		
+		}
+	}
+	]]>
+</mx:Script>
+
+<mx:Style source="assets/css/Dependencies.css"/>
+<mx:VBox height="249" width="470" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+	<mx:Spacer height="10" width="100%" />
+	<mx:DataGrid
+		id="parentGrid" 
+		rowHeight="25" 
+		variableRowHeight="false" 
+		sortableColumns="false"
+		draggableColumns="false"
+		dragMoveEnabled="false" 
+		width="100%" 
+		height="205" 
+		horizontalGridLines="false"
+		verticalGridLines="false"	
+		styleName="dependenciesGrid"
+		verticalScrollPolicy="auto"
+		resizableColumns="false"
+		headerStyleName="gridheaders">	
+		<mx:columns>
+			<!-- Action Grid Col -->
+	        <mx:DataGridColumn  width = "32" id="gridColumnTaskResourceDelete" >
+		        <mx:headerRenderer>
+		         	<mx:Component>
+		         		<mx:VBox horizontalAlign="center">
+		         			<mx:Image 
+				           	click="outerDocument.addRow();" 
+				           	source="@Embed(source='assets/imgs/add_icon.png')"
+				           	toolTip="Add a new dependency"
+				           	useHandCursor="true" buttonMode="true" />	
+		         		</mx:VBox>
+		         	</mx:Component>	
+		        </mx:headerRenderer>
+		        <mx:itemRenderer >
+		            <mx:Component>
+			            <mx:VBox horizontalAlign="center">
+			            	<mx:Image 
+								click="outerDocument.deleteDependency(data,event);" 
+								source="@Embed(source='assets/imgs/delete_icon.png')"
+								useHandCursor="true" buttonMode="true" />	
+			            </mx:VBox>
+		            </mx:Component>
+		        </mx:itemRenderer>
+	        </mx:DataGridColumn>        
+	        <!-- Name Grid Col -->       
+		    <mx:DataGridColumn headerStyleName="gridheaders"  headerText="Task name" dataField="name" width="105" >
+		        <mx:itemRenderer>
+		            <mx:Component>
+			            <mx:HBox horizontalScrollPolicy = "off" horizontalGap="0" verticalGap="0" width="100" height="19">
+							    <mx:Script>
+							    	<![CDATA[
+							    		import com.salesforce.gantt.controller.Constants;
+							    	]]>
+							    </mx:Script>
+							    <mx:ComboBox
+								left="2"
+			            		id="dependenciesNameCombo"
+			            		styleName="gridComboColumn" 	
+			            		width="120"
+			            		labelField="name"
+			            		selectedIndex="{outerDocument.updateIndexTask(data,dependenciesNameCombo)}"
+						 		height="19"
+						 		upSkin="@Embed('assets/imgs/name_combo_skin_dependency.png')"
+						 		downSkin="@Embed('assets/imgs/name_combo_skin_dependency.png')"
+						 		overSkin="@Embed('assets/imgs/name_combo_skin_dependency.png')"									 		
+						 		change="outerDocument.updateDependency(event, data, Constants.PARENT)"
+			            		dataProvider="{outerDocument.parentTasks}"/>	
+						</mx:HBox>
+		            </mx:Component>
+		        </mx:itemRenderer>
+	        </mx:DataGridColumn> 
+	        
+	        <!-- Lag Grid Col -->
+	        <mx:DataGridColumn headerStyleName="gridheaders" dataField = "Lag" width = "42" >
+		        <mx:itemRenderer>
+		            <mx:Component>
+			            <mx:HBox 
+			            	horizontalScrollPolicy = "off" 
+			            	horizontalGap="0" 
+			            	verticalGap="0">
+			            	<mx:Canvas 
+			            		borderColor="#CBCBCB"
+			            		borderStyle="solid"
+			            		width="40"
+			            		height="19"
+			            		x="0" y="0" top="0" left="0">
+				            	<mx:NumericStepper value="{data.lagTime}"
+				            	id="dependenciesLagStepper"	
+								keyUp="if(event.keyCode==13){outerDocument.parentGrid.setFocus();outerDocument.updateDependency(event, data,'lagTime')}"
+								change="outerDocument.updateDependency(event, data,'lagTime')" 
+								width="40"
+								styleName = "numericStepperText"  
+								minimum="0"		            		
+								maximum="100">
+	       		 			 </mx:NumericStepper>	
+			            	</mx:Canvas>		            	
+	        			</mx:HBox>
+		            </mx:Component>
+		        </mx:itemRenderer>
+	        </mx:DataGridColumn> 
+	        
+	        <!-- Unit Grid Col --> 
+	        <mx:DataGridColumn headerStyleName="gridheaders" dataField = "Unit" width = "73" >
+		        <mx:itemRenderer>
+		            <mx:Component>
+			            <mx:HBox horizontalScrollPolicy = "off" horizontalGap="0" verticalGap="0">		            	
+			            	<mx:ComboBox 
+			            		id="dependenciesUnitCombo"
+			            		styleName="gridComboColumn"   
+			            		width="73" height="19" 
+			            		selectedIndex="{data.lagUnits-1}" 
+			            		change="outerDocument.updateDependency(event, data,'lagUnit')" 
+			            		dataProvider="{outerDocument.lagUnitLabel()}"
+						 		upSkin="@Embed('assets/imgs/unit_combo_skin_dependency.png')"
+						 		downSkin="@Embed('assets/imgs/unit_combo_skin_dependency.png')"
+						 		overSkin="@Embed('assets/imgs/unit_combo_skin_dependency.png')" 
+						 		/>
+	        			</mx:HBox>
+		            </mx:Component>
+		        </mx:itemRenderer>
+	        </mx:DataGridColumn> 
+	        
+	        <!-- Type Grid Col -->
+	        <mx:DataGridColumn headerStyleName="gridheaders" dataField = "Type" width = "100"  >
+		        <mx:itemRenderer>
+		            <mx:Component>
+			            <mx:HBox horizontalScrollPolicy = "off" horizontalGap="0" verticalGap="0">
+			            	<mx:ComboBox
+			            		id="dependenciesTypeCombo"
+			            		styleName="gridComboColumn"		            		
+			            		width="100" 
+			            		height="19" 
+			            		selectedIndex="{data.lagType-1}" 
+			            		change="outerDocument.updateDependency(event, data,'lagType')" 
+			            		dataProvider="{outerDocument.lagTypeLabel()}" 
+			            		upSkin="@Embed('assets/imgs/type_combo_skin_dependency.png')"
+						 		overSkin="@Embed('assets/imgs/type_combo_skin_dependency.png')"
+						 		downSkin="@Embed('assets/imgs/type_combo_skin_dependency.png')"/>
+	        			</mx:HBox>
+		            </mx:Component>
+		        </mx:itemRenderer>
+	        </mx:DataGridColumn> 
+	    </mx:columns>
+	</mx:DataGrid>	
+</mx:VBox>
+</mx:Panel>

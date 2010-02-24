@@ -1,0 +1,10 @@
+<info>
+	<user> 
+		<name>insertYourUserHere@projectforce.dev</name> 
+		<password>insertYourPasswordHere</password> 
+	</user>
+	<project>
+		<id>insertYourProjectIdHere</id> 
+	</project>
+</info>
+

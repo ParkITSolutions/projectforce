@@ -1,0 +1,92 @@
+
+.columnDataGrid
+{
+	color : #666666;
+	background-color : #ffffff;
+	background-alpha: 0;
+	font-family : Arial Narrow, Arial, Trebuchet MS, Verdana;
+	text-align : left;
+	font-weight : bold;
+	font-size:10;
+}
+/*setea el dataGrid de la clase Dependencies*/
+.dataGrid  
+{
+	header-colors : white, white;
+	horizontal-grid-lines : true;
+	alternating-item-colors : white, white;
+	font-family : verdana, arial;
+	border-thickness : 1;
+	border-sides : bottom;
+	border-style : solid;
+	border-color : #C0C0C0;		 
+	selection-disabled-color : true;
+}
+ /*setea el NumericStepper de la clase Dependencies*/
+.numericStepperText 
+{
+	border-style : none; 
+	font-size : 10pt;
+	margin : none;  
+	padding : none; 
+	text-Align : right;
+	background-alpha : .0;  
+	text-indent : 0;
+	font-weight : normal;
+	text-decoration : none;
+	corner-radius : 0;
+	up-arrow-skin : Embed(source="../imgs/stepper_arrow_up.png");
+	down-arrow-skin : Embed(source="../imgs/stepper_arrow_down.png");
+	selection-disabled-color : true;
+}
+.headerDependencies
+{
+	font-family : verdana, arial;
+	vertical-align : middle;
+	background-Color : #cccccc; 
+	height : 26; 
+	border-Color : 999999;
+	border-Thickness : 1; 
+	border-Style : solid; 
+	border-Sides : bottom;
+}
+
+.dependenciesGrid {
+	roll-over-color:white;
+	border-style :none;
+	header-separator-skin : Embed(source="../imgs/blank_pix.png");
+	header-background-skin : Embed(source="../imgs/blank_pix.png");
+	header-colors : white, white;
+	alternating-item-colors : white, white;	
+	selection-color : white;
+	
+}
+
+.gridheaders {
+	font-weight : bold;
+	font-size : 12pt;
+	font-family : Arial Narrow, Arial, Trebuchet MS;
+	color : #999999;
+	background-color:#FFFFFF;
+	border-style:none;
+	border-thickness:0;
+	padding-left:0;
+	padding-right:0;
+}
+
+.gridComboColumn {
+	corner-radius : 0;
+	border-thickness :0;
+	roll-over-color : #F9F8CD;
+	color : #000000;
+	border-color : #CBCBCB;
+	theme-color : #000000;
+	text-indent : 0;
+	font-weight : normal;
+	fill-alphas : 1.0,1.0,1.0,1.0;
+	fill-colors : #FFFFFF, #FFFFFF;
+	selection-color : #FFFFFF;
+	padding-left : 0;
+	
+	
+}

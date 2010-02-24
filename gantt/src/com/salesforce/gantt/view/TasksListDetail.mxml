@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:dynGrid="com.salesforce.gantt.view.components.grid.*"
+	width="100%" 
+	height="100%"
+	horizontalScrollPolicy="off" 
+	verticalScrollPolicy="off">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ListEvent;
+			import mx.events.ItemClickEvent;
+			import mx.events.AdvancedDataGridEvent;
+			import com.salesforce.gantt.model.Resource;
+			import com.salesforce.gantt.model.UiTask;
+			import com.salesforce.gantt.model.Task;
+			import com.salesforce.gantt.view.components.grid.DataGridColumnFactory;
+			import mx.collections.ArrayCollection;
+			import com.salesforce.gantt.controller.SMetadataController;
+			
+			[Bindable]
+			public var selectedTask : Object;
+			
+			[Bindable]
+			public var tasks : ArrayCollection;
+			
+			[Bindable]
+			public var selectedResource : Resource; 
+			
+		]]>
+	</mx:Script>
+	<!--<mx:Binding source="DataGridColumnFactory.buildDataGridColumns(SMetadataController.TASK_CUSTOM_OBJECT)" 
+				destination="tasksListDetailGrid.columns" />-->
+	<mx:Binding source="DataGridColumnFactory.buildHierarchicalData(tasks,'subtasks')" 
+				destination="tasksListDetailGrid.dataProvider" />
+	<mx:Binding source="tasksListDetailGrid.selectedItem" destination="selectedTask"/>
+	<mx:AdvancedDataGrid
+		id="tasksListDetailGrid"
+		selectable="true"
+		resizableColumns="true"
+		selectedItem="{selectedTask}"
+		>
+		<mx:Script>
+	        	<![CDATA[
+	        			
+	        		
+	        		private function changeSelectedItem(event : ListEvent){
+	        			//tasksListDetailGrid.selectedItem = event.itemRenderer.data;
+	        		}
+	        		
+	        		private function editCell(event : ListEvent) : void{
+		            	trace(event.toString());
+		            	tasksListDetailGrid.editable = "true";
+		            	dispatchEvent(new Event(AdvancedDataGridEvent.ITEM_EDIT_BEGINNING,true));
+		            	trace("editing...");
+		            }
+		            
+		            private function endEditingCell(event : Event) : void{
+		            	tasksListDetailGrid.editable = "false";
+		            	trace("not editing...");
+		            }
+	        	]]>
+	        </mx:Script>
+		<mx:columns>
+			<mx:AdvancedDataGridColumn 
+	    	 	dataField="position"
+	    	 	headerText=""
+	    	 	width="30">
+	        	<mx:itemRenderer >
+	            	<mx:Component >
+						<mx:Label textAlign="center" text="{setPosition(data)}">
+							<mx:Script >
+								<![CDATA[
+									import com.salesforce.gantt.model.Task;
+									public function setPosition(data: Object) : String{
+									 	var task : Task = Task(data);
+									 	var position : String;
+									 	if(task.id != ''){
+									 		position = task.positionVisible.toString();
+									 	}else{
+									 		position = "►";
+									 	}
+									 	return position;
+									 }	
+								]]>
+							</mx:Script>
+						</mx:Label>	
+	                </mx:Component>
+	            </mx:itemRenderer>
+	    	</mx:AdvancedDataGridColumn>
+	    	<mx:AdvancedDataGridColumn  
+	        	headerText="Name"
+	        	dataField = "name" 
+	        	minWidth = "155" 
+	        	width="155" >
+	            <mx:itemRenderer>
+	                <mx:Component>
+						<mx:Label />
+	                </mx:Component>
+	            </mx:itemRenderer>
+	        </mx:AdvancedDataGridColumn>
+	        <mx:AdvancedDataGridColumn
+	        	headerText="Duration" 
+        		dataField="duration"
+        		minWidth="90" 
+        		width="90">
+	            <mx:itemRenderer>
+	            	<mx:Component>
+						<mx:NumericStepper   
+							minimum="1" 
+							maximum="10000">
+								<mx:upArrowSkin>@Embed('assets/imgs/stepper_arrow_up_big.png')</mx:upArrowSkin>
+								<mx:downArrowSkin>@Embed('assets/imgs/stepper_arrow_down_big.png')</mx:downArrowSkin>
+						</mx:NumericStepper>
+					</mx:Component>
+	            </mx:itemRenderer>
+	        </mx:AdvancedDataGridColumn>
+	        <mx:AdvancedDataGridColumn
+        		headerText="Start Date" 
+        		minWidth="90" 
+        		width="90"
+        		editable="false">
+	        	<mx:itemRenderer>
+	                <mx:Component>
+	                	<mx:DateField
+	              			selectedDate="{UiTask(data).startDate}"
+					        firstDayOfWeek = "0">
+					        <mx:Script>
+		                		<![CDATA[
+		                			import com.salesforce.gantt.model.UiTask;
+		                		]]>
+		                	</mx:Script>
+						</mx:DateField> 
+					</mx:Component>
+	            </mx:itemRenderer>
+	        </mx:AdvancedDataGridColumn>
+	        <mx:AdvancedDataGridColumn
+        		headerText="End Date" 
+        		minWidth="90"
+        		width="90"
+        		editable="false">
+	        	<mx:itemRenderer>
+	                <mx:Component>
+	                	<mx:DateField
+	              			selectedDate="{UiTask(data).endDate}"
+					        firstDayOfWeek = "0">
+					        <mx:Script>
+		                		<![CDATA[
+		                			import com.salesforce.gantt.model.UiTask;
+		                		]]>
+		                	</mx:Script>
+						</mx:DateField>
+					</mx:Component>
+	            </mx:itemRenderer>
+	        </mx:AdvancedDataGridColumn>
+			<mx:AdvancedDataGridColumn
+				headerText="% Complete" 
+				dataField = "completed" 
+				minWidth = "100" 
+				width="100">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:NumericStepper
+							minimum="0"
+							maximum="100">	
+		            			<mx:upArrowSkin >@Embed('assets/imgs/stepper_arrow_up_big.png')</mx:upArrowSkin>
+		            			<mx:downArrowSkin>@Embed('assets/imgs/stepper_arrow_down_big.png')</mx:downArrowSkin>
+			            </mx:NumericStepper>
+					</mx:Component>
+			    </mx:itemRenderer> 
+			</mx:AdvancedDataGridColumn>
+			<mx:AdvancedDataGridColumn 
+        		headerText="Assignees"
+        		width="120"
+        		minWidth="120"
+        		editable="false">
+            	<mx:itemRenderer>
+                    <mx:Component>
+        			   	<mx:Label text="{UiTask(data).concatTaskResouces(',')}" doubleClick="dispatchDoubleClickEvent(event)">
+	        			   	<mx:Script>
+	                    		<![CDATA[
+	                    			import mx.controls.Alert;
+	                    			import com.salesforce.gantt.view.event.TaskEvent;
+	                    			import com.salesforce.gantt.model.UiTask;
+	                    			
+	                    			private function dispatchDoubleClickEvent(event : MouseEvent) : void{
+	                    				Alert.show("Open Task Resources Tab!!!.");
+	                    			}
+	                    		]]>
+	                    	</mx:Script>
+	                    </mx:Label>
+                    </mx:Component>
+                </mx:itemRenderer>
+            </mx:AdvancedDataGridColumn>
+		</mx:columns>
+	</mx:AdvancedDataGrid>
+</mx:Panel>

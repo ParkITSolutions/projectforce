@@ -1,0 +1,232 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<mx:Panel xmlns:mx = "http://www.adobe.com/2006/mxml"
+	horizontalScrollPolicy="off" 
+	verticalScrollPolicy="off" 
+	width="100%"
+	height="310"
+	borderThickness="0" borderThicknessBottom="0" borderThicknessLeft="0" 
+	borderThicknessRight="0" borderThicknessTop="0" headerHeight="0"
+	paddingLeft="10"
+	paddingRight="10"
+	paddingTop="10"
+	paddingBottom="10" creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import com.salesforce.gantt.controller.IProfiles;
+			import mx.binding.utils.BindingUtils;
+			import com.salesforce.gantt.model.Profile;
+			import com.salesforce.gantt.util.CustomArrayUtil;
+			import com.salesforce.gantt.model.User;
+			import mx.utils.StringUtil;
+			import com.salesforce.gantt.view.event.UserEvent;
+			import com.salesforce.gantt.view.event.ResourceEvent;
+		import com.salesforce.gantt.controller.Constants;
+		import com.salesforce.gantt.model.Resource;
+		import com.salesforce.gantt.controller.Components;
+		import com.salesforce.gantt.controller.Tasks;
+		import com.salesforce.gantt.model.UiTask;
+		import com.salesforce.gantt.model.Task;
+		import mx.events.ListEvent; 
+		import mx.collections.ArrayCollection;
+	    import mx.managers.PopUpManager;
+		import flash.events.Event;
+		import flash.events.EventDispatcher;
+		
+	    [Bindable]
+	    public var selectedTask : UiTask;
+	    
+	    [Bindable]
+	    public var availableResources : ArrayCollection;
+	    
+	    [Bindable]
+	    public var profiles : IProfiles;
+	    
+	    [Bindable]
+	    public var resource : Resource;
+	    
+	    [Bindable]
+	    private var selectedResource : Resource = new Resource();
+	    
+	    private var copyAvailableResources : ArrayCollection;
+	    
+	    function setSelectedResource(data : Object){
+	    	selectedResource = Resource(data);
+	    }
+	    
+	    function addMember() : void{
+	    	var userSelected : User;
+	    	var newMember : Resource;
+	    		
+	    	if(membersDetailCombo.selectedItem){
+	    		userSelected = User(membersDetailCombo.selectedItem);
+	    		newMember = new Resource(userSelected.name,'',userSelected);
+	    		newMember.profile = profiles.projectMember();
+	    		availableResources.addItem(newMember);
+	    		membersDetailCombo.selectedItem = null;	
+	    		membersDetailCombo.text = "";
+	    	}
+	    }
+	    
+	    function removeMember(index : int,event : KeyboardEvent) : void{
+	    	var resourceTemp : Resource;
+	    	if(event.keyCode == Keyboard.DELETE){
+	    		resourceTemp = Resource(availableResources.getItemAt(index));
+	    		if(!resourceTemp.isProjectOwner){
+	    			availableResources.removeItemAt(index);
+	    			selectedResource = null;	
+	    		};
+	    	}
+	    }
+	    
+	    function save() : void{
+	    	var resourceEvent : ResourceEvent = new ResourceEvent(ResourceEvent.MERGE,availableResources);
+	    	dispatchEvent(resourceEvent);
+	    }
+	    
+	    function loadUsersOnDemand(event : TimerEvent) : void{
+	    	var filteredIds : ArrayCollection;
+	    	var usersFromAvailableResources : ArrayCollection;
+	    	membersDetailCombo.selectedIndex = -1;
+	    	membersDetailCombo.dataProvider = new ArrayCollection();
+	    	membersDetailCombo.text = StringUtil.trim(membersDetailCombo.text);
+	    	if(membersDetailCombo.text.length > 0){
+	    		usersFromAvailableResources = CustomArrayUtil.getAttributesArrayCollection(availableResources,"user");
+	    		filteredIds = CustomArrayUtil.getAttributesArrayCollection(usersFromAvailableResources,"id");
+	    		membersDetailCombo.dispatchEvent(new UserEvent(UserEvent.LOAD_ON_DEMAND,membersDetailCombo.text,filteredIds));	
+	    	}
+	    }
+	    
+	    private var timer : Timer;
+	    
+	    private function init() : void{
+			BindingUtils.bindProperty(membersDetailGridAdd,"enabled",resource,"canManage");
+	    	BindingUtils.bindProperty(membersDetailGrid,"enabled",resource,"canManage");
+	    	BindingUtils.bindProperty(membersDetailCombo,"editable",resource,"canManage");
+	    	BindingUtils.bindProperty(membersDetailGridSave,"enabled",resource,"canManage");
+	    	BindingUtils.bindProperty(membersDetailGridCancel,"enabled",resource,"canManage");	
+	    	copyAvailableResources = CustomArrayUtil.copyArrayCollection(availableResources);
+	    	timer = new Timer(500,1);
+	    	timer.addEventListener(TimerEvent.TIMER_COMPLETE,loadUsersOnDemand);
+	    }
+	    
+	    private function initOnDemand() : void{
+	    	if(timer.running){
+	    		timer.reset()
+	    	}else{
+	    		timer.start();
+	    	}
+	    }
+	    
+	    private function cancel() : void{
+	    	availableResources = CustomArrayUtil.copyArrayCollection(copyAvailableResources);	
+	    }
+	    
+		]]>
+	</mx:Script>
+	<mx:Style source="assets/css/MembersDetail.css"/>
+	<mx:DateFormatter id="memberDetailFormatter" formatString="MM/DD/YYYY"/>
+	<mx:HBox width="100%" >
+		<mx:VBox height="100%" >
+			<mx:Label text="Find" styleName="headerlabel" color="#000000" />
+			<mx:HBox>
+				<mx:ComboBox  id="membersDetailCombo" styleName="sComboBoxFind" editable="true" 
+					keyDown="initOnDemand()" />
+					<mx:GridItem id="membersDetailGridAdd">
+						<mx:Image id="membersDetailAdd" source="assets/imgs/pan_right_arrow.png" enabled="false" click="addMember()"/>		
+					</mx:GridItem>
+			</mx:HBox>				
+			<mx:VBox width="100%" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+				<mx:Form width="235" id='memberDetail' styleName="sFormDetail" label="Member detail"
+					height="100%" dropShadowEnabled="false"  verticalScrollPolicy="off" horizontalScrollPolicy="off">	
+					<mx:FormItem  label="Name" styleName="sFormItemDetail" height="15">
+						<mx:Label text="{selectedResource.name}" styleName="sLabelDetail"
+							truncateToFit="true"/>
+					</mx:FormItem>
+					<mx:FormItem  label="First Name" styleName="sFormItemDetail" height="15">
+						<mx:Label text="{selectedResource.user.firstName}" styleName="sLabelDetail"  
+							truncateToFit="true"/>
+					</mx:FormItem>
+					<mx:FormItem  label="Last Name" styleName="sFormItemDetail" height="15">
+						<mx:Label text="{selectedResource.user.lastName}" styleName="sLabelDetail" 
+							truncateToFit="true"/>
+					</mx:FormItem>
+					<mx:FormItem  label="Company" styleName="sFormItemDetail" height="15">
+						<mx:Label text="{selectedResource.user.companyName}" styleName="sLabelDetail"
+							truncateToFit="true"/>
+					</mx:FormItem>
+					<mx:FormItem  label="Title" styleName="sFormItemDetail" height="15">
+						<mx:Label text="{selectedResource.user.title}" styleName="sLabelDetail"
+							truncateToFit="true"/>
+					</mx:FormItem>
+					<mx:FormItem  label="Profile" styleName="sFormItemDetail" height="15">
+						<mx:Label text="{selectedResource.profile.name}" styleName="sLabelDetail"
+							truncateToFit="true"/>
+					</mx:FormItem>
+					<mx:FormItem  label="Project Owner" styleName="sFormItemDetail" height="15">
+						<mx:Label text="{selectedResource.isProjectOwner?'Yes':'No'}"  styleName="sLabelDetail"
+							truncateToFit="true"/>
+					</mx:FormItem>
+					<mx:FormItem  label="Member since" styleName="sFormItemDetail" height="15">
+						<mx:Label text="{memberDetailFormatter.format(selectedResource.createdDate)}" styleName="sLabelDetail"
+							truncateToFit="true"/>
+					</mx:FormItem>
+				</mx:Form>
+			</mx:VBox>
+		</mx:VBox>
+		<mx:VBox height="100%" horizontalAlign="left">
+			<mx:Label text="Project Members" styleName="headerlabel" color="#000000"/>
+			<mx:DataGrid styleName="dataGridPopUp" id="membersDetailGrid" rowHeight = "20"  dataProvider="{availableResources}"
+				variableRowHeight="false" sortableColumns="false" width="100%" height="100%"  textAlign="left"
+				keyDown="{removeMember(membersDetailGrid.selectedIndex,event);}">
+				<mx:columns>
+			         <mx:DataGridColumn dataField="Name" width = "200"   >
+				        <mx:itemRenderer>
+				            <mx:Component>
+				            	  <mx:HBox horizontalScrollPolicy = "off" verticalAlign="middle">
+					            	<mx:Label width = "100%" height = "15" text = "{data.name}"
+					            		click="outerDocument.setSelectedResource(data)" />
+			        			  </mx:HBox>
+				            </mx:Component> 
+				        </mx:itemRenderer>
+			        </mx:DataGridColumn> 
+			    </mx:columns>
+			</mx:DataGrid> 
+		</mx:VBox>
+	</mx:HBox>
+	<mx:Grid verticalAlign="middle">
+		<mx:GridRow>
+			<mx:GridItem verticalAlign="middle" horizontalAlign="center" colSpan="2">
+				<mx:Image width="100%" source="@Embed(source='assets/imgs/line_hr.png')" />	
+			</mx:GridItem>					
+		</mx:GridRow>
+		<mx:GridRow height="50" verticalAlign="middle">
+			<mx:GridItem  id="membersDetailGridSave" verticalAlign="middle" horizontalAlign="right">
+				<mx:TextInput 
+					id="membersDetailSave" 	
+					width="70" 
+					height="25"
+					editable="false" 
+					useHandCursor="true"  
+					buttonMode="true"
+					mouseChildren="false" 
+					text="Save"
+					styleName="tabbedOverlayButton" 
+					click="save()"
+					 />						
+			</mx:GridItem>
+			<mx:GridItem id="membersDetailGridCancel" verticalAlign="middle" horizontalAlign="left">
+				<mx:TextInput 
+					id="membersDetailCancel" 
+					width="70" 
+					height="25"
+					editable="false" 
+					useHandCursor="true" buttonMode="true"  
+					mouseChildren="false"  
+					styleName="tabbedOverlayButton"
+					text="Cancel" 
+					click="cancel()"
+					 />
+			</mx:GridItem>
+		</mx:GridRow>
+	</mx:Grid>
+</mx:Panel>

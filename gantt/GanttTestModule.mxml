@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml"
+	creationComplete="creationComplete()" implements="com.salesforce.IModule">
+	<mx:Script>
+		<![CDATA[
+			import flexunit.textui.TestRunner;
+			import flexunit.junit.JUnitTestRunner;
+			import mx.collections.ArrayCollection;
+			import com.salesforce.test.cases.tasklist.create.*;
+			import com.salesforce.test.cases.tasklist.edit.*;
+			import com.salesforce.test.cases.tasklist.delet3.*;
+			import com.salesforce.test.cases.chart.create.*;
+			import com.salesforce.test.cases.chart.edit.*;
+			import com.salesforce.test.cases.chart.delet3.*;
+			import com.salesforce.test.cases.chart.undochanges.*;
+			import com.salesforce.test.cases.chart.redochanges.*;
+			import com.salesforce.test.cases.chart.navigator.*;
+			import com.salesforce.test.cases.chart.makeparentchildtask.*;
+			import com.salesforce.test.cases.chart.moveataskmilestonehorizontally.*;
+			import com.salesforce.test.cases.*;
+			
+			//FlexUnit
+    		import flexunit.framework.TestSuite;
+    		private var allTestCases : Object = new Object();
+    		private var jUnitRunner : JUnitTestRunner;
+    		private var testSuite:TestSuite;
+    		
+    		public function runTestSuite(testName : String) : void{
+    			jUnitRunner = new JUnitTestRunner();
+    			jUnitRunner.sendAvailable;
+    			testSuite = new TestSuite();
+				testSuite.addTestSuite(getTestCase(testName));  
+          		//testSuite = AllTest.getAllTests();
+          		jUnitRunner.run(testSuite, onTestComplete);
+    		}
+    		
+    		public function getTestCase(name : String) : Class{
+    			trace("testcase name : "+name);
+    			return allTestCases[name];
+    		} 
+    		
+    		private function onTestComplete() : void
+             {
+                trace("Finished running test suite.")
+                fscommand( "quit" );
+             }
+    		
+			private function creationComplete():void {
+				trace("loading test cases...");
+				
+				allTestCases[getClassNameOnly(TestCaseTaskListCreateTask01)] = TestCaseTaskListCreateTask01 ;
+				allTestCases[getClassNameOnly(TestCaseTaskListCreateTask02)] = TestCaseTaskListCreateTask02 ;
+				allTestCases[getClassNameOnly(TestCaseTaskListCreateTask03)] = TestCaseTaskListCreateTask03 ;
+				allTestCases[getClassNameOnly(TestCaseTaskListCreateTask04)] = TestCaseTaskListCreateTask04 ;
+				allTestCases[getClassNameOnly(TestCaseTaskListCreateTask05)] = TestCaseTaskListCreateTask05 ;
+				
+				allTestCases[getClassNameOnly(TestCaseTaskListCreateTask01)] = TestCaseTaskListCreateTask01 ;
+				allTestCases[getClassNameOnly(TestCaseTaskListCreateTask02)] = TestCaseTaskListCreateTask02;
+				
+				allTestCases[getClassNameOnly(TestCaseTaskListCreateTask01)] = TestCaseTaskListCreateTask01;
+				allTestCases[getClassNameOnly(TestCaseTaskListCreateTask02)] = TestCaseTaskListCreateTask02;
+				
+				allTestCases[getClassNameOnly(TestCaseChartCreateTask01)] = TestCaseChartCreateTask01;
+				allTestCases[getClassNameOnly(TestCaseChartCreateTask03)] = TestCaseChartCreateTask03;
+				allTestCases[getClassNameOnly(TestCaseChartCreateTask04)] = TestCaseChartCreateTask04;
+				allTestCases[getClassNameOnly(TestCaseChartCreateTask09)] = TestCaseChartCreateTask09;
+				
+				allTestCases[getClassNameOnly(TestCaseChartDeleteTask01)] = TestCaseChartDeleteTask01;
+				allTestCases[getClassNameOnly(TestCaseChartDeleteTask02)] = TestCaseChartDeleteTask02;
+				allTestCases[getClassNameOnly(TestCaseChartDeleteTask03)] = TestCaseChartDeleteTask03;
+				allTestCases[getClassNameOnly(TestCaseChartDeleteTask04)] = TestCaseChartDeleteTask04;
+				allTestCases[getClassNameOnly(TestCaseChartDeleteTask05)] = TestCaseChartDeleteTask05;
+				
+				allTestCases[getClassNameOnly(TestCaseChartEditTask01)] = TestCaseChartEditTask01;
+				allTestCases[getClassNameOnly(TestCaseChartEditTask02)] = TestCaseChartEditTask02;
+				allTestCases[getClassNameOnly(TestCaseChartEditTask03)] = TestCaseChartEditTask03;
+				allTestCases[getClassNameOnly(TestCaseChartEditTask04)] = TestCaseChartEditTask04;
+				allTestCases[getClassNameOnly(TestCaseChartEditTask05)] = TestCaseChartEditTask05;
+				allTestCases[getClassNameOnly(TestCaseChartEditTask06)] = TestCaseChartEditTask06;
+				allTestCases[getClassNameOnly(TestCaseChartEditTask09)] = TestCaseChartEditTask09;
+				allTestCases[getClassNameOnly(TestCaseChartEditTask11)] = TestCaseChartEditTask11;
+				allTestCases[getClassNameOnly(TestCaseChartEditTask12)] = TestCaseChartEditTask12;
+				allTestCases[getClassNameOnly(TestCaseChartEditTask13)] = TestCaseChartEditTask13;
+				allTestCases[getClassNameOnly(TestCaseChartEditTask14)] = TestCaseChartEditTask14;
+				
+				allTestCases[getClassNameOnly(TestCaseMakeParenChildTask01)] = TestCaseMakeParenChildTask01;
+				allTestCases[getClassNameOnly(TestCaseMakeParenChildTask02)] = TestCaseMakeParenChildTask02;
+				allTestCases[getClassNameOnly(TestCaseMakeParenChildTask03)] = TestCaseMakeParenChildTask03;
+				allTestCases[getClassNameOnly(TestCaseMakeParenChildTask04)] = TestCaseMakeParenChildTask04;
+				allTestCases[getClassNameOnly(TestCaseMakeParenChildTask05)] = TestCaseMakeParenChildTask05;
+				allTestCases[getClassNameOnly(TestCaseMakeParenChildTask06)] = TestCaseMakeParenChildTask06;
+				allTestCases[getClassNameOnly(TestCaseMakeParenChildTask07)] = TestCaseMakeParenChildTask07;
+				allTestCases[getClassNameOnly(TestCaseMakeParenChildTask08)] = TestCaseMakeParenChildTask08;
+				
+				allTestCases[getClassNameOnly(TestCaseChartNavigatorTask01)] = TestCaseChartNavigatorTask01;
+				allTestCases[getClassNameOnly(TestCaseChartNavigatorTask02)] = TestCaseChartNavigatorTask02;
+				
+				allTestCases[getClassNameOnly(TestCaseChartUndoChanges01)] = TestCaseChartUndoChanges01;
+				allTestCases[getClassNameOnly(TestCaseChartUndoChanges02)] = TestCaseChartUndoChanges02;
+				allTestCases[getClassNameOnly(TestCaseChartUndoChanges03)] = TestCaseChartUndoChanges03;
+				allTestCases[getClassNameOnly(TestCaseChartUndoChanges04)] = TestCaseChartUndoChanges04;
+				allTestCases[getClassNameOnly(TestCaseChartUndoChanges05)] = TestCaseChartUndoChanges05;
+				allTestCases[getClassNameOnly(TestCaseChartUndoChanges07)] = TestCaseChartUndoChanges07;
+				
+				allTestCases[getClassNameOnly(TestCaseChartRedoChanges01)] = TestCaseChartRedoChanges01 ;
+				allTestCases[getClassNameOnly(TestCaseChartRedoChanges02)] = TestCaseChartRedoChanges02 ;
+				allTestCases[getClassNameOnly(TestCaseChartRedoChanges03)] = TestCaseChartRedoChanges03 ;
+				allTestCases[getClassNameOnly(TestCaseChartRedoChanges04)] = TestCaseChartRedoChanges04 ;
+				allTestCases[getClassNameOnly(TestCaseChartRedoChanges05)] = TestCaseChartRedoChanges05 ;
+				allTestCases[getClassNameOnly(AllTest)] = AllTest;
+				allTestCases[getClassNameOnly(TestCreateTasks)] = TestCreateTasks ;				
+
+			}
+  			
+  			private function getClassNameOnly(clazz : Class) : String{
+  				var qualifiedClassName : String = getQualifiedClassName(clazz);
+  				var classNameOnly : String = qualifiedClassName.substr(qualifiedClassName.lastIndexOf(":")+1,qualifiedClassName.length);
+				return classNameOnly;
+  			}
+		]]>
+	</mx:Script>
+</mx:Module>
