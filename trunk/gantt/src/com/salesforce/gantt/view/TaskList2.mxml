@@ -1,0 +1,543 @@
+<mx:Canvas xmlns:mx = "http://www.adobe.com/2006/mxml"
+	xmlns:view="com.salesforce.gantt.view.*" 
+	xmlns:dynGrid="com.salesforce.gantt.view.components.grid.*"
+	mouseMove="parentDocument.barChart.outCanvasDataGrid(false)"
+	width="100%"
+	height="100%"   
+	left="0" 
+	top="0" y="0"
+	borderColor="#FFFFFF" focusEnabled="true"
+	horizontalScrollPolicy="auto"
+	verticalScrollPolicy="auto" 
+	horizontalScrollBarStyleName="scrollBar" 
+	verticalScrollBarStyleName="scrollBar" 
+	creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import com.salesforce.gantt.controller.ITasks;
+			import mx.controls.DataGrid;
+			import mx.events.AdvancedDataGridEventReason;
+			import mx.controls.AdvancedDataGrid;
+			import com.salesforce.gantt.view.event.TaskEvent;
+			import com.salesforce.gantt.util.CustomArrayUtil;
+			import mx.binding.utils.BindingUtils;
+			import com.salesforce.gantt.view.validator.DurationValidator;
+		
+			import mx.effects.RemoveItemAction;	
+			import mx.events.CalendarLayoutChangeEvent;
+			import mx.controls.Button;   
+			import mx.controls.Image;
+			import mx.utils.StringUtil;
+			import mx.events.CloseEvent;
+			import mx.events.ScrollEvent;
+			import com.salesforce.gantt.model.Heriarchy;
+			import mx.events.AdvancedDataGridEvent;
+			import mx.containers.Grid;
+			import mx.events.DragEvent;
+			import com.salesforce.gantt.controller.Constants;
+			import com.salesforce.gantt.model.Dependency;
+			import com.salesforce.gantt.model.Resource;
+			import com.salesforce.gantt.controller.Components;
+			import com.salesforce.gantt.controller.Tasks;
+			import com.salesforce.gantt.model.UiTask;
+			import com.salesforce.gantt.model.Task;
+			import com.salesforce.gantt.model.UI;
+			import com.salesforce.gantt.model.Calendar;
+			import flash.events.Event;
+			import mx.controls.Alert;
+			import mx.events.ListEvent; 
+			import mx.collections.ArrayCollection;
+			import mx.collections.*;
+		    import mx.core.IUIComponent;
+		
+		    // Drag and drop
+			import mx.managers.DragManager;
+	 	    import mx.core.DragSource;
+	   	    import mx.events.DragEvent;
+	   	    
+		 	// Mouse and cursor
+			import mx.managers.CursorManager;
+		
+		    [Bindable]
+		    public var selectedTask : UiTask;
+		           
+		    [Bindable]
+		    public var selectedResource : Resource;
+		    
+		    [Bindable]
+		    public var tasksHandler : ITasks;
+		    			
+			[Embed(source="assets/imgs/stepper_arrow_down.png")]
+		    private var stepper_down_enabled : Class;
+		    [Embed(source="assets/imgs/stepper_arrow_up.png")]
+		    private var stepper_up_enabled : Class;
+		
+			[Embed(source="assets/imgs/hand_down.png")]
+			private var cursorHandDown: Class;
+			 
+		     
+		    [Embed(source="assets/imgs/collapse.jpg")]
+		    private var imgCollapse : Class;
+		    
+		    [Embed(source="assets/imgs/expand.jpg")]
+		    private var imgExpand : Class;
+
+		    public function set visibleTasksList( visibleTasks : ArrayCollection) : void{
+		    	var newTask : UiTask;
+		    	var lastTask : UiTask;
+		    	if(taskListAdvancedDataGrid){
+		    		newTask = new UiTask('');
+		    		newTask.isHidden = true;
+		    		if(visibleTasks.length > 0){
+		    			lastTask = UiTask(visibleTasks.getItemAt(visibleTasks.length-1));	
+		    		}
+		    		if(lastTask && lastTask.id != '' || visibleTasks.length == 0){
+		    			
+		    			visibleTasks.addItem(newTask);
+		    		}
+		    		taskListAdvancedDataGrid.dataProvider = visibleTasks;
+		    		visibleTasks.refresh();	
+		    	}
+		    }  
+		    
+		    public function get visibleTasksList() : ArrayCollection{
+		    	return taskListAdvancedDataGrid.dataProvider as ArrayCollection;
+		    }
+			/**
+			* Style for the image of a parentTask
+			*/
+		     public function imageEmbed(image : int) : Class
+		     {
+		     	var clazz : Class;
+		     	switch (image)
+		     	{
+		     		case 0:
+		     			clazz = imgCollapse;
+		     			break;
+		     		case 1:
+		     			clazz = imgExpand;
+		     			break;
+		     	}
+		     	return clazz;
+		     }
+			
+			
+			/**
+			* Called when clicking on plus or minus images
+			* to expand or collapse the tasks
+			*/
+			public function toggleExpanded(data : Object) : void
+			{
+				Components.instance.tasks.getTask(data.id).isExpanded = !data.isExpanded;
+				//filter();
+			}
+			
+			/**
+			* Assigns the style for the scale (black/none) 
+			*/
+			public function fontWeight(data : Object) : String
+			{
+				var task : UiTask = UiTask(data);
+				if(task.imageSign()!=-1)
+				{
+					return 'bold';
+				}
+				else
+				{
+					return 'normal';
+				}
+			}
+				 public function setPosition(data: Object) : String{
+				 	var task : Task = Task(data);
+				 	var position : String;
+				 	if(task.id != ''){
+				 		position = task.positionVisible.toString();
+				 	}else{
+				 		position = "●";
+				 	}
+				 	return position;
+				 }		 
+				 
+				 
+				 public function init() : void{
+				 	//custom the header name of column duration
+				 	visibleTasksList = new ArrayCollection();
+				 	//gridColumnDuration.dataField = "Duration ("+Constants.DURATION_HOURS+")";
+				 	//filter();
+				 	//clearWritingText();
+				 }
+				 
+		]]> 
+</mx:Script>
+<mx:Style source="assets/css/Grid.css"/>
+	<mx:Binding destination="taskListAdvancedDataGrid.selectedItem" source="selectedTask"/>
+	<dynGrid:DynamicDataGrid id="taskListAdvancedDataGrid" 
+	  	width="100%"
+	  	height="100%"
+	  	rowHeight="{UI.ROW_HEIGHT}"
+	  	editable="true"
+	  	sortableColumns="false" 
+	  	verticalAlign="middle"
+	  	draggableColumns="true"
+	  	dragEnabled="true"
+	  	dropEnabled="true"
+	  	dragMoveEnabled="true"
+	  	dragEnter="{dragEnter(event)}"
+	  	dragDrop="{dragDrop(event)}"
+	  	itemClick="{selectRow(event)}"
+	  	itemEditEnd="{afterEdit(event)}" 
+	  	itemEditBeginning="{beforeEdit(event)}"
+	  	creationComplete="{taskListInit()}">
+	  	<mx:Script>
+	  		<![CDATA[
+	  			import mx.controls.TabBar;
+	  			import mx.events.ItemClickEvent;
+	  		
+	  			private var oldValue : Object;
+	  			
+	  			private var draggedTask : UiTask;
+	  			
+	  			private function taskListInit() :void{
+		 			taskListAdvancedDataGrid.addEventListener(AdvancedDataGridEvent.ITEM_EDIT_END,afterPostEdit,false,-100);
+				}
+				
+				// check permission to editing a task.
+				private function beforeEdit(event : AdvancedDataGridEvent) : void{
+					var size : int = taskListAdvancedDataGrid.dataProviderSize();
+					var task : UiTask = UiTask(taskListAdvancedDataGrid.dataProvider[event.rowIndex]);
+					// editing a existing task
+					if(event.rowIndex < size - 1){
+						dispatchEvent(new TaskEvent(TaskEvent.SELECT,task));	
+						if(task.hasChildren() || !selectedResource.canManage || !selectedResource.canModifyTask(task)){
+							event.preventDefault();
+							return;
+						}
+					}
+					// editing a new one
+					else if(!selectedResource.canCreate){
+						event.preventDefault();
+						return;
+					}
+				}
+				
+				private function afterPostEdit(event : AdvancedDataGridEvent) : void{
+					var size : int = taskListAdvancedDataGrid.dataProviderSize();
+					var task : UiTask = UiTask(taskListAdvancedDataGrid.dataProvider[event.rowIndex]);
+					var newTask : UiTask;
+					var newValue : Object = event.itemRenderer.data[event.dataField];
+					//taskListAdvancedDataGrid.selectedItem = task;
+					// updating a existing task
+					if(event.reason == AdvancedDataGridEventReason.NEW_ROW && newValue != oldValue){
+						if(event.rowIndex < size - 1){
+							task.isHidden = false;
+							dispatchEvent(new TaskEvent(TaskEvent.UPDATE,task));
+							taskListAdvancedDataGrid.editable = (true).toString();
+						}
+						// creating a new one
+						else{
+							task.isHidden = false;
+							dispatchEvent(new TaskEvent(TaskEvent.CREATE,task));
+							newTask = new UiTask('');
+							newTask.isHidden = true;
+							visibleTasksList.addItem(newTask);	
+						}	
+					}
+				}
+					
+				private function selectRow(event : ListEvent) : void{
+					var task : UiTask;
+					if(event.rowIndex < taskListAdvancedDataGrid.dataProviderSize() - 1){
+						task = taskListAdvancedDataGrid.dataProvider[event.rowIndex] as UiTask;
+						dispatchEvent(new TaskEvent(TaskEvent.SELECT,task));
+					}	
+				}
+				
+				private function afterEdit(event : AdvancedDataGridEvent) : void{
+					oldValue = event.itemRenderer.data[event.dataField];
+				}
+				
+				private function dragEnter(event : DragEvent) : void{
+					//trace("dragEnter");
+					draggedTask = taskListAdvancedDataGrid.selectedItem as UiTask;
+					if(!draggedTask || draggedTask.id == '' || draggedTask.hasChildren()){
+						event.preventDefault();
+						draggedTask = null;
+					}
+				}
+				
+				private function dragDrop(event : DragEvent) : void{
+					trace("dragDrop	");
+					var rowIndex : Number = Math.floor((event.localY - event.target.rowHeight) / event.target.rowHeight);
+					if(draggedTask){
+						draggedTask.position = rowIndex;
+						if(event.action == DragManager.MOVE){
+							dispatchEvent(new TaskEvent(TaskEvent.CUT_AND_PASTE,draggedTask));		
+						}else if(event.action == DragManager.COPY){
+							dispatchEvent(new TaskEvent(TaskEvent.COPY_AND_PASTE,draggedTask));	
+						}
+					}
+					draggedTask = null;
+					//event.preventDefault();
+					event.stopImmediatePropagation();
+					var dragExit : DragEvent = new DragEvent(DragEvent.DRAG_EXIT,false,true,event.dragInitiator,event.dragSource);
+					taskListAdvancedDataGrid.dispatchEvent(dragExit);
+					//taskListAdvancedDataGrid.invalidateDisplayList();
+					//taskListAdvancedDataGrid.invalidateList();
+				}
+					
+	  		]]>
+	  	</mx:Script>
+        <dynGrid:columns>
+	    	 <mx:AdvancedDataGridColumn 
+	    	 	textAlign="center"
+	    	 	editable="false"
+	    	 	width="30"
+	    	 	minWidth="30"
+	    	  	headerStyleName="gridColumnHeader" 
+	    	 	id="gridColumnPosition"    	 	
+	    	 	backgroundColor="#E1E2E1" 
+	    	 	>
+	        	<mx:itemRenderer >
+	            	<mx:Component >
+							<mx:Label textAlign="center" styleName = "taskNumber" text="{outerDocument.setPosition(data)}" width="30" maxWidth="30" fontAntiAliasType="normal" />	
+	                </mx:Component>
+	            </mx:itemRenderer>
+	    	</mx:AdvancedDataGridColumn>
+	    	<!-- 
+	    		Task Name Column 
+	    	-->
+	        <mx:AdvancedDataGridColumn
+	        	id="gridColumnTaskName" 
+	        	headerStyleName="gridColumnHeader"  
+	        	rendererIsEditor="false" 
+	        	headerText="Task Name"
+	        	textAlign="left" 
+	        	width="155" 
+	        	dataField="name"
+	        	fontAntiAliasType="normal">
+	            <mx:itemRenderer>
+	                <mx:Component>
+						  <mx:HBox borderStyle="none" backgroundAlpha="{data.alphaCut}" backgroundColor="#eaeaea"
+						  	  horizontalScrollPolicy = "off"  fontAntiAliasType="normal" >
+							<mx:Script>
+							  <![CDATA[
+							  import com.salesforce.gantt.model.UI;
+							  import mx.utils.StringUtil;
+							  import com.salesforce.gantt.controller.Components;
+							  import com.salesforce.gantt.model.Task;
+							  
+							  	private function indent(data : Object) : int{
+							  		return (data.heriarchy.indent * UI.indent);
+							  	}
+							  	
+							  	public function get value() : Object{
+									return nameTask.text;
+								}
+							  ]]>
+							</mx:Script>
+	                        <mx:Label width="{indent(data)}" fontAntiAliasType="normal" />
+	                    	<mx:Image useHandCursor="true" buttonMode="true" click="outerDocument.toggleExpanded(data)" width = "10" id = "nodoImage" source="{outerDocument.imageEmbed(data.imageSign())}"  visible="{!data.isHidden}"  />
+	                        <mx:Label id="nameTask" textIndent="{indent(data)}" text="{data.name}" alpha = "0"
+	                        	width = "100%"  styleName = "textInputGrill" height = "19"
+	                        	  fontWeight="{outerDocument.fontWeight(data)}"  
+	                        	   visible="{!data.isHidden}"
+	                        	   fontAntiAliasType="normal" 
+	                        	   />
+	                    </mx:HBox>
+	                </mx:Component>
+	            </mx:itemRenderer>
+	            <mx:itemEditor >
+	            	<mx:Component>
+	            		<mx:TextInput textIndent="{indent(data)}" text="{data.name}">
+	            		<mx:Script>
+							  <![CDATA[
+							  import com.salesforce.gantt.model.UI;
+							  import mx.utils.StringUtil;
+							  import com.salesforce.gantt.controller.Components;
+							  import com.salesforce.gantt.model.Task;
+							  
+							  	private function indent(data : Object) : int
+							  	{
+							  		return (data.heriarchy.indent * UI.indent);
+							  	}
+							  ]]>
+							</mx:Script>
+	            		</mx:TextInput>
+	            	</mx:Component>
+	            </mx:itemEditor>
+	        </mx:AdvancedDataGridColumn>
+	        <!-- Task Duration Column-->
+	        <mx:AdvancedDataGridColumn 
+	        		id="gridColumnDuration" 
+	        		headerStyleName="gridColumnHeader"   
+	        		dataField= "duration"
+	        		editorDataField="value"
+	        		headerText="Duration"
+	        		width="90"
+	        		textAlign="left"
+	        		rendererIsEditor="false"
+	        		>
+	            <mx:itemEditor>
+	            	<mx:Component>
+	            		<mx:NumericStepper  
+								styleName="textInputGrill"
+			            		width="15" height = "100%" minimum="1" maximum="10000">
+			            			<mx:upArrowSkin>@Embed('assets/imgs/stepper_arrow_up_big.png')</mx:upArrowSkin>
+				            		<mx:downArrowSkin>@Embed('assets/imgs/stepper_arrow_down_big.png')</mx:downArrowSkin>
+			           	</mx:NumericStepper>		
+	        		</mx:Component>
+	            </mx:itemEditor>
+			</mx:AdvancedDataGridColumn>
+	        <!--  Start Date Col -->
+	       	<mx:AdvancedDataGridColumn  
+	        	id="gridColumnStartDate" 
+	        	headerStyleName="gridColumnHeader"
+	        	headerText="Start Date" 
+	        	width="80"
+	        	editorDataField="selectedDate"
+	        	rendererIsEditor="true">
+	        	<mx:itemRenderer>
+	                <mx:Component>
+	                	<mx:DateField 
+	                		selectionColor="8376063" change="updateDate(event,data)"
+		            		selectedDate="{data.startDate}"
+		            		firstDayOfWeek = "0">
+		            		<mx:Script>
+		                		<![CDATA[
+		                			//// TODO remove this after refactor the model //////////
+		                			import com.salesforce.gantt.model.UiTask;
+		                			import com.salesforce.gantt.view.event.TaskEvent;
+		                			import mx.events.CalendarLayoutChangeEvent;
+		                			private function updateDate(event : CalendarLayoutChangeEvent,data : Object) : void {
+										if (event.newDate != null) {
+											var dateNew : Date = new Date(event.newDate.getFullYear(), event.newDate.month, event.newDate.date);
+											data.startDate = event.newDate;
+											if(data.id != ''){
+												UiTask(data).isHidden = false;
+												dispatchEvent(new TaskEvent(TaskEvent.UPDATE,UiTask(data)));
+											}
+											// creating a new one
+											else{
+												UiTask(data).isHidden = false;
+												dispatchEvent(new TaskEvent(TaskEvent.CREATE,UiTask(data)));
+												//newTask = new UiTask();
+												var newTask : UiTask = new UiTask();
+												newTask.isHidden = true;
+												parentDocument.visibleTasksList.addItem(newTask);
+											}
+										}
+									}
+									///////////////////////////////////////////////////////////
+		                		]]>
+	                		</mx:Script>
+		            	</mx:DateField> 
+	                </mx:Component>
+	            </mx:itemRenderer>
+	        </mx:AdvancedDataGridColumn>
+	        <!--  End Date Col -->
+	        <mx:AdvancedDataGridColumn  
+	        	id="gridColumnEndDate" 
+	        	headerStyleName="gridColumnHeader"
+	        	headerText="End Date" 
+	        	width="80" 
+	        	editorDataField="selectedDate"
+	        	rendererIsEditor="true">
+	        	<mx:itemRenderer>
+	                <mx:Component>
+	                	<mx:DateField
+	                		selectionColor="8376063" change="updateDate(event,data)"
+		            		selectedDate="{data.endDate}"
+		            		firstDayOfWeek = "0">
+		            		<mx:Script>
+		                		<![CDATA[
+		                		
+		                		//// TODO remove this after refactor the model
+		                			import com.salesforce.gantt.model.UiTask;
+		                			import com.salesforce.gantt.view.event.TaskEvent;
+		                			import mx.events.CalendarLayoutChangeEvent;
+		                			private function updateDate(event : CalendarLayoutChangeEvent,data : Object) : void {
+										if (event.newDate != null) {
+											var dateNew : Date = new Date(event.newDate.getFullYear(), event.newDate.month, event.newDate.date);
+											data.endDate = event.newDate;
+											if(data.id != ''){
+												UiTask(data).isHidden = false;
+												dispatchEvent(new TaskEvent(TaskEvent.UPDATE,UiTask(data)));
+											}
+											// creating a new one
+											else{
+												UiTask(data).isHidden = false;
+												dispatchEvent(new TaskEvent(TaskEvent.CREATE,UiTask(data)));
+												//newTask = new UiTask();
+												var newTask : UiTask = new UiTask();
+												newTask.isHidden = true;
+												parentDocument.visibleTasksList.addItem(newTask);
+											}
+										}
+									}
+								//////////////////////////////////////////////////
+		                		]]>
+	                		</mx:Script>
+		            	</mx:DateField> 
+	                </mx:Component>
+	            </mx:itemRenderer>
+        	</mx:AdvancedDataGridColumn>
+            <!--  % Completed  Col -->
+        	<mx:AdvancedDataGridColumn 
+	        		id="gridColumnCompleted" 
+	        		headerStyleName="gridColumnHeader"   
+	        		dataField= "completed"
+	        		editorDataField="value"
+	        		headerText="% Completed"
+	        		width="90"
+	        		textAlign="left" 
+	        		rendererIsEditor="false"
+	        		>
+	            <mx:itemEditor>
+	            	<mx:Component>
+	            		<mx:NumericStepper  
+								styleName="textInputGrill"
+			            		width="15" height = "100%" minimum="0" maximum="100">
+			            			<mx:upArrowSkin>@Embed('assets/imgs/stepper_arrow_up_big.png')</mx:upArrowSkin>
+				            		<mx:downArrowSkin>@Embed('assets/imgs/stepper_arrow_down_big.png')</mx:downArrowSkin>
+			           	</mx:NumericStepper>		
+	        		</mx:Component>
+	            </mx:itemEditor>
+	        </mx:AdvancedDataGridColumn>  
+            <!--  Task Resources Col -->
+       		<mx:AdvancedDataGridColumn 
+        		id="gridColumnResources"  
+        		headerStyleName="gridColumnHeader"
+        		headerText="Assignee"
+        		width="100" 
+        		editable="false">
+            	<mx:itemRenderer>
+                    <mx:Component>
+                    	<mx:Label
+                    		text="{UiTask(data).concatTaskResouces(',')}"  
+                    		doubleClickEnabled="true" doubleClick="dispatchDoubleClickEvent(event)">
+	        			   	<mx:Script>
+	                    		<![CDATA[
+	                    			import mx.core.Application;
+	                    			import com.salesforce.gantt.model.Task;
+	                    			import mx.controls.Alert;
+	                    			import com.salesforce.gantt.view.event.TaskEvent;
+	                    			import com.salesforce.gantt.model.UiTask;
+	                    			
+	                    			private function dispatchDoubleClickEvent(event : MouseEvent) : void{
+	                    				//refactor dispatch an event to open the resources of the selected task.
+	                    				var task : UiTask = UiTask(data);
+	                    				if(parentDocument.selectedResource.canModifyTask(task) && task.id != '' ){
+											Application.application.mainView.selectedTask = task;
+											Application.application.mainView.openAssigneesTab = true;
+											Application.application.mainView.editTaskOverlay();	
+										}
+	                    			}
+	                    		]]>
+	                    	</mx:Script>
+	                    </mx:Label>
+                    </mx:Component>
+                </mx:itemRenderer>
+            </mx:AdvancedDataGridColumn>          
+        </dynGrid:columns>       
+    </dynGrid:DynamicDataGrid>
+</mx:Canvas>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx = "http://www.adobe.com/2006/mxml" 
+	xmlns:form="com.salesforce.gantt.view.components.form.*"
+	borderThickness="0" borderThicknessBottom="0" borderThicknessLeft="0" 
+	borderThicknessRight="0" borderThicknessTop="0" headerHeight="0"
+	horizontalScrollPolicy="off" 
+	height="350" width="450" dropShadowEnabled="false"	
+	xmlns:validator="com.salesforce.gantt.view.validator.*">
+	<mx:Script>
+			<![CDATA[
+				import mx.managers.IFocusManagerComponent;
+				import com.salesforce.gantt.model.Task;
+				import com.salesforce.gantt.model.Calendar;
+				import mx.controls.Alert;
+				import com.salesforce.gantt.view.components.form.scomponent.SComponent;
+				import com.salesforce.gantt.view.components.form.custom.CustomComponentsBinder;
+				import com.salesforce.gantt.view.components.form.scomponent.SCustomTextInput;
+				import com.salesforce.gantt.view.validator.DurationValidator;
+				import mx.events.FlexEvent;
+				import com.salesforce.gantt.controller.SOTaskConstants;
+				import com.salesforce.gantt.controller.SMetadataController;
+				import com.salesforce.test.util.ComponentUtil;
+				import com.salesforce.gantt.view.components.form.event.SResultEvent;
+				import mx.containers.FormItem;
+				import com.salesforce.gantt.view.components.form.SFormItem;
+				import com.salesforce.gantt.view.components.form.SComponentFactory;
+				import com.salesforce.gantt.controller.Components;
+				import com.salesforce.gantt.controller.Constants;
+				import com.salesforce.gantt.model.UiTask;
+				import mx.collections.ArrayCollection;
+				import com.salesforce.results.Error;
+				
+				[Bindable]	
+				public var rows : ArrayCollection;
+				
+				[Bindable]
+				public var selectedTask : UiTask;
+				
+				public function loadSelectedTask(isNew : Boolean ) : void
+				{
+					var newDate : Date = new Date();
+					if(isNew){
+						// TODO refact this method pass a new task from MainView and check only if id!='' to identify if a task is new
+						//////////// FROM HERE ////////////////
+						selectedTask = new UiTask('', newDate,newDate, 0, '');
+						selectedTask.dependencies = new ArrayCollection();
+						selectedTask.taskResources = new ArrayCollection();
+						selectedTask.createdBy = Components.instance.resourceLogged.user;
+						selectedTask.priority = 'Medium';
+
+						//set the selected task to resources
+						parentDocument.taskResources.selectedTask = selectedTask;
+						
+						//set the selected task to dependencies
+						parentDocument.dependencies.selectedTask = selectedTask;
+						
+						 ///////////// TO HERE ///////////////////
+					}
+					rows = SMetadataController.instance.editLayoutSectionRows(selectedTask.stype);
+					rows.refresh();
+					
+					//define a timer to set the focus in the task name field after task detail popup is shown.
+					var topComponent : SFormItem = taskDetail.getChildren()[0];
+					var timer : Timer = new Timer(100,1);
+					timer.addEventListener(TimerEvent.TIMER_COMPLETE,function(){ 
+							focusManager.setFocus(IFocusManagerComponent(topComponent.component));
+						});
+					timer.start(); 
+				}
+				
+				public function clean() : void{
+					taskDetail.removeAllChildren();
+					rows = new ArrayCollection();
+				}
+				
+				//TODO refactor dispatch the necessaries event to remove some of logic from here.
+				public function save() : void{
+					if(validate()){
+						Components.instance.controller.addEventListener(SResultEvent.ERRORS,displayErrors);
+						parentDocument.visibilityLoadingProgress(true);
+						
+						var components : Object = new Object();
+						var component : SComponent;
+						for each (var formItem : FormItem in taskDetail.getChildren()){
+							
+							if(formItem as SFormItem){
+								component = SFormItem(formItem).component;
+								components[component.id] = component.value;	
+							}
+						}
+						selectedTask.properties = components;
+						if(!parentDocument.newTask){
+							Components.instance.controller.updateTask(selectedTask,false);
+						}else{
+							Components.instance.controller.addTask(selectedTask, parentDocument.action);
+						}
+					}
+				}
+				
+				private function validate() : Boolean{
+					var valid : Boolean = true;
+					for each(var formItem : FormItem in taskDetail.getChildren()){
+						if(formItem as SFormItem){
+							valid = SFormItem(formItem).validate() && valid;	
+						}
+					}
+					return valid;
+				}
+				
+				private function displayErrors(event : SResultEvent) : void{
+					var closePopUp : Boolean = true;
+					if(event.result as Array){
+						var failure : Boolean = !event.result[0].success;
+						for each(var formItem : FormItem in taskDetail.getChildren()){
+							for each(var error in event.result[0].errors){
+								if(formItem as SFormItem){
+									closePopUp &&= SFormItem(formItem).displayError(error);	
+								}
+							}
+						}
+						if(closePopUp || failure){
+							parentDocument.closeEditTaskOverlay();
+						}	
+					}
+					
+				}
+				
+				private function bindingCustomComponents(event : FlexEvent) : void{
+					if(rows.length > 0){
+						var binder : CustomComponentsBinder = new CustomComponentsBinder(taskDetail,selectedTask);
+						var isNew : Boolean = selectedTask.id == '';
+						binder.bind();
+						binder.hide(isNew);	
+					}
+				}
+			
+			]]>
+	</mx:Script>
+	<mx:Style  source="assets/css/DynamicForm.css"/>
+	<mx:VBox width="100%" paddingLeft="0" paddingRight="0" paddingBottom="0" paddingTop="3">
+		<mx:Grid horizontalGap="2" verticalGap="0" paddingTop="10" horizontalAlign="right" width="100%" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+			<mx:GridRow height="15" >
+				<mx:GridItem width="4"  verticalAlign="middle">
+					<mx:Image source="@Embed(source='assets/imgs/required_block.png')"  />			
+				</mx:GridItem>
+				<mx:GridItem verticalAlign="middle">
+					<mx:Label text=" = Required Information"  styleName="requiredLabel"/>			
+				</mx:GridItem>
+			</mx:GridRow>
+		</mx:Grid>
+		<mx:Form width="95%" id='taskDetail' styleName="sForm"
+			height="289" dropShadowEnabled="false"  verticalScrollPolicy="auto" horizontalScrollPolicy="off">	
+			<mx:Repeater id="fr" dataProvider="{rows}"  recycleChildren="false" repeatEnd="bindingCustomComponents(event)">
+				<form:SFormItem data="{[fr.currentItem,selectedTask]}"/>
+			</mx:Repeater>
+			<mx:FormItem  id="formItemAssignee" width="95%" label="Assign To" styleName="sFormItem">
+				<mx:HBox click="parentDocument.showTabContent('asignees',true);">		 	
+				 	<mx:Label styleName="sLabel" text="{selectedTask.taskResources[0]} ({selectedTask.taskResources[0].dedicated}%) "
+								  	 width="120"/>			  	 
+					<mx:Image id="addAssignee_icon" 
+				 	  		source="@Embed(source='assets/imgs/add_icon.png')"  
+				 	  		useHandCursor="true" buttonMode="true" mouseChildren="false"/>			
+	 	  			<mx:Label
+	 	  					text="Add Assignee" 
+	 	  					width="100"  
+	 	  					textDecoration="underline"
+	 	  					useHandCursor="true" buttonMode="true" mouseChildren="false"/>
+				</mx:HBox>
+			</mx:FormItem>
+		</mx:Form>
+	</mx:VBox>
+</mx:Panel>

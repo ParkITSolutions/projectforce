@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<project name="GanttNew" basedir="."> 
+	<property file="init.properties" />
+    <taskdef resource="flexTasks.tasks" classpath="${LIBS}/flexTasks.jar"/> 
+	<taskdef resource="com/adobe/ac/ant/tasks/tasks.properties" classpath="${LIBS}/FlexAntTasks.jar"/> 
+    <target name="compileApp" description="Compile the application">
+    	<mxmlc
+        	file="${SRC}/${APP_ROOT}/${APP_NAME}.mxml"
+        	keep-generated-actionscript="false" 
+        	warnings="true"
+    		output="${DEPLOY_DIR}/${APP_FILE}"
+        	actionscript-file-encoding="UTF-8" as3="true" optimize="true"> 
+            <load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+            <source-path path-element="${FLEX_HOME}/frameworks"/>
+        	<compiler.include-libraries dir="${LIBS}" append="true">
+        		<include name="as3Salesforce.swc"/>
+        	</compiler.include-libraries>
+        	<compiler.source-path path-element="${SRC}"/>
+    	</mxmlc>
+    </target>
+	<target name="compileTestModule"  description="Compile the test module">
+		<mxmlc 
+        	file="${SRC}/${APP_ROOT}/${APP_MODULE_NAME}.mxml" 
+        	keep-generated-actionscript="false" 
+        	warnings="true"
+        	output="${DEPLOY_DIR}/${APP_MODULE_FILE}"
+        	actionscript-file-encoding="UTF-8" as3="true" optimize="true"> 
+            <load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+            <source-path path-element="${FLEX_HOME}/frameworks"/>
+			<compiler.include-libraries dir="${LIBS}" append="true">
+			    <include name="as3Salesforce.swc"/>
+				<include name="FlexUnit.swc"/>
+				<include name="SeleniumFlexApi.swc"/>
+			    <include name="FlexUnitOptional.swc"/>
+			</compiler.include-libraries>
+			<compiler.source-path path-element="${SRC}"/>
+        </mxmlc>
+	</target>
+	<target name="runTests">
+		<flexunit timeout="${FLEXUNIT.TIMEOUT}"
+            swf="${DEPLOY_DIR}/${APP_FILE}"
+			toDir="${REPORTS.RAW}"
+			haltonfailure="false"
+			testfile="${TEST_DIR}"/>
+	</target>
+	<target name="test" depends="clean,runTests">
+		<junitreport todir="${REPORTS}">
+			<fileset dir="${REPORTS.RAW}">
+				<include name="TEST-*.xml"/>
+			</fileset>
+			<report format="frames" todir="${REPORTS.HTML}">
+		  	</report>
+		</junitreport>
+	</target>
+	<target name="clean">
+        <delete dir="${REPORTS}"/>
+		<mkdir dir="${REPORTS}"/>
+		<mkdir dir="${REPORTS.HTML}"/>
+		<mkdir dir="${REPORTS.RAW}"/>
+    </target>
+</project>

@@ -1,0 +1,1691 @@
+<mx:Canvas xmlns:mx = "http://www.adobe.com/2006/mxml"
+	xmlns:view="com.salesforce.gantt.view.*" 
+	mouseMove="parentDocument.barChart.outCanvasDataGrid(false)"
+	width="100%"
+	height="100%"   
+	left="0" 
+	top="0" y="0"
+	borderColor="#FFFFFF" focusEnabled="true"
+	horizontalScrollPolicy="auto"
+	verticalScrollPolicy="auto" 
+	horizontalScrollBarStyleName="scrollBar" 
+	verticalScrollBarStyleName="scrollBar" 
+	initialize="init()">
+<mx:Script>
+	<![CDATA[
+		import com.salesforce.gantt.view.event.TaskEvent;
+		import com.salesforce.gantt.util.CustomArrayUtil;
+		import mx.binding.utils.BindingUtils;
+		import com.salesforce.gantt.view.validator.DurationValidator;
+	
+		import mx.effects.RemoveItemAction;	
+		import mx.events.CalendarLayoutChangeEvent;
+		import mx.controls.Button;   
+		import mx.controls.Image;
+		import mx.utils.StringUtil;
+		import mx.events.CloseEvent;
+		import mx.events.ScrollEvent;
+		import com.salesforce.gantt.model.Heriarchy;
+		import mx.events.AdvancedDataGridEvent;
+		import mx.containers.Grid;
+		import mx.events.DragEvent;
+		import com.salesforce.gantt.controller.Constants;
+		import com.salesforce.gantt.model.Dependency;
+		import com.salesforce.gantt.model.Resource;
+		import com.salesforce.gantt.controller.Components;
+		import com.salesforce.gantt.controller.Tasks;
+		import com.salesforce.gantt.model.UiTask;
+		import com.salesforce.gantt.model.Task;
+		import com.salesforce.gantt.model.TaskDate;
+		import com.salesforce.gantt.model.UI;
+		import com.salesforce.gantt.model.Calendar;
+		import flash.events.Event;
+		import mx.controls.Alert;
+		import mx.events.ListEvent; 
+		import mx.collections.ArrayCollection;
+		import mx.collections.*;		
+		import mx.printing.*;
+	    import com.salesforce.gantt.view.print.FormPrintViewTask;
+	    import mx.core.IUIComponent;
+	
+	    // Drag and drop
+		import mx.managers.DragManager;
+ 	    import mx.core.DragSource;
+   	    import mx.events.DragEvent;
+   	    
+   	    // Filters for eyecandy
+		import flash.filters.DropShadowFilter;
+		import flash.filters.BitmapFilterQuality;
+		import flash.filters.GlowFilter;
+	
+	 	// Mouse and cursor
+		import mx.managers.CursorManager;
+	
+    [Bindable]
+    public var selectedTask : UiTask;
+           
+    [Bindable] 
+    public var visibleTasksList : ArrayCollection;
+     
+	public var hasCreating : Boolean = false;//indicates whether to delete the task or not when Esc key pressed
+     
+     //disable the keys in the grid when a new task is creating
+	public var disabledKeys : Boolean = false;
+	public var selectedTaskAux: Object;
+     			
+	[Embed(source="assets/imgs/stepper_arrow_down.png")]
+    private var stepper_down_enabled : Class;
+    [Embed(source="assets/imgs/stepper_arrow_up.png")]
+    private var stepper_up_enabled : Class;
+
+	[Embed(source="assets/imgs/hand_down.png")]
+	private var cursorHandDown: Class;
+	 
+     
+     [Embed(source="assets/imgs/collapse.jpg")]
+     private var imgCollapse : Class;
+     [Embed(source="assets/imgs/expand.jpg")]
+     private var imgExpand : Class;
+     
+     [Embed(source="assets/imgs/line_hr.png")]
+	 private var indicator_image : Class;
+     private var none : Class;
+	
+     private var dateStart : Date = new Date();
+    
+     private var indicator : Image; 
+     
+     private var numericStepperTimer : Timer = new Timer(1000,1);
+     
+     public function newDate() : void
+     {
+     	dateStart = new Date();
+     }
+     
+	/**
+	* Style for the image of a parentTask
+	*/
+     public function imageEmbed(image : int) : Class
+     {
+     	switch (image)
+     	{
+     		case 0:
+     			return imgCollapse;
+     			break;
+     		case 1:
+     			return imgExpand;
+     			break;
+     		default:
+     			return none;
+     			break;	
+     	}
+     }
+     
+     
+     /**
+     * Called when a row is selected, 
+     * setting taskSelected to the task in that row.
+     */
+    private var listEventTemp : ListEvent = null;
+	private function select(listEvent : ListEvent) : void
+	{	
+		
+		if(listEvent.rowIndex == (visibleTasksList.length - 1))
+		{
+			drawSpriteCell(true);
+				//dispatchEvent(new Event(Constants.TASK_DESELECT));
+				dispatchEvent(new TaskEvent(TaskEvent.SELECT));
+		}
+		else if(listEvent.rowIndex >= 0 && listEvent.rowIndex < visibleTasksList.length)
+    	{
+			
+				/* var id : String = visibleTasksList.getItemAt(listEvent.rowIndex).id;
+				Components.instance.tasks.select(id);
+				parentDocument.centerTask();
+				dispatchEvent(new Event(Constants.TASK_SELECT)); */
+				var task : UiTask = UiTask(visibleTasksList.getItemAt(listEvent.rowIndex));
+				dispatchEvent(new TaskEvent(TaskEvent.SELECT,task));	
+			
+			
+	    }
+	}
+
+	
+	public function filterVisibleTaskTest(item:Object) : Boolean
+	{
+		return item.isVisible();
+	}
+	
+	
+	/**
+	* Updates the Grid
+	*/
+	public function filter() : void
+	{
+		newDate();
+		var f : Date = new Date();
+		//visibleTasksList = CustomArrayUtil.copyArrayCollection(Components.instance.tasks.filterVisibleTask());
+		visibleTasksList = Components.instance.tasks.filterVisibleTask();
+		var uiTask : UiTask;
+		if(visibleTasksList.length>0)
+		{
+			/* if(!UiTask(visibleTasksList.getItemAt(visibleTasksList.length-1)).isHidden)
+			{
+				uiTask = new UiTask('', Calendar.toString(dateStart),Calendar.toString(dateStart),0, '');
+				uiTask.isHidden = true;
+				uiTask.heriarchy = new Heriarchy(0);
+				uiTask.positionVisible = visibleTasksList.length + 1;
+				uiTask.priority = 'Medium';
+				visibleTasksList.addItem(Task(uiTask));
+			} */
+		}
+		else if(visibleTasksList.length==0)
+		{
+			/* uiTask = new UiTask('', Calendar.toString(dateStart),Calendar.toString(dateStart), 0, '');
+			uiTask.isHidden = true;
+			uiTask.heriarchy = new Heriarchy(0);
+			uiTask.positionVisible = visibleTasksList.length + 1;
+			uiTask.priority = 'Medium';
+			visibleTasksList.addItem(Task(uiTask)); */
+		}
+		enabledFirstImage();
+		parentDocument.barChart.resizeBarChart();
+	}
+	
+	
+	/**
+	* Shows the arrow to create a task when there is none
+	*/
+	private function enabledFirstImage() : void
+	{
+		if(visibleTasksList.length == 1)
+		{
+			createFirstTask.visible = true;
+			createFirstTask.x = gridColumnPosition.width +  7;
+		}
+		else
+		{
+			createFirstTask.visible = false;
+		}
+	}
+	
+	
+	/**
+	* Called when clicking on plus or minus images
+	* to expand or collapse the tasks
+	*/
+	public function toggleExpanded(data : Object) : void
+	{
+		hasUpdating = true;
+		Components.instance.tasks.getTask(data.id).isExpanded = !data.isExpanded;
+		filter();
+	}
+	
+	
+	/**
+	* Set the selected task
+	*/
+	public function setSelectedTaskData(data : Object) : void{
+    	selectedTaskAux = data;
+    }
+    
+    
+	/**
+	* Called by the grid to edit a task
+	*/  
+	public function updateTask(data : Object, event : Event, type : String) : void
+	{		
+		
+		if(type != 'priority'){
+			var taskTemp : Task = Components.instance.tasks.getTask(data.id).clone();
+		} else {
+			var taskTemp : Task = Components.instance.tasks.getTask(selectedTaskAux.id).clone();
+			Alert.show('the task are :'+selectedTaskAux);
+		}
+		if(taskTemp != null)
+		{
+			var text : String = '';
+			if(type == Constants.COMPLETED || type == Constants.DURATION)
+			{
+				text = event.currentTarget.value;
+			} 
+			else
+			{
+				 text = event.currentTarget.text;
+			}
+			//update(taskTemp, type, text);
+		}
+	}
+	
+	/**
+	* Sets the scroll's position
+	*/
+	public function setScroll(row : int = -1) : void
+	{
+		if(visibleTasksList!=null)
+		{
+			var heightCanvas : int = parentDocument.dragPanelTasks.height / UI.ROW_HEIGHT;
+			var maxScroll : int = (visibleTasksList.length - heightCanvas);
+			if(maxScroll > 0)
+			{
+		 		var verticalScrollPosition : int = maxScroll-(visibleTasksList.length-row-1) + 1;
+		 		if(verticalScrollPosition < 0)
+		 		{
+		 			verticalScrollPosition = 0;
+		 		}
+		 		taskListAdvancedDataGrid.verticalScrollPosition = verticalScrollPosition;
+		 	}
+		}
+ 	}
+	
+	/**
+	* Opens the assignees panel at Edit overlay
+	*/
+	public function addTaskResources(data : Object) : void
+	{
+		if(parentDocument.resourceLogged.canModifyTask(Task(data))){
+			//Components.instance.tasks.select(data.id);
+			parentDocument.openAssigneesTab = true;
+			parentDocument.editTaskOverlay();	
+		}
+	}
+	
+	
+	/**
+	* Sets the scroll when Gantt is moved
+	*/
+	private var isMoveGantt : Boolean = false;
+	public function moveGrid(rowHeight : int, positionY : int) : void
+	{
+		isMoveGantt = true;
+		if(parentDocument.dragPanelTasks.width!=Constants.GRID_PANEL_MIN_WIDTH)
+		{
+			taskListAdvancedDataGrid.verticalScrollPosition = int(positionY / rowHeight);
+		}
+		drawSpriteCell();
+		/* WATCH THIS*/
+		//checkhideProgress();
+	}
+	private function checkhideProgress() : void
+	{
+		if(isMoveGantt)
+		{
+			parentDocument.visibilityLoadingProgress(false);
+			isMoveGantt = false;
+		}
+	}
+	
+	
+	/**
+	* Assigns the style for the scale (black/none) 
+	*/
+	public function fontWeight(data : Object) : String
+	{
+		var task : UiTask = UiTask(data);
+		if(task.imageSign()!=-1)
+		{
+			return 'bold';
+		}
+		else
+		{
+			return 'normal';
+		}
+	}
+	
+	
+	/**
+	* Verifies if the keyEvent is numeric(keyUp o KeyDown)
+	*/
+	private function isNumber(num : int) : Boolean
+	{
+		return (num > 47 && num < 58);
+	}
+	
+	
+	/**
+	* Return the correspondent char to the key pressed
+	*/
+	public function numToChar(num:int):String {
+        if (num > 47 && num < 58) {
+            var strNums:String = "0123456789";
+            return strNums.charAt(num - 48);
+        } else if (num > 64 && num < 91) {
+            var strCaps:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            return strCaps.charAt(num - 65);
+        } else if (num == 32) {
+            return ' ';
+        } else if (num > 96 && num < 123) {
+            var strLow:String = "abcdefghijklmnopqrstuvwxyz";
+            return strLow.charAt(num - 97);
+        } else {
+            return '';
+        }
+    }
+    
+    private var taskDraged : UiTask = null;
+    
+    private var isDraging : Boolean = false;
+    
+    /* dragCompleted event isn't carring stageY value so I use this var to save the last eventY carried by
+    dragEnter event */
+    private var stageY : int = 0;
+  
+  
+    /**
+	* Drag and Drop
+	* dragEnter 
+	*/
+ 	private function dataGridDragEnter(event : DragEvent) : void
+    {
+    	var position : int = (event.stageY / UI.ROW_HEIGHT) - 1;
+		var index : int = position - 1;
+		if( index >= 0 && index < visibleTasksList.length - 1){
+			var task : UiTask = UiTask(visibleTasksList.getItemAt(index));
+			stageY = event.stageY;
+			setDragCursor();
+			
+			if(taskDraged){
+				if(taskDraged.position < task.position){
+					position++
+				}
+				indicator.setActualSize(taskListAdvancedDataGrid.width,2);
+				indicator.y = (position)*UI.ROW_HEIGHT -1;
+				indicator.setVisible(true);
+			}
+			
+			if(!isDraging){
+				isDraging = true;
+				if(parentDocument.resourceLogged.canManage || parentDocument.resourceLogged.canModifyTask(task) ){
+			    	if(index < visibleTasksList.length && index > -1)
+			    	{
+			    		taskDraged = task;
+			    	}
+			 	} else {
+			 		trace('Drag not Enabled');
+			 	}
+			}	
+		}
+    	
+    }
+    
+    
+    /**
+	* Drag and Drop
+	* dragDrop 
+	*/
+    private function dataGridDragDrop(event : DragEvent) : void
+    {
+    	isDraging = false;
+    	if(taskDraged != null)
+    	{
+    		var position : int = (stageY / UI.ROW_HEIGHT)-1;
+    		var index : int = position - 1;
+    		if(taskDraged.position <= index && index <visibleTasksList.length-2){
+    			index++;
+    		}
+    		var taskTarget : UiTask = UiTask(visibleTasksList.getItemAt(index)).clone();
+    		indicator.setVisible(false)
+  
+  			trace("taskTarget.name : "+taskTarget.name);
+    		 if( Components.instance.tasks.checkMove(taskDraged,taskTarget)){
+    			parentDocument.visibilityLoadingProgress(true);
+    			parentDocument.addListener(Constants.TASK_MODIFIED_BY_OTHER_WAY);
+    			Components.instance.controller.moveTask(taskDraged,taskTarget);	
+    		} 
+    	}
+    }
+    /*
+	* Called on the onClick event of the Grid to check if it
+	* took place at the position after the lastTask to create a new one.
+	*/
+    private function dataGridClick(event : MouseEvent) : void
+    {
+    	var position : int = ((event.stageY - UI.ROW_HEIGHT -7) / UI.ROW_HEIGHT);
+		var index : int = position + taskListAdvancedDataGrid.verticalScrollPosition;
+		taskListAdvancedDataGrid.setFocus();
+		rowG = index - 1;
+		if(index == visibleTasksList.length)
+		{
+			paintSelect();
+			if(parentDocument.resourceLogged.canCreate){
+				colG=4; 
+				//focusInTextWriting(4,'');
+				writingCanvas.y = cellSelectedY();
+				writingCanvas.x = gridColumnPosition.width+27;
+				writingCanvas.width = gridColumnTaskName.width -30;
+				writingCanvas.visible = true;
+				writingText.text = '';
+				writingText.setFocus();
+			}
+		}else if(index >0 && index < visibleTasksList.length){
+			paintSelect();
+			writingCanvas.x = cellSelectedX();
+			writingCanvas.y = cellSelectedY();
+			writingCanvas.width = cellSelectedWidth();
+			if(event.target.hasOwnProperty("text")){
+				setTextWritingText(event.target.text);		
+			}
+		}
+	}
+    
+    /*
+	* returns a visible task by id
+	*/
+    public function getVisibleTask(id : String) : Task
+    {
+    	for(var i : int = 0; i < visibleTasksList.length; i++)
+    	{
+    		var task : Task = Task(visibleTasksList.getItemAt(i));
+			if(task.id==id)
+			{
+				return task;
+			}
+    	}
+    	return null;
+    }
+    
+	public var rowG : int = -1;
+	//public var rowGPrevious : int = -1;
+	public var colG : int = 0;
+ 	public var isFocusInTextInput : Boolean = false;
+ 	public var isClickInTextInput : Boolean = false;
+ 	public var hasUpdating : Boolean = false;
+ 	
+ 	
+    /**
+	* Sets the focused cell
+	*/
+    public function setSelectionModeCell(row : int, col : int) : void
+    {
+		rowG = row;
+		colG = col;
+		hasCreating = false;
+		clearWritingText();
+		
+		//if selected a new task to create
+		// FIXME: try to ask for another condition.
+		if(row == -1){
+			hasCreating = true;
+		}
+    }
+    
+    
+    
+    /*
+	* sets row and col
+	*/
+    public function setPaintIndices(rowIndex : int, columnIndex : int= -1) : void
+    {
+		rowG = rowIndex;
+		if(columnIndex!=-1)
+		{
+			colG = columnIndex;
+		}
+    }
+    /*
+	* 
+	*/
+    public function paintSelect(setPosScroll : Boolean = true) : void
+    {
+    	if(setPosScroll)
+    	{
+    		setScroll(rowG);//this is for the row to be shown since an error occurs when .selectedCells
+    	}
+    	moveBarChartVertically();
+		drawSpriteCell();
+    }
+    /**
+	* When a key is pressed at the datagrid.
+	*/
+	private function myKeyUpHandler(event:KeyboardEvent):void
+    {
+    	if(!disabledKeys){
+    		var cells : Array = taskListAdvancedDataGrid.selectedCells;
+    		clearWritingText();
+	    	switch (event.keyCode)
+	    	{
+	    		case Keyboard.LEFT://left
+	    			if(colG>0 && !isFocusInTextInput)
+	    			{
+	    				colG--;
+	    				paintSelect(false);
+	    				taskListAdvancedDataGrid.selectedCells = [ { rowIndex : (rowG), columnIndex : colG }];
+	    			}
+	    			break;
+	    		case Keyboard.UP://above
+	    			if(rowG>0 && !isFocusInTextInput)
+	    			{
+	    				rowG--;	
+	    				paintSelect(false);
+	    				if(rowG + 1!=visibleTasksList.length){
+	    					parentDocument.barChart.keyPressedMainCanvas(event);	
+	    				}
+	    				taskListAdvancedDataGrid.selectedCells = [ { rowIndex : (rowG), columnIndex : colG }];
+	    			}
+	    			break;
+	    		case Keyboard.RIGHT://right
+	    			if(colG<10 && !isFocusInTextInput)
+	    			{
+	    				colG++;
+	    				paintSelect(false);
+	    				taskListAdvancedDataGrid.selectedCells = [ { rowIndex : (rowG), columnIndex : colG }];
+	    			}
+	    			break;
+	    		case Keyboard.DOWN://below
+	    			if(rowG < visibleTasksList.length-1 && !isFocusInTextInput)
+	    			{
+	    				rowG++;
+	    				paintSelect(false);
+	    				if(rowG!=visibleTasksList.length -1){
+	    					parentDocument.barChart.keyPressedMainCanvas(event);	
+	    				}else{
+	    					//dispatchEvent(new Event(Constants.TASK_DESELECT));
+	    					dispatchEvent(new TaskEvent(TaskEvent.SELECT));
+	    				}
+	    				taskListAdvancedDataGrid.selectedCells = [ { rowIndex : (rowG), columnIndex : colG }];
+	    			}
+	    			break;
+	    		//case 27:
+	    		case Keyboard.ENTER:
+	    				var task : Task = Task(visibleTasksList.getItemAt(rowG))
+	    				if(parentDocument.resourceLogged.canModifyTask(task) || (rowG +1) == visibleTasksList.length){
+	    						if(colG == 4 || ((colG == 5 || colG == 8)&& (rowG+1) != visibleTasksList.length)){
+	    						writingText.setFocus();
+	    						var text : String = getFieldData();
+	    						setTextWritingText(text);
+	    						//setCharSetToWritingText();
+	    						writingCanvas.visible = true;
+	    					}	
+	    				}		
+	    			break;
+	    	}
+    	}
+    }
+    /*
+    * Sets focus to textWriting, set its position
+    * and shows it at the correspondent cell.
+    */
+    public function focusInTextWriting(col : int , event : Event = null) : void
+    {
+    	if(parentDocument.resourceLogged.canModifyTask(Task(visibleTasksList.getItemAt(rowG)))){
+    		if(event){
+    			writingText.text = event.currentTarget.text;	
+    		}
+	    	switch(col)
+			{
+			// position
+				case 4:
+					if(event==null){
+						writingText.text = '';
+					}
+					writingCanvas.y = cellSelectedY();
+					writingCanvas.x = gridColumnPosition.width+(Task(visibleTasksList.getItemAt(rowG)).heriarchy.indent*UI.indent)+27;
+					writingCanvas.width = 190 - (Task(visibleTasksList.getItemAt(rowG)).heriarchy.indent*UI.indent);
+					writingCanvas.visible = true;
+					writingText.setFocus();
+					break;
+			// Duration
+				case 5:
+					writingCanvas.y = cellSelectedY();
+					writingCanvas.x = gridColumnPosition.width+gridColumnTaskName.width+3;
+					writingCanvas.width = gridColumnDuration.width-22;
+					writingCanvas.visible = true;
+					writingText.setFocus();
+					break;
+				case 8:
+					writingCanvas.y = cellSelectedY();
+					writingCanvas.x = gridColumnPosition.width+gridColumnTaskName.width+gridColumnDuration.width+gridColumnStartDate.width+gridColumnEndDate.width+3;
+					writingCanvas.width = gridColumnCompleted.width-22;
+					writingCanvas.visible = true;
+					writingText.setFocus();
+					break;
+			}
+    	}
+    }
+    /*
+	* Triggered on keyDown in textWriting 
+	* - Case Enter creates or edits a task
+	* - Case Escape edits a task
+	*/
+	public var isTyping : Boolean = false;
+	
+    private function keyPressWriting(event : KeyboardEvent) : void
+    {
+    	switch (event.keyCode)
+    	{
+    		case Keyboard.ENTER:
+    			writingText.text = StringUtil.trim(writingText.text);
+    			if(writingText.length == 0)
+				{
+					trace('Enter');
+					// The enter key					
+				} 
+				else
+				{
+					//try to move more deeply
+					//parentDocument.taskResources.buildTempResources();
+					
+					isTyping=false;
+					newDate();
+	    			saveWriting();
+	    			clearWritingText();
+	  
+	    			//disable the key event in the grid
+	    			disabledKeys = true;
+	    			taskCreated=null; 
+   				}
+    			break;
+    		case Keyboard.ESCAPE:
+    			clearWritingText();
+	    		taskListAdvancedDataGrid.setFocus();
+	    		hasCreating=false;
+	    		taskCreated=null;
+    			break;
+    		case Keyboard.DELETE:
+    			clearWritingText();
+    		case Keyboard.SPACE:
+    			break;
+    		case Keyboard.UP:
+    			if(colG!=4 ){
+    				writingText.text = String(Number(writingText.text) + 1);	
+    			}
+    			break;
+    		case Keyboard.DOWN:
+    			if(colG!=4){
+    				writingText.text = String(Number(writingText.text) - 1);	
+    			}
+    			break;
+    	}	
+    }
+    
+    private function validateText(event : Event){
+    	if(colG==5){
+    		writingText.text = DurationValidator.parse(writingText.text);
+    		isTyping = true;
+    	}
+    }
+     /**
+	 * Checks the text enterd to avoid the creation of null tasks
+	 */
+	 public function checkTaskFocusOut() : void
+	 {
+	 		if(writingText.text == ''){
+	 				if(hasCreating){
+	 					Alert.show('Please Check the task name.');	 				
+	 				}
+		 	}	else {
+		 		isTyping=false;
+		 		writingCanvas.visible=false;
+	    		saveWriting();	
+		 		hasCreating=false;
+		 		taskCreated=null;
+		 		writingText.text='';
+		 	}
+	 }
+	 
+	 
+	 /**
+	 * Un-focus the recently created task
+	 */
+	 public function blurTask() : void {
+		hasCreating=false;
+	 	taskCreated=null;
+	 	isTyping = false;
+	 	clearWritingText();
+	 	rowG == visibleTasksList.length - 1;
+	    taskListAdvancedDataGrid.setFocus();
+	 }
+	 
+	 
+    /**
+	* Clears and hides textWriting
+	*/
+    public function clearWritingText() : void 
+    {
+    	writingText.text='';
+    	writingCanvas.visible = false;
+    }
+    
+    
+    /**
+	* Called when enter pressed at textWriting to create or edit a task
+	*/
+    private function saveWriting() : void
+    {
+    	if(hasCreating)
+		{
+			saveInHistory = false;
+			//rowG = visibleTasksList.length - 1;
+		}
+    	var row : int = rowG;
+		visibleTasksList.getItemAt(row).isHidden = false;
+		var num : Number = 0;
+		var task : UiTask= UiTask(visibleTasksList.getItemAt(row)).clone();
+		var saveInHistory : Boolean = true;
+		
+		//parentDocument.addListener(Constants.TASK_MODIFIED_BY_OTHER_WAY);
+		switch(colG)
+		{
+			case 4:
+				task.name = writingText.text;
+				parentDocument.visibilityLoadingProgress(true);
+				//parentDocument.addEventListener(Constants.TASK_NEXT_LINE,nextLineAfterCreateUpdateTask);
+				if(rowG == visibleTasksList.length - 1)
+				{
+					parentDocument.addTask(Constants.ACTION_ADD_WRITING, task);
+					//rowG++;
+					
+				}
+				else
+				{
+					//parentDocument.action = Constants.ACTION_ADD_WRITING;
+					Components.instance.controller.updateTask(task);
+					//update(task,Constants.NAME,writingText.text,saveInHistory);
+				}
+				
+				break;
+			case 5:
+				writingText.text = DurationValidator.parse(writingText.text);
+				var num : Number = DurationValidator.convert(writingText.text,Components.instance.project.durationInHours);
+				if(num > 0){
+					task.duration = num;
+					parentDocument.visibilityLoadingProgress(true);
+					//parentDocument.addEventListener(Constants.TASK_NEXT_LINE,nextLineAfterCreateUpdateTask);
+					Components.instance.controller.updateTask(task);
+				}
+					//update(task,Constants.DURATION,num.toString(),saveInHistory);
+				break;
+			case 8:
+				num = int(writingText.text);
+				if(num<0)
+				{
+					num = 0;
+				}
+				if(num>100)
+				{
+					num = 100;
+				}
+				task.completed = num;
+				parentDocument.visibilityLoadingProgress(true);
+				//parentDocument.addEventListener(Constants.TASK_NEXT_LINE,nextLineAfterCreateUpdateTask);
+				//update(task,Constants.COMPLETED,num.toString(),saveInHistory);
+				Components.instance.controller.updateTask(task);
+				break;
+		}
+		
+		clearWritingText();
+		taskListAdvancedDataGrid.setFocus();
+  		
+    }
+   
+   
+    /**
+	 * Moves the Chart when the scroll is moved
+	 */
+	 private function moveBarChartVertically() : void
+	 {
+	 	var positionActual : int = parentDocument.barChart.barChartCanvas.y / UI.ROW_HEIGHT * (-1);
+	 	var potitionChange : int = taskListAdvancedDataGrid.verticalScrollPosition;
+	 	parentDocument.barChart.moveBarChartVertically((positionActual - potitionChange) * UI.ROW_HEIGHT);
+	 }
+	 
+	 
+	 /**
+	 * Calculates the width of the selected cell
+	 */
+	 private function cellSelectedWidth() : int
+	 {
+	 	var width : int = 0;
+	 	switch (colG)
+	 	{
+	 		case 0:
+	 			width = gridColumnPosition.width+gridColumnTaskName.width+gridColumnDuration.width+gridColumnStartDate.width+gridColumnEndDate.width+gridColumnCompleted.width+gridColumnResources.width;
+	 			break;
+	 		case 4:
+	 			width = gridColumnTaskName.width;
+	 			break;
+ 			case 5:
+	 			width = gridColumnDuration.width;
+	 			break;
+	 		case 6:
+	 			width = gridColumnStartDate.width;
+	 			break;
+ 			case 7:
+	 			width = gridColumnEndDate.width;
+	 			break;
+	 		case 8:
+	 			width = gridColumnCompleted.width;
+	 			break;	 		
+	 		case 9:
+	 			width = gridColumnResources.width;
+	 			break;
+	 	}
+	 	return width;
+	 }
+	 
+	 
+	/**
+	* Returns x property of the selected cell
+	*/
+	 private function cellSelectedX() : int
+	 {
+	 	var x : int = 0;
+	 	switch (colG)
+	 	{
+	 		case 1:
+	 			x = gridColumnPosition.width;
+	 			break;
+	 		case 2:
+	 			x = gridColumnPosition.width;
+	 			break;
+	 		case 3:
+	 			x = gridColumnPosition.width;
+	 			break;
+ 			case 4:
+	 			x = gridColumnPosition.width;
+	 			break;
+	 		case 5:
+	 			x = gridColumnPosition.width+gridColumnTaskName.width;
+	 			break;
+	 		case 6:
+	 			x = gridColumnPosition.width+gridColumnTaskName.width+gridColumnDuration.width;
+	 			break;
+ 			case 7:
+	 			x = gridColumnPosition.width+gridColumnTaskName.width+gridColumnDuration.width+gridColumnStartDate.width;
+	 			break;
+	 		case 8:
+	 			x = gridColumnPosition.width+gridColumnTaskName.width+gridColumnDuration.width+gridColumnStartDate.width+gridColumnEndDate.width;
+	 			break;
+	 		case 9:
+	 			x = gridColumnPosition.width+gridColumnTaskName.width+gridColumnDuration.width+gridColumnStartDate.width+gridColumnEndDate.width+gridColumnCompleted.width;
+	 			break;
+	 	
+	 	}
+	 	return x;
+	 }
+	 
+	/**
+	* Returns y property of the selected cell
+	*/
+	private function cellSelectedY() : int
+	{
+		return (rowG * UI.ROW_HEIGHT) + UI.ROW_HEIGHT + 3 - (taskListAdvancedDataGrid.verticalScrollPosition * UI.ROW_HEIGHT);
+	}
+	
+	/**
+	* Returns true if value is between start and end
+	*
+	 * @param value The int to test belonging to the interval.
+	 * @param start Lower limit of the interval.
+	 * @param end Upper limit of the interval. 
+	*/
+	 private function isBetween(value : int, start : int, end : int) : Boolean
+     {
+      	return ( (value >= start) && (value <= end) );
+     }
+     
+     
+     /**
+	* Returns the correspondent column for a given x.
+	 * @param x position
+	*/
+	 private function colOfX(x : int) : int
+	 {
+	 	var col : int = 0;
+	 	if(isBetween(x, 0, gridColumnPosition.width))
+	 	{
+	 		col = 0;
+	 	}
+	 	else if(isBetween(x, gridColumnPosition.width, gridColumnPosition.width))
+	 	{
+	 		col = 1;
+	 	}
+	 	else if(isBetween(x, gridColumnPosition.width,  gridColumnPosition.width))
+	 	{
+	 		col = 2;
+	 	}
+	 	else if(isBetween(x, gridColumnPosition.width, gridColumnPosition.width))
+	 	{
+	 		col = 3;
+	 	}
+	 	else if(isBetween(x, gridColumnPosition.width+gridColumnPosition.width,gridColumnTaskName.width))
+	 	{
+	 		col = 4;
+	 	}
+	 	else if(isBetween(x, gridColumnPosition.width+gridColumnTaskName.width+gridColumnDuration.width, gridColumnPosition.width+gridColumnTaskName.width+gridColumnDuration.width+gridColumnStartDate.width))
+	 	{
+	 		col = 5;
+	 	}
+	 	else if(isBetween(x, gridColumnPosition.width+gridColumnTaskName.width+gridColumnDuration.width+gridColumnStartDate.width, gridColumnPosition.width+gridColumnTaskName.width+gridColumnDuration.width+gridColumnStartDate.width+gridColumnEndDate.width))
+	 	{
+	 		col = 6;
+	 	}
+	 	else if(isBetween(x, gridColumnPosition.width+gridColumnTaskName.width+gridColumnDuration.width+gridColumnStartDate.width+gridColumnEndDate.width, gridColumnPosition.width+gridColumnTaskName.width+gridColumnDuration.width+gridColumnStartDate.width+gridColumnEndDate.width+gridColumnCompleted.width))
+	 	{
+	 		col = 7;
+	 	}
+	 	else if(isBetween(x, gridColumnPosition.width+gridColumnTaskName.width+gridColumnDuration.width+gridColumnStartDate.width+gridColumnEndDate.width+gridColumnCompleted.width, gridColumnPosition.width+gridColumnTaskName.width+gridColumnStartDate.width+gridColumnEndDate.width+gridColumnCompleted.width))
+	 	{
+	 		col = 8;
+	 	}
+	 	else if(isBetween(x, gridColumnPosition.width+gridColumnTaskName.width+gridColumnDuration.width+gridColumnStartDate.width+gridColumnEndDate.width+gridColumnCompleted.width, gridColumnPosition.width+gridColumnTaskName.width+gridColumnDuration.width+gridColumnStartDate.width+gridColumnEndDate.width+gridColumnCompleted.width+gridColumnResources.width))
+	 	{
+	 		col = 9;
+	 	}
+	 	return col;
+	 }
+	 
+	 
+	 /**
+	* Draws the spriteObject that represents the border of the focused cell
+	*/
+	 public function drawSpriteCell(isNewTask : Boolean = false) : void
+   	 {
+   	 	if(visibleTasksList.length>1 && (rowG!=-1 || isNewTask))
+   	 	{
+	   	 	var name : String = 'drawSpriteCell';
+			var labelSprite : Sprite = Sprite(taskListAdvancedDataGrid.getChildByName(name));
+			var width : int = cellSelectedWidth();
+			var height : int = UI.ROW_HEIGHT;
+			var x : int = cellSelectedX() + 3;
+			if(isNewTask)
+			{
+				var y : int = (visibleTasksList.length) * height + 1;
+			}
+			else
+			{
+				var y : int = (rowG + 1) * height + 1;
+			}
+			y -= (taskListAdvancedDataGrid.verticalScrollPosition * height);
+			if(y>1)
+			{
+				
+				if(labelSprite == null)
+				{
+					
+					labelSprite = new Sprite();
+					labelSprite.name = name;
+					labelSprite.x = x;
+					labelSprite.y = y;				
+					if(colG!=0){
+						
+						labelSprite.graphics.drawRoundRect(0, 0, width, height, 0, 0);
+						// Apply the glow filter to the cross shape.
+						var glow:GlowFilter = new GlowFilter();
+						glow.color = 0x0000ff;
+						glow.alpha = 1;
+						glow.blurX = 8;
+						glow.blurY = 8;
+						glow.quality = BitmapFilterQuality.MEDIUM;
+						
+						labelSprite.opaqueBackground = 0xFFFFFF;
+						labelSprite.filters = [glow];
+						labelSprite.alpha= 0.3;
+					} else {
+						
+						width = width -  gridColumnPosition.width ;						
+						
+						labelSprite.graphics.drawRoundRect(gridColumnPosition.width - 1, 0, width, height, 0, 0);
+						labelSprite.opaqueBackground = 0xCFECF2;						
+						var glow:GlowFilter = new GlowFilter();
+						glow.color = 0x000000;
+						glow.alpha = 0;
+						labelSprite.filters = [glow]; 
+						labelSprite.alpha= 0.5;				
+					}
+					
+					taskListAdvancedDataGrid.addChildAt(labelSprite, 3);
+				}
+				else
+				{	
+					labelSprite.x = x;
+					labelSprite.y = y;
+					labelSprite.graphics.clear();
+					
+					if(colG!=0){
+					
+						labelSprite.graphics.drawRoundRect(0, 0, width, height, 0, 0);
+						// Apply the glow filter to the cross shape.
+						var glow:GlowFilter = new GlowFilter();
+						glow.color = 0x000000;
+						glow.alpha = 1;
+						glow.blurX = 8;
+						glow.blurY = 8;
+						glow.quality = BitmapFilterQuality.MEDIUM;						
+						labelSprite.opaqueBackground = 0xFFFFFF;
+						labelSprite.filters = [glow];
+						labelSprite.alpha= 0.3;
+					} else {
+					
+						width = width -  gridColumnPosition.width;						
+						labelSprite.graphics.drawRoundRect(gridColumnPosition.width, 0, width, height, 0, 0);
+						labelSprite.filters = null;
+						var glow:GlowFilter = new GlowFilter();
+						glow.alpha = 0;
+						labelSprite.filters = [glow];
+						labelSprite.opaqueBackground = 0xCFECF2;
+						labelSprite.alpha= 0.5;
+						labelSprite.addEventListener(MouseEvent.MOUSE_DOWN,clickSelectedSprite)
+					}
+					taskListAdvancedDataGrid.addChildAt(labelSprite, 3);
+				}
+				
+				/*
+				if(!isNewTask){
+				*/
+					writingCanvas.x = labelSprite.x;
+					writingCanvas.y = labelSprite.y;
+					writingCanvas.width = labelSprite.width;
+				/*
+				}
+				*/
+			}
+			else
+			{
+				labelSprite.graphics.clear();
+			}
+		}
+   	 } 
+   	 
+   	 private function clickSelectedSprite(event : MouseEvent) : void
+     {
+     	colG = colOfX(event.localX);
+    	drawSpriteCell();    	
+		taskListAdvancedDataGrid.selectedCells = [ { rowIndex : (rowG), columnIndex : colG }];
+     }
+     
+     
+     /**
+	* Returns true if completed percet is editable.
+	*/
+     public function editableCompleted(data : Object) : Boolean
+	 {
+		return (data.isEditable());
+	 }
+	 private var taskCreated : Task = null;
+	 
+	 
+	 /**
+	* Set variables that indicate a task has been created
+	*/
+	 public function setInsertTaskName(task : Task) : void
+	 {
+	 	  taskCreated = task;
+  		  hasCreating=true;
+	 }
+	 
+	 
+	 /**
+	* Set the position of the textWritting to the place where the task is being created
+	*/
+	 public function insertTaskName() : void
+	 {
+	 	if(taskCreated!=null)
+	 	{
+  		  setPaintIndices(taskCreated.positionVisible - 1, 4);
+  		  focusInTextWriting(4);
+  	 	}
+	 }
+	 
+	 
+	 
+		
+		[Bindable]
+		[Embed(source="assets/imgs/indicator_arrow.png")]
+   		public  var cursorRightArrow : Class; 
+
+
+		 /**
+		 * Change cursor over task number
+		 */
+		 public function setCursor() : void 
+		 {
+		 	if(!isDraging){
+		 		CursorManager.setCursor(cursorRightArrow,2.0,-8);
+		 	}					 	 
+		 }
+		 
+		 public function unSetCursor() : void 
+		 { 
+		 	if(!isDraging){
+		 		CursorManager.removeAllCursors();
+		 	}
+		 }
+		 
+		  public function setDragCursor() : void 
+		 {
+		 	CursorManager.removeAllCursors();
+		 	CursorManager.setCursor(cursorHandDown,2.0,-8);							 	 
+		 }
+		 
+		 public function nextLineAfterCreateUpdateTask(event : Event = null) : void{
+		 	hasCreating = true;
+		 	disabledKeys = false;
+		 	var task : UiTask = null;
+		 	//if the task is not the last row
+		 	//focus to next cell below depending if the colG is the name else restrict the length -1
+		 	if((colG == 4 && rowG-1 < visibleTasksList.length) || (colG!=4 && rowG+1 < visibleTasksList.length -1)){
+		 		filter();
+		 		rowG++;
+		 		var taskId : String = getFieldData(true); 
+		 		Components.instance.tasks.select(taskId);
+		 		task = UiTask(visibleTasksList.getItemAt(rowG));
+		 	}
+		 	var rowNext : int = rowG ;
+		 	writingCanvas.y = (rowNext * UI.ROW_HEIGHT) - (taskListAdvancedDataGrid.verticalScrollPosition * UI.ROW_HEIGHT);
+			if(height < writingCanvas.y + 2*UI.ROW_HEIGHT){
+				writingCanvas.y -= UI.ROW_HEIGHT;
+				taskListAdvancedDataGrid.verticalScrollPosition ++;
+			} 
+			writingCanvas.x = gridColumnPosition.width+27;
+			writingCanvas.width = gridColumnTaskName.width -30;
+			if((task && parentDocument.resourceLogged.canModifyTask(task)) || rowG + 1== visibleTasksList.length){
+				var text : String = getFieldData();
+	    		setTextWritingText(text);
+				if(rowG + 1 == visibleTasksList.length){
+					writingText.setFocus();
+				}
+				writingCanvas.visible = (rowG + 1 == visibleTasksList.length);
+			}
+			drawSpriteCell();
+
+			if(task.id != ''){
+				//dispatchEvent(new Event(Constants.TASK_SELECT));
+				dispatchEvent(new TaskEvent(TaskEvent.SELECT,task));	
+			}else{
+				//dispatchEvent(new Event(Constants.TASK_DESELECT));
+				dispatchEvent(new TaskEvent(TaskEvent.SELECT));
+			}
+		 }
+		 
+		 public function moveWritingCanvas(event : ScrollEvent) : void{
+		 	if(writingCanvas.visible){
+		 		writingCanvas.y = writingCanvas.y - event.delta * UI.ROW_HEIGHT ;
+		 		if(writingCanvas.y <= 5)
+			 	{
+			 		writingCanvas.visible = false;
+			 	}else{
+			 		writingCanvas.visible = true;
+			 	}	
+		 	}
+		 }	
+		 
+		 public function setPosition(data: Object) : String{
+		 	var task : Task = Task(data);
+		 	var position : String;
+		 	if(task.id != ''){
+		 		position = task.positionVisible.toString();
+		 	}else{
+		 		position = "►";
+		 	}
+		 	return position;
+		 }		 
+		 
+		 private function getFieldData(isId : Boolean = false) : String{
+		 	var data : Task = Task(visibleTasksList.getItemAt(rowG));
+		 	var fieldValue : String = '';
+		 	if(isId){
+		 		fieldValue = data.id;	
+		 	}else{
+		 		if(colG == 4){
+				fieldValue = data.name;
+			 	}else if(colG == 5){
+			 		fieldValue = data.duration.toString();
+			 	}else if(colG == 8){
+			 		fieldValue = data.completed.toString();
+			 	}	
+		 	}
+		 	return fieldValue;
+		 }
+		 
+		 private function setTextWritingText(text : String) : void{
+		 	writingText.text = text;
+			//set the cursor at the end of the text.
+			writingText.selectionBeginIndex = writingText.length;
+			writingText.selectionEndIndex = writingText.length;
+		 }
+		 
+		 private function setCharSetToWritingText() : void {
+		 	if(colG==4){
+		 		writingText.restrict="0-9A-Za-z ";
+		 	}else{
+		 		writingText.restrict="0-9hHdD";
+		 	}
+		 }
+		 
+		 public function init() : void{
+		 	//custom the header name of column duration
+		 	visibleTasksList = new ArrayCollection();
+		 	gridColumnDuration.dataField = "Duration ("+Constants.DURATION_HOURS+")";
+		 	filter();
+		 	clearWritingText();
+		 }
+		 
+		private function taskListInit() :void{
+			indicator = new Image();
+		 	indicator.source = indicator_image;
+		 	indicator.setActualSize(taskListAdvancedDataGrid.width,2);
+		 	addChild(indicator);
+		 	indicator.setVisible(false);
+		 	numericStepperTimer.addEventListener(TimerEvent.TIMER_COMPLETE,updateFromNumericStepper);
+		 	filter();
+		}
+		
+		/**
+		 * TODO refactor this function
+		 * ***********************************************
+		 */ 
+		public function updateTask2(event : Event, data : Object) : void{
+			var task : UiTask = UiTask(data)
+			var toUpdate : Boolean = false;
+			switch(event.currentTarget.id){
+				case "duration":
+					if(task.isEditable() && !task.isMilestone)
+				  	{
+				  		if(parentDocument.resourceLogged.canModifyTask(task) || parentDocument.resourceLogged.canManage){
+					  		if(event.currentTarget.value != task.duration)
+					  		{
+					  			task.duration = event.currentTarget.value;
+					  			hasUpdating = true;
+					  			taskToUpdate = UiTask(data);
+								numericStepperTimer.reset();
+								numericStepperTimer.start();
+					  		}
+					  	}
+				  	}
+					break;
+				case "completed":
+					if(task.isEditable())
+			  		{
+			  			if(parentDocument.resourceLogged.canModifyTask(task) || parentDocument.resourceLogged.canManage){
+				  			if(event.currentTarget.value != task.completed)
+				  			{
+				  				task.completed = event.currentTarget.value;
+				  				hasUpdating = true;
+				  				taskToUpdate = UiTask(data);
+								numericStepperTimer.reset();
+								numericStepperTimer.start();
+					  		}
+					  	}
+				  	}
+					break;
+				case "startDate":
+				  	if(event.currentTarget.text != task.startDate && event.currentTarget.text != '')
+				  	{
+				  		if(Calendar.toString(task.startDate,"mm/dd/yyyy")!=event.currentTarget.text)
+					  	{
+					  		toUpdate = true;
+					  		task.startDate = event.currentTarget.selectedDate;
+				  		}
+				  		var durationInDays : int;
+				  		if(Components.instance.project.durationInHours){
+					  		durationInDays = task.project.convertToDays(task.duration);
+					  	}else{
+					  		durationInDays = task.duration;
+					  	}
+				  		if(Calendar.less(task.endDate,task.startDate)){
+				  			task.endDate = Calendar.nextWorkDate(task.startDate,durationInDays);
+				  		}
+				  	}
+					break;
+				case "endDate":
+					if(event.currentTarget.text != '' && !task.isMilestone)
+				  	{
+				  		if(Calendar.toString(task.endDate,"mm/dd/yyyy")!=event.currentTarget.text)
+				  		{
+				  			toUpdate = true;
+				  			task.endDate = event.currentTarget.selectedDate;
+					  	}
+					  	var durationInDays : int;
+					  	if(task.project.durationInHours){
+					  		durationInDays = task.project.convertToDays(task.duration);
+					  	}else{
+					  		durationInDays = task.duration;
+					  	}
+					  	if(Calendar.less(task.endDate,task.startDate)){
+				  			task.startDate = Calendar.previousWorkDate(task.endDate,durationInDays);
+				  		}
+				  	}
+					break
+			}
+			if(toUpdate){
+				parentDocument.visibilityLoadingProgress(true);
+	    		disabledKeys = true;
+				hasCreating = false;
+	    		//parentDocument.addEventListener(Constants.TASK_NEXT_LINE,nextLineAfterCreateUpdateTask);
+				Components.instance.controller.updateTask(task);
+			}
+		}		
+		
+		/******************************************************************************/
+		
+		private var taskToUpdate : UiTask;
+		private function updateFromNumericStepper(event : Event = null) : void{
+			numericStepperTimer.reset();
+			parentDocument.visibilityLoadingProgress(true);
+    		disabledKeys = true;
+			hasCreating = false;
+    		//parentDocument.addEventListener(Constants.TASK_NEXT_LINE,nextLineAfterCreateUpdateTask);
+			Components.instance.controller.updateTask(taskToUpdate);
+		}
+	]]> 
+</mx:Script>
+<mx:Style source="assets/css/Grid.css"/>
+<mx:Style>
+	.scrollBar {
+	   cornerRadius: 9;
+	   highlightAlphas: 0, 0;
+	   fillAlphas: 0.6, 0.39, 0.82, 0.65;
+	   fillColors: #000000, #333333, #999999, #cccccc;
+	   trackColors: #d9ddde, #ffffff;
+	   themeColor: #666666;
+	   borderColor: #000000;
+	}
+	
+</mx:Style>	
+	<mx:AdvancedDataGrid id="taskListAdvancedDataGrid" 
+		styleName="dataGridTaskList"
+		height="100%" width="100%" x="0" y="0"
+		rowHeight="30" headerHeight="30" 
+	    variableRowHeight="false" 
+	    sortableColumns="false"
+	  	selectionMode="singleCell"
+	  	selectable="true"
+	  	scroll="paintSelect(false);moveWritingCanvas(event)"
+	  	itemClick="select(event)"
+	  	click="dataGridClick(event)" 
+	  	keyDown="myKeyUpHandler(event);"
+	  	dataProvider="{visibleTasksList}"	
+	  	dragEnabled="true"  	
+	  	dropEnabled="true"
+	  	dragMoveEnabled="true"
+	  	dragEnter="dataGridDragEnter(event)"
+	  	dragComplete="dataGridDragDrop(event);unSetCursor();" 		
+	  	selectionColor="#ffffff"
+	  	verticalScrollBarStyleName="scrollBar"
+	  	draggableColumns="false"
+	  	creationComplete="{taskListInit()}">
+        <mx:columns>
+        <!-- 
+        	to do: dragComplete="updateTask(data,event, 'priority');"
+        	Task Number Column 
+        -->
+    	 <mx:AdvancedDataGridColumn 
+    	 	textAlign="center" 
+    	 	resizable="false" 
+    	 	dataField="" 
+    	 	minWidth="30" 
+    	 	width="30" 
+    	  	headerStyleName="gridColumnHeader" 
+    	 	id="gridColumnPosition"    	 	
+    	 	backgroundColor="#E1E2E1" 
+    	 	>
+        	<mx:itemRenderer >
+            	<mx:Component >
+						<mx:HBox 
+	            				textAlign="center" 
+	            				horizontalScrollPolicy="off" 
+	            				backgroundAlpha="{data.alphaCut}" 
+	            				click="outerDocument.setSelectionModeCell(data.position-1, 0);outerDocument.setSelectedTaskData(data);"
+	            				backgroundColor="#E1E2E1" 
+	            				width="30"  
+	            				maxWidth="30"
+	            				mouseMove="outerDocument.setCursor();"
+	            				mouseOut="outerDocument.unSetCursor();" >
+							<mx:Label textAlign="center" styleName = "taskNumber" text="{outerDocument.setPosition(data)}" width="30" maxWidth="30" fontAntiAliasType="normal" />
+	        			</mx:HBox>	
+                </mx:Component>
+            </mx:itemRenderer>
+    	</mx:AdvancedDataGridColumn>
+    	<!-- 
+    		Task Name Column 
+    	-->
+        <mx:AdvancedDataGridColumn resizable="false" id="gridColumnTaskName" headerStyleName="gridColumnHeader"  
+        	dataField = "Task Name" textAlign="center" minWidth = "155" width="155" fontAntiAliasType="normal">
+            <mx:itemRenderer>
+                <mx:Component>
+					  <mx:HBox borderStyle="{creationComplete(data)}" backgroundAlpha="{data.alphaCut}" click="outerDocument.setSelectionModeCell(data.position-1, 4)" backgroundColor="#eaeaea"
+					  	  horizontalScrollPolicy = "off"  fontAntiAliasType="normal" >
+						<mx:Script>
+						  <![CDATA[
+						  import com.salesforce.gantt.model.UI;
+						  import mx.utils.StringUtil;
+						  import com.salesforce.gantt.controller.Components;
+						  import com.salesforce.gantt.model.Task;
+						  
+						  private function creationComplete(data : Object) : String
+						  {
+						  	  if(data.name == '')
+						  	  {
+						  	  	  outerDocument.setInsertTaskName(Task(data));
+						  	  }
+						  	  return 'none';
+						   }
+						  	private function indent(data : Object) : int
+						  	{
+						  		return (data.heriarchy.indent * UI.indent);
+						  	}
+						  ]]>
+						</mx:Script>
+                        <mx:Label width="{indent(data)}"  visible="{!data.isHidden}" fontAntiAliasType="normal" />
+                    	<mx:Image useHandCursor="true" buttonMode="true" click="outerDocument.toggleExpanded(data)" width = "10" id = "nodoImage" source="{outerDocument.imageEmbed(data.imageSign())}"  visible="{!data.isHidden}"  />
+                        <mx:TextInput id="nameTask" text="{data.name}" alpha = "0"
+                        	width = "100%"  styleName = "textInputGrill" height = "19" 
+                        	  fontWeight="{outerDocument.fontWeight(data)}"  
+                        	   visible="{!data.isHidden}"
+                        	   editable="false"
+                        	   click="outerDocument.taskListAdvancedDataGrid.setFocus()"
+                        	   doubleClick="outerDocument.focusInTextWriting(4,event)"
+                        	   doubleClickEnabled="true"
+                        	   fontAntiAliasType="normal" 
+                        	   />
+                    </mx:HBox>
+                </mx:Component>
+            </mx:itemRenderer>
+        </mx:AdvancedDataGridColumn>
+        <!-- Task Duration Column-->
+        <mx:AdvancedDataGridColumn 
+        		resizable="false" 
+        		id="gridColumnDuration" 
+        		headerStyleName="gridColumnHeader"   
+        		minWidth = "90" 
+        		dataField= "Duration"
+        		width="90"
+        		textAlign="center" 
+        		>
+            <mx:itemRenderer>
+            	<mx:Component>
+            		<mx:HBox backgroundAlpha="{data.alphaCut}" click="outerDocument.setSelectionModeCell(data.position-1, 5)" backgroundColor="#eaeaea" horizontalAlign="center" horizontalScrollPolicy = "off">				
+						<mx:Label text="{data.duration}" width="100%" 
+								doubleClick="if(outerDocument.editableCompleted(data)){outerDocument.focusInTextWriting(5, event)}"
+                        	    doubleClickEnabled="{!data.isMilestone}" visible="{!data.isHidden}" />
+						<mx:NumericStepper  
+							id = "duration"
+							styleName="textInputGrill" 	
+							fontWeight="{outerDocument.fontWeight(data)}"	            		 
+		            		width="15" height = "100%" minimum="1" maximum="10000" backgroundAlpha="0" 
+		            		enabled="{outerDocument.editableCompleted(data)}"
+		            		click="{outerDocument.updateTask2(event, data)}"
+		            		value="{data.duration}" visible="{!data.isHidden}">
+		            			<mx:upArrowSkin>@Embed('assets/imgs/stepper_arrow_up_big.png')</mx:upArrowSkin>
+			            		<mx:downArrowSkin>@Embed('assets/imgs/stepper_arrow_down_big.png')</mx:downArrowSkin>
+		            	</mx:NumericStepper>
+		            		
+        			</mx:HBox>
+                </mx:Component>
+            </mx:itemRenderer>
+        </mx:AdvancedDataGridColumn>
+        <!--  Start Date Col -->
+        <mx:AdvancedDataGridColumn
+        	textAlign="center"  
+        	resizable="false" 
+        	id="gridColumnStartDate" 
+        	headerStyleName="gridColumnHeader" 
+        	dataField = "Start Date" minWidth = "80" width="80">
+        	<mx:itemRenderer>
+                <mx:Component>
+                	<mx:HBox backgroundAlpha="{data.alphaCut}" click="outerDocument.setSelectionModeCell(data.position-1, 6)" backgroundColor="#eaeaea" horizontalScrollPolicy = "off" horizontalAlign="center">
+                		<mx:Script>
+						  <![CDATA[
+						  	import com.salesforce.gantt.model.Task;
+						  
+						  import mx.events.CalendarLayoutChangeEvent;
+						  import com.salesforce.gantt.controller.Constants;
+						  import com.salesforce.gantt.controller.Components;
+						  import com.salesforce.gantt.model.Calendar;
+						    
+						   private function keyDown(event :KeyboardEvent):void
+							  {
+							  	if(event.keyCode==27)
+							  	{
+							  		startDate.close();
+							  	}
+							  }
+							  private function updateDate(event : CalendarLayoutChangeEvent) : void {
+								if (event.newDate != null) {
+									var dateNew : Date = new Date(event.newDate.getFullYear(), event.newDate.month, event.newDate.date);
+									startDate.selectedDate = event.newDate;
+								}
+							 }
+							 
+							 // Check If the user can edit the start date 
+							  private function editStartDate(event : Event) : void {						  	
+							  	if(outerDocument.parentDocument.resourceLogged.canModifyTask(Task(data)) || outerDocument.parentDocument.resourceLogged.canManage){
+							  		startDate.x = outerDocument.gridColumnStartDate.width;
+							  		startDate.open();
+							  	}
+							  }
+						  ]]>
+						</mx:Script>
+						<mx:Canvas click="outerDocument.setPaintIndices(data.position-1,7);">
+							<mx:LinkButton alpha="0" textAlign="center" height="100%" width="100%"
+								enabled="{data.isEditable()}" visible="{!data.isHidden}" fontWeight="{outerDocument.fontWeight(data)}" 
+								 click="editStartDate(event)" label="{startDate.text}" keyDown="keyDown(event)"/>
+		 					<mx:DateField id="startDate" selectionColor="8376063" 
+		                		change="updateDate(event);outerDocument.updateTask2(event, data)" 
+		                		text = "{data.startDate.toString(Constants.FOUR_DIGIT_FORMAT)}"
+						        firstDayOfWeek = "0" height = "0" width = "0" visible="false"
+						          /> 
+			        	</mx:Canvas>
+				    </mx:HBox>
+                </mx:Component>
+            </mx:itemRenderer>
+        </mx:AdvancedDataGridColumn>
+        <!--  End Date Col -->
+        <mx:AdvancedDataGridColumn 
+        	resizable="false" 
+        	id="gridColumnEndDate" 
+        	headerStyleName="gridColumnHeader"
+        	textAlign="center"       	
+        	dataField = "Due Date" minWidth = "80" width="80" >
+        	<mx:itemRenderer>
+                <mx:Component>
+                	<mx:HBox backgroundAlpha="{data.alphaCut}" click="outerDocument.setSelectionModeCell(data.position-1, 7)" backgroundColor="#eaeaea" horizontalScrollPolicy = "off" horizontalAlign="center">
+	                	<mx:Script>
+						  <![CDATA[
+						  	import com.salesforce.gantt.model.Task;
+						  	  import mx.events.CalendarLayoutChangeEvent;
+						      import com.salesforce.gantt.controller.Constants;
+						      import com.salesforce.gantt.controller.Components;
+						      import com.salesforce.gantt.model.Calendar;
+						   
+							  private function keyDown(event :KeyboardEvent):void
+							  {
+							  	if(event.keyCode==27)
+							  	{
+							  		endDate.close();
+							  	}
+							  }
+							  private function updateDate(event : CalendarLayoutChangeEvent) : void {
+								if (event.newDate != null) {
+									var dateNew : Date = new Date(event.newDate.getFullYear(), event.newDate.month, event.newDate.date);
+									endDate.selectedDate = event.newDate;
+								}
+							  }
+							  
+							  // Check If the user can edit the start date
+							  private function editEndDate(data : Object) : void {
+							   	if(!data.isMilestone && (outerDocument.parentDocument.resourceLogged.canModifyTask(Task(data)) || outerDocument.parentDocument.resourceLogged.canManage)){
+							  		endDate.x = outerDocument.gridColumnEndDate.width;
+							  		endDate.open();
+							  	}
+							  }
+							  
+							  ]]>
+							</mx:Script>
+							<mx:Canvas click="outerDocument.setPaintIndices(data.position-1,8);">
+								<mx:LinkButton id="endDateLink" alpha="0" textAlign="center" height="100%" width="100%"
+									enabled="{outerDocument.editableCompleted(data)}" visible="{!data.isHidden}" fontWeight="{outerDocument.fontWeight(data)}" 
+									 click="editEndDate(data)" label="{endDate.text}" keyDown="keyDown(event)"/>
+			 					<mx:DateField id="endDate" selectionColor="8376063"
+			                		change="{updateDate(event);outerDocument.updateTask2(event, data)}" 
+			                		text = "{data.endDate.toString(Constants.FOUR_DIGIT_FORMAT)}" 
+							        firstDayOfWeek = "0" height = "0" width = "0" visible="false"
+							          /> 
+							</mx:Canvas>
+					    </mx:HBox>
+                    </mx:Component>
+                </mx:itemRenderer>
+            </mx:AdvancedDataGridColumn>
+            <!--  % Completed  Col -->
+        <mx:AdvancedDataGridColumn 
+        		resizable="false" 
+        		id="gridColumnCompleted" 
+        		headerStyleName="gridColumnHeader" 
+        		dataField = "% Complete" 
+        		minWidth = "80"
+        		textAlign="center" 
+        		width="80">
+            	<mx:itemRenderer>
+                    <mx:Component>
+                    	<mx:HBox  backgroundAlpha="{data.alphaCut}" click="outerDocument.setSelectionModeCell(data.position-1, 8)" backgroundColor="#eaeaea" horizontalAlign="center" horizontalScrollPolicy = "off">
+							<mx:Label text="{data.completed}" width="100%" 
+								doubleClick="if(outerDocument.editableCompleted(data)){outerDocument.focusInTextWriting(8, event)}"
+                        	    doubleClickEnabled="true" visible="{!data.isHidden}"/>
+            				<mx:NumericStepper id="completed"
+								styleName="textInputGrill" backgroundAlpha="0"	
+								fontWeight="{outerDocument.fontWeight(data)}"	            		
+			            		width="15" height = "100%" minimum="0" maximum="100" 
+			            		enabled="{outerDocument.editableCompleted(data)}"
+			            		click="{outerDocument.updateTask2(event, data)}" 
+			            		value="{data.completed}"  visible="{!data.isHidden}">
+			            			<mx:upArrowSkin >@Embed('assets/imgs/stepper_arrow_up_big.png')</mx:upArrowSkin>
+			            			<mx:downArrowSkin>@Embed('assets/imgs/stepper_arrow_down_big.png')</mx:downArrowSkin>
+			            		</mx:NumericStepper>
+					    </mx:HBox>
+                    </mx:Component>
+                </mx:itemRenderer> 
+            </mx:AdvancedDataGridColumn>            
+            <!--  Task Resources Col -->
+        <mx:AdvancedDataGridColumn 
+        		resizable="false" 
+        		id="gridColumnResources"  
+        		headerStyleName="gridColumnHeader"
+        		dataField="Assignee"
+        		width="100" 
+        		minWidth="100"        		
+        		textAlign="center"	>
+            	<mx:itemRenderer>
+                    <mx:Component>
+        			   	<mx:HBox resize="outerDocument.drawSpriteCell()" backgroundAlpha="{data.alphaCut}" click="outerDocument.setSelectionModeCell(data.position-1, 9)" backgroundColor="#eaeaea" horizontalScrollPolicy = "off" width="100%" verticalScrollPolicy="off" 
+        			   		doubleClick="outerDocument.addTaskResources(data)" doubleClickEnabled="true">
+    			   			 <mx:LinkButton textDecoration="underline" alpha="0" textAlign="left" fontWeight="{outerDocument.fontWeight(data)}" 
+			 					label="{data.concatTaskResouces(',')}" visible="{!data.isHidden}"/>
+						</mx:HBox>
+                    </mx:Component>
+                </mx:itemRenderer>
+            </mx:AdvancedDataGridColumn>           
+        </mx:columns>       
+    </mx:AdvancedDataGrid>
+	<mx:Canvas toolTip="Create the first task" id="createFirstTask" visible="false" width="30" height="20" x="20" y="40" horizontalScrollPolicy = "off">		
+	</mx:Canvas>
+	<mx:Canvas id="writingCanvas" visible="false" height="28" backgroundColor="#ffffff" horizontalScrollPolicy = "off">
+		<mx:TextInput id="writingText" alpha = "0" paddingTop="6" paddingLeft="28"
+            width = "100%"  styleName = "textInputGrill" height = "100%"
+            focusIn="drawSpriteCell();"
+            restrict="a-zA-Z0-9. "
+            keyDown="keyPressWriting(event)"
+            change="validateText(event)" 
+             />        
+	</mx:Canvas>
+</mx:Canvas>

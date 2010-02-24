@@ -1,0 +1,1737 @@
+<mx:Panel
+	 xmlns:mx = "http://www.adobe.com/2006/mxml" styleName="barChartMainPanel"
+	 horizontalScrollPolicy="off" verticalScrollPolicy="off" verticalGap="0" horizontalGap="0"
+	 dropShadowEnabled="false" 
+	   borderThickness="0"
+	   mouseUp="if(isMouseDown){isMouseDown=false;showObjectDraging();}"
+	   keyUp="keyPressed(event)">
+<mx:Script>
+	<![CDATA[
+		import com.salesforce.gantt.model.Project;
+		import com.salesforce.gantt.view.event.TaskEvent;
+		import com.salesforce.gantt.view.event.PopUpEvent;
+		import com.salesforce.gantt.controller.ITasks;
+		import mx.automation.codec.KeyCodePropertyCodec;
+		import mx.managers.ToolTipManager;
+		import mx.messaging.AbstractConsumer;
+		import com.salesforce.gantt.renderers.MilestoneImage;
+		import com.salesforce.gantt.view.print.FormPrintHeader;
+		import mx.controls.Alert;
+		import mx.skins.Border;
+		import mx.controls.TextInput;
+		import mx.core.SpriteAsset;
+		import com.salesforce.gantt.model.Dependency;
+		import mx.controls.Text;
+		import com.salesforce.gantt.model.GanttState;
+		import com.salesforce.gantt.model.Calendar;
+		import com.salesforce.gantt.controller.Constants;
+		import com.salesforce.gantt.renderers.TaskRenderer;
+		import com.salesforce.Connection;
+	    import mx.controls.scrollClasses.ScrollBar;	
+	    import com.salesforce.gantt.view.components.DragHorizontal;
+	    import mx.containers.Panel; 	
+	    import com.salesforce.gantt.model.UI;
+	    import com.salesforce.gantt.model.UiTask;
+	    import com.salesforce.gantt.model.Task;
+	    import com.salesforce.gantt.model.User;
+	    import com.salesforce.gantt.controller.Components;	
+    	import mx.collections.ArrayCollection;
+    	import mx.events.ListEvent; 	
+    	import flash.events.TimerEvent;
+        import flash.utils.Timer;
+        import mx.managers.DragManager;
+ 	    import mx.core.DragSource;
+   	    import mx.events.DragEvent;
+   	    import mx.containers.Canvas;
+   	    import mx.events.SliderEvent;
+        import mx.controls.sliderClasses.Slider;
+   	    import mx.utils.GraphicsUtil;
+   	    
+   	    import flash.ui.Mouse;
+		import mx.collections.IViewCursor;
+		import mx.managers.CursorManager;
+	
+   	    import mx.printing.*;
+    	import com.salesforce.gantt.view.print.FormPrintViewBarChart;
+
+		private var xOffsetDrag : Number = 0;
+	    private var yOffsetDrag : Number = 0;
+	    private var timer : Timer;
+     	private var direction : String;// Tells the timer in which direction to move the panel.
+       	
+       	// position relative to task clicked inside the rectangle task
+       	private var positionOnTask : Number = 0;
+       
+       [Bindable]
+		private var isLabelVisible : Boolean = true;
+    	private var calendarScale : int = 1;
+    	
+    	   	[Embed(source="assets/imgs/hand_up.png")]
+	    private var cursorHandUp : Class;
+	    
+	    [Embed(source="assets/imgs/hand_down.png")]
+	    private var cursorHandDown : Class;
+	    
+	    [Embed(source="assets/imgs/resize_cursor.png")]
+	    private var cursorLeftUp : Class;
+	    
+	    [Embed(source="assets/imgs/resize_cursor.png")]
+	    private var cursorRightUp : Class;
+	    
+	    [Embed(source="assets/imgs/move_cursor.png")]
+	    private var cursorCenterUp : Class;
+	    
+	    [Embed(source="assets/imgs/resize_cursor.png")] 
+	    private var cursorLeftDown : Class;
+	    
+	    [Embed(source="assets/imgs/resize_cursor.png")]
+	    private var cursorRightDown : Class;
+	    
+	    [Embed(source="assets/imgs/move_cursor.png")]
+	    private var cursorCenterDown : Class;
+	    
+	    [Embed(source="assets/imgs/resize_complete.png")]
+	    private var cursorResizeTask : Class;
+    
+    	[Embed(source="assets/imgs/lin.gif")]
+	    private var linScale : Class;
+	    
+	    
+	    [Bindable]
+	    public var visibleTasks : ArrayCollection;
+        
+        [Bindable]
+        public var selectedTask : UiTask;
+        
+        public var rangeDates : ArrayCollection = new ArrayCollection();
+        public var rangeDatesAll : ArrayCollection = new ArrayCollection();
+       
+	    public var zoom : int = Constants.MONTH;	    
+	    
+	    public function centerToday(): void
+	    {
+
+	   		moveBarChartHorizontally(600);
+	    }
+	  	
+	    /*
+	     * Moves the arrows that are over the chart (up, down, left, right)
+	     */
+		public function moveArrows() : void
+	    {	
+		  var height : int = parentDocument.dragPanelTasks.height - 50;
+		  var left : int = parentDocument.dragPanelTasks.width - barChartCanvas.x;
+		  var right : int =  width - barChartCanvas.x;
+		  var arrowSize : int = leftArrow.width;
+		
+	   	  leftArrow.x = left;
+		  rightArrow.x = right - arrowSize;
+	 	  var xCenter : int = leftArrow.x +((rightArrow.x - (leftArrow.x )) /2);
+		  upArrow.x = xCenter;
+		  downArrow.x = xCenter;
+		
+		  leftArrow.y = (height / 2) - (barChartCanvas.y);
+		  rightArrow.y = (height / 2) - (barChartCanvas.y);
+		  upArrow.y = 20 - (barChartCanvas.y);   
+		  downArrow.y = (height - 20) - (barChartCanvas.y);
+		  
+		  labelVisibleMonth.x = left;
+		  labelVisibleMonth.y = (height - 20) - (barChartCanvas.y);
+		}
+	   
+		/*
+		 * Sets the background color for each day to difference the weekend days.
+		 *
+		 * @param date The day being analized for background setting.
+		 * @return The String that represents the color in rgb format. 
+		 */
+		private function getOpaqueBackground(date : Date) : String
+		{
+			var color : String = "0xFFFFFF";
+			if(calendarScale == 1)
+	   		{ 
+				//if it is a weekend day
+				if(date.getDay() == 0 || date.getDay() == 6)
+				{
+					color = "0xEAEAEA";
+				}
+	   	  	}
+			return color;
+		}
+	   /*
+	    * Centers the selected task on the visible part of the window.
+	    *
+	    * @param panelTasksWidth
+	    * @param editPanelWidth
+	    * @param editPanelX
+	    */
+	   public function centerSelected(panelTasksWidth : int, editPanelWidth : int, editPanelX : int) : void
+	   {
+			var windowWidth : int = parentApplication.width;
+			if(windowWidth > (panelTasksWidth + editPanelWidth))
+			{
+				var x : Number = Calendar.toDay(selectedTask.startDate) * UI.scale;
+				var taskWidth : Number = selectedTask.durationInDays() * UI.scale;
+				
+				var panelXStart : int = panelTasksWidth;
+				var panelXEnd : int = panelTasksWidth + ( editPanelX - panelTasksWidth );
+				
+				var mediumPosition : int = panelXStart + ((panelXEnd - panelXStart) / 2 - (taskWidth / 2)); 
+				if((mediumPosition - x) < 0)
+				{
+					datesCanvas.x = mediumPosition - x;
+					barChartCanvas.x = mediumPosition - x;
+				}
+				else
+				{
+					datesCanvas.x = 0;
+					barChartCanvas.x = 0;
+				}
+				
+			}
+			//barChartCanvas.setFocus();
+		}
+		
+		public var datesScale : ArrayCollection = new ArrayCollection();
+		
+		public function getDatesPrintPosition(date : Date) : int
+		{
+			for(var i : int = 0; i < datesScale.length; i++)
+			{
+				if(datesScale.getItemAt(i).getTime()==date.getTime())
+				{
+					return i;
+				}
+			}
+			return -1;
+		}
+		
+		/*
+		 * Moves the bars horizontally
+		 *
+		 * @param move The number of pixels to be moved.
+		 */
+	   public function moveBarChartHorizontally(move : int) : void
+	   {
+	   	  var x : int = datesCanvas.x + move;
+	   	  if(zoom == Constants.YEAR){
+				datesCanvas.x = 0;
+				barChartCanvas.x = 0;
+	   	  }else if(-x <= lastTaskX()){	
+			  	if (x <= 0)
+				{	
+					datesCanvas.x = x;
+					barChartCanvas.x = x;
+				}
+				else
+				{
+					datesCanvas.x = 0;
+					barChartCanvas.x = 0;
+				}
+			}
+		}
+	   /*
+		* Returns the maximum x that user could drag to.
+		*/
+	   public function lastTaskX() : Number
+	   {
+	   		return ((Calendar.toDay(Calendar.endDate)) * UI.scale) - 940;
+
+	   }
+	   
+	   /*
+	   *  Returns the number of pixel to center the bar chart
+	   */
+	   private function centerBarchartToday() : Number
+	   {
+	   		var toDay : Number = Calendar.toDay(new Date());
+			return (toDay * UI.scale);
+	   }
+	   
+	   /*
+		 * Moves the bars vertically.
+		 * @param move The number of pixels to be moved
+		 */
+	   public function moveBarChartVertically(move : int) : void
+	   {
+	   	  if(visibleTasks!=null)
+	   	  {
+			  if ((barChartCanvas.y + move) < 0)
+			  {
+			  	  var maxY : int = ((visibleTasks.length + 2) * UI.ROW_HEIGHT) - mainCanvas.height;
+			  	  if(-(barChartCanvas.y + move) > maxY)
+			   	  {
+			   	  	if(-maxY < 0)
+			   	  	{
+			   	  		barChartCanvas.y = - maxY;// - (maxY + (2 * UI.ROW_HEIGHT));
+			   	  	}
+			   	  	else
+			   	  	{
+			   	  		barChartCanvas.y = 0;
+			   	  	}
+			   	  }
+			   	  else
+			   	  {
+					barChartCanvas.y = barChartCanvas.y + move;
+			   	  }
+			   	
+			  }
+			  else
+			  {
+				barChartCanvas.y = 0;
+				//parentDocument.taskList.moveGrid(bars.rowHeight, 0);
+			  }
+	   	  }
+	   }
+	   
+	   public var isDraging : Boolean = false;
+	   public var isMouseDown : Boolean = false;
+	   public var taskClicked : UiTask = null;
+	   private var moveSelect : String = '';
+	   
+	   
+	   /*
+	    * Indicates to the barChart which is the task that is being moved and
+	    * the direction of the movement.
+	    *
+	    * @param taskId
+	    * @param moveSelect
+	    */
+	   public function dragAndDropBar(task : UiTask, moveSelect : String, event : MouseEvent) : void
+	   {
+	   	 
+			   	
+			this.moveSelect = moveSelect;
+			taskClicked = task;
+	   
+			if(taskClicked)
+	   		{
+	   			
+	   			var taskX : Number = Calendar.toDay(taskClicked.startDate) * UI.scale;
+	   	   		positionOnTask = ((event.stageX - barChartCanvas.x) - taskX);
+	   			paintSelect(task);
+	   	 	
+		   	}
+	   	
+	   }
+	   
+	   
+	   /*
+		* Marks the border of the selected task.
+		*
+		* @param task
+		*/
+	   public function paintSelect(task : Task) : void
+	   {
+	   		if(task!=null)
+	   		{
+				var posTaskY : int = task.positionVisible * UI.ROW_HEIGHT;
+	   			moveToShowInBarchart(posTaskY);
+	   		}
+	   }
+	   /*
+	    * Initializes the drag and drop event
+	    */
+   	   private function panelHandler(event : Event) : void
+       {
+  		  barChartCanvas.addEventListener(MouseEvent.MOUSE_DOWN, mouseMoveHandler);
+  		  barChartCanvas.addEventListener(MouseEvent.MOUSE_UP, clickHandler);
+   	   }
+   	   
+   	   
+   	   /*
+	    * If a task is being dragged it is moved
+	    *
+	    * @param event
+	    */
+   	   private function moveHandler(event : MouseEvent) : void
+   	   {
+   	   		//Enters here when dragging or resizing a task			
+   	   		isMouseDown = false;
+   	   		// TODO pass the permission as parameters in this view.
+   	   		if(taskClicked && (Components.instance.resourceLogged.canModifyTask(selectedTask) || Components.instance.resourceLogged.canManage))
+   	   		{
+   	   			var mouseY : int = int((event.stageY - barChartCanvas.y - 30) / UI.ROW_HEIGHT);
+   	   			
+   	   			//If the mouseY position is within the task height
+   	   			if(mouseY == taskClicked.positionVisible || moveSelect!=Constants.CENTER)
+	   	   		{
+	   	   			var scale : Number = UI.scale;
+		   	   		var taskX : Number = Calendar.toDay(taskClicked.startDate) * scale;
+		   	   		var defasaje : Number = 0.30;
+		   	   		var y : int = (taskClicked.positionVisible * 30) - 25;
+		   	   		var x : Number = 0;
+		   	   		var move : Number = 0;
+		   	   		switch(moveSelect)
+		   	   		{
+		   	   			case Constants.RESIZE_COMPLETED_PERCENT:
+		   	   				var posX : Number = event.stageX - barChartCanvas.x - taskX;
+		   	   				var width : Number = (taskClicked.durationInDays() * scale);
+		   	   				var percentageCompleted : Number = (posX/width)*100;
+		   	   				if(percentageCompleted < 0){
+		   	   					percentageCompleted = 0;
+		   	   				}else if(percentageCompleted >100){
+		   	   					percentageCompleted = 100;
+		   	   				}
+		   	   				taskClicked.completed= percentageCompleted;
+		   	   				x = (Calendar.toDay(taskClicked.startDate) * scale) + UI.MARGIN;
+		   	   				drawSpriteBar(event,taskClicked,x,y,true);	
+		   	   				break;
+		   	   			case Constants.CENTER://The task is moved
+		   	   			
+		   	   				var positionInpixels : Number = ((event.stageX - barChartCanvas.x) - taskX);
+		   	   				move = positionInpixels;
+			   	   			if(move!=0)
+			   	   			{
+			   	   				move = Math.round((move - positionOnTask)/UI.scale);
+			   	   				taskClicked.startDate.setTime(taskClicked.startDate.getTime() + Calendar.toMillis(move));
+		   						taskClicked.endDate.setTime(taskClicked.endDate.getTime() + Calendar.toMillis(move));
+		   						x = (Calendar.toDay(taskClicked.startDate) * scale) + UI.MARGIN;
+		   						drawSpriteBar(event, taskClicked, x, y);
+		   						
+			   	   			}
+		   	   				break;
+		   	   			case Constants.RIGHT://resizes the task from the right 
+		   	   				var duration : int = (((event.stageX - barChartCanvas.x) - taskX) / scale) - defasaje + 1;
+		   	   				x = (Calendar.toDay(taskClicked.startDate) * scale) + UI.MARGIN;
+		   	   				if(duration > 0 && taskClicked.durationInDays() != duration )
+		   	   				{
+		   	   					showMilestone(taskClicked,x,y,false);
+		   	   					taskClicked.endDate = Calendar.add(taskClicked.startDate,duration );
+		   	   					drawSpriteBar(event, taskClicked, x, y);
+		   	   				}else if(duration <= 0){
+		   	   					drawSpriteBar(event,taskClicked,x,y,false,true);
+		   	   				}
+		   	   				break;
+		   	   			case Constants.LEFT://resizes the task from the left
+		   	   				if(((event.stageX - barChartCanvas.x) - taskX) > 10)//shrinks to the right
+		   	   				{
+		   	   					move = (((event.stageX - barChartCanvas.x) - taskX) / UI.scale) - defasaje;
+		   	   					move=Math.round(move);
+		   	   					if(taskClicked.durationInDays() > move && move > 0)
+		   	   					{
+		   	   						taskClicked.startDate.setTime(taskClicked.startDate.getTime() + Calendar.toMillis(move));
+		   	   						
+		   	   						x = (Calendar.toDay(taskClicked.startDate) * scale) + UI.MARGIN;
+		   	   						drawSpriteBar(event, taskClicked, x, y);
+		   	   					}
+		   	  
+		   	   				}
+		   	   				else//enlarges to the left
+		   	   				{
+		   	   					move = (((event.stageX - barChartCanvas.x) - taskX) / UI.scale) - defasaje - 1;
+		   	   					move=Math.round(move);
+		   	   					if(-move > 0)
+		   	   					{
+			   	   					taskClicked.startDate.setTime(taskClicked.startDate.getTime() + Calendar.toMillis(move));
+			   	   					x = (Calendar.toDay(taskClicked.startDate) * scale) + UI.MARGIN;
+			   	   					
+			   	   					drawSpriteBar(event, taskClicked, x, y);
+			   	   				}
+		   	   				}
+		   	   				break;
+		   	   		}
+   	   			}
+   	   			else//if mouseY position isn't over the task
+		   	   	{
+		   	   		//It draws the task under the mouse pointer
+		   	   		drawSpriteBar(event, taskClicked, -1, ((mouseY - 1) * UI.ROW_HEIGHT) + 2);
+	   	   		}
+	   	   	}
+   	   }
+   	   /*
+		* Creates the Sprite object of the selected task
+		*
+		* @param event
+		* @param task
+		* @param x The x position of the task.
+		* @param y The y position of the task.
+		* @param hasText Indicates whether the task has a text label or dont.
+		*/
+   	   private function drawSpriteBar(event : MouseEvent, task : UiTask, x : Number = -1, y : Number = -1, resizePercentage : Boolean = false,possibleMilestone :Boolean = false) : void
+   	   {
+   	   		//draws the task over the mouse pointer
+   	   		var scale : Number = UI.scale;
+   	   		var durationT : Number = task.durationInDays();
+   	   		var width : Number = ((durationT) * scale);
+
+			var height : Number = UI.ROW_HEIGHT - 8;
+			if(x == -1)
+			{
+				x = -(barChartCanvas.x) + event.stageX - positionOnTask;
+			}
+			if(y == -1)
+			{
+				y = event.stageY - 60 - barChartCanvas.y;
+			}
+			var name : String = 'name'+task.id;
+			var size : int = 12;
+			var hypotenuse : Number = size * 2;	
+			var labelSprite : Sprite = Sprite(bars.getChildByName(name));
+			var text : String = task.name;
+			if(labelSprite == null)
+			{
+				labelSprite = new Sprite();
+				labelSprite.name = name;
+			}
+			labelSprite.x = x;
+			labelSprite.y = y;
+					
+			var textFormat : TextFormat = null;
+			var textFieldName : TextField = null;
+			if(possibleMilestone || task.isMilestone)
+			{
+				removeSpriteBar(task);
+				showMilestone(task,x,y,true);			
+			}
+			else if(resizePercentage){
+				var completed : Number = task.durationInDays()*(task.completed/100);
+   	   			var completedWidth : Number = completed * scale; 
+   	   			
+   	   			percentTextField.visible = true;
+   	   			x += completedWidth;
+   	   			width = completedWidth;
+   	   			percentTextField.x = x;	
+   	   			percentTextField.y = y + height - 6;
+				percentTextField.text = task.completed.toString()+'%';
+				
+				labelSprite.graphics.clear();
+				labelSprite.graphics.beginFill(Constants.COLOR_TASK_NORMAL_COMPLETED_FONT, .4);
+				labelSprite.graphics.drawRoundRectComplex(0,0,completedWidth,height,3,0,3,0);
+			}
+			else{
+				labelSprite.graphics.clear();
+				if(task.isEditable()){
+					labelSprite.graphics.beginFill(Constants.COLOR_TASK_NORMAL_COMPLETED_FONT, .4);	
+				}else{
+					labelSprite.graphics.beginFill(Constants.COLOR_TASK_PARENT_COMPLETED_FONT, .4);
+				}
+				labelSprite.graphics.drawRoundRectComplex(0,0,width,height,3,3,3,3);	
+			}
+			if(Sprite(bars.getChildByName(name)) == null && !possibleMilestone && !task.isMilestone)
+				{
+					bars.addChild(labelSprite);
+   	   			}
+			moveToShowInBarchart(y,x,width,height);		
+   	   }
+   	   
+   	   
+   	   /*
+		* Erases the Sprite object of the selected task
+		*
+		* @param task
+		*/
+   	   private function removeSpriteBar(task : Task) : void
+   	   {
+   	   		var name : String = 'name'+task.id;
+   	   		if(task.isMilestone){
+   	   			name = MilestoneImage.name+task.id;
+   	   		}
+  			if(bars.getChildByName(name) != null)
+			{
+				bars.removeChild(DisplayObject(bars.getChildByName(name)));
+			}	
+   	   }
+   	   
+   	   private function getSpriteBar(task : Task) : DisplayObject{
+   	   		var name : String = 'name'+task.id;
+   	   		if(task.isMilestone){
+   	   			name = MilestoneImage.name+task.id;
+   	   		}
+  			return bars.getChildByName(name);
+			
+   	   }
+   	   
+   	   public function outCanvasDataGrid(cursorHandUp : Boolean = true): void
+   	   {
+   	   	
+   	   		if(taskClicked!=null)
+   	   		{
+   	   			removeSpriteBar(taskClicked);
+   	   			taskClicked=null;
+   	   		}
+   	   		taskClicked=null;
+   	   		isDraging=false;
+   	   		if(cursorHandUp)
+   	   		{
+   	   			setCursor('cursorHandUp');
+   	   		}
+   	   		percentTextField.visible = false;
+   	   }
+   	  
+   	   
+   	   /*
+		* Assigns or deletes dependencies
+		*
+		* @param event 
+		*/
+       private function clickHandler(event : MouseEvent) : void
+   	   {	
+   	   		if(taskClicked != null)
+   	   		{
+   	   			var spriteBar : DisplayObject = getSpriteBar(taskClicked);
+   	   			if(spriteBar != null)
+				{
+	   	   			
+					var indexTask : int = Math.round((Sprite(spriteBar).y) / UI.ROW_HEIGHT);
+					
+					removeSpriteBar(taskClicked);
+					if(taskClicked.positionVisible - 1 != indexTask)
+					{
+						if(visibleTasks.length - 1 > indexTask)
+						{
+							var parentTask : UiTask = UiTask(visibleTasks.getItemAt(indexTask)).clone();
+							var dependency : Dependency = Components.instance.dependencies.getDependency(taskClicked,parentTask);
+							if(dependency){
+								dispatchEvent(new TaskEvent(TaskEvent.DEL_DEPENDENCY,parentTask,dependency));
+							}else if(Components.instance.dependencies.validateDependency(taskClicked,parentTask))
+							{
+								dependency = new Dependency(taskClicked, Dependency.FS, 0, 1);
+								dispatchEvent(new TaskEvent(TaskEvent.ADD_DEPENDENCY,parentTask,dependency));
+								taskClicked = null;	
+							}
+						}
+					}
+					else
+					{
+						if(taskClicked.isEditable()){
+							if(moveSelect == Constants.CENTER){
+								taskClicked.adjustDates(taskClicked.project.durationInHours);
+							}
+							percentTextField.visible = false;
+							dispatchEvent(new TaskEvent(TaskEvent.UPDATE,taskClicked));
+							taskClicked = null;		
+						}
+						
+					}
+					
+			 	}
+			 	setCursorUpActual();
+   	   		}
+   	   		else
+   	   		{
+   	   			moveHandler(event);
+   	   			setCursor('cursorHandUp');
+   	   		}
+   	   }
+   	   /*
+		* Inicializa drag and drop
+		*/
+   	   private function mouseMoveHandler(event : MouseEvent) : void
+   	   {
+   	   		isMouseDown = true;
+	   	  	//Calculates if mouse is over the selectedTask
+	   	  	//if it isn't the (taskIdClicked='') var is set which represents the selected task.
+			if(taskClicked)
+			{
+				//If mouse isn't over the task
+				if(!mouseIsOverTask(taskClicked, event))
+				{
+					
+					taskClicked = null;
+					setCursor('cursorHandDown');
+				}
+				else
+				{
+					setCursorDownActual();
+				}
+			}
+			else
+			{
+				setCursor('cursorHandDown');
+			}
+			var dragInitiator : Canvas = Canvas(event.currentTarget.parent);
+			var dragSource : DragSource = new DragSource();
+			dragSource.addData(event.currentTarget.parent,  'canvas');
+			xOffsetDrag = event.currentTarget.mouseX;
+			yOffsetDrag = event.currentTarget.mouseY;
+			var canvas : Canvas = new Canvas();
+			canvas.visible = false;
+			DragManager.doDrag(dragInitiator, dragSource, event, canvas, -15, -15, 1.00);
+       } 
+       
+       private var startd : Date = new Date();
+       
+       public function tms() : void
+       {
+       	startd.setTime(new Date().getTime());
+       }
+       /*
+		* Initializes drag and drop
+		*/
+       private function doDragEnter(event : DragEvent) : void
+   	   {
+	  		if(isMouseDown)//not to catch the dragging that comes from overviewpane(only the bars will be dragged if mouseDown occured over that canvas.)
+	      	{
+	      			
+	     		DragManager.acceptDragDrop(Canvas(event.target));
+	     		isDraging = true;
+	     		if(!taskClicked)
+	     		{
+	     			hideObjectDraging();
+	     		} 
+	   		}
+   	   }
+   	   /*
+		* drag event
+		*/
+   	   private function doDragOver(event : DragEvent) : void
+       {
+       		if(!taskClicked)//If no task selected the whole canvas is moved
+       		{
+       			moveBarChartVerticallyAndHorizontally(event.currentTarget.mouseY - yOffsetDrag, event.currentTarget.mouseX - xOffsetDrag);
+			   	
+			   	parentDocument.barChartOverview.setMaskProperties();
+       		}
+       		else//only the selected task is moved.
+       		{
+       			moveHandler(event);
+       		}
+   	   }
+   	   public function moveBarChartVerticallyAndHorizontally(moveY : int, moveX : int) : void
+   	   {
+   	   	  var finalX : int = datesCanvas.x;
+   	   	  var finalY : int = barChartCanvas.y;
+   	   	  var x : int = datesCanvas.x + moveX;
+	   	  if(-x < lastTaskX())
+	   	  {	
+			  if (x <= 0)
+			  {	
+				finalX = x;
+			  }
+			  else
+			  {
+				finalX = 0;
+			  }
+		  }
+		  if(moveY != 0)
+		  {
+			  if(visibleTasks!=null)
+		   	  {
+		   	  	  var y : int = barChartCanvas.y + moveY;
+				  if (y < 0)
+				  {
+				  	  var maxY : int = ((visibleTasks.length + 2) * UI.ROW_HEIGHT) - mainCanvas.height;
+				  	  if(-y > maxY)
+				   	  {
+				   	  	if(-maxY < 0)
+				   	  	{
+				   	  		finalY = - maxY;
+				   	  	}
+				   	  	else
+				   	  	{
+				   	  		finalY = 0;
+				   	  	}
+				   	  }
+				   	  else
+				   	  {
+						finalY = y;
+				   	  }
+				  }
+				  else
+				  {
+					finalY = 0;
+				  }
+		   	  }
+		  }
+		  datesCanvas.x = finalX;
+		  barChartCanvas.x = finalX;
+		  barChartCanvas.y = finalY;
+
+   	   }
+	   public function showObjectDraging(moveOverview : Boolean = false):void
+	   {
+	   	    dateStart = new Date();
+	   	    if(isDraging || moveOverview)
+	   	    {
+			 	canvLines.visible=true;
+			 	moveArrows();
+			 	leftArrow.visible=true;
+				rightArrow.visible=true;
+				upArrow.visible=true;
+				downArrow.visible=true;
+				updateDates(false);
+				timerScrollStart();
+	   	    }
+	   }
+   	   public function hideObjectDraging():void
+	   {
+		 	canvLines.visible=true;
+		 	leftArrow.visible=false;
+			rightArrow.visible=false;
+			upArrow.visible=false;
+			downArrow.visible=false;
+	   }	   
+	   
+   	   /*
+		* Stops the timer
+		*/
+   	   private function stopTimer():void
+       {
+       	if(timer!=null)
+       	{
+    	 timer.stop();
+       	}
+       }
+       /*
+		* Initializes the timer
+		*/
+   	   private function startTimer(direction : String = '') : void 
+       {
+    	 this.direction = direction;
+         // creates a new five-second Timer
+        timer = new Timer(10, 1);
+        
+        // designates listeners for the interval and completion events
+        timer.addEventListener(TimerEvent.TIMER, moveBarChartTimer);
+        timer.addEventListener(TimerEvent.TIMER_COMPLETE, moveTimerContinue);
+        
+        // starts the timer ticking
+        timer.start();
+       }
+       /*
+		* Called while the timer is running
+		*/
+       private function moveBarChartTimer(event : TimerEvent):void 
+       {
+        	moveBarChart(direction);
+        	//this is done to avoid the conflict with d&d over the panel
+        	xOffsetDrag = mouseX - barChartCanvas.x;
+   			yOffsetDrag = mouseY - barChartCanvas.y;
+       }
+       /*
+		* Moves the Gantt horizontally UI.ROW_HEIGHT pixeles at a time
+		*/
+		private function moveBarChart(direction : String) : void
+		{
+			switch(direction)
+			{
+		    	case Constants.LEFT:
+		    		moveBarChartHorizontally(UI.ROW_HEIGHT);
+		    		updateDates(false);
+		    		break;
+				case Constants.RIGHT:
+		    		moveBarChartHorizontally(-UI.ROW_HEIGHT);
+		    		updateDates(false);
+		    		break;
+		    	case Constants.UP:
+		    		moveBarChartVertically(UI.ROW_HEIGHT);
+		    		break;
+		    	case Constants.DOWN:
+		    		moveBarChartVertically(-UI.ROW_HEIGHT);
+		    		break;
+			}
+			parentDocument.barChartOverview.setMaskProperties();
+			moveArrows();
+		}
+		
+		
+       /*
+		* Called when it should stop.
+		*/
+		private function moveTimerContinue(event : TimerEvent):void
+		{
+			timer.stop();
+			var x : int = 0;
+			var y : int = 0;
+			switch(direction)
+			{
+				case Constants.LEFT:
+					x = leftArrow.x + barChartCanvas.x;
+					y = leftArrow.y + barChartCanvas.y;
+					break;
+				case Constants.RIGHT:
+					x = rightArrow.x + barChartCanvas.x;
+					y = rightArrow.y + barChartCanvas.y;
+					break;
+				case 'up':
+					x = upArrow.x + barChartCanvas.x;
+					y = upArrow.y + barChartCanvas.y;
+					break;
+				case 'down':
+					x = downArrow.x + barChartCanvas.x;
+					y = downArrow.y + barChartCanvas.y;
+					break;
+			}
+			y += 20;
+			if(isBetween(mouseX, x, x + 20) && isBetween(mouseY, y, y + 20))
+			{
+				startTimer(direction);
+			}
+		}
+       
+       
+       /*
+		* Tells whether a number is between other two.
+		*
+		* @param value The number to test.
+		* @param start
+		* @param end
+		*/
+		private function isBetween(value : int, start : int, end : int) : Boolean
+		{
+			return ( (value >= start) && (value <= end) );
+		}
+       
+       
+    /*
+	* Changes the zoom(day, week, month, year)
+	*/
+    public function changeZoom(zoom : int) : void 
+    {       	
+    	this.zoom = zoom;
+    	//var startDaysBefore : Number = (datesCanvas.x / UI.scale);//calculates the first date displayed before calculating the new scale
+    	
+    	UI.scale = this.width / zoom;
+    	
+    	var xOffSetToday : int = this.width/2;
+    	
+    	if(zoom == Constants.DAY){
+    		xOffSetToday = this.width;
+    	}
+	    	
+	    moveBarChartHorizontally(-centerBarchartToday()-datesCanvas.x+xOffSetToday);
+	    
+	    parentDocument.barChartOverview.setMaskProperties();
+	 	updateDates(false);
+		refreshGrid();
+		
+		resizeBarChart();
+		
+		
+    }
+    public function refreshGrid() : void
+    {
+    	
+    	visibleTasks.refresh();
+    }
+    
+    private var startDateViewLabel : int = -1;
+	private var endDateViewLabel : int = -1;
+	
+
+	/*
+	* Updates the dates to redraw the horizontal timeline
+	*/
+    public function updateDates(isFirst : Boolean) : void
+    {
+
+    	if(isFirst)//if it is the fist time the chart is loaded
+    	{
+	    	//for the first bar no to be hidden to the left. 
+    		if(visibleTasks.length == 0)
+    		{
+    			Calendar.startDate = Calendar.add(Calendar.startDate, -20);
+    			Calendar.startDate.setHours(0);
+    			Calendar.startDate.setMinutes(0);
+    			Calendar.startDate.setSeconds(0);
+    		}
+	    }
+		var reserveSpace : int = 600 / UI.scale;
+    	var startDateView : int = -(datesCanvas.x) / UI.scale - reserveSpace;
+    	var endDateView : int = (-(datesCanvas.x) + parentApplication.width) / UI.scale + reserveSpace;
+    	if(startDateView < 0) 
+    	{
+    		startDateView = 0;
+    	}
+    	
+    	switch(zoom)
+    	{
+    		case Constants.MONTH:
+    			calendarScale = 1;
+    			isLabelVisible = true;
+    			dayFormatter.formatString="EEE";
+    			dateFormatter.formatString="DD";
+    			break;
+    		case Constants.YEAR:
+    			calendarScale = 30;
+    			isLabelVisible = true;
+    			dayFormatter.formatString="YYYY";
+    			dateFormatter.formatString="MMMM";
+    			break;
+    		default:
+    			calendarScale = 1;
+    			isLabelVisible = true;
+    			dayFormatter.formatString="EEEE";
+    			dateFormatter.formatString="MM/DD/YYYY";
+    			break;
+    	}
+    	
+    	clearAllChildOfScale();
+    	clearChildrenLabelMonth();//erases all labelsMonth
+    	clearChildrenVerticalLinesScale();//erases all labelsMonth
+    	var tempDates : ArrayCollection = new ArrayCollection();
+		for(var i : int = startDateView -10; i <= endDateView; i+=calendarScale)
+		{
+			var tempDate : Date = Calendar.add(Calendar.startDate, i)
+			if(tempDate.hours != 00)
+			{
+				tempDate = new Date(tempDate.getFullYear(),tempDate.getMonth(),tempDate.getDate());
+			}
+			tempDates.addItem(tempDate);
+			if(tempDate.getDate()==1)
+			{
+				createLabelMonth(tempDate, (Calendar.toDay(tempDate) * UI.scale) + 10);
+			}
+			addLabelScale(tempDate);
+			addVerticalLineScale(tempDate);
+			
+		}
+		
+		var hasShowDivisionMonths : Boolean = false;
+		var startScreenX : int = (parentDocument.dragPanelTasks.width - barChartCanvas.x) / UI.scale;
+		var endScreenX : int = (parentApplication.width - parentDocument.editPanel.width - barChartCanvas.x) / UI.scale;
+		for(i = startScreenX; i < endScreenX; i++)
+		{
+			if(Calendar.add(Calendar.startDate, i).getDate()==1)
+			{
+				hasShowDivisionMonths = true;
+			}
+		}
+		if(hasShowDivisionMonths)//if two month division is being shown
+		{
+			labelVisibleMonth.visible = false;
+		}
+		else
+		{
+			labelVisibleMonth.visible = true;
+		}
+		//label with the month that is being displayed
+		labelVisibleMonth.text = dateFormatterMonth.format(Calendar.add(Calendar.startDate, Number((-(datesCanvas.x) / UI.scale))));
+		
+		
+		parentDocument.barChartOverview.setMaskProperties();
+		rangeDates.list = tempDates;
+    }
+    /*
+	* Cleans the Sprite object from the date scale
+	*/
+    private function clearAllChildOfScale() : void
+    {
+    	var child : DisplayObject;
+    	for(var i : int = 0 ; i<canvasDatesContent.numChildren; i++)
+    	{
+    		child = canvasDatesContent.getChildAt(i);
+    		if(child.name.toString().substr(0,6)=='scale_')
+			{
+				
+				Sprite(child).y = -500;
+				//canvasDatesContent.rem
+			}
+    	}
+    }
+    /*
+	* Creates a Sprite object equivalent to a label in the date scale.
+	*/
+    private function addLabelScale(date : Date) : void
+    {
+    	var name : String = 'scale_'+date.getTime()+'_'+this.zoom;
+    	var sprite : Sprite = Sprite(canvasDatesContent.getChildByName(name));
+		if(sprite == null)
+		{
+			sprite = new Sprite();
+			sprite.name=name;
+		}
+		sprite.y = 0;
+		sprite.x = leftScale(date);
+		if(Sprite(canvasDatesContent.getChildByName(name)) == null)
+		{
+	    	var width : Number = widthScale();
+	    	var color : String = getOpaqueBackground(date);
+	
+			var textFormat : TextFormat = new TextFormat();
+			textFormat.font = "verdana";
+			textFormat.size = 11;
+			textFormat.align = 'center';
+	    	
+	    	if(calendarScale == 1)
+		   	{ 
+			  if(date.getDay() == 0 || date.getDay() == 6)//if it is a weekend day
+			  {
+			  	textFormat.bold = "bold";
+			  }
+		   	}
+	   	
+	   		
+	   	
+	   		var text2 : TextField = new TextField();
+	   		
+	    	text2.width=width;
+	    	text2.y=12;
+	    				
+			text2.text=dateFormatter.format(date);
+		   	text2.setTextFormat(textFormat,-1,-1);
+		   	sprite.addChild(text2);
+		   	
+		 	if(isLabelVisible)
+			{
+				var text : TextField = new TextField();
+	    		text.width=width;
+	    		text.y=-2;
+				text.text=dayFormatter.format(date);
+				text.setTextFormat(textFormat,-1,-1);
+				sprite.addChild(text);
+			}
+		
+			canvasDatesContent.addChild(sprite);
+		}
+    }
+    
+    /**
+    * Draw the lines of the gantt
+    *
+    */
+    
+    
+    private function addVerticalLineScale(date : Date) : void
+    {
+    	var today : Date = new Date();
+		var scale : Number = UI.scale;
+    	var name : String = 'scaleLine_'+date.getTime()+'_'+this.zoom;
+    	var sprite : Sprite = Sprite(canvLines.getChildByName(name));
+    	if(sprite == null)
+		{
+			sprite = new Sprite();
+			sprite.name=name;
+		}
+		sprite.y = 0;
+		sprite.x=leftScale(date);
+		if(Sprite(canvLines.getChildByName(name)) == null)
+		{
+	    	var top : int = 0;//-3000;
+	    	var bottom : int = 6000;
+			
+			if(Calendar.equals(today, date) && this.zoom != Constants.YEAR)// || equals(tomorrow, date))
+			{
+				
+				if(Calendar.isFirstDayOfTheMonth(date))
+				{
+					sprite.graphics.lineStyle(1, 0x333333, 1);
+				}
+				else
+				{
+					sprite.graphics.lineStyle(1, 0x999999, 1);
+				}
+				sprite.graphics.beginFill(0xff0000, 1);
+
+				sprite.graphics.moveTo(x, top);
+				sprite.graphics.lineTo(x, top);
+				sprite.graphics.lineTo(x, bottom);
+				sprite.graphics.lineTo(x + scale, bottom);
+				sprite.graphics.lineTo(x + scale, top);
+				sprite.graphics.lineTo(x, top);
+			}
+			else if(Calendar.isWeekend(date) && this.zoom != Constants.YEAR)
+			{
+				if(Calendar.isFirstDayOfTheMonth(date))
+				{
+					sprite.graphics.lineStyle(1, 0x333333, 1);
+				}
+				else
+				{
+					sprite.graphics.lineStyle(1, 0xC0C0Bf, 1);
+				}
+				sprite.graphics.beginFill(0x00ff00, 1);
+				
+				sprite.graphics.moveTo(x, top);
+				sprite.graphics.lineTo(x, top);
+				sprite.graphics.lineTo(x, bottom);
+				sprite.graphics.lineTo(x + scale, bottom);
+				sprite.graphics.lineTo(x + scale, top);
+				sprite.graphics.lineTo(x, top);
+			}
+			else
+			{
+				if(Calendar.isFirstDayOfTheMonth(date))
+				{
+					sprite.graphics.lineStyle(1, 0x333333, 1);
+				}
+				else
+				{
+					sprite.graphics.lineStyle(1, 0xC0C0Bf, 1);
+				}
+				sprite.graphics.beginFill(0x0000ff, 1);
+				sprite.graphics.moveTo(x, top);
+				sprite.graphics.lineTo(x, top);
+				sprite.graphics.lineTo(x, bottom);
+			}
+			canvLines.addChild(sprite);
+		}
+    }
+    
+    /*
+	* Erases month labels
+	*/
+    private function clearChildrenVerticalLinesScale() : void
+	{
+		var child : int = canvLines.numChildren;
+		for (var i : int = 0; i < child; i++)
+		{	
+			if(canvLines.getChildAt(i).name.substring(0,10)=='scaleLine_')
+			{
+				canvLines.removeChildAt(i);
+				child--; i--;
+			}
+		}
+   	}
+   	
+   	
+    /*
+	* Erases month labels
+	*/
+    private function clearChildrenLabelMonth() : void
+	{
+		if(parent != null)
+		{
+			var child : int = bars.numChildren;
+			for (var i : int = 0; i < child; i++)
+			{	
+				var time : Number = Number(bars.getChildAt(i).name);
+				if(time.toString() != 'NaN')
+				{
+					bars.removeChildAt(i);
+					child--; i--;
+				}
+			}
+		}
+   	}
+   	
+   	
+   	/*
+	* Creates the Sprite object that display the months
+	*/
+	private function createLabelMonth(date : Date, x : int) : void
+	{
+		var widthTextField : int = 70;
+		
+		var spriteMonth : Sprite = createSpriteMonth(date);
+		spriteMonth.addChild(createTextFieldMonth(Calendar.add(date,-1), x - widthTextField - 10, widthTextField, 'right'));
+		spriteMonth.addChild(createTextFieldMonth(date, x + 10, widthTextField, 'left'));
+		
+		bars.addChild(spriteMonth);
+	}
+	
+	
+	/*
+	* Format for month labels
+	*/
+	private function createTextFormater(align : String) : TextFormat
+	{
+		var textFormat : TextFormat = new TextFormat();
+		textFormat.font = "verdana";
+		textFormat.size = 11;
+		textFormat.align = align;
+		return textFormat;
+	}
+	
+	
+	private function createSpriteMonth(date : Date) : Sprite
+	{
+		var sprite : Sprite = new Sprite();
+		sprite.name = date.getTime().toString();
+		var height : int = parentApplication.mainView.dragPanelTasks.height - 50;
+		sprite.y = (height - 20) - (parentApplication.mainView.barChart.barChartCanvas.y);
+		return sprite;
+	}
+	
+	
+	private function createTextFieldMonth(date : Date, x : int, width : int, align : String) : TextField
+	{
+		var textField : TextField = new TextField();
+		if(zoom == Constants.WEEK)
+		{
+			textField.text = dateFormatterMonth.format(date);
+		}
+		else if(zoom == Constants.MONTH)
+		{
+			textField.text = dateFormatterMonthShort.format(date) +' `'+ dateFormatterYearShort.format(date);
+		}
+		textField.name = date.getMonth().toString();
+		textField.width = width;
+		textField.x = x;
+		textField.selectable = false;
+		textField.setTextFormat(createTextFormater(align),-1,-1);
+		return textField;
+	}
+	
+	/*
+	 * Sets the cursor
+	 */
+	private var currentCursor : String = '';
+	public function setCursor(cursor : String) : void
+	{
+		if(currentCursor != cursor)
+		{
+			CursorManager.removeAllCursors();
+			currentCursor = cursor;
+			switch (cursor)
+			{
+				case 'cursorHandUp':
+					CursorManager.setCursor(cursorHandUp,2.0,-8,-8);
+					break;			
+				case 'cursorHandDown':
+					CursorManager.setCursor(cursorHandDown,2.0,-8,-8);
+					break;
+				case 'cursorLeftUp':
+					CursorManager.setCursor(cursorLeftUp,2.0,-8,-8);
+					break;
+				case 'cursorRightUp':
+					CursorManager.setCursor(cursorRightUp,2.0,-8,-8);
+					break;
+				case 'cursorCenterUp':
+					CursorManager.setCursor(cursorCenterUp,2.0,-8,-8);
+					break;
+				case 'cursorResizeComplete':
+					CursorManager.setCursor(cursorResizeTask,2.0,-8,-8);
+					break;
+			}
+		}
+	}
+	
+	
+	/*
+	* Sets the cursorDown correspondant to current cursor.
+	*
+	* <p> For example, if the HandUp cursor is current, it selects the HandDown cursor. </p>
+	*/
+	public function setCursorDownActual() : void
+	{
+	    CursorManager.removeAllCursors();
+		switch (currentCursor)
+		{
+			case 'cursorHandUp':
+				CursorManager.setCursor(cursorHandDown,2.0,-8,-8);
+				currentCursor = 'cursorHandDown';
+				break;
+			case 'cursorLeftUp':
+				CursorManager.setCursor(cursorLeftDown,2.0,-8,-8);
+				currentCursor = 'cursorLeftDown';
+				break;
+			case 'cursorRightUp':
+				CursorManager.setCursor(cursorRightDown,2.0,-8,-8);
+				break;
+			case 'cursorCenterUp':
+				CursorManager.setCursor(cursorCenterDown,2.0,-8,-8);
+				currentCursor = 'cursorCenterDown';
+				break;
+			case 'cursorResizeComplete':
+					CursorManager.setCursor(cursorResizeTask,2.0,-8,-8);
+					break;
+		}
+	}
+	
+	
+	/*
+	* Sets the cursor up correspondant to current cursor. 
+	*/
+	private function setCursorUpActual() : void
+	{
+	    CursorManager.removeAllCursors();
+		switch (currentCursor)
+		{
+			case 'cursorHandDown':
+				CursorManager.setCursor(cursorHandUp,2.0,-8,-8);
+				currentCursor = 'cursorHandUp';
+				break;
+			case 'cursorLeftDown':
+				CursorManager.setCursor(cursorLeftUp,2.0,-8,-8);
+				currentCursor = 'cursorLeftUp';
+				break;
+			case 'cursorRightDown':
+				CursorManager.setCursor(cursorRightUp,2.0,-8,-8);
+				currentCursor = 'cursorRightUp';
+				break;
+			case 'cursorCenterDown':
+				CursorManager.setCursor(cursorCenterUp,2.0,-8,-8);
+				currentCursor = 'cursorCenterUp';
+				break;
+		}
+	}
+	/*
+	 * Sets the default cursor
+	 */
+	public function defaultCursor() : void
+	{
+		CursorManager.removeAllCursors();
+		currentCursor = '';
+	}
+	
+	
+	/*
+	 * Indicates whether default cursor is selected.
+	 */
+	public function isDefaultCursor() : Boolean
+	{
+		return (CursorManager.currentCursorID==0);
+	}
+	
+	/*
+	 * Indicates whether mouse is over a taskBar
+	 */
+	 public function mouseIsOverTask(task : Task, event : MouseEvent, axisValidate : String = '') : Boolean
+	 {
+	 	if(task!=null)
+	 	{
+	 		//add 1 day for the duration to display task correctly 
+			var duration : int = (task.durationInDays() + 1);
+		 	var scale : Number = UI.scale;
+			var taskWidth : int = (duration * scale);
+			var taskX : int = (Calendar.toDay(task.startDate) * scale) + barChartCanvas.x;
+			var taskY : int = (task.positionVisible * UI.ROW_HEIGHT) + 30 + (barChartCanvas.y);
+			var taskHeight : int = UI.ROW_HEIGHT;
+			
+			//amplify the area (2px to each side) to capture events near the task border.
+			taskX -= 2;
+			taskWidth += 4;
+			taskY -= 2;
+			taskHeight += 4;
+			
+			if(axisValidate == '')//checks if mouse pointer is over the task
+			{
+				if( ((event.stageX - 10) > taskX) && ((event.stageX - 10) <= (taskX + taskWidth)) && 
+						( event.stageY > taskY ) && ( event.stageY < (taskY + taskHeight) ) )
+				{
+					return true;
+				}
+			}
+			else if(axisValidate == 'y')//checks if mouseY position is within the task height.
+			{
+				if( ( event.stageY > taskY ) && ( event.stageY < (taskY + taskHeight) ) )
+				{
+					return true;
+					
+				}
+			}
+			else if(axisValidate == 'x')//valida solo que coincida el eje x, sin importar la posicion x del raton
+			{
+				if( ( (event.stageX - 10) > taskX ) && ( (event.stageX - 10) <= (taskX + taskWidth) ) )
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	 }
+	 
+	private function widthScale() : Number
+	{
+		return UI.scale * calendarScale;
+	}
+	
+	private function leftScale(date : Date) : Number
+	{
+ 		return Calendar.toDay(date) * UI.scale + 11;
+ 	}
+	
+	 
+	 
+	 private var timerScroll : Timer;
+   	 private function timerScrollStart() : void 
+     {
+        // creates a new five-second Timer
+        timerScroll = new Timer(200, 1);
+        
+        // designates listeners for the interval and completion events
+        timerScroll.addEventListener(TimerEvent.TIMER, timerScrollContinue);
+        timerScroll.addEventListener(TimerEvent.TIMER_COMPLETE, timerScrollComplete);
+        
+        // starts the timer ticking
+        timerScroll.start();
+     }
+     private function timerScrollContinue(event : TimerEvent):void 
+     {
+     	//parentDocument.taskList.moveGrid(bars.rowHeight, - barChartCanvas.y);
+     }
+     private function timerScrollComplete(event : TimerEvent):void 
+     {
+     	timerScroll.stop();
+     }
+	 
+	 public var dateStart : Date = new Date();
+	
+	
+	public function resizeBarChart() : void
+	{
+		var height : int = visibleTasks.length * UI.ROW_HEIGHT + 800;
+		var width : int = lastTaskX() + 2000;
+		datesCanvas.width		= width;
+		canvasDatesContent.width= width;
+		canvLines.width			= width;
+		bars.width				= width;
+		barChartCanvas.width	= width;
+		barChartCanvas.height	= height;
+		if(canvLines.width < this.width){
+			canvLines.width 		= this.width;
+			datesCanvas.width		= this.width;
+			canvasDatesContent.width= this.width;
+			canvLines.width			= this.width;
+			datesCanvas.x			= 0;
+			bars.width				= this.width;
+			barChartCanvas.x = 0;
+			datesCanvas.x = 0;
+			barChartCanvas.width	= this.width;
+			
+		}
+	}
+	
+	override public function setFocus() : void{
+		barChartCanvas.setFocus();	
+	}
+	
+	private function moveToShowInBarchart(y : int,x:int=-1,width:int = -1,height : int = -1) : void{
+		var posMaxY : int = -barChartCanvas.y + mainCanvas.height;
+		var posMinY : int = -barChartCanvas.y;
+		var posMaxX : int = -barChartCanvas.x + mainCanvas.width;
+		var posMinX : int = -barChartCanvas.x;
+		var moveX : int = 0;
+		//if the coordinate y is out of bounds of the barchart
+		if(!isBetween(y,posMinY,posMaxY)){
+			if(posMinY > y){
+				moveX = - posMinY + y;
+			}else if(posMaxY < y){
+				moveX = y - posMaxY + UI.ROW_HEIGHT;
+			}
+			moveBarChartVertically(-moveX);
+			parentDocument.barChartOverview.setMaskProperties();	
+		}else{
+			if(y - posMinY < 31){
+				moveBarChart(Constants.UP);
+			}else if(posMaxY - (y+height)<31){
+				moveBarChart(Constants.DOWN);
+			}
+		}
+		//if the coordinate x is out of bounds of the barchart
+		if(isBetween(x,posMinX,posMaxX)){
+			//if the task is being stretch from the left
+			if(x - posMinX < UI.ROW_HEIGHT * 2 && moveSelect != Constants.RIGHT){
+				moveBarChart(Constants.LEFT);
+			}else if(posMaxX - x < UI.ROW_HEIGHT * 2){
+				moveBarChart(Constants.RIGHT);
+			}
+		}
+		if(isBetween(x+width,posMinX,posMaxX)){
+			//if the task is being stretch from the right
+			if(posMaxX - (x+width)<UI.ROW_HEIGHT * 2 && moveSelect != Constants.LEFT ){
+				moveBarChart(Constants.RIGHT);
+			}else if(x+width -posMinX < UI.ROW_HEIGHT * 2){
+				moveBarChart(Constants.LEFT);
+			}
+		}
+	}
+	
+	private function showMilestone(task : Task,posX : int,posY : int,visible: Boolean) : void{
+		var milestone_image : MilestoneImage = MilestoneImage(bars.getChildByName(MilestoneImage.name+task.id));
+		if(milestone_image == null){
+			milestone_image = new MilestoneImage();
+			milestone_image.name = task.id;
+			milestone_image.alpha = 0.5;
+		}
+		milestone_image.x = posX;
+		milestone_image.y = posY;
+		milestone_image.setVisible(visible);
+		task.isMilestone = visible;				
+		bars.addChild(milestone_image);
+	}
+	
+	// TODO replace these references to Components.instance.tasks dispatching the corresponding
+	// event.
+	function keyPressedMainCanvas(event : KeyboardEvent) : void{
+		var task : UiTask;
+		switch(event.keyCode){
+			case Keyboard.UP:
+					task = Components.instance.tasks.previousTask(true);
+					bars.selectedItem = task;
+					if(task){
+						dispatchEvent(new TaskEvent(TaskEvent.SELECT,task));
+					}
+					break;
+			case Keyboard.DOWN:
+					task = Components.instance.tasks.nextTask(true);
+					bars.selectedItem = task;
+					if(task){
+						dispatchEvent(new TaskEvent(TaskEvent.SELECT,task));
+					}
+					break;
+			case Keyboard.ESCAPE:
+					bars.selectedItem = null;
+					dispatchEvent(new TaskEvent(TaskEvent.SELECT,task));
+					break;
+			case Keyboard.RIGHT:
+					moveBarChart(Constants.RIGHT);
+					break;
+			case Keyboard.LEFT:
+					moveBarChart(Constants.LEFT);
+					break;
+		}
+	}
+
+	public function init() : void{
+		// center the Gantt to TODAY 
+		var todayDate : Date = new Date();
+		moveBarChartHorizontally(-((Calendar.toDay(todayDate) * UI.scale)-(width/2)));
+		updateDates(true);
+		bars.dataProvider = new ArrayCollection();
+	}
+	
+	/**
+	 *	Key Down Handling 
+	 * */		 
+	public function keyPressed(event : KeyboardEvent): void {
+		var task : UiTask;
+	 	new KeyCodePropertyCodec();
+ 		switch (event.keyCode){
+ 			case Keyboard.DELETE :
+ 				//TODO pass by reference the user profile to check permissions.
+	 			if(parentDocument.resourceLogged.canDeleteTask(selectedTask)){
+	 				dispatchEvent(new PopUpEvent(PopUpEvent.DELETE_DIALOG_OPEN));//parentDocument.showDeleteDialog();
+	 			}
+ 				break;
+ 			case Keyboard.ENTER :
+ 				//TODO pass by reference the user profile to check permissions.
+ 				if(parentDocument.resourceLogged.canModifyTask(selectedTask)){
+ 					dispatchEvent(new PopUpEvent(PopUpEvent.TASK_DETAIL_OPEN));
+ 				}
+ 				break;
+ 			case Keyboard.UP:
+					task = Components.instance.tasks.previousTask(true);
+					bars.selectedItem = task;
+					if(task){
+						dispatchEvent(new TaskEvent(TaskEvent.SELECT,task));
+					}
+					break;
+			case Keyboard.DOWN:
+					task = Components.instance.tasks.nextTask(true);
+					bars.selectedItem = task;
+					if(task){
+						dispatchEvent(new TaskEvent(TaskEvent.SELECT,task));
+					}
+					break;
+			case Keyboard.ESCAPE:
+					bars.selectedItem = null;
+					dispatchEvent(new TaskEvent(TaskEvent.SELECT));
+					break;
+			case Keyboard.RIGHT:
+					moveBarChart(Constants.RIGHT);
+					break;
+			case Keyboard.LEFT:
+					moveBarChart(Constants.LEFT);
+					break;
+ 			default : 
+ 				trace("ctrlKey :"+event.ctrlKey +" key :"+KeyCodePropertyCodec.fromKeyCode(event.keyCode));
+ 				//trace("ctrlKey :"+event.ctrlKey +" key :"+event.keyCode);
+ 				if(event.altKey || event.ctrlKey || event.shiftKey){
+ 					switch (event.keyCode){
+	 					case 67 :
+			 				dispatchEvent(new TaskEvent(TaskEvent.COPY));
+			 				break;
+			 			// V
+			 			case 86 :
+			 				dispatchEvent(new TaskEvent(TaskEvent.PASTE));
+			 				break;
+			 			case 88 :
+			 				dispatchEvent(new TaskEvent(TaskEvent.CUT));
+	 						break;
+	 				};
+ 				}
+ 				break;
+ 		}	
+	 	if(event.target is BarChart && event.keyCode == Keyboard.ESCAPE){
+	 		dispatchEvent(new TaskEvent(TaskEvent.SELECT));
+	 	}
+	 		
+	 }
+		 
+	
+	]]>
+</mx:Script>
+<mx:Style source="assets/css/BarChart.css"/>
+<mx:Binding destination="bars.selectedItem" source="selectedTask"/>
+<mx:DateFormatter id="dateFormatterMonthShort" formatString="MMM"/>
+<mx:DateFormatter id="dateFormatterYearShort" formatString="YY"/>
+<mx:DateFormatter id="dateFormatterMonth" formatString="MMMM"/>
+<mx:DateFormatter id="dayFormatter" formatString="EEEE"/>
+<mx:DateFormatter id="dateFormatter" formatString="MM/DD/YYYY"/>
+	<mx:Canvas id="barChartDates" height="30" width="100%" 
+		horizontalScrollPolicy="off" verticalScrollPolicy="off"
+		mouseMove="outCanvasDataGrid()">	
+		<mx:Canvas styleName="canvasDates" id="datesCanvas" height="100%" width="50000" 
+			horizontalScrollPolicy="off" verticalScrollPolicy="off">   
+		 	<mx:HorizontalList id="canvasDatesContent" height="100%" width="50000"
+		 		horizontalScrollPolicy="off" verticalScrollPolicy="off" mouseOver="defaultCursor()">
+		 	</mx:HorizontalList>
+		</mx:Canvas>
+	</mx:Canvas>
+	<mx:Canvas id="mainCanvas" height="100%" width="100%" 
+		horizontalScrollPolicy="off" verticalScrollPolicy="off">
+		<mx:Canvas styleName="canvasDataGrids" id="barChartCanvas" y="0" height="10000" width="50000" 
+			horizontalScrollPolicy="off" verticalScrollPolicy="off"
+			creationComplete = "panelHandler(event);"
+			dragEnter = "doDragEnter(event);" 
+			dragOver="doDragOver(event);"
+			dragDrop="showObjectDraging();isDraging=false;setCursor('cursorHandUp');"
+			dragExit="outCanvasDataGrid();">
+				<mx:DataGrid styleName="gridDatesLines" id="canvLines" alpha="0.5" selectable="false" rowHeight="30" width="50000" height="0" 
+				 x="0" headerHeight="0"  horizontalScrollPolicy="off" verticalScrollPolicy="off" >
+					<mx:columns>
+						<mx:DataGridColumn width="0" />
+					</mx:columns>
+				</mx:DataGrid>
+				<mx:DataGrid styleName="gridTaskRenderer" id="bars" width="50000" 
+					horizontalScrollPolicy="off" verticalScrollPolicy="off"
+					dataProvider="{visibleTasks}"
+					selectable="false"
+					rowHeight="30"
+					height="100%" x="0" headerHeight="0"
+					itemClick="itemSelect(event)"
+					>
+					<mx:Script>
+						<![CDATA[
+								
+								private function itemSelect(event : ListEvent) : void{	
+									var task : UiTask;
+									if(event.target is DataGrid){
+										task = UiTask(bars.selectedItem);
+										if(!task || task.id == ''){
+											bars.selectedItem = null;
+										}
+								 	}else if(event.target is TaskRenderer){
+										task = event.target.data;
+									}
+									if(task){
+										dispatchEvent(new TaskEvent(TaskEvent.SELECT,task));	
+									}
+									
+								}
+						]]>
+					</mx:Script>
+					<mx:columns>
+						<mx:DataGridColumn  id="columnTaskRenderer" width="0"
+							itemRenderer="com.salesforce.gantt.renderers.TaskRenderer"
+							/>
+						<mx:DataGridColumn 
+							itemRenderer="com.salesforce.gantt.renderers.DependencyRenderer"
+							/>
+					</mx:columns>
+				</mx:DataGrid>
+				<!-- Scrol Images -->
+				<mx:Image id="leftArrow" 
+					mouseDown="moveBarChart(Constants.RIGHT);startTimer(Constants.LEFT)" 
+					mouseUp="stopTimer();updateDates(false)" 
+				 	 source="@Embed(source='assets/imgs/left_arrow.png')"/>
+				<mx:Image id="rightArrow" 
+					mouseDown="moveBarChart(Constants.RIGHT);startTimer(Constants.RIGHT)" 
+					mouseUp="stopTimer();updateDates(false)"
+					 source="@Embed(source='assets/imgs/right_arrow.png')"/>
+				<mx:Image id="upArrow"
+					mouseDown="moveBarChart(Constants.UP);startTimer(Constants.UP)" 
+					mouseUp="showObjectDraging(true);stopTimer();" 
+					source="@Embed(source='assets/imgs/up_arrow.png')"/>
+				<mx:Image id="downArrow" 
+					mouseDown="moveBarChart(Constants.DOWN);startTimer(Constants.DOWN)"
+					mouseUp="showObjectDraging(true);stopTimer();"
+					source="@Embed(source='assets/imgs/down_arrow.png')" />
+				<mx:Label id="labelVisibleMonth" visible="false" styleName="labelVisibleMonth" />
+				<mx:Label id="percentTextField" width="40" color="#000000" fontWeight="bold" visible="false" />
+		</mx:Canvas>
+	</mx:Canvas>
+</mx:Panel>

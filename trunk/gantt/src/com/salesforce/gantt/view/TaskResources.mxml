@@ -1,0 +1,226 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<mx:Panel xmlns:mx = "http://www.adobe.com/2006/mxml"
+	width="470"	horizontalGap="0" headerHeight="0" height="350"
+	horizontalAlign="left"
+	borderThicknessTop="0" borderThicknessLeft="0" borderThicknessRight="0" borderThicknessBottom="0"
+	dropShadowEnabled="false" 
+	mouseOver="parentDocument.barChart.defaultCursor()"	initialize="fillPercentArray()">
+<mx:Script>
+	<![CDATA[
+	
+	import flash.sampler.getInvocationCount;
+	import mx.controls.Alert;
+	import mx.events.CloseEvent;
+	import com.salesforce.gantt.controller.Constants;
+	import com.salesforce.gantt.model.TaskResource;
+	import com.salesforce.gantt.controller.Components;
+	import com.salesforce.gantt.model.UiTask;
+	import flash.events.Event;
+	import mx.events.ListEvent; 
+	import mx.collections.ArrayCollection;
+	import com.salesforce.gantt.model.Resource;
+	import com.salesforce.gantt.controller.Tasks;
+	import com.salesforce.gantt.model.Task;
+	import mx.collections.ArrayCollection;
+	
+	[Bindable]
+	public var selectedTask : UiTask;
+ 	
+ 	[Bindable]
+ 	public var availableResources : ArrayCollection;
+ 	
+ 	[Bindable]
+    public var percentCollection = new ArrayCollection();
+
+ 	public function buildTempResources() : void { 		
+	    availableResources = Components.instance.resources.getAvailableResources();
+ 	}
+	
+	/**
+	* Array col that have the 1 to 100 ints	
+	*/	
+
+ 	public function fillPercentArray(): void 
+ 	{
+ 			percentCollection.removeAllChildren();
+		     for (var i : int = 0;i < 101; i=i+5 ){	             	
+	     			percentCollection.addItem({name:i+' %',value:i});	             	
+	     	}				     	
+ 	}
+ 	
+ 	/**
+ 	* Add another row to the Datagrid.
+ 	*/
+ 	public function addTempResourceToGrid():void 
+ 	{
+ 		var res : Resource = new Resource(Constants.MESSAGE_CHOOSE_MEMBER); 			 		
+ 		selectedTask.taskResources.addItem( new TaskResource("",res));		 			
+ 	}
+ 	
+
+		
+	/**
+	 * Delete a task resource ROW at the datagrid.
+	 */
+	public function deleteTaskResource(event : Event) : void
+	{
+		if(selectedTask.taskResources.length == 1){
+			Alert.show('You cannot remove all resources!');
+		} else {
+			selectedTask.taskResources.removeItemAt(gridTaskResource.selectedIndex);
+		}		
+	}
+	
+ 	/**
+ 	* Add the selected resource to the temp array and delete from the available resources list
+ 	*/
+ 	public function setTempResource(combo : Event) : void 
+ 	{
+ 		var alreadySet: Boolean = false;
+ 		var taskResource : TaskResource;
+	 	for (var i : int = 0;!alreadySet && i < selectedTask.taskResources.length; i=i+1 ){
+	 		taskResource = selectedTask.taskResources[i];
+	 		alreadySet = taskResource.resource.id == combo.target.selectedItem.id && gridTaskResource.selectedIndex != i;
+	 	}	
+ 		if(alreadySet){
+ 			Alert.show('Please select another resource.');
+ 			combo.target.text = Constants.MESSAGE_CHOOSE_MEMBER;
+ 			combo.target.selectedIndex = -1;
+ 		}else{
+ 			selectedTask.taskResources[gridTaskResource.selectedIndex].resource = combo.target.selectedItem;
+ 		}
+	}
+ 	
+ 	/**
+ 	* Set the Dedicated percent of the selected resource at the temp array
+ 	*/ 	
+ 	public function setTempDedicated(event : Event) : void{
+ 		selectedTask.taskResources[gridTaskResource.selectedIndex].dedicated =  event.target.selectedItem.value;
+ 	}
+ 	
+ 	function updateIndexTask(data : Object,object : Object): int{
+		var index : int = -1;
+		if(data){
+			var item : Object;
+			for(var i:int =0;i<availableResources.length;i++){
+				item = availableResources.getItemAt(i);
+				if(item.id == data.resource.id){
+				index = i;	
+				}
+			}
+			if(index == -1){
+				object.text = Constants.MESSAGE_CHOOSE_MEMBER;
+			}
+		}
+		return index;
+	}
+	
+	function updateIndexDedicated(data : Object) : int{
+		var index : int = 0;
+		if(data.dedicated % 5 == 0){
+			index = data.dedicated / 5;
+		}
+		return index;
+	}
+ 	
+ 	public function removeFakeData() : void
+	{
+		selectedTask.taskResources.filterFunction = removeFakeItem;
+		selectedTask.taskResources.refresh();					        
+	}
+ 	
+ 	function removeFakeItem(item : TaskResource) : Boolean{
+		return (item.resource.id != '');
+	}
+	
+	public function addRow() : void{
+		if(gridTaskResource.dataProvider.length < availableResources.length){
+			addTempResourceToGrid();
+		}
+	}
+	]]>
+</mx:Script>
+<mx:Style source="assets/css/Dependencies.css"/>
+<mx:VBox height="249" width="470" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+	<mx:Spacer height="10" width="100%" />
+	<mx:DataGrid
+		id="gridTaskResource"
+		dataProvider="{selectedTask.taskResources}"
+		rowHeight="25" 
+		variableRowHeight="false" 
+		sortableColumns="false"
+		draggableColumns="false"
+		dragMoveEnabled="false" 
+		width="80%" 
+		height="205" 
+		horizontalGridLines="false"
+		verticalGridLines="false"	
+		styleName="dependenciesGrid"
+		verticalScrollPolicy="auto"
+		resizableColumns="false"
+		headerStyleName="gridheaders">
+		<mx:columns>
+			<mx:DataGridColumn id="gridColumnTaskResourceDelete" width="32">
+				<mx:headerRenderer>
+		         	<mx:Component>
+		         		<mx:VBox horizontalAlign="center">
+		         			<mx:Image 
+				           	click="outerDocument.addRow();" 
+				           	source="@Embed(source='assets/imgs/add_icon.png')"
+				           	toolTip="Add a new assignee"
+				           	useHandCursor="true" buttonMode="true" />	
+		         		</mx:VBox>
+		         	</mx:Component>	
+		        </mx:headerRenderer>
+		        <mx:itemRenderer>
+		            <mx:Component>
+			            <mx:HBox horizontalAlign="center"  >
+			            	<mx:Image id="taskResourceDeleteButton" 
+			            		click="outerDocument.deleteTaskResource(event); " 
+			            		source="@Embed(source='assets/imgs/delete_icon.png')"
+			            		useHandCursor="true" buttonMode="true" />			           			            		 	
+			            </mx:HBox>
+		            </mx:Component>
+		        </mx:itemRenderer>
+	        </mx:DataGridColumn> 
+		    <mx:DataGridColumn id="gridColumnTaskResourceName" headerStyleName="gridheaders" headerText="Assignee" dataField="name" width="160">
+		      <mx:itemRenderer >
+		            <mx:Component>
+			            <mx:HBox horizontalScrollPolicy = "off" horizontalAlign="left" height="25" >
+			            	<mx:ComboBox
+			            		id="assigneeComboBox"
+			            		styleName="gridComboColumn"
+								dataProvider="{outerDocument.availableResources}"
+								selectedIndex = "{outerDocument.updateIndexTask(data,this.assigneeComboBox)}"
+								width="160"	  
+						 		height="19"
+						 		downSkin="@Embed(source='assets/imgs/name_combo_skin_dependency.png')" 
+						 		skin="@Embed(source='assets/imgs/name_combo_skin_dependency.png')"
+						 		change="outerDocument.setTempResource(event);"/>						 	
+						 </mx:HBox>
+		          	</mx:Component>
+	          </mx:itemRenderer>
+	        </mx:DataGridColumn>
+		    <mx:DataGridColumn id="gridColumnTaskResourceDedicated" headerStyleName="gridheaders" headerText="% dedicated"  width="80">
+		        <mx:itemRenderer >
+		            <mx:Component>
+			            <mx:HBox horizontalScrollPolicy = "off" horizontalAlign="left" height="25">
+			            	<mx:ComboBox
+								dataProvider="{outerDocument.percentCollection}"						 		
+						 		id="numericStepperDedicated"
+						 		styleName="gridComboColumn" 				
+						 		selectedIndex="{outerDocument.updateIndexDedicated(data)}"
+						 		width="64"
+						 		height="19"
+						 		labelField="name"
+						 		change="outerDocument.setTempDedicated(event);"
+						 		downSkin="@Embed(source='assets/imgs/drop_down_skin.png')" 
+						 		skin="@Embed(source='assets/imgs/drop_down_skin.png')"/>
+						</mx:HBox>		
+		            </mx:Component>	
+		        </mx:itemRenderer>
+	        </mx:DataGridColumn>
+	    </mx:columns>
+	</mx:DataGrid>
+</mx:VBox>
+</mx:Panel>
