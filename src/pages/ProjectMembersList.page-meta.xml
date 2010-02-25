@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>15.0</apiVersion>
-    <description>Project Member page for displaying all Project members</description>
-    <label>ProjectMembersList</label>
-</ApexPage>
