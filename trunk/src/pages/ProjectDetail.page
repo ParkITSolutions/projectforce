@@ -10,10 +10,6 @@
     
    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}" />
     
-    <!-- Script.aculo.us / Prototype -->
-    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}" />
-    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}" />
-    
      <!-- overlays resources -->
     <apex:includeScript value="{!URLFOR($Resource.overlaysResources, 'inc/js/js.js')}"/>
     <apex:stylesheet value="{!URLFOR($Resource.overlaysResources, 'inc/css/css.css')}"/>
@@ -90,16 +86,7 @@
         <!-- End breadcrumbPanel -->
      
          <div align="center" class="breadCrumbAndButtons">
-            <!-- <apex:outputpanel layout="block" styleclass="breadCrumbs">
-                <div onmouseover="addMouseOver(this)" onfocus="addMouseOver(this)" class="mouseOverInfoOuter">
-                <a id="projectNameBreadcrumb"  href="#"><apex:outputText escape="true" value="{!projectName}" /></a> &gt;                                       
-                    <apex:outputpanel layout="block" rendered="{!IF(LEN(Teamspace.Name) > 24,true,false)}" 
-                    style="display: none;z-index:9999;" styleClass="mouseOverInfo">
-                        <div class="body">{!Teamspace.Name}</div>
-                    </apex:outputpanel>
-                </div>  
-                <span class="breadCrumbsLast"><strong>Detail</strong></span>     
-            </apex:outputpanel> -->
+
             
             <div id="btnDiv">
                 <apex:form id="thisForm" >
@@ -122,21 +109,22 @@
                     </apex:outputPanel>         
                     
                     <!-- Join Button -->
-                    <apex:commandLink styleClass="blackbutton" action="{!joinProject}" 
+                    <apex:commandLink styleClass="blackbutton" action="{!joinProject}"
                         rendered="{!IF(AND(NOT(isMember), isPublic),true,false)}" 
-                        onclick="setClassWaiting('.blackbutton');" 
+                        onclick="swirly.show();" 
                         rerender="thisForm, mainContentForm, sidebarWidgets"
-                        oncomplete="projectDetail();">
+                        oncomplete="projectDetail(); swirly.hide(); ">
                         <span> Join </span>
-                    </apex:commandLink>         
+                    </apex:commandLink>
                     
-                    <!-- Unjoin Button -->
+                    <!-- Unjoin Button   -->
                     <apex:commandLink styleClass="blackbutton" rendered="{!IF(isMember,true,false)}" 
-                        onclick="setClassWaiting('.blackbutton');"  
+                        onclick="swirly.show();"  
                         rerender="thisForm, mainContentForm, sidebarWidgets" action="{!unjoinProject}" 
-                        onComplete="projectDetail(); showWarningIsLastAdmin();">
+                        onComplete="projectDetail(); swirly.hide();  showWarningIsLastAdmin();">
                         <span> Unjoin </span>
                     </apex:commandLink>
+
                 </apex:form>    
             </div>              
         </div>
@@ -149,13 +137,11 @@
                 	projectId="{!projectId}"
                 />
                 
-                <!--  <c:ProjectActivityWidget id="activityWidget" projectId="{!projectId}"/>-->
-                
                 <!-- Team members -->
                 <c:MembersWidget projectId="{!projectId}" id="MembersWidget" />
                 
                 <!-- Team Suscribe -->
-            	<c:ProjectSubscriptionWidget id="subscriptionWidget"/>
+            	<c:ProjectSubscriptionWidget id="subscriptionWidget" rendered="{!IF(isMember,true,false)}"/>
             	
             </apex:outputPanel>
             <div class="clear"></div>
@@ -170,7 +156,7 @@
     <div class="messageToUser errorMessage" id="ErrorMessage" style="display:none" ></div>     
      
     <!-- Main Content -->
-    <div class="main_content">
+    <div class="main_content" id="main_content">
         <div class="centerCol">
            <div class="holder">
                 <div id="swirlyDetail" class="swirlyDetail" style="display: none;" />

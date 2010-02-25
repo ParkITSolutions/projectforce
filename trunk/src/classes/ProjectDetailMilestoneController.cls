@@ -132,19 +132,20 @@ public class ProjectDetailMilestoneController {
 		}
 	 	
 		for( ProjectTask__c milestone : milestones) {
-			if(milestone.PercentCompleted__c < 100){				
+							
 				ProjectTasks miMilestones = new ProjectTasks();
 				miMilestones.setTaskName(milestone.Name);
 				miMilestones.setTaskId(milestone.Id);
 				miMilestones.setStartDate(milestone.StartDate__c);
-				if(milestone.ProjectsAssignees__r.size() > 0){
+				miMilestones.setPercentCompleted(milestone.PercentCompleted__c);
+				if(milestone.ProjectsAssignees__r.size() > 0)
+				{
 					miMilestones.setUser(userMap.get(milestone.ProjectsAssignees__r[0].User__c));					
 				}
 				
 				miMilestones.setPriority(milestone.Priority__c);
 				
 				result.add(miMilestones);
-			}
 			
 		 } 
 		 
@@ -207,21 +208,21 @@ public class ProjectDetailMilestoneController {
 			userMap.put(u.Id, u);							
 		}
 	 	
-		for( ProjectTask__c milestone : milestones) {
-			if(milestone.PercentCompleted__c < 100){				
+	 	
+	 	System.debug('\n\n\n\n\n\n\n\n\n Milestone Size : '+listSize+'\n\n\n\n\n\n\n\n\n');
+		
+		for( ProjectTask__c milestone : milestones) 
+		{			
 				ProjectTasks miMilestones = new ProjectTasks();
 				miMilestones.setTaskName(milestone.Name);
 				miMilestones.setTaskId(milestone.Id);
 				miMilestones.setStartDate(milestone.StartDate__c);
-				if(milestone.ProjectsAssignees__r.size() > 0){
+				if(milestone.ProjectsAssignees__r.size() > 0)
+				{
 					miMilestones.setUser(userMap.get(milestone.ProjectsAssignees__r[0].User__c));					
 				}
-				
 				miMilestones.setPriority(milestone.Priority__c);
-				
 				result.add(miMilestones);
-			}
-			
 		 } 
 		 
 		 milestones.clear();
@@ -248,8 +249,10 @@ public class ProjectDetailMilestoneController {
         public String Picture;
         public String Priority;
         public String isToLate;
+        public Integer percentCompleted;
       	private DateTime now = System.now();
       	private Boolean late;
+      	
 		
       	/**
       	* Constructor
@@ -377,6 +380,24 @@ public class ProjectDetailMilestoneController {
 			}
            	EndDateRight =  endD.format();
         }
+        
+        /**
+        *@Param Double PercentCompleted
+        *@return void
+        */
+        public void setPercentCompleted(Double pCompleted)
+        {
+        	percentCompleted = pCompleted.intValue();
+        }
+        
+        
+        /**
+  		*@return Integer
+  		*/
+  		public Integer getPercentCompleted() {
+      		return percentCompleted;
+        }
+        
         
   		/**
   		*@return String

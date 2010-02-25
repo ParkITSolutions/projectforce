@@ -7,6 +7,7 @@ public class MembersWidgetController {
 	public UserPermissions userPermissions	 	{ set; get; }
 	public String projectId   					{ set; get; }
 	public Boolean isManager   					{ set; get; }
+	public List<ProjectMember> projectMembers;
 	
 	/**
     * Empty Constructor
@@ -26,7 +27,16 @@ public class MembersWidgetController {
 		this.userPermissions.setPermissions();
 		this.isManager = userPermissions.getCanManage();
 	}
-
+	
+	/**
+	* reloadMemberList 
+	* @refresh the projectMembers List
+	*/
+	public void reloadMemberList()
+	{ 
+		this.projectMembers = getProjectMembers();
+	}
+	
 	/**
 	* Get the project Members
 	* @return listProjectMember

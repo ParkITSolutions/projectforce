@@ -352,13 +352,17 @@ public without sharing class ProjectMembersListController {
 	public void joinProject(){
 		ProjectMember__c projectMember = new ProjectMember__c();
 		projectMember.User__c = UserInfo.getUserId();
-		projectMember.Profile__c = [select Id 
-										from ProjectProfile__c 
-										where Name = 'Member Profile' 
-										limit 1].Id;
-										
+		projectMember.Name = UserInfo.getName();
 		projectMember.Project__c = this.getProjectId();
-		insert projectMember;
+		
+		Map<String,Id> projectProfile = DAOFactory.getInstance().idProjectProfile();
+		Id idProfile = projectProfile.get( 'Member Profile' );
+		projectMember.Profile__c = idProfile; 
+
+		List<ProjectMember__c> newMemberList = new List<ProjectMember__c>();
+		newMemberList.add( projectMember );
+		DAOFactory.getInstance().newMemberList( newMemberList );
+		
 	}
 	
 	

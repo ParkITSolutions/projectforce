@@ -35,7 +35,7 @@
                   
                     <apex:outputPanel layout="block" id="projectDetail" >                   
                         <apex:outputPanel layout="block" styleClass="FieldValue" >
-                            <apex:outputPanel rendered="{!ShowDetail}">
+                            <apex:outputPanel rendered="{!ShowDetail}">>{!ShowDetail}<
                                 <center>
                                     <apex:outputPanel layout="block" id="detailProject" styleClass="DetailProject">
                                         <apex:outputPanel layout="block" id="subContainer" styleClass="SubContainer">

@@ -106,7 +106,7 @@ public class ProjectTaskNotesController {
     private Boolean sizeAllowed(){
     	
     	Boolean result= false;
-    	if ( taskNotes.length() <= 32000 )
+    	if ( taskNotes != null && taskNotes.length() <= 32000 )
     		result=true;
     		
     	return result;

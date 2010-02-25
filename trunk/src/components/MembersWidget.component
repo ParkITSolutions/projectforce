@@ -15,7 +15,16 @@
 
     
     <apex:outputPanel id="widget" styleClass="widget" layout="block" >
-    
+    	
+    	<apex:form >
+        	<apex:actionFunction name="reloadMemberList" 
+        							action="{!reloadMemberList}" 
+        							rerender="membersWidgetContent" 
+        							onComplete="swirly.hide(); alert('reloadMemberList has been executed');"
+        							
+        							/>
+        </apex:form>
+        
         <!-- widget header -->
         <apex:outputPanel id="header" layout="block" styleClass="header">
             <div>
@@ -31,7 +40,7 @@
             <!-- Body of Widget goes here -->
             
             <apex:outputpanel id="linksTop" layout="block" styleclass="panelLinksTop"  rendered="{!isManager}" >                        
-                <apex:outputLink id="NewMemberLink" styleclass="linksTop" value="javascript:;" onClick="promptOverlay.open(newMember);"> NewMember</apex:outputLink> |
+                <apex:outputLink id="NewMemberLink" styleclass="linksTop" value="javascript:;" onClick="promptOverlay.open(newMember);">New Member</apex:outputLink> |
                 <apex:outputLink id="SeeMoreLink" styleclass="linksTop" value="/apex/MembersList?id={!projectId}#" > See More&#187;</apex:outputLink>
             </apex:outputpanel>
             

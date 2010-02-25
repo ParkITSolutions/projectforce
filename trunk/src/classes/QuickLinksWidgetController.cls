@@ -3,19 +3,16 @@
 */
 public class QuickLinksWidgetController {
 	
-	//public String idProject   				{ set; get; }
 	public UserPermissions userPermission 	{ set; get; }
-	public String projectId   				{ set; get; }
+	public String projectId   				{ set{this.userPermission = new UserPermissions(); this.genPermissions();} get; }
+	public Boolean isMember   				{ set; get; }
 
     /**
     * Constructor
     */
     public QuickLinksWidgetController(){
     	
-    	this.userPermission = new UserPermissions();
-		//this.idProject 		= System.currentPageReference().getParameters().get( 'id' );
-		
-		this.genPermissions();
+		//System.debug('XXX contr UserInfo.getUserId()='+UserInfo.getUserId()+', this.projectId ='+this.projectId );
 		
     }
     
@@ -23,12 +20,11 @@ public class QuickLinksWidgetController {
     * Load permission for current user
     */
  	private void genPermissions(){
- 		
         userPermission.setId(UserInfo.getUserId());
-        
         userPermission.setProject(this.projectId);
-        //userPermission.setProject(idProject);
         userPermission.setObjectType('Project');
         userPermission.setPermissions();
+        System.debug('XXX gen UserInfo.getUserId()='+UserInfo.getUserId()+', this.projectId ='+this.projectId );
+        this.isMember = userPermission.isUserMemberOfProject( UserInfo.getUserId() , 'a003000000DjAKJAA3' );
     }
 }
