@@ -13,7 +13,7 @@ public class MembersWidgetController {
     * Empty Constructor
     */
 	public MembersWidgetController(){
-		this.userPermissions 	= new UserPermissions();
+		this.userPermissions = new UserPermissions();
 		genPermissions();
 	}
 

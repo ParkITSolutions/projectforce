@@ -15,14 +15,14 @@
 
     
     <apex:outputPanel id="widget" styleClass="widget" layout="block" >
-    	
-    	<apex:form >
-        	<apex:actionFunction name="reloadMemberList" 
-        							action="{!reloadMemberList}" 
-        							rerender="membersWidgetContent" 
-        							onComplete="swirly.hide(); alert('reloadMemberList has been executed');"
-        							
-        							/>
+        
+        <apex:form >
+            <apex:actionFunction name="reloadMemberList" 
+                                    action="{!reloadMemberList}" 
+                                    rerender="membersWidgetContent" 
+                                    onComplete="swirly.hide(); alert('reloadMemberList has been executed');"
+                                    
+                                    />
         </apex:form>
         
         <!-- widget header -->
@@ -39,17 +39,17 @@
             
             <!-- Body of Widget goes here -->
             
-            <apex:outputpanel id="linksTop" layout="block" styleclass="panelLinksTop"  rendered="{!isManager}" >                        
-                <apex:outputLink id="NewMemberLink" styleclass="linksTop" value="javascript:;" onClick="promptOverlay.open(newMember);">New Member</apex:outputLink> |
-                <apex:outputLink id="SeeMoreLink" styleclass="linksTop" value="/apex/MembersList?id={!projectId}#" > See More&#187;</apex:outputLink>
+            <apex:outputpanel id="linksTop" layout="block" styleclass="panelLinksTop" >                        
+                <apex:outputLink id="NewMemberLink" styleclass="linksTop"  rendered="{!isManager}" value="javascript:;" onClick="promptOverlay.open(newMember);">New Member |</apex:outputLink>
+                <apex:outputLink id="SeeMoreLink" styleclass="linksTop" value="/apex/MembersList?id={!projectId}" > See More&#187;</apex:outputLink>
             </apex:outputpanel>
             
             <apex:repeat value="{!ProjectMembers}" var="member" id="projectMembers">
                 <apex:outputPanel id="lineMember" styleclass="lineMember" layout="block">
-	                <apex:image id="imageMember" styleclass="imageMember" value="{!URLFOR($Resource.MembersWidget, 'images/no_image_small.gif')}" />
-	                <apex:outputLink id="usrLink" value="/{!member.Id}" styleclass="{!IF(member.isAdmin, 'usrAdmin', 'usrStandar')}">        
-	                    {!member.Name}
-	                </apex:outputLink>
+                    <apex:image id="imageMember" styleclass="imageMember" value="{!URLFOR($Resource.MembersWidget, 'images/no_image_small.gif')}" />
+                    <apex:outputLink id="usrLink" value="/{!member.Id}" styleclass="{!IF(member.isAdmin, 'usrAdmin', 'usrStandar')}">        
+                        {!member.Name}
+                    </apex:outputLink>
                 </apex:outputPanel>
             </apex:repeat>
             

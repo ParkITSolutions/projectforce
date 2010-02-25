@@ -52,12 +52,13 @@ public class DAOProject {
 		            where id =: projectId 
 		            limit 1 ];
 		
-		project.id = project2.id;
-		project.name = project2.name;
-		project.description = project2.description__c;
-		project.priority = project2.priority__c;
-		project.displayDuration = project2.displayDuration__c;
-		project.daysWorkWeek = project2.DaysInWorkWeek__c;
+		//TODO migrate to ObjectFormatter
+		project.id 					= project2.id;
+		project.name 				= project2.name;
+		project.description 		= project2.description__c;
+		project.priority 			= project2.priority__c;
+		project.displayDuration 	= project2.displayDuration__c;
+		project.daysWorkWeek 		= project2.DaysInWorkWeek__c;
 		project.setWorkingHours( project2.WorkingHours__c );
 		
 		return project;
@@ -128,5 +129,18 @@ public class DAOProject {
 			delete projectToDelete[0];
 		}
 	}
-	
+
+	/**
+	* Delete a Project
+	* @param pid projec id
+	* @return avatarId return the avatar id of the project	
+	*/
+	public String projectAvatarId( Id pId ){
+		String avatarId = '';
+		try{
+			avatarId = [ SELECT id, picture__c FROM Project2__c WHERE id =: pId LIMIT 1 ].picture__c;
+		}catch (Exception e){}
+		
+		return avatarId;
+	}	
 }

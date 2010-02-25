@@ -8,9 +8,7 @@
     <script type="text/javascript">
         var deleteTasksOverlay          = new ConfirmOverlay( '{!$Component.DeleteTasksOverlay}' );
         var markCompleteTasksOverlay    = new ConfirmOverlay( '{!$Component.MarkCompleteTasksOverlay}' );
-        
     </script>
-    
     
     <c:ConfirmOverlay id="DeleteTasksOverlay" 
         title="Delete tasks"
@@ -37,8 +35,6 @@
         </apex:define>
     </apex:composition>
     <!-- End Header -->
-    
-	
         
     <!-- ContentPanel -->
     <apex:outputPanel id="contentPanelTaskList" styleClass="contentPanelTaskList" layout="block" >
@@ -56,7 +52,7 @@
             <apex:outputLink value="javascript:;"
                 id="NewTaskLink"
                 onClick="promptOverlay.open( newTask );"
-                styleClass="blackbutton">
+                styleClass="blackbutton" rendered="{!isMember || isManager}">
                 <apex:outputPanel >
                     New Task
                 </apex:outputPanel>
@@ -65,7 +61,7 @@
             <apex:outputLink value="javascript:;"
                 id="NewMilestoneLink"
                 onClick="promptOverlay.open( newMilestone );"
-                styleClass="blackbutton">
+                styleClass="blackbutton" rendered="{!isMember || isManager}">
                 <apex:outputPanel >
                     New Milestone
                 </apex:outputPanel>
@@ -74,7 +70,7 @@
             <apex:outputLink value="javascript:;"
                 id="MarkComplete"
                 onClick="markCompleteTasks();"
-                styleClass="blackbutton">
+                styleClass="blackbutton" rendered="{!isMember || isManager}">
                 <apex:outputPanel >
                     Mark Complete
                 </apex:outputPanel>
@@ -91,7 +87,7 @@
             <apex:outputLink value="javascript:;"
                 id="Delete"
                 onClick="deleteTasks();"
-                styleClass="blackbutton">
+                styleClass="blackbutton" rendered="{!isMember || isManager}">
                 <apex:outputPanel >
                     Delete
                 </apex:outputPanel>
@@ -229,7 +225,6 @@
                     
                     <!-- FilterPanel -->
                     <apex:outputPanel id="FilterPanel" styleClass="filterPanel" layout="block">
-                        
                             Quick filter: 
                             <apex:selectList id="FilterSelect" value="{!paginator.filter}" size="1" onChange="paginator.setLetterChoosen('All'); swirly.show(); RefreshRecordsList();">
                                 <apex:selectOptions id="FilterOption" value="{!filterItems}"/>
@@ -269,13 +264,15 @@
                         
                         <apex:column id="Action">
                             <apex:facet name="header"><apex:inputCheckbox id="ActionCheckbox" onClick="markAllCheckboxes(this,'actionCheckbox');"/></apex:facet>
-                            <input type="checkbox" id="{!task.id}" value="{!task.id}" class="actionCheckbox"/>
+                            <apex:outputPanel id="chk" rendered="{!task.canUpdate || task.canDelete || isManager}">
+                            	<input type="checkbox" id="{!task.id}" value="{!task.id}" class="actionCheckbox" />
+                            </apex:outputPanel>
                         </apex:column>
                         
                         <apex:column >
                             <apex:facet name="header">Action</apex:facet>
-                            <apex:outputLink value="/{!task.id}/e?retURL={!url}/apex/TaskList?id={!projectId}" id="EditLink" rendered="{!task.canUpdate}">Edit | </apex:outputLink>
-                            <apex:outputLink value="javascript:;" id="DeleteLink" onClick="deleteTask('{!task.id}');"> Del</apex:outputLink>
+                            <apex:outputLink value="/{!task.id}/e?retURL={!url}/apex/TaskList?id={!projectId}" id="EditLink" rendered="{!task.canUpdate || isManager}">Edit | </apex:outputLink>
+                            <apex:outputLink value="javascript:;" id="DeleteLink" onClick="deleteTask('{!task.id}');" rendered="{!task.canDelete || isManager}"> Del</apex:outputLink>
                         </apex:column>
                         
                         <apex:column >

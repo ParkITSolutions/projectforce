@@ -4,12 +4,15 @@
 */
 public class MembersListController {
 	
-	public List<ProjectMember> 	member;	
-	public String projectId 			{ set; get; }
-	public String url 					{ set; get; }
-	public Project project 				{ set; get; }
-	public Project exceptionMessage 	{ set; get; }
-	public Paginator paginator 			{ set; get; }
+	public List<ProjectMember> member;	
+	public UserPermissions userPermissions	 	{ set; get; }
+	public Boolean isMember   					{ set; get; }
+	public Boolean isManager   					{ set; get; }
+	public String projectId 					{ set; get; }
+	public String url 							{ set; get; }
+	public Project project 						{ set; get; }
+	public Project exceptionMessage 			{ set; get; }
+	public Paginator paginator 					{ set; get; }
 	
 	/**
 	* Constructor
@@ -31,7 +34,23 @@ public class MembersListController {
 		this.paginator.project.id 	= this.projectId;
 		
 		paginator.loadMembersByProject();
+		
+		this.userPermissions = new UserPermissions();
+		this.genPermissions();
 	}
+	
+	/**
+    * Load permission for current user
+    */
+ 	public void genPermissions(){
+        this.userPermissions.setId( UserInfo.getUserId() );
+        this.userPermissions.setProject( this.projectId );
+        this.userPermissions.setObjectType( 'Project' );
+        this.userPermissions.setPermissions();
+        
+        this.isManager 	= this.userPermissions.getCanManage();
+        this.isMember 	= this.userPermissions.isUserMemberOfProject( UserInfo.getUserId() , this.projectId );
+    }
 	
 	/**
 	* @return options the filter options

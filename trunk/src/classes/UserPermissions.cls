@@ -203,9 +203,8 @@ public class UserPermissions {
 		return null;
 	}
 	
-	public boolean isUserMemberOfProject( String usriId, String projectId ){
-		//return null;
-		return DAOFactory.getInstance().isMemberOfProject( usriId, projectId );
+	public boolean isUserMemberOfProject( String userId, String projectId ){
+		return DAOFactory.getInstance().isMemberOfProject( userId, projectId );
 	}	
 	/*
 	*
@@ -220,7 +219,7 @@ public class UserPermissions {
 		if( taskList.size() > 0 ){
 			Boolean isAdmin			= DAOFactory.getInstance().isAdministrator();
 			Boolean isProjectMember	= DAOFactory.getInstance().isProjectMember( taskList.get(0).project );
-			System.debug('######## Sys Admin : ' +isAdmin + '  projectmemeber :' + isProjectMember);
+
 			for( Task task : taskList ){
 				if( !isAdmin ){
 					if( isProjectMember ){
@@ -257,13 +256,11 @@ public class UserPermissions {
 					task.canDeleteAssignees 	= true;
 					task.canDeleteAttachments 	= true;
 				}
-				System.debug('======' + task);
 				resultTasks.add( task );
 			}
 		}
 		
 		return resultTasks;
-		//return taskList;
 	}
 	
 }

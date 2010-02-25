@@ -7,9 +7,11 @@ public class AttachmentController {
 	private final Integer MAX_LENGTH_NAME = 71;
 	private final String  ERROR_NO_FILE   = 'Please select a file to upload.';
 	private final String  ERROR_IMG_TYPE  = 'The image must be .jpg, .gif or .png';	
+	private final String  ERROR_BIN_TYPE  = 'Binary type are not allowed.';	
 	private final String  ERROR_SIZE_FILE = 'Maximum size is 120 KB';
 	
 	private Set<String> imagesTypes = new Set<String> {'image/jpeg', 'image/pjpeg', 'image/png', 'image/x-png', 'image/gif'};
+	private Set<String> notAllowedTypes = new Set<String> {'application/octet-stream'};
 	  
 	public String		parentId 	 		{ set; get; }
 	public String 		error 				{ set; get; }
@@ -62,6 +64,9 @@ public class AttachmentController {
 		
 		this.newAttach = new Attachment();
 		this.endAction = true;
+		this.typeOfAttachment = ''; 
+		this.avatarTypeFlag = '';
+		
 		
 		return Page.UploadAttachment;
 	}
@@ -83,6 +88,15 @@ public class AttachmentController {
 		this.error = this.imagesTypes.contains( newAttach.ContentType ) ? '' : ERROR_IMG_TYPE;
 		return this.error;
 	} 
+
+	/**
+	* Checks if the type of file is binary. Returns the error as string
+	* @return String 
+	*/
+	private String  checkBinType(){
+		this.error = this.notAllowedTypes.contains( newAttach.ContentType ) ? ERROR_BIN_TYPE : '';
+		return this.error;
+	} 
 	
 	/**
 	* Checks maximum size of file. Returns the error as string
@@ -98,10 +112,14 @@ public class AttachmentController {
 	* @return Boolean
 	*/
 	private Boolean allValidations(){
-		if( this.checkEmptyValue() == '' && this.checkSize() == '' ){
+		if( this.checkEmptyValue() == '' && this.checkSize() == '' ){	
 			// As avatar
-			if( this.typeOfAttachment == 'avatar' )
+			if( this.typeOfAttachment == 'avatar' ){
 				this.checkOnlyImgExtensions();
+			}else{
+				this.checkBinType();
+			}
+			
 		}
 		return this.error == ''; 
 	}
