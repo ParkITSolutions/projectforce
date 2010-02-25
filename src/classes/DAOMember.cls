@@ -11,8 +11,8 @@ public class DAOMember {
 	* Constructor
 	*/
 	public DAOMember(){
-		this.DAOAssignee = new DAOAssignee();
-		this.DAOTask = new DAOTask();
+		this.DAOAssignee 	= new DAOAssignee();
+		this.DAOTask 		= new DAOTask();
 	}
 	
 	/**
@@ -24,6 +24,7 @@ public class DAOMember {
 	* @throws CustomException It can not delete all project administrators
 	*/
 	public void deleteMembers( String members, String projectId ){
+		
 		List<String> membersIds = new List<String>();
         membersIds = members.split(':'); 
         List<ProjectMember__c> membersAdmin = [select Id 
@@ -35,9 +36,7 @@ public class DAOMember {
 			throw new CustomException('It can not delete all project administrators.');
 		}            			
         
-        List<ProjectMember__c> membersToDelete = [select Id 
-            								      from ProjectMember__c 
-            								      where id in: membersIds];
+        List<ProjectMember__c> membersToDelete = [ select Id from ProjectMember__c where id in: membersIds ];
             
 		delete membersToDelete;
 	}
@@ -73,11 +72,14 @@ public class DAOMember {
 	* @return a list of members candidates to be assigned
 	*/
 	public List<ProjectMember__c> getCandidatesToAssign(String taskId){
-		List<TaskAssignee> assignees = DAOAssignee.getAssignees(taskId);
-		List<String> assigned = new List<String>();
+		
+		List<TaskAssignee> assignees 	= DAOAssignee.getAssignees(taskId);
+		List<String> assigned 			= new List<String>();
+		
 		for(TaskAssignee assignee: assignees){
 			assigned.add(assignee.id);
 		} 
+		
 		ProjectTask__c task = DAOTask.get(taskId);
 		
 		return [select Id, Name, User__c
@@ -85,18 +87,15 @@ public class DAOMember {
 			    where Project__c =: task.Project__c
 			    and User__r.IsActive != false 
 				and User__c not in: assigned ];
-		
 	}
 
 	/**
 	*@return List<ProjectMember__c>
 	*/
 	public List<ProjectMember__c> getProjetsInfoByMember( Id us ){
+		
 		List<ProjectMember__c> memList = new List<ProjectMember__c>();
 		try{
-						System.debug(' >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ');
-						System.debug(' >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ');
-			
 			memList = [ SELECT Project__c, Project__r.Picture__c, Project__r.name, Project__r.Description__c, Project__r.Priority__c, Project__r.DisplayDuration__c, Project__r.DaysInWorkWeek__c FROM ProjectMember__c WHERE User__c =:  us ];
 		}catch (Exception e){
 			memList = null;
@@ -123,6 +122,7 @@ public class DAOMember {
 	* @return members a list of members
 	*/
 	public ApexPages.StandardSetController getByProject( String projectId, String filter, String orderBy, Boolean orderAsc, String letter ){
+		
 		if(letter=='All'){
 			letter='';
 		}
@@ -171,5 +171,4 @@ public class DAOMember {
 		
 		return members;
 	}
-	
 }

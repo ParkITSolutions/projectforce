@@ -1,43 +1,43 @@
 <apex:component id="ProjectSubscriptionWidget" controller="ProjectSubscriptionWidgetController" allowDML="true">
-	
-	<!-- Corresponding CSS and JS for particular Widget-->
-	
-	<!-- TODO place in application top -->
-	<apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
-	
-	<style type="text/css">
-		.subscribeLink{
-			padding:7px;
-		}
-	</style>
-	
-	<apex:outputPanel id="widget" styleClass="widget" layout="block" >
-	
-		<!-- widget header -->
-		<apex:outputPanel id="header" layout="block" styleClass="header">
-			<div>
-				<div>
-					<h5>Project Subscriptions</h5>
-				</div>
-			</div>
-		</apex:outputPanel>
-		
-		<!-- dynamic content goes here -->
-		<apex:outputPanel id="widgetContent" layout="block" styleClass="widgetContent">
-			
-        	<apex:outputPanel id="subscribeLink" layout="block" styleClass="subscribeLink">
-        		<apex:image id="icon" value="{!URLFOR($Resource.commonResources, '/images/icons/user_rss.gif')}" />
-        		<a href="ProjectSubscription?id={!idProject}">Manage Subscriptions</a>
-        	</apex:outputPanel> 
-			
-		</apex:outputPanel>
-		
-		<!-- widget footer -->
-		<apex:outputPanel id="footer" layout="block" styleClass="footer">
-			<div>
-				<div></div>
-			</div>
-		</apex:outputPanel>
-	
-	</apex:outputPanel>
+    
+    <!-- Corresponding CSS and JS for particular Widget-->
+    
+    <!-- TODO place in application top -->
+    <apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
+    
+    <style type="text/css">
+        .subscribeLink{
+            padding:7px;
+        }
+    </style>
+    
+    <apex:outputPanel id="widget" styleClass="widget" layout="block" >
+    
+        <!-- widget header -->
+        <apex:outputPanel id="header" layout="block" styleClass="header">
+            <div>
+                <div>
+                    <h5>Project Subscriptions</h5>
+                </div>
+            </div>
+        </apex:outputPanel>
+        
+        <!-- dynamic content goes here -->
+        <apex:outputPanel id="widgetContent" layout="block" styleClass="widgetContent">
+            
+            <apex:outputPanel id="subscribeLink" layout="block" styleClass="subscribeLink">
+                <apex:image id="icon" value="{!URLFOR($Resource.commonResources, '/images/icons/user_rss.gif')}" />
+                <a href="ProjectSubscription?id={!idProject}">Manage Subscriptions</a>
+            </apex:outputPanel> 
+            
+        </apex:outputPanel>
+        
+        <!-- widget footer -->
+        <apex:outputPanel id="footer" layout="block" styleClass="footer">
+            <div>
+                <div></div>
+            </div>
+        </apex:outputPanel>
+    
+    </apex:outputPanel>
 </apex:component>

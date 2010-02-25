@@ -10,7 +10,20 @@
 			height:100% !important;
 		}
 	</style>	
+	
+	 <script type="text/javascript">
+        
+		var deleteProjectAttachmentOverlay = new ConfirmOverlay( '{!$Component.DeleteProjectAttachmentOverlay}' );
+		
+		function DeleteProjectAttachment(attachID){
+    	    deleteProjectAttachmentOverlay.open();
+    	    deleteProjectAttachmentOverlay.setActionIds(attachID);	
+		}
 
+	</script>
+	
+
+	
 	<!-- Generic Refresh Attachment Method -->
 	<apex:actionFunction name="refreshAttachmentList" 
 						 action="{!readAttachments}" 
@@ -53,12 +66,18 @@
 							<apex:repeat value="{!attachments}" var="attachment" rows="{!numberOfItemsToShowSummary}">									
 								<tr> 
 									<td>
-										<a href="javascript:;" 
+										<!-- <a href="javascript:;" 
 										   onclick="deleteAttachmentOverlay.open(); 
 										            $('ProjectDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!attachment.Id}';
 										            addOverlayEvents(function(){deleteAttachmentOverlay.close();}, 'ProjectDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn')">
 										   Delete
-										 </a>
+										 </a> -->
+										 <apex:outputLink value="javascript:;"
+							                id="DeleteAttachment"
+							                onClick="DeleteProjectAttachment('{!attachment.Id}');"
+							                styleClass="blackbutton">
+							                    Delete New
+							            </apex:outputLink>
 									</td>
 									<td>
 										<img style="vertical-align:bottom;" src="https://{!domain}{!URLFOR($Resource.FileTypeIcons, attachment.attachImage)}"/> &nbsp;

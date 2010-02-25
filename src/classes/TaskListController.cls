@@ -4,12 +4,15 @@
 public class TaskListController {
 	
 	public List<Task> tasks;	
-	public String projectId 			{ set; get; }
-	public String url 					{ set; get; }
-	public Project project 				{ set; get; }
-	public Project exceptionMessage 	{ set; get; }
-	public Paginator paginator 			{ set; get; }
-	public String csvFileId 			{ set; get; }
+	public UserPermissions userPermissions	 	{ set; get; }
+	public Boolean isMember   					{ set; get; }
+	public Boolean isManager   					{ set; get; }
+	public String projectId 					{ set; get; }
+	public String url 							{ set; get; }
+	public Project project 						{ set; get; }
+	public Project exceptionMessage 			{ set; get; }
+	public Paginator paginator 					{ set; get; }
+	public String csvFileId 					{ set; get; }
 	
 	/**
 	* Constructor
@@ -33,7 +36,23 @@ public class TaskListController {
 		this.paginator.project.id 	= this.projectId;
 		
 		paginator.loadTasksByProject();
+		
+		this.userPermissions = new UserPermissions();
+		this.genPermissions();
 	}
+	
+	/**
+    * Load permission for current user
+    */
+ 	public void genPermissions(){
+        this.userPermissions.setId( UserInfo.getUserId() );
+        this.userPermissions.setProject( this.projectId );
+        this.userPermissions.setObjectType( 'Project' );
+        this.userPermissions.setPermissions();
+        
+        this.isManager 	= this.userPermissions.getCanManage();
+        this.isMember 	= this.userPermissions.isUserMemberOfProject( UserInfo.getUserId() , this.projectId );
+    }
 	
 	/**
 	* 

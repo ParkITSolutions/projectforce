@@ -75,7 +75,7 @@ public class NewMemberController {
 				if ( userList.size() == newMembers.size() ){
 					//Ok
 					this.postAction = 'NewMemberSuccess';
-					if(System.currentPageReference().getUrl().contains('ProjectDetail'))
+					if(System.currentPageReference().getUrl().contains('ProjectDetail') || System.currentPageReference().getUrl().contains('ProjectTaskDetail'))
 					{
 						this.postAction = 'ProjectDetail-'+this.postAction;
 					}

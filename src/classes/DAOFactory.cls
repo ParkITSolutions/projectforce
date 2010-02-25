@@ -324,6 +324,10 @@ public class DAOFactory {
 	public void deleteProject( String projectId ){
 		DAOProject.deleteProject( projectId );
 	}
+	
+	public String getProjectAvatarId( String pId ){
+		return DAOProject.projectAvatarId( pId );
+	}
     /*-----------------------------------------------------------------------------------------------------------------------------*/
     
     /*--------------------------------------------------- Activity Log operations ------------------------------------------------------*/

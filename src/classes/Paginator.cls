@@ -32,7 +32,7 @@ public class Paginator {
     public Paginator(){
         this.project            = new project();
         this.project.id			='';
-        this.recordsPerPage     = 2;
+        this.recordsPerPage     = 10;
         this.resultSize         = 0;
         this.lettersList        = new List<String>{'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
         this.letterChoosen      = 'All'; //value by default
@@ -207,8 +207,6 @@ public class Paginator {
     public List<SelectOption> getPageSizeItems() {
         
         List<SelectOption> pageSizeItems = new List<SelectOption>();
-        
-        pageSizeItems.add( new SelectOption( '2','2' ) );
         pageSizeItems.add( new SelectOption( '10','10' ) );
         pageSizeItems.add( new SelectOption( '25','25' ) );
         pageSizeItems.add( new SelectOption( '50','50' ) );

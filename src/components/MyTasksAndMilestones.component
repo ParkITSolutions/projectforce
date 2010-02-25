@@ -19,55 +19,55 @@
         <!-- dynamic content goes here -->
         <apex:outputPanel id="widgetContent" layout="block" styleClass="widgetContent">
         
-        	<apex:outputPanel styleClass="tabsContainer" layout="block">
-	        	<apex:outputPanel onclick="MyTaskAndMiletones.showTask( this );" styleClass="tabTasks tabSelected" id="tasksLink">Tasks</apex:outputPanel>
-	        	<apex:outputPanel onclick="MyTaskAndMiletones.showMilestones( this );" styleClass="tabMilestones" id="milestonesLink">Milestones</apex:outputPanel>
-	        	<apex:outputLink value="/apex/userTasks" id="seeMoreLink" > <apex:outputText value="See More >>>" /></apex:outputLink>
-        	</apex:outputPanel>
-        	
-			<apex:datalist value="{!tasks}" var="t" styleClass="tasksList" id="tasksList" rendered="{!showTasks}">
-				<apex:outputPanel layout="block" styleClass="container" id="nameTaskLink">
-					<apex:outputLink value="/apex/ProjectTaskDetail?id={!t.id}" >
-						<apex:outputText value="{!t.name}" styleClass="taskName" id="name" />
-					</apex:outputLink> 
-					<br />
-					<apex:outputText value="{!t.status} | " id="status" rendered="{!t.status!=''}" />
-					<apex:outputText value="{!t.PercentCompleted}% | " id="percentCompleted"  />
-					<apex:outputText value="{!t.priority} | " id="priority" rendered="{!t.priority!=''}" />
-					<apex:outputPanel rendered="{!t.overdue}" id="overdue">
-						<apex:outputText value="{!t.daysOverdue} | " id="dasysOverdue" rendered="{!t.daysOverdue!=''}" />
-					</apex:outputPanel>
-					<apex:outputPanel rendered="{!NOT(t.overdue)}" id="notOverdue"> 
-						<apex:outputText value="{!t.endDateDisplay}" id="endDate" rendered="{!t.endDateDisplay!=''}"/>
-					</apex:outputPanel>
-				</apex:outputPanel>
-			</apex:datalist>
-			
-			<apex:outputPanel styleClass="tasksList" id="noTasksMessage" layout="block" rendered="{!NOT(showTasks)}">
-				No tasks yet.
-			</apex:outputPanel>
+            <apex:outputPanel styleClass="tabsContainer" layout="block">
+                <apex:outputPanel onclick="MyTaskAndMiletones.showTask( this );" styleClass="tabTasks tabSelected" id="tasksLink">Tasks</apex:outputPanel>
+                <apex:outputPanel onclick="MyTaskAndMiletones.showMilestones( this );" styleClass="tabMilestones" id="milestonesLink">Milestones</apex:outputPanel>
+                <apex:outputLink value="/apex/userTasks" id="seeMoreLink" > <apex:outputText value="See More >>>" /></apex:outputLink>
+            </apex:outputPanel>
+            
+            <apex:datalist value="{!tasks}" var="t" styleClass="tasksList" id="tasksList" rendered="{!showTasks}">
+                <apex:outputPanel layout="block" styleClass="container" id="nameTaskLink">
+                    <apex:outputLink value="/apex/ProjectTaskDetail?id={!t.id}" >
+                        <apex:outputText value="{!t.name}" styleClass="taskName" id="name" />
+                    </apex:outputLink> 
+                    <br />
+                    <apex:outputText value="{!t.status} | " id="status" rendered="{!t.status!=''}" />
+                    <apex:outputText value="{!t.PercentCompleted}% | " id="percentCompleted"  />
+                    <apex:outputText value="{!t.priority} | " id="priority" rendered="{!t.priority!=''}" />
+                    <apex:outputPanel rendered="{!t.overdue}" id="overdue">
+                        <apex:outputText value="{!t.daysOverdue} | " id="dasysOverdue" rendered="{!t.daysOverdue!=''}" />
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!NOT(t.overdue)}" id="notOverdue"> 
+                        <apex:outputText value="{!t.endDateDisplay}" id="endDate" rendered="{!t.endDateDisplay!=''}"/>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </apex:datalist>
+            
+            <apex:outputPanel styleClass="tasksList" id="noTasksMessage" layout="block" rendered="{!NOT(showTasks)}">
+                No tasks yet.
+            </apex:outputPanel>
  
-			<apex:datalist value="{!milestones}" var="t" styleClass="milestonesList" style="display: none;" rendered="{!showMilestones}">
-				<apex:outputPanel layout="block" styleClass="container" >
-					<apex:outputLink value="/apex/ProjectTaskDetail?id={!t.id}" id="nameMilestoneLink">
-						<apex:outputText value="{!t.name}" styleClass="taskName" id="mileName" />
-					</apex:outputLink>
-					<br />
-					<apex:outputText value="{!t.status} | " id="mileStatus" rendered="{!t.status!=''}"/>
-					<apex:outputText value="{!t.PercentCompleted}% | " id="milePercentCompleted" />
-					<apex:outputText value="{!t.priority} | " id="milePrioriry" rendered="{!t.priority!=''}"/>
-					<apex:outputPanel rendered="{!t.overdue}" id="mileOverdue" >
-						<apex:outputText value="{!t.daysOverdue}" id="mileDasysOverdue" rendered="{!t.daysOverdue!=''}"/>
-					</apex:outputPanel>
-					<apex:outputPanel rendered="{!NOT(t.overdue)}" id="mileNotOverdue" >
-						<apex:outputText value="{!t.endDateDisplay}" id="mileEndDate" rendered="{!t.endDateDisplay!=''}"/>
-					</apex:outputPanel>
-				</apex:outputPanel>
-			</apex:datalist>
-			
-			<apex:outputPanel styleClass="milestonesList" id="noMilestonesMessage" layout="block"  rendered="{!NOT(showMilestones)}" >
-				No milestones yet.
-			</apex:outputPanel>
+            <apex:datalist value="{!milestones}" var="t" styleClass="milestonesList" style="display: none;" rendered="{!showMilestones}">
+                <apex:outputPanel layout="block" styleClass="container" >
+                    <apex:outputLink value="/apex/ProjectTaskDetail?id={!t.id}" id="nameMilestoneLink">
+                        <apex:outputText value="{!t.name}" styleClass="taskName" id="mileName" />
+                    </apex:outputLink>
+                    <br />
+                    <apex:outputText value="{!t.status} | " id="mileStatus" rendered="{!t.status!=''}"/>
+                    <apex:outputText value="{!t.PercentCompleted}% | " id="milePercentCompleted" />
+                    <apex:outputText value="{!t.priority} | " id="milePrioriry" rendered="{!t.priority!=''}"/>
+                    <apex:outputPanel rendered="{!t.overdue}" id="mileOverdue" >
+                        <apex:outputText value="{!t.daysOverdue}" id="mileDasysOverdue" rendered="{!t.daysOverdue!=''}"/>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!NOT(t.overdue)}" id="mileNotOverdue" >
+                        <apex:outputText value="{!t.endDateDisplay}" id="mileEndDate" rendered="{!t.endDateDisplay!=''}"/>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </apex:datalist>
+            
+            <apex:outputPanel styleClass="milestonesList" id="noMilestonesMessage" layout="block"  rendered="{!NOT(showMilestones)}" >
+                No milestones yet.
+            </apex:outputPanel>
 
         </apex:outputPanel>
         

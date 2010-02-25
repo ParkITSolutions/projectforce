@@ -2,11 +2,11 @@
     
     <apex:styleSheet value="{!URLFOR($Resource.Breadcrum, 'inc/css/breadcrum.css')}" />
 
-	<apex:outputPanel styleClass="BreadsrumContainer" id="breadsrumContainer">
-		<apex:repeat value="{!breadcrum}" var="b">
-			<apex:outputLink value="{!b.url}" styleClass="BredcrumLink">{!b.urlDisplay}</apex:outputLink> &nbsp; &gt; &nbsp; 
-		</apex:repeat>
-		<apex:outputText styleClass="BreadcrumActualPage" id="breadcrumActualPage"	Value="{!lastLinkPage}" />
-	</apex:outputPanel>
+    <apex:outputPanel styleClass="BreadsrumContainer" id="breadsrumContainer">
+        <apex:repeat value="{!breadcrum}" var="b">
+            <apex:outputLink value="{!b.url}" styleClass="BredcrumLink">{!b.urlDisplay}</apex:outputLink> &nbsp; &gt; &nbsp; 
+        </apex:repeat>
+        <apex:outputText styleClass="BreadcrumActualPage" id="breadcrumActualPage"  Value="{!lastLinkPage}" />
+    </apex:outputPanel>
 
 </apex:component>

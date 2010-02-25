@@ -67,12 +67,16 @@ public class ConfirmOverlayController {
 			}
 			
 			if( this.actionName == 'DeleteProject' ){
+				//From ProjectDetail.page
 				DAOFactory.getInstance().deleteProject( this.actionIds );
 				this.postAction = 'DeleteProjectsSuccess';
 				
 				pageRef = new PageReference( '/apex/projectOverview' );
 			}
-			
+			if ( this.actionName == 'DeleteProjectAttachment'){
+				DAOFactory.getInstance().deleteAttachments(this.actionIds);
+				this.postAction = 'DeleteAttachmentSuccess';
+			}
 		}catch( CustomException e ){
 			Apexpages.addMessages( e );
 			this.exceptionMessage = e.getMessage();

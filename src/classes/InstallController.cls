@@ -3,15 +3,14 @@ public class InstallController {
 	public List<String> profilesNames = new List<String> {'Member Profile' , 'Public Profile' , 'Project Administrator'};
     public List<ProjectProfile__c> profiles = new List<ProjectProfile__c>();
     public ProjectProfile__c projectProfile =  new ProjectProfile__c(); 
-    public List<ProjectProfile__c> profilesToInsert = new List<ProjectProfile__c>();
-
-    
+    public List<ProjectProfile__c> profilesToInsert = new List<ProjectProfile__c>();    
 	
 	/**
 	*Constructor
 	*/
 	public InstallController(){
 		InitializeProfiles();
+		
 	}
 	
 	/**
@@ -19,18 +18,20 @@ public class InstallController {
 	*/
 	//TODO Javadoc
 	public void projectSetupActualization(){
-		List<ProjectSetup__c> setups = new List<ProjectSetup__c>();
-		List<ProjectSetup__c> setupsMod = new List<ProjectSetup__c>();
-		setups = [ SELECT id, CanViewButtonNew__c, ListSavedProfiles__c FROM ProjectSetup__c ];
+		ProjectSetup__c setup = new ProjectSetup__c();
+		List<String> setupNames = new List<String>();
 		
-		for( ProjectSetup__c sObj : setups )
-			if (sObj.ListSavedProfiles__c != '' ){
-				sObj.ListSavedProfiles__c = sObj.CanViewButtonNew__c;
-				setupsMod.add( sObj );
-			}
+		setup = DAOFactory.getInstance().getListSavedProfilesProjectSetup()[0];
 		
-		if( setupsMod.size() > 0 )
-			update setupsMod;
+		if( setup.CanViewButtonNew__c != null ){
+			 			
+			for( Profile s : [ SELECT id, Name FROM Profile WHERE id IN: setup.CanViewButtonNew__c.split( '#' ) ])
+				setupNames.add( s.name );
+				
+			setup.ListSavedProfiles__c = ProjectUtil.joinStrListByToken( setupNames , ';' );
+			
+			DAOFactory.getInstance().updateProjectSetup( setup );
+		}
 	}
 	
 	/**

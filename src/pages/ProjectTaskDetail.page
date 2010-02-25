@@ -1,28 +1,23 @@
 <apex:page id="ProjectTaskDetail" standardController="ProjectTask__c" extensions="ProjectTaskDetailController"  sidebar="false" tabStyle="Project2__c">
-    <!-- Ajax Toolkit SDFC -->
-    <apex:includeScript value="/soap/ajax/11.1/connection.js"/>
     
+    <c:ApplicationTop id="ApplicationTop" />
+    
+	<!-- Ajax Toolkit SDFC -->
+    <apex:includeScript value="/soap/ajax/11.1/connection.js"/>
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}"/>
     
-    <!-- Script.aculo.us / Prototype -->
-    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'prototype.js')}"/>
-    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'scriptaculous.js')}"/>
-    <apex:includeScript value="{!URLFOR($Resource.Script_aculo_us, 'effects.js')}"/>
+    
     
      <!-- overlays resources -->
     <apex:includeScript value="{!URLFOR($Resource.overlaysResources, 'inc/js/js.js')}"/>
     <apex:stylesheet value="{!URLFOR($Resource.overlaysResources, 'inc/css/css.css')}"/>
-    
+
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectLayout.css')}" />   
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskDetail.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />
     
     <!-- Portal Support -->
     <apex:includeScript value="{!$Resource.portalSupport}"/>
-    
-    <!-- CSS styles for Portal Integration -->
-    <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
+
     
     <!-- Common JS for All Sections -->
 
@@ -32,8 +27,8 @@
     
     <!-- ProjectTaskDetail CSS -->
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskDetails.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgets/TeamMemberWidget.css')}" />   
+<!--    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />-->
+<!--    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgets/TeamMemberWidget.css')}" />   -->
 
     <!-- ProjectTaskList CSS -->
        <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskList.css')}" />
@@ -41,60 +36,11 @@
     <!-- ProjectTaskDetail JS -->
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskDetail.js')}" />
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskList.js')}" />
-    
-    <apex:form >
-        <apex:actionFunction name="reloadIframe" action="{!dummyRefresh}" rerender="iframeWrapperPanel" />
-    </apex:form>
-    
-    <script>
-       document.observe("dom:loaded", function(){
-               trunkAllTitles();
-               //$$('.sidebar')[0].style.height =$$('.holder')[0].getDimensions().height + 15 + 'px';
-               setTimeout( "readPortalCSSRules()", 300 );
-               setTimeout( "$$('.pbBottomButtons')[0].remove()", 150);
-                                                       
-           }
-       );
-       
-       var currentTeam = '{!Task.ProjectId}';
-       
-       
-       var deleteTaskOverlay          = new ConfirmOverlay( '{!$Component.DeleteTaskOverlay}' );
-       
-       function DeleteDetailTask(){
-    	    deleteTaskOverlay.open();
-    	    deleteTaskOverlay.setActionIds('{!param}');	
-		}
-    </script>
-    <script>
-                function openAttachmentOverlay(){
-
-                    newAttachmentFileOverlay.open(); 
-                    newAttachmentToProject();
-                    observeIframeUpload();
-                    loadAttOverlay = true;
-                    $('uploadIframe').src = $('uploadIframe').src;
-                    addOverlayNewAttachmentEvents(function(){newAttachmentOverlay.close();},'UploadAttachment:Form:SaveButton');
-                }
-            </script>
-    <style type = "text/css">
-         div.swirly_overlay{
-            height : 100%!important;
-         }
-        
-    </style>
-    
-
-    <div class="confirmation" id="confirmation" style="display:none;">
-           This task has been marked complete
-    </div>
-   
-    <c:ProjectOverlayDeleteAssignee id="projectDeleteAssigneeComponent"/>
+     <div class="confirmation" id="confirmation" style="display:none;">This task has been marked complete</div>
+	
     <c:ProjectOverlayDeleteAttachment id="ProjectOverlayDeleteAttachmentInclude" />
     
-     <!-- Upload Attachment -->
-    <c:ProjectOverlayNewAttachment parentId="{!Task.Id}" />
-    <c:ApplicationTop id="ApplicationTop" />
+    
    <c:PromptOverlay id="PromptOverlay"
         includeAttachment="true" 
         includeNewAssignee="true"
@@ -105,12 +51,63 @@
    <!-- Delete Task Overlay -->
 	<c:ConfirmOverlay id="DeleteTaskOverlay" 
 		title="Delete Task"
-		messageToUser=" Are you sure you want to delete this project? 
-		Once a project is deleted, tasks and milestones are not recoverable"
+		messageToUser=" Are you sure you want to delete assignee? "
 		actionName="DeleteDetailTask" 
 	/>               
-         
-         
+        
+   <!-- Delete Task Assignee -->
+	<c:ConfirmOverlay id="DeleteTaskAssignee" 
+		title="Delete Task Assignee"
+		messageToUser=" Are you sure you want to delete this project? 
+		Once a project is deleted, tasks and milestones are not recoverable"
+		actionName="TaskDetialDeleteAseegnee" 
+	/>    
+	
+    <apex:form >
+        <apex:actionFunction name="reloadIframe" action="{!dummyRefresh}" rerender="iframeWrapperPanel" />
+    </apex:form>
+    
+    <script>
+       document.observe("dom:loaded", function(){
+               setTimeout( "readPortalCSSRules()", 300 );
+               setTimeout( "$$('.pbBottomButtons')[0].remove()", 150);
+                                                       
+           }
+       );
+       
+       var currentTeam = '{!Task.ProjectId}';
+       
+       
+       var deleteTaskOverlay          = new ConfirmOverlay( '{!$Component.DeleteTaskOverlay}' );
+       var deleteTaskAssignee         = new ConfirmOverlay( '{!$Component.DeleteTaskAssignee}' );
+       
+       function DeleteDetailTask(){
+    	    deleteTaskOverlay.open();
+    	    deleteTaskOverlay.setActionIds('{!param}');	
+		}
+		
+		function TaskDetialDeleteAseegnee(paramAssignee){
+    	    deleteTaskAssignee.open();
+    	    deleteTaskAssignee.setActionIds(paramAssignee);	
+		}
+    </script>
+    <script>
+        function openAttachmentOverlay(){
+
+            newAttachmentFileOverlay.open(); 
+            newAttachmentToProject();
+            observeIframeUpload();
+            loadAttOverlay = true;
+            $('uploadIframe').src = $('uploadIframe').src;
+            addOverlayNewAttachmentEvents(function(){newAttachmentOverlay.close();},'UploadAttachment:Form:SaveButton');
+        }
+    </script>
+    <style type = "text/css">
+         div.swirly_overlay{
+            height : 100%!important;
+         }
+        
+    </style>  
     <!-- includeNewMember="true" -->
     <!-- Header -->
     <apex:composition template="HeaderTemplate">
@@ -143,7 +140,6 @@
             <div class="clear"></div>
         </div>
         
-        <c:ProjectOverlayNewAssignee id="ProjectOverlayNewAssignee"/>
         <!-- Holder -->     
         <div class="holder" style="overflow:hidden;clear:both;margin:0px;margin-left:200px;margin-bottom:0px;" id="holder">
              <div align="center" class="breadCrumbAndButtons">
@@ -200,7 +196,12 @@
                 <p>No Id given , no id to look for</p>
             </apex:outputpanel>
             <apex:outputpanel id="detailContainer" styleClass="projectTaskDetail" rendered="{!detailsOk}" layout="block" style="overflow:hidden; position:relative; clear:both;" >
-            
+            	<script type="text/javascript">
+            		if($$('.pbBottomButtons').length > 0){
+            			$$('.pbBottomButtons')[0].remove();
+            		} 
+            	</script>
+            	
                 <div style="display: none;" id="sw_all" class="swirly_members"></div>
                 <div style="display: none;" id="swirlyAttachment" class="swirly_members"></div>
                 <div style="display: none;" id="sw_all2" class="swirly_members"></div>     
@@ -211,7 +212,7 @@
                     <apex:actionFunction name="apexAFRefreshDetail" 
                         action="{!doRefresh}" 
                         rerender="detailContainer, taskDetail" 
-                        oncomplete="clearTableDetail();$( 'sw_all' ).hide(); $( 'sw_all2' ).hide()"/>
+                        oncomplete="$( 'sw_all' ).hide(); $( 'sw_all2' ).hide()"/>
                         
                      <apex:actionFunction name="detailListPanel" 
                         action="{!doRefresh}" 
@@ -270,14 +271,22 @@
                                                 
                                                 <apex:outputPanel styleClass="height20px" rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}"> 
                                     
-                                                    <apex:outputLink styleclass="notassigned"
+                                                    <!-- <apex:outputLink styleclass="notassigned"
                                                         onClick="deleteAttachmentOverlay.open(); 
                                                                  $('ProjectTaskDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!item.Id}';
                                                                  addOverlayEvents(function(){deleteAttachmentOverlay.close();},'ProjectTaskDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn');"
                                                         value="javascript:;">
                                                         
                                                         Delete
-                                                    </apex:outputLink>  
+                                                    </apex:outputLink>  --> 
+                                                    <apex:outputLink value="javascript:;"
+										                id="Delete"
+										                onClick="TaskDetialDeleteAseegnee({!item.Id});"
+										                styleClass="blackbutton">
+										                <apex:outputPanel >
+										                    Delete New
+										                </apex:outputPanel>
+										            </apex:outputLink>
                                                                                             
                                                 </apex:outputPanel>
                                                 </div>
@@ -417,17 +426,4 @@
         
         </div>
         </div>
-        
-        
-        
- <div id="modal_overlay5" style="position: fixed; top: 0pt; left: 0pt; width: 100%; height: 100%; z-index: 9998; display: none; background-color:black; opacity:0.6;"/>
-    <script type="text/javascript">        
-         clearTableDetail();         
-     
-	     function refreshAttachmentList(){
-	        refreshDetail();
-	     }
-	  
-	</script>
-
 </apex:page>

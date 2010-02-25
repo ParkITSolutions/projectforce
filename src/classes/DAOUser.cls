@@ -48,7 +48,6 @@ public class DAOUser {
 	*/
 	public Boolean isMemberOfProject( String usriId, String projectId ){
 		try{
-			System.debug('XXX proj ='+projectId+', usr = '+usriId);
 			ProjectMember__c prjMember = [ 	Select Project__c, Id 
 											From ProjectMember__c  
 											Where Project__c =:projectId AND User__c =: usriId 

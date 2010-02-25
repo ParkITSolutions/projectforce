@@ -14,7 +14,7 @@ public class DAOSetup {
 	* @return List<ProjectSetup__c>
 	*/
 	public List<ProjectSetup__c> getListSavedProfiles(){ 
-		return [ select Id, ListSavedProfiles__c from ProjectSetup__c limit 1 ];
+		return [ select Id, ListSavedProfiles__c, CanViewButtonNew__c from ProjectSetup__c limit 1 ];
 	}
 	
 	/** 

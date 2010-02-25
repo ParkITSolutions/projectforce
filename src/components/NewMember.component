@@ -1,14 +1,14 @@
 <apex:component id="NewMember" allowDML="true" controller="NewMemberController" >
 
-	<apex:stylesheet value="{!URLFOR($Resource.NewMember, 'inc/css/newMember.css')}" />
-	<script src="{!URLFOR($Resource.NewMember, 'inc/js/newMember.js')}" type="text/javascript" />
+    <apex:stylesheet value="{!URLFOR($Resource.NewMember, 'inc/css/newMember.css')}" />
+    <script src="{!URLFOR($Resource.NewMember, 'inc/js/newMember.js')}" type="text/javascript" />
 
-	<script type="text/javascript">
-		var newMember 			= '{!$Component.Content}'; 
-		infoToUser.listErrors 	= '{!$Component.Form.listErrors}';	
-	</script>
+    <script type="text/javascript">
+        var newMember           = '{!$Component.Content}'; 
+        infoToUser.listErrors   = '{!$Component.Form.listErrors}';  
+    </script>
 
-	<!-- Attribute Definitions -->
+    <!-- Attribute Definitions -->
     <apex:attribute name="projectId" description="The project ID" type="String" required="true" assignTo="{!projectId}" /> 
     
     <apex:outputPanel id="Content" styleClass="contentNewMember overlay" style="display:none;" layout="block">
@@ -29,8 +29,8 @@
             <apex:form id="Form">
             
                 <apex:outputPanel id="HiddenPanel" style="display: none">
-                	<apex:inputHidden value="{!postAction}" id="PostAction" />
-                	<apex:inputHidden value="{!listErrors}" id="listErrors"/>
+                    <apex:inputHidden value="{!postAction}" id="PostAction" />
+                    <apex:inputHidden value="{!listErrors}" id="listErrors"/>
                 </apex:outputPanel>
             
                 <apex:outputPanel styleclass="required"></apex:outputPanel>
@@ -40,56 +40,56 @@
                 <!-- ComponentBody -->
                 <apex:outputPanel id="ComponentBody" styleClass="componentBody" layout="block">
                     <script type="text/javascript">
-	                    function setFocusAreaState()
-	                    {
-	                    	var options = { script: function (input) {	return ('SuggestDispatcher?input='+input+'&class=colleagueNames&teamId={!projectId}&selectedMembers='+$$('.colleaguesNames')[0].value);}};
-	                    	var xml = new AutoComplete('{!$Component.colleaguesNames}',options);
-	                    	return true;
-	                    }
+                        function setFocusAreaState()
+                        {
+                            var options = { script: function (input) {  return ('SuggestDispatcher?input='+input+'&class=colleagueNames&teamId={!projectId}&selectedMembers='+$$('.colleaguesNames')[0].value);}};
+                            var xml = new AutoComplete('{!$Component.colleaguesNames}',options);
+                            return true;
+                        }
                     </script>                
-					<apex:outputPanel id="panelBody" layout="block" styleclass="panelBody">
-						<apex:outputPanel id="columnfirst" layout="block" styleclass="columnLeft">
-							<apex:outputPanel layout="block" styleclass="inputInfoTitle">Add Colleagues</apex:outputPanel>
-							<apex:outputPanel layout="block" styleclass="explain">(enter name or email)</apex:outputPanel>
-						</apex:outputPanel>
-						
-						<apex:outputPanel styleclass="redline" />
-						
-						<apex:outputPanel id="columnRight" layout="block" styleclass="columnRight">							
-							<apex:inputTextArea id="colleaguesNames" styleClass="colleaguesNames" value="{!colleagueNames}" onFocus="setFocusAreaState();"/>
-								
-							<apex:outputPanel layout="block" styleclass="explain">(comma separated)</apex:outputPanel>
-							
-							<apex:outputPanel id="emailNotificationsPanel" layout="block">
-								<apex:inputCheckBox value="{!emailNotifications}" id="emailNotifications" />
-								<apex:outputPanel styleclass="inputInfoTitle">Email notifications </apex:outputPanel>
-							</apex:outputPanel>
-							
-							<apex:outputPanel id="makeAdministrator" layout="block">
-								<apex:inputCheckBox value="{!isAdministrator}" id="makeAdministrators"/>
-								<apex:outputPanel styleclass="inputInfoTitle">Make Members Administrators</apex:outputPanel>
-							</apex:outputPanel>
-							
-	                   </apex:outputPanel>
-					</apex:outputPanel>
-					
-                   	<apex:outputPanel styleclass="overlaySeparateLine" layout="block"></apex:outputPanel> 
-                   	
+                    <apex:outputPanel id="panelBody" layout="block" styleclass="panelBody">
+                        <apex:outputPanel id="columnfirst" layout="block" styleclass="columnLeft">
+                            <apex:outputPanel layout="block" styleclass="inputInfoTitle">Add Colleagues</apex:outputPanel>
+                            <apex:outputPanel layout="block" styleclass="explain">(enter name or email)</apex:outputPanel>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel styleclass="redline" />
+                        
+                        <apex:outputPanel id="columnRight" layout="block" styleclass="columnRight">                         
+                            <apex:inputTextArea id="colleaguesNames" styleClass="colleaguesNames" value="{!colleagueNames}" onFocus="setFocusAreaState();"/>
+                                
+                            <apex:outputPanel layout="block" styleclass="explain">(comma separated)</apex:outputPanel>
+                            
+                            <apex:outputPanel id="emailNotificationsPanel" layout="block">
+                                <apex:inputCheckBox value="{!emailNotifications}" id="emailNotifications" />
+                                <apex:outputPanel styleclass="inputInfoTitle">Email notifications </apex:outputPanel>
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel id="makeAdministrator" layout="block">
+                                <apex:inputCheckBox value="{!isAdministrator}" id="makeAdministrators"/>
+                                <apex:outputPanel styleclass="inputInfoTitle">Make Members Administrators</apex:outputPanel>
+                            </apex:outputPanel>
+                            
+                       </apex:outputPanel>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel styleclass="overlaySeparateLine" layout="block"></apex:outputPanel> 
+                    
                     <!-- SubmitButtons -->
                     <apex:outputPanel id="SubmitButtons" styleClass="submitButtons" layout="block">
                     
                         <apex:commandLink id="AcceptButton" value="Accept" 
-                        	action="{!action}" 
-                        	onClick="swirly.show(); promptOverlay.close();"
-							onComplete="promptOverlay.postAction();" 
-							reRender="HiddenPanel, ComponentBody"
-                        	styleClass="Accept submitButton"
+                            action="{!action}" 
+                            onClick="swirly.show(); promptOverlay.close();"
+                            onComplete="promptOverlay.postAction();" 
+                            reRender="HiddenPanel, ComponentBody"
+                            styleClass="Accept submitButton"
                         />
-                        	
+                            
                         <apex:outputLink id="CancelButton" 
-                        	value="javascript:;"
-                        	onClick="newMemberFunction.clear('{!$Component.colleaguesNames}'); promptOverlay.close(); "
-                        	styleClass="Cancel submitButton" > Cancel
+                            value="javascript:;"
+                            onClick="newMemberFunction.clear('{!$Component.colleaguesNames}'); promptOverlay.close(); "
+                            styleClass="Cancel submitButton" > Cancel
                         </apex:outputLink> 
                     
                     </apex:outputPanel>
