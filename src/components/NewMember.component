@@ -81,7 +81,7 @@
                         <apex:commandLink id="AcceptButton" value="Accept" 
                         	action="{!action}" 
                         	onClick="swirly.show(); promptOverlay.close();"
-							onComplete="promptOverlay.postAction(); RefreshRecordsList();" 
+							onComplete="promptOverlay.postAction();" 
 							reRender="HiddenPanel, ComponentBody"
                         	styleClass="Accept submitButton"
                         />

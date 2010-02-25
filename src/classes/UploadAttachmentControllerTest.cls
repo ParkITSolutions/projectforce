@@ -12,7 +12,7 @@
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
-    	
+    	/*
 		System.currentPageReference().getParameters().put( 'pId', GenerateEnvironmentTest.project.id );
 		UploadAttachmentController upc = new UploadAttachmentController();
 		
@@ -26,7 +26,7 @@
 		upc.saveNewAttach();    	
 		upc.cancelAttach();    
 		upc.getErrorMsg();
-			
+		*/	
     	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );

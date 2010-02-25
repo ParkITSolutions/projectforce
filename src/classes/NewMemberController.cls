@@ -75,6 +75,10 @@ public class NewMemberController {
 				if ( userList.size() == newMembers.size() ){
 					//Ok
 					this.postAction = 'NewMemberSuccess';
+					if(System.currentPageReference().getUrl().contains('ProjectDetail'))
+					{
+						this.postAction = 'ProjectDetail-'+this.postAction;
+					}
 				}
 				else{
 					//Some users were not admitted
@@ -86,6 +90,7 @@ public class NewMemberController {
 					
 					this.listErrors = stringAux;
 					this.postAction = 'NewMemberPartialSuccess';
+					
 				}
 			}
 			else{
@@ -98,6 +103,9 @@ public class NewMemberController {
 			//must enter at least one user
 			this.postAction = 'NewMemberEmpty';
 		}
+		
+		
+		
 		this.colleagueNames='';
 	}
 

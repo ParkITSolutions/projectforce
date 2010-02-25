@@ -1,23 +1,43 @@
-public class ProjectInitProfiles {
+public class InstallController {
 
 	public List<String> profilesNames = new List<String> {'Member Profile' , 'Public Profile' , 'Project Administrator'};
-    public List<ProjectProfile__c> profilesToInsert = new List<ProjectProfile__c>();
     public List<ProjectProfile__c> profiles = new List<ProjectProfile__c>();
     public ProjectProfile__c projectProfile =  new ProjectProfile__c(); 
-    public Boolean showOverlay = false;
+    public List<ProjectProfile__c> profilesToInsert = new List<ProjectProfile__c>();
 
+    
+	
 	/**
-	* Constructor
+	*Constructor
 	*/
-	public ProjectInitProfiles (){
+	public InstallController(){
 		InitializeProfiles();
+	}
+	
+	/**
+	*
+	*/
+	//TODO Javadoc
+	public void projectSetupActualization(){
+		List<ProjectSetup__c> setups = new List<ProjectSetup__c>();
+		List<ProjectSetup__c> setupsMod = new List<ProjectSetup__c>();
+		setups = [ SELECT id, CanViewButtonNew__c, ListSavedProfiles__c FROM ProjectSetup__c ];
+		
+		for( ProjectSetup__c sObj : setups )
+			if (sObj.ListSavedProfiles__c != '' ){
+				sObj.ListSavedProfiles__c = sObj.CanViewButtonNew__c;
+				setupsMod.add( sObj );
+			}
+		
+		if( setupsMod.size() > 0 )
+			update setupsMod;
 	}
 	
 	/**
 	* Initializes Profiles
 	*@return void
 	*/
-	public void InitializeProfiles(){
+	private void InitializeProfiles(){
 	
         profiles = [select Id, Name from ProjectProfile__c where Name in : profilesNames];
         
@@ -46,17 +66,9 @@ public class ProjectInitProfiles {
         }
         
         if(profilesToInsert.size() > 0)
-        	showOverlay = true;
+        	insert profilesToInsert;
 	}
-	
-	/**
-	* Save Profiles
-	*@return void
-	*/
-	public void saveProfiles(){
-		//insert profilesToInsert;
-	}
-	
+
 	/**
 	*Check from list if Name Profile exist an set boolean
 	*@param String name
@@ -69,22 +81,5 @@ public class ProjectInitProfiles {
         	}
         }
         return false;	
-	}
-	
-	/**
-	*
-	*@return Boolean 
-	*/
-	public Boolean getShowOverlay(){
-		return showOverlay;
-	}
-	
-	/**
-	* Set profilesNames for Code Coverage Enviroment
-	*@param List<String> testProfilesNames
-	*@return void
-	**/
-	public void setProfilesNames(List<String> testProfilesNames){
-		profilesNames = testProfilesNames;
 	}
 }

@@ -39,10 +39,7 @@
 		
 		<!-- Simple gray Line below Header -->
 		<apex:outputpanel id="backgroundGray" styleClass="bottomBorder" layout="block" ></apex:outputpanel>
-		
-		<!-- Component for initializing Profile on a new install -->
-		<c:ProjectInitProfiles />
-		
+				
 	</apex:outputpanel>
 	
 </apex:page>

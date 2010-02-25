@@ -18,12 +18,11 @@
                 <apex:outputPanel styleclass="overlaySeparateLine" layout="block"></apex:outputPanel>
     
                 <apex:outputPanel styleClass="submitButtons" layout="block">
-                    <apex:commandLink id="Accept" styleClass="submitButton Accept" action="{!action}"
-                    >
+                    <apex:commandLink id="Accept" styleClass="submitButton Accept" action="{!action}" onclick="parent.promptOverlay.close();parent.swirly.show();">
                         Accept
                     </apex:commandLink>
                     <apex:outputLink id="Cancel" value="javascript:;" onClick="parent.promptOverlay.close(); Attachment.clearForm();" styleClass="submitButton Cancel" >
-                        Cancel-{!endAction }-{! error == '' }-{!postAction}-{!currentPage}                  
+                        Cancel          
                     </apex:outputLink>
                 </apex:outputPanel>
                 
@@ -34,7 +33,7 @@
 
     <apex:outputPanel id="errors">  
         <apex:outputPanel rendered="{!endAction && error == '' }">
-	        <apex:outputPanel rendered="{!postAction == 'taskdetail'}">
+	        <apex:outputPanel rendered="{!postAction == 'detailListPanel'}">
 	            <script type="text/javascript">
 	                parent.infoToUser.open('success', 'File uploaded.');
 	                parent.reloadPanelAction();

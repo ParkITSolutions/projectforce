@@ -105,6 +105,10 @@ public class DAOMember {
 		return memList;
 	}
 	
+	/**
+	* Insert a list of new members in a project
+	*@param List<ProjectMember__c> newMemberList
+	*/
 	public void newMemberList(List<ProjectMember__c> newMemberList){
 		insert newMemberList;
 	}

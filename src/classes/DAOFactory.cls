@@ -463,6 +463,15 @@ public class DAOFactory {
     	return DAOUser.isProjectMember( projectId );
     }
 	
+	/**
+	* Return true if the usr usrid is a member of project (projectid)
+	* @param String usrId
+	* @param String projectId
+	* @return Boolean
+	*/
+	public Boolean isMemberOfProject( String usriId, String projectId ){
+		return DAOUser.isMemberOfProject( usriId, projectId );
+	}
     /*-----------------------------------------------------------------------------------------------------------------------------*/
     
     /*--------------------------------------------------- Project Subscription operations ------------------------------------------------------*/

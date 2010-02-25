@@ -203,8 +203,9 @@ public class UserPermissions {
 		return null;
 	}
 	
-	public boolean isUserMemberOfProject( String userId ){
-		return null;
+	public boolean isUserMemberOfProject( String usriId, String projectId ){
+		//return null;
+		return DAOFactory.getInstance().isMemberOfProject( usriId, projectId );
 	}	
 	/*
 	*

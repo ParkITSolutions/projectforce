@@ -1,8 +1,8 @@
 /**
 * Author Miguel Soares
 */
-public class AttachmentController { 
-	  
+public class AttachmentController {  
+	 
 	private final Integer MAX_SIZE = 131072; // 128Kb
 	private final Integer MAX_LENGTH_NAME = 71;
 	private final String  ERROR_NO_FILE   = 'Please select a file to upload.';
@@ -38,24 +38,19 @@ public class AttachmentController {
 	public PageReference action(){
 		
 		this.parentId = System.currentPageReference().getParameters().get( 'pid' );
-		this.typeOfAttachment = this.avatarTypeFlag;//System.currentPageReference().getParameters().get( 'avatar' );
+		this.typeOfAttachment = this.avatarTypeFlag;
 		this.cleanErrors();
 		if( this.allValidations() ){ 
 			if( this.currentPage == 'taskdetail' ){
 				Task t = new Task();
 				t.id = this.parentId;
 				t.addAttachment( newAttach ); 
-				
 			}else if( this.currentPage == 'projectdetail' ){
-				
 				Project p = new Project( this.parentId );
-				
 				if( this.typeOfAttachment == 'avatar')
 					p.setAvatar( newAttach );
-				else{
+				else
 					p.addAttachment( newAttach );
-				}
-					
 			}else if( this.currentPage == 'attachmentlist' ){
 				newAttach.parentId = this.parentId;
 				insert newAttach;
@@ -65,7 +60,6 @@ public class AttachmentController {
 			this.parentId = null;
 		}
 		
-	System.debug('2[[[>>>>]]] ' + this.currentPage);
 		this.newAttach = new Attachment();
 		this.endAction = true;
 		
@@ -104,16 +98,12 @@ public class AttachmentController {
 	* @return Boolean
 	*/
 	private Boolean allValidations(){
-		
 		if( this.checkEmptyValue() == '' && this.checkSize() == '' ){
 			// As avatar
 			if( this.typeOfAttachment == 'avatar' )
 				this.checkOnlyImgExtensions();
-			
 		}
-		
 		return this.error == ''; 
-		
 	}
 	
 	/**
@@ -129,14 +119,13 @@ public class AttachmentController {
 	private void location(){
 		
 		String url = ApexPages.currentPage().getUrl().toLowerCase();
-		
 		if( url.contains( 'taskdetail' )){
 			this.postAction = 'detailListPanel';
 			this.currentPage = 'taskdetail';
 		}else if( url.contains( 'projectdetail' )){
 			this.currentPage = 'projectdetail';
 			this.postAction = 'reloadMainContent';
-		}else if( url.contains( 'projectattachmentlist' )){
+		}else if( url.contains( 'attachmentlist' )){
 			this.currentPage = 'attachmentlist';
 			this.postAction = 'ReloadAttachmentList';
 		}

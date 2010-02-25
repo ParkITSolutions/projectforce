@@ -41,6 +41,31 @@ public class DAOUser {
 	}
 	
 	/**
+	* Return true if the usr usrid is a member of project (projectid)
+	* @param String usrId
+	* @param String projectId
+	* @return Boolean
+	*/
+	public Boolean isMemberOfProject( String usriId, String projectId ){
+		try{
+			System.debug('XXX proj ='+projectId+', usr = '+usriId);
+			ProjectMember__c prjMember = [ 	Select Project__c, Id 
+											From ProjectMember__c  
+											Where Project__c =:projectId AND User__c =: usriId 
+											limit 1];
+			
+			if( prjMember == null ){
+				return false;
+			}
+			else{
+				return true;
+			}
+		}
+		catch(Exception e){
+			return false;
+		}
+	}
+	/**
 	* Find users from a list(where the user is not a member)
 	* @param List<String> newMembers
 	* @param String idProject

@@ -31,8 +31,7 @@ public with sharing class ProjectDetailController
        	this.isManager = userPermission.getCanManage();
        	this.projectType = getTeamspace().Type__c;
      }   
-    public void prueba(){//dfdfd
-    }
+
     /**
     * Empty Constructor
     */

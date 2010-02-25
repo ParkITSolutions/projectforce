@@ -66,7 +66,7 @@
                 <apex:outputPanel styleClass="submitButtons" layout="block">
             
                     <apex:commandLink id="Accept" value="Accept" action="{!action}" onClick="confirmOverlay.close(); swirly.show();"
-                        onComplete="confirmOverlay.postAction();" reRender="HiddenPanel" styleClass="submitButton Accept"/>
+                        onComplete="swirly.hide();confirmOverlay.postAction();" reRender="HiddenPanel" styleClass="submitButton Accept"/>
                         
                     <apex:outputLink id="Cancel" value="javascript:;" onClick="confirmOverlay.close();" styleClass="submitButton Cancel" >
                         Cancel
