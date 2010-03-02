@@ -1,5 +1,5 @@
 /**
-*@author Nicolas Dominguez
+* @author Nicolas Dominguez
 */
 public class ProjectSubscriptionController {
 	

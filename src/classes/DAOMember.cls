@@ -74,13 +74,16 @@ public class DAOMember {
 	public List<ProjectMember__c> getCandidatesToAssign(String taskId){
 		
 		List<TaskAssignee> assignees 	= DAOAssignee.getAssignees(taskId);
-		List<String> assigned 			= new List<String>();
+		List<Id> assigned 			= new List<Id>();
 		
-		for(TaskAssignee assignee: assignees){
-			assigned.add(assignee.id);
+		for(TaskAssignee assignee: assignees)
+		{
+			assigned.add(assignee.user);
 		} 
 		
 		ProjectTask__c task = DAOTask.get(taskId);
+		
+		System.debug('\n\n\n\n\n\n\n\n'+assigned+'\n\n\n\n\n\n\n\n');
 		
 		return [select Id, Name, User__c
 		        from ProjectMember__c 

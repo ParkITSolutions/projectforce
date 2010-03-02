@@ -62,7 +62,7 @@ public with sharing class ProjectAttachmentListController {
         return this.userPermission;
     }
     
-     /**
+    /**
     * Static function for widgets controllers use
     * @return UserPermissions
     */
@@ -70,7 +70,7 @@ public with sharing class ProjectAttachmentListController {
         return this.userPermission;
     }
 	
-	 /**
+	/**
     * Load permission for current user
     */
  	public void genPermissions(){

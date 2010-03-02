@@ -292,4 +292,16 @@ public class DAOTask {
         return task;
     }
     
+    /**
+    *
+    *@param String idTaskAssignee
+    */
+    public void deleteTaskAssignee( String idTaskAssignee ){
+    	try{
+	    	ProjectAssignee__c projAssig = [Select Id from ProjectAssignee__c  where Id =: idTaskAssignee limit 1][0];
+	    	if ( projAssig != null )
+	    		delete projAssig;
+    	}
+    	catch(Exception e){}
+    }
 }

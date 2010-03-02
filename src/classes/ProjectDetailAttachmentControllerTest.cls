@@ -1,14 +1,13 @@
 /**
-*@author Miguel Soares - 04/08/2009
+* @author Miguel Soares 
+* @createdDate 04/08/2009
 */
-@isTest private  class ProjectDetailAttachmentControllerTest {
+@isTest private class ProjectDetailAttachmentControllerTest {
 	
 	/**
 	* Test ProjectDetailAttachmentController
-	*@void
-    *@static
 	*/
-    static testMethod void myUnitTest(){
+    public static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );

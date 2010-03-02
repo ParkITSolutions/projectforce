@@ -13,7 +13,6 @@ public class ProjectTaskNotesController {
 	public String projectName 		{ set; get; }
 	public String projectNameShort 	{ set; get; }
 	public Boolean canAccess 		{ set; get; }
-	public Boolean rend		 		{ set; get; }
 	public UserPermissions userPermissions;
 
 	/**
@@ -26,7 +25,6 @@ public class ProjectTaskNotesController {
 		this.userPermissions 	= new UserPermissions();
 		this.genPermissions();
 		this.obtainData();
-		this.rend = true;
     }
     
     /**

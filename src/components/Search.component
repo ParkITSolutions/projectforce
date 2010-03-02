@@ -10,6 +10,7 @@
     <!-- Variables used within the javascript for the Search Input -->
     <script type="text/javascript" >
         searchControl.searchInputId = '{!$Component.frmSearch.searchQuery}';
+
     </script>
     
     <apex:outputPanel id="leftBorder" layout="block" styleClass="leftBorder" >
@@ -18,7 +19,7 @@
             
             <apex:outputPanel id="innerContent" layout="block" styleClass="innerContent" >
                 
-                <apex:form id="frmSearch" >
+                <apex:form id="frmSearch" onsubmit="return false">
                     <apex:outputPanel id="findLeft" layout="block" styleClass="findLeft" >
 
                         <apex:outputPanel id="innerFind" layout="block" styleClass="innerFind" >
@@ -28,12 +29,18 @@
                                 <apex:outputPanel >Find {!labelName}</apex:outputPanel> 
                             </apex:outputPanel>
                             
-                            <apex:inputText value="{!key}" id="searchQuery" styleClass="searchQuery" onclick="searchControl.clearInput();" />
+                            <apex:inputText value="{!key}" id="searchQuery" 
+                            				styleClass="searchQuery" 
+                            				onclick="searchControl.clearInput();" 
+                            				onKeyUp="searchControl.getPressedKey(event)" />
                             
                          </apex:outputPanel>
                     </apex:outputPanel>
                     
-                    <apex:commandLink value="Search" action="{!searchKey}" id="searchBtn" styleClass="searchBtn" onclick="return searchControl.validateQuery();" />
+                    <a href="javascript:searchControl.doSearch();" class="searchBtn">Search</a>
+                	
+                	<apex:actionFunction name="proccedSearch" action="{!searchKey}" />
+                	
                 </apex:form>
                 
             </apex:outputPanel>

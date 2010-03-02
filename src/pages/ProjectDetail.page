@@ -29,8 +29,6 @@
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
 
-    <c:ProjectOverlayDeleteAttachment id="ProjectOverlayDeleteAttachmentInclude" />
-    
     <!-- ### Initialize the overlay box for modal.js ### -->
     <a href="#modal_container" id="initializeModal" style="display:none;"></a>
     <div id="modal_container" ></div>
@@ -71,7 +69,7 @@
 	<c:ConfirmOverlay id="DeleteProjectAttachmentOverlay" 
 		title="Delete Project Attachment"
 		messageToUser=" Are you sure you want to delete this attachment?"
-		actionName="deleteAttachments" 
+		actionName="ProjectDetailDeleteAttachments"
 	/>  
 	    
     <div id="all" style="overflow:hidden;">
@@ -92,11 +90,14 @@
         </apex:outputPanel>
         <!-- End breadcrumbPanel -->
      
+         <apex:form >
+        	<apex:actionFunction action="{!deleteAvatar}" name="deleteTheAvatar" rerender="mainContentForm" oncomplete="projectDetail();swirly.hide();" />
+         </apex:form>            
          <div align="center" class="breadCrumbAndButtons">
 
-            
             <div id="btnDiv">
                 <apex:form id="thisForm" >
+                
                     <apex:outputPanel styleClass="isLastMemberAdmin" style="display: none;" >{!isLastMemberAdmin}</apex:outputPanel>
                     <!-- Edit-Delete Project Buttons -->
                     <apex:outputPanel rendered="{!IF(userPermission.canManage, true, false)}">
@@ -168,9 +169,8 @@
            <div class="holder">
                 <div id="swirlyDetail" class="swirlyDetail" style="display: none;" />
                 <apex:form id="mainContentForm">
-                    
+						 
                     <!-- sfdc detail -->
-                    
                     <div style="display:none;" class="sfdcDetail">
                         <apex:detail subject="{!projectId}" relatedList="false" title="false" />
                     </div>

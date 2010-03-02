@@ -1,14 +1,13 @@
 /**
-*@author Miguel Soares @ 04/14/2009
+* @author Miguel Soares 
+* @createdDate 04/14/2009
 */
 @isTest private class ProjectOverviewControllerTest {
 	
 	/**
 	* Test  ProjectOverviewController
-	*@void
-    *@static
 	*/
-    static testMethod void myUnitTest(){
+    public static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
@@ -27,7 +26,6 @@
     	System.currentPageReference().getParameters().put( 'ltr', null );
     	po.setLetterFilter();
 
- 
     	po.getProjectsForTabsSize();
     	po.getProjectsForTabs();
     	po.setProjects(po.getProjects());
@@ -39,7 +37,6 @@
     	ll.setContainSites(1);
     	ll.setContainSites(0);
     	ll.getContainSites();
-
 
     	ProjectOverviewController.Project pp = new ProjectOverviewController.Project();
     	pp.name = 'name';

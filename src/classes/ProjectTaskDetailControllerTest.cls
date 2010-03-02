@@ -1,14 +1,13 @@
 /**
-*@author Miguel Soares @ 04/14/2009
+* @author Miguel Soares 
+* @createdDate 04/14/2009
 */
 @isTest private class ProjectTaskDetailControllerTest {
 	
 	/**
-	* Test  ProjectTaskDetailController
-	*@void
-    *@static
+	* Test ProjectTaskDetailController
 	*/
-    static testMethod void myUnitTest(){
+    public static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
@@ -49,9 +48,6 @@
             System.assert(true, 'Attachment Info Class null var');  
         if(attchInfo.getAttachImage() == null) 
             System.assert(true, 'Attachment Info Class null var');     	
-    	
-    	
-    	
     	
 		taskDetailController.deleteAttach();
 		Boolean max = taskDetailController.getMaxAssignees();

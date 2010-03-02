@@ -1,21 +1,27 @@
+/**
+* @author Matias Menafra
+* @createdDate 02/02/2010
+*/
 @isTest private class ProjectAttachmentListControllerTest {
-    static testMethod void myUnitTest(){
+    
+    /*
+    * Test Project Attachment List Controller
+    */
+    public static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
-    	/*System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.Id );
     	
+    	System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.Id );
     	ProjectAttachmentListController prjAtt = new ProjectAttachmentListController();
     	
-    	prjAtt.getTeamIdParam();
-    	prjAtt.getIsManager();
-    	prjAtt.getProjectName();
-    	prjAtt.getUserPermission();
-    	ProjectAttachmentListController.getUserPermissions();
+		prjAtt.loadAttachmentList();
+		String prjName = prjAtt.getProjectName();
+    	UserPermissions permissions = prjAtt.getUserPermission();
+    	permissions = prjAtt.getUserPermissions();
     	prjAtt.genPermissions();
-    	prjAtt.getTeamspace();
-    	*/
+    	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     }     	

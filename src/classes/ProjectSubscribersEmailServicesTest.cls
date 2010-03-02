@@ -1,14 +1,13 @@
 /**
-*@author Miguel Soares @ 04/14/2009
+* @author Miguel Soares 
+* @createdDate 04/14/2009
 */
 @isTest private class ProjectSubscribersEmailServicesTest {
 	
 	/**
 	* Test  ProjectSubscribersEmailServices
-	*@void
-    *@static
 	*/
-    static testMethod void myUnitTest(){
+    public static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
@@ -46,7 +45,7 @@
 		sub.ProjectTaskAssignToMeChanged__c = true;
 		sub.ProjectTaskChanged__c = true;
 		sub.ProjectTaskDeleted__c = true;
-		sub.User__c = GenerateEnvironmentTest.us.Id;
+		sub.User__c = GenerateEnvironmentTest.user.Id;
 		List<ProjectSubscription__c> psb = new List<ProjectSubscription__c>();
 		psb.add( sub );
 		psb.add( sub );

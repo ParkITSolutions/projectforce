@@ -1,4 +1,5 @@
-@isTest private class BigListOfTasksTest {
+@isTest
+private class BigListOfTasksTest {
 	
 	public static ProjectTask__c pt;
 	public static ProjectTask__c pt1;

@@ -35,7 +35,7 @@
                   
                     <apex:outputPanel layout="block" id="projectDetail" >                   
                         <apex:outputPanel layout="block" styleClass="FieldValue" >
-                            <apex:outputPanel rendered="{!ShowDetail}">>{!ShowDetail}<
+                            <apex:outputPanel rendered="{!opSelected != null && opSelected != 'none'}">
                                 <center>
                                     <apex:outputPanel layout="block" id="detailProject" styleClass="DetailProject">
                                         <apex:outputPanel layout="block" id="subContainer" styleClass="SubContainer">
@@ -77,7 +77,7 @@
                             <apex:actionFunction name="RefreshPaginator"
                                 action="{!paginator.pagesListConstructor}"
                                 onComplete="swirly.hide();" 
-                                reRender="PaginatorPanel, RecordsList, letterFilter"/>
+                                reRender="PaginatorPanel, RecordsList, letterFilter, projectDetail"/>
                                 
                                 <apex:actionFunction name="RefreshRecordsList"
                                 action="{!paginator.loadTasksByUser}"

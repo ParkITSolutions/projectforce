@@ -29,7 +29,7 @@
         pw.getTeamId();
 
         ProjectWidgetTasksMainController.ProjectTask pt = new ProjectWidgetTasksMainController.ProjectTask();
-        pt.setUser( GenerateEnvironmentTest.us );
+        pt.setUser( GenerateEnvironmentTest.user );
         pt.setEndDate( Date.toDay());
         pt.setIsToLate( Date.toDay());
         pt.setTaskId( GenerateEnvironmentTest.task.Id );

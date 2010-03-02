@@ -1,8 +1,10 @@
 /** 
-*@author Miguel Soares de Lima  @ 15/01/2010
+* @author Matias Menafra
+* @createdDate 15/01/2010
 */
 public with sharing class ProjectTaskNotesControllerTest {
-	static testMethod void myUnitTest(){
+	
+	public static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
@@ -12,17 +14,27 @@ public with sharing class ProjectTaskNotesControllerTest {
 		
 		ProjectTaskNotesController nt = new ProjectTaskNotesController( new ApexPages.StandardController( pt ));
 		nt.CancelEdit();
-		
-		System.currentPageReference().getParameters().put('id_task', GenerateEnvironmentTest.task.id );
-		nt = new ProjectTaskNotesController( new ApexPages.StandardController( GenerateEnvironmentTest.task ));
+		nt.genPermissions();
+		nt.obtainData();
 		nt.SaveEditAndExit();
-		
-		System.currentPageReference().getParameters().put('id_task', GenerateEnvironmentTest.task.id );
-		nt = new ProjectTaskNotesController( new ApexPages.StandardController( GenerateEnvironmentTest.task ));
 		nt.SaveEdit();
 		
-
-
+		System.currentPageReference().getParameters().put('id_task', GenerateEnvironmentTest.task.id );
+		nt = new ProjectTaskNotesController( new ApexPages.StandardController( GenerateEnvironmentTest.task ));
+		nt.CancelEdit();
+		nt.genPermissions();
+		nt.obtainData();
+		nt.SaveEditAndExit();
+		nt.SaveEdit();
+		
+		System.currentPageReference().getParameters().put('id_task', GenerateEnvironmentTest.task.id );
+		nt = new ProjectTaskNotesController( new ApexPages.StandardController( GenerateEnvironmentTest.task ));
+		nt.CancelEdit();
+		nt.genPermissions();
+		nt.obtainData();
+		nt.SaveEditAndExit();
+		nt.SaveEdit();
+		
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     }    	

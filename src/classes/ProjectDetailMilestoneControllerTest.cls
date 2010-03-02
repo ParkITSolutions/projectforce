@@ -1,23 +1,20 @@
 /**
-*@author Miguel Soares @ 04/08/2009
+* @author Miguel Soares
+* @createdDate 04/08/2009
 */
 @isTest private class ProjectDetailMilestoneControllerTest {
 	
 	/**
 	* Test ProjectDetailMilestoneController
-	*@void
-    *@static
 	*/
-	// vghghghgyu 
-	static testMethod void myUnitTest(){
+	public static testMethod void myUnitTest(){
+		
     	GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
     	    	
     	ProjectDetailMilestoneController mile = new ProjectDetailMilestoneController();
-       	//mile.setTeamId( GenerateEnvironmentTest.project.Id );
     	mile.setSidebar( false );
-    	//mile.setTeamId( GenerateEnvironmentTest.project.Id );
     	mile.genAllProjectTasks();
     	mile.getAllProjectTasks();
     	mile.getUserPermissions();
@@ -35,7 +32,7 @@
     	inn.setEndDateRight( Date.today(), 2 );
     	inn.setIsToLate( Date.today() );
     	inn.setDaysCount( Date.today(), 2 );
-    	inn.setUser( GenerateEnvironmentTest.us );
+    	inn.setUser( GenerateEnvironmentTest.user );
     	inn.setTaskId( GenerateEnvironmentTest.task.Id );
     	inn.setPriority( 'high' );
     	inn.setTaskName( 'task name' );

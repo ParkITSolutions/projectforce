@@ -15,7 +15,7 @@
         title="Delete Attachment"
         messageToUser=" Are you sure you want to continue?
                         Once Attachment(s) are deleted, it is not recoverable "
-        actionName="deleteAttachments" />
+        actionName="ProjectDetailDeleteAttachments" />
         
     <!-- Principal Container for Search Results Page -->
     <apex:outputpanel id="attachmentListPage" layout="block" styleClass="attachmentListPage">   
@@ -56,7 +56,7 @@
                         onClick="deleteAttachments();"
                         styleClass="blackbutton">
                         <apex:outputPanel >
-                            Delete
+                            Deleteeee
                         </apex:outputPanel>
                     </apex:outputLink>
                     
