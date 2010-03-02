@@ -1,5 +1,6 @@
 /**
-*@author Bruno Fagundez @ 10/06/2008
+* @author Bruno Fagundez
+* @createdDate 10/06/2008
 */
 global class FlexWebService {   
         
@@ -7,9 +8,8 @@ global class FlexWebService {
     
     /**
     * Load permissions for one user for some project
-    *@param String project id
-    *@param String user id
-    *@return void
+    * @param project id
+    * @param user id
     */
     public void genPermissions (String projectId, String userId) {
         userPermissions.setId(userId);
@@ -20,10 +20,9 @@ global class FlexWebService {
     
     /**
     * Generate permissions for one user for some project
-    *@static
-    *@param String project id
-    *@param String user id
-    *@return String userPermissions
+    * @param project id
+    * @param user id
+    * @return userPermissions
     */
     webservice static String generatePermissions (String user, String project) {
         UserPermissions userPermissions = new UserPermissions();
@@ -43,4 +42,22 @@ global class FlexWebService {
         String userPermissionsString = canCreate+'|'+canManage;
         return userPermissionsString; 
     }
+    
+    /**
+    * Test FlexWebService
+    */
+    public static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+    	
+    	FlexWebService  fw = new FlexWebService();
+    	
+    	fw.genPermissions( GenerateEnvironmentTest.project.id, GenerateEnvironmentTest.user.id );
+    	FlexWebService.generatePermissions( GenerateEnvironmentTest.user.id, GenerateEnvironmentTest.project.id );
+    	
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );
+    }     	
 }

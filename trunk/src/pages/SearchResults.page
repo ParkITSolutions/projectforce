@@ -35,6 +35,8 @@
             
         </apex:outputpanel>
         
+        
+        
         <!-- Main Content Section -->
         <apex:outputpanel id="ContentPanel" layout="block" styleClass="searchMain">
     

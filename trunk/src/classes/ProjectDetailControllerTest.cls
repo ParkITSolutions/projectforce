@@ -1,27 +1,26 @@
 /**
-*@author Miguel Soares @ 04/08/2009
+* @author Miguel Soares
+* @createdDate 04/08/2009
 */
 @isTest private class ProjectDetailControllerTest {
 	
 	/**
 	* Test ProjectDetailController
-	*@void
-    *@static
 	*/
     static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
-    	/*
+    	
     	System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.Id );
     	
     	ApexPages.StandardController stdCtrl;
     	ProjectDetailController pD = new ProjectDetailController( stdCtrl );
     	ProjectDetailController pD2 = new ProjectDetailController();
     	
-    	pD.setTeamIdParam( GenerateEnvironmentTest.project.Id );
-    	pd.getTeamIdParam();
+    	pD.projectId = GenerateEnvironmentTest.project.Id;
+    	//pd.getTeamIdParam();
     	
 		pD.setIsPublic( true );
 		pD.setIsMember( false );
@@ -38,7 +37,6 @@
     	
     	pd.getInTeamSubscription();
     	
-    	*/
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     }    	

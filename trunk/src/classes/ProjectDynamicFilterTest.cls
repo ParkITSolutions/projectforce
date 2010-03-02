@@ -1,11 +1,13 @@
-@isTest private  class ProjectDynamicFilterTest {
-
-
+/**
+* @author Miguel Soares
+* @createDate 04/08/2009
+*/
+@isTest private class ProjectDynamicFilterTest {
 
 	/**
     * Test customException
     */
-    static testMethod void myUnitTest(){
+    public static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
@@ -64,6 +66,5 @@
 		List<SelectOption> retValue1 = dyn.getAssignees();
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );    	
-    	
     }    	
 }

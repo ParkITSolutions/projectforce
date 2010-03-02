@@ -29,15 +29,15 @@ public class DAOAttachment {
 	}
 	
 	public void deleteAttachment( String attachments ){
-		
-		List<String> attachmentIds = new List<String>();
-        
-        attachmentIds = attachments.split(':'); 
-        
-        List<Attachment> attachmentsToDelete = [select Id 
-            								  		from Attachment 
-            								  		where id in: attachmentIds];
-		delete attachmentsToDelete;
+			List<String> attachmentIds = new List<String>();
+	        
+	        attachmentIds = attachments.split(':'); 
+	        
+	        List<Attachment> attachmentsToDelete = [select Id 
+	            								  		from Attachment 
+	            								  		where id in: attachmentIds];
+			delete attachmentsToDelete;
+
 	}
 	
 	public List<AttachmentObj> getAttachments( String id ){

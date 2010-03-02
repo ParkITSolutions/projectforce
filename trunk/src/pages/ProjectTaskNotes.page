@@ -11,6 +11,7 @@
         includeNewMember="true"
         idValue="{!projectId}"
      />
+       
         
     <apex:outputPanel id="contentTaskNotes" styleclass="contentTaskNotes" layout="block">   
     

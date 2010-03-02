@@ -1,29 +1,20 @@
 /**
-*@author Nicolas Gunther - 03/23/2009
-*@modify : Sebastian Munoz (smunoz@timbasoftware.com)
+* @author Nicolas Gunther 
+* @createdDate 03/23/2009
 */   
 public class ProjectDetailAttachmentController {
 
 	private String project = null;
-	
 	private List<AttachmentInfo> attachments = new List<AttachmentInfo>();
-	
 	private UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
-	
 	private String idToDelete;
-	
 	private String emptyValue;
-	
 	private Integer numberOfItemsToShowSummary; //number of items displaying on project detail
-	
 	public void dummyRefresh () {}
-		
 	public Set<Id> idsToDelSet = new Set<Id>();
-   
     public String idsToDel = ':';
-
     
-	 /**
+	/**
     * Set of Integers to control pagination
     */
     private Integer totalItemsNumber;
@@ -67,7 +58,7 @@ public class ProjectDetailAttachmentController {
     	idsToDel='';
     }
 	
-	 /**
+	/**
     * Generates number of pages
     */
     public void genCntPagination() {
@@ -79,7 +70,7 @@ public class ProjectDetailAttachmentController {
     
     /**
     * Returns true if we should show next page link
-    *@return Boolean
+    * @return Boolean
     */
     public boolean getNextPageLinkShow () {
         if((currentPagination == cntPagination) || (cntPagination == 0)){  
@@ -107,8 +98,8 @@ public class ProjectDetailAttachmentController {
     }
 	
 	/**
-    *Returns true if we should show next page
-    *@return Boolean
+    * Returns true if we should show next page
+    * @return Boolean
     */
     public boolean getNextPageShow () {
         if((currentPagination == cntPagination) || (cntPagination == 0)){
@@ -121,7 +112,7 @@ public class ProjectDetailAttachmentController {
     
 	/**
     * Returns true if should show prev page
-    *@return Boolean
+    * @return Boolean
     */
     public boolean getPrevPageShow () {
         if(currentPagination == 1){
@@ -132,9 +123,9 @@ public class ProjectDetailAttachmentController {
         return prevPageShow;
     }
 	
-	 /**
+	/**
     * Returns true if should show prev page link
-    *@return Boolean
+    * @return Boolean
     */
     public boolean getPrevPageLinkShow () {
         if(currentPagination == 1){
@@ -145,25 +136,25 @@ public class ProjectDetailAttachmentController {
         return prevPageLinkShow;
     }
     
-	 /**
+	/**
     * Get the current page
-    *@return Integer
+    * @return Integer
     */
     public Integer getCurrentPagination () {
         return currentPagination;
     }
     
     /**
-    *@return Integer
+    * @return Integer
     */
     public Integer getNumberOfItemsToShowSummary() {
         return numberOfItemsToShowSummary;
     }
 	
 	
-	 /**
+	/**
     * Get the number of pages
-    *@return Integer
+    * @return Integer
     */
     public Integer getCntPagination () {
         return cntPagination;
@@ -171,23 +162,23 @@ public class ProjectDetailAttachmentController {
 	
 	/**
     * Get the number of first row in page
-    *@return Integer
+    * @return Integer
     */
     public Integer getFirstRow () {
         return firstRow;
     }
     
     /**
-    *Returns the Task list size
-    *@return Integer
+    * Returns the Task list size
+    * @return Integer
     */
     public Integer getTotalItemsNumber(){   
         return totalItemsNumber;
     }
     
-     /**
+    /**
     * Get the number of items to show
-    *@return Integer
+    * @return Integer
     */
     public Integer getNumberOfItemsToShow () {
         return numberOfItemsToShow;
@@ -228,6 +219,7 @@ public class ProjectDetailAttachmentController {
 	public List<AttachmentInfo> getAttachments(){
 		return attachments;
 	}
+	
 	/*
 	*@return Boolean
 	*/
@@ -254,7 +246,7 @@ public class ProjectDetailAttachmentController {
 	
 	/**
 	* Read user permissions
-	*@return void
+	* @return void
 	*/
 	public void genPermissions() {
 		userPermissions.setId(UserInfo.getUserId());
@@ -264,7 +256,7 @@ public class ProjectDetailAttachmentController {
 	}
 	
 	/**
-	*@return UserPermissions
+	* @return UserPermissions
 	*/
 	public UserPermissions getUserPermissions () {
 		//Refresh user permissions
@@ -273,8 +265,8 @@ public class ProjectDetailAttachmentController {
 	}	
                           
 	/**
-	*readAttachments();
-	*@return void
+	* readAttachments();
+	* @return void
 	*/
 	public void readAttachments(){
 		
@@ -288,28 +280,19 @@ public class ProjectDetailAttachmentController {
 								order by LastModifiedDate desc];
 		}
 		
-		
-		
 		loadAttachmentList(attachmentsList);
-		
 		totalItemsNumber = attachments.size();
-		
 		genCntPagination();
-		
 	}       
 	
 	/**
 	* Load attachment list
-	*@param List<Attachment> attachment list
-	*@return void
+	* @param attachs
 	*/
 	public void loadAttachmentList(List<Attachment> attachs){
 		List<AttachmentInfo> attachList = new List<AttachmentInfo>();
 		String avatarId;
 		
-		//Get current Avatar
-		//avatarId = [ select Picture__c from Project2__c where Id =: project limit 1 ].Picture__c ;
-
 		List<Project2__c> pic = new List<Project2__c>();
 		pic = [ select Picture__c from Project2__c where Id =: project limit 1 ] ;
 		if( pic.size() > 0 ) 
@@ -395,7 +378,6 @@ public class ProjectDetailAttachmentController {
 
 	/**
 	* Delete Attachment
-	*@return void
 	*/
 	public void deleteAttach (){
 		String attachId = this.getIdToDelete();
@@ -423,7 +405,6 @@ public class ProjectDetailAttachmentController {
 		
 		deleteChecked();	
 	}
-	                                    
 	
 	/**
 	* Inner Class AttachmentInfo

@@ -155,6 +155,13 @@ public class DAOFactory {
          return this.DAOTask.getTaskInfoWithProjectRel( idTask );
     }
     
+    /**
+    *
+    *@param String idTaskAssignee
+    */
+    public void deleteTaskAssignee( String idTaskAssignee ){
+    	this.DAOTask.deleteTaskAssignee( idTaskAssignee );
+    }
     /*-----------------------------------------------------------------------------------------------------------------------------*/
     
     /*--------------------------------------------------- Member operations -------------------------------------------------------*/

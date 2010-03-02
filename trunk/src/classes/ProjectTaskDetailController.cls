@@ -231,7 +231,7 @@ public class ProjectTaskDetailController {
 				
 				userPermissions.setProject(TD.Project__c);
 				taskDetail.ProjectId = TD.Project__c;
-				taskDetail.ProjectName = TD.Project__r.Name;
+				taskDetail.ProjectName = ProjectUtil.chopWords(TD.Project__r.Name, 20);
 				this.projectNameShort = ProjectUtil.chopWords( ProjectUtil.chopPhrase( taskDetail.ProjectName , 20 ));
 				taskDetail.Priority = TD.Priority__c;
 				taskDetail.StartDate = TD.StartDate__c.format();

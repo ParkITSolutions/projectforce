@@ -1,19 +1,17 @@
 /**
-*@author: Miguel Soares @ 04-15-2009
+* @author Miguel Soares
+* @createdDate 04/15/2009
 */
 @isTest private class PaginatorControllerTest {
 	
 	/**
     * Test PaginatorController
-    *@void
-    *@static
     */
     static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
-    	
     	
 		PaginatorController n = new PaginatorController();
         n.setNumberOfItemsToShow(8);
@@ -78,7 +76,6 @@
         }
         n.setJumpPage(12);
         n.JumpToPage();
-
  
         n.getPrevPageLinkShow();
         n.getPrevPageShow();
@@ -86,7 +83,6 @@
         n.getNextPageShow();       
         
         n.clearPagination();
-        
         
         n.setPrevPageShow(true); 
         n.setNextPageShow(true);
@@ -100,15 +96,12 @@
         n.setCntPagination(1);
         n.getLastItem();
         
-        
         n.setCntPagination(3);
         n.setJumpPage(2);
         n.JumpToPage();
         
         n.setJumpPage(0);
         n.JumpToPage();    	
-    	
-    	
     	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );

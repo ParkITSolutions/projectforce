@@ -20,7 +20,7 @@
             <apex:actionFunction name="reloadMemberList" 
                                     action="{!reloadMemberList}" 
                                     rerender="membersWidgetContent" 
-                                    onComplete="swirly.hide(); alert('reloadMemberList has been executed');"
+                                    onComplete="swirly.hide();"
                                     
                                     />
         </apex:form>

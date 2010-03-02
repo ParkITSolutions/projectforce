@@ -69,7 +69,7 @@
             
             <apex:outputLink value="javascript:;"
                 id="MarkComplete"
-                onClick="markCompleteTasks();"
+                onClick="taskList.markCompleteTasks();"
                 styleClass="blackbutton" rendered="{!isMember || isManager}">
                 <apex:outputPanel >
                     Mark Complete
@@ -86,7 +86,7 @@
     
             <apex:outputLink value="javascript:;"
                 id="Delete"
-                onClick="deleteTasks();"
+                onClick="taskList.deleteTasks();"
                 styleClass="blackbutton" rendered="{!isMember || isManager}">
                 <apex:outputPanel >
                     Delete
@@ -263,7 +263,7 @@
                         rendered="{!paginator.tasksByProject.size > 0}"> 
                         
                         <apex:column id="Action">
-                            <apex:facet name="header"><apex:inputCheckbox id="ActionCheckbox" onClick="markAllCheckboxes(this,'actionCheckbox');"/></apex:facet>
+                            <apex:facet name="header"><apex:inputCheckbox id="ActionCheckbox" onClick="taskList.markAllCheckboxes(this,'actionCheckbox');"/></apex:facet>
                             <apex:outputPanel id="chk" rendered="{!task.canUpdate || task.canDelete || isManager}">
                             	<input type="checkbox" id="{!task.id}" value="{!task.id}" class="actionCheckbox" />
                             </apex:outputPanel>
@@ -272,7 +272,7 @@
                         <apex:column >
                             <apex:facet name="header">Action</apex:facet>
                             <apex:outputLink value="/{!task.id}/e?retURL={!url}/apex/TaskList?id={!projectId}" id="EditLink" rendered="{!task.canUpdate || isManager}">Edit | </apex:outputLink>
-                            <apex:outputLink value="javascript:;" id="DeleteLink" onClick="deleteTask('{!task.id}');" rendered="{!task.canDelete || isManager}"> Del</apex:outputLink>
+                            <apex:outputLink value="javascript:;" id="DeleteLink" onClick="taskList.deleteTask('{!task.id}');" rendered="{!task.canDelete || isManager}"> Del</apex:outputLink>
                         </apex:column>
                         
                         <apex:column >
@@ -314,12 +314,24 @@
                         </apex:column>
                         
                         <apex:column >
-                            <apex:facet name="header"><apex:outputLink styleclass="member_title_description" value="javascript:;" id="AssignedToLink">Assigned to</apex:outputLink></apex:facet>
-                            <select id="Assignees" style="width: 150px;">
-                                <apex:repeat value="{!task.assignees}" var="assignee" id="Assignees">
-                                    <option id="{!assignee.id}">{!assignee.name}</option>
+                            <apex:facet name="header">Assigned to</apex:facet>
+                            
+                            <apex:outputPanel layout="block" styleClass="OneAssignee">
+								 <apex:repeat value="{!task.assignees}" var="assignee" id="OneAssignee" rows="1">
+                                    - {!assignee.name} &nbsp;
+                                    <apex:outputLink value="javascript:;" 
+                                    		onClick="taskList.toggleList('{!task.id}', this);" 
+                                    		rendered="{!task.assignees.size > 1}">
+                                    		[+]</apex:outputLink>
                                 </apex:repeat>
-                            </select>
+							</apex:outputPanel>
+							
+                            <apex:outputPanel layout="block" styleClass="AssigneesList_{!task.id}" style="display:none;float:left;padding:2px 0;">
+                                <apex:repeat value="{!task.assignees}" var="assignee" id="Assignees" first="1" rendered="{!task.assignees.size > 1}">
+                                    - {!assignee.name}<br/>
+                                </apex:repeat>
+                            </apex:outputPanel>
+                            
                         </apex:column>
                         
                         <apex:column >

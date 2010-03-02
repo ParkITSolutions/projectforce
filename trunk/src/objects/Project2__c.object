@@ -105,7 +105,8 @@ Private -  This Project will not appear in search. Membership is by invitation o
     </fields>
     <fields>
         <fullName>Image__c</fullName>
-        <formula>IF(Picture__c != null, IMAGE(&quot;/servlet/servlet.FileDownload?file=&quot; &amp; Picture__c, &apos;Project Avatar&apos;, 70, 70) , &quot;[No Image]&quot;)  &amp; HYPERLINK(&apos;javascript: addAvatarAsAvatar()&apos;, &apos;Change Image&apos;, &apos;&apos;) &amp;IF(Picture__c != null, HYPERLINK(&apos;javascript: delAvatarr()&apos;, &apos; | Delete&apos;, &apos;&apos;), &apos;&apos;)</formula>
+        <formula>IF(Picture__c != null, IMAGE(&quot;/servlet/servlet.FileDownload?file=&quot; &amp; Picture__c, &apos;Project Avatar&apos;, 70, 70) , &quot;[No Image]&quot;)  
+&amp; IF(Picture__c != null, HYPERLINK(&apos;javascript: swirly.show();deleteTheAvatar()&apos;, &apos;Delete&apos;), HYPERLINK(&apos;javascript: addAvatarAsAvatar()&apos;, &apos;Change Image&apos;, &apos;&apos;) )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Image</label>
         <type>Text</type>

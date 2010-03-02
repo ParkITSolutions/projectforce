@@ -38,36 +38,7 @@
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskList.js')}" />
      <div class="confirmation" id="confirmation" style="display:none;">This task has been marked complete</div>
 	
-    <c:ProjectOverlayDeleteAttachment id="ProjectOverlayDeleteAttachmentInclude" />
-    
-    
-   <c:PromptOverlay id="PromptOverlay"
-        includeAttachment="true" 
-        includeNewAssignee="true"
-        includeNewMember="true"
-        idValue="{!projectId}"
-   />        
-   
-   <!-- Delete Task Overlay -->
-	<c:ConfirmOverlay id="DeleteTaskOverlay" 
-		title="Delete Task"
-		messageToUser=" Are you sure you want to delete assignee? "
-		actionName="DeleteDetailTask" 
-	/>               
-        
-   <!-- Delete Task Assignee -->
-	<c:ConfirmOverlay id="DeleteTaskAssignee" 
-		title="Delete Task Assignee"
-		messageToUser=" Are you sure you want to delete this project? 
-		Once a project is deleted, tasks and milestones are not recoverable"
-		actionName="TaskDetialDeleteAseegnee" 
-	/>    
-	
-    <apex:form >
-        <apex:actionFunction name="reloadIframe" action="{!dummyRefresh}" rerender="iframeWrapperPanel" />
-    </apex:form>
-    
-    <script>
+   	<script  type="text/javascript">
        document.observe("dom:loaded", function(){
                setTimeout( "readPortalCSSRules()", 300 );
                setTimeout( "$$('.pbBottomButtons')[0].remove()", 150);
@@ -79,19 +50,25 @@
        
        
        var deleteTaskOverlay          = new ConfirmOverlay( '{!$Component.DeleteTaskOverlay}' );
-       var deleteTaskAssignee         = new ConfirmOverlay( '{!$Component.DeleteTaskAssignee}' );
+       var taskDetailDeleteAssignee	  = new ConfirmOverlay( '{!$Component.TaskDetailDeleteAssignee}' );
+       var taskDetailDeleteAttachment = new ConfirmOverlay( '{!$Component.TaskDetailDeleteAttachment}' );
        
        function DeleteDetailTask(){
     	    deleteTaskOverlay.open();
     	    deleteTaskOverlay.setActionIds('{!param}');	
 		}
 		
-		function TaskDetialDeleteAseegnee(paramAssignee){
-    	    deleteTaskAssignee.open();
-    	    deleteTaskAssignee.setActionIds(paramAssignee);	
+		function TaskDetailDeleteAssignee(paramAssignee){
+    	    taskDetailDeleteAssignee.open();
+    	    taskDetailDeleteAssignee.setActionIds(paramAssignee);	
 		}
-    </script>
-    <script>
+		
+		function TaskDetailDeleteAttachment(attachID){
+    	    taskDetailDeleteAttachment.open();
+    	    taskDetailDeleteAttachment.setActionIds(attachID);	
+		}
+		
+
         function openAttachmentOverlay(){
 
             newAttachmentFileOverlay.open(); 
@@ -102,6 +79,42 @@
             addOverlayNewAttachmentEvents(function(){newAttachmentOverlay.close();},'UploadAttachment:Form:SaveButton');
         }
     </script>
+    
+    
+	<c:PromptOverlay id="PromptOverlay"
+	     includeAttachment="true" 
+	     includeNewAssignee="true"
+	     includeNewMember="true"
+	     idValue="{!projectId}"
+	/>        
+	
+	<!-- Delete Task Overlay -->
+	<c:ConfirmOverlay id="DeleteTaskOverlay" 
+		title="Delete Task"
+		messageToUser=" Are you sure you want to delete assignee? "
+		actionName="DeleteDetailTask" 
+	/>               
+        
+   <!-- Delete Task Assignee -->
+	<c:ConfirmOverlay id="TaskDetailDeleteAssignee" 
+		title="Delete Task Assignee"
+		messageToUser=" Are you sure you want to delete the assignee?" 
+		actionName="TaskDetailDeleteAssigneeOverlay" 
+	/>    
+	
+	<!-- Delete Attachment -->
+	<c:ConfirmOverlay id="TaskDetailDeleteAttachment" 
+		title="Delete Project Attachment"
+		messageToUser=" Are you sure you want to delete this attachment?"
+		actionName="TaskDetailDeleteAttachmentOverlay"
+	/>  
+	
+	
+    <apex:form >
+        <apex:actionFunction name="reloadIframe" action="{!dummyRefresh}" rerender="iframeWrapperPanel" />
+    </apex:form>
+    
+    
     <style type = "text/css">
          div.swirly_overlay{
             height : 100%!important;
@@ -170,10 +183,6 @@
                     </apex:actionStatus>
                 </apex:form>                   
                 <apex:outputPanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner)}">
-              <!--      <a class="blackbutton" href="Javascript:;" onclick="showDeleteEvent('{!Task.id}', 'Detail','{!Task.name}');">
-                        <span>Delete</span>
-                    </a>-->
-                    
                     <apex:outputLink value="javascript:;"
 		                id="Delete"
 		                onClick="DeleteDetailTask();"
@@ -212,18 +221,29 @@
                     <apex:actionFunction name="apexAFRefreshDetail" 
                         action="{!doRefresh}" 
                         rerender="detailContainer, taskDetail" 
-                        oncomplete="$( 'sw_all' ).hide(); $( 'sw_all2' ).hide()"/>
+                        oncomplete="$( 'sw_all' ).hide(); $( 'sw_all2' ).hide();"/>
                         
                      <apex:actionFunction name="detailListPanel" 
                         action="{!doRefresh}" 
                         rerender="detailListPanel" 
-                        oncomplete="$('sw_o').hide(); $('sw_all2').hide();swirly.hide();"/>
+                        oncomplete="$('sw_o').hide(); $('sw_all2').hide(); swirly.hide();"/>
                         
                      <apex:actionFunction name="RefreshTaskAssignedList" 
                         action="{!doRefresh}" 
                         rerender="detailListPanel" 
-                        oncomplete="swirly.hide(); infoToUser.show();"/>
-                        
+                        oncomplete="swirly.hide();"/>
+                     
+                     <!-- Generic Refresh Attachment Method -->
+					<apex:actionFunction name="RefreshAttachmentList"
+						action="{!doRefresh}"  
+						rerender="detailListPanel" 
+						oncomplete="swirly.hide();" />
+							 
+					<!-- Generic Refresh Assignee Method -->
+					<apex:actionFunction name="RefreshAssigneeList"
+						action="{!doRefresh}"  
+						rerender="detailListPanel" 
+						oncomplete="swirly.hide();" />   
                 </apex:form>
                
                 <div class="bPageBlock">
@@ -262,6 +282,8 @@
                                         </div>
                                     </apex:outputPanel>
                                     <apex:form id="attachmentList">
+                                    	
+                                    	
                                         <apex:actionFunction name="reloadAttachmentList" rerender="attachmentList" />
                                         <apex:repeat value="{!Task.Files}" var="item" >
                                             <div class="height20px">
@@ -270,24 +292,12 @@
                                                     <a href="javascript:;" onclick="window.open('/servlet/servlet.FileDownload?file={!item.Id}')" >{!item.Name}</a>&nbsp;&nbsp;&nbsp;
                                                 
                                                 <apex:outputPanel styleClass="height20px" rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}"> 
-                                    
-                                                    <!-- <apex:outputLink styleclass="notassigned"
-                                                        onClick="deleteAttachmentOverlay.open(); 
-                                                                 $('ProjectTaskDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!item.Id}';
-                                                                 addOverlayEvents(function(){deleteAttachmentOverlay.close();},'ProjectTaskDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn');"
-                                                        value="javascript:;">
-                                                        
-                                                        Delete
-                                                    </apex:outputLink>  --> 
                                                     <apex:outputLink value="javascript:;"
 										                id="Delete"
-										                onClick="TaskDetialDeleteAseegnee({!item.Id});"
-										                styleClass="blackbutton">
-										                <apex:outputPanel >
-										                    Delete New
-										                </apex:outputPanel>
+										                styleclass="notassigned"
+										                onClick="TaskDetailDeleteAttachment('{!item.Id}');">
+										                    Delete
 										            </apex:outputLink>
-                                                                                            
                                                 </apex:outputPanel>
                                                 </div>
                                             </div>
@@ -317,10 +327,14 @@
                                                     <td>
                                                         <a href="/{!item.Id}">{!item.Name}</a>
                                                     </td>
-                                                    <td class="percent">{!item.percent}%</td>
                                                     <td>
                                                         <apex:outputpanel rendered="{!AND(IF(Task.CantAssignees > 1, true, false), OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe))}">
-                                                            <a class="notassigned" value="{!item.AssigneeId}" onclick="showDeleteAssigneeEvent('{!item.AssigneeId}')" href="javascript:;">Remove</a>
+                                                            <apex:outputLink value="javascript:;"
+												                id="Delete"
+												                styleclass="notassigned"
+												                onClick="TaskDetailDeleteAssignee('{!item.AssigneeId}');">
+												                    Remove
+												            </apex:outputLink>
                                                         </apex:outputpanel>
                                                     </td>                                                 
                                                 </tr>                                      
@@ -358,7 +372,8 @@
                                             <apex:inputField styleClass="commentBody" value="{!comment.Body__c}" /><br/>
                                             <apex:commandLink onclick="if(!validateComment()){return false;}"
                                                 oncomplete="Effect.Fade('sw_all')"
-                                                action="{!saveComment}"                                     
+                                                action="{!saveComment}"        
+                                                rendered="{!OR(userPermissions.canManage,Task.IsTaskOwner)}"                             
                                                 rerender="taskComments">
                                                 <span>Save Comment</span>
                                             </apex:commandLink>
@@ -373,6 +388,7 @@
                                                         onclick="if(confirm('Are you sure you want to delete this comment?')){showSwirl();}else{return false;}"
                                                         value="Delete Comment" 
                                                         action="{!deleteComment}" 
+                                                        rendered="{!OR(userPermissions.canManage,Task.IsTaskOwner)}"
                                                         rerender="taskComments">
                                                         <apex:param name="idComment" value="{!comment.Id}" />
                                                     </apex:commandLink>
@@ -393,7 +409,6 @@
             <div align="center" class="breadCrumbAndButtons" style="padding-top:15px;">
             <div class="buttons" style="{!IF(Task.IsTaskOwner,'width:340px;','')}">
                 <apex:outputpanel rendered="{!OR(userPermissions.canManage,Task.IsTaskOwner)}" layout="block">
-                   <!--   <a class="blackbutton" href="/apex/projectRedirect?sO=ProjectTask__c&attr=task&page=ProjectCreateNewTask&rR=NewProjectFormContainer&oC=true&eid={!Task.ProjectId}&task={!Task.id}"><span>Edit Task</span></a>-->
                    <a class="blackbutton" href="/{!Task.id}/e?retURL=/{!Task.id}"><span>Edit Task</span></a>
                     <apex:form id="quickMilestoneForm2" styleclass="quickMilestoneForm" onsubmit="if(isCompleted){alert('The task percent is already completed.');return false}" >   
                         <apex:actionStatus id="taskStatus2">
@@ -423,7 +438,6 @@
                 </apex:outputpanel>
             </div>
         </div>
-        
         </div>
         </div>
 </apex:page>

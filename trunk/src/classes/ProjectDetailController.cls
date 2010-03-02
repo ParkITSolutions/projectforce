@@ -23,7 +23,7 @@ public with sharing class ProjectDetailController
     /**
     * Constructor
     */
-    public ProjectDetailController(ApexPages.StandardController ctrl){
+    public ProjectDetailController( ApexPages.StandardController ctrl ){
     	this.projectId = System.currentPageReference().getParameters().get('id');
        	genPermissions();   	   
    	   	getTeamDetail();
@@ -41,14 +41,14 @@ public with sharing class ProjectDetailController
     }
     
     /**
-    *@return boolean isLastMemberAdmin
+    * @return boolean isLastMemberAdmin
     */
     public Boolean getIsLastMemberAdmin(){
     	return this.isLastMemberAdmin;
    	}
    	
-   	 /**
-    *@return UserPermission
+   	/**
+    * @return UserPermission
     */
     public UserPermissions getUserPermission () {
     	genPermissions();
@@ -57,7 +57,7 @@ public with sharing class ProjectDetailController
 
     /**
     * Get project Name
-    *@return String
+    * @return String
     */
     public String getProjectName(){
     	/*Project2__c p = new Project2__c();
@@ -72,23 +72,23 @@ public with sharing class ProjectDetailController
     }
      
 	/**
-    *@return boolean IsManager
+    * @return boolean IsManager
     */
     public boolean getIsManager(){
     	return this.isManager;
     }  
     
     /**
-    *@param Boolean isp
-    *@return void
+    * @param Boolean isp
+    * @return void
     */	
 	public void setIsPublic(Boolean isp){
 		this.isPublic = isp;
 	}
 	
 	/**
-    *@param Boolean ism
-    *@return void
+    * @param Boolean ism
+    * @return void
     */	
 	public void setIsMember(Boolean ism){
 		this.isMember = ism;
@@ -112,7 +112,7 @@ public with sharing class ProjectDetailController
        
     /**
     * Check if is TeamsSuscription page
-    *@return Boolean 
+    * @return Boolean 
     */
     public Boolean getInTeamSubscription () {
         String currentPageUrl = System.currentPageReference().getUrl();
@@ -121,7 +121,7 @@ public with sharing class ProjectDetailController
     
     /**
     * Load permission for current user
-    *@return void
+    * @return void
     */
  	public void genPermissions () {
         userPermission.setId(UserInfo.getUserId());
@@ -133,13 +133,11 @@ public with sharing class ProjectDetailController
       
     /**
     * Read Team
-    *@throws Exception
-    *@return void
     */
     public void getTeamDetail(){
         try {
            	teamspace = [Select t.OwnerId, t.Name, t.LastModifiedDate, t.LastModifiedById, 
-           					t.IsDeleted, t.Id, t.Description__c, t.CreatedDate, t.CreatedById, t.Type__c 
+           					t.IsDeleted, t.Id, t.Description__c, t.CreatedDate, t.CreatedById, t.Type__c, t.picture__c
            					from Project2__c t 
            					where id =: this.projectId];
            					
@@ -150,8 +148,7 @@ public with sharing class ProjectDetailController
     
      /**
     * Show join event
-    *@return Boolean
-    *@return void
+    * @return Boolean
     */
   	public void genTeamData(){
 		if(this.projectId != null){
@@ -181,7 +178,6 @@ public with sharing class ProjectDetailController
 
     /**
     * Join Project
-    *@return void
     */
     public void joinProject(){
 		pmc.setProjectId(System.currentPageReference().getParameters().get('id'));
@@ -192,7 +188,7 @@ public with sharing class ProjectDetailController
 	
 	/**
 	* Unjoin Project
-	*@return PageReference
+	* @return PageReference
 	*/
 	public PageReference unjoinProject(){
 		pmc.setProjectId(System.currentPageReference().getParameters().get('id'));
@@ -217,7 +213,7 @@ public with sharing class ProjectDetailController
 
 	/**
 	* Redirect to ProjectOverview
-	*@return PageReference
+	* @return PageReference
 	*/
 	public PageReference projectRedirect(){
 		PageReference discOver = Page.projectOverview;
@@ -226,7 +222,7 @@ public with sharing class ProjectDetailController
     
     /**
     * Get Teamspace
-    *@return Team__c
+    * @return Team__c
     */
     public Project2__c getTeamspace() {
     	
@@ -243,7 +239,7 @@ public with sharing class ProjectDetailController
     
     /**
     * Get Teamspace image
-    *@return String
+    * @return String
     */
     public String getTeamspaceImage() {
     
@@ -257,9 +253,20 @@ public with sharing class ProjectDetailController
     
     /**
     * Static function for widgets controllers use
-    *@return UserPermissions instance
+    * @return UserPermissions instance
     */
     public static UserPermissions getUserPermissions () {
         return userPermission;
+    }
+
+    public void deleteAvatar(){
+    	
+    	Attachment att = new Attachment();
+    	this.getTeamDetail();
+    	att = [ SELECT id FROM Attachment WHERE id =: this.teamspace.picture__c LIMIT 1 ];
+    	delete att;
+    	
+    	this.teamspace.picture__c = '';
+    	update this.teamspace;
     }
 }

@@ -1,14 +1,13 @@
 /**
-*@author Miguel Soares @ 04/14/2009
+* @author Miguel Soares
+* @createdDate 04/14/2009
 */
 public class ProjectUtilTest {
 		
 	/**
 	* Test  ProjectUtil
-	*@void
-    *@static
 	*/
-    static testMethod void myUnitTest(){
+    public static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
@@ -30,7 +29,6 @@ public class ProjectUtilTest {
 		List<Attachment> lAtt = new List<Attachment>();
 		lAtt.add( GenerateEnvironmentTest.avatar);
 		ProjectUtil.validateFileSize( lAtt );
-
     	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );

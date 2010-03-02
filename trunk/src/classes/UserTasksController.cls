@@ -4,6 +4,7 @@
 public class UserTasksController{
 
     public Boolean showDetail { set; get; }
+    public Boolean auxShowDetail { set; get; }
     public id currentUser;
     public Project currentProject { set; get; }
     public List<ProjectMember__c> allProjects;
@@ -66,7 +67,6 @@ public class UserTasksController{
     public List<SelectOption> getProjectSelectOps(){
         
         this.selectOpsProject.clear();
-        ProjectMember__c c = this.allProjects[0].clone();       
         this.selectOpsProject.add( new SelectOption( 'none', 'All projects' ) );
 
         for( ProjectMember__c p : this.allProjects )
@@ -88,15 +88,12 @@ public class UserTasksController{
     /**
     * @param option
     */
-    public void setOpSelected( String option ){
-        
-        System.debug( '[>>>] ' + option );
-        
+    public void setOpSelected( String option ){          
         this.opSelected = option;
         this.paginator.project.id = option == 'none' ? '' : option;
         this.showDetail = option != 'none';
-                paginator.loadTasksByUser();
-        
+        auxShowDetail= this.opSelected == 'none' ? false : true;
+        paginator.loadTasksByUser();
         this.selectProjectBasicData();
     }
     
@@ -109,7 +106,7 @@ public class UserTasksController{
         this.currentProject             = new Project();
         ProjectMember__c tempProject    = new ProjectMember__c(); 
         
-        if( this.allProjectsMap.size() > 0 && this.OpSelected != 'none' ){
+        if( this.allProjectsMap.size() > 0 && this.OpSelected != null && this.OpSelected != 'none' ){
             tempProject = this.allProjectsMap.get( this.OpSelected );
             
             this.AttachmentPrjId                        = tempProject.Project__r.Picture__c;

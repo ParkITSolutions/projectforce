@@ -1,4 +1,4 @@
-<apex:component controller="ProjectDetailAttachmentController" allowDML="true">
+<apex:component id="ProjectDetailAttachmentComponent" controller="ProjectDetailAttachmentController" allowDML="true">
 	<!-- Set Attribute for project id. -->
 	<apex:attribute name="project" description="Project Id" type="String" required="true" assignTo="{!project}" />	
 	
@@ -15,7 +15,7 @@
         
 		var deleteProjectAttachmentOverlay = new ConfirmOverlay( '{!$Component.DeleteProjectAttachmentOverlay}' );
 		
-		function DeleteProjectAttachment(attachID){
+		function ProjectDetailDeleteProjectAttachment(attachID){
     	    deleteProjectAttachmentOverlay.open();
     	    deleteProjectAttachmentOverlay.setActionIds(attachID);	
 		}
@@ -25,10 +25,10 @@
 
 	
 	<!-- Generic Refresh Attachment Method -->
-	<apex:actionFunction name="refreshAttachmentList" 
+	<apex:actionFunction name="RefreshAttachmentList" 
 						 action="{!readAttachments}" 
 						 rerender="projectAttachmentWidget, seeMoreLink" 
-						 oncomplete="hideSwirly('swirlyAttachment');" />
+						 oncomplete="swirly.hide(); infoToUser.show();" />
 	
 	<apex:actionFunction name="reloadIframe" action="{!dummyRefresh}" rerender="iframeWrapperPanel"  />
 	<apex:outputPanel layout="block">
@@ -66,17 +66,10 @@
 							<apex:repeat value="{!attachments}" var="attachment" rows="{!numberOfItemsToShowSummary}">									
 								<tr> 
 									<td>
-										<!-- <a href="javascript:;" 
-										   onclick="deleteAttachmentOverlay.open(); 
-										            $('ProjectDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:idToDelete').value ='{!attachment.Id}';
-										            addOverlayEvents(function(){deleteAttachmentOverlay.close();}, 'ProjectDetail:ProjectOverlayDeleteAttachmentInclude:projectOverlayDeleteAttachment:overlayForm2:DeleteAttachmentBtn')">
-										   Delete
-										 </a> -->
-										 <apex:outputLink value="javascript:;"
+										<apex:outputLink value="javascript:;"
 							                id="DeleteAttachment"
-							                onClick="DeleteProjectAttachment('{!attachment.Id}');"
-							                styleClass="blackbutton">
-							                    Delete New
+							                onClick="ProjectDetailDeleteProjectAttachment('{!attachment.Id}');">
+							                    Delete
 							            </apex:outputLink>
 									</td>
 									<td>
