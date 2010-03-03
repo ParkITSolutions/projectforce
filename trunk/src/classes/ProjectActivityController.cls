@@ -4,15 +4,15 @@
 */
 public class ProjectActivityController {
 	
-	public String projectId 	{ set; get; }
-	public Paginator paginator 	{ set; get; }
+	public String 		projectId 	{ set; get; }
+	public Paginator 	paginator 	{ set; get; }
 	
 	/**
 	* Constructor
 	*/
 	public ProjectActivityController(){
 		
-		this.projectId 				= System.currentPageReference().getParameters().get('id');
+		this.projectId 				= System.currentPageReference().getParameters().get( 'id' );
 		this.paginator 				= new Paginator();
 		this.paginator.project.id 	= this.projectId;
 		
@@ -20,7 +20,7 @@ public class ProjectActivityController {
 	}
 	
 	/**
-    * Test 
+    * Test Project Activity Page
     */
     static testMethod void myUnitTest(){
     	
@@ -28,9 +28,9 @@ public class ProjectActivityController {
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
 		
-		Test.setCurrentPageReference(new PageReference('Page.ProjectDetail'));
 		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
-
+		
+		ProjectActivityController projectActivity = new ProjectActivityController();
 		
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );    	

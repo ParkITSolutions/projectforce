@@ -18,8 +18,8 @@ public class MemberActivity extends ActivityLog{
 	public MemberActivity( String projectId, DateTime timeStamp, String modifiedBy, String action, ProjectMember__c member ){
 		
 		super( projectId, timeStamp, action );
-		this.memberChanged = member;
-		this.memberId = modifiedBy;
+		this.memberChanged 	= member;
+		this.memberId 		= modifiedBy;
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public class MemberActivity extends ActivityLog{
 	}
 	
 	/**
-    * Test 
+    * Test Member Activity
     */
     static testMethod void myUnitTest(){
     	
@@ -54,9 +54,11 @@ public class MemberActivity extends ActivityLog{
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
 		
-		Test.setCurrentPageReference(new PageReference('Page.ProjectDetail'));
-		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
-
+		MemberActivity memberAct = new MemberActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'insert', GenerateEnvironmentTest.member );
+		memberAct.log();
+		
+		MemberActivity memberAct2 = new MemberActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'delete', GenerateEnvironmentTest.member );
+		memberAct2.log();
 		
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );    	

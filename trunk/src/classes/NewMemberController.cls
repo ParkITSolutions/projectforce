@@ -26,83 +26,89 @@ public class NewMemberController {
 		
 		this.mailList 							= new List<User>();
 		List<ProjectMember__c> newMemberList 	= new List<ProjectMember__c>();
-		List<String> newMembers 				= colleagueNames.split( '[ ]*,[ ]*' );
-		
-		if( !newMembers.isEmpty() ){
-			//Find de users (where the user is not a member)
-			List<User> userList = DAOFactory.getInstance().findUserNotMember( newMembers , this.projectId );
-			
-			Map<String,Id> projectProfile = DAOFactory.getInstance().idProjectProfile();
-
-			if( !userList.isEmpty() )
-			{
+		System.debug('XXX - colleagueNames='+colleagueNames);
+		if ((colleagueNames !='') && (colleagueNames !=null)){
+			List<String> newMembers = colleagueNames.split( '[ ]*,[ ]*' );
+			System.debug('XXX - colleagueNames='+colleagueNames);
+			if ((newMembers != null) && ( !newMembers.isEmpty() )){
+				//Find de users (where the user is not a member)
+				List<User> userList = DAOFactory.getInstance().findUserNotMember( newMembers , this.projectId );
 				
-				Map<String,String> auxMap = new Map<String,String>{};
-
-				for( User user : userList ){
-					ProjectMember__c newMember = new ProjectMember__c();
-					newMember.User__c 		= user.Id;
-					newMember.Name 			= user.Name;
-					newMember.Project__c 	= this.projectId;
+				Map<String,Id> projectProfile = DAOFactory.getInstance().idProjectProfile();
+	
+				if( !userList.isEmpty() ) {
 					
-					auxMap.put( user.Name,user.Name );		
-		
-					Id idProfile = null;
-					if( isAdministrator ){
-						idProfile = projectProfile.get( 'Project Administrator' );
+					Map<String,String> auxMap = new Map<String,String>{};
+	
+					for( User user : userList ){
+						ProjectMember__c newMember = new ProjectMember__c();
+						newMember.User__c 		= user.Id;
+						newMember.Name 			= user.Name;
+						newMember.Project__c 	= this.projectId;
+						
+						auxMap.put( user.Name,user.Name );		
+			
+						Id idProfile = null;
+						if( isAdministrator ){
+							idProfile = projectProfile.get( 'Project Administrator' );
+						}
+						else{
+							idProfile = projectProfile.get( 'Member Profile' );
+						}
+			
+						newMember.Profile__c = idProfile; 
+						newMemberList.add( newMember );
+			
+						//If Email Notification is selected
+						if( emailNotifications ){
+							this.mailList.add( user );
+						}
+					}
+					
+					//insert newMemberList;
+					DAOFactory.getInstance().newMemberList( newMemberList );
+					
+					if( emailNotifications ){
+						this.sendMails();
+					}
+					
+					if ( userList.size() == newMembers.size() ){
+						//Ok
+						this.postAction = 'NewMemberSuccess';
+						if( System.currentPageReference().getUrl().contains( 'ProjectDetail' ) || System.currentPageReference().getUrl().contains( 'ProjectTaskDetail' ) ){
+							this.postAction = 'ProjectDetail-'+this.postAction;
+						}
 					}
 					else{
-						idProfile = projectProfile.get( 'Member Profile' );
-					}
-		
-					newMember.Profile__c = idProfile; 
-					newMemberList.add( newMember );
-		
-					//If Email Notification is selected
-					if( emailNotifications ){
-						this.mailList.add( user );
-					}
-				}
-				
-				//insert newMemberList;
-				DAOFactory.getInstance().newMemberList( newMemberList );
-				
-				if( emailNotifications ){
-					this.sendMails();
-				}
-				
-				if ( userList.size() == newMembers.size() ){
-					//Ok
-					this.postAction = 'NewMemberSuccess';
-					if( System.currentPageReference().getUrl().contains( 'ProjectDetail' ) || System.currentPageReference().getUrl().contains( 'ProjectTaskDetail' ) ){
-						this.postAction = 'ProjectDetail-'+this.postAction;
+						//Some users were not admitted
+						String stringAux='';
+						for( String str : newMembers ){
+							if( str != '' &&  str != null && auxMap.get(str) != str )
+								stringAux += ', ' + str;
+						}
+						
+						this.listErrors = stringAux;
+						this.postAction = 'NewMemberPartialSuccess';
+						
 					}
 				}
 				else{
-					//Some users were not admitted
-					String stringAux='';
-					for( String str : newMembers ){
-						if( str != '' &&  str != null && auxMap.get(str) != str )
-							stringAux += ', ' + str;
-					}
-					
-					this.listErrors = stringAux;
-					this.postAction = 'NewMemberPartialSuccess';
-					
+					//Empty or invalid users
+					this.postAction = 'NewMemberEmptyWithError';
+					this.listErrors = colleagueNames;
 				}
 			}
-			else{
-				//Empty or invalid users
-				this.postAction = 'NewMemberEmptyWithError';
-				this.listErrors = colleagueNames;
+			else {
+				//must enter at least one user
+				this.postAction = 'NewMemberEmpty';
 			}
+			
+			this.colleagueNames='';
 		}
-		else {
-			//must enter at least one user
+		else{
 			this.postAction = 'NewMemberEmpty';
+			System.debug('XXX - this postaction = newmember...');
 		}
-		
-		this.colleagueNames='';
 	}
 
 	/**

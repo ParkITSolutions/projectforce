@@ -10,7 +10,11 @@
 		task.dueDate	= '{!$Component.Form.dueDate}';
 		task.duration	= '{!$Component.Form.duration}';
 		task.assignee	= '{!$Component.Form.membersTask}';
-		task.errorClass = '.taskErrors'
+		task.errorClass = '.taskErrors';
+		
+		$$('.disabled').each(function(){
+			this.disabled = true;
+		});
     </script>
 
     <apex:outputPanel id="Content" styleClass="contentNewTask overlay" style="display:none;" layout="block">
@@ -54,7 +58,7 @@
 
                 <apex:outputLabel >Start Date</apex:outputLabel>
                 <apex:outputPanel styleclass="required"></apex:outputPanel>
-                <apex:inputField id="startDate" value="{!myTask.StartDate__c}" />
+                <apex:inputField id="startDate" value="{!myTask.StartDate__c}" styleClass="disabled"/>
                 
                 <br />
                 <apex:outputPanel id="taskStartDateError" styleClass="taskErrors" style="display:none;">Error: You must enter a value</apex:outputPanel>
@@ -62,7 +66,7 @@
 
                 <apex:outputLabel >Due Date</apex:outputLabel>
                 <apex:outputPanel styleclass="notrequired"></apex:outputPanel>
-                <apex:inputField id="dueDate" value="{!myTask.EndDate__c}" />
+                <apex:inputField id="dueDate" value="{!myTask.EndDate__c}" styleClass="disabled"/>
                 
                 <br />
                 <apex:outputPanel id="taskDueDateErrorValue" styleClass="taskErrors" layout="block" style="display:none;">Error: You must enter a valid value</apex:outputPanel>

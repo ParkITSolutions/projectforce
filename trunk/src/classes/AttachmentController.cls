@@ -8,7 +8,7 @@ public class AttachmentController {
 	private final String  ERROR_NO_FILE   = 'Please select a file to upload.';
 	private final String  ERROR_IMG_TYPE  = 'The image must be .jpg, .gif or .png';	
 	private final String  ERROR_BIN_TYPE  = 'Binary type are not allowed.';	
-	private final String  ERROR_SIZE_FILE = 'Maximum size is 120 KB';
+	private final String  ERROR_SIZE_FILE = 'Maximum size is 128 KB';
 	
 	private Set<String> imagesTypes = new Set<String> {'image/jpeg', 'image/pjpeg', 'image/png', 'image/x-png', 'image/gif'};
 	private Set<String> notAllowedTypes = new Set<String> {'application/octet-stream'};

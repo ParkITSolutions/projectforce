@@ -185,7 +185,7 @@ public class MessageLog {
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
 		
-		Test.setCurrentPageReference(new PageReference('Page.ProjectDetail'));
+		Test.setCurrentPageReference( new PageReference( 'Page.ProjectDetail' ) );
 		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
 
 		
