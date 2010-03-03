@@ -38,9 +38,8 @@ public class AttachmentActivity extends ActivityLog{
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
 		
-		Test.setCurrentPageReference(new PageReference('Page.ProjectDetail'));
-		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
-
+		AttachmentActivity attachmentAct = new AttachmentActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'update' );
+		attachmentAct.log();
 		
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );    	

@@ -80,12 +80,12 @@
                     
                         <apex:commandLink id="AcceptButton" value="Accept" 
                             action="{!action}" 
-                            onClick="swirly.show(); promptOverlay.close();"
+                            onClick="promptOverlay.close(); swirly.show();"
                             onComplete="promptOverlay.postAction();" 
                             reRender="HiddenPanel, ComponentBody"
                             styleClass="Accept submitButton"
                         />
-                            
+                            <!-- onComplete="promptOverlay.postAction();"  -->
                         <apex:outputLink id="CancelButton" 
                             value="javascript:;"
                             onClick="newMemberFunction.clear('{!$Component.colleaguesNames}'); promptOverlay.close(); "

@@ -52,7 +52,7 @@ public class ProjectActivity extends ActivityLog{
 	}
 	
 	/**
-    * Test 
+    * Test Project Activity
     */
     static testMethod void myUnitTest(){
     	
@@ -60,9 +60,16 @@ public class ProjectActivity extends ActivityLog{
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
 		
-		Test.setCurrentPageReference(new PageReference('Page.ProjectDetail'));
-		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
-
+		Project2__c oldPrj = GenerateEnvironmentTest.project;
+		Project2__c newPrj = oldPrj.clone();
+		newPrj.Name = 'newName';
+		
+		ProjectActivity prjActivity = new ProjectActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'update', oldPrj, newPrj );
+		prjActivity.log();
+		
+		newPrj.Access__c = 'Closed';
+		ProjectActivity prjActivity2 = new ProjectActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'update', oldPrj, newPrj );
+		prjActivity2.log();
 		
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );    	

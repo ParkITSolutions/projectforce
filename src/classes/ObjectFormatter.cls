@@ -8,7 +8,6 @@ public class ObjectFormatter {
 	* Constructor
 	*/
 	public ObjectFormatter(){
-	
 	}
 	
 	/**
@@ -73,23 +72,23 @@ public class ObjectFormatter {
     		
     		Task taskAux = new Task();
     		
-    		taskAux.id = task.id;
-			taskAux.idDisplay = task.Id__c;
-			taskAux.name = task.Name; 
-			taskAux.status = task.Status__c;
-			taskAux.ownerId = task.OwnerId;
-			taskAux.isMilestone = task.Milestone__c;
-			taskAux.priority = task.Priority__c; 
+    		taskAux.id 					= task.id;
+			taskAux.idDisplay 			= task.Id__c;
+			taskAux.name 				= task.Name; 
+			taskAux.status 				= task.Status__c;
+			taskAux.ownerId 			= task.OwnerId;
+			taskAux.isMilestone 		= task.Milestone__c;
+			taskAux.priority 			= task.Priority__c; 
 			taskAux.setPercentCompleted( task.PercentCompleted__c );
-			taskAux.durationDisplay = String.valueOf(task.Duration__c);
+			taskAux.durationDisplay 	= String.valueOf(task.Duration__c);
 			
 			//TODO learn about the latest milestone because no final date
 			if( task.Milestone__c ){
-				taskAux.endDateDisplay = String.valueOf(task.StartDate__c.format());
-				taskAux.endDate = task.StartDate__c;
+				taskAux.endDateDisplay 	= String.valueOf(task.StartDate__c.format());
+				taskAux.endDate 		= task.StartDate__c;
 			}else{
-				taskAux.endDateDisplay = String.valueOf(task.EndDate__c.format());
-				taskAux.endDate = task.EndDate__c;
+				taskAux.endDateDisplay 	= String.valueOf(task.EndDate__c.format());
+				taskAux.endDate 		= task.EndDate__c;
 			}
 			
 			taskAux.assignees = DAOFactory.getInstance().getAssignees( taskAux.id );
@@ -242,7 +241,7 @@ public class ObjectFormatter {
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
 		
-		Test.setCurrentPageReference(new PageReference('Page.ProjectDetail'));
+		Test.setCurrentPageReference( new PageReference( 'Page.ProjectDetail' ) );
 		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
 
 		

@@ -2,7 +2,7 @@
 * @author Matias Menafra 
 * @createdDate 1/15/2010
 */
-public class ActivityWidgetController {
+public class ActivityWidgetController{
 	
 	public String 			projectId 		{ set; get; }
 	private MessageLog 		messageObj; 			
@@ -56,7 +56,7 @@ public class ActivityWidgetController {
 				auxActivity.message 	= this.messageObj.getMessage( row.TaskAssigneeActivites__r[0] );
 			}
 			
-			if(row.TaskCommentActivites__r.size() != 0 ){
+			if( row.TaskCommentActivites__r.size() != 0 ){
 				auxActivity.changeType 	= row.TaskCommentActivites__r[0].ChangeType__c;
 				auxActivity.message 	= this.messageObj.getMessage( row.TaskCommentActivites__r[0] );
 			}
@@ -77,7 +77,7 @@ public class ActivityWidgetController {
 	}
 	
 	/**
-    * Test 
+    * Test Project Activity Widget
     */
     static testMethod void myUnitTest(){
     	
@@ -85,6 +85,15 @@ public class ActivityWidgetController {
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
 		
+		Test.setCurrentPageReference( new PageReference( 'Page.ProjectDetail' ) );
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+		
+		ActivityWidgetController actWidget = new ActivityWidgetController();
+		actWidget.getResultActivities();
+		
+		//TODO create test Activity for project
+		actWidget.projectId = GenerateEnvironmentTest.project.id;
+		actWidget.parseActivities();
 		
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );    	

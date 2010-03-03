@@ -68,7 +68,7 @@ public class NewTaskController{
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
 		
-		Test.setCurrentPageReference(new PageReference('Page.ProjectDetail'));
+		Test.setCurrentPageReference( new PageReference( 'Page.ProjectDetail' ) );
 		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
 
 		NewTaskController newTask = new NewTaskController();

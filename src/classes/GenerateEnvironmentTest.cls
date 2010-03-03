@@ -104,6 +104,7 @@ public class GenerateEnvironmentTest {
         // This project members are to delete
         member.User__c    = UserInfo.getUserId();
         member.Project__c = project.Id;
+        member.Name		  = 'Member 1';	
         member.Profile__c = project.NewMemberProfile__c; 
         
         member2.User__c    = UserInfo.getUserId();
