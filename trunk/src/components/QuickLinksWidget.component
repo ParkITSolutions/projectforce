@@ -36,14 +36,12 @@
         <!-- dynamic content goes here -->
         <apex:outputPanel id="QuickLinksWidget" layout="block" styleClass="quickLinksWidget" >
             <!-- Body of Widget goes here --> 
-            <!-- <apex:outputPanel id="newTaskPanel" layout="block" styleclass="textQuickLink"  rendered="{!IF(AND(userPermission.canManage, AND(userPermission.canCreate,viewNewLinks)),true, false)}"> -->
-            <apex:outputPanel id="newTaskPanel" layout="block" styleclass="textQuickLink"  rendered="{!IF(canView,true, false)}">
+            <apex:outputPanel id="newTaskPanel" layout="block" styleclass="textQuickLink"  rendered="{!IF(AND(canView, viewNewLinks),true, false)}">
                 <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
                 <apex:outputLink id="newTaskLink" value="javascript:;" onClick="promptOverlay.open(newTask);">New Task</apex:outputLink>
             </apex:outputPanel>
             
-            <!-- <apex:outputPanel id="newmilestonPanel" layout="block" styleclass="textQuickLink"  rendered="{!IF(AND(userPermission.canManage, viewNewLinks),true, false)}"> -->
-            <apex:outputPanel id="newmilestonPanel" layout="block" styleclass="textQuickLink"  rendered="{!IF(canView,true, false)}">
+            <apex:outputPanel id="newmilestonPanel" layout="block" styleclass="textQuickLink"  rendered="{!IF(AND(canView, viewNewLinks),true, false)}">
                 <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
                 <apex:outputLink id="newMilestoneLink" value="javascript:;" onClick="promptOverlay.open(newMilestone);">New Milestone</apex:outputLink>
             </apex:outputPanel>

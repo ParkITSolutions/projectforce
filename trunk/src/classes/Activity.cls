@@ -1,5 +1,6 @@
 /**
-* @author Matias Menafra 1/15/2010
+* @author Matias Menafra 
+* @createdDate 1/15/2010
 */
 public class Activity {
 	
@@ -20,16 +21,15 @@ public class Activity {
 	
 	/**
 	* Setter method for timestamp
-	* @param Datetime value
-	* @return void
+	* @param value
 	*/
-	public void setTimestamp(Datetime value){
+	public void setTimestamp( Datetime value ){
 		this.timestamp = value;
 	}
 	
 	/**
 	* Getter method for timestamp, includes date format
-	* @return String
+	* @return timestamp
 	*/
 	public String getTimestamp(){
 		return this.timestamp.format('EEE, d MMM yyyy HH:mm');
@@ -37,7 +37,6 @@ public class Activity {
 	
 	/**
 	* Method for setting the string containing the path to the action image to be displayed in the widget
-	* @return void
 	*/
 	public void setImagePath(){
 		
@@ -87,7 +86,6 @@ public class Activity {
 	
 	/**
 	* Method for setting the activity header inside the widget. 
-	* @return void
 	*/
 	public void setHeader(){
 		
@@ -134,4 +132,92 @@ public class Activity {
 			}
 		}
 	}
+	
+	/**
+    * Test 
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		Activity activity = new Activity();
+		
+		activity.setTimestamp( Datetime.Now() );
+		activity.getTimestamp();
+		
+		activity.action 	= '';
+		activity.changeType = 'Project_Name';
+		activity.setImagePath(); 
+		activity.setHeader();
+		System.assertEquals( 'document-new.png', activity.imagePath );
+		System.assertEquals( 'Project Updated', activity.header );
+		
+		activity.action 	= 'insert';
+		activity.changeType = 'Member_Insert';
+		activity.setImagePath(); 
+		activity.setHeader();
+		System.assertEquals( 'add-user.png', activity.imagePath );
+		System.assertEquals( 'Member Added', activity.header );
+		
+		activity.action 	= 'delete';
+		activity.changeType = 'Member_Delete';
+		activity.setImagePath(); 
+		activity.setHeader();
+		System.assertEquals( 'remove-user.png', activity.imagePath );
+		System.assertEquals( 'Member Removed', activity.header );
+		
+		activity.action 	= 'insert';
+		activity.changeType = 'Task_Insert';
+		activity.setImagePath(); 
+		activity.setHeader();
+		System.assertEquals( 'ticket.png', activity.imagePath );
+		System.assertEquals( 'Task Added', activity.header );
+		
+		activity.action 	= 'update';
+		activity.changeType = 'Task_Insert';
+		activity.setImagePath(); 
+		activity.setHeader();
+		System.assertEquals( 'ticket_edit.png', activity.imagePath );
+		System.assertEquals( 'Task Updated', activity.header );
+		
+		activity.action 	= 'delete';
+		activity.changeType = 'Task_Insert';
+		activity.setImagePath(); 
+		activity.setHeader();
+		System.assertEquals( 'ticket.png', activity.imagePath );
+		System.assertEquals( 'Task Removed', activity.header );
+		
+		activity.action 	= 'insert';
+		activity.changeType = 'TaskAssignee_Insert';
+		activity.setImagePath(); 
+		activity.setHeader();
+		System.assertEquals( 'add-user.png', activity.imagePath );
+		System.assertEquals( 'Assignee Added', activity.header );
+		
+		activity.action 	= 'delete';
+		activity.changeType = 'TaskAssignee_Delete';
+		activity.setImagePath(); 
+		activity.setHeader();
+		System.assertEquals( 'remove-user.png', activity.imagePath );
+		System.assertEquals( 'Assignee Removed', activity.header );
+		
+		activity.action 	= 'insert';
+		activity.changeType = 'TaskComment_Insert';
+		activity.setImagePath(); 
+		activity.setHeader();
+		System.assertEquals( 'comments.png', activity.imagePath );
+		System.assertEquals( 'Comment Added', activity.header );
+		
+		activity.action 	= 'delete';
+		activity.changeType = 'TaskComment_Delete';
+		activity.setImagePath(); 
+		activity.setHeader();
+		System.assertEquals( 'comments.png', activity.imagePath );
+		System.assertEquals( 'Comment Removed', activity.header );
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

@@ -34,10 +34,10 @@
 										</a>
 									</li>
 									<li>
-										<apex:commandLink action="{!getAllProjectTasks}" id="refreshTaskWidget" value="All Tasks" rerender="{!$Component.TaskWidgetFull}" onclick="showLoaderAll(document.getElementById('filter'));dropDownContact(document.getElementById('filter'));" onComplete="hideLoader('results_task_loader');" />
+										<apex:commandLink action="{!getAllProjectTasks}" id="refreshTaskWidget" value="All Tasks" rerender="{!$Component.TaskWidgetFull}" onclick="swirly.show();dropDownContact(document.getElementById('filter'));" onComplete="swirly.hide();" />
 									</li>
 									<li>
-										<apex:commandLink action="{!getMyProjectTasks}" value="My Tasks" rerender="{!$Component.TaskWidgetFull}" onclick="showLoaderMy(document.getElementById('filter'));dropDownContact(document.getElementById('filter'));" onComplete="hideLoader('results_task_loader');" />
+										<apex:commandLink action="{!getMyProjectTasks}" value="My Tasks" rerender="{!$Component.TaskWidgetFull}" onclick="swirly.show();dropDownContact(document.getElementById('filter'));" onComplete="swirly.hide();" />
 									</li>	
 								</ul>
 							</li>

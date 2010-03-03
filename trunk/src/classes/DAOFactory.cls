@@ -457,7 +457,11 @@ public class DAOFactory {
     public void deleteAttachments( String attachments ){
         DAOAttachment.deleteAttachment( attachments );
     }
-    
+
+    public List<Attachment> csvExport( String fileName ){
+    	return DAOAttachment.getCsvExport( fileName );
+    }
+        
     /*-----------------------------------------------------------------------------------------------------------------------------*/
     
     /*--------------------------------------------------- User operations ------------------------------------------------------*/
@@ -539,6 +543,17 @@ public class DAOFactory {
 		DAOSetup.updateProjectSetup( projectSetup );
 	}
 	
+	
+	/*-----------------------------------------------------------------------------------------------------------------------------*/
+    
+    /*--------------------------------------------------- Task Comments operations ------------------------------------------------------*/
+	/**
+	* Delete a comment from a task
+	* @param String taskCommentId
+	*/
+	public void deleteTaskComment(String taskCommentId){
+		DAOTaskComment.deleteTaskComment(taskCommentId);
+	}
     /*-----------------------------------------------------------------------------------------------------------------------------*/
     
 }

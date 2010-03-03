@@ -15,7 +15,6 @@ public class ObjectFormatter {
 	* 
 	*
 	*/
-	//TODO javadoc
 	public static List<Activity> formatProjectActivities( List<Activity__c> activityList ){
 		
 		MessageLog messageObj = new MessageLog();
@@ -66,7 +65,6 @@ public class ObjectFormatter {
 	*
 	*
 	*/
-	//TODO javadoc
 	public static List<Task> formatTasks( List<ProjectTask__c> taskList ){
 		
 		List<Task> tasks = new List<Task>();
@@ -183,7 +181,6 @@ public class ObjectFormatter {
 	* 
 	*
 	*/
-	//TODO javadoc
 	public static List<AttachmentObj> formatAttachments( List<Attachment> attachments ){
 		
 		List<AttachmentObj> formattedAttachments = new List<AttachmentObj>();
@@ -207,7 +204,6 @@ public class ObjectFormatter {
 	* 
 	*
 	*/
-	//TODO javadoc
 	public static List<Task> formatAssigneeTask( List<ProjectAssignee__c> listOfAssignees ){
 	
         Task tempTask;
@@ -236,4 +232,21 @@ public class ObjectFormatter {
  	
 		return tasks;
 	}
+	
+	/**
+    * Test 
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		Test.setCurrentPageReference(new PageReference('Page.ProjectDetail'));
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

@@ -97,4 +97,29 @@ public class TaskActivity extends ActivityLog{
 			}
 		}
 	}
+	
+	/**
+	* Test method
+	*/
+    static testMethod void myUnitTest(){
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		ProjectTask__c task = GenerateEnvironmentTest.task;
+		ProjectTask__c task2 = task.clone();
+		task2.name = 'newtaskname';
+		task2.DurationUI__c = '22';
+		task2.PercentCompleted__c = 100.0;
+		task2.Status__c = 'Closed';
+		
+		TaskActivity tA = new TaskActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'update', task2, task );	
+		
+    	task = GenerateEnvironmentTest.task.clone();
+    	
+    	tA = new TaskActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'insert', task );
+    	tA = new TaskActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'delete', task ); 
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );
+    }
 }

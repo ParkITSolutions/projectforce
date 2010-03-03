@@ -1,5 +1,6 @@
 /**
-* @author Matias Menafra 1/11/2010
+* @author Matias Menafra 
+* @createdDate 1/11/2010
 */
 public class MessageLog {
 	
@@ -11,8 +12,8 @@ public class MessageLog {
 	
 	/**
 	* Method in charge of retrieving the message log for each activity
-	* @param sObject activity
-	* @return String
+	* @param activity
+	* @return message
 	*/
 	public String getMessage( sObject activity ){
 		
@@ -53,8 +54,8 @@ public class MessageLog {
 	
 	/**
 	* Method for generating specific messages for the Project logs
-	* @param ProjectActivity__c activity
-	* @return String
+	* @param activity
+	* @return msg
 	*/
 	private String messageProject( ProjectActivity__c activity ){
 		
@@ -73,8 +74,8 @@ public class MessageLog {
 	
 	/**
 	* Method for generating specific messages for the Task logs
-	* @param TaskActivity__c activity
-	* @return String
+	* @param activity
+	* @return msg
 	*/
 	private String messageTask( TaskActivity__c activity ){
 		
@@ -109,8 +110,8 @@ public class MessageLog {
 	
 	/**
 	* Method for generating specific messages for the Task Assignee logs
-	* @param TaskAssigneeActivity__c activity
-	* @return String
+	* @param activity
+	* @return msg
 	*/
 	private String messageAssignee( TaskAssigneeActivity__c activity ){
 		
@@ -129,8 +130,8 @@ public class MessageLog {
 	
 	/**
 	* Method for generating specific messages for the Task Comment logs
-	* @param TaskCommentActivity__c activity
-	* @return String
+	* @param activity
+	* @return msg
 	*/
 	private String messageTaskComment( TaskCommentActivity__c activity ){
 		
@@ -149,8 +150,8 @@ public class MessageLog {
 	
 	/**
 	* Method for generating specific messages for the Member logs
-	* @param MemberActivity__c activity
-	* @return String
+	* @param activity
+	* @return msg
 	*/
 	private String messageMember( MemberActivity__c activity ){
 		String msg = '';
@@ -174,4 +175,21 @@ public class MessageLog {
 	private String messageAttachment(){
 		return '';
 	}
+	
+	/**
+    * Test 
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		Test.setCurrentPageReference(new PageReference('Page.ProjectDetail'));
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

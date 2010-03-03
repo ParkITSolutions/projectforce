@@ -167,7 +167,6 @@
     <div class="main_content" id="main_content">
         <div class="centerCol">
            <div class="holder">
-                <div id="swirlyDetail" class="swirlyDetail" style="display: none;" />
                 <apex:form id="mainContentForm">
 						 
                     <!-- sfdc detail -->

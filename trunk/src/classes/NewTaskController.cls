@@ -1,7 +1,7 @@
 /**
 * @author Andres Canavesi
 */
-public class NewTaskController {
+public class NewTaskController{
 	
 	private List<ProjectMember__c> projectMembers;
 	public  String[] assignees 						{ set; get; }
@@ -30,23 +30,25 @@ public class NewTaskController {
 	
 	/**
 	* Action Method which inserts the new Task
-	* @return void
 	*/
 	public void action(){
 		myTask.Project__c = this.projectId;
+		
 		DAOFactory.getInstance().insertTask( myTask, this.assignees );
 		this.postAction = 'TaskCreatedSuccess';
-		if(System.currentPageReference().getUrl().contains('ProjectDetail')){
+		
+		if( System.currentPageReference().getUrl().contains( 'ProjectDetail' ) ){
 			this.postAction = 'ProjectDetail-TaskCreatedSuccess';
 		}
-		this.myTask 			= new ProjectTask__c();
+		
+		this.myTask = new ProjectTask__c();
 	}
 	
 	/**
 	* Method for retrieving project members
-	* @return List<SelectOption>
+	* @return options
 	*/
-	public List<SelectOption> getMembers() {
+	public List<SelectOption> getMembers(){
 		
 		List<SelectOption> options = new List<SelectOption>();
 		
@@ -56,4 +58,34 @@ public class NewTaskController {
 		
 		return options;
 	}
+	
+	/**
+    * Test new task overlay component
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		Test.setCurrentPageReference(new PageReference('Page.ProjectDetail'));
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+
+		NewTaskController newTask = new NewTaskController();
+		
+		List<SelectOption> options = newTask.getMembers();
+		ProjectTask__c task = new ProjectTask__c();
+		task.Name 			= 'task 1';
+        task.Project__c 	= GenerateEnvironmentTest.project.id;
+        task.StartDate__c 	= Date.today();
+        task.EndDate__c 	= Date.today();
+        task.DurationUI__c 	= '2';
+        newTask.myTask		= task;
+		newTask.action();
+		
+		System.assertEquals( 'ProjectDetail-TaskCreatedSuccess', newTask.postAction );
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

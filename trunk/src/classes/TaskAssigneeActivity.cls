@@ -51,4 +51,23 @@ public class TaskAssigneeActivity extends ActivityLog{
 			DAOFactory.getInstance().logTaskAssigneeActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.assigneeName, this.taskName );
 		}
 	}
+	
+	/**
+	* Test 
+	*/
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+    	
+    	ProjectAssignee__c a = GenerateEnvironmentTest.assi.clone();    	
+    	TaskAssigneeActivity tA = new TaskAssigneeActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'insert', a );
+    	
+    	a = GenerateEnvironmentTest.assi.clone();    	
+    	tA = new TaskAssigneeActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'delete', a );
+    	
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );
+    }	
 }

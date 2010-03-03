@@ -30,22 +30,25 @@ public class NewMilestoneController {
 	
 	/**
 	* Action Method which inserts the new Milestone
-	* @return void
 	*/
 	public void action(){
 		myTask.Project__c 	= this.projectId;
 		myTask.Milestone__c = true;
+		
 		DAOFactory.getInstance().insertTask( myTask, this.assignees );
+		
 		this.postAction = 'MilestoneCreatedSuccess';
-		if(System.currentPageReference().getUrl().contains('ProjectDetail')){
+		
+		if( System.currentPageReference().getUrl().contains( 'ProjectDetail' ) ){
 			this.postAction = 'ProjectDetail-MilestoneCreatedSuccess';
 		}
-		this.myTask 			= new ProjectTask__c();
+		
+		this.myTask = new ProjectTask__c();
 	}
 	
 	/**
 	* Method for retrieving project members
-	* @return List<SelectOption>
+	* @return options
 	*/
 	public List<SelectOption> getMembers() {
 		
@@ -57,4 +60,37 @@ public class NewMilestoneController {
 		
 		return options;
 	}
+	
+	/**
+    * Test new milestone overlay component
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+    	
+    	Test.setCurrentPageReference(new PageReference('Page.ProjectDetail'));
+    	
+    	System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.Id );
+		NewMilestoneController newMilestone = new NewMilestoneController();
+		
+		List<SelectOption> options = newMilestone.getMembers();
+		
+		ProjectTask__c mile = new ProjectTask__c();
+		mile.Name 					= 'milestone';
+        mile.Project__c 			= GenerateEnvironmentTest.project.id;
+        mile.StartDate__c 			= Date.today();
+        mile.DurationUI__c 			= '2';
+        mile.PercentCompleted__c 	= 55;
+        mile.Milestone__c 			= true;
+        
+        newMilestone.myTask	= mile;
+		newMilestone.action();
+		
+		System.assertEquals( 'ProjectDetail-MilestoneCreatedSuccess', newMilestone.postAction );
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

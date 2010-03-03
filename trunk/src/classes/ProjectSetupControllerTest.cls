@@ -1,7 +1,7 @@
 @isTest private  class ProjectSetupControllerTest {
 	
 	/**
-    * Test customException
+    * Test ProjectSetupControllerTest
     */
     static testMethod void myUnitTest(){
     	

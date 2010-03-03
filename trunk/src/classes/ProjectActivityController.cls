@@ -1,5 +1,6 @@
 /**
-*@author Matias Menafra  1/20/2009
+* @author Matias Menafra  
+* @createdDate 1/20/2010
 */
 public class ProjectActivityController {
 	
@@ -16,5 +17,22 @@ public class ProjectActivityController {
 		this.paginator.project.id 	= this.projectId;
 		
 		paginator.loadProjectActivities();
-	} 
+	}
+	
+	/**
+    * Test 
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		Test.setCurrentPageReference(new PageReference('Page.ProjectDetail'));
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    } 
 }

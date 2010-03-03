@@ -21,6 +21,7 @@ public class QuickLinksWidgetController {
         userPermission.setProject(this.projectId);
         userPermission.setObjectType('Project');
         userPermission.setPermissions();
+        //If is member or canmanage
         this.canView = userPermission.isUserMemberOfProject( UserInfo.getUserId() , this.projectId ) || userPermission.getCanManage();
     }
     

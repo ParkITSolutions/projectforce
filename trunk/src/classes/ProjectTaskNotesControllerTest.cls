@@ -13,7 +13,6 @@ public with sharing class ProjectTaskNotesControllerTest {
 		ProjectTask__c pt = new ProjectTask__c();
 		
 		ProjectTaskNotesController nt = new ProjectTaskNotesController( new ApexPages.StandardController( pt ));
-		nt.CancelEdit();
 		nt.genPermissions();
 		nt.obtainData();
 		nt.SaveEditAndExit();
@@ -21,7 +20,6 @@ public with sharing class ProjectTaskNotesControllerTest {
 		
 		System.currentPageReference().getParameters().put('id_task', GenerateEnvironmentTest.task.id );
 		nt = new ProjectTaskNotesController( new ApexPages.StandardController( GenerateEnvironmentTest.task ));
-		nt.CancelEdit();
 		nt.genPermissions();
 		nt.obtainData();
 		nt.SaveEditAndExit();
@@ -29,7 +27,6 @@ public with sharing class ProjectTaskNotesControllerTest {
 		
 		System.currentPageReference().getParameters().put('id_task', GenerateEnvironmentTest.task.id );
 		nt = new ProjectTaskNotesController( new ApexPages.StandardController( GenerateEnvironmentTest.task ));
-		nt.CancelEdit();
 		nt.genPermissions();
 		nt.obtainData();
 		nt.SaveEditAndExit();
