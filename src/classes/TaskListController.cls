@@ -107,9 +107,9 @@ public class TaskListController {
         }
        
         List<Attachment> attachs =  new List<Attachment>();
-        Attachment doc = null;
+        Attachment doc = null; 
        
-        attachs = [select Id, Name from Attachment where Name = 'pf__export.csv'];
+        attachs = DAOFactory.getInstance().csvExport( 'pf__export.csv' );
         if( attachs.size() > 0 )
             doc = attachs[0];
         else{
@@ -124,4 +124,41 @@ public class TaskListController {
         upsert doc;
         this.csvFileId = doc.Id;
     }   	
+    
+	/**
+	* Test ProjectDetailController
+	*/
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+    	
+    	TaskListController tKC;
+    	
+    	try{
+    		tKC = new TaskListController();
+    	}catch( CustomException e ){
+    		System.assert( e.getMessage().contains('There is not a project selected' ));
+    	}
+
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+    	tKC = new TaskListController();
+	
+		tKC.getFilterItems();
+        List<Attachment> attachs =  new List<Attachment>();
+        attachs = DAOFactory.getInstance().csvExport( 'pf__export.csv' );
+        
+        tKC.generateTaskListCsv();
+
+        List<Attachment> attachs2 =  new List<Attachment>();
+        attachs = DAOFactory.getInstance().csvExport( 'pf__export.csv' );
+
+
+		System.assertEquals( attachs, attachs2 );    	
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );
+    }
+    
+        
 }

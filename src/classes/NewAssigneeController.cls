@@ -45,7 +45,33 @@ public class NewAssigneeController{
 		return members;
 	}
 	
+	/**
+	* 
+	*/
 	public void loadCandidates(){
 		this.candidates = DAOFactory.getInstance().getCandidatesToAssign( this.taskId );
 	}
+	
+	/**
+    * Test new assignee overlay component
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+    	
+    	System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.task.Id );
+		NewAssigneeController newAssignee = new NewAssigneeController();
+		
+		newAssignee.loadCandidates();
+		List<SelectOption> members = newAssignee.getCandidatesToAssign();
+		newAssignee.assignees.add( members.get(0).getValue() ); 
+		newAssignee.action();
+		
+		System.assertEquals( 'MemberAssignedSuccess', newAssignee.postAction );
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

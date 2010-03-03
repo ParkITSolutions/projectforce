@@ -45,10 +45,10 @@
 									</a>
 								</li>
 								<li>
-									<apex:commandLink action="{!genAllProjectTasks}" id="refreshMilestoneWidget" rerender="milestonePanelCenter" value="All Milestones"  onclick="dropDownContact($('filterMile'));showSwirly('milestoneLoadDiv');$('filterMile').innerHTML = 'View: All Milestones';" onComplete="hideLoader('milestoneLoadDiv');" />
+									<apex:commandLink action="{!genAllProjectTasks}" id="refreshMilestoneWidget" rerender="milestonePanelCenter" value="All Milestones"  onclick="dropDownContact($('filterMile'));swirly.show();$('filterMile').innerHTML = 'View: All Milestones';" onComplete="swirly.hide();" />
 								</li>
 								<li>
-									<apex:commandLink action="{!getMyProjectMilestones}" value="My Milestones" rerender="milestonePanelCenter" onclick="dropDownContact($('filterMile'));showSwirly('milestoneLoadDiv');$('filterMile').innerHTML = 'View: My Milestones';" onComplete="hideLoader('milestoneLoadDiv');" />
+									<apex:commandLink action="{!getMyProjectMilestones}" value="My Milestones" rerender="milestonePanelCenter" onclick="dropDownContact($('filterMile'));swirly.show();$('filterMile').innerHTML = 'View: My Milestones';" onComplete="swirly.hide();" />
 								</li>	
 							</ul>
 						</li>

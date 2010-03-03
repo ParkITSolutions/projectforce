@@ -1,11 +1,12 @@
 /**
-* @author Matias Menafra 1/15/2010
+* @author Matias Menafra 
+* @createdDate 1/15/2010
 */
 public class ActivityWidgetController {
 	
-	public String projectId 			{ set; get; }
-	private MessageLog messageObj = null;
-	private List<Activity> resultActivities = null;
+	public String 			projectId 		{ set; get; }
+	private MessageLog 		messageObj; 			
+	private List<Activity> 	resultActivities; 
 	
 	/**
 	* Constructor
@@ -21,7 +22,6 @@ public class ActivityWidgetController {
 	
 	/**
 	* Method which collects the latest 10 project activities and parses them.
-	* @return void
 	*/
 	public void parseActivities(){
 		
@@ -70,10 +70,23 @@ public class ActivityWidgetController {
 	
 	/**
 	* Getter for returning the list with the 10 latest activities for the widget.
-	* @return List<Activity>
+	* @return resultActivities
 	*/
 	public List<Activity> getResultActivities(){
-		
 		return this.resultActivities;
 	}
+	
+	/**
+    * Test 
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

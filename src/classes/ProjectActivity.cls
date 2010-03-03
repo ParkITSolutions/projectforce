@@ -1,5 +1,6 @@
 /**
-* @author Matias Menafra 1/7/2010
+* @author Matias Menafra 
+* @createdDate 1/15/2010
 */
 public class ProjectActivity extends ActivityLog{
 
@@ -10,12 +11,12 @@ public class ProjectActivity extends ActivityLog{
 	
 	/**
 	* Constructor
-	* @param String projectId
-	* @param DateTime timeStamp
-	* @param String modifiedBy
-	* @param String action
-	* @param Project2__c oldProject
-	* @param Project2__c newProject
+	* @param projectId
+	* @param timeStamp
+	* @param modifiedBy
+	* @param action
+	* @param oldProject
+	* @param newProject
 	*/
 	public ProjectActivity( String projectId, DateTime timeStamp, String modifiedBy, String action, Project2__c oldProject, Project2__c newProject ){
 		
@@ -27,7 +28,6 @@ public class ProjectActivity extends ActivityLog{
 	
 	/**
 	* Method which will take care of logging individual changes to Project Object
-	* @return void
 	*/
 	public override void log(){
 		
@@ -49,6 +49,22 @@ public class ProjectActivity extends ActivityLog{
 				DAOFactory.getInstance().logProjectActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, '', this.access );
 			}
 		}
-		
 	}
+	
+	/**
+    * Test 
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		Test.setCurrentPageReference(new PageReference('Page.ProjectDetail'));
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

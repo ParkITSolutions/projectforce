@@ -49,4 +49,22 @@ public class TaskCommentActivity extends ActivityLog{
 			DAOFactory.getInstance().logTaskCommentActivity( this.projectId, this.timeStamp, this.modifiedBy, this.action, this.changeType, this.taskName );
 		}
 	}
+	
+	/**
+	* Test
+	*/
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+    	
+    	TaskComment__c c = new TaskComment__c(); 
+    	TaskCommentActivity tC = new TaskCommentActivity( GenerateEnvironmentTest.project.id, Datetime.now(), Userinfo.getUserId(), 'insert', c );
+    	tC = new TaskCommentActivity( GenerateEnvironmentTest.project.id, Datetime.now(), Userinfo.getUserId(), 'delete', c );
+    	
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );
+    }		
+	
 }

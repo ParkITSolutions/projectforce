@@ -19,8 +19,9 @@ public class NewMemberController {
 		this.mailList = null;
 	}
 	
-	
-
+	/**
+	* Action Method which inserts the new Member
+	*/
 	public void action(){
 		
 		this.mailList 							= new List<User>();
@@ -29,7 +30,7 @@ public class NewMemberController {
 		
 		if( !newMembers.isEmpty() ){
 			//Find de users (where the user is not a member)
-			List<User>  userList = DAOFactory.getInstance().findUserNotMember( newMembers , this.projectId );
+			List<User> userList = DAOFactory.getInstance().findUserNotMember( newMembers , this.projectId );
 			
 			Map<String,Id> projectProfile = DAOFactory.getInstance().idProjectProfile();
 
@@ -47,12 +48,10 @@ public class NewMemberController {
 					auxMap.put( user.Name,user.Name );		
 		
 					Id idProfile = null;
-					if( isAdministrator )
-					{
+					if( isAdministrator ){
 						idProfile = projectProfile.get( 'Project Administrator' );
 					}
-					else
-					{
+					else{
 						idProfile = projectProfile.get( 'Member Profile' );
 					}
 		
@@ -75,8 +74,7 @@ public class NewMemberController {
 				if ( userList.size() == newMembers.size() ){
 					//Ok
 					this.postAction = 'NewMemberSuccess';
-					if(System.currentPageReference().getUrl().contains('ProjectDetail') || System.currentPageReference().getUrl().contains('ProjectTaskDetail'))
-					{
+					if( System.currentPageReference().getUrl().contains( 'ProjectDetail' ) || System.currentPageReference().getUrl().contains( 'ProjectTaskDetail' ) ){
 						this.postAction = 'ProjectDetail-'+this.postAction;
 					}
 				}
@@ -104,8 +102,6 @@ public class NewMemberController {
 			this.postAction = 'NewMemberEmpty';
 		}
 		
-		
-		
 		this.colleagueNames='';
 	}
 
@@ -114,7 +110,7 @@ public class NewMemberController {
 	* @return projectName
 	*/
 	public void loadProjectName(){
-		this.projectName = ProjectUtil.chopWords( ProjectUtil.chopPhrase( DAOFactory.getInstance().getProjectInfo( this.projectId ).name , 24 ));
+		this.projectName = ProjectUtil.chopWords( ProjectUtil.chopPhrase( DAOFactory.getInstance().getProjectInfo( this.projectId ).name , 24 ) );
 	}
 
 	/**
@@ -123,18 +119,25 @@ public class NewMemberController {
 	public void sendMails(){
 		String message = 'You Have Been Added to ' + this.projectName;
 		for( User user: this.mailList ){
-			SendMail( user,message );
+			SendMail( user, message );
 		}
 	}
 	
+	/**
+	* 
+	*/
 	public void setProjectId( String value ){
 		this.projectId = value;
 		this.loadProjectName();
 	}
 	
+	/**
+	* 
+	*/
 	public String getProjectId(){
 		return this.projectId;
 	}
+	
 	/**
 	* Send mail to new members
 	* @param user
@@ -165,5 +168,51 @@ public class NewMemberController {
 		mail.setHtmlBody( message );
 		// Send the email you have created.
         Messaging.sendEmail( new Messaging.SingleEmailMessage[] { mail } );
+    }
+    
+    /**
+    * Test new member overlay component
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+    	
+    	Test.setCurrentPageReference(new PageReference('Page.ProjectDetail'));
+		NewMemberController newMember = new NewMemberController();
+		
+		newMember.setProjectId( GenerateEnvironmentTest.project.Id );
+		newMember.getProjectId();
+		newMember.loadProjectName();
+		
+		newMember.colleagueNames 		= 'Miguel Soares';
+		newMember.emailNotifications 	= true;
+		newMember.isAdministrator 		= false;
+		newMember.action();
+		System.assertEquals( 'ProjectDetail-NewMemberSuccess', newMember.postAction );
+		
+		newMember.colleagueNames 		= 'Nicolas Dominguez';
+		newMember.emailNotifications 	= true;
+		newMember.isAdministrator 		= true;
+		newMember.action();
+		System.assertEquals( 'ProjectDetail-NewMemberSuccess', newMember.postAction );
+		
+		newMember.colleagueNames 		= 'Nicolas Dominguez, Miguel Soares, Nicolas Dodssminguez';
+		newMember.emailNotifications 	= false;
+		newMember.isAdministrator 		= false;
+		newMember.action();
+		System.assertEquals( 'NewMemberEmptyWithError', newMember.postAction );
+		
+		newMember.colleagueNames 		= '';
+		newMember.emailNotifications 	= false;
+		newMember.isAdministrator 		= false;
+		newMember.action();
+		System.assertEquals( 'NewMemberEmptyWithError', newMember.postAction );
+		
+		newMember.sendMails();
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );
     }
 }

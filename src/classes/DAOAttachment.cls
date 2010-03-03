@@ -51,4 +51,9 @@ public class DAOAttachment {
 	
 		return null;
 	}
+	
+    public  List<Attachment> getCsvExport( String fileName ){
+    	return  [select Id, Name from Attachment where Name =: fileName ];
+    }
+	
 }

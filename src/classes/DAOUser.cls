@@ -30,7 +30,7 @@ public class DAOUser {
 	*/
 	public Boolean isProjectMember( String projectId ){
 		
-		ProjectMember__c prjMember = [ Select p.User__c, p.Project__c, p.Profile__c, p.Name, p.Id From ProjectMember__c p Where Project__c =:projectId AND User__c =: Userinfo.getUserId() limit 1];
+		ProjectMember__c prjMember = [ Select Id, Name, CreatedDate, Profile__c, Project__c, User__c From ProjectMember__c p Where Project__c =:projectId AND User__c =: Userinfo.getUserId() limit 1];
 		
 		if( prjMember == null ){
 			return false;

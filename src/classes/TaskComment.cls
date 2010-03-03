@@ -13,4 +13,27 @@ public class TaskComment {
 	public TaskComment(){
 	
 	}
+	
+	/**
+	* Test ProjectDetailController
+	*/
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+    	
+    	TaskComment tC = new TaskComment();
+    	
+    	tc.taskId = '';
+    	tc.body =  '';
+    	tc.createdBy = '';
+    	
+    	tc.taskId = tc.taskId;
+    	tc.body = tc.body;  
+    	tc.createdBy = tc.createdBy;
+
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );
+    }			
 }

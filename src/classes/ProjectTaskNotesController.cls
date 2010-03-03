@@ -84,18 +84,6 @@ public class ProjectTaskNotesController {
 		}
 	}
 
-    /**
-    * cancel changes
-    * @return pageRef a page reference
-    */
-    public PageReference CancelEdit () {
-    	
-		PageReference pageRef = new PageReference( '/apex/ProjectTaskDetail' );
-		pageRef.getParameters().put( 'id', this.taskId );
-        pageRef.setRedirect( true );
-        
-		return pageRef;	
-	}
     
     /**
     * 

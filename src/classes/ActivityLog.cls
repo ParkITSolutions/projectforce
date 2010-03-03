@@ -1,5 +1,6 @@
 /**
 * @author Matias Menafra 1/6/2010
+* @createdDate 1/6/2010
 */
 public abstract class ActivityLog {
 	
@@ -12,9 +13,9 @@ public abstract class ActivityLog {
 	
 	/**	
 	* Constructor
-	* @param String projectId
-	* @param DateTime timeStamp
-	* @param String action
+	* @param projectId
+	* @param timeStamp
+	* @param action
 	*/
 	public ActivityLog( String projectId, DateTime timeStamp, String action ){
 		
@@ -25,7 +26,6 @@ public abstract class ActivityLog {
 	
 	/**
 	* Virtual method for logging Objects, will be overriden by sub classes
-	* @return void
 	*/
 	public virtual void log(){
 	}

@@ -70,8 +70,7 @@
                         styleclass="blackbutton" action="{!SaveEditAndExit}"
                         onclick="taskNotes.saveContent();" />
                         
-                    <apex:commandButton value="Cancel" id="cancelButton"
-                        styleclass="blackbutton" action="{!CancelEdit}" />
+                    <a href="ProjectTaskDetail?id={!taskId}" class="btn blackbutton" style="padding: 3px;">Cancel</a>
                 </apex:outputPanel>
             </apex:form>
         </apex:outputPanel>
