@@ -185,7 +185,7 @@ public class UserPermissions {
 			
 			if( ownerId == id ) 
 				canManage = true;  // Shouldnt this be called user UserId?
-			
+
 			canManageStatic = canManage;
 		}catch( Exception e ){
 			throw e;

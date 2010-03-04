@@ -145,16 +145,9 @@
                 <apex:repeat var="item" value="{!paginator.searchResults}" >
                 
                     <apex:outputpanel id="searchResultItem" layout="block" styleClass="searchResultItem">
-                    
-                        <!-- Project PAGE LINK -->
-                        <apex:outputpanel id="projectResult" layout="block" rendered="{!IF(item.resultType == 'Project',true, false)}">
-                            <a class="title" href="/apex/ProjectDetail?id={!item.id}"><apex:outputtext id="projectName" value="{!item.name}" escape="false" /></a>
-                        </apex:outputpanel>
-
-                        <!-- PROJECT TASK LINK -->
-                        <apex:outputpanel id="taskResult" layout="block" rendered="{!IF(item.resultType == 'Project Task',true, false)}">
-                            <a class="title" href="/apex/ProjectTaskDetail?id={!item.id}"><apex:outputtext id="taskName" value="{!item.name}" escape="false" /></a>
-                        </apex:outputpanel>
+                    	<a class="title" href="{!item.url}">
+                    		<apex:outputtext id="projectName" value="{!item.name}" escape="false" />
+                    	</a>
 
                         <apex:outputpanel id="description" layout="block" styleClass="matches">
                             <apex:outputText escape="false" value="{!item.matches}" />

@@ -8,6 +8,7 @@ public class SearchResults {
 	public Id id				{ set; get; }
 	public String resultType	{ set; get; }
 	public String realName		{ set; get; }
+	public String url			{ set; get; }
 		
 	/**
 	* Constructor

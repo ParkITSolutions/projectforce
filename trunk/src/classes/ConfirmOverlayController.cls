@@ -123,7 +123,7 @@ public class ConfirmOverlayController {
 		System.assertEquals( 'DeleteTasksSuccess', confirm.postAction );
 		
 		confirm.actionName 	= 'DeleteDetailTask';
-		confirm.actionIds 	= '';
+		confirm.actionIds 	= GenerateEnvironmentTest.task.id;
 		confirm.action();
 		System.assertEquals( 'DeleteTasksSuccess', confirm.postAction );
 		

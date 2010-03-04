@@ -1,6 +1,6 @@
 /**
 * @author Miguel Soares
-* @createDate
+* @createDate 02/23/2010
 */
 public class InstallController {
 
@@ -104,8 +104,6 @@ public class InstallController {
     	Test.startTest();
     	
 		InstallController install = new InstallController();
-		
-		GenerateEnvironmentTest.gen();
 		install.projectSetupActualization();
 		
     	Test.stopTest();

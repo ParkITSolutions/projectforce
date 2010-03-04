@@ -5,15 +5,13 @@ private class TaskQuickAccessControllerTest {
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
-/*
+
 		TaskQuickAccessController taq = new TaskQuickAccessController();
 		
-		taq.setTaskId( '#' + GenerateEnvironmentTest.task.Id__c );
-		taq.getTaskId();
-		taq.setError( true );
-		taq.getError();
-		taq.go();
- */
+		taq.setTaskCustomId( GenerateEnvironmentTest.task.id );
+		taq.getTaskCustomId();
+		taq.goToTaskDetail();
+
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     }    	

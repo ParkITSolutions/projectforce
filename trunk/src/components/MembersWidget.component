@@ -18,11 +18,9 @@
         
         <apex:form >
             <apex:actionFunction name="reloadMemberList" 
-                                    action="{!reloadMemberList}" 
-                                    rerender="membersWidgetContent" 
-                                    onComplete="swirly.hide();"
-                                    
-                                    />
+	            action="{!reloadMemberList}" 
+	            rerender="membersWidgetContent" 
+	            onComplete="swirly.hide();"/>
         </apex:form>
         
         <!-- widget header -->
@@ -40,7 +38,8 @@
             <!-- Body of Widget goes here -->
             
             <apex:outputpanel id="linksTop" layout="block" styleclass="panelLinksTop" >                        
-                <apex:outputLink id="NewMemberLink" styleclass="linksTop"  rendered="{!isManager}" value="javascript:;" onClick="promptOverlay.open(newMember);">New Member |</apex:outputLink>
+                <apex:outputLink id="NewMemberLink" styleclass="linksTop"  rendered="{!isManager}" value="javascript:;" onClick="promptOverlay.open(newMember);">New Member </apex:outputLink>
+                <apex:outputpanel id="middleBar" rendered="{!isManager}"  > | </apex:outputpanel>
                 <apex:outputLink id="SeeMoreLink" styleclass="linksTop" value="/apex/MembersList?id={!projectId}" > See More&#187;</apex:outputLink>
             </apex:outputpanel>
             

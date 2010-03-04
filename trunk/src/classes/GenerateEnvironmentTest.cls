@@ -24,7 +24,7 @@ public class GenerateEnvironmentTest {
     public static ProjectAssignee__c assi2 	= new ProjectAssignee__c();
     public static ProjectAssignee__c assi3 	= new ProjectAssignee__c();
 
-    public static Attachment avatar 		= new Attachment(Name = 'avatar', Body = Crypto.generateMac('HMacSHA1', Blob.valueOf('String'), Blob.valueOf('String')));
+    public static Attachment avatar 		= new Attachment(Name = 'avatar',ContentType = 'foo', Body = Crypto.generateMac('HMacSHA1', Blob.valueOf('String'), Blob.valueOf('String')));
     public static User user					= new User();
     
     public static List<ProjectProfile__c> profList = new List<ProjectProfile__c>();
@@ -34,7 +34,7 @@ public class GenerateEnvironmentTest {
     */
     public static testMethod void gen(){
 
-        ProjectUtil.setIsTest( true ); 
+        ProjectUtil.setIsTest( true );
         
         user = [ SELECT Id, Name FROM User LIMIT 1 ];
                 

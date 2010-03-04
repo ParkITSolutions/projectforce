@@ -28,16 +28,14 @@ public class DAOUser {
 	* 
 	* 
 	*/
-	public Boolean isProjectMember( String projectId ){
-		
-		ProjectMember__c prjMember = [ Select Id, Name, CreatedDate, Profile__c, Project__c, User__c From ProjectMember__c p Where Project__c =:projectId AND User__c =: Userinfo.getUserId() limit 1];
-		
-		if( prjMember == null ){
-			return false;
-		}
-		else{
-			return true;
-		}
+	public Boolean isProjectMember( String projectId )
+	{
+		List<ProjectMember__c> prjMember = [ Select Id, Name, CreatedDate, Profile__c, Project__c, User__c 
+											 From ProjectMember__c p 
+											 Where Project__c =: projectId 
+											 AND User__c =: Userinfo.getUserId() 
+											 limit 1];
+		return (!prjMember.isEmpty());
 	}
 	
 	/**

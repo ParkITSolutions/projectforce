@@ -1,5 +1,6 @@
 /**
-* @author Matias Menafra 1/7/2010
+* @author Matias Menafra 
+* @createdDate 1/7/2010
 */
 public class TaskActivity extends ActivityLog{
 
@@ -13,12 +14,12 @@ public class TaskActivity extends ActivityLog{
 	
 	/**
 	* Constructor that can handle two tasks, for comparing (update)
-	* @param String projectId
-	* @param DateTime timeStamp
-	* @param String modifiedBy	
-	* @param String action
-	* @param ProjectTask__c oldTask
-	* @param ProjectTask__c newTask
+	* @param projectId
+	* @param timeStamp
+	* @param modifiedBy	
+	* @param action
+	* @param oldTask
+	* @param newTask
 	*/
 	public TaskActivity( String projectId, DateTime timeStamp, String modifiedBy, String action, ProjectTask__c oldTask, ProjectTask__c newTask ){
 		
@@ -30,21 +31,21 @@ public class TaskActivity extends ActivityLog{
 	
 	/**
 	* Constructor for only one task (insert,  delete)
-	* @param String projectId
-	* @param DateTime timeStamp
-	* @param String modifiedBy	
-	* @param String action
-	* @param ProjectTask__c newTask
+	* @param projectId
+	* @param timeStamp
+	* @param modifiedBy	
+	* @param action
+	* @param newTask
 	*/
 	public TaskActivity( String projectId, DateTime timeStamp, String modifiedBy, String action, ProjectTask__c newTask ){
 		
 		super( projectId, timeStamp, action );
 		this.newTask = newTask;
+		this.memberId 	= modifiedBy;
 	}
 	
 	/**
 	* Method which will take care of logging individual changes to ProjectTask Object
-	* @return void
 	*/
 	public override void log(){
 		
@@ -99,26 +100,40 @@ public class TaskActivity extends ActivityLog{
 	}
 	
 	/**
-	* Test method
+	* Test Task activity
 	*/
-    static testMethod void myUnitTest(){
+    public static testMethod void myUnitTest(){
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
 		
 		ProjectTask__c task = GenerateEnvironmentTest.task;
 		ProjectTask__c task2 = task.clone();
-		task2.name = 'newtaskname';
-		task2.DurationUI__c = '22';
-		task2.PercentCompleted__c = 100.0;
-		task2.Status__c = 'Closed';
+		task2.name 					= 'newtaskname';
+		task2.DurationUI__c 		= '22';
+		task2.PercentCompleted__c 	= 100.0;
+		task2.Status__c 			= 'Closed';
 		
 		TaskActivity tA = new TaskActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'update', task2, task );	
 		
-    	task = GenerateEnvironmentTest.task.clone();
-    	
     	tA = new TaskActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'insert', task );
-    	tA = new TaskActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'delete', task ); 
+    	ta.log();
+    	
+    	tA = new TaskActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'delete', task2 ); 
+    	tA.log();
+    	
+    	tA = new TaskActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'update', task, task2 ); 
+    	tA.log();
+    	
+    	tA = new TaskActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'update', task, task2 ); 
+    	tA.log();
+    	
+    	tA = new TaskActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'update', task, task2 ); 
+    	tA.log();
+    	
+    	tA = new TaskActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'update', task, task2 ); 
+    	tA.log();
+    	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     }

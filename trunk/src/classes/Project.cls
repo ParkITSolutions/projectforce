@@ -90,7 +90,7 @@ public class Project {
 		
 		haveTasksPermissions( this.tasks );
 		List<ProjectTask__c> tasks = new List<ProjectTask__c>();
-				
+		
 		for( ProjectTask__c task: this.tasks ){
 			task.PercentCompleted__c = 100;
 			tasks.add( task );
@@ -180,4 +180,21 @@ public class Project {
 		
 		return this.attachments;
 	}
+	
+	/**
+    * Test 
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		Test.setCurrentPageReference( new PageReference( 'Page.ProjectDetail' ) );
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

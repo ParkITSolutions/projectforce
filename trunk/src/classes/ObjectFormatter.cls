@@ -1,6 +1,6 @@
 /**
 * @author Matias Menafra
-* @dataCreated 01/22/2010
+* @dateCreated 01/22/2010
 */
 public class ObjectFormatter {
 
@@ -61,7 +61,7 @@ public class ObjectFormatter {
 	}
 	
 	/**
-	*
+	*	
 	*
 	*/
 	public static List<Task> formatTasks( List<ProjectTask__c> taskList ){
@@ -151,6 +151,7 @@ public class ObjectFormatter {
 				currentResult.iD 			= iter.Id;
 				currentResult.resultType 	= 'Project';
 				currentResult.setMatches( iter.Description__c, searchTerm );
+				currentResult.url			= 'ProjectDetail?id=' + iter.Id;
 				
 				results.add( currentResult );
 			}
@@ -168,6 +169,7 @@ public class ObjectFormatter {
 				currentResult.iD 			= iter.Id;
 				currentResult.resultType 	= 'Project';
 				currentResult.setMatches( iter.Description__c, searchTerm );
+				currentResult.url			= 'ProjectTaskDetail?id=' + iter.Id;
 				
 				results.add( currentResult );
 			}
@@ -233,7 +235,7 @@ public class ObjectFormatter {
 	}
 	
 	/**
-    * Test 
+    * Test Object Formatter
     */
     static testMethod void myUnitTest(){
     	

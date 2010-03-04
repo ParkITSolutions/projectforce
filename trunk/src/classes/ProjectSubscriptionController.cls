@@ -1,5 +1,6 @@
 /**
 * @author Nicolas Dominguez
+* @createdDate 02/15/2010
 */
 public class ProjectSubscriptionController {
 	
@@ -15,9 +16,9 @@ public class ProjectSubscriptionController {
 	* Constructor
 	*/
 	public ProjectSubscriptionController(){
-		this.projectId = System.currentPageReference().getParameters().get('id');
-		this.subscription = new ProjectSubscription__c();
-		this.ProjectName=ProjectUtil.chopWords( ProjectUtil.chopPhrase( DAOFactory.getInstance().getProjectInfo(this.projectId).name , 20 ) );
+		this.projectId 		= System.currentPageReference().getParameters().get( 'id' );
+		this.subscription 	= new ProjectSubscription__c();
+		this.ProjectName 	= ProjectUtil.chopWords( ProjectUtil.chopPhrase( DAOFactory.getInstance().getProjectInfo(this.projectId).name , 20 ) );
 		
 		loadProjectSubscription();
 	}
@@ -26,6 +27,7 @@ public class ProjectSubscriptionController {
 	* Execute on Construct
 	*/
 	public void loadProjectSubscription(){
+		
 		if( this.projectId != null ) {
 			List<ProjectSubscription__c> subProjList = new List<ProjectSubscription__c>();
 
@@ -63,9 +65,11 @@ public class ProjectSubscriptionController {
 	* @return pageRef
 	*/
 	public PageReference cancelSubscription(){
+		
 		PageReference pageRef = Page.ProjectDetail;
 		pageRef.getParameters().put( 'id', this.projectId );
 		pageRef.setRedirect( true );
+		
 		return pageRef;
 	}
 	
@@ -73,7 +77,9 @@ public class ProjectSubscriptionController {
 	* Delete subscription
 	*/
 	public void deleteSubscription(){
+		
 		if ( this.subscription != null && this.subscriptionCount > 0 ){ 
+			
 			this.subscription.ProjectTaskAssignedToMe__c 		= false;
 			this.subscription.ProjectTaskAssignToMeChanged__c 	= false;
 			this.subscription.ProjectTaskChanged__c 			= false;
@@ -83,4 +89,26 @@ public class ProjectSubscriptionController {
 			this.Message = 'All  email notifications have been disabled';
 		}
 	}
+	
+	/**
+    * Test ProjectSubscription Page controller
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		Test.setCurrentPageReference( new PageReference( 'Page.ProjectSubscription' ) );
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+
+		ProjectSubscriptionController projectSubs = new ProjectSubscriptionController();
+		projectSubs.saveSubscription();
+		projectSubs.cancelSubscription();
+		projectSubs.deleteSubscription();
+		
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

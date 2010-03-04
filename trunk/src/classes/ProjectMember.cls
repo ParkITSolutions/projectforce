@@ -1,5 +1,6 @@
 /**
-*@author Matias Menafra 
+* @author Matias Menafra 
+* @createdDate 12/18/2009
 */
 public class ProjectMember {
 
@@ -18,4 +19,19 @@ public class ProjectMember {
 	*/
 	public ProjectMember(){
 	}
+	
+	/**
+    * Test 
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		ProjectMember prjMember = new ProjectMember();
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

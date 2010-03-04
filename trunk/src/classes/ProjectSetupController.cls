@@ -33,6 +33,7 @@ public class ProjectSetupController {
 	* Constructor
 	*/
 	public ProjectSetupController(){
+		
 		ProjectSetup = new ProjectSetup__c();
 		this.insertProjectSetup = true;
 		this.typeMessage		= '';
@@ -72,6 +73,7 @@ public class ProjectSetupController {
 				//Update the ProjectSetup;
 				DAOFactory.getInstance().updateProjectSetup( ProjectSetup );
 			}
+			
 			this.messageInfoToUsr 	= 'Project Setup Saved Successfully.';
 			this.typeMessage 		= 'success';
 		}
@@ -80,4 +82,23 @@ public class ProjectSetupController {
 			this.typeMessage 		= 'error';
 		}
 	}
+	
+	/**
+    * Test Object Formatter
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		Test.setCurrentPageReference( new PageReference( 'Page.ProjectSetup' ) );
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+
+		ProjectSetupController projectSetup = new ProjectSetupController();
+		projectSetup.saveSetup();
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

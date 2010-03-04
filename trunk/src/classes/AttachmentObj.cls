@@ -13,6 +13,20 @@ public class AttachmentObj {
 	* Constructor
 	*/
 	public AttachmentObj(){
-	
 	}
+	
+	/**
+    * Test 
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		AttachmentObj attachment = new AttachmentObj();
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

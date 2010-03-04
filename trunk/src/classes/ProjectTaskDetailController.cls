@@ -35,7 +35,6 @@ public class ProjectTaskDetailController {
 		task = [select project__c from ProjectTask__c where Id =:taskId];
 		
 		projectId = task[0].project__c;
-		System.debug('====================== Task DEtail: ' +projectId);
 	}
 	
 	/**
@@ -44,7 +43,6 @@ public class ProjectTaskDetailController {
 	*/	
 	public void doRefresh (){
 		this.getTask(param);
-		System.debug('##### doRefresh');
 	}
 	
 	/**
@@ -501,7 +499,6 @@ public class ProjectTaskDetailController {
 				AuxList = [ select Id 
 								from ProjectMember__c 
 								where Project__c =: taskDetail.ProjectId  and User__r.IsActive != false];
-				System.debug(':::>' + AuxList.size() + ' > ' + taskDetail.CantAssignees); 
 				if (taskDetail.CantAssignees==AuxList.size()){
 					return true;
 				}else return false;

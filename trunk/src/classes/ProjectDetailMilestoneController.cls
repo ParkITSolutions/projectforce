@@ -208,11 +208,7 @@ public class ProjectDetailMilestoneController {
 			userMap.put(u.Id, u);							
 		}
 	 	
-	 	
-	 	System.debug('\n\n\n\n\n\n\n\n\n Milestone Size : '+listSize+'\n\n\n\n\n\n\n\n\n');
-		
-		for( ProjectTask__c milestone : milestones) 
-		{			
+		for( ProjectTask__c milestone : milestones){			
 				ProjectTasks miMilestones = new ProjectTasks();
 				miMilestones.setTaskName(milestone.Name);
 				miMilestones.setTaskId(milestone.Id);

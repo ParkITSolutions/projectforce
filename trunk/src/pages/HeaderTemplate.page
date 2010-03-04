@@ -1,4 +1,4 @@
-<apex:page id="projectHeader" cache="true" >
+<apex:page id="projectHeader" cache="true" sidebar="false" showHeader="false" >
 	
 	<apex:styleSheet value="{!URLFOR($Resource.ProjectHeader, 'inc/css/projectHeader.css')}" />
 	

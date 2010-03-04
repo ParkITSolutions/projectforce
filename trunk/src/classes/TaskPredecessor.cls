@@ -15,6 +15,27 @@ public class TaskPredecessor {
 	* Constructor
 	*/
 	public TaskPredecessor(){
-	
 	}
+	
+	/**
+    * Test Task Predecessor Class
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		TaskPredecessor taskPred = new TaskPredecessor();
+		taskPred.lagTime 		= 0;
+		taskPred.lagType 		= '';
+		taskPred.lagUnit 		= '';
+		taskPred.parent 		= '';
+		taskPred.predecessor 	= '';
+		taskPred.project 		= '';
+		taskPred.createdBy 		= '';
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }
