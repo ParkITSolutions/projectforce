@@ -26,88 +26,90 @@ public class NewMemberController {
 		
 		this.mailList 							= new List<User>();
 		List<ProjectMember__c> newMemberList 	= new List<ProjectMember__c>();
-		System.debug('XXX - colleagueNames='+colleagueNames);
-		if ((colleagueNames !='') && (colleagueNames !=null)){
+		String pageName 						= '';
+		
+		//discriminate by page
+		if( System.currentPageReference().getUrl().contains( 'ProjectDetail' ) ){
+			pageName = 'ProjectDetail-';
+		}	
+		if( System.currentPageReference().getUrl().contains( 'ProjectTaskDetail' ) ){
+			pageName = 'ProjectTaskDetail-';
+		}
+		if( System.currentPageReference().getUrl().contains( 'MembersList' ) ){
+			pageName = 'MembersList-';
+		}
+		
+		if( ( colleagueNames != '' ) & ( colleagueNames != null ) ){
 			List<String> newMembers = colleagueNames.split( '[ ]*,[ ]*' );
-			System.debug('XXX - colleagueNames='+colleagueNames);
-			if ((newMembers != null) && ( !newMembers.isEmpty() )){
-				//Find de users (where the user is not a member)
-				List<User> userList = DAOFactory.getInstance().findUserNotMember( newMembers , this.projectId );
+
+			//Find de users (where the user is not a member)
+			List<User> userList = DAOFactory.getInstance().findUserNotMember( newMembers , this.projectId );
+			
+			Map<String,Id> projectProfile = DAOFactory.getInstance().idProjectProfile();
+
+			if( !userList.isEmpty() ) {
 				
-				Map<String,Id> projectProfile = DAOFactory.getInstance().idProjectProfile();
-	
-				if( !userList.isEmpty() ) {
+				Map<String,String> auxMap = new Map<String,String>{};
+
+				for( User user : userList ){
+					ProjectMember__c newMember = new ProjectMember__c();
+					newMember.User__c 		= user.Id;
+					newMember.Name 			= user.Name;
+					newMember.Project__c 	= this.projectId;
 					
-					Map<String,String> auxMap = new Map<String,String>{};
-	
-					for( User user : userList ){
-						ProjectMember__c newMember = new ProjectMember__c();
-						newMember.User__c 		= user.Id;
-						newMember.Name 			= user.Name;
-						newMember.Project__c 	= this.projectId;
-						
-						auxMap.put( user.Name,user.Name );		
-			
-						Id idProfile = null;
-						if( isAdministrator ){
-							idProfile = projectProfile.get( 'Project Administrator' );
-						}
-						else{
-							idProfile = projectProfile.get( 'Member Profile' );
-						}
-			
-						newMember.Profile__c = idProfile; 
-						newMemberList.add( newMember );
-			
-						//If Email Notification is selected
-						if( emailNotifications ){
-							this.mailList.add( user );
-						}
-					}
-					
-					//insert newMemberList;
-					DAOFactory.getInstance().newMemberList( newMemberList );
-					
-					if( emailNotifications ){
-						this.sendMails();
-					}
-					
-					if ( userList.size() == newMembers.size() ){
-						//Ok
-						this.postAction = 'NewMemberSuccess';
-						if( System.currentPageReference().getUrl().contains( 'ProjectDetail' ) || System.currentPageReference().getUrl().contains( 'ProjectTaskDetail' ) ){
-							this.postAction = 'ProjectDetail-'+this.postAction;
-						}
+					auxMap.put( user.Name,user.Name );		
+		
+					Id idProfile = null;
+					if( isAdministrator ){
+						idProfile = projectProfile.get( 'Project Administrator' );
 					}
 					else{
-						//Some users were not admitted
-						String stringAux='';
-						for( String str : newMembers ){
-							if( str != '' &&  str != null && auxMap.get(str) != str )
-								stringAux += ', ' + str;
-						}
-						
-						this.listErrors = stringAux;
-						this.postAction = 'NewMemberPartialSuccess';
-						
+						idProfile = projectProfile.get( 'Member Profile' );
+					}
+		
+					newMember.Profile__c = idProfile; 
+					newMemberList.add( newMember );
+		
+					//If Email Notification is selected
+					if( emailNotifications ){
+						this.mailList.add( user );
 					}
 				}
+				
+				//insert newMemberList;
+				DAOFactory.getInstance().newMemberList( newMemberList );
+				
+				if( emailNotifications ){
+					this.sendMails();
+				}
+				
+				if ( userList.size() == newMembers.size() ){
+					//Ok
+					this.postAction = pageName+'NewMemberSuccess';
+				}
 				else{
-					//Empty or invalid users
-					this.postAction = 'NewMemberEmptyWithError';
-					this.listErrors = colleagueNames;
+					//Some users were not admitted
+					String stringAux = '';
+					for( String str : newMembers ){
+						if( str != '' &&  str != null && auxMap.get(str) != str )
+							stringAux += ', ' + str;
+					}
+					
+					this.listErrors = stringAux;
+					this.postAction = pageName+'NewMemberPartialSuccess';
 				}
 			}
-			else {
-				//must enter at least one user
-				this.postAction = 'NewMemberEmpty';
+			else{
+				//Empty or invalid users
+				this.postAction = pageName+'NewMemberEmptyWithError';
+				this.listErrors = colleagueNames;
 			}
 			
 			this.colleagueNames='';
 		}
 		else{
-			this.postAction = 'NewMemberEmpty';
-			System.debug('XXX - this postaction = newmember...');
+			//the same for all
+			this.postAction = 'All-NewMemberEmpty';
 		}
 	}
 
@@ -185,7 +187,7 @@ public class NewMemberController {
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
     	
-    	Test.setCurrentPageReference(new PageReference('Page.ProjectDetail'));
+    	Test.setCurrentPageReference( new PageReference( 'Page.ProjectDetail' ) );
 		NewMemberController newMember = new NewMemberController();
 		
 		newMember.setProjectId( GenerateEnvironmentTest.project.Id );
@@ -208,15 +210,38 @@ public class NewMemberController {
 		newMember.emailNotifications 	= false;
 		newMember.isAdministrator 		= false;
 		newMember.action();
-		System.assertEquals( 'NewMemberEmptyWithError', newMember.postAction );
+		System.assertEquals( 'ProjectDetail-NewMemberEmptyWithError', newMember.postAction );
+		
+		newMember.colleagueNames 		= 'Andres Canavesi, Miguel Soares, Nicolas Dodssminguez';
+		newMember.emailNotifications 	= false;
+		newMember.isAdministrator 		= false;
+		newMember.action();
+		System.assertEquals( 'ProjectDetail-NewMemberPartialSuccess', newMember.postAction );
 		
 		newMember.colleagueNames 		= '';
 		newMember.emailNotifications 	= false;
 		newMember.isAdministrator 		= false;
 		newMember.action();
-		System.assertEquals( 'NewMemberEmptyWithError', newMember.postAction );
+		System.assertEquals( 'All-NewMemberEmpty', newMember.postAction );
 		
-		newMember.sendMails();
+		newMember = new NewMemberController();
+		newMember.setProjectId( GenerateEnvironmentTest.project2.Id );
+		newMember.getProjectId();
+		newMember.loadProjectName();
+		
+		Test.setCurrentPageReference( new PageReference( 'Page.MembersList' ) );
+		newMember = new NewMemberController();
+		newMember.setProjectId( GenerateEnvironmentTest.project2.Id );
+		newMember.getProjectId();
+		newMember.loadProjectName();
+		newMember.action();
+		
+		Test.setCurrentPageReference( new PageReference( 'Page.ProjectTaskDetail' ) );
+		newMember = new NewMemberController();
+		newMember.setProjectId( GenerateEnvironmentTest.project2.Id );
+		newMember.getProjectId();
+		newMember.loadProjectName();
+		newMember.action();
 		
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );

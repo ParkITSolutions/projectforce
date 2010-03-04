@@ -149,7 +149,7 @@ public class DAOTask {
                         'and Name like \''+letter+'%\'' +  
                         ''+condition +' ' + 
                         'order by '+orderBy+' '+orderWay; 
-        System.debug( '###>>> ' + query );
+
         ApexPages.StandardSetController tasks = new ApexPages.StandardSetController( Database.getQueryLocator( query ) );
         
         if( tasks.getResultSize() == 0 ){

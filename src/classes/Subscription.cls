@@ -1,5 +1,6 @@
 /**
-*@author Matias Menafra @ 12/18/2009
+* @author Matias Menafra 
+* @createdDate 12/18/2009
 */
 public class Subscription {
 
@@ -15,7 +16,27 @@ public class Subscription {
 	* Constructor
 	*/
 	public Subscription(){
-	
 	}
-
+	
+	/**
+    * Test Subscription Class
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		Subscription subs = new Subscription();
+		subs.project 						= '';
+		subs.ProjectMemberJoinLeave 		= true;
+		subs.ProjectTaskAssignedToMe 		= true;
+		subs.ProjectTaskAssignToMeChanged 	= true;
+		subs.ProjectTaskChanged 			= true;
+		subs.ProjectTaskDeleted 			= true;
+		subs.UserId 						= '';
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

@@ -5,6 +5,7 @@ public class TaskQuickAccessController {
 
 	public String taskCustomId;
 	public Boolean error { set; get; }
+	public String trace { set; get; }
 	
 	/**
 	* Constructor
@@ -39,21 +40,23 @@ public class TaskQuickAccessController {
 	* returns page Reference to task detail
 	* @return taskDetail 
 	*/
-	public PageReference goToTaskDetail(){
-		
+	public PageReference goToTaskDetail()
+	{
 		Project prj = new Project();
-		
 		ProjectTask__c task = prj.getTaskByCustomId( this.taskCustomId );
 		
-		if( task != null ){
-			
+		if( task != null )
+		{
+			this.error = false;
 			PageReference taskDetail = new PageReference( '/apex/ProjectTaskDetail?id=' + task.Id );
+			taskDetail.setRedirect(true);
 			return taskDetail;
-			
-		}else{
-			this.error = true;
 		}
-		
-		return null;
+		else
+		{
+			this.error = true;
+			this.trace = this.taskCustomId;
+			return null;
+		}
 	}
 }

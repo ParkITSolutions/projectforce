@@ -195,14 +195,7 @@
         
  
     <script>
-    /*
-        readPortalCSSRules();
-        function insertSwirly(){
-            $$( '.sfdcDetailFormated' )[0].insert('<div class="swirlyDetail" style="display: none;" />', 'top'); 
-            $$( '.swirlyDetail' )[0].show();            
-        }
-        */
-        var userIsManager = '{!isManager}';
+       var userIsManager = '{!isManager}';
        function addAvatarAsAvatar(){
        		window.frames.attachmentIframe.Attachment.uploadAsAvatar();
        		promptOverlay.open( attachment );

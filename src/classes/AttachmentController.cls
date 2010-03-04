@@ -1,7 +1,7 @@
 /**
-* Author Miguel Soares
+* @author Miguel Soares
 */
-public class AttachmentController {  
+public class AttachmentController{  
 	 
 	private final Integer MAX_SIZE = 131072; // 128Kb
 	private final Integer MAX_LENGTH_NAME = 71;
@@ -10,8 +10,8 @@ public class AttachmentController {
 	private final String  ERROR_BIN_TYPE  = 'Binary type are not allowed.';	
 	private final String  ERROR_SIZE_FILE = 'Maximum size is 128 KB';
 	
-	private Set<String> imagesTypes = new Set<String> {'image/jpeg', 'image/pjpeg', 'image/png', 'image/x-png', 'image/gif'};
-	private Set<String> notAllowedTypes = new Set<String> {'application/octet-stream'};
+	private Set<String> imagesTypes 		= new Set<String> {'image/jpeg', 'image/pjpeg', 'image/png', 'image/x-png', 'image/gif'};
+	private Set<String> notAllowedTypes 	= new Set<String> {'application/octet-stream'};
 	  
 	public String		parentId 	 		{ set; get; }
 	public String 		error 				{ set; get; }
@@ -28,33 +28,38 @@ public class AttachmentController {
 	public AttachmentController(){
 		
 		this.parentId = System.currentPageReference().getParameters().get( 'Id' );
-    
+     
 		this.newAttach = new Attachment();
 		this.location(); 
 	}
 	
-	
 	/**
 	* Uploads the file
+	* @return UploadAttachment
 	*/
 	public PageReference action(){
 		
 		this.parentId = System.currentPageReference().getParameters().get( 'pid' );
 		this.typeOfAttachment = this.avatarTypeFlag;
 		this.cleanErrors();
+		
 		if( this.allValidations() ){ 
+			
 			if( this.currentPage == 'taskdetail' ){
 				Task t = new Task();
 				t.id = this.parentId;
 				t.addAttachment( newAttach ); 
 			}else if( this.currentPage == 'projectdetail' ){
 				Project p = new Project( this.parentId );
+				
 				if( this.typeOfAttachment == 'avatar')
 					p.setAvatar( newAttach );
 				else
 					p.addAttachment( newAttach );
+					
 			}else if( this.currentPage == 'attachmentlist' ){
 				newAttach.parentId = this.parentId;
+				//TODO Move insert to DAOattachments
 				insert newAttach;
 			} 
 		
@@ -63,17 +68,16 @@ public class AttachmentController {
 		}
 		
 		this.newAttach = new Attachment();
-		this.endAction = true;
-		this.typeOfAttachment = ''; 
-		this.avatarTypeFlag = '';
-		
+		this.endAction 			= true;
+		this.typeOfAttachment 	= ''; 
+		this.avatarTypeFlag 	= '';
 		
 		return Page.UploadAttachment;
 	}
 
 	/**
 	* Checks if file is empty. Return the error as string
-	* @return String 
+	* @return error 
 	*/
 	private String checkEmptyValue(){
 		this.error = newAttach.body != null ? '' : ERROR_NO_FILE;
@@ -82,7 +86,7 @@ public class AttachmentController {
 	
 	/**
 	* Checks the type of file. Returns the error as string
-	* @return String 
+	* @return error 
 	*/
 	private String  checkOnlyImgExtensions(){
 		this.error = this.imagesTypes.contains( newAttach.ContentType ) ? '' : ERROR_IMG_TYPE;
@@ -91,7 +95,7 @@ public class AttachmentController {
 
 	/**
 	* Checks if the type of file is binary. Returns the error as string
-	* @return String 
+	* @return error 
 	*/
 	private String  checkBinType(){
 		this.error = this.notAllowedTypes.contains( newAttach.ContentType ) ? ERROR_BIN_TYPE : '';
@@ -100,7 +104,7 @@ public class AttachmentController {
 	
 	/**
 	* Checks maximum size of file. Returns the error as string
-	* @return String 
+	* @return error 
 	*/
 	private String checkSize(){
 		this.error = newAttach.BodyLength <= MAX_SIZE ? '' : ERROR_SIZE_FILE;
@@ -137,15 +141,54 @@ public class AttachmentController {
 	private void location(){
 		
 		String url = ApexPages.currentPage().getUrl().toLowerCase();
-		if( url.contains( 'taskdetail' )){
-			this.postAction = 'detailListPanel';
-			this.currentPage = 'taskdetail';
-		}else if( url.contains( 'projectdetail' )){
-			this.currentPage = 'projectdetail';
-			this.postAction = 'reloadMainContent';
-		}else if( url.contains( 'attachmentlist' )){
-			this.currentPage = 'attachmentlist';
-			this.postAction = 'ReloadAttachmentList';
+		if( url.contains( 'taskdetail' ) ){
+			this.postAction 	= 'detailListPanel';
+			this.currentPage 	= 'taskdetail';
+		}else if( url.contains( 'projectdetail' ) ){
+			this.currentPage 	= 'projectdetail';
+			this.postAction 	= 'reloadMainContent';
+		}else if( url.contains( 'attachmentlist' ) ){
+			this.currentPage 	= 'attachmentlist';
+			this.postAction 	= 'ReloadAttachmentList';
 		}
 	}
+	
+	/**
+    * Test Attachment Controller
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		Attachment uploadTest = new Attachment( Name = 'avatar', Body = Crypto.generateMac( 'HMacSHA1', Blob.valueOf( 'String' ), Blob.valueOf( 'String' ) ), ContentType = 'image/png' );
+		
+		Test.setCurrentPageReference( new PageReference( 'Page.ProjectDetail' ) );
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+		
+		AttachmentController attController = new AttachmentController();
+		
+		uploadTest.parentId 	= GenerateEnvironmentTest.project.Id;
+		attController.newAttach = uploadTest;
+		attController.action();
+		
+		Test.setCurrentPageReference( new PageReference( 'Page.taskdetail' ) );
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.task.id );
+		
+		attController = new AttachmentController();
+		uploadTest.parentId 	= GenerateEnvironmentTest.project.Id;
+		attController.newAttach = uploadTest;
+		attController.action();
+		
+		Test.setCurrentPageReference( new PageReference( 'Page.attachmentlist' ) );
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+		
+		attController = new AttachmentController();
+		uploadTest.parentId 	= GenerateEnvironmentTest.project.Id;
+		attController.newAttach = uploadTest;
+		attController.action();
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

@@ -151,11 +151,7 @@ public class TaskListController {
         
         tKC.generateTaskListCsv();
 
-        List<Attachment> attachs2 =  new List<Attachment>();
-        attachs = DAOFactory.getInstance().csvExport( 'pf__export.csv' );
 
-
-		System.assertEquals( attachs, attachs2 );    	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     }

@@ -1,5 +1,6 @@
 /**
-* @author Matias Menafra 1/7/2010
+* @author Matias Menafra 
+* @createdDate 1/7/2010
 */
 public class TaskAssigneeActivity extends ActivityLog{
 
@@ -9,12 +10,12 @@ public class TaskAssigneeActivity extends ActivityLog{
 		
 	/**
 	* Constructor
-	* @param String projectId
-	* @param DateTime timeStamp
-	* @param String modifiedBy
-	* @param String action
-	* @param String assigneeId
-	* @param String taskId
+	* @param projectId
+	* @param timeStamp
+	* @param modifiedBy
+	* @param action
+	* @param assigneeId
+	* @param taskId
 	*/
 	public TaskAssigneeActivity( String projectId, DateTime timeStamp, String modifiedBy, String action, ProjectAssignee__c assignee ){
 		
@@ -25,7 +26,6 @@ public class TaskAssigneeActivity extends ActivityLog{
 	
 	/**
 	* Method which will take care of logging individual changes to TaskAssignee Object
-	* @return void
 	*/
 	public override void log(){
 		
@@ -53,7 +53,7 @@ public class TaskAssigneeActivity extends ActivityLog{
 	}
 	
 	/**
-	* Test 
+	* Test task assignee activity
 	*/
     static testMethod void myUnitTest(){
     	
@@ -61,11 +61,14 @@ public class TaskAssigneeActivity extends ActivityLog{
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
     	
-    	ProjectAssignee__c a = GenerateEnvironmentTest.assi.clone();    	
-    	TaskAssigneeActivity tA = new TaskAssigneeActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'insert', a );
+    	ProjectAssignee__c assignee = GenerateEnvironmentTest.assi.clone();    	
+    	TaskAssigneeActivity tA;
     	
-    	a = GenerateEnvironmentTest.assi.clone();    	
-    	tA = new TaskAssigneeActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'delete', a );
+    	tA = new TaskAssigneeActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'insert', assignee );
+    	tA.log();
+    	
+    	tA = new TaskAssigneeActivity( GenerateEnvironmentTest.project.id, Datetime.now(), UserInfo.getUserId(), 'delete', assignee );
+    	tA.log();
     	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );

@@ -30,15 +30,13 @@ public with sharing class ProjectDetailController
        	genTeamData();
        	this.isManager = userPermission.getCanManage();
        	this.projectType = getTeamspace().Type__c;
-       	
+       	 
      }   
 
     /**
     * Empty Constructor
     */
-    public ProjectDetailController (){
-    
-    }
+    public ProjectDetailController (){} 
     
     /**
     * @return boolean isLastMemberAdmin

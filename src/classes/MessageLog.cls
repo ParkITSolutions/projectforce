@@ -168,27 +168,51 @@ public class MessageLog {
 	}
 	
 	/**
-	* Method for generating specific messages for the Attachment logs
-	* @param 
-	* @return String
-	*/
-	private String messageAttachment(){
-		return '';
-	}
-	
-	/**
-    * Test 
+    * Test Message Log
     */
-    static testMethod void myUnitTest(){
+    public static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
 		
-		Test.setCurrentPageReference( new PageReference( 'Page.ProjectDetail' ) );
-		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
-
+		ProjectActivity__c prjAct = new ProjectActivity__c();
+		TaskActivity__c taskAct	= new TaskActivity__c();
+		TaskAssigneeActivity__c assigneeAct = new TaskAssigneeActivity__c();
+		TaskCommentActivity__c commentAct =  new TaskCommentActivity__c();
+		MemberActivity__c memberAct = new MemberActivity__c();
 		
+		MessageLog 	msgLog 	= new MessageLog();
+		
+		prjAct.changeType__c = 'Project_Name';
+		msgLog.getMessage( prjAct );
+		prjAct.changeType__c = 'Project_Access';
+		msgLog.getMessage( prjAct );
+		memberAct.changeType__c = 'Member_Insert';
+		msgLog.getMessage( memberAct );
+		memberAct.changeType__c = 'Member_Delete';
+		msgLog.getMessage( memberAct );
+		taskAct.changeType__c = 'Task_Insert';
+		msgLog.getMessage( taskAct );
+		taskAct.changeType__c = 'Task_Delete';
+		msgLog.getMessage( taskAct );
+		taskAct.changeType__c = 'Task_Name';
+		msgLog.getMessage( taskAct );
+		taskAct.changeType__c = 'Task_Duration';
+		msgLog.getMessage( taskAct );
+		taskAct.changeType__c = 'Task_Complete';
+		msgLog.getMessage( taskAct );
+		taskAct.changeType__c = 'Task_Status';
+		msgLog.getMessage( taskAct );
+		assigneeAct.changeType__c = 'TaskAssignee_Insert';
+		msgLog.getMessage( assigneeAct );
+		assigneeAct.changeType__c = 'TaskAssignee_Delete';
+		msgLog.getMessage( assigneeAct );
+		commentAct.changeType__c = 'TaskComment_Insert';
+		msgLog.getMessage( commentAct );
+		commentAct.changeType__c = 'TaskComment_Delete';
+		msgLog.getMessage( commentAct );
+
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );    	
     }

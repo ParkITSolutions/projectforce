@@ -5,16 +5,15 @@
 public class MembersWidgetController {
 	
 	public UserPermissions userPermissions	 	{ set; get; }
-	public String projectId   					{ set; get; }
+	public String projectId;
 	public Boolean isManager   					{ set; get; }
 	public List<ProjectMember> projectMembers;
 	
 	/**
-    * Empty Constructor
+    * Constructor
     */
 	public MembersWidgetController(){
 		this.userPermissions = new UserPermissions();
-		genPermissions();
 	}
 
 	/**
@@ -25,15 +24,30 @@ public class MembersWidgetController {
 		this.userPermissions.setProject( this.projectId );
 		this.userPermissions.setObjectType( 'Project' );
 		this.userPermissions.setPermissions();
-		this.isManager = userPermissions.getCanManage();
+		this.isManager = this.userPermissions.getCanManage();
 	}
 	
+	/**
+    * setter method for project Id
+    * @param projId
+    */
+	public void setProjectId( String projId ){
+		this.projectId = projId;
+		this.genPermissions();
+	}
+	
+	/**
+    * Getter for Project Id
+    * @return projectId
+    */
+	public String getProjectId(){
+		return this.projectId;
+	}
 	/**
 	* reloadMemberList 
 	* @refresh the projectMembers List
 	*/
-	public void reloadMemberList()
-	{ 
+	public void reloadMemberList(){ 
 		this.projectMembers = getProjectMembers();
 	}
 	
@@ -51,8 +65,28 @@ public class MembersWidgetController {
 			projAux.CreatedDate 	= projMember.CreatedDate;
 			projAux.isAdmin 		= (projMember.Profile__r.Name == 'Project Administrator');
 			
-			listProjectMember.add(projAux);
+			listProjectMember.add( projAux );
 		}
 		return listProjectMember;
 	}
+	
+	/**
+    * Test Members Widget
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		Test.setCurrentPageReference( new PageReference( 'Page.ProjectDetail' ) );
+		
+		MembersWidgetController memberWidget = new MembersWidgetController();
+		memberWidget.setProjectId( GenerateEnvironmentTest.project.id );
+		memberWidget.getProjectId();
+		memberWidget.reloadMemberList();
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

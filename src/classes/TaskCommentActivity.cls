@@ -1,5 +1,6 @@
 /**
-* @author Matias Menafra 1/7/2010
+* @author Matias Menafra 
+* @createdDate 1/7/2010
 */
 public class TaskCommentActivity extends ActivityLog{
 
@@ -8,12 +9,12 @@ public class TaskCommentActivity extends ActivityLog{
 		
 	/**
 	* Constructor
-	* @param String projectId
-	* @param DateTime timeStamp
-	* @param String modifiedBy
-	* @param String action
-	* @param String commentId
-	* @param String taskId
+	* @param projectId
+	* @param timeStamp
+	* @param modifiedBy
+	* @param action
+	* @param commentId
+	* @param taskId
 	*/
 	public TaskCommentActivity( String projectId, DateTime timeStamp, String modifiedBy, String action, TaskComment__c comment ){
 		
@@ -24,7 +25,6 @@ public class TaskCommentActivity extends ActivityLog{
 	
 	/**
 	* Method which will take care of logging individual changes to TaskComment Object
-	* @return void
 	*/
 	public override void log(){
 		
@@ -51,7 +51,7 @@ public class TaskCommentActivity extends ActivityLog{
 	}
 	
 	/**
-	* Test
+	* Test task comment activity
 	*/
     static testMethod void myUnitTest(){
     	
@@ -59,9 +59,12 @@ public class TaskCommentActivity extends ActivityLog{
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
     	
-    	TaskComment__c c = new TaskComment__c(); 
+    	TaskComment__c c = GenerateEnvironmentTest.comment;
     	TaskCommentActivity tC = new TaskCommentActivity( GenerateEnvironmentTest.project.id, Datetime.now(), Userinfo.getUserId(), 'insert', c );
+    	tC.log();
+    	
     	tC = new TaskCommentActivity( GenerateEnvironmentTest.project.id, Datetime.now(), Userinfo.getUserId(), 'delete', c );
+    	tC.log();
     	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );

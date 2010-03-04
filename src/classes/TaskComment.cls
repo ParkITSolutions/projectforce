@@ -1,5 +1,6 @@
 /**
-*@author Matias Menafra @ 12/18/2009
+* @author Matias Menafra 
+* @createdDate 12/18/2009
 */
 public class TaskComment {
 
@@ -11,7 +12,6 @@ public class TaskComment {
 	* Constructor
 	*/ 
 	public TaskComment(){
-	
 	}
 	
 	/**
@@ -23,15 +23,15 @@ public class TaskComment {
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
     	
-    	TaskComment tC = new TaskComment();
+    	TaskComment tc = new TaskComment();
     	
-    	tc.taskId = '';
-    	tc.body =  '';
-    	tc.createdBy = '';
+    	tc.taskId 		= '';
+    	tc.body 		=  '';
+    	tc.createdBy 	= '';
     	
-    	tc.taskId = tc.taskId;
-    	tc.body = tc.body;  
-    	tc.createdBy = tc.createdBy;
+    	tc.taskId 		= tc.taskId;
+    	tc.body 		= tc.body;  
+    	tc.createdBy 	= tc.createdBy;
 
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );

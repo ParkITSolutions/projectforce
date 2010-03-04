@@ -10,7 +10,6 @@ public class UserTasksController{
     public List<ProjectMember__c> allProjects;
     public Map<id,ProjectMember__c> allProjectsMap;
     public List<SelectOption> selectOpsProject;
-
     public String opSelected;
     public String attachmentPrjId;
     
@@ -37,10 +36,6 @@ public class UserTasksController{
         this.paginator.filter       = '1'; // Show all tasks and milestones
         if( this.opSelected == null || this.opSelected == 'none' )
         	this.paginator.project.id   = '';
-       // else 
-        	//this.paginator.project.id   = this.opSelected;
-        //this.opSelected == 'none' ? '' : this.opSelected; 
-        //this.paginator.project.id = 'none';
         
         paginator.loadTasksByUser();
         
@@ -130,4 +125,31 @@ public class UserTasksController{
          for( ProjectMember__c p : this.allProjects)
             this.allProjectsMap.put( p.project__c, p );
     }
+
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		
+		System.runAs( GenerateEnvironmentTest.user ){
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+    	
+    	UserTasksController u = new UserTasksController();
+	 	u.showDetail = true;
+		u.showDetail = u.showDetail;
+		u.auxShowDetail = true;
+		u.auxShowDetail = u.auxShowDetail;
+		u.currentProject = new Project();
+		u.currentProject = u.currentProject;
+		u.paginator = new Paginator();
+		u.paginator = u.paginator;
+		
+    	u = new UserTasksController();
+    	u.getProjectSelectOps();
+    	u.selectProjectBasicData();
+    	
+    	
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );}
+    }	
 }

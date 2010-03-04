@@ -83,8 +83,6 @@ public class DAOMember {
 		
 		ProjectTask__c task = DAOTask.get(taskId);
 		
-		System.debug('\n\n\n\n\n\n\n\n'+assigned+'\n\n\n\n\n\n\n\n');
-		
 		return [select Id, Name, User__c
 		        from ProjectMember__c 
 			    where Project__c =: task.Project__c

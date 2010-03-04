@@ -53,9 +53,10 @@ public class MembersListController {
     }
 	
 	/**
+	* 
 	* @return options the filter options
 	*/
-	public List<SelectOption> getFilterItems() {
+	public List<SelectOption> getFilterItems(){
 		
 		List<SelectOption> options = new List<SelectOption>();
 		
@@ -65,4 +66,31 @@ public class MembersListController {
 		
 		return options;
 	}
+	
+	/**
+    * Test Member List
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		Test.setCurrentPageReference( new PageReference( 'Page.MembersList' ) );
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+
+		MembersListController memberList = new MembersListController();
+		memberList.getFilterItems();
+		
+		Test.setCurrentPageReference( new PageReference( 'Page.MembersList' ) );
+		try{
+			memberList = new MembersListController();
+			memberList.getFilterItems();
+		}
+		catch( Exception e ){
+		}
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

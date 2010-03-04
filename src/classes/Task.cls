@@ -1,5 +1,6 @@
 /**
-* @author Matias Menafra @ 12/17/2009
+* @author Matias Menafra
+* @createdDate @ 12/17/2009
 */
 public class Task{
 
@@ -192,5 +193,21 @@ public class Task{
 		this.daysOverdue = localDaysOverdue + 'day(s) overdue.';
 		return localDaysOverdue > 0;
 	}
-	
+
+	/**
+    * Test 
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		Test.setCurrentPageReference( new PageReference( 'Page.ProjectDetail' ) );
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }	
 }

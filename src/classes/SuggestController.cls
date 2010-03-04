@@ -23,9 +23,6 @@ public class SuggestController {
 		this.paramProjectId 	= System.currentPageReference().getParameters().get( 'teamId' );
 		this.selectedMembers	= System.currentPageReference().getParameters().get( 'selectedMembers' ).split(',');
 		
-		System.debug('\n\n\n\n\n'+ selectedMembers +'\n\n\n\n\n');
-		
-		
 		if ( this.paramClass == 'Competency' ){
 			List<ProjectMember__c> s = [select User__r.Name, Id 
 											from ProjectMember__c 

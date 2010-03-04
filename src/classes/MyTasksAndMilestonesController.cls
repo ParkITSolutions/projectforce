@@ -36,7 +36,6 @@ public class MyTasksAndMilestonesController{
 		localTasks 		= DAOFactory.getInstance().getTaskOrMilestoneByUser( false );
 		localMilestones = DAOFactory.getInstance().getTaskOrMilestoneByUser( true );
 							
-							
 		this.showTasks 		= localTasks != null || localTasks.size() > 0;
 		this.showMilestones = localMilestones != null || localMilestones.size() > 0;
 		
@@ -46,4 +45,22 @@ public class MyTasksAndMilestonesController{
 		if( this.showMilestones )
 			this.milestones = ObjectFormatter.formatAssigneeTask( localMilestones );
 	}
+	
+	/**
+    * Test My task and milestone widget
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		Test.setCurrentPageReference( new PageReference( 'Page.ProjectDetail' ) );
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+
+		MyTasksAndMilestonesController widget = new MyTasksAndMilestonesController();
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }
