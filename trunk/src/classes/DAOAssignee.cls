@@ -39,18 +39,14 @@ public class DAOAssignee {
 	*/
 	//TODO change the list for a simple ProjectAssignee__c
 	public Boolean isTaskAssigned(ProjectTask__c task){
-		
 		List<ProjectAssignee__c> assignee = [select Id
 											 from ProjectAssignee__c
 											 where ProjectTask__c =: task.Id
-											 and OwnerId =: Userinfo.getUserId()
+											 and User__c  =: Userinfo.getUserId()
 											 limit 1];
-											 
-		if(assignee.size() == 0){
-			
+		if(assignee.size() > 0){
 			return true;
 		}				
-		
 		return false;							 
 	}
 	

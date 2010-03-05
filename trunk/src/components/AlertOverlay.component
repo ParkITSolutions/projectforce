@@ -1,7 +1,4 @@
 <apex:component id="AlertOverlay" >
-
-    <apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/js/overlays.js')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" />
     
     <script type="text/javascript">
         alertOverlay.id         = '{!$Component.Content}';

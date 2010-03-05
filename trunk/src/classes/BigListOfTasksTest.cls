@@ -46,19 +46,20 @@ private class BigListOfTasksTest {
 	 public static testMethod void myUnitTest(){
 			
 		generateEnvironment();
-		BigListOfTasks bigListOfTask = new BigListOfTasks(GenerateEnvironmentTest.project.Id);
+		BigListOfTasks bigListOfTask = new BigListOfTasks( GenerateEnvironmentTest.project.Id );
 		
     	Test.startTest();
-		if(BigListOfTasks.size() > 0)
+		if( BigListOfTasks.size() > 0 )
+		
 		ProjectTask__c aux = BigListOfTasks.get(0);
 		ProjectTask__c pt3 = new ProjectTask__c();
-		BigListOfTasks.add(pt3);
+		BigListOfTasks.add( pt3 );
 		
-		BigListOfTasks.setById(pt2);
+		BigListOfTasks.setById( pt2 );
 		
-		ProjectTask__c aux2 = BigListOfTasks.getById(pt.Id);
+		ProjectTask__c aux2 = BigListOfTasks.getById( pt.Id );
 		
-		List<ProjectTask__c> lst = BigListOfTasks.getByParentId(pt.Id);
+		List<ProjectTask__c> lst = BigListOfTasks.getByParentId( pt.Id );
 		
 		Integer size = BigListOfTasks.size();
 		Test.stopTest();		 

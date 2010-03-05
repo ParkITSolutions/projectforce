@@ -11,9 +11,11 @@ public with sharing class TaskDependencies {
 	Boolean cyclicDependencieChecked = false;
 	
 	public TaskDependencies( Id projectId ){
-		bTaskList = new BigListOfTasks('SELECT Id, name, StartDate__c, EndDate__c, Duration__c, DurationUI__c, PercentCompleted__c, Milestone__c,ParentTask__c, Indent__c, Project__c  FROM ProjectTask__c WHERE Project__c =\'' + projectId + '\'');
+		//bTaskList = new BigListOfTasks('SELECT Id, name, StartDate__c, EndDate__c, Duration__c, DurationUI__c, PercentCompleted__c, Milestone__c,ParentTask__c, Indent__c, Project__c  FROM ProjectTask__c WHERE Project__c =\'' + projectId + '\'');
 		this.project = [ SELECT Id, DaysInWorkWeek__c FROM Project2__c WHERE Id =: projectId ][0];
 	}
+	
+	
 	/**
 	*@return Boolean
 	*@Param ProjectTask__c ProjectTask__c
@@ -332,13 +334,13 @@ public with sharing class TaskDependencies {
 		relsFromMe	= this.bPredList.getListByPred( task.id, '2');
 		
 		if( relsToMe.size() > 0 )
-		relsToDelete.addAll( relsToMe );
+			relsToDelete.addAll( relsToMe );
 		
 		if( relsFromMe.size() > 0 )
-		relsToDelete.addAll( relsFromMe );
+			relsToDelete.addAll( relsFromMe );
 
 		if( relsToDelete.size() > 0 )
-		delete relsToDelete;
+			delete relsToDelete;
 	}	
 
 	public Boolean isWorkingDay( Date d ){

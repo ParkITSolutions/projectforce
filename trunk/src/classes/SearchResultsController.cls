@@ -1,7 +1,8 @@
 /**
-*@author Matias Menafra
+* @author Matias Menafra
+* @createdDate 02/02/2010
 */
-public with sharing class SearchResultsController {
+public with sharing class SearchResultsController{
 	
 	public String searchTerm	{ set; get; }
 	public String projectId		{ set; get; }
@@ -29,18 +30,44 @@ public with sharing class SearchResultsController {
 	* Makes the search against Projects or Tasks 
 	* Populates a List of type SearchResults
 	*/
-	public void search() {
+	public void search(){
 		
 		//TODO correct decoding for special characters
 		this.searchTerm = this.searchTerm.replaceAll( 'cde38;', '&' );
 		this.searchTerm = this.searchTerm.replaceAll( 'cde37;', '%' );
 		this.searchTerm = this.searchTerm.replaceAll( 'cde35;', '#' );	
 	
- 		if( projectId != null ){ 
+ 		if( this.projectId != null ){ 
  			paginator.loadTaskSearchResults( this.searchTerm, this.namespace );
 		}
 		else{
 			paginator.loadProjectSearchResults( this.searchTerm, this.namespace );
 		}
 	}
+	
+	/**
+    * Test Search Results Controller
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		Test.setCurrentPageReference( new PageReference( 'Page.SearchResults' ) );
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+		System.currentPageReference().getParameters().put( 'key', 'Project' );
+
+		SearchResultsController searchResults = new SearchResultsController();
+		searchResults.search();
+		
+		System.currentPageReference().getParameters().put( 'id', null );
+		System.currentPageReference().getParameters().put( 'key', '' );
+
+		searchResults = new SearchResultsController();
+		searchResults.search();
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

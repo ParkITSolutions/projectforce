@@ -35,24 +35,17 @@
         <apex:outputPanel rendered="{!endAction && error == '' }">
 	        <apex:outputPanel rendered="{!postAction == 'detailListPanel'}">
 	            <script type="text/javascript">
-	                
-	                parent.reloadPanelAction();
 					parent.infoToUser.set('success', 'File uploaded.');
-	                
 	            </script>
 	        </apex:outputPanel>
 	        <apex:outputPanel rendered="{!postAction == 'reloadMainContent'}">
-	            <script type="text/javascript">          
-	                
-	                parent.swirlyDetail();
+	            <script type="text/javascript">      
 	                parent.reloadMainContent();
 	                parent.infoToUser.set('success', 'File uploaded.');
-
 	            </script>
 	        </apex:outputPanel>
 	        <apex:outputPanel rendered="{!postAction == 'ReloadAttachmentList'}">
 	            <script type="text/javascript">          
-	                
 	                parent.RefreshAttachmentList();
 	                parent.infoToUser.set('success', 'File uploaded.');
 	                

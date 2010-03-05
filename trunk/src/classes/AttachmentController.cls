@@ -164,26 +164,17 @@ public class AttachmentController{
 		Attachment uploadTest = new Attachment( Name = 'avatar', Body = Crypto.generateMac( 'HMacSHA1', Blob.valueOf( 'String' ), Blob.valueOf( 'String' ) ), ContentType = 'image/png' );
 		
 		Test.setCurrentPageReference( new PageReference( 'Page.ProjectDetail' ) );
-		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+		System.currentPageReference().getParameters().put( 'Id', GenerateEnvironmentTest.project.id );
+		System.currentPageReference().getParameters().put( 'pid', GenerateEnvironmentTest.project.id );
 		
 		AttachmentController attController = new AttachmentController();
-		
 		uploadTest.parentId 	= GenerateEnvironmentTest.project.Id;
 		attController.newAttach = uploadTest;
 		attController.action();
 		
-		Test.setCurrentPageReference( new PageReference( 'Page.taskdetail' ) );
-		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.task.id );
-		
+		uploadTest = new Attachment( Name = 'avatar', Body = Crypto.generateMac( 'HMacSHA1', Blob.valueOf( 'String' ), Blob.valueOf( 'String' ) ), ContentType = 'image/png' );
 		attController = new AttachmentController();
-		uploadTest.parentId 	= GenerateEnvironmentTest.project.Id;
-		attController.newAttach = uploadTest;
-		attController.action();
-		
-		Test.setCurrentPageReference( new PageReference( 'Page.attachmentlist' ) );
-		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
-		
-		attController = new AttachmentController();
+		attController.avatarTypeFlag = 'avatar';
 		uploadTest.parentId 	= GenerateEnvironmentTest.project.Id;
 		attController.newAttach = uploadTest;
 		attController.action();
@@ -191,4 +182,51 @@ public class AttachmentController{
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );    	
     }
+    
+	/**
+    * Test Attachment Controller
+    */
+    static testMethod void myUnitTest2(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		Attachment uploadTest = new Attachment( Name = 'avatar', Body = Crypto.generateMac( 'HMacSHA1', Blob.valueOf( 'String' ), Blob.valueOf( 'String' ) ), ContentType = 'image/png' );
+		
+		Test.setCurrentPageReference( new PageReference( 'Page.taskdetail' ) );
+		System.currentPageReference().getParameters().put( 'Id', GenerateEnvironmentTest.project.id );
+		System.currentPageReference().getParameters().put( 'pid', GenerateEnvironmentTest.project.id );
+		
+		AttachmentController attController = new AttachmentController();
+		uploadTest.parentId 	= GenerateEnvironmentTest.project.Id;
+		attController.newAttach = uploadTest;
+		attController.action();
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
+
+	/**
+    * Test Attachment Controller
+    */
+    static testMethod void myUnitTest3(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		Attachment uploadTest = new Attachment( Name = 'avatar', Body = Crypto.generateMac( 'HMacSHA1', Blob.valueOf( 'String' ), Blob.valueOf( 'String' ) ), ContentType = 'image/png' );
+		
+		Test.setCurrentPageReference( new PageReference( 'Page.attachmentlist' ) );
+		System.currentPageReference().getParameters().put( 'Id', GenerateEnvironmentTest.project.id );
+		System.currentPageReference().getParameters().put( 'pid', GenerateEnvironmentTest.project.id );
+		
+		AttachmentController attController = new AttachmentController();
+		uploadTest.parentId 	= GenerateEnvironmentTest.project.Id;
+		attController.newAttach = uploadTest;
+		attController.action();
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
+
 }

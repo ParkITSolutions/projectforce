@@ -1,23 +1,25 @@
 /**
 * @author Matias Menafra 
+* @createdDate 04/05/2008
 */
 //TODO pasar consultas al DAO
 public class SuggestController {
 
 	public List<Suggestions> suggestionList { set; get; }
+	public List<String> selectedMembers 	{ get; set; }
 	public String paramInput;
 	public String paramClass;
 	public String paramProjectId;
-	public List<String> selectedMembers {get; set;}
 	
 	/**
 	* Constructor
 	*/
 	public SuggestController(){
 		
+		String inputValue 		= System.currentPageReference().getParameters().get( 'input' ).trim();
+		
 		this.suggestionList 	= new List<Suggestions>();
 		this.selectedMembers 	= new List<String>();
-		String inputValue 		= System.currentPageReference().getParameters().get( 'input' ).trim();
 		this.paramInput 		= '%' + inputValue + '%';
 		this.paramClass 		= System.currentPageReference().getParameters().get( 'class' );		
 		this.paramProjectId 	= System.currentPageReference().getParameters().get( 'teamId' );
@@ -70,5 +72,36 @@ public class SuggestController {
 		public String Name 	{ set; get; }
 		public String Id	{ set; get; }
 		
-	}	    
+	}
+	
+	/**
+    * Test Suggest Controller 
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		System.currentPageReference().getParameters().put( 'class', 'Competency' );
+		System.currentPageReference().getParameters().put( 'teamId', GenerateEnvironmentTest.project.Id );
+		System.currentPageReference().getParameters().put( 'input', 'member' );
+		System.currentPageReference().getParameters().put( 'selectedMembers', 'member' );
+		SuggestController suggest = new SuggestController();
+		
+		System.currentPageReference().getParameters().put( 'class', 'colleagueNames' );
+		System.currentPageReference().getParameters().put( 'teamId', GenerateEnvironmentTest.project.Id );
+		System.currentPageReference().getParameters().put( 'input', 'member' );
+		System.currentPageReference().getParameters().put( 'selectedMembers', 'member' );
+		suggest = new SuggestController();
+		
+		System.currentPageReference().getParameters().put( 'class', 'colleagueNames' );
+		System.currentPageReference().getParameters().put( 'teamId', GenerateEnvironmentTest.project.Id );
+		System.currentPageReference().getParameters().put( 'input', '' );
+		System.currentPageReference().getParameters().put( 'selectedMembers', '' );
+		suggest = new SuggestController();
+				
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }	    
 }

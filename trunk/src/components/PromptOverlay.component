@@ -1,8 +1,8 @@
 <apex:component id="PromptOverlay" controller="PromptOverlayController" allowDML="true">
 
-	<apex:includeScript value="{!URLFOR($Resource.Lib, 'inc/js/scriptaculous/lib/prototype.js')}" />
-    <apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/js/overlays.js')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" />           
+<!--	<apex:includeScript value="{!URLFOR($Resource.Lib, 'inc/js/scriptaculous/lib/prototype.js')}" />-->
+<!--    <apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/js/overlays.js')}" />-->
+<!--    <apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" />           -->
     
     <apex:attribute name="includeNewTask" 
                     description="Flag to include new task component"

@@ -145,7 +145,6 @@ public class ProjectTaskDetailController {
 										
 			BigListOfTasks bigListOfTasks = new BigListOfTasks(myTask.Project__c);	
 			return parent.taskHasChildren(myTask);
-			
 		}catch(Exception e){
 			throw e;
 		}
@@ -160,7 +159,8 @@ public class ProjectTaskDetailController {
 		try{
 			Project project = new Project(projectId);
 			//We need re-factorize this code, all controller in order to discard the SOQL Select in the follow line
-			project.tasks = [Select Id, PercentCompleted__c from ProjectTask__c where Id =: param];
+			//project.tasks = [Select Id, PercentCompleted__c from ProjectTask__c where Id =: param];
+			project.setTasks(param);
 			
 			if(project.tasks.size() > 0)
 			{
@@ -496,16 +496,18 @@ public class ProjectTaskDetailController {
 	*/
 	public boolean getMaxAssignees(){
 				List <ProjectMember__c> AuxList = new List<ProjectMember__c>();
-				AuxList = [ select Id 
-								from ProjectMember__c 
-								where Project__c =: taskDetail.ProjectId  and User__r.IsActive != false];
-				if (taskDetail.CantAssignees==AuxList.size()){
-					return true;
-				}else return false;
+				List <ProjectAssignee__c> AuxList2 = new List<ProjectAssignee__c>();
+				List <String> AuxList3 = new List<String>();
 				
-			
-	}
-	
+				AuxList2 = [ select user__c from ProjectAssignee__c where project__c =: projectId and projectTask__c =: taskId ];
+				for(ProjectAssignee__c a : AuxList2)
+					AuxList3.add( a.user__c );
+				AuxList = [ select Id, user__c from ProjectMember__c 
+							where Project__c =: taskDetail.ProjectId  and User__r.IsActive != false
+							and  user__c not in: AuxList3 ];
+				return AuxList.size() == 0;
+										
+	}	
 	
 	
 	/**

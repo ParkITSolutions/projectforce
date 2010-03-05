@@ -3,9 +3,7 @@
     <!-- Corresponding CSS and JS for particular Widget -->
     <apex:stylesheet value="{!URLFOR($Resource.QuickLinksWidget, 'inc/css/quickLinksWidget.css')}" />
     
-    <!-- TODO place in application top -->
-    <apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
-    
+   
     
     <!-- Attribute Definitions -->
     <apex:attribute name="viewNewLinks" 

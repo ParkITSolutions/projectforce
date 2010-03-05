@@ -4,8 +4,7 @@
     <apex:stylesheet value="{!URLFOR($Resource.ActivityWidget, 'inc/css/activityWidget.css')}" /> 
     <apex:includeScript value="{!URLFOR($Resource.ActivityWidget, 'inc/js/activityWidget.js')}" />
     
-    <!-- TODO place in application top -->
-    <apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
+  
     
     <apex:outputPanel id="widget" styleClass="widget" layout="block" >
     

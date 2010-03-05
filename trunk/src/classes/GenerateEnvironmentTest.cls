@@ -109,6 +109,7 @@ public class GenerateEnvironmentTest {
         
         member2.User__c    = UserInfo.getUserId();
         member2.Project__c = project.Id;
+        member.Name		  = 'Member 2';	
         member2.Profile__c = project.NewMemberProfile__c; 
         
         List<ProjectMember__c> memlist = new List<ProjectMember__c>();
@@ -121,6 +122,7 @@ public class GenerateEnvironmentTest {
         task.Project__c 	= project.id;
         task.StartDate__c 	= Date.today();
         task.EndDate__c 	= Date.today();
+        task.Notes__c		= 'fjfkl dsjfklds jfiosdj flksdj flkaj klfjs dlkf sjl';
         task.DurationUI__c 	= '2';
         
         mile.Name 					= 'milestone';
@@ -133,6 +135,7 @@ public class GenerateEnvironmentTest {
         task2.Name 				= 'task 2';
         task2.Project__c 		= project2.id;
         task2.StartDate__c 		= Date.today();
+        task2.Notes__c			= 'fjfkl dsjfklds jfiosdj flksdj flkaj klfjs dlkf sjl';
         task2.EndDate__c 		= Date.today();
         task2.DurationUI__c 	= '2';      
         

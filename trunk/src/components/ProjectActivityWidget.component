@@ -9,8 +9,6 @@
                      assignTo="{!projectId}" 
                      required="true"/>
     
-    <!-- TODO place in application top -->
-    <apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
     
     <apex:outputPanel id="widget" styleClass="widget" layout="block" >
     
