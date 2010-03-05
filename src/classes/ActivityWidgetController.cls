@@ -29,14 +29,15 @@ public class ActivityWidgetController{
 		allActivities = DAOFactory.getInstance().getActivityForProjectWidget( this.projectId );
 		
 		for( Activity__c row : allActivities ){
-			
+			//TODO uncomment when Activity goes online
+			/*
 			Activity auxActivity = new Activity();
 			
 			auxActivity.modifiedBy 	= row.ModifiedBy__c;
 			auxActivity.action 		= row.Action__c;
 			auxActivity.timestamp	= row.TimeStamp__c;
 			
-			if (row.ProjectActivities__r.size() != 0 ){
+			if( row.ProjectActivities__r.size() != 0 ){
 				auxActivity.changeType 	= row.ProjectActivities__r[0].ChangeType__c;
 				auxActivity.message 	= this.messageObj.getMessage( row.ProjectActivities__r[0] );
 			}
@@ -64,7 +65,7 @@ public class ActivityWidgetController{
 			auxActivity.setImagePath();
 			auxActivity.setHeader();
 			
-			this.resultActivities.add( auxActivity );
+			this.resultActivities.add( auxActivity ); */
 		}
 	}
 	
@@ -92,6 +93,12 @@ public class ActivityWidgetController{
 		actWidget.getResultActivities();
 		
 		//TODO create test Activity for project
+		ProjectActivity__c prjAct = new ProjectActivity__c();
+		MemberActivity__c memberAct = new MemberActivity__c();
+		TaskActivity__c taskAct = new TaskActivity__c();
+		TaskAssigneeActivity__c assigneeAct = new TaskAssigneeActivity__c();
+		TaskCommentActivity__c commentAct = new TaskCommentActivity__c();
+		
 		actWidget.projectId = GenerateEnvironmentTest.project.id;
 		actWidget.parseActivities();
 		

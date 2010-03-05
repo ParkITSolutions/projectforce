@@ -1,8 +1,5 @@
 <apex:component id="ConfirmOverlay" controller="ConfirmOverlayController" allowDML="true">
 
-    <apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/js/overlays.js')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" />
-
     <apex:attribute name="title" 
                     description="Title of the overlay"
                     type="String" 

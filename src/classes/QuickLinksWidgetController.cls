@@ -35,4 +35,20 @@ public class QuickLinksWidgetController {
 	public String getProjectId(){
 		return this.projectId;
 	}
+	
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+    	
+    	QuickLinksWidgetController qLk = new QuickLinksWidgetController();
+    	qLk.setProjectId( GenerateEnvironmentTest.project.id );
+    	qLk.getProjectId();
+    	qLk.userPermission = qLk.userPermission; 
+    	qLk.canView = qLk.canView;
+    	
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );
+    }	
 }

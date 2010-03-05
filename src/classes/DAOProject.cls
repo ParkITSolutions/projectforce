@@ -65,12 +65,19 @@ public class DAOProject {
 	}
 	
 	/**
-	* 
+	* Return true if user is administrator or if is owner of the project
 	* @param projectId
 	* @return isProjectAdministrator
 	*/
 	public Boolean isProjectAdministrator( String projectId ){
 		
+		//If is owner of the project...
+		List<Project2__c> prjOwner = [Select OwnerId, Id From Project2__c where Id =: projectId AND OwnerId =: Userinfo.getUserId() ];
+		if( prjOwner != null ){
+			return true;
+		}
+		
+		//If is member admin of the project...
 		ProjectMember__c prjMember = [ Select p.User__c, p.Project__c, p.Profile__r.Name, p.Profile__c, p.Name, p.Id From ProjectMember__c p Where Project__c =:projectId AND User__c =: Userinfo.getUserId() ];
 		
 		if( prjMember != null ){

@@ -1,7 +1,5 @@
 <apex:component id="ProjectSetupWidget" controller="ProjectSetupController" allowDML="true" >
-	
-	<!-- TODO place in application top -->
-	<apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
+	 
 	
 	<style type="text/css">
 		.prjSetupLink{

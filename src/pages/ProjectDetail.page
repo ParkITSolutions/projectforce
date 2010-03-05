@@ -2,27 +2,27 @@
 
     <c:ApplicationTop id="ApplicationTop" />
     
-    <!-- Ajax Toolkit -->
+    <!-- Ajax Toolkit 
     <apex:includeScript value="/soap/ajax/11.1/connection.js" />
     <script>
         var API_SESSION_ID = '{!$Api.Session_ID}';
     </script>
-    
-   <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}" />
+    -->
+<!--   <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}" />-->
     
      <!-- overlays resources -->
-    <apex:includeScript value="{!URLFOR($Resource.overlaysResources, 'inc/js/js.js')}"/>
-    <apex:stylesheet value="{!URLFOR($Resource.overlaysResources, 'inc/css/css.css')}"/>
+<!--    <apex:includescript value="{!urlfor($resource.overlaysresources, 'inc/js/js.js')}"/>-->
+<!--    <apex:stylesheet value="{!urlfor($resource.overlaysresources, 'inc/css/css.css')}"/>-->
 
     <!-- Portal Support -->
     
     <!-- Common JS for All Sections -->
-    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/TeamsWidgetCommon.js')}" />
-    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}" />
-    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" />
+<!--    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/TeamsWidgetCommon.js')}" />-->
+<!--    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}" />-->
+<!--    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" />-->
 
-    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupTop.js')}" />
-    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectDetail.js')}" />
+<!--    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupTop.js')}" />-->
+<!--    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectDetail.js')}" />-->
 
     <!-- CSS Includes -->
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
@@ -30,13 +30,15 @@
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
 
     <!-- ### Initialize the overlay box for modal.js ### -->
-    <a href="#modal_container" id="initializeModal" style="display:none;"></a>
-    <div id="modal_container" ></div>
+<!--    <a href="#modal_container" id="initializeModal" style="display:none;"></a>-->
+<!--    <div id="modal_container" ></div>-->
     <script type="text/javascript">
+        /*
         createOverlay('initializeModal');
         var globalInfoBig = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/infoBig.gif')}';
         var globalCheckNew = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}';
         var userIsManager = '{!isManager}';
+        */
 		var deleteProjectOverlay          = new ConfirmOverlay( '{!$Component.DeleteProjectOverlay}' );
 		
 		
@@ -202,5 +204,46 @@
        }
        
        function openAvatarUploader(){}
+       
+       /**
+		* Move detail table to custom container
+		*/
+		function projectDetail(){
+		
+			$$('.centerCol')[0].style.marginRigth = '0px';
+			var detailTables = $$('.detailList');
+			var content = $$('.sfdcDetailFormated')[0];
+		
+			for(var it=0; it < detailTables.length; it++){
+				detailTables[it].style.width = '100%';
+				content.insert(detailTables[it]);
+					content.insert('<div class="overlaySeparateLine"/></div>');
+			}
+			
+		
+			var tds = detailTables[0].getElementsByTagName('td');			
+			for(var i=0; i < tds.length; i++){
+			    if(tds[i].innerHTML == 'Image'){
+					var theTd = tds[i].nextSibling;
+					var newAvatar = theTd.getElementsByTagName('a')[0];
+			    }
+			}
+			
+			if(userIsManager == 'false'){
+				//newAvatar.setStyle({'display' : 'none'});
+				newAvatar.style.display = 'none';
+				newAvatar.removeAttribute('href');
+			}else{
+				//Change avatar link
+				newAvatar.style.marginLeft = '7px';
+				newAvatar.removeAttribute('target');
+				newAvatar.onclick = function(){}
+			}
+		}        
+		
+		/**
+		* On DOM ready functions
+		*/
+		document.observe('dom:loaded', function(){projectDetail()});
     </script>
 </apex:page>

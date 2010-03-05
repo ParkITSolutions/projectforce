@@ -1,7 +1,7 @@
 /**
 * This class manages all pagination
 * @author Andres Canavesi
-* @createdAt 01/15/2010
+* @createDate 01/15/2010
 * @group Auxiliary Classes
 */
 public class Paginator {
@@ -438,4 +438,17 @@ public class Paginator {
     
     /**----------------------------------------------- End data getters functions ----------------------------------------------------------------*/
     
+    /**
+    * Test Generic Paginator
+    */
+    static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

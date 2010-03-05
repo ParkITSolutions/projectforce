@@ -1,20 +1,19 @@
 /**
 * @author Miguel Soares 
+* @createdDate 
 */
 public class UserTasksController{
-
-    public Boolean showDetail { set; get; }
-    public Boolean auxShowDetail { set; get; }
-    public id currentUser;
-    public Project currentProject { set; get; }
-    public List<ProjectMember__c> allProjects;
+	
+	public List<ProjectMember__c> allProjects;
+	public List<SelectOption> selectOpsProject;
     public Map<id,ProjectMember__c> allProjectsMap;
-    public List<SelectOption> selectOpsProject;
-    public String opSelected;
+	public id currentUser;
+	public String opSelected;
     public String attachmentPrjId;
-    
-    public Paginator paginator  { set; get; }
-    
+    public Boolean showDetail 		{ set; get; }
+    public Boolean auxShowDetail 	{ set; get; }
+    public Project currentProject 	{ set; get; }
+    public Paginator paginator  	{ set; get; }
     
     /**
     * Constructor
@@ -22,7 +21,6 @@ public class UserTasksController{
     public UserTasksController(){
         
         this.currentUser    = UserInfo.getUserId();
-        //this.opSelected     = 'none'; 
         this.showDetail     = false;
 
         this.allProjects        = new List<ProjectMember__c>();
@@ -31,20 +29,19 @@ public class UserTasksController{
         
         this.paginator = new Paginator();
         
-        this.paginator.orderBy      = 'Name';
-        this.paginator.orderAsc     = true;
-        this.paginator.filter       = '1'; // Show all tasks and milestones
+        this.paginator.orderBy    = 'Name';
+        this.paginator.orderAsc   = true;
+        this.paginator.filter     = '1'; // Show all tasks and milestones
+        
         if( this.opSelected == null || this.opSelected == 'none' )
         	this.paginator.project.id   = '';
         
         paginator.loadTasksByUser();
-        
         this.selectAllProjectsName();
     }
 
-
     /**
-    *@return attachmentPrjId
+    * @return attachmentPrjId
     */
     public String getAttachmentPrjId(){
         
@@ -53,8 +50,6 @@ public class UserTasksController{
         
         return this.attachmentPrjId;
     }
-
-
 
     /**
     * @return List<SelectOption>
@@ -66,7 +61,7 @@ public class UserTasksController{
 
         for( ProjectMember__c p : this.allProjects )
             if( p.Project__c != null )
-            this.selectOpsProject.add( new SelectOption( (String)p.Project__c, p.Project__r.name ) );
+            	this.selectOpsProject.add( new SelectOption( (String)p.Project__c, p.Project__r.name ) );
             
         return this.selectOpsProject;
     }
@@ -81,13 +76,17 @@ public class UserTasksController{
     }
     
     /**
+    * 
     * @param option
     */
     public void setOpSelected( String option ){          
         this.opSelected = option;
+        
         this.paginator.project.id = option == 'none' ? '' : option;
+        
         this.showDetail = option != 'none';
-        auxShowDetail= this.opSelected == 'none' ? false : true;
+        auxShowDetail 	= this.opSelected == 'none' ? false : true;
+        
         paginator.loadTasksByUser();
         this.selectProjectBasicData();
     }
@@ -109,6 +108,7 @@ public class UserTasksController{
             this.currentProject.priority                = ProjectUtil.chopWords( tempProject.Project__r.priority__c );
             this.currentProject.displayDuration         = ProjectUtil.chopWords( tempProject.Project__r.DisplayDuration__c );
             this.currentProject.description             = ProjectUtil.chopWords( tempProject.Project__r.Description__c );
+            
             if( tempProject.Project__r.DaysInWorkWeek__c == null )
             	this.currentProject.daysWorkWeekFormated = '-';
             else
@@ -125,7 +125,10 @@ public class UserTasksController{
          for( ProjectMember__c p : this.allProjects)
             this.allProjectsMap.put( p.project__c, p );
     }
-
+	
+	/**
+    * Test user tasks Page
+    */
     static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();
@@ -134,20 +137,33 @@ public class UserTasksController{
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
     	
-    	UserTasksController u = new UserTasksController();
-	 	u.showDetail = true;
-		u.showDetail = u.showDetail;
-		u.auxShowDetail = true;
-		u.auxShowDetail = u.auxShowDetail;
-		u.currentProject = new Project();
-		u.currentProject = u.currentProject;
-		u.paginator = new Paginator();
-		u.paginator = u.paginator;
+    	Test.setCurrentPageReference( new PageReference( 'Page.UserTasks' ) );
+
+    	UserTasksController userTask = new UserTasksController();
+	 	userTask.showDetail 		= true;
+		userTask.showDetail 		= userTask.showDetail;
+		userTask.auxShowDetail 		= true;
+		userTask.auxShowDetail 		= userTask.auxShowDetail;
 		
-    	u = new UserTasksController();
-    	u.getProjectSelectOps();
-    	u.selectProjectBasicData();
+		userTask.currentProject = new Project();
+		userTask.currentProject = userTask.currentProject;
+		
+		userTask.paginator 	= new Paginator();
+		userTask.paginator 	= userTask.paginator;
+		
+    	userTask = new UserTasksController();
+    	userTask.getProjectSelectOps();
+    	userTask.getOpSelected();
     	
+    	userTask.selectProjectBasicData();
+    	userTask.setOpSelected( 'none' );
+    	userTask.selectProjectBasicData();
+    	
+    	userTask.selectAllProjectsname();
+    	
+    	userTask.getAttachmentPrjId();
+    	userTask.allProjects = null;
+    	userTask.getAttachmentPrjId();
     	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );}

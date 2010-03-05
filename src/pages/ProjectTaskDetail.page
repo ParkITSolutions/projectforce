@@ -272,6 +272,12 @@
 						rerender="detailListPanel" 
 						oncomplete="swirly.hide();" />
 						
+					<!-- Refresh assigneelist whitout hide the swirly -->
+					<apex:actionFunction name="RefreshAssigneeListNotSwirly"
+						action="{!doRefresh}"  
+						rerender="detailListPanel" 
+						/>
+							
 					<!-- Generic Refresh Comment Method -->
 					<apex:actionFunction name="RefreshCommentList"
 						action="{!doRefresh}"  

@@ -1,9 +1,5 @@
 <apex:component id="myTaskAndMilestones" controller="MyTasksAndMilestonesController" allowDML="true" >
 
-    <!-- TODO place in application top -->
-    <apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
-    <apex:stylesheet value="{!URLFOR($Resource.MyTaskAndMilestonesWidget, 'inc/css/myTaskAndMilestonesWidget.css')}" /> 
-    <apex:includeScript value="{!URLFOR($Resource.MyTaskAndMilestonesWidget, 'inc/js/myTaskAndMilestonesWidget.js')}" />
     
     <apex:outputPanel id="widget" styleClass="widget" layout="block" >
     

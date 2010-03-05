@@ -3,10 +3,10 @@
 */
 public class SearchController {
 	
+	public String labelName; 
 	public String module 					{ set; get; }
 	public String key 						{ set; get; }
 	public String projectId 				{ set; get; }
-	public String labelName; 					
 	public String defaultText 				{ set; get; }
 	public boolean isProperQueryLength 		{ set; get; }
 	
@@ -103,4 +103,66 @@ public class SearchController {
 			return null;
 		}
 	}
+	
+	/**
+    * Test Search Controller
+    */
+    public static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		Test.setCurrentPageReference( new PageReference( 'Page.ProjectDetail' ) );
+		
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+		System.currentPageReference().getParameters().put( 'key', 'Project open' );
+		
+		SearchController search = new SearchController();
+		
+		search.setLabelName( 'Projects' );
+		search.getLabelName();
+		search.getDefaultText();
+		
+		search.setLabelName( 'Tasks' );
+		search.getLabelName();
+		search.getDefaultText();
+		
+		System.currentPageReference().getParameters().put( 'id', null );
+		System.currentPageReference().getParameters().put( 'key', null );
+		
+		search = new SearchController();
+		
+		search.setLabelName( 'Projects' );
+		search.getDefaultText();
+		
+		search.setLabelName( 'Tasks' );
+		search.getDefaultText();
+		
+		System.currentPageReference().getParameters().put( 'id', '' );
+		System.currentPageReference().getParameters().put( 'key', 'Project open' );
+		search = new SearchController();
+		search.module = 'module';
+		search.searchKey();
+		
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+		System.currentPageReference().getParameters().put( 'key', 'Project open' );
+		search = new SearchController();
+		search.module = 'module';
+		search.searchKey();
+		
+		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
+		System.currentPageReference().getParameters().put( 'key', 'p' );
+		search = new SearchController();
+		search.module = 'module';
+		search.searchKey();
+		
+		System.currentPageReference().getParameters().put( 'id', null );
+		System.currentPageReference().getParameters().put( 'key', null );
+		search = new SearchController();
+		search.searchKey();
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

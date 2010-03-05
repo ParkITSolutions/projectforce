@@ -163,7 +163,7 @@
                     </apex:outputPanel>
                     <!-- End PaginatorPanel -->
                 
-                		<!-- letterFilter -->
+                        <!-- letterFilter -->
                         <apex:outputPanel id="letterFilter" styleClass="letterFilter" layout="block">
                             <apex:outputLink id="allLink"
                                 value="javascript:;"
@@ -266,7 +266,8 @@
                                     </apex:outputPanel>
                                 </apex:outputLink>
                             </apex:facet>
-                            <apex:outputText value="{!t.Priority}" />
+                            <!-- <apex:outputText value="{!t.Priority}" /> -->
+                            <apex:image id="PriorityImage" value="{!URLFOR($Resource.UserTasks, 'images/'+t.priority+'Priority.gif')}" />
                         </apex:column>
                         
                         <apex:column >
@@ -279,7 +280,8 @@
                                     </apex:outputPanel>
                                 </apex:outputLink>
                             </apex:facet>
-                            <apex:outputText value="{!t.isMilestone}" />
+                            <!-- <apex:outputText value="{!t.isMilestone}" /> -->
+                            <apex:image id="MilestoneImage" value="{!URLFOR($Resource.UserTasks, 'images/milestone.gif')}" rendered="{!t.isMilestone}" />
                         </apex:column>
     
                         <apex:column >

@@ -57,7 +57,7 @@ public class DAOTask {
         
         ProjectTask__c task = new ProjectTask__c();
         
-        task = [select Id, Name, Milestone__c, Project__c
+        task = [select Id, Name, Milestone__c, Project__c, OwnerId
                 from ProjectTask__c 
                 where Id =:taskId
                 limit 1];
@@ -171,7 +171,7 @@ public class DAOTask {
         
         tasksIdsList = tasksIds.split( ':' ); 
         
-        List<ProjectTask__c> tasks = [select Id, Name, Milestone__c
+        List<ProjectTask__c> tasks = [select Id, Name, Milestone__c, OwnerId
                                       from ProjectTask__c 
                                       where id in: tasksIdsList];
         

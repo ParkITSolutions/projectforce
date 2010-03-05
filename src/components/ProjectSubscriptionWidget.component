@@ -1,10 +1,5 @@
 <apex:component id="ProjectSubscriptionWidget" controller="ProjectSubscriptionWidgetController" allowDML="true">
-    
-    <!-- Corresponding CSS and JS for particular Widget-->
-    
-    <!-- TODO place in application top -->
-    <apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
-    
+  
     <style type="text/css">
         .subscribeLink{
             padding:7px;

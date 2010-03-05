@@ -3,9 +3,6 @@
     <!-- Corresponding CSS and JS for particular Widget-->
     <apex:stylesheet value="{!URLFOR($Resource.MembersWidget, 'inc/css/membersWidget.css')}" /> 
     
-    <!-- TODO place in application top -->
-    <apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> 
-    
     <!-- Attribute Definitions -->
     <apex:attribute name="projectId" 
                      description="Project id"

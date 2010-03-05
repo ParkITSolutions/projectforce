@@ -29,4 +29,21 @@ public abstract class ActivityLog {
 	*/
 	public virtual void log(){
 	}
+	
+	/**
+    * Test Activity Log Class
+    */
+    public static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		TaskComment__c c = GenerateEnvironmentTest.comment;
+    	TaskCommentActivity tC = new TaskCommentActivity( GenerateEnvironmentTest.project.id, Datetime.now(), Userinfo.getUserId(), 'insert', c );
+    	tC.log();
+    	
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );    	
+    }
 }

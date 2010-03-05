@@ -185,17 +185,17 @@ public class Task{
 	/**
 	* Setting overdue flag and days overdue message.
 	*/
-	private Boolean settingDaysOverdue(){
+	public Boolean settingDaysOverdue(){
 		Integer localDaysOverdue;
 		if( this.endDate != null )
-		localDaysOverdue = this.endDate.daysBetween( Date.today());
+			localDaysOverdue = this.endDate.daysBetween( Date.today());
 		 
 		this.daysOverdue = localDaysOverdue + 'day(s) overdue.';
 		return localDaysOverdue > 0;
 	}
 
 	/**
-    * Test 
+    * Test Task Wrapper Class
     */
     static testMethod void myUnitTest(){
     	
@@ -203,9 +203,32 @@ public class Task{
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
 		
-		Test.setCurrentPageReference( new PageReference( 'Page.ProjectDetail' ) );
-		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
-
+		Task tsk = new Task();
+		tsk.Id = GenerateEnvironmentTest.task.Id;
+		tsk.settingDaysOverdue();
+		
+		tsk.overdue = true;
+		tsk.endDate = System.today();
+		tsk.getOverdueTask();
+		tsk.endDate = null;
+		tsk.getOverdueTask();
+		
+		tsk.getDuration();
+		tsk.setduration( 1.0 );
+		tsk.getdurationDisplay();
+		tsk.setPercentCompleted( 55.0 );
+		tsk.getPercentCompleted();
+		tsk.getPercentCompletedDisplay();
+		tsk.setPercentCompletedDisplay( '55' );
+		tsk.setProjectName( 'Prj Test' );
+		tsk.getProjectName();
+		tsk.getProjectNameDisplay();
+		tsk.setName( 'name' );
+		tsk.getName();
+		tsk.getNameDisplay();
+		
+		Attachment uploadTest = new Attachment( Name = 'avatar', Body = Crypto.generateMac( 'HMacSHA1', Blob.valueOf( 'String' ), Blob.valueOf( 'String' ) ), ContentType = 'image/png' );
+		tsk.addAttachment( uploadTest );
 		
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );    	

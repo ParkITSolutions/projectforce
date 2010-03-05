@@ -32,7 +32,7 @@ public class InstallController {
 		
 		setup = DAOFactory.getInstance().getListSavedProfilesProjectSetup()[0];
 		
-		if( setup.CanViewButtonNew__c != null ){
+		if( setup.CanViewButtonNew__c != null ){ 
 			 			
 			for( Profile s : [ SELECT id, Name FROM Profile WHERE id IN: setup.CanViewButtonNew__c.split( '#' ) ])
 				setupNames.add( s.name );
@@ -103,10 +103,15 @@ public class InstallController {
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
     	
+    	delete [ select Id, Name from ProjectProfile__c ];
+    	
 		InstallController install = new InstallController();
 		install.projectSetupActualization();
 		
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     }
+
+    
+    
 }

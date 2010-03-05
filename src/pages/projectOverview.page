@@ -36,7 +36,7 @@
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/teamOverview.js')}" />
         
     <script>
-    
+         
         var API_SESSION_ID = '{!$Api.Session_ID}';
   
     </script>
@@ -63,12 +63,12 @@
         <apex:define name="search">
             <c:Search id="searchBox" module="Project" label="Projects" />
         </apex:define>
-    </apex:composition>
+    </apex:composition> 
     <!-- Sidebar -->
     <div class="sidebar">
         <c:ProjectsWidgetMyTasks id="myTasks"/>
         <c:ProjectsWidgetMyMilestones id="myMilestones"/>
-        <c:ProjectSetupWidget id="projectSetup"/>  
+        <c:ProjectSetupWidget id="projectSetup"/>
     </div>
     <!-- Main Content Div --> 
     <div class="main_content" > 

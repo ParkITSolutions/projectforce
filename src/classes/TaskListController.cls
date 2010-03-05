@@ -1,5 +1,6 @@
 /**
 * @author Andres Canavesi
+* @createdDate 
 */
 public class TaskListController {
 	
@@ -77,10 +78,10 @@ public class TaskListController {
     */ 
     public void generateTaskListCsv() {
        
-        this.project = DAOFactory.getInstance().getProjectInfo( projectId );
-        String csvText = 'ID ,Type,Priority,Name,Description,Status,AssignedTo,PercentCompleted,Duration (' + project.displayDuration + '),DueDate,DaysLate\n';               
+        this.project 	= DAOFactory.getInstance().getProjectInfo( projectId );
+        String csvText 	= 'ID ,Type,Priority,Name,Description,Status,AssignedTo,PercentCompleted,Duration (' + project.displayDuration + '),DueDate,DaysLate\n';               
              
-        for( Task iterTask : this.tasks ) {
+        for( Task iterTask : this.paginator.getTasksByProject() ) {
            
             csvText += iterTask.idDisplay + ',';           
            
@@ -99,8 +100,10 @@ public class TaskListController {
             }
            
             csvText += description + ',';           
-            csvText += iterTask.status + ',';           
-            csvText += iterTask.assignees[0].name + ',';
+            csvText += iterTask.status + ',';  
+            if( iterTask.assignees.size() > 0 ){
+            	csvText += iterTask.assignees[0].name + ',';
+            }         
             csvText += iterTask.getPercentCompleted() + ',';
             csvText += iterTask.endDate + '\n';
                  
@@ -120,13 +123,13 @@ public class TaskListController {
 
         doc.Body = Blob.valueOf(csvText);
         doc.ContentType = 'text/csv';
-       
+       	//TODO move SOQL to DAO
         upsert doc;
         this.csvFileId = doc.Id;
     }   	
     
 	/**
-	* Test ProjectDetailController
+	* Test Task List Controller
 	*/
     static testMethod void myUnitTest(){
     	
@@ -151,10 +154,7 @@ public class TaskListController {
         
         tKC.generateTaskListCsv();
 
-
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     }
-    
-        
 }

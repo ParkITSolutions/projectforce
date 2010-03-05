@@ -2,7 +2,7 @@
 * @author Matias Menafra
 * @dateCreated 01/22/2010
 */
-public class ObjectFormatter {
+public class ObjectFormatter{
 
 	/**
 	* Constructor
@@ -243,9 +243,25 @@ public class ObjectFormatter {
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
 		
-		Test.setCurrentPageReference( new PageReference( 'Page.ProjectDetail' ) );
-		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
-
+		ObjectFormatter format = new ObjectFormatter();
+		
+		List<Activity__c> activityList 	= new List<Activity__c>();
+		ObjectFormatter.formatProjectActivities( activityList );
+		
+		List<ProjectTask__c> taskList1 = new List<ProjectTask__c>();
+		ObjectFormatter.formatTasks( taskList1 );
+		
+		List<ProjectAssignee__c> listOfAssignees = new List<ProjectAssignee__c>();
+		ObjectFormatter.formatAssigneeTask( listOfAssignees );
+		
+		List<ProjectTask__c> taskList = new List<ProjectTask__c>();
+		//ObjectFormatter.formatSearchResults( searchTerm, resultList, objectType );
+		
+		List<Attachment> attachments = new List<Attachment>();
+		ObjectFormatter.formatAttachments( attachments );
+		 
+		List<ProjectAssignee__c> assignees = new List<ProjectAssignee__c>();
+		ObjectFormatter.formatTaskAssignees( assignees );
 		
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );    	

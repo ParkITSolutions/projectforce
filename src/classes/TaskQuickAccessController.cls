@@ -1,11 +1,12 @@
 /**
 * @author Matias Menafra 
+* @createdDate 01/22/2010
 */
 public class TaskQuickAccessController {
 
-	public String taskCustomId;
-	public Boolean error { set; get; }
-	public String trace { set; get; }
+	public String 	taskCustomId;
+	public Boolean 	error 	{ set; get; }
+	public String 	trace 	{ set; get; }
 	
 	/**
 	* Constructor
@@ -45,18 +46,39 @@ public class TaskQuickAccessController {
 		Project prj = new Project();
 		ProjectTask__c task = prj.getTaskByCustomId( this.taskCustomId );
 		
-		if( task != null )
-		{
+		if( task != null ){
 			this.error = false;
 			PageReference taskDetail = new PageReference( '/apex/ProjectTaskDetail?id=' + task.Id );
-			taskDetail.setRedirect(true);
+			taskDetail.setRedirect( true );
 			return taskDetail;
 		}
-		else
-		{
+		else{
 			this.error = true;
 			this.trace = this.taskCustomId;
 			return null;
 		}
 	}
+	
+	/**
+	* Test Task Quick Access component
+	*/
+	public static testMethod void myUnitTest(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+		
+		TaskQuickAccessController taq = new TaskQuickAccessController();
+		
+		taq.setTaskCustomId( '#' + GenerateEnvironmentTest.task.id );
+		//taq.setTaskCustomId( '#' + String.valueOf( GenerateEnvironmentTest.task.Id__c ) );
+		taq.getTaskCustomId();
+		taq.goToTaskDetail();
+
+		taq.setTaskCustomId( '#f43' );
+		taq.goToTaskDetail();
+    	Test.stopTest();
+    	
+		ProjectUtil.setIsTest( false );
+    }    	
 }
