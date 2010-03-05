@@ -25,7 +25,7 @@ trigger ProjectTaskPredBeforeInsert on ProjectTaskPred__c (Before Insert, Before
 		    //td.updateNow();
        }else if(Trigger.isDelete){
 			ProjectUtil.setTaskDependenciesFlag( false ); 
-       }
+       } 
    }else if(Trigger.isAfter){ 
 
        if(Trigger.isInsert){

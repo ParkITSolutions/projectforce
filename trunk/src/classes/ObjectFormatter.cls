@@ -20,7 +20,7 @@ public class ObjectFormatter{
 		List<Activity> projectActivities = new List<Activity>();
 		
 		for( Activity__c row : activityList ){
-			
+			/*
 			Activity auxActivity = new Activity();
 			
 			auxActivity.modifiedBy 	= row.ModifiedBy__c;
@@ -56,6 +56,7 @@ public class ObjectFormatter{
 			auxActivity.setHeader();
 			
 			projectActivities.add( auxActivity );
+			*/
 		}
 		return projectActivities;
 	}
@@ -249,18 +250,30 @@ public class ObjectFormatter{
 		ObjectFormatter.formatProjectActivities( activityList );
 		
 		List<ProjectTask__c> taskList1 = new List<ProjectTask__c>();
+		taskList1.add( GenerateEnvironmentTest.task );
+		taskList1.add( GenerateEnvironmentTest.task2 );
+		taskList1.add( GenerateEnvironmentTest.mile );
 		ObjectFormatter.formatTasks( taskList1 );
 		
 		List<ProjectAssignee__c> listOfAssignees = new List<ProjectAssignee__c>();
 		ObjectFormatter.formatAssigneeTask( listOfAssignees );
 		
-		List<ProjectTask__c> taskList = new List<ProjectTask__c>();
-		//ObjectFormatter.formatSearchResults( searchTerm, resultList, objectType );
+		List<ProjectTask__c> resultList = new List<ProjectTask__c>();
+		resultList.add( GenerateEnvironmentTest.task );
+		resultList.add( GenerateEnvironmentTest.task2 );
+		resultList.add( GenerateEnvironmentTest.mile );
+		ObjectFormatter.formatSearchResults( GenerateEnvironmentTest.task.Name, resultList, 'projectTask' );
 		
 		List<Attachment> attachments = new List<Attachment>();
+		Attachment uploadFile = new Attachment( Name = 'Name1', Body = Blob.valueOf(' fdsfdsf dsa fds fsd fsd fsd fsdf sd'), ContentType = 'plain/text', BodyLength = 2000 );
+		Attachment uploadFile2 = new Attachment( Name = 'Name2', Body = Blob.valueOf(' fdsfdsfsdfdsf dsfsdf sdafds fads'), ContentType = 'plain/text', BodyLength = 2000 );
+		attachments.add( uploadFile );
+		attachments.add( uploadFile2 );
 		ObjectFormatter.formatAttachments( attachments );
-		 
+		
 		List<ProjectAssignee__c> assignees = new List<ProjectAssignee__c>();
+		assignees.add( GenerateEnvironmentTest.assi );
+		assignees.add( GenerateEnvironmentTest.assi2 );
 		ObjectFormatter.formatTaskAssignees( assignees );
 		
     	Test.stopTest();
