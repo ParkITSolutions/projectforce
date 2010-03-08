@@ -56,14 +56,12 @@
                         onClick="deleteAttachments();"
                         styleClass="blackbutton">
                         <apex:outputPanel >
-                            Deleteeee
+                            Delete
                         </apex:outputPanel>
                     </apex:outputLink>
                     
             </apex:outputpanel>
 
-        
-            
             <!-- RecordsList -->
             <apex:outputPanel id="RecordsList" layout="block" styleclass="RecordsList">
             

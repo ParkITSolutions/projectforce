@@ -91,7 +91,7 @@ public class TaskPdfExportController {
 	*/
 	public void getTask (String param){
 		
-			ProjectTask__c TD = [Select p.Id,p.Project__c,p.Project__r.Name,p.StartDate__c,
+			ProjectTask__c TD = [Select p.Id,p.Id__c, p.Project__c,p.Project__r.Name,p.StartDate__c,
 									p.Priority__c,p.PercentCompleted__c, p.Name, p.Milestone__c,
 									p.LastModifiedById,p.LastModifiedBy.Name,p.LastModifiedDate,
 									p.EndDate__c, p.Duration__c, p.Description__c,p.ParentTask__c,
@@ -104,7 +104,7 @@ public class TaskPdfExportController {
 			
 			if(TD != null ){
 				taskDetail = new TaskDetails();
-				taskDetail.id = TD.Id;
+				taskDetail.id = TD.Id__c;
 				taskDetail.status = TD.status__c;
 				taskDetail.IsTaskOwner = false;
 				
