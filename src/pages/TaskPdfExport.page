@@ -145,7 +145,6 @@
                     <apex:repeat value="{!Task.Asignee}" var="item">
                         <tr>
                             <td>{!item.Name}</td>
-                            <td>{!item.percent}%</td>
                         </tr>                                      
                     </apex:repeat>
                 </table>

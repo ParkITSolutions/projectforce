@@ -39,9 +39,7 @@
         var globalCheckNew = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}';
         var userIsManager = '{!isManager}';
         */
-		var deleteProjectOverlay          = new ConfirmOverlay( '{!$Component.DeleteProjectOverlay}' );
-		
-		
+		var deleteProjectOverlay = new ConfirmOverlay( '{!$Component.DeleteProjectOverlay}' );
 	
 		function DeleteProject(){
     	    deleteProjectOverlay.open();

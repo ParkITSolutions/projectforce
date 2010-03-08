@@ -56,7 +56,7 @@
                     
                     <br />
                     <apex:outputPanel id="milestoneDateInvalid" styleClass="milestoneErrors" style="display:none;" >Error: You must enter a valid value</apex:outputPanel>
-                    <!-- <apex:outputPanel id="milestoneDateInvalidDate" styleClass="taskErrors" style="display:none;">Error: The date is to older</apex:outputPanel> -->
+                    <apex:outputPanel id="milestoneDateInvalidDate" styleClass="milestoneErrors" style="display:none;">Error: The date is to older</apex:outputPanel>
                     <br />
                     
                     <apex:outputLabel >Assign To</apex:outputLabel> 

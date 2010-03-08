@@ -45,6 +45,11 @@
 		margin-top:10px;
 		width:430px;
 	}
+	
+	.bPageBlock .pbFooter, .bWizardBlock .pbFooter {
+		display:none !important;
+	}
+	
 	</style>
    	<script  type="text/javascript">
        document.observe("dom:loaded", function(){
@@ -194,7 +199,7 @@
         <div class="holder" style="overflow:hidden;clear:both;margin:0px;margin-left:200px;margin-bottom:0px;" id="holder">
              <div align="center" class="breadCrumbAndButtons">
         
-        <div class="buttons" style="{!IF(Task.IsTaskOwner,'width:340px;','')}">
+        <div class="buttons">
             <apex:outputpanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}" layout="block">
                 <a class="blackbutton" href="/{!Task.id}/e?retURL=/{!Task.id}"><span>Edit Task</span></a>
                 <apex:form id="quickMilestoneForm" styleclass="quickMilestoneForm" onsubmit="if(isCompleted){alert('The task percent is already completed.');return false}"  >   
@@ -439,7 +444,7 @@
 											                id="DeleteComment"
 											                styleclass="notassigned"
 											                rendered="{!OR(userPermissions.canManage,Task.IsTaskOwner,Task.assignToMe)}"
-											                onClick="TaskDetailDeleteComment('{!comment.Id}');">
+											                onClick="DeleteDetailTask();">
 											                    Delete Comment
 											            </apex:outputLink>
                                                 </apex:outputPanel>
