@@ -6,7 +6,7 @@
     <apex:includeScript value="{!URLFOR($Resource.NewAttachment, 'inc/js/newAttachment.js')}" />
      <apex:form id="uploadAttachment">
     	
-        <apex:outputPanel id="Overlay" styleClass="overlay" layout="block">     
+        <apex:outputPanel id="Overlay" styleClass="overlay overlayAttachment" layout="block">     
             <apex:outputPanel id="ComponentBody" styleClass="componentBody" layout="block">
             
                 <apex:outputText value="Select the file to upload." styleclass="label nonFloat"/>
@@ -46,7 +46,7 @@
 	        </apex:outputPanel>
 	        <apex:outputPanel rendered="{!postAction == 'ReloadAttachmentList'}">
 	            <script type="text/javascript">          
-	                parent.RefreshAttachmentList();
+	                parent.reloadMainContent();
 	                parent.infoToUser.set('success', 'File uploaded.');
 	                
 	            </script>
@@ -74,51 +74,50 @@
     </style>
     
     <script type="text/javascript">
-    Attachment = {
-
-	objFile : '',
-	sendFlag : false,
-	avatarTypeFlagValue : document.getElementById( 'Attachment:uploadAttachment:avatarTypeFlag' ).value,
-
-	verify : function(){
-		if( Attachment.objFile == '' )
-			Attachment.objFile = $$('.newAttach')[0];
-		Attachment.verifyNameLength();
-		return Attachment.send();
-	},
-	
-	send : function(){
-		return this.sendFlag;
-	},
-	
-	verifyNameLength : function(){
-		Attachment.sendFlag = Attachment.objFile.value.length < 71;
+	    Attachment = {
+			objFile : '',
+			sendFlag : false,
+			avatarTypeFlagValue : document.getElementById( 'Attachment:uploadAttachment:avatarTypeFlag' ).value,
 		
-		if( !Attachment.sendFlag ){
+			verify : function(){
+				if( Attachment.objFile == '' )
+					Attachment.objFile = $$('.newAttach')[0];
+				Attachment.verifyNameLength();
+				return Attachment.send();
+			},
 			
-			Attachment.clearForm();
-			parent.infoToUser.open( 'error', 'File name too large, 70 characters max.' );
-		}else{
-			parent.promptOverlay.close();
-			parent.swirly.show();
-		} 
-	},
-	
-	clearForm : function(){
-		if( Attachment.objFile == '' )
-			Attachment.objFile = $$('.newAttach')[0]; 
-		Attachment.objFile.value = '';
-	}, 
-	
-	postAction: function(){
-		parent.infoToUser.open( 'success', 'post action executed.' );
-		parent.RefreshAttachmentList();
-	},
-	
-	uploadAsAvatar: function(){
-		document.getElementById( 'Attachment:uploadAttachment:avatarTypeFlag' ).value = "avatar";
-	}
-}
+			send : function(){
+				return this.sendFlag;
+			},
+			
+			verifyNameLength : function(){
+				Attachment.sendFlag = Attachment.objFile.value.length < 71;
+				
+				if( !Attachment.sendFlag ){
+					
+					Attachment.clearForm();
+					parent.infoToUser.open( 'error', 'File name too large, 70 characters max.' );
+				}else{
+					parent.promptOverlay.close();
+					parent.swirly.show();
+				} 
+			},
+			
+			clearForm : function(){
+				if( Attachment.objFile == '' )
+					Attachment.objFile = $$('.newAttach')[0]; 
+				Attachment.objFile.value = '';
+			}, 
+			
+			postAction: function(){
+				parent.infoToUser.open( 'success', 'post action executed.' );
+				parent.RefreshAttachmentList();
+			},
+			
+			uploadAsAvatar: function(){
+				document.getElementById( 'Attachment:uploadAttachment:avatarTypeFlag' ).value = "avatar";
+			}
+		}
     </script>
 
 </apex:page>

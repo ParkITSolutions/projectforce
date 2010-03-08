@@ -174,9 +174,9 @@ public class AttachmentController{
 		
 		uploadTest = new Attachment( Name = 'avatar', Body = Crypto.generateMac( 'HMacSHA1', Blob.valueOf( 'String' ), Blob.valueOf( 'String' ) ), ContentType = 'image/png' );
 		attController = new AttachmentController();
-		attController.avatarTypeFlag = 'avatar';
 		uploadTest.parentId 	= GenerateEnvironmentTest.project.Id;
 		attController.newAttach = uploadTest;
+		attController.avatarTypeFlag = 'avatar';
 		attController.action();
 		
     	Test.stopTest();
@@ -214,15 +214,20 @@ public class AttachmentController{
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
+    	
 		Attachment uploadTest = new Attachment( Name = 'avatar', Body = Crypto.generateMac( 'HMacSHA1', Blob.valueOf( 'String' ), Blob.valueOf( 'String' ) ), ContentType = 'image/png' );
+		uploadTest.ParentId = GenerateEnvironmentTest.project.id;
+		insert uploadTest;
 		
 		Test.setCurrentPageReference( new PageReference( 'Page.attachmentlist' ) );
 		System.currentPageReference().getParameters().put( 'Id', GenerateEnvironmentTest.project.id );
 		System.currentPageReference().getParameters().put( 'pid', GenerateEnvironmentTest.project.id );
 		
 		AttachmentController attController = new AttachmentController();
-		uploadTest.parentId 	= GenerateEnvironmentTest.project.Id;
-		attController.newAttach = uploadTest;
+		//uploadTest.parentId = GenerateEnvironmentTest.project.Id;
+		//attController.newAttach = uploadTest;
+		attController.avatarTypeFlag = 'avatar';
+		attController.newAttach = GenerateEnvironmentTest.avatar;
 		attController.action();
 		
     	Test.stopTest();

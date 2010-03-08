@@ -177,7 +177,7 @@
                     </div>
                     <div class="sfdcDetailFormated"></div>
                     
-                    <apex:actionFunction name="reloadMainContent" rerender="mainContentForm" oncomplete="projectDetail();swirlyDetail();swirly.hide();"/>
+                    <apex:actionFunction name="reloadMainContent" rerender="mainContentForm" oncomplete="projectDetail();swirly.hide();"/>
                     
                     <!-- Project Tasks -->
                     <c:ProjectWidgetTaskMain team="{!projectId}" id="ProjectWidgetTaskMain"/>             

@@ -104,10 +104,10 @@ public class UserTasksController{
             tempProject = this.allProjectsMap.get( this.OpSelected );
             
             this.AttachmentPrjId                        = tempProject.Project__r.Picture__c;
-            this.currentProject.name                    = ProjectUtil.chopWords( ProjectUtil.chopPhrase( tempProject.Project__r.name,27) );
+            this.currentProject.name                    = ProjectUtil.chopWords( ProjectUtil.chopPhrase( tempProject.Project__r.name,30) );
             this.currentProject.priority                = ProjectUtil.chopWords( tempProject.Project__r.priority__c );
             this.currentProject.displayDuration         = ProjectUtil.chopWords( tempProject.Project__r.DisplayDuration__c );
-            this.currentProject.description             = ProjectUtil.chopWords( ProjectUtil.chopPhrase( tempProject.Project__r.Description__c, 27) );
+            this.currentProject.description             = ProjectUtil.chopWords( ProjectUtil.chopPhrase( tempProject.Project__r.Description__c, 30) );
             
             if( tempProject.Project__r.DaysInWorkWeek__c == null )
             	this.currentProject.daysWorkWeekFormated = '-';
@@ -132,8 +132,7 @@ public class UserTasksController{
     static testMethod void myUnitTest(){
     	
 		GenerateEnvironmentTest.gen();
-		
-		System.runAs( GenerateEnvironmentTest.user ){
+		//System.runAs( GenerateEnvironmentTest.user ){
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
     	
@@ -154,18 +153,20 @@ public class UserTasksController{
     	userTask = new UserTasksController();
     	userTask.getProjectSelectOps();
     	userTask.getOpSelected();
+    	userTask.getAttachmentPrjId();
     	
     	userTask.selectProjectBasicData();
     	userTask.setOpSelected( 'none' );
     	userTask.selectProjectBasicData();
     	
-    	userTask.selectAllProjectsname();
+    	userTask.selectAllProjectsName();
     	
     	userTask.getAttachmentPrjId();
     	userTask.allProjects = null;
     	userTask.getAttachmentPrjId();
     	
     	Test.stopTest();
-		ProjectUtil.setIsTest( false );}
+		ProjectUtil.setIsTest( false );
+		//}
     }	
 }

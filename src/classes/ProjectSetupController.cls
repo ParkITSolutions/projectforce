@@ -64,7 +64,7 @@ public class ProjectSetupController {
 	*/	
 	public void saveSetup(){
 		try{
-			if ( insertProjectSetup ){
+			if ( this.insertProjectSetup ){
 				//Insert the ProjectSetup;
 				DAOFactory.getInstance().insertProjectSetup( ProjectSetup );
 				this.insertProjectSetup = false;
@@ -96,6 +96,11 @@ public class ProjectSetupController {
 		System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.project.id );
 
 		ProjectSetupController projectSetup = new ProjectSetupController();
+		projectSetup.saveSetup();
+		
+		projectSetup = new ProjectSetupController();
+		delete [ select Id, ListSavedProfiles__c, CanViewButtonNew__c from ProjectSetup__c ];
+		projectSetup.listProfiles();
 		projectSetup.saveSetup();
 		
     	Test.stopTest();

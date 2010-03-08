@@ -196,9 +196,8 @@ public class Project {
 
 		Project projectObj 	= new Project( GenerateEnvironmentTest.project.id );
         Project prjObj 		= new Project();
-        
-       // projectObj.getTasks( filter, orderBy, orderAsc, letter );
-        //projectObj.getMembers( filter, orderBy, orderAsc, letter );
+       	projectObj.getTasks( '1', 'Name', true, 'All' );
+        projectObj.getMembers( '1', 'Name', true, 'All' );
         projectObj.setInfo();
         projectObj.setTasks( ''+GenerateEnvironmentTest.task2.Id );
         projectObj.getTasks();

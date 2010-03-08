@@ -68,7 +68,8 @@
     <div class="sidebar">
         <c:ProjectsWidgetMyTasks id="myTasks"/>
         <c:ProjectsWidgetMyMilestones id="myMilestones"/>
-        <c:ProjectSetupWidget id="projectSetup"/>
+        
+        <c:ProjectSetupWidget id="projectSetup"/ rendered="{!isManager}">
     </div>
     <!-- Main Content Div --> 
     <div class="main_content" > 

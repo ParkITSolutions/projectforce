@@ -31,14 +31,14 @@ public class Paginator {
     */
     public Paginator(){
         this.project            = new project();
-        this.project.id			='';
+        this.project.id			= '';
         this.recordsPerPage     = 10;
         this.resultSize         = 0;
         this.lettersList        = new List<String>{'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
         this.letterChoosen      = 'All'; //value by default
-        this.orderByOld = null;
-        this.orderAsc = true;
-        this.orderByRequest = false;
+        this.orderByOld 		= null;
+        this.orderAsc 			= true;
+        this.orderByRequest 	= false;
     }
     
     /**----------------------------------------------- Paginator functions -------------------------------------------------------*/
@@ -77,21 +77,24 @@ public class Paginator {
                 this.pages.add(i);
             }
             
-        }else{
+        }
+        else{
         
             if( paginator.getPageNumber() >= 1 && paginator.getPageNumber() <= half ){
             
-            for( Integer i=1; i<=(half*2+1); i++ ){
-                this.pages.add(i);
+	            for( Integer i=1; i<=(half*2+1); i++ ){
+	                this.pages.add(i);
+	            }
             }
-            }else{
+            else{
                 
                 if( paginator.getPageNumber() >= qPages-half && paginator.getPageNumber() <= qPages ){
                 
                     for( Integer i = qPages - ( half * 2 ); pages.size() < ( half * 2 + 1 ); i++ ){
                         this.pages.add(i);
                     }
-                }else{
+                }
+                else{
                     
                     for( Integer i = paginator.getPageNumber() - half; i<= paginator.getPageNumber() + half; i++ ){
                         this.pages.add(i);
@@ -107,7 +110,7 @@ public class Paginator {
     */
     public void previous(){
         
-        paginator.setPageNumber(pageNumber-1);
+        paginator.setPageNumber( pageNumber - 1 );
         pagesListConstructor();
     }
     
@@ -134,7 +137,7 @@ public class Paginator {
     */
     public void next(){
         
-        paginator.setPageNumber(pageNumber+1);
+        paginator.setPageNumber( pageNumber + 1 );
         pagesListConstructor();
         
     }
@@ -235,9 +238,9 @@ public class Paginator {
     * sets sorting criteria
     */
     private void setSorting(){
-        if(this.orderByRequest){
+        if( this.orderByRequest ){
             //user did click on a column to sort
-            if(this.orderByOld == this.orderBy){
+            if( this.orderByOld == this.orderBy ){
                 //user pressed on the same order by link
                 this.orderAsc = !this.orderAsc;
             }
@@ -262,24 +265,25 @@ public class Paginator {
     * Constructs the list of letters and highlights letters that have currencies
     * @param records list
     */
-    private void letterCurrenciesConstructor(List<String> records){
+    private void letterCurrenciesConstructor( List<String> records ){
         this.letters = new List<Letter>();
         Map<String,Boolean> letterCurrencies = new Map<String, Boolean>();
         String firstLetter;
         //goes through the records and marks letters that have currencies
-        for(String record: records){
+        for( String record: records ){
             firstLetter = record.substring(0,1).toUpperCase();
-            if(!letterCurrencies.containsKey(firstLetter)){
-                letterCurrencies.put(firstLetter, true);
+            if( !letterCurrencies.containsKey( firstLetter ) ){
+                letterCurrencies.put( firstLetter, true );
             }
         }
-        for(String letter:this.lettersList){
-            if(letterCurrencies.containsKey(letter)){
-                Letter l = new Letter(letter,true);
+        for( String letter:this.lettersList ){
+            if( letterCurrencies.containsKey( letter ) ){
+                Letter l = new Letter( letter, true );
                 this.letters.add(l);
-            }else{
-                Letter l = new Letter(letter,false);
-                this.letters.add(l);
+            }
+            else{
+                Letter l = new Letter( letter, false );
+                this.letters.add( l );
             }
         }
     }
@@ -288,32 +292,38 @@ public class Paginator {
     * loads letter currencies
     * @param load type
     */
-    private void loadLetterCurrencies(String loadType){
+    private void loadLetterCurrencies( String loadType ){
         Integer recordsPerPageAux = this.recordsPerPage;
-        this.recordsPerPage=0; //this in order to bring all data
+        this.recordsPerPage = 0; //this in order to bring all data
         List<String> records = new List<String>();
-        if(loadType == 'TasksByProject'){
+        
+        if( loadType == 'TasksByProject' ){
             this.paginator = project.getTasks( this.filter, this.orderBy, this.orderAsc, 'All' ); //'All' means letterChoosen='All'
             List<ProjectTask__c> tasks = (List<ProjectTask__c>) paginator.getRecords();
-            for(ProjectTask__c task:tasks){
+            
+            for( ProjectTask__c task : tasks ){
                 records.add(task.Name);
             }
         }
-        if(loadType == 'MembersByProject'){
-            this.paginator = project.getMembers( this.filter, this.orderBy, this.orderAsc, 'All'); 
-            for(ProjectMember__c member:(List<ProjectMember__c>) paginator.getRecords()){
-                records.add(member.Name);
+        
+        if( loadType == 'MembersByProject' ){
+            this.paginator = project.getMembers( this.filter, this.orderBy, this.orderAsc, 'All' ); 
+            
+            for( ProjectMember__c member:( List<ProjectMember__c> ) paginator.getRecords() ){
+                records.add( member.Name );
             }
         }
         
-        if(loadType == 'TasksByUser'){
+        if( loadType == 'TasksByUser' ){
             this.paginator = DAOFactory.getInstance().loadTasksByUser( this.filter, this.orderBy, this.orderAsc, this.project.id, 'All' );
             List<ProjectAssignee__c> tasks = (List<ProjectAssignee__c>) paginator.getRecords();
-            for(ProjectAssignee__c task:tasks){
-                records.add(task.ProjectTask__r.name);
+            
+            for( ProjectAssignee__c task : tasks ){
+                records.add( task.ProjectTask__r.name );
             }
         }
-        letterCurrenciesConstructor(records);
+        
+        letterCurrenciesConstructor( records );
         this.recordsPerPage = recordsPerPageAux;
     }
     
@@ -325,7 +335,7 @@ public class Paginator {
     * loads the tasks list
     */
     public void loadTasksByProject(){
-        loadLetterCurrencies('TasksByProject');
+        loadLetterCurrencies( 'TasksByProject' );
         setSorting();
         this.paginator = project.getTasks( this.filter, this.orderBy, this.orderAsc, this.letterChoosen );
         postLoad();
@@ -335,7 +345,7 @@ public class Paginator {
     * loads members by project
     */
     public void loadMembersByProject(){
-        loadLetterCurrencies('MembersByProject');
+        loadLetterCurrencies( 'MembersByProject' );
         setSorting();
         this.paginator = project.getMembers( this.filter, this.orderBy, this.orderAsc, this.letterChoosen );
         postLoad();
@@ -377,7 +387,7 @@ public class Paginator {
     * loads the tasks list by user
     */
     public void loadTasksByUser(){
-        loadLetterCurrencies('TasksByUser');
+        loadLetterCurrencies( 'TasksByUser' );
         setSorting();
         this.paginator = DAOFactory.getInstance().loadTasksByUser( this.filter, this.orderBy, this.orderAsc, this.project.id, this.letterChoosen ); 
         postLoad();
@@ -433,7 +443,7 @@ public class Paginator {
         if( paginator.getRecords() != null && paginator.getRecords().size() == 0 )
             return  ObjectFormatter.formatAssigneeTask( new List<ProjectAssignee__c>() );
         else
-            return  ObjectFormatter.formatAssigneeTask(( List<ProjectAssignee__c>) paginator.getRecords());
+            return  ObjectFormatter.formatAssigneeTask( ( List<ProjectAssignee__c>) paginator.getRecords() );
     }
     
     /**----------------------------------------------- End data getters functions ----------------------------------------------------------------*/
@@ -447,6 +457,28 @@ public class Paginator {
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
 		
+		Paginator pager = new Paginator();
+		pager.project.id 	= GenerateEnvironmentTest.project.Id;
+		pager.orderBy 		= 'Name';
+		pager.filter 		= '1';
+		pager.loadTasksByProject();
+		
+		pager.pagesListConstructor();
+		pager.setPageNumber( 2 );
+		pager.previous();
+		pager.last();
+		pager.first();
+		pager.next();
+		
+		pager.getHasNext();
+		pager.getHasPrevious();
+		pager.getResultSize();
+		pager.getRecordsPerPage();
+		pager.setRecordsPerPage( 10 );
+		pager.getPageNumber();
+		pager.getPageSizeItems();
+		pager.setPaginator();
+		pager.goToPage();		
 		
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );    	

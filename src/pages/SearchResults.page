@@ -73,7 +73,7 @@
                             
                             <apex:commandLink id="PreviousLink"
                                 rendered="{!paginator.hasPrevious}" 
-                                value="Prevoius Page"
+                                value="Previous Page"
                                 styleClass="label"
                                 action="{!paginator.previous}" 
                                 onClick="swirly.show();" 

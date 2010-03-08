@@ -68,6 +68,7 @@
 									<td>
 										<apex:outputLink value="javascript:;"
 							                id="DeleteAttachment"
+							                rendered="{!IF(AND(viewDeleteAttachement),true,false)}" 
 							                onClick="ProjectDetailDeleteProjectAttachment('{!attachment.Id}');">
 							                    Delete
 							            </apex:outputLink>
