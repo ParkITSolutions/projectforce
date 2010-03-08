@@ -107,6 +107,7 @@ trigger ProjectMemberAfterDelete on ProjectMember__c (after delete) {
 					}
 				}
 			}
+			System.debug( '===>>>> ' + gm);
 			projectUtil.deleteGroupMembers(gm);
 		
 	    } finally {

@@ -21,7 +21,7 @@ public class DAOSetup {
 	* Insert project setup
 	* @param ProjectSetup__c 
 	*/
-	public void insertProjectSetup(ProjectSetup__c projectSetup){
+	public void insertProjectSetup( ProjectSetup__c projectSetup ){
 		insert projectSetup;
 	}
 	
@@ -29,8 +29,7 @@ public class DAOSetup {
 	* Updtate project setup
 	* @param ProjectSetup__c
 	*/
-	public void updateProjectSetup(ProjectSetup__c projectSetup){
+	public void updateProjectSetup( ProjectSetup__c projectSetup ){
 		update projectSetup;
 	}
-	
 }

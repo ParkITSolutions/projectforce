@@ -32,7 +32,6 @@ public class DAOFactoryTest {
 		ProjectUtil.setIsTest( false );
     }
     	
-    	
     static testMethod void myUnitTest2(){
     	
 		GenerateEnvironmentTest.gen();
@@ -76,11 +75,10 @@ public class DAOFactoryTest {
     	insert tAux;
     	DAOFactory f = DAOFactory.getInstance();
     	
-    	
-    
+    	//f.getMemberByUserId( GenerateEnvironmentTest.member.id );
     	f.deleteMembers( GenerateEnvironmentTest.member.id, GenerateEnvironmentTest.project.id );
     	f.isCRMAdministrator();
-    	f.getMemberByUserId( GenerateEnvironmentTest.user.id );
+    	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     }
@@ -102,9 +100,7 @@ public class DAOFactoryTest {
     	f.getCandidatesToAssign( GenerateEnvironmentTest.task.id );
     	f.getProjetsInfoByMember( GenerateEnvironmentTest.user.id );
     	
-    	//
     	f.insertAssignees( GenerateEnvironmentTest.task.id, new List<String>{GenerateEnvironmentTest.user.id}, GenerateEnvironmentTest.project.id );
-    	
     	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );

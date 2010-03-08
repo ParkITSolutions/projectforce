@@ -13,6 +13,7 @@ public class ProjectDetailAttachmentController {
 	public void dummyRefresh () {}
 	public Set<Id> idsToDelSet = new Set<Id>();
     public String idsToDel = ':';
+    public Boolean viewDeleteAttachement {set; get;}
     
 	/**
     * Set of Integers to control pagination
@@ -252,7 +253,12 @@ public class ProjectDetailAttachmentController {
 		userPermissions.setId(UserInfo.getUserId());
 		userPermissions.setProject(project);
 		userPermissions.setObjectType('Project');
-		userPermissions.setPermissions();		
+		userPermissions.setPermissions();
+		
+		if (userPermissions.getCanCreate() || userPermissions.getCanManage() || userPermissions.isUserMemberOfProject(UserInfo.getUserId(), project))
+			viewDeleteAttachement=true;
+		else
+			viewDeleteAttachement=false;		
 	}
 	
 	/**

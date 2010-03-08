@@ -100,6 +100,7 @@ public class ObjectFormatter{
     	UserPermissions permissions = new UserPermissions();
     	tasks = permissions.generateTaskPermissions( tasks );
     	
+    	System.debug( '============== ' + tasks );
     	return tasks;
 	}
 	
@@ -227,7 +228,7 @@ public class ObjectFormatter{
             tempTask.priority 			= row.ProjectTask__r.priority__c;
             tempTask.isMilestone 		= row.ProjectTask__r.milestone__c;
             tempTask.setPercentCompleted( row.ProjectTask__r.percentCompleted__c );
-            tempTask.duration 			= Double.valueOf(row.ProjectTask__r.durationUI__c); 
+            tempTask.duration 			= Double.valueOf( row.ProjectTask__r.durationUI__c ); 
             
             tasks.add( tempTask ); 
         }
@@ -256,6 +257,8 @@ public class ObjectFormatter{
 		ObjectFormatter.formatTasks( taskList1 );
 		
 		List<ProjectAssignee__c> listOfAssignees = new List<ProjectAssignee__c>();
+		//listOfAssignees.add( GenerateEnvironmentTest.assi );
+		//listOfAssignees.add( GenerateEnvironmentTest.assi2 );
 		ObjectFormatter.formatAssigneeTask( listOfAssignees );
 		
 		List<ProjectTask__c> resultList = new List<ProjectTask__c>();
@@ -264,12 +267,22 @@ public class ObjectFormatter{
 		resultList.add( GenerateEnvironmentTest.mile );
 		ObjectFormatter.formatSearchResults( GenerateEnvironmentTest.task.Name, resultList, 'projectTask' );
 		
+		List<Project2__c> resultList2 = new List<Project2__c>();
+		resultList2.add( GenerateEnvironmentTest.project );
+		resultList2.add( GenerateEnvironmentTest.project2 );
+		resultList2.add( GenerateEnvironmentTest.project3 );
+		ObjectFormatter.formatSearchResults( GenerateEnvironmentTest.project2.Name, resultList2, 'project' );
+		
 		List<Attachment> attachments = new List<Attachment>();
-		Attachment uploadFile = new Attachment( Name = 'Name1', Body = Blob.valueOf(' fdsfdsf dsa fds fsd fsd fsd fsdf sd'), ContentType = 'plain/text', BodyLength = 2000 );
-		Attachment uploadFile2 = new Attachment( Name = 'Name2', Body = Blob.valueOf(' fdsfdsfsdfdsf dsfsdf sdafds fads'), ContentType = 'plain/text', BodyLength = 2000 );
+		Attachment uploadFile 	= new Attachment( Name = 'Name1', Body = Blob.valueOf(' fdsfdsf dsa fds fsd fsd fsd fsdf sd'), ContentType = 'plain/text' );
+		Attachment uploadFile2 	= new Attachment( Name = 'Name2', Body = Blob.valueOf(' fdsfdsfsdfdsf dsfsdf sdafds fads'), ContentType = 'plain/text' );
+		uploadFile.ParentId 	= GenerateEnvironmentTest.task.Id;
+		uploadFile2.ParentId 	= GenerateEnvironmentTest.task.Id;
 		attachments.add( uploadFile );
 		attachments.add( uploadFile2 );
-		ObjectFormatter.formatAttachments( attachments );
+		insert attachments;
+		
+		//ObjectFormatter.formatAttachments( attachments );
 		
 		List<ProjectAssignee__c> assignees = new List<ProjectAssignee__c>();
 		assignees.add( GenerateEnvironmentTest.assi );

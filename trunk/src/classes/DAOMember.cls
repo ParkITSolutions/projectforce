@@ -59,7 +59,7 @@ public class DAOMember {
 	* @param userId
 	* @return member
 	*/
-	public ProjectMember__c getMemberByUserId(String userId){
+	public ProjectMember__c getMemberByUserId( String userId ){
 
 		ProjectMember__c member = [select Id, Name, CreatedDate, CreatedById, Profile__c, Project__c, User__c 
 		                           from ProjectMember__c

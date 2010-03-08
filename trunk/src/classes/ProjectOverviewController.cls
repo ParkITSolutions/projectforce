@@ -16,7 +16,8 @@ public with sharing class ProjectOverviewController {
     public String objectPrefix = Schema.SObjectType.Project2__c.getKeyPrefix();
     //Items to list per page 
     static final Integer itemsToList = 10;
-    
+    public UserPermissions userPermissions	 	{ set; get; }
+	public Boolean isManager   					{ set; get; }
     public String domain;
     
     /**
@@ -26,7 +27,21 @@ public with sharing class ProjectOverviewController {
         projectsForTabs();
         
         domain = ProjectUtil.getDomain();
+        
+        this.userPermissions = new UserPermissions();
+		this.genPermissions();
     }   
+    
+    /**
+    * Load permission for current user
+    */
+ 	public void genPermissions(){
+        this.userPermissions.setId( UserInfo.getUserId() );
+        this.userPermissions.setObjectType( 'Project' );
+        this.userPermissions.setPermissions();
+        
+        this.isManager 	= this.userPermissions.getCanManage();
+    }
     
   	/**
     *If a given string has its length greater than wordLength param,
@@ -137,7 +152,7 @@ public with sharing class ProjectOverviewController {
     public Boolean getCanViewCreateNewProject(){
         /*ProjectSetupController canV = new ProjectSetupController();
         return canV.canView();*/
-        //Please Refactor!
+        //TODO Please Refactor!
         return true;
     }
     
@@ -175,7 +190,8 @@ public with sharing class ProjectOverviewController {
             for(Project2__c project : [Select (Select Id From ProjectsMembers__r), 
                                         (Select Id, Milestone__c From ProjectsTasks__r), 
                                         t.Name, t.Picture__c, t.Id 
-                                        From Project2__c t order by t.Name asc limit :lim]){
+                                        From Project2__c t
+                                        order by t.Name asc limit :lim]){
                 projects.add(project);
             }         
                                   

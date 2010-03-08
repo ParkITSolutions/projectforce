@@ -115,6 +115,7 @@ public class UserPermissions {
 			canManage = false;
 			canCreate = false;
 			canComment = false;
+			canView = false;
 			Boolean isAdmin = false;			
 			
 			if( projectAdmin == null || projectAdmin.Id != UserInfo.getUserId() )

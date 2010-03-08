@@ -29,13 +29,23 @@
     <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskDetails.css')}" />
 
     <!-- ProjectTaskList CSS -->
-       <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskList.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskList.css')}" />
                                                                     
     <!-- ProjectTaskDetail JS -->
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskDetail.js')}" />
     <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskList.js')}" />
      <div class="confirmation" id="confirmation" style="display:none;">This task has been marked complete</div>
 	
+	<style type="text/css">
+	
+	.buttons {
+		height:30px;
+		margin-left:auto;
+		margin-right:auto;
+		margin-top:10px;
+		width:430px;
+	}
+	</style>
    	<script  type="text/javascript">
        document.observe("dom:loaded", function(){
                setTimeout( "readPortalCSSRules()", 300 );
@@ -107,7 +117,7 @@
 	<!-- Delete Task Overlay -->
 	<c:ConfirmOverlay id="DeleteTaskOverlay" 
 		title="Delete Task"
-		messageToUser=" Are you sure you want to delete assignee? "
+		messageToUser=" Are you sure you want to delete this task? "
 		actionName="DeleteDetailTask" 
 	/>               
         
@@ -127,7 +137,7 @@
 	
 	<!-- Delete Comment -->
 	<c:ConfirmOverlay id="TaskDetailDeleteComment" 
-		title="Delete Project Attachment"
+		title="Delete Project Comment"
 		messageToUser=" Are you sure you want to delete this comment?"
 		actionName="TaskDetailDeleteCommentOverlay"
 	/>  
@@ -219,7 +229,7 @@
 		            </apex:outputLink>
                     
                 </apex:outputPanel>  
-                <apex:outputPanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner)}">
+                <apex:outputPanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}">
                     <a class="blackbutton" href="/apex/TaskPdfExport?id={!Task.id}">
                         <span>PDF Export</span>
                     </a>
@@ -412,7 +422,7 @@
                                             <apex:commandLink onclick="if(!validateComment()){return false;}"
                                                 oncomplete="swirly.hide();infoToUser.open( 'success', 'Comment saved successfully.');"
                                                 action="{!saveComment}"        
-                                                rendered="{!OR(userPermissions.canManage,Task.IsTaskOwner)}"                             
+                                                rendered="{!OR(userPermissions.canManage,Task.IsTaskOwner,Task.assignToMe)}"                             
                                                 rerender="taskComments">
                                                 <span>Save Comment</span>
                                             </apex:commandLink>
@@ -428,7 +438,7 @@
 	                                                <apex:outputLink value="javascript:;"
 											                id="DeleteComment"
 											                styleclass="notassigned"
-											                rendered="{!OR(userPermissions.canManage,Task.IsTaskOwner)}"
+											                rendered="{!OR(userPermissions.canManage,Task.IsTaskOwner,Task.assignToMe)}"
 											                onClick="TaskDetailDeleteComment('{!comment.Id}');">
 											                    Delete Comment
 											            </apex:outputLink>

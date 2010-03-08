@@ -62,6 +62,7 @@
                 
                 <br />
                 <apex:outputPanel id="taskStartDateError" styleClass="taskErrors" style="display:none;">Error: You must enter a value</apex:outputPanel>
+                <apex:outputPanel id="taskStartDateErrorDate" styleClass="taskErrors" style="display:none;">Error: The date is to older</apex:outputPanel>
                 <br />
 
                 <apex:outputLabel >Due Date</apex:outputLabel>
