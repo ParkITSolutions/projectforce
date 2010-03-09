@@ -444,7 +444,7 @@
 											                id="DeleteComment"
 											                styleclass="notassigned"
 											                rendered="{!OR(userPermissions.canManage,Task.IsTaskOwner,Task.assignToMe)}"
-											                onClick="DeleteDetailTask();">
+											                onClick="TaskDetailDeleteComment('{!comment.Id}');">
 											                    Delete Comment
 											            </apex:outputLink>
                                                 </apex:outputPanel>
@@ -484,7 +484,7 @@
                             </apex:facet>
                         </apex:actionStatus>
                     </apex:form>          
-                    <a class="blackbutton" href="Javascript:;" onclick="showDeleteEvent('{!Task.id}', 'Detail','{!Task.name}');"><span>Delete</span></a>
+                    <a class="blackbutton" href="Javascript:;" onclick="DeleteDetailTask();"><span>Delete</span></a>
                     <apex:outputPanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner)}">
                         <a class="blackbutton" href="/apex/TaskPdfExport?id={!Task.id}">
                             <span>PDF Export</span>
