@@ -1,10 +1,12 @@
 <apex:page id="Attachment" sidebar="false" showHeader="false" cache="false" controller="AttachmentController">
-        <apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" />
+    
+    <apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" />
     <apex:includeScript value="{!URLFOR($Resource.Lib, 'inc/js/scriptaculous/lib/prototype.js')}" />
     
     <apex:stylesheet value="{!URLFOR($Resource.NewAttachment, 'inc/css/newAttachment.css')}" />
     <apex:includeScript value="{!URLFOR($Resource.NewAttachment, 'inc/js/newAttachment.js')}" />
-     <apex:form id="uploadAttachment">
+    
+    <apex:form id="uploadAttachment">
     	
         <apex:outputPanel id="Overlay" styleClass="overlay overlayAttachment" layout="block">     
             <apex:outputPanel id="ComponentBody" styleClass="componentBody" layout="block">
@@ -32,18 +34,22 @@
     </apex:form>    
 
     <apex:outputPanel id="errors">  
+    
         <apex:outputPanel rendered="{!endAction && error == '' }">
+        
 	        <apex:outputPanel rendered="{!postAction == 'detailListPanel'}">
 	            <script type="text/javascript">
 					parent.infoToUser.set('success', 'File uploaded.');
 	            </script>
 	        </apex:outputPanel>
+	        
 	        <apex:outputPanel rendered="{!postAction == 'reloadMainContent'}">
 	            <script type="text/javascript">      
 	                parent.reloadMainContent();
 	                parent.infoToUser.set('success', 'File uploaded.');
 	            </script>
 	        </apex:outputPanel>
+	        
 	        <apex:outputPanel rendered="{!postAction == 'ReloadAttachmentList'}">
 	            <script type="text/javascript">          
 	                parent.reloadMainContent();
@@ -51,13 +57,16 @@
 	                
 	            </script>
 	        </apex:outputPanel>
+	        
         </apex:outputPanel>
+        
         <apex:outputPanel id="error"  rendered="{!error != ''}">
             <script type="text/javascript">
                 parent.swirly.hide();
                 parent.infoToUser.open('error', '{!error}');
             </script>
         </apex:outputPanel>
+        
     </apex:outputPanel>
      
     <style>

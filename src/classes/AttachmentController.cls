@@ -48,7 +48,7 @@ public class AttachmentController{
 			if( this.currentPage == 'taskdetail' ){
 				Task t = new Task();
 				t.id = this.parentId;
-				t.addAttachment( newAttach ); 
+				t.addAttachment( newAttach );
 			}else if( this.currentPage == 'projectdetail' ){
 				Project p = new Project( this.parentId );
 				
