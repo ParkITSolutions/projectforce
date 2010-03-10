@@ -129,7 +129,7 @@
                     <apex:commandLink styleClass="blackbutton" rendered="{!IF(isMember,true,false)}" 
                         onclick="swirly.show();"  
                         rerender="thisForm, mainContentForm, sidebarWidgets" action="{!unjoinProject}" 
-                        onComplete="projectDetail(); swirly.hide();  showWarningIsLastAdmin();">
+                        onComplete="projectDetail(); swirly.hide();  showWarningIsLastAdmin();infoToUser( 'error', 'Last Adminstrator can\'t Unjoin' )">
                         <span> Unjoin </span>
                     </apex:commandLink>
 

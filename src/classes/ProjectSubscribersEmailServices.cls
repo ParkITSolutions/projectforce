@@ -284,7 +284,7 @@ public class ProjectSubscribersEmailServices{
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='Priority';
-			field=proj.ProjectTask__r.Priority__c;
+			field=(proj.ProjectTask__r.Priority__c !=null) ?proj.ProjectTask__r.Priority__c:'';
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='Start date';
@@ -375,7 +375,7 @@ public class ProjectSubscribersEmailServices{
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='Priority';
-			field=lstPT[0].Priority__c;
+			field=(lstPT[0].Priority__c!=null)?lstPT[0].Priority__c:'';
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='Start date';
@@ -389,8 +389,8 @@ public class ProjectSubscribersEmailServices{
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			
-			title='End Descripcion';
-			field=lstPT[0].Description__c;
+			title='Description';
+			field=(lstPT[0].Description__c != null)? lstPT[0].Description__c : '';
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			msjFoot='The task has been updated';
@@ -453,7 +453,7 @@ public class ProjectSubscribersEmailServices{
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='Priority';
-			field=lstPT[0].Priority__c;
+			field=(lstPT[0].Priority__c !=null)?lstPT[0].Priority__c:'';
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='Start date';
@@ -467,7 +467,7 @@ public class ProjectSubscribersEmailServices{
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='Description';
-			field=lstPT[0].Description__c;
+			field=(lstPT[0].Description__c !=null) ? lstPT[0].Description__c:'';
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			msjFoot='The task has been updated';
@@ -544,7 +544,7 @@ public class ProjectSubscribersEmailServices{
 	        htmlVar=returnVarHtml(htmlVar, title, field);
 	        
 	        title='Priority';
-	        field=lstPT[0].Priority__c;
+	        field=(lstPT[0].Priority__c != null) ? lstPT[0].Priority__c : '';
 	        htmlVar=returnVarHtml(htmlVar, title, field);
 	        
 	        title='Start date';
@@ -558,7 +558,7 @@ public class ProjectSubscribersEmailServices{
 	        htmlVar=returnVarHtml(htmlVar, title, field);
 	        
 	        title='Description';
-	        field=lstPT[0].Description__c;
+	        field=(lstPT[0].Description__c !=null) ? lstPT[0].Description__c:'';
 	        htmlVar=returnVarHtml(htmlVar, title, field);
 	        
 	        msjFoot='The percent completed from task has changed from '+oldPercent+' to '+lstPT[0].PercentCompleted__c;
@@ -615,7 +615,7 @@ public class ProjectSubscribersEmailServices{
 			htmlVar=returnHtmlIni(htmlVar,title);
 			
 			title='Priority';
-			field=proj.Priority__c;
+			field= (proj.Priority__c != null) ? proj.Priority__c : '' ;
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='Start date';
@@ -629,7 +629,7 @@ public class ProjectSubscribersEmailServices{
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='Description';
-			field=proj.Description__c;
+			field= (proj.Description__c != null) ?  proj.Description__c : '';
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			msjFoot='Task '+proj.Name + ' has been deleted from '+proj.Project__r.Name;
@@ -687,7 +687,7 @@ public class ProjectSubscribersEmailServices{
 					htmlVar=returnVarHtml(htmlVar, title, field);
 					
 					title='Priority';
-					field='t.Priority__c';
+					field= (t.Priority__c != null) ? t.Priority__c : '';
 					htmlVar=returnVarHtml(htmlVar, title, field);
 					
 					title='Start date';
@@ -701,7 +701,7 @@ public class ProjectSubscribersEmailServices{
 					htmlVar=returnVarHtml(htmlVar, title, field);
 					
 					title='Description';
-					field=t.Description__c;
+					field= (t.Description__c != null) ? t.Description__c : '';
 					htmlVar=returnVarHtml(htmlVar, title, field);
 					
 					msjFoot='You were unassigned from this task';
@@ -767,7 +767,7 @@ public class ProjectSubscribersEmailServices{
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='Priority';
-			field=lstPT[0].Priority__c;
+			field= (lstPT[0].Priority__c != null) ? lstPT[0].Priority__c : '';
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='Start date';
@@ -781,9 +781,9 @@ public class ProjectSubscribersEmailServices{
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			
-			title='End Descripcion';
-			field=lstPT[0].Description__c;
-			htmlVar=returnVarHtml(htmlVar, title, field);
+			title='Description';
+			field = (lstPT[0].Description__c != null)? lstPT[0].Description__c : '';
+			htmlVar = returnVarHtml(htmlVar, title, field);
 			
 			msjFoot='Task is past its due date';
 			htmlVar=returnHtmlFin(htmlVar,msjFoot);

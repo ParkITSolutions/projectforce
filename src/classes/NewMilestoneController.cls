@@ -33,6 +33,9 @@ public class NewMilestoneController {
 	*/
 	public void action(){
 		myTask.Project__c 	= this.projectId;
+		Project p = DAOFactory.getInstance().getProjectInfo( this.projectId );
+		if( p.displayDuration == 'Days' )
+			myTask.Duration__c = p.getWorkingHours();
 		myTask.Milestone__c = true;
 		
 		DAOFactory.getInstance().insertTask( myTask, this.assignees );

@@ -6,10 +6,34 @@
         <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
-        <application>Projectforce</application>
-        <default>true</default>
+        <application>Project</application>
+        <default>false</default>
         <visible>true</visible>
     </applicationVisibilities>
+    <classAccesses>
+        <apexClass>Activity</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ActivityLog</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ActivityWidgetController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AttachmentActivity</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AttachmentController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AttachmentObj</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
     <classAccesses>
         <apexClass>BigListOfTasks</apexClass>
         <enabled>false</enabled>
@@ -19,19 +43,71 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>BreadcrumController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>BreadcrumNode</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ConfirmOverlayController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CustomException</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>CustomExceptionTest</apexClass>
+        <apexClass>DAOActivity</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>DeleteProjectController</apexClass>
+        <apexClass>DAOAssignee</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>DeleteProjectControllerTest</apexClass>
+        <apexClass>DAOAttachment</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DAOFactory</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DAOFactoryTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DAOMember</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DAOProject</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DAOSetup</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DAOSubscription</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DAOTask</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DAOTaskComment</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DAOTaskPredecessor</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DAOUser</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -39,11 +115,59 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>FlexWebServiceTest</apexClass>
+        <apexClass>GenerateEnvironmentTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>GenerateEnvironmentTest</apexClass>
+        <apexClass>InstallController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>Letter</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>MemberActivity</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>MembersListController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>MembersWidgetController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>MessageLog</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>MyTasksAndMilestonesController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>NewAssigneeController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>NewMemberController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>NewMilestoneController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>NewTaskController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ObjectFormatter</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>Paginator</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -63,43 +187,19 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>Project</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProjectActivity</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProjectActivityController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProjectAttachmentListController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectAttachmentListControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectCreateNewController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectCreateNewControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectCreateNewProjectController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectCreateNewProjectControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectCreateNewTaskController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectCreateNewTaskControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectDeleteTaskOverlayController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectDeleteTaskOverlayControllerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -135,11 +235,7 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProjectInitProfiles</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectInitProfilesTest</apexClass>
+        <apexClass>ProjectMember</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -151,59 +247,7 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProjectMembersWidgetController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectMembersWidgetControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectOverlayDeleteAssigneeController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectOverlayDeleteAssigneeTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectOverlayDeleteAttachmentController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectOverlayDeleteAttachmentTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectOverlayNewAssigneeController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectOverlayNewAssigneeTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectOverlayNewAttachmentController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectOverlayNewAttachmentTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectOverlayNewMilestoneController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectOverlayNewMilestoneControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectOverlayNewTaskController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectOverlayNewTaskControllerTest</apexClass>
+        <apexClass>ProjectNewsWidgetController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -215,35 +259,7 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProjectRedirectController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectRedirectControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectSearchResultController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectSearchResultControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ProjectSetupController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectSetupControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectSubscribeController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectSubscribeControllerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -259,7 +275,7 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProjectSubscriptionControllerTest</apexClass>
+        <apexClass>ProjectSubscriptionWidgetController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -279,11 +295,7 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProjectTaskListController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProjectTaskListControllerTest</apexClass>
+        <apexClass>ProjectTaskNotesController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -319,11 +331,11 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProjectsWidgetTasksMainController</apexClass>
+        <apexClass>PromptOverlayController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProjectsWidgetTasksMainControllerTest</apexClass>
+        <apexClass>QuickLinksWidgetController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -331,7 +343,15 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>SearchControllerTest</apexClass>
+        <apexClass>SearchResults</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SearchResultsController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>Subscription</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -339,7 +359,27 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>SuggestControllerTest</apexClass>
+        <apexClass>Task</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TaskActivity</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TaskAssignee</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TaskAssigneeActivity</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TaskComment</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TaskCommentActivity</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -351,23 +391,27 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>TaskListController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TaskPdfExportController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TaskPdfExportControllerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TaskPredecessor</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>TaskQuickAccessController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>TaskQuickAccessControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>TriggersTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>UploadAttachmentController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>UploadAttachmentControllerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -379,11 +423,7 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>XMLDom</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>startHereController</apexClass>
+        <apexClass>UserTasksController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <fieldLevelSecurities>
@@ -481,6 +521,25 @@
     <fieldLevelSecurities>
         <editable>true</editable>
         <field>Account.Website</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>Activity__c.Action__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>Activity__c.ModifiedBy__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>Activity__c.ProjectId__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>Activity__c.TimeStamp__c</field>
+        <hidden>true</hidden>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
@@ -817,6 +876,11 @@
         <field>Contact.Birthdate</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>Contact.CanAllowPortalSelfReg</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
         <editable>true</editable>
         <field>Contact.Department</field>
     </fieldLevelSecurities>
@@ -1056,6 +1120,11 @@
         <field>Lead.NumberofLocations__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>Lead.PartnerAccountId</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
         <editable>true</editable>
         <field>Lead.Phone</field>
     </fieldLevelSecurities>
@@ -1082,6 +1151,20 @@
     <fieldLevelSecurities>
         <editable>true</editable>
         <field>Lead.Website</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>MemberActivity__c.ActivityId__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>MemberActivity__c.ChangeType__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>MemberActivity__c.MemberName__c</field>
+        <hidden>true</hidden>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
@@ -1130,6 +1213,11 @@
     <fieldLevelSecurities>
         <editable>true</editable>
         <field>Opportunity.OrderNumber__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>Opportunity.PartnerAccountId</field>
+        <hidden>true</hidden>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
@@ -1231,6 +1319,14 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
+        <field>Project2__c.ProjectAfterOfExpiringTask__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>Project2__c.ProjectBeforeOfExpiringTask__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
         <field>Project2__c.ProjectCreatedBy__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
@@ -1239,11 +1335,11 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
-        <field>Project2__c.PublicProfile__c</field>
+        <field>Project2__c.ProjectDayOfExpiringTask__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
-        <field>Project2__c.Sprint__c</field>
+        <field>Project2__c.PublicProfile__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
@@ -1259,19 +1355,28 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
+        <field>ProjectActivity__c.Access__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>ProjectActivity__c.ActivityId__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>ProjectActivity__c.ChangeType__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>ProjectActivity__c.name__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
         <field>ProjectAssignee__c.Notify__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
         <field>ProjectAssignee__c.PercentDedicated__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>ProjectAssignee__c.ProjectIssue__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>ProjectAssignee__c.ProjectRisk__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
@@ -1295,30 +1400,6 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
-        <field>ProjectIssue__c.DeadLine__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>ProjectIssue__c.PercentComplete__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>ProjectIssue__c.Priority__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>ProjectIssue__c.ProjectTask__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>ProjectIssue__c.Project__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>ProjectIssue__c.StartDate__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
         <field>ProjectMember__c.Profile__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
@@ -1328,6 +1409,20 @@
     <fieldLevelSecurities>
         <editable>true</editable>
         <field>ProjectMember__c.User__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>ProjectNews__c.NewsText__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>ProjectNews__c.Project__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>ProjectNews__c.Username__c</field>
+        <hidden>true</hidden>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
@@ -1343,60 +1438,23 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
-        <field>ProjectRisk__c.Category__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>ProjectRisk__c.DateClosed__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>ProjectRisk__c.DateDue__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>false</editable>
-        <field>ProjectRisk__c.DateOpened__c</field>
-        <hidden>true</hidden>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>ProjectRisk__c.DaysImpact__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>ProjectRisk__c.Description__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>ProjectRisk__c.ImpactDescription__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>ProjectRisk__c.MitigationPlan__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>ProjectRisk__c.Priority__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>ProjectRisk__c.Probability__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>ProjectRisk__c.ProjectTask__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>ProjectRisk__c.Project__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>ProjectRisk__c.Status__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
         <field>ProjectSetup__c.CanViewButtonNew__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>ProjectSetup__c.ListSavedProfiles__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>ProjectSubscription__c.ProjectAfterOfExpiringTask__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>ProjectSubscription__c.ProjectBeforeOfExpiringTask__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>ProjectSubscription__c.ProjectDayOfExpiringTask__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
@@ -1455,8 +1513,9 @@
         <field>ProjectTask__c.Description__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>ProjectTask__c.DurationUI__c</field>
+        <hidden>true</hidden>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
@@ -1484,6 +1543,10 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
+        <field>ProjectTask__c.Notes__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
         <field>ProjectTask__c.ParentTask__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
@@ -1500,15 +1563,7 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
-        <field>ProjectTask__c.Rank__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
         <field>ProjectTask__c.RawDuration__c</field>
-    </fieldLevelSecurities>
-    <fieldLevelSecurities>
-        <editable>true</editable>
-        <field>ProjectTask__c.Sprint__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
@@ -1566,6 +1621,60 @@
     </fieldLevelSecurities>
     <fieldLevelSecurities>
         <editable>true</editable>
+        <field>TaskActivity__c.ActivityId__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskActivity__c.ChangeType__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskActivity__c.Complete__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskActivity__c.Duration__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskActivity__c.NewName__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskActivity__c.Status__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskAssigneeActivity__c.ActivityId__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskAssigneeActivity__c.AssigneeName__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>TaskAssigneeActivity__c.ChangeType__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskAssigneeActivity__c.TaskName__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskCommentActivity__c.ActivityId__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>false</editable>
+        <field>TaskCommentActivity__c.ChangeType__c</field>
+        <hidden>true</hidden>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
+        <field>TaskCommentActivity__c.TaskName__c</field>
+    </fieldLevelSecurities>
+    <fieldLevelSecurities>
+        <editable>true</editable>
         <field>TaskComment__c.Body__c</field>
     </fieldLevelSecurities>
     <fieldLevelSecurities>
@@ -1594,6 +1703,9 @@
     </fieldLevelSecurities>
     <layoutAssignments>
         <layout>Account-Account Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Activity__c-Activity Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Asset-Asset Layout</layout>
@@ -1626,6 +1738,9 @@
         <layout>Lead-Lead Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>MemberActivity__c-MemberActivity Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Opportunity-Opportunity Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -1642,22 +1757,22 @@
         <recordType>Project2__c.Test</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>ProjectActivity__c-ProjectActivity Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>ProjectAssignee__c-ProjectAssignee Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ProjectFilter__c-Project Filter Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>ProjectIssue__c-ProjectIssue Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>ProjectMember__c-ProjectMember Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>ProjectProfile__c-ProjectProfile Layout</layout>
+        <layout>ProjectNews__c-ProjectNews Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>ProjectRisk__c-ProjectRisk Layout</layout>
+        <layout>ProjectProfile__c-ProjectProfile Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ProjectSetup__c-ProjectSetup Layout</layout>
@@ -1678,6 +1793,15 @@
         <layout>Task-Task Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>TaskActivity__c-TaskActivity Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>TaskAssigneeActivity__c-TaskAssigneeActivity Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>TaskCommentActivity__c-TaskCommentActivity Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>TaskComment__c-TaskComment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -1689,6 +1813,10 @@
     <objectPermissions>
         <allowRead>true</allowRead>
         <object>Account</object>
+    </objectPermissions>
+    <objectPermissions>
+        <allowRead>true</allowRead>
+        <object>Activity__c</object>
     </objectPermissions>
     <objectPermissions>
         <allowRead>true</allowRead>
@@ -1712,15 +1840,15 @@
     </objectPermissions>
     <objectPermissions>
         <allowRead>true</allowRead>
-        <object>Foo__c</object>
-    </objectPermissions>
-    <objectPermissions>
-        <allowRead>true</allowRead>
         <object>Idea</object>
     </objectPermissions>
     <objectPermissions>
         <allowRead>true</allowRead>
         <object>Lead</object>
+    </objectPermissions>
+    <objectPermissions>
+        <allowRead>true</allowRead>
+        <object>MemberActivity__c</object>
     </objectPermissions>
     <objectPermissions>
         <allowRead>true</allowRead>
@@ -1736,6 +1864,10 @@
     </objectPermissions>
     <objectPermissions>
         <allowRead>true</allowRead>
+        <object>ProjectActivity__c</object>
+    </objectPermissions>
+    <objectPermissions>
+        <allowRead>true</allowRead>
         <object>ProjectAssignee__c</object>
     </objectPermissions>
     <objectPermissions>
@@ -1744,19 +1876,14 @@
     </objectPermissions>
     <objectPermissions>
         <allowRead>true</allowRead>
-        <object>ProjectIssue__c</object>
+        <object>ProjectMember__c</object>
     </objectPermissions>
     <objectPermissions>
-        <allowRead>true</allowRead>
-        <object>ProjectMember__c</object>
+        <object>ProjectNews__c</object>
     </objectPermissions>
     <objectPermissions>
         <allowRead>true</allowRead>
         <object>ProjectProfile__c</object>
-    </objectPermissions>
-    <objectPermissions>
-        <allowRead>true</allowRead>
-        <object>ProjectRisk__c</object>
     </objectPermissions>
     <objectPermissions>
         <allowRead>true</allowRead>
@@ -1780,6 +1907,18 @@
     </objectPermissions>
     <objectPermissions>
         <allowRead>true</allowRead>
+        <object>TaskActivity__c</object>
+    </objectPermissions>
+    <objectPermissions>
+        <allowRead>true</allowRead>
+        <object>TaskAssigneeActivity__c</object>
+    </objectPermissions>
+    <objectPermissions>
+        <allowRead>true</allowRead>
+        <object>TaskCommentActivity__c</object>
+    </objectPermissions>
+    <objectPermissions>
+        <allowRead>true</allowRead>
         <object>TaskComment__c</object>
     </objectPermissions>
     <objectPermissions>
@@ -1791,39 +1930,23 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>MembersList</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>OutputStyles</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>ProjectActivity</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>ProjectAttachmentList</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>ProjectCreateNew</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>ProjectCreateNewTask</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>ProjectDetail</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>ProjectMembersList</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>ProjectMembersMassiveRemove</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>ProjectMembersRemove</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>ProjectRedirectTest</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>ProjectSearchResult</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
@@ -1839,7 +1962,7 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>ProjectTasksList</apexPage>
+        <apexPage>ProjectTaskNotes</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
@@ -1847,11 +1970,23 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>Start_Here</apexPage>
+        <apexPage>SearchResults</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>StackOverflowError</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>SuggestDispatcher</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>TaskList</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>TaskPdfExport</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
@@ -1863,11 +1998,15 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>miguel</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>projectOverview</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>projectRedirect</apexPage>
+        <apexPage>userTasks</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <recordTypeVisibilities>
@@ -1876,16 +2015,13 @@
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>false</default>
+        <default>true</default>
+        <personAccountDefault>true</personAccountDefault>
         <recordType>Project2__c.Test</recordType>
-        <visible>false</visible>
+        <visible>true</visible>
     </recordTypeVisibilities>
     <tabVisibilities>
         <tab>Project2__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Start_Here</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>

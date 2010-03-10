@@ -75,6 +75,7 @@ public class ObjectFormatter{
     		
     		taskAux.id 					= task.id;
 			taskAux.idDisplay 			= task.Id__c;
+			taskAux.project				= task.Project__c;
 			taskAux.name 				= task.Name; 
 			taskAux.status 				= task.Status__c;
 			taskAux.ownerId 			= task.OwnerId;
