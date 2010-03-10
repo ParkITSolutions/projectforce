@@ -1,7 +1,7 @@
 /**
 * @author Andres Canavesi
 */
-public class NewAssigneeController{
+public with Sharing class NewAssigneeController{
 	
 	public String[] assignees		{ set; get; }
 	public String   postAction 	    { set; get; }

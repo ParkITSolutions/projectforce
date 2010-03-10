@@ -2,7 +2,7 @@
 * @author Nicolas Dominguez 
 * @dateCreated 21/12/2009
 */
-public class ProjectTaskNotesController {
+public with Sharing class ProjectTaskNotesController {
 
 	private ProjectTask__c taskVar 	{ set; get; }
 	public String taskId 			{ set; get; }

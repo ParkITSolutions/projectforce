@@ -4,7 +4,10 @@
     
     <apex:styleSheet value="{!URLFOR($Resource.SearchResults, 'inc/css/searchResults.css')}" />
     <apex:includeScript value="{!URLFOR($Resource.SearchResults, 'inc/js/searchResults.js')}" />
+	<apex:styleSheet value="{!URLFOR($Resource.Breadcrum, 'inc/css/breadcrum.css')}" />
     
+    
+   
     <!-- Principal Container for Search Results Page -->
     <apex:outputpanel id="searchResultsPage" layout="block" styleClass="searchResultsPage">
     
@@ -16,23 +19,31 @@
                 <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
                 <apex:define name="title">Search</apex:define>
                 <apex:define name="search">
-                    <c:Search id="search" module="Project" label="" projectId="{!projectId}"  />
+                    <c:Search id="search" module="Project" label="" projectId="{!HTMLENCODE( projectId )}"  />
                 </apex:define>
             </apex:composition>
     
         </apex:outputpanel>
         
+        <!-- BreaCrumbs -->
+        <apex:outputPanel styleclass="breadcrumbPanel" layout="block" id="breadcrumbPanel" style="height:20px;">
+	        <apex:outputPanel styleclass="breadCrum" layout="block">
+	        	
+	        	<apex:outputPanel rendered="{!HTMLENCODE( projectId ) == ''}" styleClass="BreadsrumContainer">
+					<a class="BredcrumLink" href="/apex/projectOverview">Overview</a> >  
+					<apex:outputPanel styleClass="BreadcrumActualPage" id="breadcrumActualPage">
+						Project Search Results
+					</apex:outputPanel>
+	        	</apex:outputPanel>
+	        	
+	        	<apex:outputPanel rendered="{!HTMLENCODE( projectId ) != ''}"><c:Breadcrum id="BreadCrum" /></apex:outputPanel>
+	        	
+	        </apex:outputPanel>
+        </apex:outputPanel>
+        
         <!-- Sidebar Section Contains Widgets -->
-        <apex:outputpanel id="sideBar" layout="block" styleClass="sideBar">
-    		
-    		<c:QuickLinksWidget id="quickLinks" 
-    			projectId="{!projectId}"
-    		/>
-    		
-            <!--  <c:ProjectsWidgetMyTasks id="myTasksWidget"/>
-            
-            <c:ProjectsWidgetMyMilestones id="myMilestonesWidget"/>-->
-            
+        <apex:outputpanel id="sideBar" layout="block" styleClass="sideBar">	
+	    	<c:QuickLinksWidget id="quickLinks" projectId="{!HTMLENCODE( projectId )}"  rendered="{!HTMLENCODE( projectId ) != ''}"/>
         </apex:outputpanel>
         
         
@@ -162,5 +173,10 @@
         </apex:outputpanel>
         
     </apex:outputpanel>
-    
+    <script type="text/javascript">
+    	if($$('.sideBar')[0].offsetHeight < 50)
+    	{
+    		$$('.sideBar')[0].style.height = '300px';
+    	}
+    </script>
 </apex:page>

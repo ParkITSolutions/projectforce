@@ -22,7 +22,7 @@
 	Package License Manager
 */
 
-public class ProjectSetupController {
+public with Sharing class ProjectSetupController{
 
 	public String messageInfoToUsr 			{ set; get; }
 	public ProjectSetup__c ProjectSetup 	{ set; get; }

@@ -3,7 +3,7 @@
 * @createdDate 04/05/2008
 */
 //TODO pasar consultas al DAO
-public class SuggestController {
+public with Sharing class SuggestController {
 
 	public List<Suggestions> suggestionList { set; get; }
 	public List<String> selectedMembers 	{ get; set; }

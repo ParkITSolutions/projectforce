@@ -462,7 +462,7 @@
             <br style="clear:both;" />
             
             <div align="center" class="breadCrumbAndButtons" style="padding-top:15px;">
-            <div class="buttons" style="{!IF(Task.IsTaskOwner,'width:340px;','')}">
+            <div class="buttons" >
                 <apex:outputpanel rendered="{!OR(userPermissions.canManage,Task.IsTaskOwner)}" layout="block">
                    <a class="blackbutton" href="/{!Task.id}/e?retURL=/{!Task.id}"><span>Edit Task</span></a>
                     <apex:form id="quickMilestoneForm2" styleclass="quickMilestoneForm" onsubmit="if(isCompleted){alert('The task percent is already completed.');return false}" >   

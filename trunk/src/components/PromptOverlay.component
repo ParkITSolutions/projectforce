@@ -70,7 +70,7 @@
                     </apex:outputPanel>
                     
                     <apex:outputPanel rendered="{!includeNewMember}" layout="block" id="include5">
-                    		<c:NewMember id="NewMember" projectId="{!idValue}"/>
+                    		<c:NewMember id="NewMember" projectId="{!HTMLENCODE( idValue )}"/>
                     </apex:outputPanel>
             
                 </apex:outputPanel>

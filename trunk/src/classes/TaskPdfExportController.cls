@@ -1,7 +1,7 @@
 /*
 * @author Matias Menafra - 12/10/2009
 */
-public class TaskPdfExportController {
+public with Sharing class TaskPdfExportController {
 
 	private String USERID = UserInfo.getUserId(); 
 	public TaskDetails taskDetail = null;

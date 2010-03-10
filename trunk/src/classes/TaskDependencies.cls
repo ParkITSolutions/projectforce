@@ -409,10 +409,10 @@ public with sharing class TaskDependencies {
 		* @param Id projectId
 		*/
 		public BigListOfTaskPredecessors( Id projectId ){
-			for( ProjectTaskPred__c pT : [ SELECT Id, Name, Project__c, Parent__c, Predecessor__c, Lag_Time__c, Lag_Type__c, Lag_Unit__c FROM ProjectTaskPred__c WHERE Project__c =: projectId ])
+			for( ProjectTaskPred__c pT : [ SELECT Id, Name, Project__c, Parent__c, Predecessor__c, Lag_Time__c, Lag_Type__c, Lag_Unit__c FROM ProjectTaskPred__c WHERE Project__c =: projectId AND Parent__c != null AND Predecessor__c != null ])
 				if( this.bList.size() < 1000 )
 				this.bList.add( pT );
-		}		
+		} 
 		
 		/**
 		* @param Integer 

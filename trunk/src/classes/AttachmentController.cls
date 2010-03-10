@@ -1,7 +1,7 @@
 /**
 * @author Miguel Soares
 */
-public class AttachmentController{  
+public with Sharing class AttachmentController{  
 	 
 	private final Integer MAX_SIZE = 131072; // 128Kb
 	private final Integer MAX_LENGTH_NAME = 71;

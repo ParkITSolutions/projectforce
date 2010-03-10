@@ -1,7 +1,7 @@
 /**
 * @author Andres Canavesi
 */
-public class NewMilestoneController {
+public with Sharing class NewMilestoneController {
 	
 	private List<ProjectMember__c> projectMembers;
 	public  String[] assignees 						{ set; get; }
@@ -32,10 +32,8 @@ public class NewMilestoneController {
 	* Action Method which inserts the new Milestone
 	*/
 	public void action(){
+		
 		myTask.Project__c 	= this.projectId;
-		Project p = DAOFactory.getInstance().getProjectInfo( this.projectId );
-		if( p.displayDuration == 'Days' )
-			myTask.Duration__c = p.getWorkingHours();
 		myTask.Milestone__c = true;
 		
 		DAOFactory.getInstance().insertTask( myTask, this.assignees );

@@ -1,7 +1,7 @@
 /**
 * @author Matias Menafra
 */
-public class SearchController {
+public with Sharing class SearchController{
 	
 	public String labelName; 
 	public String module 					{ set; get; }

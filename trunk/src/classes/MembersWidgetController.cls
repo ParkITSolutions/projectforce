@@ -2,7 +2,7 @@
 * @author Nicolas Dominguez 
 * @dateCreated 08/02/2009
 */
-public class MembersWidgetController {
+public with Sharing class MembersWidgetController {
 	
 	public UserPermissions userPermissions	 	{ set; get; }
 	public String projectId;

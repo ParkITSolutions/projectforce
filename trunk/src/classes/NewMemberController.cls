@@ -1,7 +1,7 @@
 /*
 * @author Nicolas Dominguez
 */
-public class NewMemberController {
+public with Sharing class NewMemberController {
 	
 	public String projectId;
 	public Boolean emailNotifications 	{ set; get; }
@@ -151,31 +151,10 @@ public class NewMemberController {
 	* @param user
 	* @param message
 	*/
-	public void SendMail( User user, String message ){
-		
-        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-        
-        String subject = message;
-       
+	public void SendMail( User user, String message )
+	{
         String[] toAddresses = new String[] {user.Email};
- 		// Assign the addresses for the To and CC lists to the mail object.
-		mail.setToAddresses( toAddresses );
-		// Specify the address used when the recipients reply to the email.
-		mail.setReplyTo( 'forwardtosfdc@gmail.com' );
-		// Specify the name used as the display name.
-		mail.setSenderDisplayName( user.Name );
-		// Specify the subject line for your email address.
-		mail.setSubject( subject );
-		// Set to True if you want to BCC yourself on the email.
-		mail.setBccSender( false );
-		// Optionally append the salesforce.com email signature to the email.
-		// The email address of the user executing the Apex Code will be used.
-		mail.setUseSignature( true );
-		// Specify the html version of the content as well.
-		message = ( message == null ) ? '' : message;
-		mail.setHtmlBody( message );
-		// Send the email you have created.
-        Messaging.sendEmail( new Messaging.SingleEmailMessage[] { mail } );
+        ProjectSubscribersEmailServices.getInstance().newMemberEmail(toAddresses , this.projectName); 
     }
     
     /**

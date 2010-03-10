@@ -1,7 +1,7 @@
 /**
 *@author Nicolas Gunther @ 03/30/2009
 */
-public class ProjectTaskDetailController {
+public with Sharing class ProjectTaskDetailController {
 	
 	private String USERID = UserInfo.getUserId(); 
 	private Boolean editDeletePer = false;

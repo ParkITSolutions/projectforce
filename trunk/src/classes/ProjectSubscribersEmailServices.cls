@@ -876,7 +876,7 @@ public class ProjectSubscribersEmailServices{
         // Specify the address used when the recipients reply to the email.
         mail.setReplyTo('forwardtosfdc@gmail.com');
         // Specify the name used as the display name.
-        mail.setSenderDisplayName('Team Subscribe');  
+        mail.setSenderDisplayName('Project Force');  
         //Specify the subject line for your email address.
         mail.setSubject(subject);
         //mail.setSenderDisplayName( team.Name );
@@ -1087,4 +1087,25 @@ public class ProjectSubscribersEmailServices{
 			}
 		}
     }
+    
+    /** Send Mail to New Member of Project newMemberEmail() ...
+    *@param String[] usersMails
+    *@return void
+    */
+    public void newMemberEmail(String[] userMails, String projectName)
+    {
+        String emailSub = returnHtmlSubject(projectName,'You Have Been Added');
+        String emailBody= '';
+		emailBody += this.returnHtmlIni('', projectName);
+		emailBody += this.returnVarHtml('','','You Have Been Added to this Project');
+		emailBody += this.returnHtmlFin('','');
+		this.SendMail(userMails, null, emailBody, emailSub);
+    }
+    
+    
+    
+    
+    
+    
+    
 }

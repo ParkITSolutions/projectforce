@@ -2,7 +2,7 @@
 * @author Nicolas Gunther 
 * @createdDate 03/23/2009
 */   
-public class ProjectDetailAttachmentController {
+public with Sharing class ProjectDetailAttachmentController {
 
 	private String project = null;
 	private List<AttachmentInfo> attachments = new List<AttachmentInfo>();

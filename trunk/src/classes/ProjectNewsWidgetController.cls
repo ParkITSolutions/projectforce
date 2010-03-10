@@ -2,7 +2,7 @@
 * @author Matias Menafra
 * @createdDate 02/20/2010
 */
-public class ProjectNewsWidgetController {
+public with Sharing class ProjectNewsWidgetController {
 	
 	public String projectId { set; get;}
 	

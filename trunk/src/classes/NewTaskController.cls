@@ -1,7 +1,7 @@
 /**
 * @author Andres Canavesi
 */
-public class NewTaskController{
+public with Sharing class NewTaskController{
 	
 	private List<ProjectMember__c> projectMembers;
 	public  String[] assignees 						{ set; get; }

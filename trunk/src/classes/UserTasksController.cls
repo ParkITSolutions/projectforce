@@ -2,7 +2,7 @@
 * @author Miguel Soares 
 * @createdDate 
 */
-public class UserTasksController{
+public with Sharing class UserTasksController{
 	
 	public List<ProjectMember__c> allProjects;
 	public List<SelectOption> selectOpsProject;

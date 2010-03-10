@@ -23,7 +23,7 @@
             <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
             <apex:define name="title">Task Notes</apex:define>
             <apex:define name="search">
-                <c:Search module="Project" projectId="{!projectId}" label="Tasks" />
+                <c:Search module="Project" projectId="{!HTMLENCODE( projectId )}" label="Tasks" />
             </apex:define>
         </apex:composition>
    		
@@ -34,11 +34,8 @@
         
         <!-- Sidebar -->
 		<apex:outputPanel id="sidebar" styleclass="sidebar" layout="block">
-                <!-- Project Quick Links -->
-                <c:QuickLinksWidget id="quidkLinks" 
-                	viewNewLinks="false"
-                	projectId="{!projectId}"
-                />
+	        <!-- Project Quick Links -->
+	        <c:QuickLinksWidget id="quidkLinks" viewNewLinks="false" projectId="{!HTMLENCODE( projectId )}" />
         </apex:outputPanel>
    
         <!-- Main Content -->

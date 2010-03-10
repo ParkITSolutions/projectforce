@@ -2,7 +2,7 @@
 * @author Andres Canavesi
 * @createdDate 02/08/2010
 */
-public class MembersListController {
+public with Sharing class MembersListController {
 	
 	public List<ProjectMember> member;	
 	public UserPermissions userPermissions	 	{ set; get; }

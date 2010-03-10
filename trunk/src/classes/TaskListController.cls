@@ -2,7 +2,7 @@
 * @author Andres Canavesi
 * @createdDate 
 */
-public class TaskListController {
+public with Sharing class TaskListController {
 	
 	public List<Task> tasks;	
 	public UserPermissions userPermissions	 	{ set; get; }

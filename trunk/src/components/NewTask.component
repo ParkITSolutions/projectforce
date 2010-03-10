@@ -110,7 +110,7 @@
                         styleClass="Cancel submitButton" >Cancel
                     </apex:outputLink>
                     
-                    <a href="https://{!domain}/{!taskPrefix}/e?retURL=https://{!domain}/apex/projectDetail?id={!projectId}" class="fullTaskLink">
+                    <a href="https://{!domain}/{!taskPrefix}/e?retURL=https://{!domain}/apex/projectDetail?id={!HTMLENCODE( projectId )}" class="fullTaskLink">
                     Create Full Task</a>
 
                 </apex:outputPanel>

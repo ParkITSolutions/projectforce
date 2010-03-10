@@ -2,7 +2,7 @@
 * @author Matias Menafra  
 * @createdDate 1/20/2010
 */
-public class ProjectActivityController {
+public with Sharing class ProjectActivityController {
 	
 	public String 		projectId 	{ set; get; }
 	public Paginator 	paginator 	{ set; get; }
