@@ -143,6 +143,7 @@ public class DAOTask {
                             'StartDate__c, ' + 
                             'EndDate__c, ' +
                             'OwnerId, '+
+                            'Project__c, '+
                             ' (Select Id, User__c, User__r.Name, User__r.Id,PercentDedicated__c From ProjectsAssignees__r order by User__r.Name) ' +
                         'from ProjectTask__c  ' + 
                         'where Project__c = \''+projectId+'\' ' +  
@@ -171,7 +172,7 @@ public class DAOTask {
         
         tasksIdsList = tasksIds.split( ':' ); 
         
-        List<ProjectTask__c> tasks = [select Id, Name, Milestone__c, OwnerId
+        List<ProjectTask__c> tasks = [select Id, Name, Milestone__c, OwnerId, Project__c
                                       from ProjectTask__c 
                                       where id in: tasksIdsList];
         

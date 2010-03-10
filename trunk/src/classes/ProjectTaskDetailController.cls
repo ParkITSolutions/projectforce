@@ -6,7 +6,7 @@ public class ProjectTaskDetailController {
 	private String USERID = UserInfo.getUserId(); 
 	private Boolean editDeletePer = false;
 	public String projectId { set; get;}
-	private Boolean canComment;
+	public Boolean canComment { set; get;}
 	public TaskDetails taskDetail = null;
 	public TaskComment__c comment = new TaskComment__c(); 
 	public boolean detailsOk;

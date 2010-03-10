@@ -42,7 +42,6 @@
     <script type="text/javascript">
         promptOverlay.id = '{!$Component.Content}';
     </script>
-	
     <!-- Content -->
     <apex:outputPanel id="Content" styleClass="Overlaycontainer" layout="block" style="display:none">
         
@@ -82,5 +81,4 @@
         
     </apex:outputPanel>
     <!-- end of Content -->
-
 </apex:component>

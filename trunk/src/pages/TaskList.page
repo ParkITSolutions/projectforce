@@ -294,7 +294,7 @@
                                     <apex:image id="PriorityArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Priority__c', NOT(paginator.orderAsc)),true, false)}"/>
                                 </apex:outputpanel>
                             </apex:facet>
-                            <apex:image id="PriorityImage" value="{!URLFOR($Resource.TaskList, 'images/'+task.priority+'Priority.gif')}" />
+                            <apex:image id="PriorityImage" value="{!URLFOR($Resource.TaskList, 'images/'+task.priority+'Priority.gif')}"  rendered="{!IF(task.priority != '' ,true,false)}"/>
                         </apex:column>
                         
                         <apex:column >

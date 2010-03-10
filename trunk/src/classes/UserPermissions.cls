@@ -219,11 +219,15 @@ public class UserPermissions {
 		
 		if( taskList.size() > 0 ){
 			Boolean isAdmin			= DAOFactory.getInstance().isAdministrator();
-			Boolean isProjectMember	= DAOFactory.getInstance().isProjectMember( taskList.get(0).project );
-
+			Boolean isProjectMember	= DAOFactory.getInstance().isMemberOfProject( userId, taskList.get(0).project );
+			
+			System.debug( ' Is Admin : ' + isAdmin );
+			System.debug( ' Is member : ' + isProjectMember );
+			
 			for( Task task : taskList ){
 				if( !isAdmin ){
 					if( isProjectMember ){
+						System.debug( '=======INSIDE : Task: ' + task.nameDisplay + '  ' + task );
 						//ask if user is the owner of the task
 						if( task.OwnerId != userId ){
 							if( task.assignees.size() > 0){

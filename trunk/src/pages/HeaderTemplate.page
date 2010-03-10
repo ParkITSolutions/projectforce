@@ -41,5 +41,5 @@
 		<apex:outputpanel id="backgroundGray" styleClass="bottomBorder" layout="block" ></apex:outputpanel>
 				
 	</apex:outputpanel>
-	
+	<a name="top" id="top"></a>
 </apex:page>

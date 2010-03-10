@@ -94,7 +94,8 @@ public class Project {
         haveTasksPermissions( this.tasks );
         List<ProjectTask__c> tasks = new List<ProjectTask__c>();
         
-        for( ProjectTask__c task: this.tasks ){
+        for( ProjectTask__c task: this.tasks )
+        {
             task.PercentCompleted__c = 100;
             tasks.add( task );
         }
@@ -103,7 +104,7 @@ public class Project {
         try{
             update tasks;
         }catch( Exception e ){
-            throw new CustomException('Updateing error. It may be because there are tasks that have children.');
+            throw new CustomException('Updating error. It may be because there are tasks that have children.');
         }finally{
             ProjectUtil.setTaskDependenciesFlag( true );
         }
