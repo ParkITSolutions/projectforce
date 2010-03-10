@@ -4,7 +4,7 @@
  * @createdDate 02/01/2010
  * @group Controller
  */
-public class BreadcrumController{
+public with Sharing class BreadcrumController{
 	
 	private Map<String, BreadcrumNode> listNodes;
 	private Set<String> infoOfProject;
@@ -24,8 +24,8 @@ public class BreadcrumController{
 	public BreadcrumController(){ 
 		
 		// WARNING: the name of the page must be exact as appears in the url
-		infoOfProject 			= ProjectUtil.objOfSetTolowerCase( new Set<String>{ 'projectDetail', 'ProjectActivity', 'MembersList', 'projectAttachmentList', 'TaskList', 'ProjectSubscription', 'ProjectSetup' } );
-		infoOfTaskAndProject 	=  ProjectUtil.objOfSetTolowerCase( new Set<String>{ 'ProjectTaskDetail', 'ProjectTaskNotes' } );
+		infoOfProject 			= ProjectUtil.objOfSetTolowerCase( new Set<String>{ 'projectDetail', 'ProjectActivity', 'MembersList', 'projectAttachmentList', 'TaskList', 'ProjectSubscription', 'ProjectSetup', 'SearchResults' } );
+		infoOfTaskAndProject 	= ProjectUtil.objOfSetTolowerCase( new Set<String>{ 'ProjectTaskDetail', 'ProjectTaskNotes' } );
 		
 		try{		
 			this.currentPage = ApexPages.currentPage().getUrl().split( '/apex/' ).get(1).split( '[?]' ).get(0);
@@ -50,20 +50,22 @@ public class BreadcrumController{
 		List<BreadcrumNode> breadcrumAux = new List<BreadcrumNode>(); 
 		
 		b = this.listNodes.get( this.currentPage.toLowercase() );
-		breadcrumAux.add( b );
-		
-		while( b.topName != 'root' ){
-			b = this.listNodes.get( b.topName.toLowercase() );
-			breadcrumAux.add( b );	
-		}
-	
-		this.lastLinkPage = breadcrumAux[ 0 ].urlDisplay; 
-		for( Integer k = breadcrumAux.size()-1; k > 0; k-- )
-			this.breadcrum.add(  breadcrumAux[ k ]);	
+		if( b != null )
+		{
+			breadcrumAux.add( b );
+			while( b.topName != 'root' ){
+				b = this.listNodes.get( b.topName.toLowercase() );
+				breadcrumAux.add( b );	
+			}
+			
+			this.lastLinkPage = breadcrumAux[ 0 ].urlDisplay; 
+			for( Integer k = breadcrumAux.size()-1; k > 0; k-- )
+				this.breadcrum.add(  breadcrumAux[ k ]);
+		}	
 	}
 	
 	/**
-	* Get the infomarion needed depending the name of the page
+	* Get the infomarion needed depending the name of the page 
 	*/
 	private void setInfo(){
 		
@@ -108,6 +110,7 @@ public class BreadcrumController{
 		this.addNode( '/apex/ProjectTaskNotes?id=' + this.taskId, 'Project Task Notes', 'ProjectTaskNotes', 'ProjectTaskDetail' );
 		this.addNode( '/apex/ProjectSubscription?id=' + this.taskId, 'Manage Subscription', 'ProjectSubscription', 'ProjectDetail' );
 		this.addNode( '/apex/ProjectSetup', 'Project Setup', 'ProjectSetup', 'overview' );
+		this.addNode( '/apex/SearchResults?id=' + this.projectId, 'Task Search Results' ,'SearchResults','projectDetail');
 	}
 	 
 	/**

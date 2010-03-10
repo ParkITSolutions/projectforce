@@ -16,7 +16,7 @@
                 <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
                 <apex:define name="title">Project Activity</apex:define>
                 <apex:define name="search">
-                    <c:Search module="Project" projectId="{!projectId}" label="Tasks"/>
+                    <c:Search module="Project" projectId="{!HTMLENCODE( projectId )}" label="Tasks"/>
                 </apex:define>
             </apex:composition> 
             
@@ -31,9 +31,7 @@
         <apex:outputpanel id="sideBar" layout="block" styleClass="sideBar">
         
             <!-- Project Quick Links --> 
-            <c:QuickLinksWidget id="quickLinks"
-            	projectId="{!projectId}"
-            />
+            <c:QuickLinksWidget id="quickLinks" projectId="{!HTMLENCODE( projectId )}" />
                
         </apex:outputpanel>
         

@@ -42,7 +42,7 @@
                     <script type="text/javascript">
                         function setFocusAreaState()
                         {
-                            var options = { script: function (input) {  return ('SuggestDispatcher?input='+input+'&class=colleagueNames&teamId={!projectId}&selectedMembers='+$$('.colleaguesNames')[0].value);}};
+                            var options = { script: function (input) {  return ('SuggestDispatcher?input='+input+'&class=colleagueNames&teamId={!HTMLENCODE( projectId )}&selectedMembers='+$$('.colleaguesNames')[0].value);}};
                             var xml = new AutoComplete('{!$Component.colleaguesNames}',options);
                             return true;
                         }

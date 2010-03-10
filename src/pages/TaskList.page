@@ -31,7 +31,7 @@
         <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
         <apex:define name="title">Tasks & Milestones</apex:define>
         <apex:define name="search">
-            <c:Search id="Search" module="Project" label="Tasks" projectId="{!ProjectId}"/>
+            <c:Search id="Search" module="Project" label="Tasks" projectId="{!HTMLENCODE( ProjectId )}"/>
         </apex:define>
     </apex:composition>
     <!-- End Header -->
@@ -76,7 +76,7 @@
                 </apex:outputPanel>
             </apex:outputLink>
             
-            <apex:outputLink value="ProjectTimeline?id={!projectId}"
+            <apex:outputLink value="ProjectTimeline?id={!HTMLENCODE( projectId )}"
                 id="Timeline"
                 styleClass="blackbutton">
                 <apex:outputPanel >
@@ -271,7 +271,7 @@
                         
                         <apex:column >
                             <apex:facet name="header">Action</apex:facet>
-                            <apex:outputLink value="/{!task.id}/e?retURL={!url}/apex/TaskList?id={!projectId}" id="EditLink" rendered="{!task.canUpdate || isManager}">Edit | </apex:outputLink>
+                            <apex:outputLink value="/{!task.id}/e?retURL={!url}/apex/TaskList?id={!HTMLENCODE( projectId )}" id="EditLink" rendered="{!task.canUpdate || isManager}">Edit | </apex:outputLink>
                             <apex:outputLink value="javascript:;" id="DeleteLink" onClick="taskList.deleteTask('{!task.id}');" rendered="{!task.canDelete || isManager}"> Del</apex:outputLink>
                         </apex:column>
                         

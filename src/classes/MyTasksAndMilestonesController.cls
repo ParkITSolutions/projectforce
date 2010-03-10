@@ -3,7 +3,7 @@
 * @group Widget
 * @createdDate 02/18/2010
 */
-public class MyTasksAndMilestonesController{ 
+public with Sharing class MyTasksAndMilestonesController{ 
 	
 	private id currentUser;
 	private id currentProject;

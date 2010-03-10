@@ -2,7 +2,7 @@
 * @author Andres Canavesi
 * @dateCreated 12/01/2009
 */
-public class ConfirmOverlayController {
+public with Sharing class ConfirmOverlayController {
 	
 	public String 	title 	        	{ set; get; }
 	public String 	messageToUser 		{ set; get; }
@@ -45,7 +45,7 @@ public class ConfirmOverlayController {
 			}
 			if( this.actionName == 'MarkCompleteTasks' ){
 				
-				String projectId 	= System.currentPageReference().getParameters().get( 'id' );
+				String projectId 	= System.currentPageReference().getParameters().get ( 'id' );
 				Project project 	= new Project( projectId );
 				
 				project.setTasks( this.actionIds );

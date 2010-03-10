@@ -1,7 +1,7 @@
 /**
 *@author Miguel Soares @ 03/23/2009
 */
-public class ProjectDetailMilestoneController {
+public with Sharing class ProjectDetailMilestoneController {
 
 	String teamId;
 	public Boolean sidebar = false;

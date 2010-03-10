@@ -43,18 +43,17 @@
 	
 		function DeleteProject(){
     	    deleteProjectOverlay.open();
-    	    deleteProjectOverlay.setActionIds('{!projectId}');	
+    	    deleteProjectOverlay.setActionIds('{!HTMLENCODE( projectId )}');	
 		}
 
     </script>
     
-    <!-- deleteProjectOverlay.setActionIds('{!projectId}:'); -->
     <c:PromptOverlay id="PromptOverlay"
         includeNewMember="true"
         includeNewTask="true"
         includeNewMilestone="true" 
         includeAttachment="true" 
-        idValue="{!projectId}" />
+        idValue="{!HTMLENCODE( projectId )}" />
         
         
      <!-- Delete Project Overlay -->
@@ -80,7 +79,7 @@
             <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
             <apex:define name="title">Project Detail</apex:define>
             <apex:define name="search">
-                <c:Search module="Project" projectId="{!projectId}" label="Tasks"/>
+                <c:Search module="Project" projectId="{!HTMLENCODE( projectId )}" label="Tasks"/>
             </apex:define>
         </apex:composition> 
        
@@ -111,7 +110,7 @@
 			                </apex:outputPanel>
 			            </apex:outputLink>
 
-                        <a class="blackbutton" href="/{!projectId}/e?retURL=/{!projectId}">
+                        <a class="blackbutton" href="/{!HTMLENCODE( projectId )}/e?retURL=/{!HTMLENCODE( projectId )}">
                             <span> Edit </span>
                         </a>
                     </apex:outputPanel>         
@@ -129,7 +128,7 @@
                     <apex:commandLink styleClass="blackbutton" rendered="{!IF(isMember,true,false)}" 
                         onclick="swirly.show();"  
                         rerender="thisForm, mainContentForm, sidebarWidgets" action="{!unjoinProject}" 
-                        onComplete="projectDetail(); swirly.hide();  showWarningIsLastAdmin();infoToUser( 'error', 'Last Adminstrator can\'t Unjoin' )">
+                        onComplete="projectDetail(); swirly.hide();  infoToUser.open( 'error', 'Last Adminstrator can not Unjoin' );">
                         <span> Unjoin </span>
                     </apex:commandLink>
 
@@ -141,12 +140,10 @@
         <div class="sidebar">
             <apex:outputPanel id="sidebarWidgets">
 
-                <c:QuickLinksWidget id="quickLinks"
-                	projectId="{!projectId}"
-                />
+                <c:QuickLinksWidget id="quickLinks"	projectId="{!HTMLENCODE( projectId )}" />
                 
                 <!-- Team members -->
-                <c:MembersWidget projectId="{!projectId}" id="MembersWidget" />
+                <c:MembersWidget projectId="{!HTMLENCODE( projectId )}" id="MembersWidget" />
                 
                 <!-- Team Suscribe -->
             	<c:ProjectSubscriptionWidget id="subscriptionWidget" rendered="{!IF(isMember,true,false)}"/>
@@ -157,12 +154,6 @@
    
     </div>
     
-    <div class="informationPanel clear" id="infoToUser" style="display:none"></div>
-                
-    <div class="messageToUser successMessage" id="MessageToUser" style="display:none" ></div>      
-     
-    <div class="messageToUser errorMessage" id="ErrorMessage" style="display:none" ></div>     
-     
     <!-- Main Content -->
     <div class="main_content" id="main_content">
         <div class="centerCol">
@@ -171,20 +162,20 @@
 						 
                     <!-- sfdc detail -->
                     <div style="display:none;" class="sfdcDetail">
-                        <apex:detail subject="{!projectId}" relatedList="false" title="false" />
+                        <apex:detail subject="{!HTMLENCODE( projectId )}" relatedList="false" title="false" />
                     </div>
                     <div class="sfdcDetailFormated"></div>
                     
                     <apex:actionFunction name="reloadMainContent" rerender="mainContentForm" oncomplete="projectDetail();swirly.hide();"/>
                     
                     <!-- Project Tasks -->
-                    <c:ProjectWidgetTaskMain team="{!projectId}" id="ProjectWidgetTaskMain"/>             
+                    <c:ProjectWidgetTaskMain team="{!HTMLENCODE( projectId )}" id="ProjectWidgetTaskMain"/>             
     
                     <!-- Project Milestones -->
-                    <c:ProjectDetailMilestones team="{!projectId}" id="ProjectDetailMilestones"/> 
+                    <c:ProjectDetailMilestones team="{!HTMLENCODE( projectId )}" id="ProjectDetailMilestones"/> 
     
                     <!-- Project Attachments (Overlay and Widget) -->
-                    <c:ProjectDetailAttachment project="{!projectId}" id="ProjectDetailAttachment"/>
+                    <c:ProjectDetailAttachment project="{!HTMLENCODE( projectId )}" id="ProjectDetailAttachment"/>
                     
                 </apex:form> 
             </div>

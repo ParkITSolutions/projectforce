@@ -2,7 +2,7 @@
 * @author Matias Menafra 
 * @createdDate 1/15/2010
 */
-public class ActivityWidgetController{
+public with Sharing class ActivityWidgetController{
 	
 	public String 			projectId 		{ set; get; }
 	private MessageLog 		messageObj; 			

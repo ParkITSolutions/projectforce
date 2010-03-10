@@ -4,6 +4,7 @@
     <apex:includeScript value="{!URLFOR($Resource.Lib, 'inc/js/scriptaculous/src/scriptaculous.js')}" />
     
     <apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/js/overlays.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.TrimFunction)}" />
     <apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" /> 
     
     <apex:stylesheet value="{!URLFOR($Resource.MyTaskAndMilestonesWidget, 'inc/css/myTaskAndMilestonesWidget.css')}" /> 

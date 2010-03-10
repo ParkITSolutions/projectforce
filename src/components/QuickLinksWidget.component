@@ -46,17 +46,17 @@
             
             <apex:outputPanel id="timelinePanel" layout="block" styleclass="textQuickLink">
                 <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
-                <apex:outputLink id="timelineLink" value="ProjectTimeline?id={!projectId}" >Timeline</apex:outputLink>
+                <apex:outputLink id="timelineLink" value="ProjectTimeline?id={!HTMLENCODE( projectId )}" >Timeline</apex:outputLink>
             </apex:outputPanel>
             
             <apex:outputPanel id="taskListPanel" layout="block" styleclass="textQuickLink">
                 <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
-                <apex:outputLink id="taskListLink" value="/apex/TaskList?id={!projectId}">Task List</apex:outputLink>
+                <apex:outputLink id="taskListLink" value="/apex/TaskList?id={!HTMLENCODE( projectId )}">Task List</apex:outputLink>
             </apex:outputPanel>
         
             <apex:outputPanel id="memberPanel" layout="block" styleclass="textQuickLink">
                 <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
-                <apex:outputLink id="memberLink" value="/apex/MembersList?id={!projectId}">Member List</apex:outputLink>
+                <apex:outputLink id="memberLink" value="/apex/MembersList?id={!HTMLENCODE( projectId )}">Member List</apex:outputLink>
             </apex:outputPanel>
             
             <apex:outputPanel id="userTaskPanel" layout="block" styleclass="textQuickLink">

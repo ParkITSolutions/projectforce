@@ -29,7 +29,7 @@
                 <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
                 <apex:define name="title">Attachments</apex:define>
                 <apex:define name="search">
-                    <c:Search module="Project" projectId="{!projectId}" label="Tasks"/>
+                    <c:Search module="Project" projectId="{!HTMLENCODE( projectId )}" label="Tasks"/>
                 </apex:define>
             </apex:composition> 
          	

@@ -1,7 +1,7 @@
 /**
 * @author Andres Canavesi
 */
-public class PromptOverlayController {
+public with Sharing class PromptOverlayController {
 	
 	public boolean 	includeNewTask 			{ set; get; }
 	public boolean 	includeNewMilestone		{ set; get; }

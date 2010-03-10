@@ -53,8 +53,13 @@ public class ProjectTaskDuration {
 			
 			task = this.verifyStartDate(task);
 			task.EndDate__c = null;
-			task.DurationUI__c = '1.0';
-			task.Duration__c = 1.0; 
+			if(this.displayDuration.equals('Days')){
+				task.DurationUI__c = '1.0';
+				task.Duration__c = 1.0;
+			}else{
+				task.Duration__c = this.workingHours; 
+				task.DurationUI__c = '\'' + this.workingHours + '\'';
+			} 
 		}
 		else{
 			task = this.verifyStartDate(task);

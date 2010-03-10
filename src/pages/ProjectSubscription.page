@@ -25,10 +25,7 @@
 		<!-- Sidebar -->
 		<apex:outputPanel id="sidebar" styleclass="sidebar" layout="block">        		    
 			<!-- Project Quick Links -->
-			<c:QuickLinksWidget id="quidkLinks" 
-				viewNewLinks="false"
-				projectId="{!projectId}"
-			/>
+			<c:QuickLinksWidget id="quidkLinks" viewNewLinks="false" projectId="{!HTMLENCODE( projectId )}" />
 		</apex:outputPanel>
 
 		<!-- Main Content -->
