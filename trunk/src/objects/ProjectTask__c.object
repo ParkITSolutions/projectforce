@@ -14,7 +14,7 @@
         <fullName>DurationUI__c</fullName>
         <defaultValue>&apos;1&apos;</defaultValue>
         <label>Duration</label>
-        <length>10</length>
+        <length>5</length>
         <required>true</required>
         <type>Text</type>
     </fields>
@@ -22,8 +22,8 @@
         <fullName>Duration__c</fullName>
         <description>Duration</description>
         <label>Duration Display</label>
-        <precision>13</precision>
-        <scale>1</scale>
+        <precision>18</precision>
+        <scale>6</scale>
         <type>Number</type>
     </fields>
     <fields>
@@ -80,8 +80,8 @@
         <defaultValue>0.0</defaultValue>
         <description>PercentCompleted</description>
         <label>Percent Completed</label>
-        <precision>17</precision>
-        <scale>1</scale>
+        <precision>18</precision>
+        <scale>2</scale>
         <type>Percent</type>
     </fields>
     <fields>

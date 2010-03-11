@@ -338,7 +338,7 @@
                         
                         <apex:column >
                             <apex:facet name="header">
-                                <apex:outputpanel id="Completedanel">
+                                <apex:outputpanel id="CompletedPanel">
                                     <apex:outputLink id="CompletedLink" value="javascript:;" onClick=" swirly.show(); paginator.setOrderBy('PercentCompleted__c'); RefreshRecordsList();">% Completed </apex:outputLink> &nbsp;
                                     <apex:image id="CompletedArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'PercentCompleted__c', paginator.orderAsc),true,false)}" />
                                     <apex:image id="CompletedArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'PercentCompleted__c', NOT(paginator.orderAsc)),true, false)}"/>
@@ -355,7 +355,7 @@
                         <apex:column >
                             <apex:facet name="header">
                             <apex:outputpanel id="DurationPanel">
-                                    <apex:outputLink id="DurationLink" value="javascript:;" onClick=" swirly.show(); paginator.setOrderBy('Duration__c'); RefreshRecordsList();">Duration </apex:outputLink> &nbsp;
+                                    <apex:outputLink id="DurationLink" value="javascript:;" onClick=" swirly.show(); paginator.setOrderBy('Duration__c'); RefreshRecordsList();">Duration ({!project.displayDuration})</apex:outputLink> &nbsp;
                                     <apex:image id="DurationArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Duration__c', paginator.orderAsc),true,false)}" />
                                     <apex:image id="DurationArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Duration__c', NOT(paginator.orderAsc)),true, false)}"/>
                                 </apex:outputpanel>

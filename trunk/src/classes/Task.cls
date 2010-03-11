@@ -86,7 +86,7 @@ public class Task{
 	* @return String
 	*/
 	public String getDurationDisplay(){
-		return this.durationDisplay;
+		return this.durationDisplay.substring( 0, this.durationDisplay.length() - 4);
 	}
 
 	/**
