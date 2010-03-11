@@ -3,10 +3,10 @@
     <c:ApplicationTop id="ApplicationTop" />
     
     <apex:outputPanel rendered="{!isProduction}">
-		 <apex:includeScript value="{!URLFOR($Resource.TaskList, 'inc/javascript/taskList.js')}" />
-    	<apex:stylesheet value="{!URLFOR($Resource.TaskList, 'inc/css/taskList.css')}" />
-	</apex:outputPanel>
-	
+         <apex:includeScript value="{!URLFOR($Resource.TaskList, 'inc/javascript/taskList.js')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.TaskList, 'inc/css/taskList.css')}" />
+    </apex:outputPanel>
+    
     <script type="text/javascript">
         var deleteTasksOverlay          = new ConfirmOverlay( '{!$Component.DeleteTasksOverlay}' );
         var markCompleteTasksOverlay    = new ConfirmOverlay( '{!$Component.MarkCompleteTasksOverlay}' );
@@ -42,11 +42,11 @@
     <apex:outputPanel id="contentPanelTaskList" styleClass="contentPanelTaskList" layout="block" >
     <!-- <apex:outputPanel id="ContentPanel" styleClass="contentPanel" layout="block" > -->
     
-    	<!-- BreadcrumbPanel -->
-		<apex:outputPanel id="BreadcrumbPanel" styleClass="breadcrumbPanel" layout="block">
-			<c:Breadcrum id="Breadcrum" />
-		</apex:outputPanel>
-		<!-- End BreadcrumbPanel -->    
+        <!-- BreadcrumbPanel -->
+        <apex:outputPanel id="BreadcrumbPanel" styleClass="breadcrumbPanel" layout="block">
+            <c:Breadcrum id="Breadcrum" />
+        </apex:outputPanel>
+        <!-- End BreadcrumbPanel -->    
     
         <!-- ButtonsPanel -->
         <apex:outputPanel id="ButtonsPanel" styleClass="buttonsPanel" layout="block" >
@@ -203,25 +203,25 @@
                     
                     <!-- letterFilter -->
                     <apex:outputPanel id="letterFilter" styleClass="letterFilter" layout="block">
-                    	<apex:outputLink id="allLink"
-                           	value="javascript:;"
-							styleClass="letterCurrencies {!IF(paginator.letterChoosen == 'All', 'letterChoosen', '')}"
-							onClick="paginator.setLetterChoosen('All'); swirly.show(); RefreshRecordsList();">
-								ALL
-						</apex:outputLink> 
+                        <apex:outputLink id="allLink"
+                            value="javascript:;"
+                            styleClass="letterCurrencies {!IF(paginator.letterChoosen == 'All', 'letterChoosen', '')}"
+                            onClick="paginator.setLetterChoosen('All'); swirly.show(); RefreshRecordsList();">
+                                ALL
+                        </apex:outputLink> 
                         <apex:repeat id="lettersRepeat" value="{!paginator.letters}" var="letter" > &nbsp;
-                        	<apex:outputLink id="letterLink"
+                            <apex:outputLink id="letterLink"
                                 value="javascript:;"
-								rendered="{!letter.hasCurrencies}"
-								styleClass="letterCurrencies {!IF(paginator.letterChoosen == letter.name, 'letterChoosen', '')}"
-								onClick="paginator.setLetterChoosen('{!letter.name}'); swirly.show(); RefreshRecordsList();">
-									{!letter.name}
-							</apex:outputLink>  
-							<apex:outputText id="letterText"
-								value="{!letter.name}"
-								rendered="{!NOT(letter.hasCurrencies)}" />
-                    	</apex:repeat> 
-                    	<apex:inputHidden id="letterChoosen" value="{!paginator.letterChoosen}" />
+                                rendered="{!letter.hasCurrencies}"
+                                styleClass="letterCurrencies {!IF(paginator.letterChoosen == letter.name, 'letterChoosen', '')}"
+                                onClick="paginator.setLetterChoosen('{!letter.name}'); swirly.show(); RefreshRecordsList();">
+                                    {!letter.name}
+                            </apex:outputLink>  
+                            <apex:outputText id="letterText"
+                                value="{!letter.name}"
+                                rendered="{!NOT(letter.hasCurrencies)}" />
+                        </apex:repeat> 
+                        <apex:inputHidden id="letterChoosen" value="{!paginator.letterChoosen}" />
                     </apex:outputPanel>
                     <!-- end letterFilter -->
                     
@@ -238,9 +238,9 @@
                 <!-- ExportCSVPanel -->
                 <apex:outputPanel id="ExportCSVPanel" styleClass="exportCSVPanel" layout="block">
                     
-	                <apex:image value="{!URLFOR($Resource.TaskList, 'images/csv.gif')}" id="ExportCSVImage" width="13"/>
-	                <apex:commandLink action="{!generateTaskListCsv}" value="Export to CSV" title="Export to CSV file" rerender="ExportCSVPanel" />
-	                <apex:iframe src="/servlet/servlet.FileDownload?file={!csvFileId}" rendered="{!csvFileId != null}" id="fileCSV" height="0px" width="0px"/>
+                    <apex:image value="{!URLFOR($Resource.TaskList, 'images/csv.gif')}" id="ExportCSVImage" width="13"/>
+                    <apex:commandLink action="{!generateTaskListCsv}" value="Export to CSV" title="Export to CSV file" rerender="ExportCSVPanel" />
+                    <apex:iframe src="/servlet/servlet.FileDownload?file={!csvFileId}" rendered="{!csvFileId != null}" id="fileCSV" height="0px" width="0px"/>
                          
                 </apex:outputPanel>
                 <!-- End ExportCSVPanel -->
@@ -267,7 +267,7 @@
                         <apex:column id="Action">
                             <apex:facet name="header"><apex:inputCheckbox id="ActionCheckbox" onClick="taskList.markAllCheckboxes(this,'actionCheckbox');"/></apex:facet>
                             <apex:outputPanel id="chk" rendered="{!task.canUpdate || task.canDelete || isManager}">
-                            	<input type="checkbox" id="{!task.id}" value="{!task.id}" class="actionCheckbox" />
+                                <input type="checkbox" id="{!task.id}" value="{!task.id}" class="actionCheckbox" />
                             </apex:outputPanel>
                         </apex:column>
                         
@@ -319,15 +319,15 @@
                             <apex:facet name="header">Assigned to</apex:facet>
                             
                             <apex:outputPanel layout="block" styleClass="OneAssignee">
-								 <apex:repeat value="{!task.assignees}" var="assignee" id="OneAssignee" rows="1">
+                                 <apex:repeat value="{!task.assignees}" var="assignee" id="OneAssignee" rows="1">
                                     - {!assignee.name} &nbsp;
                                     <apex:outputLink value="javascript:;" 
-                                    		onClick="taskList.toggleList('{!task.id}', this);" 
-                                    		rendered="{!task.assignees.size > 1}">
-                                    		[+]</apex:outputLink>
+                                            onClick="taskList.toggleList('{!task.id}', this);" 
+                                            rendered="{!task.assignees.size > 1}">
+                                            [+]</apex:outputLink>
                                 </apex:repeat>
-							</apex:outputPanel>
-							
+                            </apex:outputPanel>
+                            
                             <apex:outputPanel layout="block" styleClass="AssigneesList_{!task.id}" style="display:none;float:left;padding:2px 0;">
                                 <apex:repeat value="{!task.assignees}" var="assignee" id="Assignees" first="1" rendered="{!task.assignees.size > 1}">
                                     - {!assignee.name}<br/>

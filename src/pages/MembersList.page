@@ -2,10 +2,10 @@
 
     <c:ApplicationTop id="ApplicationTop" />
    
-   	<apex:outputPanel rendered="{!isProduction}">
-		<apex:includeScript value="{!URLFOR($Resource.MembersList, 'inc/javascript/membersList.js')}" />
-   		<apex:stylesheet value="{!URLFOR($Resource.MembersList, 'inc/css/membersList.css')}" />
-	</apex:outputPanel>
+    <apex:outputPanel rendered="{!isProduction}">
+        <apex:includeScript value="{!URLFOR($Resource.MembersList, 'inc/javascript/membersList.js')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.MembersList, 'inc/css/membersList.css')}" />
+    </apex:outputPanel>
     
    
     <script type="text/javascript">
@@ -214,54 +214,54 @@
                 <apex:form id="MembersForm">
                 
                 <table cellpadding="0" cellspacing="0" class="table">
-                	<thead>
-	                	<tr>
-	                		<th>
-	                			<apex:inputCheckbox id="ActionCheckbox" onClick="markAllCheckboxes(this,'actionCheckbox');"/>
-	                		</th>
-	                		<th>Action</th>	
-	                		<th>
-								 <apex:outputpanel id="NamePanel">
-	                                 <apex:outputLink id="NameLink" value="javascript:;" onClick=" swirly.show(); paginator.setOrderBy('name'); RefreshRecordsList();">Name </apex:outputLink> &nbsp;
-	                                 <apex:image id="NameArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'name', paginator.orderAsc),true,false)}" />
-	                                 <apex:image id="NameArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'name', NOT(paginator.orderAsc)),true, false)}"/>
-	                             </apex:outputpanel>
-							</th>	
-	                		<th>
-								<apex:outputpanel id="companyPanel">
-	                            	<apex:outputLink id="companyLink" value="javascript:;" onClick=" swirly.show(); paginator.setOrderBy('company'); RefreshRecordsList();">Company </apex:outputLink> &nbsp;
-	                                <apex:image id="companyArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'company', paginator.orderAsc),true,false)}" />
-	                                <apex:image id="companyArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'company', NOT(paginator.orderAsc)),true, false)}"/>
-	                            </apex:outputpanel>
-							</th>	
-	                		<th>
+                    <thead>
+                        <tr>
+                            <th>
+                                <apex:inputCheckbox id="ActionCheckbox" onClick="markAllCheckboxes(this,'actionCheckbox');"/>
+                            </th>
+                            <th>Action</th> 
+                            <th>
+                                 <apex:outputpanel id="NamePanel">
+                                     <apex:outputLink id="NameLink" value="javascript:;" onClick=" swirly.show(); paginator.setOrderBy('name'); RefreshRecordsList();">Name </apex:outputLink> &nbsp;
+                                     <apex:image id="NameArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'name', paginator.orderAsc),true,false)}" />
+                                     <apex:image id="NameArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'name', NOT(paginator.orderAsc)),true, false)}"/>
+                                 </apex:outputpanel>
+                            </th>   
+                            <th>
+                                <apex:outputpanel id="companyPanel">
+                                    <apex:outputLink id="companyLink" value="javascript:;" onClick=" swirly.show(); paginator.setOrderBy('company'); RefreshRecordsList();">Company </apex:outputLink> &nbsp;
+                                    <apex:image id="companyArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'company', paginator.orderAsc),true,false)}" />
+                                    <apex:image id="companyArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'company', NOT(paginator.orderAsc)),true, false)}"/>
+                                </apex:outputpanel>
+                            </th>   
+                            <th>
                                 <apex:outputpanel id="titlePanel">
                                     <apex:outputLink id="titleLink" value="javascript:;" onClick=" swirly.show(); paginator.setOrderBy('title'); RefreshRecordsList();">Title</apex:outputLink> &nbsp;
                                     <apex:image id="titleArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'title', paginator.orderAsc),true,false)}" />
                                     <apex:image id="titleArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'title', NOT(paginator.orderAsc)),true, false)}"/>
-                                </apex:outputpanel>	
-							</th>	
-	                		<th>
+                                </apex:outputpanel> 
+                            </th>   
+                            <th>
                                 <apex:outputpanel id="projectProfilePanel">
                                     <apex:outputLink id="projectProfileLink" value="javascript:;" onClick=" swirly.show(); paginator.setOrderBy('projectProfile'); RefreshRecordsList();">Project profile</apex:outputLink> &nbsp;
                                     <apex:image id="projectProfileArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'projectProfile', paginator.orderAsc),true,false)}" />
                                     <apex:image id="projectProfileArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'projectProfile', NOT(paginator.orderAsc)),true, false)}"/>
-                                </apex:outputpanel>								
-	                		</th>	
-	                	</tr>
-                	</thead>
-                	<tbody>
-                	<apex:repeat value="{!paginator.membersByProject}" var="member" id="membersListTable" rendered="{!paginator.membersByProject.size > 0}">
-                		<tr>
-                			<td><apex:outputpanel id="chk" rendered="{!isManager}"><input type="checkbox" id="{!HTMLENCODE( member.id )}" value="{!HTMLENCODE( member.id )}" class="actionCheckbox"/></apex:outputpanel></td>
-                			<td><apex:outputLink value="javascript:;" id="DeleteLink" onClick="deleteMember('{!HTMLENCODE( member.id )}');" rendered="{!isManager}">Delete</apex:outputLink></td>
-                			<td><apex:outputLink value="/{!member.id}" id="NameMemberLink"> {!member.name}</apex:outputLink></td>
-                			<td><apex:outputLink value="/{!member.id}" id="memberCompanyLink"> {!member.User__r.CompanyName}</apex:outputLink></td>
-                			<td><apex:outputLink value="/{!member.id}" id="memberTitleLink"> {!member.User__r.Title}</apex:outputLink></td>
-                			<td><apex:outputLink value="/{!member.id}" id="memberProfileLink"> {!member.Profile__r.Name}</apex:outputLink></td>
-                		</tr>
-                	</apex:repeat> 
-                  	</tbody>
+                                </apex:outputpanel>                             
+                            </th>   
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <apex:repeat value="{!paginator.membersByProject}" var="member" id="membersListTable" rendered="{!paginator.membersByProject.size > 0}">
+                        <tr>
+                            <td><apex:outputpanel id="chk" rendered="{!isManager}"><input type="checkbox" id="{!HTMLENCODE( member.id )}" value="{!HTMLENCODE( member.id )}" class="actionCheckbox"/></apex:outputpanel></td>
+                            <td><apex:outputLink value="javascript:;" id="DeleteLink" onClick="deleteMember('{!HTMLENCODE( member.id )}');" rendered="{!isManager}">Delete</apex:outputLink></td>
+                            <td><apex:outputLink value="/{!member.id}" id="NameMemberLink"> {!member.name}</apex:outputLink></td>
+                            <td><apex:outputLink value="/{!member.id}" id="memberCompanyLink"> {!member.User__r.CompanyName}</apex:outputLink></td>
+                            <td><apex:outputLink value="/{!member.id}" id="memberTitleLink"> {!member.User__r.Title}</apex:outputLink></td>
+                            <td><apex:outputLink value="/{!member.id}" id="memberProfileLink"> {!member.Profile__r.Name}</apex:outputLink></td>
+                        </tr>
+                    </apex:repeat> 
+                    </tbody>
                 
                 </table>
                     

@@ -1,7 +1,7 @@
 <apex:page id="ProjectDetail" sidebar="false" cache="true" standardController="Project2__c" extensions="ProjectDetailController" tabStyle="Project2__c">
 
-    <c:ApplicationTop id="ApplicationTop" />
-    
+
+     <c:ApplicationTop id="ApplicationTop" />
     <!-- Ajax Toolkit 
     <apex:includeScript value="/soap/ajax/11.1/connection.js" />
     <script>
@@ -26,10 +26,10 @@
 
     <!-- CSS Includes -->
     <apex:outputPanel rendered="{!isProduction}">
-		<apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
-	    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
-	    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
-	</apex:outputPanel>
+        <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
+    </apex:outputPanel>
     
     <!-- ### Initialize the overlay box for modal.js ### -->
 <!--    <a href="#modal_container" id="initializeModal" style="display:none;"></a>-->
@@ -41,12 +41,12 @@
         var globalCheckNew = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}';
         var userIsManager = '{!isManager}';
         */
-		var deleteProjectOverlay = new ConfirmOverlay( '{!$Component.DeleteProjectOverlay}' );
-	
-		function DeleteProject(){
-    	    deleteProjectOverlay.open();
-    	    deleteProjectOverlay.setActionIds('{!HTMLENCODE( projectId )}');	
-		}
+        var deleteProjectOverlay = new ConfirmOverlay( '{!$Component.DeleteProjectOverlay}' );
+    
+        function DeleteProject(){
+            deleteProjectOverlay.open();
+            deleteProjectOverlay.setActionIds('{!HTMLENCODE( projectId )}');    
+        }
 
     </script>
     
@@ -59,20 +59,20 @@
         
         
      <!-- Delete Project Overlay -->
-	<c:ConfirmOverlay id="DeleteProjectOverlay" 
-		title="Delete Project"
-		messageToUser=" Are you sure you want to delete this project? 
-		Once a project is deleted, tasks and milestones are not recoverable"
-		actionName="DeleteProject" 
-	/>  
+    <c:ConfirmOverlay id="DeleteProjectOverlay" 
+        title="Delete Project"
+        messageToUser=" Are you sure you want to delete this project? 
+        Once a project is deleted, tasks and milestones are not recoverable"
+        actionName="DeleteProject" 
+    />  
     
     <!-- Delete Project Attachment -->
-	<c:ConfirmOverlay id="DeleteProjectAttachmentOverlay" 
-		title="Delete Project Attachment"
-		messageToUser=" Are you sure you want to delete this attachment?"
-		actionName="ProjectDetailDeleteAttachments"
-	/>  
-	    
+    <c:ConfirmOverlay id="DeleteProjectAttachmentOverlay" 
+        title="Delete Project Attachment"
+        messageToUser=" Are you sure you want to delete this attachment?"
+        actionName="ProjectDetailDeleteAttachments"
+    />  
+        
     <div id="all" style="overflow:hidden;">
         
         <!-- Header -->
@@ -92,7 +92,7 @@
         <!-- End breadcrumbPanel -->
      
          <apex:form >
-        	<apex:actionFunction action="{!deleteAvatar}" name="deleteTheAvatar" rerender="mainContentForm" oncomplete="projectDetail();swirly.hide();" />
+            <apex:actionFunction action="{!deleteAvatar}" name="deleteTheAvatar" rerender="mainContentForm" oncomplete="projectDetail();swirly.hide();" />
          </apex:form>            
          <div align="center" class="breadCrumbAndButtons">
 
@@ -103,14 +103,14 @@
                     <!-- Edit-Delete Project Buttons -->
                     <apex:outputPanel rendered="{!IF(userPermission.canManage, true, false)}">
                     
-                    	<apex:outputLink value="javascript:;"
-			                id="Delete"
-			                onClick="DeleteProject();"
-			                styleClass="blackbutton">
-			                <apex:outputPanel >
-			                    Delete
-			                </apex:outputPanel>
-			            </apex:outputLink>
+                        <apex:outputLink value="javascript:;"
+                            id="Delete"
+                            onClick="DeleteProject();"
+                            styleClass="blackbutton">
+                            <apex:outputPanel >
+                                Delete
+                            </apex:outputPanel>
+                        </apex:outputLink>
 
                         <a class="blackbutton" href="/{!HTMLENCODE( projectId )}/e?retURL=/{!HTMLENCODE( projectId )}">
                             <span> Edit </span>
@@ -142,14 +142,14 @@
         <div class="sidebar">
             <apex:outputPanel id="sidebarWidgets">
 
-                <c:QuickLinksWidget id="quickLinks"	projectId="{!HTMLENCODE( projectId )}" />
+                <c:QuickLinksWidget id="quickLinks" projectId="{!HTMLENCODE( projectId )}" />
                 
                 <!-- Team members -->
                 <c:MembersWidget projectId="{!HTMLENCODE( projectId )}" id="MembersWidget" />
                 
                 <!-- Team Suscribe -->
-            	<c:ProjectSubscriptionWidget id="subscriptionWidget" rendered="{!IF(isMember,true,false)}"/>
-            	
+                <c:ProjectSubscriptionWidget id="subscriptionWidget" rendered="{!IF(isMember,true,false)}"/>
+                
             </apex:outputPanel>
             <div class="clear"></div>
         </div>
@@ -161,7 +161,7 @@
         <div class="centerCol">
            <div class="holder">
                 <apex:form id="mainContentForm">
-						 
+                         
                     <!-- sfdc detail -->
                     <div style="display:none;" class="sfdcDetail">
                         <apex:detail subject="{!HTMLENCODE( projectId )}" relatedList="false" title="false" />
@@ -190,51 +190,51 @@
     <script>
        var userIsManager = '{!isManager}';
        function addAvatarAsAvatar(){
-       		window.frames.attachmentIframe.Attachment.uploadAsAvatar();
-       		promptOverlay.open( attachment );
+            window.frames.attachmentIframe.Attachment.uploadAsAvatar();
+            promptOverlay.open( attachment );
        }
        
        function openAvatarUploader(){}
        
        /**
-		* Move detail table to custom container
-		*/
-		function projectDetail(){
-		
-			$$('.centerCol')[0].style.marginRigth = '0px';
-			var detailTables = $$('.detailList');
-			var content = $$('.sfdcDetailFormated')[0];
-		
-			for(var it=0; it < detailTables.length; it++){
-				detailTables[it].style.width = '100%';
-				content.insert(detailTables[it]);
-					content.insert('<div class="overlaySeparateLine"/></div>');
-			}
-			
-		
-			var tds = detailTables[0].getElementsByTagName('td');			
-			for(var i=0; i < tds.length; i++){
-			    if(tds[i].innerHTML == 'Image'){
-					var theTd = tds[i].nextSibling;
-					var newAvatar = theTd.getElementsByTagName('a')[0];
-			    }
-			}
-			
-			if(userIsManager == 'false'){
-				//newAvatar.setStyle({'display' : 'none'});
-				newAvatar.style.display = 'none';
-				newAvatar.removeAttribute('href');
-			}else{
-				//Change avatar link
-				newAvatar.style.marginLeft = '7px';
-				newAvatar.removeAttribute('target');
-				newAvatar.onclick = function(){}
-			}
-		}        
-		
-		/**
-		* On DOM ready functions
-		*/
-		document.observe('dom:loaded', function(){projectDetail()});
+        * Move detail table to custom container
+        */
+        function projectDetail(){
+        
+            $$('.centerCol')[0].style.marginRigth = '0px';
+            var detailTables = $$('.detailList');
+            var content = $$('.sfdcDetailFormated')[0];
+        
+            for(var it=0; it < detailTables.length; it++){
+                detailTables[it].style.width = '100%';
+                content.insert(detailTables[it]);
+                    content.insert('<div class="overlaySeparateLine"/></div>');
+            }
+            
+        
+            var tds = detailTables[0].getElementsByTagName('td');           
+            for(var i=0; i < tds.length; i++){
+                if(tds[i].innerHTML == 'Image'){
+                    var theTd = tds[i].nextSibling;
+                    var newAvatar = theTd.getElementsByTagName('a')[0];
+                }
+            }
+            
+            if(userIsManager == 'false'){
+                //newAvatar.setStyle({'display' : 'none'});
+                newAvatar.style.display = 'none';
+                newAvatar.removeAttribute('href');
+            }else{
+                //Change avatar link
+                newAvatar.style.marginLeft = '7px';
+                newAvatar.removeAttribute('target');
+                newAvatar.onclick = function(){}
+            }
+        }        
+        
+        /**
+        * On DOM ready functions
+        */
+        document.observe('dom:loaded', function(){projectDetail()});
     </script>
 </apex:page>

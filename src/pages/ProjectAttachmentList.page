@@ -1,6 +1,6 @@
 <apex:page id="ProjectAttachmentList" controller="ProjectAttachmentListController" sidebar="false" cache="false" tabstyle="Project2__c">    
   
-    <c:ApplicationTop id="ApplicationTop" />
+<c:ApplicationTop id="ApplicationTop" />
     
     <apex:outputPanel rendered="{!isProduction}">
 		<apex:styleSheet value="{!URLFOR($Resource.ProjectAttachmentList, 'inc/css/projectAttachmentList.css')}" />

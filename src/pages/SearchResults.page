@@ -3,10 +3,10 @@
     <c:ApplicationTop id="ApplicationTop" />
     
     <apex:outputPanel rendered="{!isProduction}">
-		<apex:styleSheet value="{!URLFOR($Resource.SearchResults, 'inc/css/searchResults.css')}" />
-	    <apex:includeScript value="{!URLFOR($Resource.SearchResults, 'inc/js/searchResults.js')}" />
-	</apex:outputPanel>
-	
+        <apex:styleSheet value="{!URLFOR($Resource.SearchResults, 'inc/css/searchResults.css')}" />
+        <apex:includeScript value="{!URLFOR($Resource.SearchResults, 'inc/js/searchResults.js')}" />
+    </apex:outputPanel>
+        
     <!-- Principal Container for Search Results Page -->
     <apex:outputpanel id="searchResultsPage" layout="block" styleClass="searchResultsPage">
     
@@ -26,23 +26,25 @@
         
         <!-- BreaCrumbs -->
         <apex:outputPanel styleclass="breadcrumbPanel" layout="block" id="breadcrumbPanel" style="height:20px;">
-	        <apex:outputPanel styleclass="breadCrum" layout="block">
-	        	
-	        	<apex:outputPanel rendered="{!HTMLENCODE( projectId ) == ''}" styleClass="BreadsrumContainer">
-					<a class="BredcrumLink" href="/apex/projectOverview">Overview</a> >  
-					<apex:outputPanel styleClass="BreadcrumActualPage" id="breadcrumActualPage">
-						Project Search Results
-					</apex:outputPanel>
-	        	</apex:outputPanel>
-	        	
-	        	<apex:outputPanel rendered="{!HTMLENCODE( projectId ) != ''}"><c:Breadcrum id="BreadCrum" /></apex:outputPanel>
-	        	
-	        </apex:outputPanel>
+            <apex:outputPanel styleclass="breadCrum" layout="block">
+                
+                <apex:outputPanel rendered="{!HTMLENCODE( projectId ) == ''}" styleClass="BreadsrumContainer">
+                    <a class="BredcrumLink" href="/apex/projectOverview">Overview</a> >  
+                    <apex:outputPanel styleClass="BreadcrumActualPage" id="breadcrumActualPage">
+                        Project Search Results
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                
+                <apex:outputPanel rendered="{!HTMLENCODE( projectId ) != ''}"><c:Breadcrum id="BreadCrum" /></apex:outputPanel>
+                
+            </apex:outputPanel>
         </apex:outputPanel>
         
+        
+        
         <!-- Sidebar Section Contains Widgets -->
-        <apex:outputpanel id="sideBar" layout="block" styleClass="sideBar">	
-	    	<c:QuickLinksWidget id="quickLinks" projectId="{!HTMLENCODE( projectId )}"  rendered="{!HTMLENCODE( projectId ) != ''}"/>
+        <apex:outputpanel id="sideBar" layout="block" styleClass="sideBar" rendered="{!HTMLENCODE( projectId ) != ''}"> 
+            <c:QuickLinksWidget id="quickLinks" viewNewLinks="false" projectId="{!HTMLENCODE( projectId )}" />
         </apex:outputpanel>
         
         
@@ -155,9 +157,9 @@
                 <apex:repeat var="item" value="{!paginator.searchResults}" >
                 
                     <apex:outputpanel id="searchResultItem" layout="block" styleClass="searchResultItem">
-                    	<a class="title" href="{!item.url}">
-                    		<apex:outputtext id="projectName" value="{!item.name}" escape="false" />
-                    	</a>
+                        <a class="title" href="{!item.url}">
+                            <apex:outputtext id="projectName" value="{!item.name}" escape="false" />
+                        </a>
 
                         <apex:outputpanel id="description" layout="block" styleClass="matches">
                             <apex:outputText escape="false" value="{!item.matches}" />
@@ -170,12 +172,13 @@
             </apex:outputpanel>
             
         </apex:outputpanel>
-        
-    </apex:outputpanel>
-    <script type="text/javascript">
-    	if($$('.sideBar')[0].offsetHeight < 50)
-    	{
-    		$$('.sideBar')[0].style.height = '300px';
-    	}
-    </script>
+	        
+	</apex:outputpanel>
+	
+    <!-- <script type="text/javascript">
+        if($$('.sideBar')[0].offsetHeight < 50)
+        {
+            $$('.sideBar')[0].style.height = '300px';
+        }
+    </script> -->
 </apex:page>

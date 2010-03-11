@@ -1,6 +1,6 @@
 <apex:page id="ProjectActivity" controller="ProjectActivityController" sidebar="false" cache="true" tabStyle="Project2__c">
 
-    <c:ApplicationTop id="ApplicationTop" />
+ <c:ApplicationTop id="ApplicationTop" />
     
     <apex:outputPanel rendered="{!isProduction}">
 		<apex:stylesheet value="{!URLFOR($Resource.ProjectActivity, 'inc/css/projectActivity.css')}" />

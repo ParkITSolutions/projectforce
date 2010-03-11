@@ -1,103 +1,103 @@
 <apex:page id="ProjectSubscription" cache="false" sidebar="false" tabStyle="Project2__c" controller="ProjectSubscriptionController">
 
-    <c:ApplicationTop id="ApplicationTop" />
+   <c:ApplicationTop id="ApplicationTop" />
     
     <apex:outputPanel rendered="{!isProduction}">
-		<apex:stylesheet value="{!URLFOR($Resource.ProjectSubscription, 'inc/css/projectSubscription.css')}" />
-	</apex:outputPanel>
+        <apex:stylesheet value="{!URLFOR($Resource.ProjectSubscription, 'inc/css/projectSubscription.css')}" />
+    </apex:outputPanel>
 
-	<apex:outputPanel id="contentProjectSubscription" styleclass="contentProjectSubscription" layout="block">   
-	
-		<!-- Header -->
-		<apex:composition template="HeaderTemplate">
-			<apex:define name="moduleId">
-				<apex:variable var="moduleId" value="headerTeams"/>
-			</apex:define>
-			<apex:define name="module">{!$ObjectType.Project2__c.labelPlural}</apex:define>
-			<apex:define name="title">Subscriptions</apex:define>
-			<apex:define name="search">
-				<c:Search module="team" />
-			</apex:define>
-		</apex:composition>
-		
-		<!-- BreaCrumbs -->
+    <apex:outputPanel id="contentProjectSubscription" styleclass="contentProjectSubscription" layout="block">   
+    
+        <!-- Header -->
+        <apex:composition template="HeaderTemplate">
+            <apex:define name="moduleId">
+                <apex:variable var="moduleId" value="headerTeams"/>
+            </apex:define>
+            <apex:define name="module">{!$ObjectType.Project2__c.labelPlural}</apex:define>
+            <apex:define name="title">Subscriptions</apex:define>
+            <apex:define name="search">
+                <c:Search module="team" />
+            </apex:define>
+        </apex:composition>
+        
+        <!-- BreaCrumbs -->
         <apex:outputPanel id="breadCrumb" styleclass="breadCrumb" layout="block">
             <c:Breadcrum id="BreadCrum" />
         </apex:outputPanel>
 
-		<!-- Sidebar -->
-		<apex:outputPanel id="sidebar" styleclass="sidebar" layout="block">        		    
-			<!-- Project Quick Links -->
-			<c:QuickLinksWidget id="quidkLinks" viewNewLinks="false" projectId="{!HTMLENCODE( projectId )}" />
-		</apex:outputPanel>
+        <!-- Sidebar -->
+        <apex:outputPanel id="sidebar" styleclass="sidebar" layout="block">                 
+            <!-- Project Quick Links -->
+            <c:QuickLinksWidget id="quidkLinks" viewNewLinks="false" projectId="{!HTMLENCODE( projectId )}" />
+        </apex:outputPanel>
 
-		<!-- Main Content -->
-		<apex:outputPanel id="mainContent" styleclass="mainContent" layout="block">
-			<apex:form id="form_content">
-		
-				<apex:actionFunction name="RefreshPage"
+        <!-- Main Content -->
+        <apex:outputPanel id="mainContent" styleclass="mainContent" layout="block">
+            <apex:form id="form_content">
+        
+                <apex:actionFunction name="RefreshPage"
                         action="{!loadProjectSubscription}"
                         onComplete="swirly.hide(); infoToUser.open('success', '{!message}');" 
                         reRender="contentProjectSubscription, groupButtons, checkboxesSection"/>
                 
                 
-				<apex:outputPanel id="title" styleclass="title" layout="block">
-					Manage Project "{!projectName}" Subscriptions
-				</apex:outputPanel>
-				
-				<!-- Project Checkboxes Section -->
-				<apex:outputPanel id="commentTitle" styleclass="commentTitle" layout="block">
-					Alert me via email in the following scenarios
-				</apex:outputPanel>
-	                      
-				<apex:outputPanel id="checkboxesSection" styleclass="checkboxesSection" layout="block">
-					<apex:outputPanel id="checkAssignedToMe" styleclass="lineCheck" layout="block">
-						<apex:inputCheckbox id="assignedToMe" value="{!subscription.ProjectTaskAssignedToMe__c}"/>
-						<apex:outputLabel value="When a task has been (un)assigned to me "  for="ProjectSubscription:form_content:assignedToMe"/>
-					</apex:outputPanel>
-					
-					<apex:outputPanel id="checkAssignedToMeChanged" styleclass="lineCheck" layout="block">
-						<apex:inputCheckbox id="assignedToMeChanged" value="{!subscription.ProjectTaskAssignToMeChanged__c}"/>
-						<apex:outputLabel value="When a percent of a task assigned to me has been changed by another "  for="ProjectSubscription:form_content:assignedToMeChanged"/>
-					</apex:outputPanel>
-					
-					<apex:outputPanel id="checkTaskChanged" styleclass="lineCheck" layout="block">
-						<apex:inputCheckbox id="taskChanged" value="{!subscription.ProjectTaskChanged__c}"/>
-						<apex:outputLabel value="All task status or percent complete changes within a {!$ObjectType.Project2__c.label}"  for="ProjectSubscription:form_content:taskChanged"/>
-					</apex:outputPanel>
-					
-					<apex:outputPanel id="checkTaskDeleted" styleclass="lineCheck" layout="block">
-						<apex:inputCheckbox id="taskDeleted" value="{!subscription.ProjectTaskDeleted__c}"/>
-						<apex:outputLabel value="When a task has been deleted "  for="ProjectSubscription:form_content:taskDeleted"/>
-	                   </apex:outputPanel>
-				</apex:outputPanel>
-				
-				<!-- Buttons -->
-				<apex:outputPanel id="groupButtons" styleclass="groupButtons" layout="block">
-					<apex:commandLink id="saveSubscription" 
-							action="{!saveSubscription}"
-							onClick="swirly.show();"
-							oncomplete="RefreshPage();"
-							styleClass="blackbutton">
-						{!IF(subscriptionCount == 0, "Save", "Update")}
-					</apex:commandLink>
-					<apex:commandLink id="deleteSubscription" 
-							action="{!deleteSubscription}"
-							onClick="swirly.show();"  
-							styleClass="blackbutton"
-							oncomplete=" RefreshPage();"
-							rendered="{!IF(subscriptionCount == 0, false, true)}">
-						Unsubscribe
-					</apex:commandLink>
-					<apex:commandLink id="cancelSubscription" 
-							action="{!cancelSubscription}" 
-							styleClass="blackbutton">
-						Cancel
-					</apex:commandLink>
-				</apex:outputPanel>
-			
-			</apex:form>
-		</apex:outputPanel>
-	</apex:outputPanel>
+                <apex:outputPanel id="title" styleclass="title" layout="block">
+                    Manage Project "{!projectName}" Subscriptions
+                </apex:outputPanel>
+                
+                <!-- Project Checkboxes Section -->
+                <apex:outputPanel id="commentTitle" styleclass="commentTitle" layout="block">
+                    Alert me via email in the following scenarios
+                </apex:outputPanel>
+                          
+                <apex:outputPanel id="checkboxesSection" styleclass="checkboxesSection" layout="block">
+                    <apex:outputPanel id="checkAssignedToMe" styleclass="lineCheck" layout="block">
+                        <apex:inputCheckbox id="assignedToMe" value="{!subscription.ProjectTaskAssignedToMe__c}"/>
+                        <apex:outputLabel value="When a task has been (un)assigned to me "  for="ProjectSubscription:form_content:assignedToMe"/>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel id="checkAssignedToMeChanged" styleclass="lineCheck" layout="block">
+                        <apex:inputCheckbox id="assignedToMeChanged" value="{!subscription.ProjectTaskAssignToMeChanged__c}"/>
+                        <apex:outputLabel value="When a percent of a task assigned to me has been changed by another "  for="ProjectSubscription:form_content:assignedToMeChanged"/>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel id="checkTaskChanged" styleclass="lineCheck" layout="block">
+                        <apex:inputCheckbox id="taskChanged" value="{!subscription.ProjectTaskChanged__c}"/>
+                        <apex:outputLabel value="All task status or percent complete changes within a {!$ObjectType.Project2__c.label}"  for="ProjectSubscription:form_content:taskChanged"/>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel id="checkTaskDeleted" styleclass="lineCheck" layout="block">
+                        <apex:inputCheckbox id="taskDeleted" value="{!subscription.ProjectTaskDeleted__c}"/>
+                        <apex:outputLabel value="When a task has been deleted "  for="ProjectSubscription:form_content:taskDeleted"/>
+                       </apex:outputPanel>
+                </apex:outputPanel>
+                
+                <!-- Buttons -->
+                <apex:outputPanel id="groupButtons" styleclass="groupButtons" layout="block">
+                    <apex:commandLink id="saveSubscription" 
+                            action="{!saveSubscription}"
+                            onClick="swirly.show();"
+                            oncomplete="RefreshPage();"
+                            styleClass="blackbutton">
+                        {!IF(subscriptionCount == 0, "Save", "Update")}
+                    </apex:commandLink>
+                    <apex:commandLink id="deleteSubscription" 
+                            action="{!deleteSubscription}"
+                            onClick="swirly.show();"  
+                            styleClass="blackbutton"
+                            oncomplete=" RefreshPage();"
+                            rendered="{!IF(subscriptionCount == 0, false, true)}">
+                        Unsubscribe
+                    </apex:commandLink>
+                    <apex:commandLink id="cancelSubscription" 
+                            action="{!cancelSubscription}" 
+                            styleClass="blackbutton">
+                        Cancel
+                    </apex:commandLink>
+                </apex:outputPanel>
+            
+            </apex:form>
+        </apex:outputPanel>
+    </apex:outputPanel>
  
 </apex:page>

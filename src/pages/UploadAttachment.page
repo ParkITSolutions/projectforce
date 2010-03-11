@@ -20,7 +20,8 @@
                 <apex:outputPanel styleclass="overlaySeparateLine" layout="block"></apex:outputPanel>
     
                 <apex:outputPanel styleClass="submitButtons" layout="block">
-                    <apex:commandLink id="Accept" styleClass="submitButton Accept" action="{!action}" onclick="parent.promptOverlay.close();parent.swirly.show();">
+                    <apex:commandLink id="Accept" styleClass="submitButton Accept" 
+                    	action="{!action}" onclick="parent.promptOverlay.close();parent.swirly.show();">
                         Accept
                     </apex:commandLink>
                     <apex:outputLink id="Cancel" value="javascript:;" onClick="parent.promptOverlay.close(); Attachment.clearForm();" styleClass="submitButton Cancel" >
@@ -39,6 +40,7 @@
         
 	        <apex:outputPanel rendered="{!postAction == 'detailListPanel'}">
 	            <script type="text/javascript">
+	            	parent.RefreshAttachmentList();
 					parent.infoToUser.set('success', 'File uploaded.');
 	            </script>
 	        </apex:outputPanel>

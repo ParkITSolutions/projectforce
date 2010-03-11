@@ -1,11 +1,11 @@
 <apex:page id="ProjectTaskNotes" sidebar="false" cache="true" standardController="ProjectTask__c" extensions="ProjectTaskNotesController" tabStyle="Project2__c">
 
     <c:ApplicationTop id="ApplicationTop" />
-	
-	<apex:outputPanel rendered="{!isProduction}">
-		<apex:includeScript value="{!URLFOR($Resource.ProjectTaskNotes, 'inc/javascript/projectTaskNotes.js')}" />
-    	<apex:stylesheet value="{!URLFOR($Resource.ProjectTaskNotes, 'inc/css/projectTaskNotes.css')}" />
-	</apex:outputPanel>
+    
+    <apex:outputPanel rendered="{!isProduction}">
+        <apex:includeScript value="{!URLFOR($Resource.ProjectTaskNotes, 'inc/javascript/projectTaskNotes.js')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.ProjectTaskNotes, 'inc/css/projectTaskNotes.css')}" />
+    </apex:outputPanel>
     
     <script src="{!URLFOR($Resource.ckeditor, 'ckeditor/ckeditor.js')}" />
     
@@ -27,25 +27,25 @@
                 <c:Search module="Project" projectId="{!HTMLENCODE( projectId )}" label="Tasks" />
             </apex:define>
         </apex:composition>
-   		
-   		<!-- BreaCrumbs -->
+        
+        <!-- BreaCrumbs -->
         <apex:outputPanel id="breadCrumb" styleclass="breadCrumb" layout="block">
             <c:Breadcrum id="BreadCrum" />
         </apex:outputPanel>
         
         <!-- Sidebar -->
-		<apex:outputPanel id="sidebar" styleclass="sidebar" layout="block">
-	        <!-- Project Quick Links -->
-	        <c:QuickLinksWidget id="quidkLinks" viewNewLinks="false" projectId="{!HTMLENCODE( projectId )}" />
+        <apex:outputPanel id="sidebar" styleclass="sidebar" layout="block">
+            <!-- Project Quick Links -->
+            <c:QuickLinksWidget id="quidkLinks" viewNewLinks="false" projectId="{!HTMLENCODE( projectId )}" />
         </apex:outputPanel>
    
         <!-- Main Content -->
         <apex:outputPanel id="mainContent" styleclass="mainContent" layout="block">
             <apex:form id="mainContentForm" rendered="{!canAccess}">
                 <apex:outputPanel id="wideHeader" styleclass="wideHeader" layout="block">
-                	<h4>Task Notes</h4>
+                    <h4>Task Notes</h4>
                 </apex:outputPanel>
-				
+                
                 <apex:outputPanel id="overlayMainContent" styleclass="overlayMainContent" layout="block" rendered="{!canAccess}">
                     <apex:outputPanel id="overlayFormContent" styleclass="overlayFormContent" layout="block">
                         <textarea class="CKloader" id="CKloader">{!taskNotes}</textarea>

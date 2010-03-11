@@ -47,32 +47,33 @@ public class ProjectTaskDuration {
 	* @param Project2__c projectInfo
 	* @return ProjectTask__c
 	*/
-	public ProjectTask__c calculateTaskInsert(ProjectTask__c task){
+	public ProjectTask__c calculateTaskInsert( ProjectTask__c task ){
 		
-		if(task.Milestone__c == true){
+		if( task.Milestone__c == true ){
 			
-			task = this.verifyStartDate(task);
+			task = this.verifyStartDate( task );
 			task.EndDate__c = null;
-			if(this.displayDuration.equals('Days')){
-				task.DurationUI__c = '1.0';
-				task.Duration__c = 1.0;
-			}else{
-				task.Duration__c = this.workingHours; 
-				task.DurationUI__c = '\'' + this.workingHours + '\'';
+			if( this.displayDuration.equals( 'Days' ) ){
+				task.DurationUI__c 	= '1.0';
+				task.Duration__c 	= 1.0;
+			}
+			else{
+				task.Duration__c 	= this.workingHours; 
+				task.DurationUI__c 	= '\'' + this.workingHours + '\'';
 			} 
 		}
 		else{
-			task = this.verifyStartDate(task);
-			task = this.verifyEndDate(task);
-			System.debug('TINE O NO END DATE::::::::::'+task.EndDate__c);		
-			if(task.EndDate__c == null){
-				task = this.parseDuration(task);
+			task = this.verifyStartDate( task );
+			task = this.verifyEndDate( task );
+
+			if( task.EndDate__c == null ){
+				task = this.parseDuration( task );
 					 				
-				if(this.displayDuration.equals('Days')){
-					task.EndDate__c = this.doCalculateEndDateInDays(task, Integer.valueOf(this.daysInWorkWeek));
+				if( this.displayDuration.equals( 'Days' ) ){
+					task.EndDate__c = this.doCalculateEndDateInDays( task, Integer.valueOf( this.daysInWorkWeek ) );
 				}
 				else{
-					task.EndDate__c = this.doCalculateEndDateInHours(task);
+					task.EndDate__c = this.doCalculateEndDateInHours( task );
 				}	
 			}
 			else{
@@ -104,11 +105,9 @@ public class ProjectTaskDuration {
 			
 			//trial correccion for bug 4464
 			if(tempPTOld.EndDate__c == tempPTNew.EndDate__c){
-				System.debug('Fechas Iguales----------------------------------------------------------');		
 				tempPTNew = this.verifyStartDate2(tempPTNew);
 			}
 			else{
-				System.debug('no deberia entrar----------------------------------------------------------');		
 				tempPTNew = this.verifyStartDate(tempPTNew);
 			}
 			
@@ -314,7 +313,6 @@ public class ProjectTaskDuration {
 				}
 			}	
 		}
-		System.debug('Primera linea de debug verify Start: '+task);
 		return task;
 	}
 	public ProjectTask__c verifyStartDate2(ProjectTask__c task){
@@ -342,36 +340,35 @@ public class ProjectTaskDuration {
 				myDate = myDate.addDays(1);
 			}	
 		}
-		System.debug('Primera linea de debug verify Start: '+task);
 		return task;
 	}
 	
 	/**
 	* Method for verifying end date is always on a valid working day
-	* @param ProjectTask__c task
-	* @param Project2__c project
-	* @return ProjectTask__c
+	* @param task
+	* @return task
 	*/
-	public ProjectTask__c verifyEndDate(ProjectTask__c task){
-		if(task.EndDate__c  != null){
-			Set<String> workdays = this.getWorkDays( Integer.valueOf(this.daysInWorkWeek ) );
-			Datetime myDate = Datetime.valueOf(task.EndDate__c + '00:00:00');
-			Datetime myStartDate = Datetime.valueOf(task.StartDate__c + '00:00:00');
-			String weekday = '';		
-			boolean isCorrect = false;
+	public ProjectTask__c verifyEndDate( ProjectTask__c task ){
+		
+		if( task.EndDate__c  != null ){
+			Set<String> workdays 	= this.getWorkDays( Integer.valueOf(this.daysInWorkWeek ) );
+			Datetime myDate 		= Datetime.valueOf( task.EndDate__c + '00:00:00' );
+			Datetime myStartDate 	= Datetime.valueOf( task.StartDate__c + '00:00:00' );
+			String weekday 			= '';		
+			boolean isCorrect 		= false;
 			
-			while(isCorrect == false){
-				weekday = myDate.format('EEE');
-				if(workdays.contains(weekday)){
-					isCorrect = true;
-					task.EndDate__c = Date.newInstance(myDate.year(), myDate.month(), (myDate.day()));
+			while( isCorrect == false ){
+				weekday = myDate.format( 'EEE' );
+				if( workdays.contains( weekday ) ){
+					isCorrect 		= true;
+					task.EndDate__c = Date.newInstance( myDate.year(), myDate.month(), (myDate.day()) );
 				}
 				else{
 					myDate = myDate.addDays(1);
 				}	
 			}
 		}
-		System.debug('Seunda linea de debug verify Enddate: '+task);
+		
 		return task;
 	}
 	
@@ -381,41 +378,42 @@ public class ProjectTaskDuration {
 	*@return ProjectTask__c
 	*@author Matias Menafra
 	*/
-	public ProjectTask__c parseDuration(ProjectTask__c task){
+	public ProjectTask__c parseDuration( ProjectTask__c task ){
 		String input;
-		if(task.DurationUI__c != null){
+		if( task.DurationUI__c != null ){
 			input = task.DurationUI__c; 
 		}
 		else{
-			input = String.valueOf(task.Duration__c); 
+			input = String.valueOf( task.Duration__c ); 
 		}
 		
 		boolean isDays  = false;
 		boolean isHours = false;
 		
-		isDays = input.contains('d') || input.contains('D');
+		isDays 	= input.contains('d') || input.contains('D');
 		isHours = input.contains('h') || input.contains('H');
 		
-		if(isDays && isHours){
+		if( isDays && isHours ){
 			//error msg
 		}
 		
-		if(!isDays && !isHours){
+		if( !isDays && !isHours ){
 			//no Hour / Days conevention used
 			Double inputAux  = Double.valueOf(input);
-			if(input.equals('0') || input.equals('0.0') || input.equals('0.00') || inputAux == 0.0){
+			if( input.equals('0') || input.equals('0.0') || input.equals('0.00') || inputAux == 0.0 ){
 				input = '1';
 			}
+			
 			if( !this.displayDuration.equals('Days') ){
 				//to deal with decimal hour values
-				Double valueAux = Math.floor( Double.valueOf(input) ) ;
-				if(valueAux == 0.0){
+				Double valueAux = Math.floor( Double.valueOf( input ) ) ;
+				if( valueAux == 0.0 ){
 					valueAux = 1.0;
 				}
 				input = String.valueOf(valueAux);
 			}
 			else{
-				input = this.calculateDurationDays(input);
+				input = this.calculateDurationDays( input );
 			}
 			this.insertRawDuration(task, this.displayDuration, input, this.workingHours, 'none');
 		}
@@ -423,22 +421,18 @@ public class ProjectTaskDuration {
 		if(isDays){
 			input = this.replaceDays(input);
 			Double valueAux = Math.floor( Double.valueOf(input) ) ;
-			System.debug(valueAux+'  AAAAAAAAAAAAAAAAa esta en dias!!!!!   '+input);
 			//ACA esta el bug!!!!
 			if(valueAux == 0.0){
 				input = '1.0';
 			}
-			System.debug(valueAux+'  AAAAAAAAAAAAAAAAa esta en dias!!!!222222222222!   '+input);
 			this.insertRawDuration(task, this.displayDuration, input, this.workingHours, 'days');
 			
 			if(this.displayDuration.equals('Days')){
 				input = this.calculateDurationDays(input);
 			}
 			else{
-				System.debug('AHORA esta en houras las cosa ::' +input);
 				input = this.calculateDurationHours(input, this.workingHours);
 			}
-			System.debug('AAAAAAAAAAAAAAAAa Ahora como quedo ????   '+input);
 		}
 		
 		if(isHours){
