@@ -144,6 +144,7 @@ public class DAOTask {
                             'EndDate__c, ' +
                             'OwnerId, '+
                             'Project__c, '+
+                            'DurationUI__c, ' +
                             ' (Select Id, User__c, User__r.Name, User__r.Id,PercentDedicated__c From ProjectsAssignees__r order by User__r.Name) ' +
                         'from ProjectTask__c  ' + 
                         'where Project__c = \''+projectId+'\' ' +  

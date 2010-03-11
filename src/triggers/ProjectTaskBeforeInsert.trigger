@@ -52,18 +52,18 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 						triggerValidation = triggerValidation && false;
 					}
 				}
-				if(parent.validateParentTaskInsert(nTask) == false){
-					nTask.ParentTask__c.addError('Parent Task selected does not belong in current project.');
+				if( parent.validateParentTaskInsert( nTask ) == false ){
+					nTask.ParentTask__c.addError( 'Parent Task selected does not belong in current project.' );
 					triggerValidation = triggerValidation && false;
 				}
 				
-				String queueId = projectMap.get('Project' + nTask.Project__c);
-				if(queueId != null)
+				String queueId = projectMap.get( 'Project' + nTask.Project__c );
+				if( queueId != null )
                     nTask.OwnerId = queueId;
                 
                 //if all validations passed
                 if( triggerValidation ){
-                	nTask = duration.calculateTaskInsert( nTask );
+                	nTask 			= duration.calculateTaskInsert( nTask );
                 	nTask.Indent__c = ParentTask.setTaskIndent( nTask );
                 }
 		    }

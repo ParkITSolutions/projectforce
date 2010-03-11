@@ -21,7 +21,7 @@ public with Sharing class TaskListController {
 	*/
 	public TaskListController(){  
 		
-		this.isProduction = ProjectUtil.isProduction;
+		this.isProduction 		= ProjectUtil.isProduction;
 		
 		this.tasks 		= new List<Task>();
 		this.projectId 	= System.currentPageReference().getParameters().get( 'id' );
@@ -32,6 +32,8 @@ public with Sharing class TaskListController {
 		
 		this.project 	= new Project( projectId );
 		this.url 		= ProjectUtil.getUrl();
+		
+		this.project.displayDuration = DAOFactory.getInstance().getProjectInfo( projectid ).displayDuration;
 		
 		this.paginator 	= new Paginator();
 		

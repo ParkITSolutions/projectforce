@@ -82,14 +82,14 @@ public class ObjectFormatter{
 			taskAux.isMilestone 		= task.Milestone__c;
 			taskAux.priority 			= task.Priority__c; 
 			taskAux.setPercentCompleted( task.PercentCompleted__c );
-			taskAux.durationDisplay 	= String.valueOf(task.Duration__c);
+			taskAux.durationDisplay 	= String.valueOf( task.Duration__c );
 			
 			//TODO learn about the latest milestone because no final date
 			if( task.Milestone__c ){
-				taskAux.endDateDisplay 	= String.valueOf(task.StartDate__c.format());
+				taskAux.endDateDisplay 	= String.valueOf( task.StartDate__c.format() );
 				taskAux.endDate 		= task.StartDate__c;
 			}else{
-				taskAux.endDateDisplay 	= String.valueOf(task.EndDate__c.format());
+				taskAux.endDateDisplay 	= String.valueOf( task.EndDate__c.format() );
 				taskAux.endDate 		= task.EndDate__c;
 			}
 			
@@ -103,7 +103,6 @@ public class ObjectFormatter{
     	
     	return tasks;
 	}
-	
 	
 	/**
 	* 
