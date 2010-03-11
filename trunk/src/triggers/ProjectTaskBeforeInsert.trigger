@@ -31,7 +31,7 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 			    	triggerValidation = triggerValidation && false;
 				}
 				
-				//duration validation
+				//Duration validation
 				if(duration.validateDurationInput(nTask) == false){
 					nTask.DurationUI__c.addError('Invalid format for Hours / Days convention!');
 					triggerValidation = triggerValidation && false; 
@@ -62,13 +62,9 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
                     nTask.OwnerId = queueId;
                 
                 //if all validations passed
-                if(triggerValidation){
-                	nTask = duration.calculateTaskInsert(nTask);
-                	nTask.Indent__c = ParentTask.setTaskIndent(nTask);
-                	
-                	//Logging Changes for Project Members
-                	//TaskActivity taskActivity = new TaskActivity( nTask.Project__c, DateTime.now(), UserInfo.getUserId(), 'insert', nTask );
-					//taskActivity.log();                	
+                if( triggerValidation ){
+                	nTask = duration.calculateTaskInsert( nTask );
+                	nTask.Indent__c = ParentTask.setTaskIndent( nTask );
                 }
 		    }
 		}

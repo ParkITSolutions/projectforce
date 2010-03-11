@@ -101,7 +101,6 @@ public class ObjectFormatter{
     	UserPermissions permissions = new UserPermissions();
     	tasks = permissions.generateTaskPermissions( tasks );
     	
-    	System.debug( '============== ' + tasks );
     	return tasks;
 	}
 	

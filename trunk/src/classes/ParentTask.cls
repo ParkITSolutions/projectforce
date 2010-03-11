@@ -114,7 +114,6 @@ public class ParentTask {
 	public static void callUpdateAllChildrenIndent(String idTsk, String idProject){
 		//Reset big list with new taskList
 		//SOQL query to retrieve a task object to get projectId
-		System.debug(idTsk);
 		ProjectTask__c t = [Select Id, Project__c from ProjectTask__c where Id =: idTsk limit 1];
 		//Initializes BigList with the ProjectID
 		
@@ -127,7 +126,6 @@ public class ParentTask {
 		ProjectUtil.setFlagValidationParentTask( false );
 		ProjectUtil.setTaskDependenciesFlag( false );
 		ProjectUtil.flags.put('exeParentTaskUpdate', true);
-		System.debug(indentUpdateTasks.values());
 			update indentUpdateTasks.values(); 
 		ProjectUtil.setTaskDependenciesFlag( true );
 		ProjectUtil.setFlagValidationParentTask( true );
@@ -157,6 +155,30 @@ public class ParentTask {
 			for(ProjectTask__c childs : children){
 				//Method is called recursivly to update all his children
 				updateAllChildrensIndent(childs);
+			}
+		}
+	}
+	
+	/**
+	* Recursive method used when mass deleting tasks, for deleting ALL child tasks
+	* @param task
+	*/
+	public void getAllChildTasks( ProjectTask__c task ){
+		//Gets all child task by Parent Id
+		List<ProjectTask__c> children = BigListOfTasks.getByParentId( task.Id );
+		
+		ProjectUtil.childrenTaskToDelete2.put( task.Id, task );
+		//Recalcute all Indent values for child tasks
+		for(ProjectTask__c tsk : children){
+			ProjectUtil.childrenTaskToDelete2.put( tsk.Id, tsk );
+		}
+		
+		//checks to see if there are child tasks
+		if( children.size() != 0 ){
+			//for each child task calls method recursivly
+			for( ProjectTask__c childs : children ){
+				//Method is called recursivly to update all his children
+				getAllChildTasks( childs );
 			}
 		}
 	}
@@ -230,7 +252,6 @@ public class ParentTask {
 		
 		//Gets all child task by Parent Id
 		List<ProjectTask__c> children = new List<ProjectTask__c>();
-		System.debug('--------------------' + task);
 		if(task != null){
 			children = BigListOfTasks.getByParentId(task.Id);
 			//checks how many child task there are
@@ -281,16 +302,7 @@ public class ParentTask {
 			c++;
 		}
 		List<ProjectTask__c> aux = ParentTask.updates.values();
-		System.debug('EN EL MERGE ----------------------------------------------------------');
-		System.debug('EN EL MERGE ----------------------------------------------------------'+updates.size());
-		for(ProjectTask__c tsk : aux){
-					System.debug('EN EL MERGE ----------------------------------------------------------');
-					System.debug('Name: ' + tsk.Name);
-					System.debug('Start Date : '+ tsk.StartDate__c);
-					System.debug('End Date : ' + tsk.EndDate__c);
-					System.debug('Percetage : ' + tsk.PercentCompleted__c);
-					System.debug('----------------------------------------------------------');
-				}
+
 		ProjectTask__c task = BigListOfTasks.getbyId((Id)taskId);
 		checkParentTask(task);
 	}
@@ -422,14 +434,6 @@ public class ParentTask {
 			ProjectUtil.setFlagValidationParentTask(false);
 				//throw new CustomException('#' + updates.values().size());
 				List<ProjectTask__c> aux = updates.values();
-				for(ProjectTask__c tsk : aux){
-					System.debug('----------------------------------------------------------');
-					System.debug('Name: ' + tsk.Name);
-					System.debug('Start Date : '+ tsk.StartDate__c);
-					System.debug('End Date : ' + tsk.EndDate__c);
-					System.debug('Percetage : ' + tsk.PercentCompleted__c);
-					System.debug('----------------------------------------------------------');
-				}
 				update updates.values();
 			ProjectUtil.setFlagValidationParentTask(true);
 		}

@@ -23,6 +23,7 @@ public class ProjectUtil {
     public static Boolean flagValidationParentTask = true;
     public static Boolean parentTaskUpdateIndent = true;
     public static List<ProjectTask__c> childrenTaskToDelete = new List<ProjectTask__c>();
+    public static Map<Id,ProjectTask__c> childrenTaskToDelete2 = new Map<Id,ProjectTask__c>();
     public static Boolean taskDependenciesFlag = true;
     public static Map<String, Boolean> flags = new Map<String, Boolean>(); 
     public static Boolean inFuture = false;

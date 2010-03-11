@@ -1,6 +1,6 @@
 <apex:page id="ProjectSetup" cache="false" sidebar="false" tabStyle="Project2__c" controller="ProjectSetupController">
 
-    <c:ApplicationTop id="ApplicationTop" />
+   <c:ApplicationTop id="ApplicationTop" />
 	
 	<apex:outputPanel rendered="{!isProduction}">
 		<apex:stylesheet value="{!URLFOR($Resource.ProjectSetup, 'inc/css/projectSetup.css')}" />

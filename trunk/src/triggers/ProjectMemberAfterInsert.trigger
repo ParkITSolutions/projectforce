@@ -68,7 +68,6 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert)
                     GroupMember gm = new GroupMember();
                     gm.GroupId = g.Id;
                     gm.UserOrGroupId = tm.User__c;
-                    System.debug( '000>>> '  );
                     insert gm;  
                 }
                 
@@ -106,7 +105,6 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert)
                         }
                     }
                     
-                    System.debug( '000>>>2 '  );
                     insert groupMembers;
                     
                     /**
@@ -117,7 +115,6 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert)
                     tms.UserOrGroupId = g.Id;
                     tms.AccessLevel = 'Read';
                     tms.RowCause = 'Manual';
-                    System.debug( '000>>>3 '  );
                     insert tms; 
                 
                 }
