@@ -3,6 +3,7 @@
 */
 public with Sharing class NewAssigneeController{
 	
+	public Boolean  isProduction 	{ set; get; }
 	public String[] assignees		{ set; get; }
 	public String   postAction 	    { set; get; }
 	public String   taskId 	    	{ set; get; }
@@ -14,9 +15,10 @@ public with Sharing class NewAssigneeController{
 	*/
 	public NewAssigneeController(){
 		
-		this.taskId 	= System.currentPageReference().getParameters().get( 'id' ); 
-		this.candidates = new List<ProjectMember__c>();
-		this.assignees 	= new String[]{};
+		this.isProduction	= ProjectUtil.isProduction;
+		this.taskId 		= System.currentPageReference().getParameters().get( 'id' ); 
+		this.candidates 	= new List<ProjectMember__c>();
+		this.assignees 		= new String[]{};
 	}
 
 	/**

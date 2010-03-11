@@ -2,7 +2,10 @@
 
     <c:ApplicationTop id="ApplicationTop" />
 	
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectSetup, 'inc/css/projectSetup.css')}" />
+	<apex:outputPanel rendered="{!isProduction}">
+		<apex:stylesheet value="{!URLFOR($Resource.ProjectSetup, 'inc/css/projectSetup.css')}" />
+	</apex:outputPanel>
+	
 
 	<apex:outputPanel id="contentProjectSetup" styleclass="contentProjectSetup" layout="block">   
 		<!-- Header -->

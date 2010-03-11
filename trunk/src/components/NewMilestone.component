@@ -1,8 +1,10 @@
 <apex:component id="NewMilestone" controller="NewMilestoneController" allowDML="true">
 
-    <apex:stylesheet value="{!URLFOR($Resource.NewMilestone, 'inc/css/newMilestone.css')}" /> 
-    <apex:includeScript value="{!URLFOR($Resource.NewMilestone, 'inc/js/newMilestone.js')}" />
-    
+	<apex:outputPanel rendered="{!isProduction}">
+		<apex:stylesheet value="{!URLFOR($Resource.NewMilestone, 'inc/css/newMilestone.css')}" /> 
+    	<apex:includeScript value="{!URLFOR($Resource.NewMilestone, 'inc/js/newMilestone.js')}" />
+	</apex:outputPanel>
+	
     <script type="text/javascript">
         var newMilestone 		= '{!$Component.Content}';
         milestone.name 			= '{!$Component.Form.Name}'

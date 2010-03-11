@@ -3,6 +3,7 @@
 */
 public with Sharing class ProjectTaskDetailController {
 	
+	public Boolean  isProduction 			{ set; get; }
 	private String USERID = UserInfo.getUserId(); 
 	private Boolean editDeletePer = false;
 	public String projectId { set; get;}
@@ -23,7 +24,9 @@ public with Sharing class ProjectTaskDetailController {
 	* Constructor
 	*/
 	public ProjectTaskDetailController(ApexPages.StandardController ctrl){
-				                 BreadcrumController b =  new BreadcrumController();  
+		
+		this.isProduction		= ProjectUtil.isProduction;
+		BreadcrumController b =  new BreadcrumController();  
 		
 		param = System.currentPageReference().getParameters().get('id'); 
 		getTask(param);

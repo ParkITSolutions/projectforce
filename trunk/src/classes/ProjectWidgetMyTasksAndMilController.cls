@@ -3,6 +3,7 @@
 */
 public class ProjectWidgetMyTasksAndMilController {
     
+    public Boolean  isProduction 			{ set; get; }
     public String currentDate = '';
     public Integer overdueAlreadyShow = 0;
     public Integer countTask = 0;
@@ -17,6 +18,7 @@ public class ProjectWidgetMyTasksAndMilController {
     * Constructor
     */
     public ProjectWidgetMyTasksAndMilController(){
+    	this.isProduction = ProjectUtil.isProduction;
         loadAllProjectTasksAndMilestones();
     }
     

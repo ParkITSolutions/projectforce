@@ -1,7 +1,9 @@
 <apex:component id="NewTask" controller="NewTaskController" allowDML="true">
-
-    <apex:stylesheet value="{!URLFOR($Resource.NewTask, 'inc/css/newTask.css')}" />
-    <apex:includeScript value="{!URLFOR($Resource.NewTask, 'inc/js/newTask.js')}" />
+	
+	<apex:outputPanel rendered="{!isProduction}">
+		<apex:stylesheet value="{!URLFOR($Resource.NewTask, 'inc/css/newTask.css')}" />
+    	<apex:includeScript value="{!URLFOR($Resource.NewTask, 'inc/js/newTask.js')}" />
+	</apex:outputPanel>
 
     <script>
         var newTask 	= '{!$Component.Content}';

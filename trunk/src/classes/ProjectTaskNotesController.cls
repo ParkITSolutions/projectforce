@@ -4,6 +4,7 @@
 */
 public with Sharing class ProjectTaskNotesController {
 
+	public Boolean  isProduction 	{ set; get; }
 	private ProjectTask__c taskVar 	{ set; get; }
 	public String taskId 			{ set; get; }
 	public String taskNotes 		{ set; get; }
@@ -21,6 +22,7 @@ public with Sharing class ProjectTaskNotesController {
     */
     public ProjectTaskNotesController( ApexPages.StandardController ctrl ){
     	
+    	this.isProduction		= ProjectUtil.isProduction;
 		this.taskVar 			= new ProjectTask__c();
 		this.userPermissions 	= new UserPermissions();
 		this.genPermissions();

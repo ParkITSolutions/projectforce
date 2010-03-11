@@ -4,7 +4,8 @@
 */
 public with Sharing class TaskListController {
 	
-	public List<Task> tasks;	
+	public List<Task> tasks;
+	public Boolean  isProduction 				{ set; get; }	
 	public UserPermissions userPermissions	 	{ set; get; }
 	public Boolean isMember   					{ set; get; }
 	public Boolean isManager   					{ set; get; }
@@ -19,6 +20,8 @@ public with Sharing class TaskListController {
 	* Constructor
 	*/
 	public TaskListController(){  
+		
+		this.isProduction = ProjectUtil.isProduction;
 		
 		this.tasks 		= new List<Task>();
 		this.projectId 	= System.currentPageReference().getParameters().get( 'id' );

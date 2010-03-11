@@ -4,14 +4,16 @@
 */
 public class ProjectSubscriptionWidgetController {
 	
-	public String idProject { set; get; } 
+	public Boolean  isProduction 	{ set; get; }
+	public String idProject 		{ set; get; } 
 	
 	/**
 	* Constructor
 	*/
 	public ProjectSubscriptionWidgetController(){
 		
-		this.idProject = System.currentPageReference().getParameters().get( 'id' );
+		this.isProduction	= ProjectUtil.isProduction;
+		this.idProject 		= System.currentPageReference().getParameters().get( 'id' );
 	}
 	
 	/**

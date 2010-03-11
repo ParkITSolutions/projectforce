@@ -3,6 +3,7 @@
 */
 public with sharing class ProjectOverviewController {
 
+	public Boolean  isProduction 			{ set; get; }
     public List<ProjectMember__c> projects = new List<ProjectMember__c>();
     public List<Project> auxProjectsList = new List<Project>();
     public String parentId = null;
@@ -24,6 +25,8 @@ public with sharing class ProjectOverviewController {
     * Construct
     */
     public projectOverviewController(){
+    	
+    	this.isProduction = ProjectUtil.isProduction;
         projectsForTabs();
         
         domain = ProjectUtil.getDomain();

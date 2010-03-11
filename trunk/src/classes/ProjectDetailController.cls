@@ -1,8 +1,9 @@
 /**
 *@author Miguel Soares @ 03/17/2009
 */
-public with sharing class ProjectDetailController
-{
+public with sharing class ProjectDetailController{
+    
+    public Boolean  isProduction 			{ set; get; }
     Project2__c teamspace = new Project2__c(); 
     public Boolean isLastMemberAdmin = false;
     boolean noImage; 
@@ -24,6 +25,8 @@ public with sharing class ProjectDetailController
     * Constructor
     */
     public ProjectDetailController( ApexPages.StandardController ctrl ){
+    	
+    	this.isProduction = ProjectUtil.isProduction;
         this.projectId = System.currentPageReference().getParameters().get('id');
         genPermissions();          
         getTeamDetail();

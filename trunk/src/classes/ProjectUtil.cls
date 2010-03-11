@@ -2,7 +2,10 @@
 *@author Miguel Soares @ 04/14/2009
 */
 public class ProjectUtil {
-
+	
+	//Important enables minimized JS and CSS files for Production Release
+	public static Boolean isProduction = true;
+	
 	public static Boolean currentlyExeTrigger = false;
 	public static Boolean isRunnig = false;
 	private static Project2__c proj = new Project2__c();

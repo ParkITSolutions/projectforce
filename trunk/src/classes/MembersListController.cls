@@ -4,6 +4,7 @@
 */
 public with Sharing class MembersListController {
 	
+	public Boolean isProduction 				{ set; get; }
 	public List<ProjectMember> member;	
 	public UserPermissions userPermissions	 	{ set; get; }
 	public Boolean isMember   					{ set; get; }
@@ -19,8 +20,9 @@ public with Sharing class MembersListController {
 	*/
 	public MembersListController(){
 		
-		this.member 	= new List<ProjectMember>();
-		this.projectId 	= System.currentPageReference().getParameters().get( 'id' );
+		this.isProduction	= ProjectUtil.isProduction;
+		this.member 		= new List<ProjectMember>();
+		this.projectId 		= System.currentPageReference().getParameters().get( 'id' );
 		
 		if( this.projectId == null || this.projectId == '' ){
 			throw new CustomException('There is not a project selected');

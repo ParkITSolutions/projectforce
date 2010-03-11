@@ -2,6 +2,7 @@
 * @author Miguel Soares
 */
 public with Sharing class AttachmentController{  
+	
 	 
 	private final Integer MAX_SIZE = 131072; // 128Kb
 	private final Integer MAX_LENGTH_NAME = 71;
@@ -12,7 +13,8 @@ public with Sharing class AttachmentController{
 	
 	private Set<String> imagesTypes 		= new Set<String> {'image/jpeg', 'image/pjpeg', 'image/png', 'image/x-png', 'image/gif'};
 	private Set<String> notAllowedTypes 	= new Set<String> {'application/octet-stream'};
-	  
+	
+	public Boolean      isProduction 		{ set; get; }  
 	public String		parentId 	 		{ set; get; }
 	public String 		error 				{ set; get; }
 	public Attachment 	newAttach 			{ set; get; }
@@ -27,7 +29,8 @@ public with Sharing class AttachmentController{
 	*/ 
 	public AttachmentController(){
 		
-		this.parentId = System.currentPageReference().getParameters().get( 'Id' );
+		this.isProduction	= ProjectUtil.isProduction;
+		this.parentId 		= System.currentPageReference().getParameters().get( 'Id' );
      
 		this.newAttach = new Attachment();
 		this.location(); 

@@ -24,6 +24,7 @@
 
 public with Sharing class ProjectSetupController{
 
+	public Boolean  isProduction 			{ set; get; }
 	public String messageInfoToUsr 			{ set; get; }
 	public ProjectSetup__c ProjectSetup 	{ set; get; }
 	public String typeMessage				{ set; get; }
@@ -33,6 +34,8 @@ public with Sharing class ProjectSetupController{
 	* Constructor
 	*/
 	public ProjectSetupController(){
+		
+		this.isProduction		= ProjectUtil.isProduction;
 		
 		ProjectSetup = new ProjectSetup__c();
 		this.insertProjectSetup = true;

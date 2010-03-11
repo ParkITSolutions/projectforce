@@ -3,6 +3,7 @@
 */
 public with sharing class ProjectAttachmentListController {
 	
+	public Boolean  isProduction 			{ set; get; }
 	public Project project	 				{ set; get; }
 	public String projectId 				{ set; get; }
 	public boolean isManager 				{ set; get; }
@@ -17,6 +18,7 @@ public with sharing class ProjectAttachmentListController {
 	*/
 	public ProjectAttachmentListController(){
 		
+		this.isProduction	= ProjectUtil.isProduction;
 		this.project		= new Project();
 		this.projectId	 	= System.currentPageReference().getParameters().get( 'id' );
 		this.project.id		= this.projectId;

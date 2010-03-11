@@ -2,8 +2,11 @@
 
     <c:ApplicationTop id="ApplicationTop" />
    
-    <apex:includeScript value="{!URLFOR($Resource.MembersList, 'inc/javascript/membersList.js')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.MembersList, 'inc/css/membersList.css')}" />
+   	<apex:outputPanel rendered="{!isProduction}">
+		<apex:includeScript value="{!URLFOR($Resource.MembersList, 'inc/javascript/membersList.js')}" />
+   		<apex:stylesheet value="{!URLFOR($Resource.MembersList, 'inc/css/membersList.css')}" />
+	</apex:outputPanel>
+    
    
     <script type="text/javascript">
         var deleteMembersOverlay = new ConfirmOverlay( '{!$Component.DeleteMembersOverlay}' );
@@ -16,8 +19,7 @@
    
    <c:PromptOverlay id="PromptOverlay"
         includeNewMember="true"
-        idValue="{!HTMLENCODE( projectId )}"
-        />
+        idValue="{!HTMLENCODE( projectId )}" />
 
     <!-- Header -->
     <apex:composition template="HeaderTemplate">

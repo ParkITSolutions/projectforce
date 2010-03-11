@@ -5,7 +5,7 @@
     
     <apex:stylesheet value="{!URLFOR($Resource.NewAttachment, 'inc/css/newAttachment.css')}" />
     <apex:includeScript value="{!URLFOR($Resource.NewAttachment, 'inc/js/newAttachment.js')}" />
-    
+	
     <apex:form id="uploadAttachment">
     	
         <apex:outputPanel id="Overlay" styleClass="overlay overlayAttachment" layout="block">     

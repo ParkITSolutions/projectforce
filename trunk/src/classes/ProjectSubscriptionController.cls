@@ -4,6 +4,7 @@
 */
 public class ProjectSubscriptionController {
 	
+	public Boolean isProduction 					{ set; get; }
 	public String projectId							{ set; get; } 
 	public Integer subscriptionCount				{ set; get; } 
 	public ProjectSubscription__c subscription		{ set; get; }
@@ -16,6 +17,7 @@ public class ProjectSubscriptionController {
 	* Constructor
 	*/
 	public ProjectSubscriptionController(){
+		this.isProduction	= ProjectUtil.isProduction;
 		this.projectId 		= System.currentPageReference().getParameters().get( 'id' );
 		this.subscription 	= new ProjectSubscription__c();
 		this.ProjectName 	= ProjectUtil.chopWords( ProjectUtil.chopPhrase( DAOFactory.getInstance().getProjectInfo(this.projectId).name , 20 ) );

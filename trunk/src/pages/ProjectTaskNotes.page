@@ -1,9 +1,11 @@
 <apex:page id="ProjectTaskNotes" sidebar="false" cache="true" standardController="ProjectTask__c" extensions="ProjectTaskNotesController" tabStyle="Project2__c">
 
     <c:ApplicationTop id="ApplicationTop" />
-
-    <apex:includeScript value="{!URLFOR($Resource.ProjectTaskNotes, 'inc/javascript/projectTaskNotes.js')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectTaskNotes, 'inc/css/projectTaskNotes.css')}" />
+	
+	<apex:outputPanel rendered="{!isProduction}">
+		<apex:includeScript value="{!URLFOR($Resource.ProjectTaskNotes, 'inc/javascript/projectTaskNotes.js')}" />
+    	<apex:stylesheet value="{!URLFOR($Resource.ProjectTaskNotes, 'inc/css/projectTaskNotes.css')}" />
+	</apex:outputPanel>
     
     <script src="{!URLFOR($Resource.ckeditor, 'ckeditor/ckeditor.js')}" />
     
@@ -12,7 +14,6 @@
         idValue="{!projectId}"
      />
        
-        
     <apex:outputPanel id="contentTaskNotes" styleclass="contentTaskNotes" layout="block">   
     
         <!-- Header -->

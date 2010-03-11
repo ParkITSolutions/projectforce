@@ -4,6 +4,7 @@
 */
 public with Sharing class MembersWidgetController {
 	
+	public Boolean  isProduction 				{ set; get; }
 	public UserPermissions userPermissions	 	{ set; get; }
 	public String projectId;
 	public Boolean isManager   					{ set; get; }
@@ -13,7 +14,8 @@ public with Sharing class MembersWidgetController {
     * Constructor
     */
 	public MembersWidgetController(){
-		this.userPermissions = new UserPermissions();
+		this.isProduction		= ProjectUtil.isProduction;
+		this.userPermissions 	= new UserPermissions();
 	}
 
 	/**

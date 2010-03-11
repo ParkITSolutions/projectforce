@@ -1,7 +1,10 @@
 <apex:page id="ProjectSubscription" cache="false" sidebar="false" tabStyle="Project2__c" controller="ProjectSubscriptionController">
 
     <c:ApplicationTop id="ApplicationTop" />
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectSubscription, 'inc/css/projectSubscription.css')}" />
+    
+    <apex:outputPanel rendered="{!isProduction}">
+		<apex:stylesheet value="{!URLFOR($Resource.ProjectSubscription, 'inc/css/projectSubscription.css')}" />
+	</apex:outputPanel>
 
 	<apex:outputPanel id="contentProjectSubscription" styleclass="contentProjectSubscription" layout="block">   
 	

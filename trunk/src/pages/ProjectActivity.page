@@ -2,7 +2,9 @@
 
     <c:ApplicationTop id="ApplicationTop" />
     
-	<apex:stylesheet value="{!URLFOR($Resource.ProjectActivity, 'inc/css/projectActivity.css')}" />
+    <apex:outputPanel rendered="{!isProduction}">
+		<apex:stylesheet value="{!URLFOR($Resource.ProjectActivity, 'inc/css/projectActivity.css')}" />
+	</apex:outputPanel>
     
     <!-- Principal Container for Activity Page -->
      <apex:outputpanel id="projectActivityPage" layout="block" styleClass="projectActivityPage">

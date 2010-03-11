@@ -4,6 +4,7 @@
 */   
 public with Sharing class ProjectDetailAttachmentController {
 
+	public Boolean  isProduction 			{ set; get; }
 	private String project = null;
 	private List<AttachmentInfo> attachments = new List<AttachmentInfo>();
 	private UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
@@ -35,6 +36,7 @@ public with Sharing class ProjectDetailAttachmentController {
     private String domain;
 	
 	public ProjectDetailAttachmentController (){
+		this.isProduction = ProjectUtil.isProduction;
 		domain = ProjectUtil.getDomain();
 		numberOfItemsToShowSummary = 5;
 	}

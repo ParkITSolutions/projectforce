@@ -10,6 +10,7 @@ public with Sharing class UserTasksController{
 	public id currentUser;
 	public String opSelected;
     public String attachmentPrjId;
+    public Boolean  isProduction 	{ set; get; }
     public Boolean showDetail 		{ set; get; }
     public Boolean auxShowDetail 	{ set; get; }
     public Project currentProject 	{ set; get; }
@@ -20,6 +21,7 @@ public with Sharing class UserTasksController{
     */
     public UserTasksController(){
         
+        this.isProduction	= ProjectUtil.isProduction;
         this.currentUser    = UserInfo.getUserId();
         this.showDetail     = false;
 

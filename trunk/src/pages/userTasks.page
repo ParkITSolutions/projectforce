@@ -2,8 +2,10 @@
     
     <c:ApplicationTop id="ApplicationTop" />
     
-    <apex:stylesheet value="{!URLFOR($Resource.UserTasks, 'inc/css/userTasks.css')}"/>
-
+    <apex:outputPanel rendered="{!isProduction}">
+		<apex:stylesheet value="{!URLFOR($Resource.UserTasks, 'inc/css/userTasks.css')}"/>
+	</apex:outputPanel>
+	
     <!-- Main Content-->
     <apex:outputPanel id="main" layout="block" styleClass="userTasks">
     
