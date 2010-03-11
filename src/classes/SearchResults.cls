@@ -6,15 +6,17 @@ public class SearchResults {
 	
 	public String name;
 	public String matches;
-	public Id     id			{ set; get; }
-	public String resultType	{ set; get; }
-	public String realName		{ set; get; }
-	public String url			{ set; get; }
+	public Boolean  isProduction 	{ set; get; }
+	public Id     id				{ set; get; }
+	public String resultType		{ set; get; }
+	public String realName			{ set; get; }
+	public String url				{ set; get; }
 		
 	/**
 	* Constructor
 	*/
 	public SearchResults(){
+		this.isProduction = ProjectUtil.isProduction;
 	}
 	
 	/**

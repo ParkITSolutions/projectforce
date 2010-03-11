@@ -40,10 +40,12 @@ trigger ProjectTaskBeforeDelete on ProjectTask__c (before delete)
     
     //Add to children List all childs for later deletion
     ProjectUtil.childrenTaskToDelete = new List<ProjectTask__c>();
+    
     for(ProjectTask__c t : [select Id, Duration__c, DurationUI__c, Indent__c, ParentTask__c, PercentCompleted__c,  Project__c,  StartDate__c, EndDate__c from ProjectTask__c where ParentTask__c in : taskIds.values() limit 1000]){
         //if same task already in Trigger.old doesnt add to children List for removal
         if(!taskIds.containsKey(t.Id)){
             ProjectUtil.childrenTaskToDelete.add(t);
         }
     }
+    System.debug('XXX - ProjectBefore childrenTaskToDelete='+ProjectUtil.childrenTaskToDelete);
 }

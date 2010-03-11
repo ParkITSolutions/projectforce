@@ -2,12 +2,11 @@
     
     <c:ApplicationTop id="ApplicationTop" />
     
-    <apex:styleSheet value="{!URLFOR($Resource.SearchResults, 'inc/css/searchResults.css')}" />
-    <apex:includeScript value="{!URLFOR($Resource.SearchResults, 'inc/js/searchResults.js')}" />
-	<apex:styleSheet value="{!URLFOR($Resource.Breadcrum, 'inc/css/breadcrum.css')}" />
-    
-    
-   
+    <apex:outputPanel rendered="{!isProduction}">
+		<apex:styleSheet value="{!URLFOR($Resource.SearchResults, 'inc/css/searchResults.css')}" />
+	    <apex:includeScript value="{!URLFOR($Resource.SearchResults, 'inc/js/searchResults.js')}" />
+	</apex:outputPanel>
+	
     <!-- Principal Container for Search Results Page -->
     <apex:outputpanel id="searchResultsPage" layout="block" styleClass="searchResultsPage">
     

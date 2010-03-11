@@ -2,7 +2,8 @@
 *@author Miguel Soares @ 03/23/2009
 */
 public with Sharing class ProjectDetailMilestoneController {
-
+	
+	public Boolean  isProduction 			{ set; get; }
 	String teamId;
 	public Boolean sidebar = false;
 	//Size of List
@@ -10,7 +11,10 @@ public with Sharing class ProjectDetailMilestoneController {
 	public UserPermissions userPermissions = ProjectDetailController.userPermission.clone();
 	List<ProjectTasks> result = new List<ProjectTasks>();
 	
-		
+	public ProjectDetailMilestoneController(){
+		this.isProduction = ProjectUtil.isProduction;
+	}
+	
 	/**
 	*@param String id
 	*@return void

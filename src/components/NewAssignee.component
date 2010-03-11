@@ -1,7 +1,10 @@
 <apex:component id="NewAssignee" allowDML="true" controller="NewAssigneeController">
-
-    <apex:stylesheet value="{!URLFOR($Resource.NewAssignee, 'inc/css/newAssignee.css')}" />
-    <apex:includeScript value="{!URLFOR($Resource.NewAssignee, 'inc/js/newAssignee.js')}" />
+	
+	<apex:outputPanel rendered="{!isProduction}">
+		<apex:stylesheet value="{!URLFOR($Resource.NewAssignee, 'inc/css/newAssignee.css')}" />
+    	<apex:includeScript value="{!URLFOR($Resource.NewAssignee, 'inc/js/newAssignee.js')}" />
+	</apex:outputPanel>
+    
     
     <script type="text/javascript">
         var newAssignee 					= '{!$Component.Content}';

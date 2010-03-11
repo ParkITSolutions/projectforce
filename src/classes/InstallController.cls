@@ -3,7 +3,8 @@
 * @createDate 02/23/2010
 */
 public class InstallController {
-
+	
+	public Boolean 					isProduction { set; get; }
 	public List<String> 			profilesNames;
     public List<ProjectProfile__c> 	profiles;
     public ProjectProfile__c 		projectProfile;
@@ -13,13 +14,12 @@ public class InstallController {
 	* Constructor
 	*/
 	public InstallController(){
-		
+		this.isProduction		= ProjectUtil.isProduction;
 		this.profilesNames 		= new List<String> {'Member Profile' , 'Public Profile' , 'Project Administrator'};
 	    this.profiles 			= new List<ProjectProfile__c>();
 	    this.projectProfile 	= new ProjectProfile__c(); 
 	  	this.profilesToInsert 	= new List<ProjectProfile__c>();
 	  	   
-		this.InitializeProfiles();
 	}
 	
 	/**
@@ -27,20 +27,22 @@ public class InstallController {
 	*/
 	public void projectSetupActualization(){
 		
-		ProjectSetup__c setup 	= new ProjectSetup__c();
+		List<ProjectSetup__c> setup = new List<ProjectSetup__c>();
 		List<String> setupNames = new List<String>();
 		
-		setup = DAOFactory.getInstance().getListSavedProfilesProjectSetup()[0];
+		setup = DAOFactory.getInstance().getListSavedProfilesProjectSetup();
 		
-		if( setup.CanViewButtonNew__c != null ){ 
+		if( setup.size() > 0 && setup[ 0 ].CanViewButtonNew__c != null ){ 
 			 			
-			for( Profile s : [ SELECT id, Name FROM Profile WHERE id IN: setup.CanViewButtonNew__c.split( '#' ) ])
+			for( Profile s : [ SELECT id, Name FROM Profile WHERE id IN: setup[ 0 ].CanViewButtonNew__c.split( '#' ) ])
 				setupNames.add( s.name );
 				
-			setup.ListSavedProfiles__c = ProjectUtil.joinStrListByToken( setupNames , ';' );
+			setup[ 0 ].ListSavedProfiles__c = ProjectUtil.joinStrListByToken( setupNames , ';' );
 			
-			DAOFactory.getInstance().updateProjectSetup( setup );
+			DAOFactory.getInstance().updateProjectSetup( setup[ 0 ]);
 		}
+
+		this.InitializeProfiles();
 	}
 	
 	/**

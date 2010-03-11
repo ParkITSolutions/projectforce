@@ -2,39 +2,41 @@
     
     <c:ApplicationTop id="ApplicationTop" />
     
-    <!-- Prototype / Scriptaculous Framework -->
-    <apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/prototype.js')}"/>
-    <apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/scriptaculous.js')}"/>
-    <apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/effects.js')}"/>
-    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}"/>
-    
-    <!-- Portal Support -->
-    <apex:includeScript value="{!$Resource.portalSupport}"/>
-    
-    <!-- Common Js to all people Sections -->
-    <apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/common.js')}"/>
-    
-    <!-- CSS de TS -->
-    <link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/teamOverlyManage.css')}" />
-    
-    <!-- Common CSS Styling  -->
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />
-    <link rel="stylesheet" media="screen" href="{!URLFOR($Resource.commonResources, 'inc/css/modal.css')}" />
-    
-    <!-- Overview CSS Styling  -->
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamOverview.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/miniFeeds.css')}" />  
-    
-    <!-- CSS styles for Portal Integration -->
-    <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
-    
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverview.css')}" />
-    
-    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/teamOverview.js')}" />
-        
+    <apex:outputPanel rendered="{!isProduction}">
+		<!-- Prototype / Scriptaculous Framework -->
+	    <apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/prototype.js')}"/>
+	    <apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/scriptaculous.js')}"/>
+	    <apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/effects.js')}"/>
+	    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}"/>
+	    
+	    <!-- Portal Support -->
+	    <apex:includeScript value="{!$Resource.portalSupport}"/>
+	    
+	    <!-- Common Js to all people Sections -->
+	    <apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/common.js')}"/>
+	    
+	    <!-- CSS de TS -->
+	    <link rel="stylesheet"  href="{!URLFOR($Resource.ProjectResources, '/inc/css/teamOverlyManage.css')}" />
+	    
+	    <!-- Common CSS Styling  -->
+	    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
+	    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />
+	    <link rel="stylesheet" media="screen" href="{!URLFOR($Resource.commonResources, 'inc/css/modal.css')}" />
+	    
+	    <!-- Overview CSS Styling  -->
+	    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamOverview.css')}" />
+	    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/miniFeeds.css')}" />  
+	    
+	    <!-- CSS styles for Portal Integration -->
+	    <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
+	    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+	    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
+	    
+	    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverview.css')}" />
+	    
+	    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/teamOverview.js')}" />
+	</apex:outputPanel>
+	
     <script>
          
         var API_SESSION_ID = '{!$Api.Session_ID}';

@@ -1,8 +1,10 @@
 <apex:component id="NewMember" allowDML="true" controller="NewMemberController" >
 
-    <apex:stylesheet value="{!URLFOR($Resource.NewMember, 'inc/css/newMember.css')}" />
-    <script src="{!URLFOR($Resource.NewMember, 'inc/js/newMember.js')}" type="text/javascript" />
-
+	<apex:outputPanel rendered="{!isProduction}">
+		<apex:stylesheet value="{!URLFOR($Resource.NewMember, 'inc/css/newMember.css')}" />
+    	<script src="{!URLFOR($Resource.NewMember, 'inc/js/newMember.js')}" type="text/javascript" />
+	</apex:outputPanel>
+	
     <script type="text/javascript">
         var newMember           = '{!$Component.Content}'; 
         infoToUser.listErrors   = '{!$Component.Form.listErrors}';  

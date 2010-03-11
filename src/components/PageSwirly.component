@@ -1,8 +1,8 @@
 <apex:component id="PageSwirly">
     
-    <apex:includeScript value="{!URLFOR($Resource.Swirly, 'inc/js/swirly.js')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.Swirly, 'inc/css/swirly.css')}" />
-    
+	<apex:includeScript value="{!URLFOR($Resource.Swirly, 'inc/js/swirly.js')}" />
+   	<apex:stylesheet value="{!URLFOR($Resource.Swirly, 'inc/css/swirly.css')}" />
+	
     <script type="text/javascript">
         swirly.id = '{!$Component.Content}';
     </script> 

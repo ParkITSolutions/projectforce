@@ -1,6 +1,5 @@
 <apex:component id="InfoToUser" >
 
-    
     <script type="text/javascript">
     
         infoToUser.id               = '{!$Component.Content}';

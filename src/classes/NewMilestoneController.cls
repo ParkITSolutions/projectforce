@@ -4,6 +4,7 @@
 public with Sharing class NewMilestoneController {
 	
 	private List<ProjectMember__c> projectMembers;
+	public Boolean  isProduction 					{ set; get; }
 	public  String[] assignees 						{ set; get; }
 	public  String projectId 						{ set; get; }
 	public  ProjectTask__c myTask 					{ set; get; }
@@ -17,6 +18,7 @@ public with Sharing class NewMilestoneController {
 	*/
 	public NewMilestoneController(){
 		
+		this.isProduction		= ProjectUtil.isProduction;
 		this.myTask 			= new ProjectTask__c();
 		this.domain 			= ProjectUtil.getDomain();
 		this.projectId 			= System.currentPageReference().getParameters().get( 'id' );

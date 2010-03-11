@@ -6,6 +6,7 @@
  */
 public with Sharing class BreadcrumController{
 	
+	public Boolean  isProduction 					{ set; get; }
 	private Map<String, BreadcrumNode> listNodes;
 	private Set<String> infoOfProject;
 	private Set<String> infoOfTaskAndProject;
@@ -22,6 +23,8 @@ public with Sharing class BreadcrumController{
 	* Constructor
 	*/
 	public BreadcrumController(){ 
+		
+		this.isProduction		= ProjectUtil.isProduction;
 		
 		// WARNING: the name of the page must be exact as appears in the url
 		infoOfProject 			= ProjectUtil.objOfSetTolowerCase( new Set<String>{ 'projectDetail', 'ProjectActivity', 'MembersList', 'projectAttachmentList', 'TaskList', 'ProjectSubscription', 'ProjectSetup', 'SearchResults' } );

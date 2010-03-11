@@ -4,14 +4,16 @@
 */
 public with Sharing class ProjectActivityController {
 	
-	public String 		projectId 	{ set; get; }
-	public Paginator 	paginator 	{ set; get; }
+	public Boolean 		isProduction	{ set; get; }
+	public String 		projectId 		{ set; get; }
+	public Paginator 	paginator 		{ set; get; }
 	
 	/**
 	* Constructor
 	*/
 	public ProjectActivityController(){
 		
+		this.isProduction			=ProjectUtil.isProduction;
 		this.projectId 				= System.currentPageReference().getParameters().get( 'id' );
 		this.paginator 				= new Paginator();
 		this.paginator.project.id 	= this.projectId;

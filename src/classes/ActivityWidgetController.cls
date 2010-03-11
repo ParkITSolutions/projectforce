@@ -4,6 +4,7 @@
 */
 public with Sharing class ActivityWidgetController{
 	
+	public Boolean  		isProduction 	{ set; get; }
 	public String 			projectId 		{ set; get; }
 	private MessageLog 		messageObj; 			
 	private List<Activity> 	resultActivities; 
@@ -12,7 +13,7 @@ public with Sharing class ActivityWidgetController{
 	* Constructor
 	*/
 	public ActivityWidgetController(){
-		
+		this.isProduction		= ProjectUtil.isProduction;
 		this.messageObj 		= new MessageLog();
 		this.resultActivities 	= new List<Activity>();
 		

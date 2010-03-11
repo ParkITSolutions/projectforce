@@ -4,6 +4,7 @@
 */
 public class Subscription {
 
+	public Boolean  isProduction 					{ set; get; }
 	public String 	project 						{ set; get; }
 	public Boolean 	ProjectMemberJoinLeave 			{ set; get; }
 	public Boolean	ProjectTaskAssignedToMe 		{ set; get; }
@@ -16,6 +17,7 @@ public class Subscription {
 	* Constructor
 	*/
 	public Subscription(){
+		this.isProduction = ProjectUtil.isProduction;
 	}
 	
 	/**

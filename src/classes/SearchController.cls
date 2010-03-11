@@ -3,6 +3,7 @@
 */
 public with Sharing class SearchController{
 	
+	public Boolean isProduction 			{ set; get; }
 	public String labelName; 
 	public String module 					{ set; get; }
 	public String key 						{ set; get; }
@@ -15,6 +16,7 @@ public with Sharing class SearchController{
 	*/
 	public SearchController(){
 		
+		this.isProduction	= ProjectUtil.isProduction;
 		this.projectId 		= System.currentPageReference().getParameters().get( 'id' );
 		this.defaultText 	= getDefaultText();	
 		

@@ -1,6 +1,8 @@
 <apex:component id="breadCrum" controller="BreadcrumController" allowDML="true">
     
-    <apex:styleSheet value="{!URLFOR($Resource.Breadcrum, 'inc/css/breadcrum.css')}" />
+    <apex:outputPanel rendered="{!isProduction}">
+		<apex:styleSheet value="{!URLFOR($Resource.Breadcrum, 'inc/css/breadcrum.css')}" />
+	</apex:outputPanel>
 
     <apex:outputPanel styleClass="BreadsrumContainer" id="breadsrumContainer">
         <apex:repeat value="{!breadcrum}" var="b">

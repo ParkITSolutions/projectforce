@@ -4,12 +4,14 @@
 */
 public with Sharing class ProjectNewsWidgetController {
 	
-	public String projectId { set; get;}
+	public Boolean  isProduction 	{ set; get; }
+	public String projectId 		{ set; get;}
 	
 	/**
 	* Constructor
 	*/
 	public ProjectNewsWidgetController(){
+		this.isProduction = ProjectUtil.isProduction;
 	}
 	
 	/**

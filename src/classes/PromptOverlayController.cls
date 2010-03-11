@@ -3,6 +3,7 @@
 */
 public with Sharing class PromptOverlayController {
 	
+	public Boolean  isProduction 			{ set; get; }
 	public boolean 	includeNewTask 			{ set; get; }
 	public boolean 	includeNewMilestone		{ set; get; }
 	public boolean 	includeAttachment		{ set; get; }
@@ -13,6 +14,7 @@ public with Sharing class PromptOverlayController {
 	* Constructor
 	*/
 	public PromptOverlayController(){
+		this.isProduction		= ProjectUtil.isProduction;
 		this.includeNewAssignee = false;
 	}
 	

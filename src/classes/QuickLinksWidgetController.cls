@@ -3,14 +3,16 @@
 */
 public class QuickLinksWidgetController {
     
+    public Boolean isProduction 			{ set; get; }
     public String projectId;
     public UserPermissions userPermission   { set; get; }
-    public Boolean canView                 { set; get; }
+    public Boolean canView                 	{ set; get; }
 
     /**
     * Constructor
     */
     public QuickLinksWidgetController(){
+    	this.isProduction	= ProjectUtil.isProduction;
     }
     
     /**

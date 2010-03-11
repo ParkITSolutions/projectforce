@@ -1,11 +1,15 @@
 <apex:component id="taskQuickAccess" controller="TaskQuickAccessController" >
     
-    <apex:styleSheet value="{!URLFOR($Resource.TaskQuickAccess, 'inc/css/taskQuickAccess.css')}" />
-    <apex:includeScript value="{!URLFOR($Resource.TaskQuickAccess, 'inc/js/taskQuickAccess.js')}" />
+    <apex:outputPanel rendered="{!isProduction}">
+		<apex:styleSheet value="{!URLFOR($Resource.TaskQuickAccess, 'inc/css/taskQuickAccess.css')}" />
+    	<apex:includeScript value="{!URLFOR($Resource.TaskQuickAccess, 'inc/js/taskQuickAccess.js')}" />
+	</apex:outputPanel>
+	
     <script type="text/javascript">
 	   	taskQuickAccess.taskSearchInputId = '{!$Component.quickAccessForm.taskInput}';
 	   	taskQuickAccess.noInput = 'noInput';
     </script>
+    
     <apex:outputPanel id="taskSearch" layout="block" styleClass="taskSearch" >
  
         <apex:outputPanel id="label" >Task ID:</apex:outputPanel>&nbsp;

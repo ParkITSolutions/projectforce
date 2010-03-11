@@ -1,8 +1,10 @@
 <apex:component id="ActivityWidget" controller="ActivityWidgetController" allowDML="true" >
     
-    <apex:stylesheet value="{!URLFOR($Resource.ActivityWidget, 'inc/css/activityWidget.css')}" /> 
-    <apex:includeScript value="{!URLFOR($Resource.ActivityWidget, 'inc/js/activityWidget.js')}" />
-    
+    <apex:outputPanel rendered="{!isProduction}">
+		<apex:stylesheet value="{!URLFOR($Resource.ActivityWidget, 'inc/css/activityWidget.css')}" /> 
+    	<apex:includeScript value="{!URLFOR($Resource.ActivityWidget, 'inc/js/activityWidget.js')}" />
+	</apex:outputPanel>
+	
      <apex:attribute name="projectId" 
                      description="Project id"
                      type="String" 

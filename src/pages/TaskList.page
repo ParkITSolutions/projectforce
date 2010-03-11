@@ -2,9 +2,11 @@
 
     <c:ApplicationTop id="ApplicationTop" />
     
-    <apex:includeScript value="{!URLFOR($Resource.TaskList, 'inc/javascript/taskList.js')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.TaskList, 'inc/css/taskList.css')}" />
-    
+    <apex:outputPanel rendered="{!isProduction}">
+		 <apex:includeScript value="{!URLFOR($Resource.TaskList, 'inc/javascript/taskList.js')}" />
+    	<apex:stylesheet value="{!URLFOR($Resource.TaskList, 'inc/css/taskList.css')}" />
+	</apex:outputPanel>
+	
     <script type="text/javascript">
         var deleteTasksOverlay          = new ConfirmOverlay( '{!$Component.DeleteTasksOverlay}' );
         var markCompleteTasksOverlay    = new ConfirmOverlay( '{!$Component.MarkCompleteTasksOverlay}' );

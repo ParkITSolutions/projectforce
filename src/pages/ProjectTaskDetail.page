@@ -2,38 +2,39 @@
    	
     <c:ApplicationTop id="ApplicationTop" />
     
-	<!-- Ajax Toolkit SDFC -->
-    <apex:includeScript value="/soap/ajax/11.1/connection.js"/>
-    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}"/>
-    
-   	
-    
-     <!-- overlays resources -->
-    <apex:includeScript value="{!URLFOR($Resource.overlaysResources, 'inc/js/js.js')}"/>
-    <apex:stylesheet value="{!URLFOR($Resource.overlaysResources, 'inc/css/css.css')}"/>
-
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />
-    
-    <!-- Portal Support -->
-    <apex:includeScript value="{!$Resource.portalSupport}"/>
-
-    
-    <!-- Common JS for All Sections -->
+    <apex:outputPanel rendered="{!isProduction}">
+		<!-- Ajax Toolkit SDFC -->
+	    <apex:includeScript value="/soap/ajax/11.1/connection.js"/>
+	    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}"/>
+	    
+	     <!-- overlays resources -->
+	    <apex:includeScript value="{!URLFOR($Resource.overlaysResources, 'inc/js/js.js')}"/>
+	    <apex:stylesheet value="{!URLFOR($Resource.overlaysResources, 'inc/css/css.css')}"/>
 	
-    <!-- CSS Includes -->
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
-    
-    <!-- ProjectTaskDetail CSS -->
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskDetails.css')}" />
-
-    <!-- ProjectTaskList CSS -->
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskList.css')}" />
-                                                                    
-    <!-- ProjectTaskDetail JS -->
-    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskDetail.js')}" />
-    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskList.js')}" />
+	    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
+	    <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />
+	    
+	    <!-- Portal Support -->
+	    <apex:includeScript value="{!$Resource.portalSupport}"/>
+	
+	    
+	    <!-- Common JS for All Sections -->
+		
+	    <!-- CSS Includes -->
+	    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+	    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
+	    
+	    <!-- ProjectTaskDetail CSS -->
+	    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskDetails.css')}" />
+	
+	    <!-- ProjectTaskList CSS -->
+	    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/projectTaskList.css')}" />
+	                                                                    
+	    <!-- ProjectTaskDetail JS -->
+	    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskDetail.js')}" />
+	    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectTaskList.js')}" />
+	</apex:outputPanel>
+	
      <div class="confirmation" id="confirmation" style="display:none;">This task has been marked complete</div>
 	
 	<style type="text/css">

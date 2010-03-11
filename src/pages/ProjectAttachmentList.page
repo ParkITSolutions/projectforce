@@ -2,8 +2,10 @@
   
     <c:ApplicationTop id="ApplicationTop" />
     
-    <apex:styleSheet value="{!URLFOR($Resource.ProjectAttachmentList, 'inc/css/projectAttachmentList.css')}" />
-    <apex:includeScript value="{!URLFOR($Resource.ProjectAttachmentList, 'inc/js/projectAttachmentList.js')}" />
+    <apex:outputPanel rendered="{!isProduction}">
+		<apex:styleSheet value="{!URLFOR($Resource.ProjectAttachmentList, 'inc/css/projectAttachmentList.css')}" />
+    	<apex:includeScript value="{!URLFOR($Resource.ProjectAttachmentList, 'inc/js/projectAttachmentList.js')}" />
+	</apex:outputPanel>
     
     <script type="text/javascript">
         var deleteAttachmentsOverlay = new ConfirmOverlay( '{!$Component.deleteAttachmentsOverlay}' );

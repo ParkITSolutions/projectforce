@@ -3,17 +3,19 @@
 * @createdDate 01/22/2010
 */
 public class TaskQuickAccessController {
-
+	
 	public String 	taskCustomId;
-	public Boolean 	error 	{ set; get; }
-	public String 	trace 	{ set; get; }
+	public Boolean  isProduction 	{ set; get; }
+	public Boolean 	error 			{ set; get; }
+	public String 	trace 			{ set; get; }
 	
 	/**
 	* Constructor
 	*/
 	public TaskQuickAccessController(){
 		
-		this.error = false;
+		this.isProduction 	= ProjectUtil.isProduction;
+		this.error 			= false;
 	}
 	
 	/**

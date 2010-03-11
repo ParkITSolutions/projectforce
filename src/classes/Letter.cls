@@ -4,6 +4,7 @@
 */
 public class Letter {
 	
+	public Boolean  isProduction 	{ set; get; }
 	public String 	name            { set; get; } //letter name
 	public Boolean  hasCurrencies 	{ set; get; } //true if the letter has currencies in a records list
 	
@@ -13,6 +14,7 @@ public class Letter {
     * @param hasCurrencies
     */
 	public Letter( String name, Boolean hasCurrencies ){
+		this.isProduction	= ProjectUtil.isProduction;
 		this.name 			= name;
 		this.hasCurrencies 	= hasCurrencies;
 	}

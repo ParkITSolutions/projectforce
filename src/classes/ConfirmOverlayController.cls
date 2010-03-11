@@ -4,6 +4,7 @@
 */
 public with Sharing class ConfirmOverlayController {
 	
+	public Boolean  isProduction 		{ set; get; }
 	public String 	title 	        	{ set; get; }
 	public String 	messageToUser 		{ set; get; }
 	public String 	actionIds 	    	{ set; get; }
@@ -15,7 +16,7 @@ public with Sharing class ConfirmOverlayController {
 	* Constructor
 	*/
 	public ConfirmOverlayController(){
-		
+		this.isProduction = ProjectUtil.isProduction;
 	}
 	
 	/**

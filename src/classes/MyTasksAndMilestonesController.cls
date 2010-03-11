@@ -8,6 +8,7 @@ public with Sharing class MyTasksAndMilestonesController{
 	private id currentUser;
 	private id currentProject;
 	
+	public Boolean  isProduction 	{ set; get; }
 	public List<Task> tasks 		 { set; get; }
 	public Boolean    showTasks		 { set; get; } 
 	public List<Task> milestones 	 { set; get; }
@@ -17,7 +18,7 @@ public with Sharing class MyTasksAndMilestonesController{
 	* Constructor
 	*/
 	public MyTasksAndMilestonesController(){ 
-		
+		this.isProduction	= ProjectUtil.isProduction;
 		this.tasks 			= new List<Task>();
 		this.milestones 	= new List<Task>();
 		this.currentUser 	= UserInfo.getUserId();

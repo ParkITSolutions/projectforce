@@ -1,8 +1,10 @@
 <apex:component id="searchControl" controller="SearchController"> 
     
-    <apex:styleSheet value="{!URLFOR($Resource.SearchControl, 'inc/css/searchControl.css')}" />
-    <apex:includeScript value="{!URLFOR($Resource.SearchControl, 'inc/js/searchControl.js')}" />
-    
+    <apex:outputPanel rendered="{!isProduction}">
+		<apex:styleSheet value="{!URLFOR($Resource.SearchControl, 'inc/css/searchControl.css')}" />
+    	<apex:includeScript value="{!URLFOR($Resource.SearchControl, 'inc/js/searchControl.js')}" />
+	</apex:outputPanel>
+	
     <apex:attribute name="module" description="Type of search (Project or Task)" type="String" required="true" assignTo="{!module}" />    
     <apex:attribute name="projectId" description="Id for project detail search" type="String" required="false" assignTo="{!projectId}" />
     <apex:attribute name="label" description="Label to show on the search box" type="String" required="false" assignTo="{!labelName}" />

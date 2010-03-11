@@ -3,7 +3,7 @@
 */
 public class ProjectWidgetTasksMainController{
 
-	
+	public Boolean  isProduction 			{ set; get; }
 	String teamId;
 	public Boolean sidebar = false;
 	Integer listSize = 0;
@@ -15,6 +15,9 @@ public class ProjectWidgetTasksMainController{
 	* Constructor
 	*/	
 	public ProjectWidgetTasksMainController(){
+
+		this.isProduction = ProjectUtil.isProduction;
+		
 		if(getTeamId()== null) teamId = System.currentPageReference().getParameters().get('id');  
 		getAllProjectTasks();
 		genPermissions();		

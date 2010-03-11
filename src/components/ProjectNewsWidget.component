@@ -1,7 +1,10 @@
 <apex:component id="projectNewsWidget" controller="ProjectNewsWidgetController" allowDML="true">
     
-    <apex:stylesheet value="{!URLFOR($Resource.ProjectNewsWidget, 'inc/css/projectNewsWidget.css')}" /> 
-    <apex:includeScript value="{!URLFOR($Resource.ProjectNewsWidget, 'inc/js/projectNewsWidget.js')}" />
+    <apex:outputPanel rendered="{!isProduction}">
+		 <apex:stylesheet value="{!URLFOR($Resource.ProjectNewsWidget, 'inc/css/projectNewsWidget.css')}" /> 
+    	<apex:includeScript value="{!URLFOR($Resource.ProjectNewsWidget, 'inc/js/projectNewsWidget.js')}" />
+	</apex:outputPanel>
+	
     <!-- 
     <apex:attribute name="projectId" 
                     description="Project id"

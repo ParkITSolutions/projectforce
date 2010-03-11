@@ -1,3 +1,7 @@
 <apex:page controller="InstallController" action="{!projectSetupActualization}" >
+	
+	<apex:outputPanel rendered="{!isProduction}">
 
+	</apex:outputPanel>
+	
 </apex:page>

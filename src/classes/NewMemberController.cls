@@ -4,6 +4,7 @@
 public with Sharing class NewMemberController {
 	
 	public String projectId;
+	public Boolean  isProduction 		{ set; get; }
 	public Boolean emailNotifications 	{ set; get; }
 	public Boolean isAdministrator 		{ set; get; }
 	public String colleagueNames		{ set; get; }
@@ -16,7 +17,8 @@ public with Sharing class NewMemberController {
 	* Constructor
 	*/
 	public NewMemberController(){
-		this.mailList = null;
+		this.isProduction 	= ProjectUtil.isProduction;
+		this.mailList 		= null;
 	}
 	
 	/**
