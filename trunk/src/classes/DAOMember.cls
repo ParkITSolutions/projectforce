@@ -73,7 +73,8 @@ public class DAOMember {
 	*/
 	public List<ProjectMember__c> getCandidatesToAssign(String taskId){
 		
-		List<TaskAssignee> assignees 	= DAOAssignee.getAssignees(taskId);
+		List<String> auxIds = new List<String>{taskId};
+		List<TaskAssignee> assignees 	= DAOAssignee.getAssignees(auxIds);
 		List<Id> assigned 			= new List<Id>();
 		
 		for(TaskAssignee assignee: assignees)

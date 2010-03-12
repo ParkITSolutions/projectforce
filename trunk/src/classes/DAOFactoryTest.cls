@@ -56,12 +56,32 @@ public class DAOFactoryTest {
 
     	f.taskInfoWithProjectRel(GenerateEnvironmentTest.task.id);
     	
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );
+    }
+    
+    static testMethod void myUnitTest3(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();
+    	ProjectTask__c tAux = new ProjectTask__c();
+        tAux.Name 			= 'task 1';
+        tAux.Project__c 	= GenerateEnvironmentTest.project.id;
+        tAux.StartDate__c 	= Date.today();
+        tAux.EndDate__c 	= Date.today();
+        tAux.DurationUI__c 	= '2';
+    	insert tAux;
+    	
+    	DAOFactory f = DAOFactory.getInstance();
+
     	f.deleteTaskAssignee( GenerateEnvironmentTest.assi.id );
+    	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
     }
     	
-    static testMethod void myUnitTest3(){
+    static testMethod void myUnitTest4(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
@@ -83,7 +103,7 @@ public class DAOFactoryTest {
 		ProjectUtil.setIsTest( false );
     }
 
-    static testMethod void myUnitTest4(){
+    static testMethod void myUnitTest5(){
     	
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );

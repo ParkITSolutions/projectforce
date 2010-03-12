@@ -164,13 +164,6 @@ public class ProjectDynamicFilter {
 		
 		List<ProjectMember__c> members = new List<ProjectMember__c>(); 
 		List<SelectOption> options = new List<SelectOption>();
-		/**
-		members = [select m.Id, m.Name, User__r.Id from ProjectMember__c m where m.Project__c =: projectId order by m.Name asc];
-		options.add(new SelectOption('', '-- Any --'));
-		for (ProjectMember__c member : members){
-			options.add(new SelectOption(member.User__r.Id, member.Name));		
-		}	
-		*/
 		return options;
 	}
 

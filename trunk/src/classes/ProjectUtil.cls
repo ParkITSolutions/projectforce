@@ -144,7 +144,7 @@ public class ProjectUtil {
 	  	if( !ProjectUtil.getIsTest() ){
 		    List<GroupMember> gm = [select UserOrGroupId, GroupId, id 
 		    							from GroupMember 
-		    							where GroupId in : gmToDelete];
+		    							where GroupId in : gmToDelete OR id in: gmToDelete ];
 			delete gm;
 	  	}
 	}

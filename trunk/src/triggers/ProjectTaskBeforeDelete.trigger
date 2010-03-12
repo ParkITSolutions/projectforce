@@ -8,12 +8,13 @@ trigger ProjectTaskBeforeDelete on ProjectTask__c (before delete){
         taskIds.put( tsk.Id, tsk );
         taskLst.add( tsk.Id);
     }
-    
+    /*
     //Creates class to call method for sending emails 
     ProjectSubscribersEmailServices mail = ProjectSubscribersEmailServices.getInstance();
     mail.sendMailForTaskDeleted( taskLst );
     
     ProjectUtil.DeleteTaskMailSent = true;
+    */
     
     //Deletes all Task Assignees 
     List<ProjectAssignee__c> projectAssigneeList = new List<ProjectAssignee__c>();

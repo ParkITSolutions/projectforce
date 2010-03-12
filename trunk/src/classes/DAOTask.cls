@@ -143,12 +143,13 @@ public class DAOTask {
                             'StartDate__c, ' + 
                             'EndDate__c, ' +
                             'OwnerId, '+
+                            'CreatedById, '+
                             'Project__c, '+
                             'DurationUI__c, ' +
                             ' (Select Id, User__c, User__r.Name, User__r.Id,PercentDedicated__c From ProjectsAssignees__r order by User__r.Name) ' +
                         'from ProjectTask__c  ' + 
                         'where Project__c = \''+projectId+'\' ' +  
-                        'and Name like \''+letter+'%\'' +  
+                        'and Name like \''+letter+'%\'' + 
                         ''+condition +' ' + 
                         'order by '+orderBy+' '+orderWay; 
 

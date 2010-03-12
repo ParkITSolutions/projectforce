@@ -190,7 +190,9 @@
                             <br>Number of records: <apex:outputText id="ResultSizeText" value="{!paginator.resultSize}" />
                             
                             <br>Records per page: 
-                            <apex:selectList id="PageSizeSelect" value="{!paginator.recordsPerPage}" size="1" onChange="paginator.setLetterChoosen('All'); swirly.show(); RefreshPaginator();">
+                            <apex:selectList id="PageSizeSelect" 
+                            					value="{!paginator.recordsPerPage}" size="1" 
+                            					onChange="paginator.setLetterChoosen('All'); swirly.show(); RefreshPaginator();">
                                 <apex:selectOptions id="PageSizeOption" value="{!paginator.pageSizeItems}"/>
                             </apex:selectList>
                             
@@ -274,6 +276,7 @@
                         <apex:column >
                             <apex:facet name="header">Action</apex:facet>
                             <apex:outputLink value="/{!task.id}/e?retURL={!url}/apex/TaskList?id={!HTMLENCODE( projectId )}" id="EditLink" rendered="{!task.canUpdate || isManager}">Edit | </apex:outputLink>
+                            {!task.canDelete} {!isMember}
                             <apex:outputLink value="javascript:;" id="DeleteLink" onClick="taskList.deleteTask('{!task.id}');" rendered="{!task.canDelete || isManager}"> Del</apex:outputLink>
                         </apex:column>
                         

@@ -40,6 +40,7 @@ public class Task{
 	public String 	status 					{ set; get; }
 	public Double 	taskPosition 			{ set; get; }
 	public String 	ownerId		 			{ set; get; }
+	public String	createdById				{ set; get; }
 	public List<TaskAssignee> assignees 	{ set; get; }
 
 	/**

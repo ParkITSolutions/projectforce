@@ -68,9 +68,15 @@ public class ObjectFormatter{
 	public static List<Task> formatTasks( List<ProjectTask__c> taskList ){
 		
 		List<Task> tasks = new List<Task>();
-	
+		
+		List<String> taskIds = new List<String>();
+		for( ProjectTask__c cTaskIds : taskList ){ taskIds.add(cTaskIds.Id); }
+		
+		List<TaskAssignee> assigneeList = DAOFactory.getInstance().getAssignees( taskIds );
+		
 		for(ProjectTask__c task : taskList){
     		
+    		List<TaskAssignee> auxListIds = new List<TaskAssignee>();
     		Task taskAux = new Task();
     		
     		taskAux.id 					= task.id;
@@ -79,6 +85,7 @@ public class ObjectFormatter{
 			taskAux.name 				= task.Name; 
 			taskAux.status 				= task.Status__c;
 			taskAux.ownerId 			= task.OwnerId;
+			taskAux.CreatedById			= task.CreatedById;
 			taskAux.isMilestone 		= task.Milestone__c;
 			taskAux.priority 			= task.Priority__c; 
 			taskAux.setPercentCompleted( task.PercentCompleted__c );
@@ -94,7 +101,15 @@ public class ObjectFormatter{
 			}
 			
 			//taskAux.assignees = DAOFactory.getInstance().getAssignees( taskAux.id ); 
+			for(TaskAssignee cAssignee : assigneeList)
+			{
+				if(cAssignee.projectTask == task.id)
+				{
+					auxListIds.add(cAssignee);
+				}
+			}
 			
+			taskAux.assignees = auxListIds;
     		tasks.add( taskAux );
     	}
     	

@@ -227,7 +227,7 @@ public class UserPermissions {
 					if( isProjectMember ){
 						//ask if user is the owner of the task
 						if( task.OwnerId != userId ){
-							if( task.assignees.size() > 0){
+							if( task.assignees.size() > 0 ){
 								for( TaskAssignee assignee : task.assignees ){
 									if( assignee.user == userId ){
 										task.canDelete 				= false;
@@ -264,5 +264,4 @@ public class UserPermissions {
 		
 		return resultTasks;
 	}
-	
 }
