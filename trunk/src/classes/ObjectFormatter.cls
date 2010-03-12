@@ -93,7 +93,7 @@ public class ObjectFormatter{
 				taskAux.endDate 		= task.EndDate__c;
 			}
 			
-			taskAux.assignees = DAOFactory.getInstance().getAssignees( taskAux.id );
+			//taskAux.assignees = DAOFactory.getInstance().getAssignees( taskAux.id ); 
 			
     		tasks.add( taskAux );
     	}

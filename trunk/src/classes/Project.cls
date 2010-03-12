@@ -104,7 +104,7 @@ public class Project {
         try{
             update tasks;
         }catch( Exception e ){
-            throw new CustomException('Updating error. It may be because there are tasks that have children.');
+        	throw new CustomException('Updating error. It may be because there are tasks that have children.');
         }finally{
             ProjectUtil.setTaskDependenciesFlag( true );
         }
