@@ -19,13 +19,12 @@ public class InstallController {
 	    this.profiles 			= new List<ProjectProfile__c>();
 	    this.projectProfile 	= new ProjectProfile__c(); 
 	  	this.profilesToInsert 	= new List<ProjectProfile__c>();
-	  	   
 	}
 	
 	/**
 	*
 	*/
-	public void projectSetupActualization(){
+	public Pagereference projectSetupActualization(){
 		
 		List<ProjectSetup__c> setup = new List<ProjectSetup__c>();
 		List<String> setupNames = new List<String>();
@@ -42,14 +41,17 @@ public class InstallController {
 			DAOFactory.getInstance().updateProjectSetup( setup[ 0 ]);
 		}
 
-		this.InitializeProfiles();
+		return this.InitializeProfiles();
 	}
 	
 	/**
 	* Initializes Profiles
 	*/
-	private void InitializeProfiles(){
-	
+	private Pagereference InitializeProfiles(){
+		
+		Pagereference pageRef = Page.projectOverview;
+		pageRef.setRedirect( true );
+		
         profiles = [ select Id, Name from ProjectProfile__c where Name in : profilesNames ];
         
        	if( !existProfile( profilesNames.get(0) ) ){
@@ -79,8 +81,12 @@ public class InstallController {
             profilesToInsert.add( projectProfile);
         }
         
-        if( profilesToInsert.size() > 0 )
+        if( profilesToInsert.size() > 0 ){
         	insert profilesToInsert;
+        	return null;
+        }
+        
+       return pageRef;
 	}
 
 	/**

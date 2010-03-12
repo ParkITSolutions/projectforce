@@ -1,7 +1,25 @@
-<apex:page controller="InstallController" action="{!projectSetupActualization}" >
+<apex:page controller="InstallController" sidebar="false" tabStyle="Project_Settings__tab" action="{!projectSetupActualization}" >
 	
-	<apex:outputPanel rendered="{!isProduction}">
-
-	</apex:outputPanel>
+	<style type="text/css">
+		.title{
+			font-weight: bold;
+		}
+	</style>
 	
+	<span class="title" >Click on "Setup" link at the top of the page </span><br/>
+	<apex:image value="{!URLFOR($Resource.Install, 'images/Install13.jpg')}" width="900" /> <br/>
+	
+	<span class="title" >Click on "View Installed Packages" link </span><br/>
+	<apex:image value="{!URLFOR($Resource.Install, 'images/Install20.jpg')}" width="900" /> <br/>
+	
+	<span class="title" >Click on "ProjectForceBeta?" link </span><br/>
+	<apex:image value="{!URLFOR($Resource.Install, 'images/Install21.jpg')}" width="900" /> <br/>
+	
+	<span class="title" >Click on "Deploy" button </span><br/>
+	<apex:image value="{!URLFOR($Resource.Install, 'images/Install22.jpg')}" width="900" /> <br/>
+	
+	<span class="title" >Click on "Deploy" button </span><br/>
+	<apex:image value="{!URLFOR($Resource.Install, 'images/Install23.jpg')}" width="900" /> <br/>
+	
+	<span class="title" >And thats it! Your now ready to start using ProjectForce.</span>
 </apex:page>
