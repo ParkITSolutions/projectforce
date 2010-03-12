@@ -139,7 +139,7 @@ public class ProjectUtil {
 	* MIXED_DML_OPERATION, DML operation on setup object is not permitted after you have updated a non-setup object
 	*@return void 
 	*/
-	//@future
+	@future
 	public static void deleteGroupMembers(List<String> gmToDelete){
 	  	if( !ProjectUtil.getIsTest() ){
 		    List<GroupMember> gm = [select UserOrGroupId, GroupId, id 
