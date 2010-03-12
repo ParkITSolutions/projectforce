@@ -226,7 +226,8 @@ public class UserPermissions {
 				if( !isAdmin ){
 					if( isProjectMember ){
 						//ask if user is the owner of the task
-						if( task.OwnerId != userId ){
+						System.debug( '============Values: ' + task.OwnerId + ' ' + userId );
+						if( task.CreatedById != userId ){
 							if( task.assignees.size() > 0 ){
 								for( TaskAssignee assignee : task.assignees ){
 									if( assignee.user == userId ){
@@ -247,6 +248,7 @@ public class UserPermissions {
 							task.canCreateAttachments 	= true;
 							task.canDeleteAssignees 	= true;
 							task.canDeleteAttachments 	= true;
+							System.debug( '================Entro al if de OWNER =>' +task.canDelete);
 						}
 					}	
 				}
