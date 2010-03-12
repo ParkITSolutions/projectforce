@@ -53,16 +53,19 @@ public class DAOAssignee {
 	/**
 	* returns a list with all task assingees
 	* @param taskId
-	* @return assigneesList
+	* @return assigneesList 
 	*/
-	public List<TaskAssignee> getAssignees( String taskId ){
+	public List<TaskAssignee> getAssignees( List<String> taskIds ) 
+	{
 		List<ProjectAssignee__c> assignees = [select Id, User__r.Name, User__c, ProjectTask__c, Project__c
 											  from ProjectAssignee__c
-											  where ProjectTask__c =: taskId];
+											  where ProjectTask__c in: taskIds];
 		
 		List<TaskAssignee> assigneesList = ObjectFormatter.formatTaskAssignees( assignees );					  
 		return assigneesList;							 
 	}
+	
+	
 	
 	/**
 	*Return a list of tasks or milestones by user

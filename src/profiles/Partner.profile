@@ -2117,10 +2117,6 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>StackOverflowError</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>SuggestDispatcher</apexPage>
         <enabled>true</enabled>
     </pageAccesses>

@@ -78,8 +78,8 @@ public class ProjectTaskDuration{
 				}	
 			}
 			else{
-		 		task = this.doCalculateDuration(task);
-		 		task = this.parseDuration(task);
+		 		task = this.doCalculateDuration( task );
+		 		task = this.parseDuration( task );
 			}
 		}
 		

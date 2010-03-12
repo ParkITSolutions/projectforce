@@ -260,9 +260,9 @@ public class DAOFactory {
     * @param taskId
     * @return assigneesList
     */
-    public List<TaskAssignee> getAssignees( String taskId ){
-        
-        return DAOAssignee.getAssignees( taskId ); 
+    public List<TaskAssignee> getAssignees( List<String> taskIds )
+    {
+        return DAOAssignee.getAssignees( taskIds ); 
     }
 
 	/**
