@@ -60,7 +60,7 @@ public class ProjectTaskDuration{
 			}
 			else{
 				task.Duration__c 	= this.workingHours; 
-				task.DurationUI__c 	= '\'' + this.workingHours + '\'';
+				task.DurationUI__c 	= String.valueOf( this.workingHours );
 			} 
 		}
 		else{

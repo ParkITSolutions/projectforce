@@ -214,7 +214,8 @@ public class Task{
 		tsk.getOverdueTask();
 		
 		tsk.getDuration();
-		tsk.setduration( 1.0 );
+		tsk.setduration( 1.0000000 );
+		tsk.durationDisplay = '1.000000';
 		tsk.getdurationDisplay();
 		tsk.setPercentCompleted( 55.0 );
 		tsk.getPercentCompleted();
