@@ -58,3 +58,14 @@ To mark complete a task/milestone you must to click on Mark Complete button.
 <img src="http://projectforce.googlecode.com/svn/wiki/images/New/Task Detail 8.png" />
 
 <img src="http://projectforce.googlecode.com/svn/wiki/images/New/Task Detail 9.png" />
+
+
+*-- TASK NOTES --*
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Task Notes1.png" />
+
+In this page you can add specific notes of the task.
+
+<img src="http://projectforce.googlecode.com/svn/wiki/images/New/Task Notes2.png" />
+
+
