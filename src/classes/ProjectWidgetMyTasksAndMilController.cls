@@ -1,7 +1,7 @@
 /**
 *@author Alvaro Scuccimarra @ 03/16/2009
 */
-public class ProjectWidgetMyTasksAndMilController {
+public with sharing class ProjectWidgetMyTasksAndMilController {
     
     public Boolean  isProduction 			{ set; get; }
     public String currentDate = '';
