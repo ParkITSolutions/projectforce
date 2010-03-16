@@ -1,7 +1,7 @@
 /**
 *@author Martin Prado @ 06/17/2008
 */
-public class ProjectWidgetTasksMainController{
+public with sharing class ProjectWidgetTasksMainController{
 
 	public Boolean  isProduction 			{ set; get; }
 	String teamId;

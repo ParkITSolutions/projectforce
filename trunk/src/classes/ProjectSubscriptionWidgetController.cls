@@ -2,7 +2,7 @@
 * @author Matias Menafra
 * @createdDate 02/20/2010  
 */
-public class ProjectSubscriptionWidgetController {
+public with sharing class ProjectSubscriptionWidgetController {
 	
 	public Boolean  isProduction 	{ set; get; }
 	public String idProject 		{ set; get; } 

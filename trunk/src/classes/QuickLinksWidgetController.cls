@@ -1,7 +1,7 @@
 /*
 *@author Nicolas Dominguez @ 29/01/2010
 */
-public class QuickLinksWidgetController {
+public with sharing class QuickLinksWidgetController {
     
     public Boolean isProduction 			{ set; get; }
     public String projectId;

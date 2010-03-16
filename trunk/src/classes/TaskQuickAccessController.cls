@@ -2,7 +2,7 @@
 * @author Matias Menafra 
 * @createdDate 01/22/2010
 */
-public class TaskQuickAccessController {
+public with sharing class TaskQuickAccessController {
 	
 	public String 	taskCustomId;
 	public Boolean  isProduction 	{ set; get; }

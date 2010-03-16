@@ -1,7 +1,7 @@
 /**
 *@author Nicolas Gunther @ 16/07/2008
 */
-public class ProjectTimelineController {
+public with sharing class ProjectTimelineController {
     
     private Project2__c project;    
     private String param = System.currentPageReference().getParameters().get('id');

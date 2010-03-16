@@ -324,7 +324,4 @@
         </div>
     </div>
     
-    <script>
-        readPortalCSSRules();
-    </script>
 </apex:page>

@@ -2,7 +2,7 @@
 * @author Nicolas Dominguez
 * @createdDate 02/15/2010
 */
-public class ProjectSubscriptionController {
+public with sharing class ProjectSubscriptionController {
 	
 	public Boolean isProduction 					{ set; get; }
 	public String projectId							{ set; get; } 

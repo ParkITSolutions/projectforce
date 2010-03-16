@@ -2,7 +2,7 @@
 * @author Miguel Soares
 * @createDate 02/23/2010
 */
-public class InstallController {
+public with sharing class InstallController {
 	
 	public Boolean 					isProduction { set; get; }
 	public List<String> 			profilesNames;

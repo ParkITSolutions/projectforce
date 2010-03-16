@@ -54,7 +54,6 @@
     </style>
     <script  type="text/javascript">
        document.observe("dom:loaded", function(){
-               setTimeout( "readPortalCSSRules()", 300 );
                setTimeout( "$$('.pbBottomButtons')[0].remove()", 150);
                                                        
            }
