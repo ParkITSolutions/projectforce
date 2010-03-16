@@ -39,4 +39,4 @@ The other way to create Milestones is creating a Full Task and checking "Milesto
 
 *-- LINKS OF THE WIDGET --*
 
-<img  src="http://projectforce.googlecode.com/svn/wiki/images/New/Project Detail 4.png"/>
+<img  src="http://projectforce.googlecode.com/svn/wiki/images/New/Widgets2.png"/>
