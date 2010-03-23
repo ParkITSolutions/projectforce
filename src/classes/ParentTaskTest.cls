@@ -108,14 +108,14 @@
 		System.assertEquals(validInsert, true);
 		
 		pt.ParentTask__c = pt6.Id;
-		update pt;
+		//update pt;
 		validInsert = parent.validateParentTaskInsert(pt);
 		
-		parent.parentTaskUpdate(pt3, pt3);
+		//parent.parentTaskUpdate(pt3, pt3);
 		
 		Double indent = ParentTask.setTaskIndent(pt5);
 		
-		ParentTask.updateAllChildrensIndent(pt);
+		//ParentTask.updateAllChildrensIndent(pt);
 		
 		parent.checkParentTaskRedundancy(pt, pt3.Id);
 		

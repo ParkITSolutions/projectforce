@@ -15,6 +15,7 @@ public with Sharing class ProjectTaskDetailController {
 	public UserPermissions userPermissions = new UserPermissions();
 	public String taskId;
 	public void dummyRefresh () {}
+	public Task taskPerm { set; get; }
 	
 	public String taskNameShort { set; get; }
 	public String projectNameShort { set; get; }
@@ -184,7 +185,7 @@ public with Sharing class ProjectTaskDetailController {
 	public void getTask (String param){
 		if((param != null) && (param != '')){
 			detailsOk = true;
-			ProjectTask__c TD = [Select p.Id,p.Project__c,p.Project__r.Name,p.StartDate__c,
+			ProjectTask__c TD = [Select p.Id,p.Id__c,p.Status__c,p.Project__c,p.OwnerId,p.Project__r.Name,p.StartDate__c,
 									p.Priority__c,p.PercentCompleted__c, p.Name, p.Milestone__c,
 									p.LastModifiedById,p.LastModifiedBy.Name,p.LastModifiedDate,
 									p.EndDate__c, p.Duration__c, p.Description__c,p.ParentTask__c,
@@ -309,6 +310,10 @@ public with Sharing class ProjectTaskDetailController {
 				} else {
 					taskDetail.ShowAttachs = false;
 				}
+				
+				List<ProjectTask__c> taskList = new List<ProjectTask__c>();
+				taskList.add( TD );
+				this.taskPerm = ObjectFormatter.formatTasks(taskList).get( 0 );
 			} 
 		} else {
 			detailsOk = false;		

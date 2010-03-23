@@ -152,27 +152,38 @@ public with sharing class ProjectDetailController{
     * @return Boolean
     */
     public void genTeamData(){
-        if(this.projectId != null){
+        if( this.projectId != null ){
+        	
             this.teamspace = [select Id, Name, PublicProfile__c 
                                 from Project2__c 
                                 where id =: this.projectId 
                                 limit 1];
-            if(teamspace.PublicProfile__c != null){
-                this.setIsPublic(true);
-            }else if (userPermission.getCanManage()){
-                this.setIsPublic(true);
-            }else {
-                this.setIsPublic(false);
+            
+            
+            Project2__c proj = [ Select Id, Name, Type__c From Project2__c where Id =: this.projectId ];
+            /*if ( userPermission.getCanManage() ){
+                this.setIsPublic( true );
+            }
+            else{
+                this.setIsPublic( false );
+            }
+              */ 
+            if( proj.Type__c == 'open' ){
+                this.setIsPublic( true );
+            }
+            else{
+            	this.setIsPublic( false );
             }
             
             List<ProjectMember__c> member = [select Id, User__c 
                                                 from ProjectMember__c 
                                                 where Project__c =: this.projectId and User__c =: UserInfo.getUserId() 
                                                 limit 1];
-            if(member.size() > 0){
-                this.setIsMember(true);
-            }else {
-                this.setIsMember(false);
+            if( member.size() > 0 ){
+                this.setIsMember( true );
+            }
+            else {
+                this.setIsMember( false );
             }
         }
     }
@@ -192,7 +203,9 @@ public with sharing class ProjectDetailController{
     * @return PageReference
     */
     public PageReference unjoinProject(){
+    	
         pmc.setProjectId( System.currentPageReference().getParameters().get('id') );
+        
         if(!pmc.isLastMemberAdmin()){
             
             pmc.unjoinProject();

@@ -2,7 +2,7 @@
 * @author Andres Canavesi
 * @createdDate 
 */
-public with Sharing class TaskListController {
+public with Sharing class TaskListController{
 	
 	public List<Task> tasks;
 	public Boolean  isProduction 				{ set; get; }	
@@ -21,7 +21,7 @@ public with Sharing class TaskListController {
 	*/
 	public TaskListController(){  
 		
-		this.isProduction 		= ProjectUtil.isProduction;
+		this.isProduction 	= ProjectUtil.isProduction;
 		
 		this.tasks 		= new List<Task>();
 		this.projectId 	= System.currentPageReference().getParameters().get( 'id' );
@@ -37,8 +37,18 @@ public with Sharing class TaskListController {
 		
 		this.paginator 	= new Paginator();
 		
+		if( System.currentPageReference().getParameters().get( 'filter' ) != null ){
+			String filter = System.currentPageReference().getParameters().get( 'filter' );
+			if( filter == 'allMilestones' ){
+				this.paginator.filter 	= '3'; // Show all milestones
+			}
+			else{
+				this.paginator.filter 	= '1'; // Show all tasks and milestones
+			}
+		}
+		
+		
 		this.paginator.orderBy 		= 'Name';
-		this.paginator.filter 		= '1'; // Show all tasks and milestones
 		this.paginator.project.id 	= this.projectId;
 		
 		paginator.loadTasksByProject();

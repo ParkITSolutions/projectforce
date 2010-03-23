@@ -31,7 +31,7 @@ public with Sharing class BreadcrumController{
 		infoOfTaskAndProject 	= ProjectUtil.objOfSetTolowerCase( new Set<String>{ 'ProjectTaskDetail', 'ProjectTaskNotes' } );
 		
 		try{		
-			this.currentPage = ApexPages.currentPage().getUrl().split( '/apex/' ).get(1).split( '[?]' ).get(0);
+			this.currentPage = ApexPages.currentPage().getUrl().split( '/apex/' ).get(1).split( '[?]' ).get(0).replace( 'pf__', '' );
 		}catch( Exception e ){
 			this.currentPage = 'overview';
 		}
@@ -53,8 +53,7 @@ public with Sharing class BreadcrumController{
 		List<BreadcrumNode> breadcrumAux = new List<BreadcrumNode>(); 
 		
 		b = this.listNodes.get( this.currentPage.toLowercase() );
-		if( b != null )
-		{
+
 			breadcrumAux.add( b );
 			while( b.topName != 'root' ){
 				b = this.listNodes.get( b.topName.toLowercase() );
@@ -64,7 +63,7 @@ public with Sharing class BreadcrumController{
 			this.lastLinkPage = breadcrumAux[ 0 ].urlDisplay; 
 			for( Integer k = breadcrumAux.size()-1; k > 0; k-- )
 				this.breadcrum.add(  breadcrumAux[ k ]);
-		}	
+		
 	}
 	
 	/**
