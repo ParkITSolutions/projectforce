@@ -11,8 +11,6 @@
 <!--   <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}" />-->
     
      <!-- overlays resources -->
-<!--    <apex:includescript value="{!urlfor($resource.overlaysresources, 'inc/js/js.js')}"/>-->
-<!--    <apex:stylesheet value="{!urlfor($resource.overlaysresources, 'inc/css/css.css')}"/>-->
 
     <!-- Portal Support -->
     
@@ -116,7 +114,6 @@
                             <span> Edit </span>
                         </a>
                     </apex:outputPanel>         
-                    
                     <!-- Join Button -->
                     <apex:commandLink styleClass="blackbutton" action="{!joinProject}"
                         rendered="{!IF(AND(NOT(isMember), isPublic),true,false)}" 
@@ -129,11 +126,15 @@
                     <!-- Unjoin Button   -->
                     <apex:commandLink styleClass="blackbutton" rendered="{!IF(isMember,true,false)}" 
                         onclick="swirly.show();"  
-                        rerender="thisForm, mainContentForm, sidebarWidgets" action="{!unjoinProject}" 
-                        onComplete="projectDetail(); swirly.hide();  infoToUser.open( 'error', 'Last Adminstrator can not Unjoin' );">
+                        rerender="thisForm, mainContentForm, sidebarWidgets, unJoinErrors" action="{!unjoinProject}" 
+                        onComplete="projectDetail(); swirly.hide(); unJoinMember();">
                         <span> Unjoin </span>
                     </apex:commandLink>
-
+					<apex:outputPanel id="unJoinErrors">
+						<script type="text/javascript" >
+							var isLastAdmin = {!isLastMemberAdmin};
+						</script>
+					</apex:outputPanel>
                 </apex:form>    
             </div>              
         </div>
@@ -187,7 +188,18 @@
     <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupBottom.js')}" />
         
  
-    <script>
+    <script type="text/javascript">
+    
+    	function unJoinMember(){
+    		if( isLastAdmin ){
+    			infoToUser.open( 'error', 'Last Adminstrator can not Unjoin!' );
+    		}
+    		else{
+    			infoToUser.open( 'success', 'Member unjoined successfully!' );
+    		}
+    	}
+    	
+    	
        var userIsManager = '{!isManager}';
        function addAvatarAsAvatar(){
             window.frames.attachmentIframe.Attachment.uploadAsAvatar();

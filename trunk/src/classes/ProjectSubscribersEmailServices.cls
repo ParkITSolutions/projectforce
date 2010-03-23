@@ -499,6 +499,7 @@ public class ProjectSubscribersEmailServices{
     *@aram List<String> lstPTId
     *@return void
     */
+    //@future
     public static void sendMailForTaskPercentChangedFuture( List<String> lstPTId, List<String> statuses, List<String> percents ){   
     	ProjectUtil.inFuture = true;
 		ProjectSubscribersEmailServices m = new ProjectSubscribersEmailServices();
@@ -604,6 +605,7 @@ public class ProjectSubscribersEmailServices{
 	        					FROM ProjectSubscription__c 
 	        					WHERE Project__c =: lstTask[0].Project__c and ProjectTaskDeleted__c = true ];
         }
+        
         for(ProjectTask__c proj : lstTask){
 	        
 	        String htmlVar ='';
@@ -833,6 +835,8 @@ public class ProjectSubscribersEmailServices{
 	                address = new String[]{};
 	            }
 	        }
+	        
+	        
         }
     }
     

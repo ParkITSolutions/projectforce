@@ -13,7 +13,7 @@
     </script>
 
     <c:ConfirmOverlay id="deleteMembersOverlay"
-        title="Delete members"
+        title="Delete Members"
         messageToUser=" Are you sure you want to continue?"
         actionName="DeleteMembers" />
    

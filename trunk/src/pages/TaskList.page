@@ -13,13 +13,13 @@
     </script>
     
     <c:ConfirmOverlay id="DeleteTasksOverlay" 
-        title="Delete tasks"
+        title="Delete Tasks"
         messageToUser=" Are you sure you want to continue?
                         Once task(s) are deleted, it is not recoverable."
         actionName="DeleteTasks" />
         
     <c:ConfirmOverlay id="MarkCompleteTasksOverlay" 
-        title="Mark complete tasks"
+        title="Mark Complete Tasks"
         messageToUser=" Are you sure you want to continue? "
         actionName="MarkCompleteTasks" />   
     
@@ -367,11 +367,13 @@
                         
                         <apex:column >
                             <apex:facet name="header">
-                            <apex:outputpanel id="EndDatePanel">
+                            	Due date
+                            <!--<apex:outputpanel id="EndDatePanel">
                                     <apex:outputLink id="EndDateLink" value="javascript:;" onClick=" swirly.show(); paginator.setOrderBy('EndDate__c'); RefreshRecordsList();">Due date </apex:outputLink> &nbsp;
                                     <apex:image id="EndDateArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'EndDate__c', paginator.orderAsc),true,false)}" />
                                     <apex:image id="EndDateArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'EndDate__c', NOT(paginator.orderAsc)),true, false)}"/>
                                 </apex:outputpanel>
+                                -->
                             </apex:facet>
                             <apex:outputText value="{!task.endDateDisplay}"/>
                             <apex:outputPanel layout="block" styleClass="DaysLateMessage" rendered="{!IF(AND(task.OverdueTask > 0,AND(task.status != 'Resolved', task.status != 'Closed')),true,false)}">

@@ -66,10 +66,12 @@
                         <apex:outputLabel value="All task status or percent complete changes within a {!$ObjectType.Project2__c.label}"  for="ProjectSubscription:form_content:taskChanged"/>
                     </apex:outputPanel>
                     
+                    <!--
                     <apex:outputPanel id="checkTaskDeleted" styleclass="lineCheck" layout="block">
                         <apex:inputCheckbox id="taskDeleted" value="{!subscription.ProjectTaskDeleted__c}"/>
                         <apex:outputLabel value="When a task has been deleted "  for="ProjectSubscription:form_content:taskDeleted"/>
-                       </apex:outputPanel>
+                    </apex:outputPanel>
+                    -->
                 </apex:outputPanel>
                 
                 <!-- Buttons -->

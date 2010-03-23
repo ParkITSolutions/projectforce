@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
     <description>Install page, setups Org with initial install and show quick guide to deploying custom objects.</description>
-    <label>Project Settings</label>
+    <label>Project Setup</label>
     <mobileReady>false</mobileReady>
     <motif>Custom67: Gears</motif>
     <page>install</page>

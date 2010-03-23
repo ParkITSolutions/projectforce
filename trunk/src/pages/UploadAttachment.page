@@ -6,7 +6,7 @@
     <apex:stylesheet value="{!URLFOR($Resource.NewAttachment, 'inc/css/newAttachment.css')}" />
     <apex:includeScript value="{!URLFOR($Resource.NewAttachment, 'inc/js/newAttachment.js')}" />
 	
-    <apex:form id="uploadAttachment">
+    <apex:form id="uploadAttachment" >
     	
         <apex:outputPanel id="Overlay" styleClass="overlay overlayAttachment" layout="block">     
             <apex:outputPanel id="ComponentBody" styleClass="componentBody" layout="block">
@@ -21,7 +21,7 @@
     
                 <apex:outputPanel styleClass="submitButtons" layout="block">
                     <apex:commandLink id="Accept" styleClass="submitButton Accept" 
-                    	action="{!action}" onclick="parent.promptOverlay.close();parent.swirly.show();">
+                    	action="{!action}" onclick="parent.promptOverlay.close();parent.swirly.show(); return Attachment.verifyNameLength();">
                         Accept
                     </apex:commandLink>
                     <apex:outputLink id="Cancel" value="javascript:;" onClick="parent.promptOverlay.close(); Attachment.clearForm();" styleClass="submitButton Cancel" >
@@ -54,7 +54,7 @@
 	        
 	        <apex:outputPanel rendered="{!postAction == 'ReloadAttachmentList'}">
 	            <script type="text/javascript">          
-	                parent.reloadMainContent();
+	                parent.RefreshAttachmentList();
 	                parent.infoToUser.set('success', 'File uploaded.');
 	                
 	            </script>
@@ -102,16 +102,30 @@
 			},
 			
 			verifyNameLength : function(){
-				Attachment.sendFlag = Attachment.objFile.value.length < 71;
+				Attachment.objFile = $$('.newAttach')[0];
+				
+				if( Attachment.objFile.value.indexOf( '\\' ) > 0  )
+					arrAux = Attachment.objFile.value.split( '\\' );
+				else
+					arrAux = Attachment.objFile.value.split( '/' );
+				
+				fileName = arrAux[ arrAux.length - 1 ];
+				Attachment.sendFlag = fileName.length < 71;
 				
 				if( !Attachment.sendFlag ){
 					
 					Attachment.clearForm();
 					parent.infoToUser.open( 'error', 'File name too large, 70 characters max.' );
-				}else{
+					parent.swirly.hide();
+				}
+				/*
+				else{
 					parent.promptOverlay.close();
 					parent.swirly.show();
 				} 
+				*/
+				return Attachment.sendFlag;
+				
 			},
 			
 			clearForm : function(){

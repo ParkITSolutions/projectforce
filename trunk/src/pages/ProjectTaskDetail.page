@@ -7,10 +7,6 @@
         <apex:includeScript value="/soap/ajax/11.1/connection.js"/>
         <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}"/>
         
-         <!-- overlays resources -->
-        <apex:includeScript value="{!URLFOR($Resource.overlaysResources, 'inc/js/js.js')}"/>
-        <apex:stylesheet value="{!URLFOR($Resource.overlaysResources, 'inc/css/css.css')}"/>
-    
         <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
         <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />
         
@@ -200,7 +196,8 @@
              <div align="center" class="breadCrumbAndButtons">
         
         <div class="buttons">
-            <apex:outputpanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}" layout="block">
+        
+            <apex:outputpanel rendered="{!OR(userPermissions.canManage, taskPerm.canUpdate)}" layout="block">
                 <a class="blackbutton" href="/{!Task.id}/e?retURL=/{!Task.id}"><span>Edit Task</span></a>
                 <apex:form id="quickMilestoneForm" styleclass="quickMilestoneForm" onsubmit="if(isCompleted){alert('The task percent is already completed.');return false}"  >   
                     <apex:actionStatus id="taskStatus">
@@ -223,7 +220,7 @@
                         </apex:facet>
                     </apex:actionStatus>
                 </apex:form>                   
-                <apex:outputPanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner)}">
+                <apex:outputPanel rendered="{!OR(userPermissions.canManage, taskPerm.canDelete)}">
                     <apex:outputLink value="javascript:;"
                         id="Delete"
                         onClick="DeleteDetailTask();"
@@ -234,7 +231,7 @@
                     </apex:outputLink>
                     
                 </apex:outputPanel>  
-                <apex:outputPanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}">
+                <apex:outputPanel rendered="{!OR(userPermissions.canManage, taskPerm.canUpdate)}">
                     <a class="blackbutton" href="/apex/TaskPdfExport?id={!Task.id}">
                         <span>PDF Export</span>
                     </a>
@@ -324,7 +321,7 @@
                             <tr >
                                 <td class="labelCol vTop">Files</td>
                                 <td class="dataCol">
-                                    <apex:outputPanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}">    
+                                    <apex:outputPanel rendered="{!OR(userPermissions.canManage, taskPerm.canCreateAttachments)}">    
                                         <div class="DistincLink">
                                             <a href="Javascript:;" 
                                                onclick="promptOverlay.open(attachment);">
@@ -344,7 +341,7 @@
                                                         <a href="javascript:;" onclick="window.open('/servlet/servlet.FileDownload?file={!item.Id}')" >{!item.Name}</a>&nbsp;&nbsp;&nbsp;
                                                     </td>
                                                     <td>
-                                                        <apex:outputPanel styleClass="height20px" rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}"> 
+                                                        <apex:outputPanel styleClass="height20px" rendered="{!OR(userPermissions.canManage, taskPerm.canDeleteAttachments)}"> 
                                                             <apex:outputLink value="javascript:;"
                                                                 id="Delete"
                                                                 styleclass="notassigned"
@@ -364,7 +361,7 @@
                                     Assigned To
                                 </td>
                                 <td class="dataCol">
-                                    <apex:outputpanel rendered="{!AND(NOT(MaxAssignees), OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe))}">
+                                    <apex:outputpanel rendered="{!AND(NOT(MaxAssignees), OR(userPermissions.canManage, taskPerm.canCreateAssignees))}">
                                         <div class="DistincLink">
                                             <apex:image id="assignToImage" value="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/add.png')}"/>
                                             <apex:outputLink id="assignToLink"
@@ -382,7 +379,7 @@
                                                         <a href="/{!item.Id}">{!item.Name}</a>
                                                     </td>
                                                     <td>
-                                                        <apex:outputpanel rendered="{!AND(IF(Task.CantAssignees > 1, true, false), OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe))}">
+                                                        <apex:outputpanel rendered="{!AND(IF(Task.CantAssignees > 1, true, false), OR(userPermissions.canManage, taskPerm.canDeleteAssignees))}">
                                                             <apex:outputLink value="javascript:;"
                                                                 id="Delete"
                                                                 styleclass="notassigned"
@@ -396,14 +393,14 @@
                                         </table>
                                     </apex:outputpanel>
                                     <apex:outputpanel rendered="{!IF(!Task.HasAsignee,true,false)}" >
-                                        Nobody Asigned to this task.
+                                        Nobody Assigned to this task.
                                     </apex:outputpanel>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="labelCol vTop">Notes</td>
                                 <td class="dataCol">
-                                    <apex:outputpanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe)}">
+                                    <apex:outputpanel rendered="{!OR(userPermissions.canManage, taskPerm.canUpdate)}">
                                         <div class="DistincLink">
                                             <a href="ProjectTaskNotes?id={!Task.id}">
                                                 <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/icons/task_edit.png')}" alt="Add assignee" title="Add assignee" />
@@ -411,7 +408,7 @@
                                             </a>
                                         </div>
                                     </apex:outputpanel>
-                                    <apex:outputpanel rendered="{!NOT(OR(userPermissions.canManage, Task.IsTaskOwner, Task.assignToMe))}">
+                                    <apex:outputpanel rendered="{!NOT(OR(userPermissions.canManage, taskPerm.canUpdate))}">
                                         <div class="DistincLink">
                                                 Without permission to edit Notes
                                         </div>
@@ -427,7 +424,7 @@
                                             <apex:commandLink onclick="if(!validateComment()){return false;}"
                                                 oncomplete="swirly.hide();infoToUser.open( 'success', 'Comment saved successfully.');"
                                                 action="{!saveComment}"        
-                                                rendered="{!OR(userPermissions.canManage,Task.IsTaskOwner,Task.assignToMe)}"                             
+                                                rendered="{!OR(userPermissions.canManage,taskPerm.canUpdate)}"                             
                                                 rerender="taskComments">
                                                 <span>Save Comment</span>
                                             </apex:commandLink>
@@ -443,7 +440,7 @@
                                                     <apex:outputLink value="javascript:;"
                                                             id="DeleteComment"
                                                             styleclass="notassigned"
-                                                            rendered="{!OR(userPermissions.canManage,Task.IsTaskOwner,Task.assignToMe)}"
+                                                            rendered="{!OR(userPermissions.canManage,taskPerm.canUpdate)}"
                                                             onClick="TaskDetailDeleteComment('{!comment.Id}');">
                                                                 Delete Comment
                                                         </apex:outputLink>
@@ -463,7 +460,7 @@
             
             <div align="center" class="breadCrumbAndButtons" style="padding-top:15px;">
             <div class="buttons" >
-                <apex:outputpanel rendered="{!OR(userPermissions.canManage,Task.IsTaskOwner)}" layout="block">
+                <apex:outputpanel rendered="{!OR(userPermissions.canManage,taskPerm.canUpdate)}" layout="block">
                    <a class="blackbutton" href="/{!Task.id}/e?retURL=/{!Task.id}"><span>Edit Task</span></a>
                     <apex:form id="quickMilestoneForm2" styleclass="quickMilestoneForm" onsubmit="if(isCompleted){alert('The task percent is already completed.');return false}" >   
                         <apex:actionStatus id="taskStatus2">
@@ -485,7 +482,7 @@
                         </apex:actionStatus>
                     </apex:form>          
                     <a class="blackbutton" href="Javascript:;" onclick="DeleteDetailTask();"><span>Delete</span></a>
-                    <apex:outputPanel rendered="{!OR(userPermissions.canManage, Task.IsTaskOwner)}">
+                    <apex:outputPanel rendered="{!OR(userPermissions.canManage, taskPerm.canDelete)}">
                         <a class="blackbutton" href="/apex/TaskPdfExport?id={!Task.id}">
                             <span>PDF Export</span>
                         </a>
