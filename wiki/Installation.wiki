@@ -71,10 +71,50 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install22.jpg
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install23.jpg
 
-*_20. Click on "ProjectForce" option._*
+*_20. Select the "ProjectForce" option._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install18.jpg
 
-*_21. This is the main page, enjoy!_*
+*_21. Select the "ProjectForce" option._*
 
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install19.jpg
+http://projectforce.googlecode.com/svn/wiki/images/installation/i21.png
+
+*_22. Select the "ProjectForce" option._*
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/i22.png
+
+*_23. Select the "ProjectForce" option._*
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/i23.png
+
+*_24. Select the "ProjectForce" option._*
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/i24.png
+
+*_25. Select the "ProjectForce" option._*
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/i25.png
+
+*_26. Select the "ProjectForce" option._*
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/i26.png
+
+*_27. Select the "ProjectForce" option._*
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/i27.png
+
+*_28. Select the "ProjectForce" option._*
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/i28.png
+
+*_29. Select the "ProjectForce" option._*
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/i29.png
+
+*_30. Select the "ProjectForce" option._*
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/i30.png
+
+*_31. This is the main page, enjoy!_*
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/i30.png
