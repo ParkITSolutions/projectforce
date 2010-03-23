@@ -75,43 +75,43 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install23.jpg
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install18.jpg
 
-*_21. Select the "ProjectForce" option._*
+*_21. Click on "Setup" link._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i21.png
 
-*_22. Select the "ProjectForce" option._*
+*_22. Expand "Manage Users" option._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i22.png
 
-*_23. Select the "ProjectForce" option._*
+*_23. Click on "Profiles" link._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i23.png
 
-*_24. Select the "ProjectForce" option._*
+*_24. Click on "Standard User" link._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i24.png
 
-*_25. Select the "ProjectForce" option._*
+*_25. Click on "Clone" button._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i25.png
 
-*_26. Select the "ProjectForce" option._*
+*_26. Write "ProjectForce" in Project Name field and click on "Save" button._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i26.png
 
-*_27. Select the "ProjectForce" option._*
+*_27. Click on "Edit" button._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i27.png
 
-*_28. Select the "ProjectForce" option._*
+*_28. Check out all the checkboxs._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i28.png
 
-*_29. Select the "ProjectForce" option._*
+*_29. Click on "Save" button._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i29.png
 
-*_30. Select the "ProjectForce" option._*
+*_30. Click on "Projects" Tab._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i30.png
 
