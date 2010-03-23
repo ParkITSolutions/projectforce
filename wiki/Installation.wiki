@@ -103,7 +103,7 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/i26.png
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i27.png
 
-*_28. Check out all the checkboxs._*
+*_28. Scroll down at the bottom of the page and check out all the checkboxs of this section._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i28.png
 
