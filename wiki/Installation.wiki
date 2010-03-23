@@ -71,74 +71,10 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install22.jpg
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install23.jpg
 
-*_20. On App Setup section, click on "Create" option._*
-
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install14.jpg
-
-*_21. Click on "Objects" option._*
-
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install15.jpg
-
-*_22. Click on the "Project" link which is next to "ProjectForce"_*
-
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install24.png
-
-*_23. Scroll down the page and click on the "Override" link which is next to "Projects Tab"_*
-
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install16.jpg
-
-*_24. Select "Visualforce Page" option._*
-
-*_25. Select "Project Overview'['ProjectOverview']'option._*
-
-*_26. Click on "Save" button._*
-
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install17.jpg
-
-*_27. Repeat the previous steps 20 and 21._*
-
-*_28. Click on "Project" link._*
-
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install24.png
-
-*_29. Scroll down the page._*
-
-*_30. Click on the "Override" link which is next to "View"._*
-
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install25.png
-
-*_31. Select "Visualforce Page" option._*
-
-*_32. Select "Project Detail'['ProjectDetail']'option._*
-
-*_33. Click on "Save" button._*
-
-http://projectforce.googlecode.com/svn/wiki/images/installation/Insall26.png
-
-*_34. Repeat the previous steps 20 and 21._*
-
-*_35. Click on "Project Task" link._*
-
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install27.png
-
-*_36. Scroll down the page._*
-
-*_37. Click on the "Override" link which is next to "View"._*
-
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install28.png
-
-*_38. Select "Visualforce Page" option._*
-
-*_39. Select "Project Task Detail'['ProjectTaskDetail']'option._*
-
-*_40. Click on "Save" button._*
-
-http://projectforce.googlecode.com/svn/wiki/images/installation/Install29.png
-
-*_41. Click on "ProjectForce" option._*
+*_20. Click on "ProjectForce" option._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install18.jpg
 
-*_42. This is the main page, enjoy!_*
+*_21. This is the main page, enjoy!_*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/Install19.jpg
