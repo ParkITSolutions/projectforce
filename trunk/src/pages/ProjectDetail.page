@@ -24,10 +24,13 @@
 
     <!-- CSS Includes -->
     <apex:outputPanel rendered="{!isProduction}">
+    
+    </apex:outputPanel>
+    
         <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
         <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
         <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
-    </apex:outputPanel>
+    
     
     <!-- ### Initialize the overlay box for modal.js ### -->
 <!--    <a href="#modal_container" id="initializeModal" style="display:none;"></a>-->

@@ -1,4 +1,4 @@
-<apex:page id="ProjectSubscription" cache="false" sidebar="false" tabStyle="Project2__c" controller="ProjectSubscriptionController">
+<apex:page id="ProjectSubscription" cache="true" sidebar="false" tabStyle="Project2__c" controller="ProjectSubscriptionController">
 
    <c:ApplicationTop id="ApplicationTop" />
     

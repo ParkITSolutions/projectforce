@@ -45,7 +45,7 @@
                         function setFocusAreaState()
                         {
                             var options = { script: function (input) {  return ('SuggestDispatcher?input='+input+'&class=colleagueNames&teamId={!HTMLENCODE( projectId )}&selectedMembers='+$$('.colleaguesNames')[0].value);}};
-                            var xml = new AutoComplete('{!$Component.colleaguesNames}',options);
+                            var xml = new ProjectAutoComplete('{!$Component.colleaguesNames}',options);
                             return true;
                         }
                     </script>                

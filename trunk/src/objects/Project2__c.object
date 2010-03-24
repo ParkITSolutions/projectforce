@@ -50,7 +50,7 @@ Private -  This Project will not appear in search. Membership is by invitation o
         <picklist>
             <picklistValues>
                 <fullName>1</fullName>
-                <default>true</default>
+                <default>false</default>
             </picklistValues>
             <picklistValues>
                 <fullName>2</fullName>
@@ -66,7 +66,7 @@ Private -  This Project will not appear in search. Membership is by invitation o
             </picklistValues>
             <picklistValues>
                 <fullName>5</fullName>
-                <default>false</default>
+                <default>true</default>
             </picklistValues>
             <picklistValues>
                 <fullName>6</fullName>
@@ -93,11 +93,11 @@ Private -  This Project will not appear in search. Membership is by invitation o
         <picklist>
             <picklistValues>
                 <fullName>Hours</fullName>
-                <default>true</default>
+                <default>false</default>
             </picklistValues>
             <picklistValues>
                 <fullName>Days</fullName>
-                <default>false</default>
+                <default>true</default>
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
@@ -201,10 +201,10 @@ Private -  This Project will not appear in search. Membership is by invitation o
     </fields>
     <fields>
         <fullName>WorkingHours__c</fullName>
-        <defaultValue>1</defaultValue>
+        <defaultValue>8</defaultValue>
         <description>Sets the amount of hour worked per day.</description>
         <inlineHelpText>Working hour should be between 1 - 24</inlineHelpText>
-        <label>Working hours</label>
+        <label>Working hours per day</label>
         <precision>2</precision>
         <required>true</required>
         <scale>0</scale>

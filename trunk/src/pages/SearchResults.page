@@ -1,4 +1,4 @@
-<apex:page id="searchResults" sidebar="false" controller="SearchResultsController" tabStyle="Project2__c" action="{!search}">   
+<apex:page id="searchResults" sidebar="false" cache="true" controller="SearchResultsController" tabStyle="Project2__c" action="{!search}">   
     
     <c:ApplicationTop id="ApplicationTop" />
     
