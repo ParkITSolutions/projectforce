@@ -103,18 +103,22 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/i26.png
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i27.png
 
-*_28. Scroll down at the bottom of the page and check out all the checkboxs of this section._*
+*_28. Change this options._*
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/i27_2.png
+
+*_29. Scroll down at the bottom of the page and check out all the checkboxs of this section._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i28.png
 
-*_29. Click on "Save" button._*
+*_30. Click on "Save" button._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i29.png
 
-*_30. Click on "Projects" Tab._*
+*_31. Click on "Projects" Tab._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i30.png
 
-*_31. This is the main page, enjoy!_*
+*_32. This is the main page, enjoy!_*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i31.png
