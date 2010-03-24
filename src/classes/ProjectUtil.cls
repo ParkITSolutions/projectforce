@@ -4,7 +4,7 @@
 public class ProjectUtil {
 	
 	//Important enables minimized JS and CSS files for Production Release
-	public static Boolean isProduction = true;
+	public static Boolean isProduction = false;
 	
 	public static Boolean currentlyExeTrigger = false;
 	public static Boolean isRunnig = false;

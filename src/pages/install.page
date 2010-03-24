@@ -1,4 +1,4 @@
-<apex:page controller="InstallController" sidebar="false" tabStyle="Project_Settings__tab" action="{!projectSetupActualization}" >
+<apex:page controller="InstallController" cache="true" sidebar="false" tabStyle="Project_Settings__tab" action="{!projectSetupActualization}" >
 	
 	<style type="text/css">
 		.title{

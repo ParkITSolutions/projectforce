@@ -2093,6 +2093,10 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>ProjectGuide</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>ProjectSetup</apexPage>
         <enabled>true</enabled>
     </pageAccesses>

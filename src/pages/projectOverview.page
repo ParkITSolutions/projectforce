@@ -1,14 +1,16 @@
-<apex:page id="projectOverview" sidebar="false" tabStyle="Project2__c" controller="ProjectOverviewController"  >
+<apex:page id="projectOverview" sidebar="false" cache="true" tabStyle="Project2__c" controller="ProjectOverviewController"  >
     
     <c:ApplicationTop id="ApplicationTop" />
     
     <apex:outputPanel rendered="{!isProduction}">
-        <!-- Prototype / Scriptaculous Framework -->
+    
+    </apex:outputPanel>
+        <!-- Prototype / Scriptaculous Framework
         <apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/prototype.js')}"/>
         <apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/scriptaculous.js')}"/>
         <apex:includeScript value="{!URLFOR($Resource.PeopleResourceFiles, 'inc/js/effects.js')}"/>
         <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}"/>
-        
+         -->
         <!-- Portal Support -->
         <apex:includeScript value="{!$Resource.portalSupport}"/>
         
@@ -28,14 +30,13 @@
         <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/miniFeeds.css')}" />  
         
         <!-- CSS styles for Portal Integration -->
-        <apex:stylesheet value="{!URLFOR($Resource.portalStyles, 'portal.css')}" />
         <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
         <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/widgetTeam.css')}" />
         
         <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamsOverview.css')}" />
         
         <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/teamOverview.js')}" />
-    </apex:outputPanel>
+    
     
     <script>
          
@@ -56,7 +57,7 @@
     <!-- Initialize the overlay box for modal.js -->
     <a href="#modal_container" id="initializeModal" style="display:none;"></a>
     <div id="modal_container"></div>
-    <script>createOverlay('initializeModal')</script>
+   
     <!-- Header -->
     <apex:composition template="HeaderTemplate">
         <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
