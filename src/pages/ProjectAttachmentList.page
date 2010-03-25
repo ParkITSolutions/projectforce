@@ -100,7 +100,8 @@
                         <apex:column >
                             <apex:facet name="header">
                                 <apex:outputpanel id="namePanel">
-                                    <apex:outputLink id="nameLink" value="javascript:;" onClick="swirly.show();RefreshRecordsList();">Name </apex:outputLink> &nbsp;
+                                Name
+                                    <!--<apex:outputLink id="nameLink" value="javascript:;" onClick="swirly.show();RefreshRecordsList();">Name </apex:outputLink> &nbsp;-->
                                     <!-- <apex:image id="NameArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', paginator.orderAsc),true,false)}" />
                                     <apex:image id="NameArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', NOT(paginator.orderAsc)),true, false)}"/>-->
                                 </apex:outputpanel>
@@ -111,7 +112,8 @@
                         <apex:column >
                             <apex:facet name="header">
                                 <apex:outputpanel id="weightPanel">
-                                    <apex:outputLink id="weightLink" value="javascript:;" onClick="swirly.show(); RefreshRecordsList();">Weight </apex:outputLink> &nbsp;
+                                Weight
+                                    <!--<apex:outputLink id="weightLink" value="javascript:;" onClick="swirly.show(); RefreshRecordsList();">Weight </apex:outputLink> &nbsp;-->
                                     <!--<apex:image id="weightArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', paginator.orderAsc),true,false)}" />
                                     <apex:image id="weightArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', NOT(paginator.orderAsc)),true, false)}"/>-->
                                 </apex:outputpanel>
@@ -122,7 +124,8 @@
                         <apex:column >
                             <apex:facet name="header">
                                 <apex:outputpanel id="createdByPanel">
-                                    <apex:outputLink id="createdByLink" value="javascript:;" onClick="swirly.show();  RefreshRecordsList();">Created By </apex:outputLink> &nbsp;
+                                Created By
+                                    <!--<apex:outputLink id="createdByLink" value="javascript:;" onClick="swirly.show();  RefreshRecordsList();">Created By </apex:outputLink> &nbsp;-->
                                     <!--<apex:image id="createdByArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', paginator.orderAsc),true,false)}" />
                                     <apex:image id="createdByArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', NOT(paginator.orderAsc)),true, false)}"/>-->
                                 </apex:outputpanel>
@@ -133,7 +136,8 @@
                         <apex:column style="width:210px;">
                             <apex:facet name="header">
                                 <apex:outputpanel id="createdDatePanel">
-                                    <apex:outputLink id="createdDateLink" value="javascript:;" onClick="swirly.show();  RefreshRecordsList();">Created Date </apex:outputLink> &nbsp;
+                                Created Date
+                                    <!--<apex:outputLink id="createdDateLink" value="javascript:;" onClick="swirly.show();  RefreshRecordsList();">Created Date </apex:outputLink> &nbsp;-->
                                     <!--<apex:image id="createdDateArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', paginator.orderAsc),true,false)}" />
                                     <apex:image id="createdDateArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', NOT(paginator.orderAsc)),true, false)}"/> -->
                                 </apex:outputpanel>

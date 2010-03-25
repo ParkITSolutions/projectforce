@@ -67,20 +67,24 @@
             <c:Search id="searchBox" module="Project" label="Projects" />
         </apex:define>
     </apex:composition> 
+    
     <!-- Sidebar -->
     <div class="sidebar">
+        
         <c:ProjectsWidgetMyTasks id="myTasks"/>
+        
         <c:ProjectsWidgetMyMilestones id="myMilestones"/>
         
         <!-- <c:ProjectSetupWidget id="projectSetup"/ rendered="{!isManager}"> -->
     </div>
+    
     <!-- Main Content Div --> 
     <div class="main_content" > 
-        
+        <apex:form >
         <div class="RightOverview">
-            <!-- Tabs -->
+            <!-- Tabs --> 
             <div class="tabContainer">
-                <apex:form >
+                
                     <ul class="tabsgray">
                         <li class="selected" id="myProjects">
                             <apex:commandLink value="My {!$ObjectType.Project2__c.labelPlural}" 
@@ -128,7 +132,6 @@
                             </apex:outputPanel>
                         </li>
                     </ul>
-                </apex:form>
             </div>
             <div class="tabBorderBlue">&nbsp;</div>
             <!-- Content Projects -->  
@@ -139,7 +142,6 @@
                     <apex:outputPanel layout="block" id="filter" rendered="{!isAllProjects}">
                         <div class="filter" id="filterDiv"  style="">
                             <div class="letterFilterWrapper">
-                                <apex:form id="filterForm">
                                     <div class="letterFilterTitle">Filter</div>
                                     <div class="letterFilterContainer">
                                         <ul class="letterFilter">
@@ -167,7 +169,6 @@
                                             </apex:repeat>
                                         </ul>
                                     </div><br style="clear:both; font-size:3px;" />
-                                </apex:form>
                             </div>
                         </div>
                         <hr class="filterHR" style="color: #E1E1E2;"/>
@@ -175,7 +176,6 @@
                     <!-- PAGINATION    -->
                     <apex:outputPanel layout="block" id="pagination" rendered="{!isAllProjects}" styleClass="navigatorContainer">               
                         <div class="navigation">
-                            <apex:form >
                                 <ul align="center">
                                 <!--  first page  -->
                                 <li>
@@ -219,7 +219,6 @@
                                         <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_last_disabled.gif')}" alt=">>"/>
                                     </apex:outputPanel> 
                                 </li>                               </ul>
-                            </apex:form>                
                         </div> 
                         <hr class="filterHR" style="color: #E1E1E2;"/>  
                     </apex:outputPanel>     
@@ -262,7 +261,6 @@
                          <hr class="filterHR" style="color: #E1E1E2;"/>
                         <div class="navigation">
                        
-                            <apex:form >
                                 <ul align="center">
                                 <!--  first page  -->
                                 <li>
@@ -306,23 +304,16 @@
                                         <img src="{!URLFOR($Resource.ProjectResources, 'images/layout/pagination_arrow_last_disabled.gif')}" alt=">>"/>
                                     </apex:outputPanel> 
                                 </li>                               </ul>
-                            </apex:form>                
-                        </div> 
                         <hr class="filterHR" style="color: #E1E1E2;"/>  
                     </apex:outputPanel>     
                     <!-- /PAGINATION -->  
-                    
-                    
                                         
                 </apex:outputPanel> 
             </div>
             
-    
-            
-            
             <!-- Widget Col -->
                     
         </div>
+        </apex:form>
     </div>
-    
 </apex:page>

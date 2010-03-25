@@ -120,7 +120,9 @@ public with Sharing class TaskListController{
             	csvText += iterTask.assignees[0].name + ',';
             }         
             csvText += iterTask.getPercentCompleted() + ',';
-            csvText += iterTask.endDate + '\n';
+            csvText += iterTask.getDurationDisplay() + ',';
+            csvText += iterTask.endDate + ',';
+            csvText += iterTask.daysOverdue  + '\n';
                  
         }
        

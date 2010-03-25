@@ -41,6 +41,8 @@ public with sharing class ProjectDetailController{
     */
     public ProjectDetailController (){} 
     
+    public void dummyRefresh(){}
+    
     /**
     * @return boolean isLastMemberAdmin
     */

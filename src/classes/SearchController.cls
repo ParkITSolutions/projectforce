@@ -35,8 +35,7 @@ public with Sharing class SearchController{
 	* @return String
 	*/ 
 	public String getLabelName(){
-		
-		if( System.currentPageReference().getParameters().get( 'id' ) == null ){
+		if( System.currentPageReference().getParameters().get( 'id' ) == null || System.currentPageReference().getParameters().get( 'id' ) == '' ){
 			return 'Projects';
 		}
 		else{
@@ -91,8 +90,7 @@ public with Sharing class SearchController{
 			
 			PageReference pageRef = Page.SearchResults;
 			pageRef.getParameters().put( 'key', this.key );
-			
-			if( this.projectId != null || this.projectId != '' ){
+			if( this.projectId != null && this.projectId != '' ){
 				pageRef.getParameters().put( 'id', this.projectId) ;
 			}
 			
