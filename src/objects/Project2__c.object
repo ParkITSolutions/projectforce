@@ -14,7 +14,7 @@ Private -  This Project will not appear in search. Membership is by invitation o
         <picklist>
             <picklistValues>
                 <fullName>Open</fullName>
-                <default>false</default>
+                <default>true</default>
             </picklistValues>
             <picklistValues>
                 <fullName>Closed</fullName>
@@ -137,7 +137,7 @@ Private -  This Project will not appear in search. Membership is by invitation o
             </picklistValues>
             <picklistValues>
                 <fullName>Medium</fullName>
-                <default>false</default>
+                <default>true</default>
             </picklistValues>
             <picklistValues>
                 <fullName>Low</fullName>
