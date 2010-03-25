@@ -12,7 +12,7 @@
         <apex:composition template="HeaderTemplate">
             <apex:define name="moduleId"><apex:variable var="moduleId" value="headerTeams"/></apex:define>
             <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
-            <apex:define name="title">Project Detail</apex:define>
+            <apex:define name="title">User Tasks</apex:define>
             <apex:define name="search">
                 <c:Search module="Project" label="Tasks"/>
             </apex:define>
@@ -288,7 +288,7 @@
     
                         <apex:column >
                             <apex:facet name="header">
-                                <apex:outputLink value="javascript:;" onclick="swirly.show();paginator.setOrderBy('projectTask__r.DurationUI__c');RefreshRecordsList();" >
+                                <apex:outputLink value="javascript:;" onclick="swirly.show();paginator.setOrderBy('projectTask__r.RawDuration__c');RefreshRecordsList();" >
                                     Duration    
                                     <apex:outputPanel rendered="{! paginator.orderBy == 'projectTask__r.DurationUI__c'}">
                                         <apex:image value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!paginator.orderAsc}"/>

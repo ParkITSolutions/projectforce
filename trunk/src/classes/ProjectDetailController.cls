@@ -162,7 +162,7 @@ public with sharing class ProjectDetailController{
                                 limit 1];
             
             
-            Project2__c proj = [ Select Id, Name, Type__c From Project2__c where Id =: this.projectId ];
+            Project2__c proj = [ Select Id, Name, Access__c, Type__c From Project2__c where Id =: this.projectId ];
             /*if ( userPermission.getCanManage() ){
                 this.setIsPublic( true );
             }
@@ -170,7 +170,7 @@ public with sharing class ProjectDetailController{
                 this.setIsPublic( false );
             }
               */ 
-            if( proj.Type__c == 'open' ){
+            if( proj.Access__c == 'open' ){
                 this.setIsPublic( true );
             }
             else{

@@ -167,6 +167,7 @@
         //project.NewmemberProfile__c = profList[ 1 ].Id;
 		insert project;
         project.PublicProfile__c = GenerateEnvironmentTest.profList[ 0 ].Id;
+		ProjectUtil.currentlyExeTrigger = true;
 		update project;
 		
 		
