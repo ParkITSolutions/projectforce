@@ -175,10 +175,4 @@
 	        
 	</apex:outputpanel>
 	
-    <!-- <script type="text/javascript">
-        if($$('.sideBar')[0].offsetHeight < 50)
-        {
-            $$('.sideBar')[0].style.height = '300px';
-        }
-    </script> -->
 </apex:page>

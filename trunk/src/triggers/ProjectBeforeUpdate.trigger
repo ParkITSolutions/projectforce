@@ -25,18 +25,17 @@ trigger ProjectBeforeUpdate on Project2__c (before update) {
 	        }
 		}  	
 		
-		// Verefying modified fields. This fields can't be modified once a project its created.
-		if( projectOld.DisplayDuration__c != project.DisplayDuration__c )
-			project.DisplayDuration__c.addError('This value can\'t be modified, restore value to ' + projectOld.DisplayDuration__c);
-		
-		if( projectOld.DaysInWorkWeek__c != project.DaysInWorkWeek__c )
-			project.DaysInWorkWeek__c.addError('This value can\'t be modified, restore value to ' + projectOld.DaysInWorkWeek__c);
-		
-		if( projectOld.WorkingHours__c != project.WorkingHours__c )
-			project.WorkingHours__c.addError('This value can\'t be modified, restore value to ' + projectOld.WorkingHours__c);
+		List<ProjectTask__c> taskList = [ select Id, Project__c from ProjectTask__c where Project__c=: projectOld.Id limit 1000 ];
+		if( taskList.size() > 0 ){
+			// Verefying modified fields. This fields can't be modified once a project its created.
+			if( projectOld.DisplayDuration__c != project.DisplayDuration__c )
+				project.DisplayDuration__c.addError('This value can\'t be modified, restore value to ' + projectOld.DisplayDuration__c);
 			
-		//Logging Changes for Project	
-		//ProjectActivity prjActivity = new ProjectActivity(project.Id, DateTime.now(), UserInfo.getUserId(), 'Update', projectOld, project);
-		//prjActivity.log();
+			if( projectOld.DaysInWorkWeek__c != project.DaysInWorkWeek__c )
+				project.DaysInWorkWeek__c.addError('This value can\'t be modified, restore value to ' + projectOld.DaysInWorkWeek__c);
+			
+			if( projectOld.WorkingHours__c != project.WorkingHours__c )
+				project.WorkingHours__c.addError('This value can\'t be modified, restore value to ' + projectOld.WorkingHours__c);
+		}
 	}
 }

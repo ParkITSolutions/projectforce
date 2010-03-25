@@ -2,6 +2,7 @@
 
 
      <c:ApplicationTop id="ApplicationTop" />
+     
     <!-- Ajax Toolkit 
     <apex:includeScript value="/soap/ajax/11.1/connection.js" />
     <script>
@@ -42,13 +43,13 @@
         var globalCheckNew = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}';
         var userIsManager = '{!isManager}';
         */
+        
         var deleteProjectOverlay = new ConfirmOverlay( '{!$Component.DeleteProjectOverlay}' );
     
         function DeleteProject(){
             deleteProjectOverlay.open();
             deleteProjectOverlay.setActionIds('{!HTMLENCODE( projectId )}');    
         }
-
     </script>
     
     <c:PromptOverlay id="PromptOverlay"
@@ -64,16 +65,15 @@
         title="Delete Project"
         messageToUser=" Are you sure you want to delete this project? 
         Once a project is deleted, tasks and milestones are not recoverable"
-        actionName="DeleteProject" 
-    />  
+        actionName="DeleteProject" />  
     
     <!-- Delete Project Attachment -->
     <c:ConfirmOverlay id="DeleteProjectAttachmentOverlay" 
         title="Delete Project Attachment"
         messageToUser=" Are you sure you want to delete this attachment?"
-        actionName="ProjectDetailDeleteAttachments"
-    />  
-        
+        actionName="ProjectDetailDeleteAttachments" />  
+    
+    
     <div id="all" style="overflow:hidden;">
         
         <!-- Header -->
@@ -91,15 +91,13 @@
             <c:Breadcrum id="BreadCrum"/>
         </apex:outputPanel>
         <!-- End breadcrumbPanel -->
-     
-         <apex:form >
-            <apex:actionFunction action="{!deleteAvatar}" name="deleteTheAvatar" rerender="mainContentForm" oncomplete="projectDetail();swirly.hide();" />
-         </apex:form>            
+         
          <div align="center" class="breadCrumbAndButtons">
 
             <div id="btnDiv">
-                <apex:form id="thisForm" >
-                
+               <apex:form id="thisForm" >
+               		
+                	<apex:actionFunction action="{!deleteAvatar}" name="deleteTheAvatar" rerender="mainContentForm" oncomplete="projectDetail();swirly.hide();" />
                     <apex:outputPanel styleClass="isLastMemberAdmin" style="display: none;" >{!isLastMemberAdmin}</apex:outputPanel>
                     <!-- Edit-Delete Project Buttons -->
                     <apex:outputPanel rendered="{!IF(userPermission.canManage, true, false)}">
@@ -138,7 +136,7 @@
 							var isLastAdmin = {!isLastMemberAdmin};
 						</script>
 					</apex:outputPanel>
-                </apex:form>    
+                   </apex:form>
             </div>              
         </div>
         
@@ -159,12 +157,11 @@
         </div>
    
     </div>
-    
+    <apex:form id="mainContentForm" >
     <!-- Main Content -->
     <div class="main_content" id="main_content">
         <div class="centerCol">
            <div class="holder">
-                <apex:form id="mainContentForm">
                          
                     <!-- sfdc detail -->
                     <div style="display:none;" class="sfdcDetail">
@@ -183,11 +180,10 @@
                     <!-- Project Attachments (Overlay and Widget) -->
                     <c:ProjectDetailAttachment project="{!HTMLENCODE( projectId )}" id="ProjectDetailAttachment"/>
                     
-                </apex:form> 
             </div>
         </div>
     </div>
-        
+        </apex:form> 
     <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupBottom.js')}" />
         
  

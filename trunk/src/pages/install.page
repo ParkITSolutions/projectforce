@@ -36,11 +36,14 @@
 	<span class="title" >Click on "Edit" button</span><br/>
 	<apex:image value="{!URLFOR($Resource.Install, 'images/profile5.png')}" width="900" /> <br/>
 	
-	<span class="title" >Scroll down at the bottom of the page and check out all the checkboxs of this section</span><br/>
+	<span class="title" >Change this options</span><br/>
 	<apex:image value="{!URLFOR($Resource.Install, 'images/profile6.png')}" width="900" /> <br/>
 	
-	<span class="title" >Click on "Save" butto</span><br/>
+	<span class="title" >Scroll down at the bottom of the page and check out all the checkboxs of this section</span><br/>
 	<apex:image value="{!URLFOR($Resource.Install, 'images/profile7.png')}" width="900" /> <br/>
+	
+	<span class="title" >Click on "Save" button</span><br/>
+	<apex:image value="{!URLFOR($Resource.Install, 'images/profile8.png')}" width="900" /> <br/>
 	
 	<span class="title" >And thats it! Your now ready to start using ProjectForce. Remeber ProjectForce 
 	Users must use the Profile above created
