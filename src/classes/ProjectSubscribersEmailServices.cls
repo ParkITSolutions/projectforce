@@ -11,6 +11,7 @@ public class ProjectSubscribersEmailServices{
     private List<ProjectSubscription__c> subscriptions2 = new List<ProjectSubscription__c>();
     public Boolean isTaskEdit = false;  
     public Boolean isTest = false;
+   
     
 	public static Boolean alreadySent = false;
 	
@@ -502,6 +503,7 @@ public class ProjectSubscribersEmailServices{
     //@future
     public static void sendMailForTaskPercentChangedFuture( List<String> lstPTId, List<String> statuses, List<String> percents ){   
     	ProjectUtil.inFuture = true;
+    	
 		ProjectSubscribersEmailServices m = new ProjectSubscribersEmailServices();
 		m.sendMailForTaskPercentChanged( lstPTId, statuses, percents ); 
 	}   
@@ -563,6 +565,15 @@ public class ProjectSubscribersEmailServices{
 	        htmlVar=returnVarHtml(htmlVar, title, field);
 	        
 	        msjFoot='The percent completed from task has changed from '+oldPercent+' to '+lstPT[0].PercentCompleted__c;
+	        
+	        //////////////////
+			/*	msjFoot+='	<BIG><b>ACAAAA :  ';
+				//msjFoot+='	auxHostName = |'+ProjectUtil.auxHostName+'| , ';
+				msjFoot+='	auxHostName = |'+Site.getDomain()+'| , ';
+				//Site.Domain;
+				msjFoot+='	</BIG></b>';*/
+			///////////////////*/
+	        
 	        htmlVar=returnHtmlFin(htmlVar,msjFoot);
 	        emailMsj=htmlVar;
 

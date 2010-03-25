@@ -5,11 +5,11 @@ trigger ProjectAfterInsert on Project2__c bulk (after insert) {
 
         try {
             //Projects
-            Project2__c[] t = Trigger.new;
-	        Group organization = new Group();
-	        List<Group> portalGroup = new List<Group>();
-			List<Group> partnerGroup = new List<Group>();
-			ProjectProfile__c defaultProfile = new ProjectProfile__c();     
+            Project2__c[] t 					= Trigger.new;
+	        Group organization 					= new Group();
+	        List<Group> portalGroup 			= new List<Group>();
+			List<Group> partnerGroup 			= new List<Group>();
+			ProjectProfile__c defaultProfile 	= new ProjectProfile__c();     
             
             //Default project member profile
             defaultProfile = [select Id from ProjectProfile__c where Name = 'Project Administrator' limit 1];
@@ -109,23 +109,22 @@ trigger ProjectAfterInsert on Project2__c bulk (after insert) {
                 // triggers firing off when all we want to do is update the owner id.
                 ProjectUtil.currentlyExeTrigger = true;
                 upsert tempTeam;
-                                
                 ProjectUtil.currentlyExeTrigger = false;
                         
                 // Create __Shared object for team
                 Project2__Share teamS = new Project2__Share();
-                teamS.ParentId = team.Id;
+                teamS.ParentId 		= team.Id;
                 teamS.UserOrGroupId = g.Id;
-                teamS.AccessLevel = 'Read';
-                teamS.RowCause = 'Manual';
+                teamS.AccessLevel 	= 'Read';
+                teamS.RowCause 		= 'Manual';
                 insert teamS;  
             
                 // Create the first team member (the founder)
                 ProjectMember__c firstTeamMember = new ProjectMember__c();
-                firstTeamMember.User__c = Userinfo.getUserId();
-                firstTeamMember.Name = UserInfo.getName();
-                firstTeamMember.Project__c = team.Id;
-                firstTeamMember.Profile__c = defaultProfile.Id;
+                firstTeamMember.User__c 	= Userinfo.getUserId();
+                firstTeamMember.Name 		= UserInfo.getName();
+                firstTeamMember.Project__c 	= team.Id;
+                firstTeamMember.Profile__c 	= defaultProfile.Id;
                 insert firstTeamMember;
             }
         } finally {
@@ -134,16 +133,26 @@ trigger ProjectAfterInsert on Project2__c bulk (after insert) {
         
     	ProjectUtil.currentlyExeTrigger = false;
     
-    }else {
+    }
+    else{
+    	
     	ProjectProfile__c defaultProfile = new ProjectProfile__c();  
         defaultProfile = [select Id from ProjectProfile__c where Name = 'Project Administrator' limit 1];
-        for (Project2__c team : Trigger.new) {
+        
+        List<ProjectMember__c> memberLst = new List<ProjectMember__c>();
+        
+        for( Project2__c team : Trigger.new ){
+            
             ProjectMember__c firstTeamMember = new ProjectMember__c();
-            firstTeamMember.User__c = Userinfo.getUserId();
-            firstTeamMember.Name = UserInfo.getName();
-            firstTeamMember.Project__c = team.Id;
-            firstTeamMember.Profile__c = defaultProfile.Id;
-            insert firstTeamMember; 
+            
+            firstTeamMember.User__c 	= Userinfo.getUserId();
+            firstTeamMember.Name 		= UserInfo.getName();
+            firstTeamMember.Project__c 	= team.Id;
+            firstTeamMember.Profile__c 	= defaultProfile.Id;
+            
+            memberLst.add( firstTeamMember ); 
         }
+        
+        insert memberLst; 
     }
 }

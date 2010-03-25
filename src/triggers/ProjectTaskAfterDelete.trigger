@@ -1,18 +1,18 @@
 trigger ProjectTaskAfterDelete on ProjectTask__c (after delete) {
-	
-	ParentTask parent = new ParentTask();
+    
+    ParentTask parent = new ParentTask();
     BigListOfTasks bigListOfTasks = new BigListOfTasks(Trigger.old.get(0).Project__c);
     
     //Gets all tasks which are children from the Task we are Deleting
     for( ProjectTask__c tsk : ProjectUtil.childrenTaskToDelete ){
-		parent.getAllChildTasks( tsk );
+        parent.getAllChildTasks( tsk );
     }
     
     if( ProjectUtil.getFlagValidationParentTask() ){
-    	//Sets flag for deleting children Tasks
-	    ProjectUtil.setFlagValidationParentTask( false );
-	    	delete ProjectUtil.childrenTaskToDelete2.values();
-	    ProjectUtil.setFlagValidationParentTask( true );
+        //Sets flag for deleting children Tasks
+        ProjectUtil.setFlagValidationParentTask( false );
+            delete ProjectUtil.childrenTaskToDelete2.values();
+        ProjectUtil.setFlagValidationParentTask( true );
     }    
     
 

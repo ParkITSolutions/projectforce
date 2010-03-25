@@ -25,7 +25,7 @@
     <apex:composition template="HeaderTemplate">
         <apex:define name="moduleId"><apex:variable var="moduleId" value="headerProject"/></apex:define>
         <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
-        <apex:define name="title">Tasks & Milestones</apex:define>
+        <apex:define name="title">Member List</apex:define>
         <apex:define name="search">
             <c:Search module="Project" label="Tasks" projectId="{!HTMLENCODE( ProjectId )}"/>
         </apex:define>
@@ -269,7 +269,7 @@
                 <!-- End TasksForm -->
                
                 <!-- NoTasksPanel -->
-                <apex:outputPanel id="NomembersPanel" rendered="{!paginator.resultSize  == 0}" styleClass="noMembers" layout="block">
+                <apex:outputPanel id="NomembersPanel" rendered="{!paginator.resultSize  == 0}" style="text-align:center;font-weight:bold;padding:15px;" layout="block">
                
                     No members
                

@@ -103,7 +103,6 @@ public class ProjectDynamicFilter {
 		
 		for( SFField f : this.fieldList ){
 			if( f.name != 'assignee' && f.value != null && f.value != '' && f.value != 'false' ){
-				System.debug( '*_***' + f.name +':' + f.fieldType);
 				if( f.fieldType.toLowercase() == 'date' ){
 					//auxDateStr = f.value.split( '/', 0 );
 					fieldsName += ' AND ' + f.name + ' = ' + f.value;//+ auxDateStr[2] + '-' + auxDateStr[0] + '-' + auxDateStr[1];

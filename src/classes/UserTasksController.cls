@@ -106,8 +106,8 @@ public with Sharing class UserTasksController{
             tempProject = this.allProjectsMap.get( this.OpSelected );
             
             this.AttachmentPrjId                        = tempProject.Project__r.Picture__c;
-            this.currentProject.name                    = ProjectUtil.chopWords( ProjectUtil.chopPhrase( tempProject.Project__r.name,30) );
-            this.currentProject.priority                = ProjectUtil.chopWords( tempProject.Project__r.priority__c );
+            this.currentProject.name                    = ProjectUtil.chopPhraseTo30Chs( tempProject.Project__r.name, 30 );
+            this.currentProject.priority                = ProjectUtil.chopPhraseTo30Chs( tempProject.Project__r.priority__c, 30 );
             this.currentProject.displayDuration         = ProjectUtil.chopWords( tempProject.Project__r.DisplayDuration__c );
             this.currentProject.description             = ProjectUtil.chopWords( ProjectUtil.chopPhrase( tempProject.Project__r.Description__c, 30) );
             

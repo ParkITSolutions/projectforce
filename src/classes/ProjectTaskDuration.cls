@@ -99,11 +99,17 @@ public class ProjectTaskDuration{
 			
 			tempPTNew 				= this.verifyStartDate( tempPTNew );
 			tempPTNew.EndDate__c 	= null;
-			tempPTNew.DurationUI__c = '1.0';
-			tempPTNew.Duration__c 	= 1.0; 
+			
+			if( this.displayDuration.equals( 'Days' ) ){
+				tempPTNew.DurationUI__c = '1.0';
+				tempPTNew.Duration__c 	= 1.0;
+			}
+			else{
+				tempPTNew.Duration__c 	= this.workingHours; 
+				tempPTNew.DurationUI__c = String.valueOf( this.workingHours );
+			} 
 		}
 		else{
-			//trial correccion for bug 4464
 			if( tempPTOld.EndDate__c == tempPTNew.EndDate__c ){
 				tempPTNew = this.verifyStartDate2( tempPTNew );
 			}
@@ -424,13 +430,11 @@ public class ProjectTaskDuration{
 		}
 		
 		if( isDays ){
-			input 			= this.replaceDays( input );
-			Double valueAux = Math.floor( Double.valueOf( input ) ) ;
-			
-			//ACA esta el bug!!!!
-			if( valueAux == 0.0 ){
-				input = '1.0';
-			}
+			input = this.replaceDays( input );
+			//Double valueAux = Math.floor( Double.valueOf( input ) ) ;
+			//if( valueAux == 0.0 ){
+				//input = '1.0';
+			//}
 			this.insertRawDuration( task, this.displayDuration, input, this.workingHours, 'days' );
 			
 			if( this.displayDuration.equals( 'Days' ) ){
@@ -442,11 +446,13 @@ public class ProjectTaskDuration{
 		}
 		
 		if( isHours ){
-			input 			= this.replaceHours( input );
-			Double valueAux = Math.floor( Double.valueOf( input ) ) ;
+			input = this.replaceHours( input );
+			
+			/*Double valueAux = Math.floor( Double.valueOf( input ) ) ;
 			if( valueAux == 0.0){
 				input = '1.0';
-			}
+			}*/
+			
 			this.insertRawDuration( task, this.displayDuration, input, this.workingHours, 'hours' );
 			
 			if( this.displayDuration.equals( 'Days' ) ){

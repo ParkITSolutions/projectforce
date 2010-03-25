@@ -19,7 +19,5 @@ trigger ProjectBeforeInsert on Project2__c (before insert) {
             project.PublicProfile__c = null;
             project.NewMemberProfile__c = null;
         }  	
-	
 	}
-
 }

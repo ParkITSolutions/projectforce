@@ -75,7 +75,7 @@
                     <apex:actionFunction name="RefreshAttachmentList"
                                 action="{!loadAttachmentList}"
                                 onComplete="swirly.hide();" 
-                                reRender="attachmentList" />
+                                rerender="RecordsList" />
                                 
                     <apex:dataTable value="{!attachments}" 
                         var="att" 
@@ -150,14 +150,14 @@
                 </apex:form>
                 <!-- End TasksForm -->
                 
+                <!-- Outputpanel for when there are no results to show -->
+	            <apex:outputpanel id="noResult" layout="block" rendered="{!attachments.size == 0}">
+	                <apex:outputpanel style="text-align:center;font-weight:bold;padding:15px;" layout="block">No Attachments for this Project.</apex:outputpanel>
+	            </apex:outputpanel>
+	            
             </apex:outputPanel>
             <!-- End RecordsList -->
             
-            <!-- Outputpanel for when there are no results to show -->
-            <apex:outputpanel id="noResult" layout="block" rendered="{!attachments.size == 0}">
-                <apex:outputpanel styleClass="noResult" >No Attachments for this Project.</apex:outputpanel>
-            </apex:outputpanel>
-                
         </apex:outputpanel>
         
     </apex:outputpanel>

@@ -238,7 +238,7 @@
                     <!-- End FilterPanel -->
                 
                 <!-- ExportCSVPanel -->
-                <apex:outputPanel id="ExportCSVPanel" styleClass="exportCSVPanel" layout="block" rendered="{!paginator.tasksByProject.size > 0}">
+                <apex:outputPanel id="ExportCSVPanel" styleClass="exportCSVPanel" layout="block" rendered="{!paginator.tasksByProject.size > 0 && (!isMember || isManager)}">
                     
                     <apex:image value="{!URLFOR($Resource.TaskList, 'images/csv.gif')}" id="ExportCSVImage" width="13"/>
                     <apex:commandLink action="{!generateTaskListCsv}" value="Export to CSV" title="Export to CSV file" rerender="ExportCSVPanel" />

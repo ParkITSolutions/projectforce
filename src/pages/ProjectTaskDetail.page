@@ -5,18 +5,10 @@
     <apex:outputPanel rendered="{!isProduction}">
     
     </apex:outputPanel>
-        <!-- Ajax Toolkit SDFC -->
-        <apex:includeScript value="/soap/ajax/11.1/connection.js"/>
         <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}"/>
         
         <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
         <apex:stylesheet value="{!URLFOR($Resource.commonResources, 'inc/css/fonts.css')}" />
-        
-        <!-- Portal Support -->
-        <apex:includeScript value="{!$Resource.portalSupport}"/>
-    
-        
-        <!-- Common JS for All Sections -->
         
         <!-- CSS Includes -->
         <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
@@ -109,7 +101,6 @@
         
     </script>
     
-    
     <c:PromptOverlay id="PromptOverlay"
          includeAttachment="true" 
          includeNewAssignee="true"
@@ -140,23 +131,18 @@
         messageToUser=" Are you sure you want to delete this comment?"
         actionName="TaskDetailDeleteCommentOverlay" />  
     
-    <apex:form >
-        <apex:actionFunction name="reloadIframe" action="{!dummyRefresh}" rerender="iframeWrapperPanel" />
-    </apex:form>
-    
-    
     <style type = "text/css">
          div.swirly_overlay{
             height : 100%!important;
          }
         
     </style>  
-    <!-- includeNewMember="true" -->
+
     <!-- Header -->
     <apex:composition template="HeaderTemplate">
         <apex:define name="moduleId"><apex:variable var="moduleId" value="headerProject"/></apex:define>
         <apex:define name="module">{!$ObjectType.Project2__c.label}</apex:define>
-        <apex:define name="title">{!Task.ProjectName}</apex:define>
+        <apex:define name="title">Task Details</apex:define>
         <apex:define name="search">
             <c:Search module="Project" projectId="{!Task.ProjectId}"/>
         </apex:define>
@@ -174,26 +160,27 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <apex:outputPanel id="sidebarWidgets">
+            
                 <!-- Project Quick Links -->
-                <c:QuickLinksWidget id="quidkLinks" 
-                    viewNewLinks="false"
-                    projectId="{!projectId}"
-                />
+                <c:QuickLinksWidget id="quidkLinks" viewNewLinks="false" projectId="{!projectId}" />
+                    
                 <!-- Team members -->
                <c:MembersWidget projectId="{!projectId}"  id="MembersWidget" />
+               
             </apex:outputPanel>
+            
             <div class="clear"></div>
         </div>
         
         <!-- Holder -->     
         <div class="holder" style="overflow:hidden;clear:both;margin:0px;margin-left:200px;margin-bottom:0px;" id="holder">
              <div align="center" class="breadCrumbAndButtons">
+        <apex:form >
         
         <div class="buttons">
-        
             <apex:outputpanel rendered="{!OR(userPermissions.canManage, taskPerm.canUpdate)}" layout="block">
                 <a class="blackbutton" href="/{!Task.id}/e?retURL=/{!Task.id}"><span>Edit Task</span></a>
-                <apex:form id="quickMilestoneForm" styleclass="quickMilestoneForm" onsubmit="if(isCompleted){alert('The task percent is already completed.');return false}"  >   
+                
                     <apex:actionStatus id="taskStatus">
                         <apex:facet name="start">
                             <a class="blackbutton" href="Javascript:;" >
@@ -213,7 +200,7 @@
                             </apex:outputPanel>
                         </apex:facet>
                     </apex:actionStatus>
-                </apex:form>                   
+
                 <apex:outputPanel rendered="{!OR(userPermissions.canManage, taskPerm.canDelete)}">
                     <apex:outputLink value="javascript:;"
                         id="Delete"
@@ -248,7 +235,6 @@
                 <div style="display: none;" id="sw_all2" class="swirly_members"></div>     
                              
                 <!-- Method to refresh task detail -->
-                <apex:form id="taskDetail" >               
                     <apex:detail subject="{!Task.Id}" relatedList="false"  title="false" />
                     <apex:actionFunction name="apexAFRefreshDetail" 
                         action="{!doRefresh}" 
@@ -258,8 +244,8 @@
                      <apex:actionFunction name="detailListPanel" 
                         action="{!doRefresh}" 
                         rerender="detailListPanel" 
-                        oncomplete="swirly.hide();"
-                        />
+                        oncomplete="swirly.hide();"/>
+                        
                         <!-- oncomplete="$('sw_o').hide(); $('sw_all2').hide(); swirly.hide();" -->
                      <apex:actionFunction name="RefreshTaskAssignedList" 
                         action="{!doRefresh}" 
@@ -281,15 +267,13 @@
                     <!-- Refresh assigneelist whitout hide the swirly -->
                     <apex:actionFunction name="RefreshAssigneeListNotSwirly"
                         action="{!doRefresh}"  
-                        rerender="detailListPanel" 
-                        />
+                        rerender="detailListPanel" />
                             
                     <!-- Generic Refresh Comment Method -->
                     <apex:actionFunction name="RefreshCommentList"
                         action="{!doRefresh}"  
                         rerender="taskComments" 
                         oncomplete="swirly.hide();" />     
-                </apex:form>
                
                 <div class="bPageBlock">
                 
@@ -325,7 +309,6 @@
                                         </div>
                                     </apex:outputPanel>
                                     
-                                    <apex:form id="attachmentList">
                                         <apex:actionFunction name="reloadAttachmentList" rerender="attachmentList" />
                                         <table class="assignedToTable">
                                             <apex:repeat value="{!Task.Files}" var="item" >
@@ -347,7 +330,6 @@
                                                 </tr>
                                             </apex:repeat>
                                         </table>
-                                    </apex:form>
                                 </td>       
                             </tr>
                             <tr>
@@ -412,7 +394,7 @@
                             <tr>
                                 <td class="labelCol vTop">Comments</td>
                                 <td class="dataCol">
-                                    <apex:form id="taskComments">
+                                    <apex:outputpanel id="taskComments">
                                         <apex:outputPanel id="taskCommentsTable" layout="block"  rendered="{!allowComments}">
                                             <apex:inputField id="taskCommentsTableBody" styleClass="taskCommentsTableBody" value="{!comment.Body__c}" /><br/>
                                             <apex:commandLink onclick="if(!validateComment()){return false;}"
@@ -442,7 +424,7 @@
                                                 <apex:outputPanel layout="block"  styleclass="overlaySeparateLine"/>
                                             </apex:outputPanel>
                                         </apex:repeat>                          
-                                    </apex:form>
+                                    </apex:outputPanel>
                                 </td>                               
                             </tr>
                         </tbody>                   
@@ -456,7 +438,6 @@
             <div class="buttons" >
                 <apex:outputpanel rendered="{!OR(userPermissions.canManage,taskPerm.canUpdate)}" layout="block">
                    <a class="blackbutton" href="/{!Task.id}/e?retURL=/{!Task.id}"><span>Edit Task</span></a>
-                    <apex:form id="quickMilestoneForm2" styleclass="quickMilestoneForm" onsubmit="if(isCompleted){alert('The task percent is already completed.');return false}" >   
                         <apex:actionStatus id="taskStatus2">
                             <apex:facet name="start">
                                 <a class="blackbutton" href="Javascript:;" ><span>Completing...</span></a>
@@ -474,9 +455,18 @@
                                 </apex:outputPanel>
                             </apex:facet>
                         </apex:actionStatus>
-                    </apex:form>          
-                    <a class="blackbutton" href="Javascript:;" onclick="DeleteDetailTask();"><span>Delete</span></a>
                     <apex:outputPanel rendered="{!OR(userPermissions.canManage, taskPerm.canDelete)}">
+                    <apex:outputLink value="javascript:;"
+                        id="Delete2"
+                        onClick="DeleteDetailTask();"
+                        styleClass="blackbutton">
+                        <apex:outputPanel >
+                            Delete
+                        </apex:outputPanel>
+                    </apex:outputLink>
+                    
+                </apex:outputPanel>  
+                    <apex:outputPanel rendered="{!OR(userPermissions.canManage, taskPerm.canUpdate)}">
                         <a class="blackbutton" href="/apex/TaskPdfExport?id={!Task.id}">
                             <span>PDF Export</span>
                         </a>
@@ -485,7 +475,7 @@
             </div>
         </div>
         
-        
+         </apex:form>
         </div>
         </div>
 </apex:page>

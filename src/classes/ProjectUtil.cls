@@ -291,6 +291,13 @@ public class ProjectUtil {
     	return rPhrase;
     }
     
+    public static String chopPhraseTo30Chs( String w, Integer c ){
+    	if( w.length() > c )
+    		return w.substring( 0, c ) + '...';
+    	else 
+    		return w;
+    	
+    }    
     
     public  static Set<String> objOfSetTolowerCase( Set<String> s ){
     	Set<String> auxSet = new Set<String>();
