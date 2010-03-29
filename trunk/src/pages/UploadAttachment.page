@@ -16,16 +16,15 @@
                 <apex:inputFile value="{!newAttach.Body}" id="newAttach" styleclass="newAttach" contentType="{!newAttach.ContentType}" 
                     filename="{!newAttach.Name}" fileSize="{!newAttach.BodyLength}" />
                 <apex:inputHidden id="avatarTypeFlag" value="{!avatarTypeFlag}" />  
-
                 <apex:outputPanel styleclass="overlaySeparateLine" layout="block"></apex:outputPanel>
     
                 <apex:outputPanel styleClass="submitButtons" layout="block">
                     <apex:commandLink id="Accept" styleClass="submitButton Accept" 
-                    	action="{!action}" onclick="parent.promptOverlay.close();parent.swirly.show(); return Attachment.verifyNameLength();">
+                    	action="{!action}" onclick="parent.promptOverlay.close();parent.swirly.show(); return Attachment.verifyNameLengthAndEmpty();">
                         Accept
                     </apex:commandLink>
                     <apex:outputLink id="Cancel" value="javascript:;" onClick="parent.promptOverlay.close(); Attachment.clearForm();" styleClass="submitButton Cancel" >
-                        Cancel          
+                        Cancel
                     </apex:outputLink>
                 </apex:outputPanel>
                 
@@ -33,7 +32,6 @@
         </apex:outputPanel>
         
     </apex:form>    
-
     <apex:outputPanel id="errors">  
     
         <apex:outputPanel rendered="{!endAction && error == '' }">
@@ -81,6 +79,8 @@
         font-weight:bold;
         text-align:right;
         width:100px;
+        font-family:'Arial','Helvetica',sans-serif;
+        font-size:12px;
     }   
     </style>
     
@@ -101,7 +101,7 @@
 				return this.sendFlag;
 			},
 			
-			verifyNameLength : function(){
+			verifyNameLengthAndEmpty : function(){
 				Attachment.objFile = $$('.newAttach')[0];
 				
 				if( Attachment.objFile.value.indexOf( '\\' ) > 0  )
@@ -110,20 +110,19 @@
 					arrAux = Attachment.objFile.value.split( '/' );
 				
 				fileName = arrAux[ arrAux.length - 1 ];
-				Attachment.sendFlag = fileName.length < 71;
+				Attachment.sendFlag = fileName.length > 0 && fileName.length < 71;
 				
 				if( !Attachment.sendFlag ){
 					
-					Attachment.clearForm();
-					parent.infoToUser.open( 'error', 'File name too large, 70 characters max.' );
+					if( fileName.length > 70 ){
+						Attachment.clearForm();
+						parent.infoToUser.open( 'error', 'File name too large, 70 characters max.' );
+					}else if( fileName.length == 0 ){
+						parent.infoToUser.open( 'error', 'Select a file to upload.' );
+					}
 					parent.swirly.hide();
 				}
-				/*
-				else{
-					parent.promptOverlay.close();
-					parent.swirly.show();
-				} 
-				*/
+
 				return Attachment.sendFlag;
 				
 			},

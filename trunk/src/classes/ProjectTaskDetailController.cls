@@ -71,7 +71,7 @@ public with Sharing class ProjectTaskDetailController {
 	*@return task comment
 	*/
 	public TaskComment__c getComment(){
-		return comment;
+		return this.comment;
 	}
 	
 	/**
@@ -121,7 +121,7 @@ public with Sharing class ProjectTaskDetailController {
 	public void saveComment(){
 		comment.Task__c = taskDetail.Id;
 		insert comment;
-		comment = new TaskComment__c();
+		this.comment = new TaskComment__c();
 	}
 	
 	/*
