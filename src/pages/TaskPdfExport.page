@@ -31,7 +31,7 @@
                 <span style="color:#9C928C;font-style:italic;font-size:30px;">force</span>
             </center>
         </div>
-        <div style="background: #004D6B none repeat scroll 0% 0%; height: 40px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+        <div style="background: #004D6B none repeat scroll 0% 0%; height: 50px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
             <center>
                 <div style="color:#FFFFFF;font-size: 22px;">{!Task.Name}</div>
             </center>

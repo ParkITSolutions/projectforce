@@ -175,7 +175,8 @@
         <!-- Holder -->     
         <div class="holder" style="overflow:hidden;clear:both;margin:0px;margin-left:200px;margin-bottom:0px;" id="holder">
              <div align="center" class="breadCrumbAndButtons">
-        <apex:form >
+
+        <apex:form id="MainForm">
         
         <div class="buttons">
             <apex:outputpanel rendered="{!OR(userPermissions.canManage, taskPerm.canUpdate)}" layout="block">
@@ -395,6 +396,7 @@
                                 <td class="labelCol vTop">Comments</td>
                                 <td class="dataCol">
                                     <apex:outputpanel id="taskComments">
+                                        
                                         <apex:outputPanel id="taskCommentsTable" layout="block"  rendered="{!allowComments}">
                                             <apex:inputField id="taskCommentsTableBody" styleClass="taskCommentsTableBody" value="{!comment.Body__c}" /><br/>
                                             <apex:commandLink onclick="if(!validateComment()){return false;}"
@@ -405,13 +407,16 @@
                                                 <span>Save Comment</span>
                                             </apex:commandLink>
                                         </apex:outputPanel>
-                                        <apex:outputPanel layout="block" styleclass="overlaySeparateLine"/>
+                                        
+                                        <apex:outputPanel layout="block" styleclass="overlaySeparateLine" />
+                                        
                                         <apex:repeat value="{!taskComments}" var="comment">
                                             <apex:outputPanel id="taskCommentDetail" layout="block" styleclass="taskCommentDetail">
                                                 <apex:outputPanel layout="block">{!comment.Body__c}</apex:outputPanel>
                                                 <apex:outputPanel layout="block" styleclass="creator">
                                                     Created By <b>{!comment.createdBy.Name}</b>, {!comment.createdDate}
                                                 </apex:outputPanel>
+                                                
                                                 <apex:outputPanel id="linkDelete" layout="block" styleclass="linkDelete">
                                                     <apex:outputLink value="javascript:;"
                                                             id="DeleteComment"
@@ -421,10 +426,13 @@
                                                                 Delete Comment
                                                         </apex:outputLink>
                                                 </apex:outputPanel>
-                                                <apex:outputPanel layout="block"  styleclass="overlaySeparateLine"/>
+                                                
+                                                <apex:outputPanel layout="block" styleclass="overlaySeparateLine"/>
+                                                
                                             </apex:outputPanel>
                                         </apex:repeat>                          
                                     </apex:outputPanel>
+                                    
                                 </td>                               
                             </tr>
                         </tbody>                   
