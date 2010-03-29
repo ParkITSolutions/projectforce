@@ -11,7 +11,6 @@ public with sharing class ProjectAttachmentListController {
 	public List<AttachmentObj> attachments	{ set; get; }
 	private String projectName;
     private UserPermissions userPermission;
-    //private Project2__c teamspace = new Project2__c();
 	
 	/**
 	* Constructor
@@ -83,26 +82,6 @@ public with sharing class ProjectAttachmentListController {
         this.userPermission.setPermissions();
     }
     
-    /**
-    * Get Teamspace
-    * @return Team__c
-    */
-    /* TODO check if these methods are needed or even used
-    public Project2__c getTeamspace() {
-    	
-         teamspace = [select name, description__c, Type__c 
-         				from Project2__c
-                     	where id=: this.projectId];
-                     	
-         if(teamspace == null) {
-            return null;
-         }else {
-         	 return teamspace;
-         }
-     }*/
-     
-     
-     
      /**
      * Inner Classe for handling Pagination of Attachment objects 
      * in the attachment list Page 

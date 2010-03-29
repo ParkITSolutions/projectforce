@@ -15,7 +15,7 @@ public with sharing class ProjectOverviewController {
     //Letters list
     public List<String> lettersList = new List<String>{'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};    
     public String objectPrefix = Schema.SObjectType.Project2__c.getKeyPrefix();
-    //Items to list per page 
+    //Items to list per page
     static final Integer itemsToList = 10;
     public UserPermissions userPermissions	 	{ set; get; }
 	public Boolean isManager   					{ set; get; }
@@ -33,7 +33,8 @@ public with sharing class ProjectOverviewController {
         
         this.userPermissions = new UserPermissions();
 		this.genPermissions();
-    }   
+		
+    } 
     
     /**
     * Load permission for current user
@@ -44,6 +45,16 @@ public with sharing class ProjectOverviewController {
         this.userPermissions.setPermissions();
         
         this.isManager 	= this.userPermissions.getCanManage();
+    }
+    
+    /**
+    * Obtian and save the org url 
+    * @return void
+    */
+    public void GetHost(){
+		AuxHostName__c  mcs  =  AuxHostName__c.getInstance('DirHostName');
+		mcs.FieldHostName__c = ProjectUtil.getDomain();
+		upsert mcs;
     }
     
   	/**
@@ -155,7 +166,6 @@ public with sharing class ProjectOverviewController {
     public Boolean getCanViewCreateNewProject(){
         /*ProjectSetupController canV = new ProjectSetupController();
         return canV.canView();*/
-        //TODO Please Refactor!
         return true;
     }
     

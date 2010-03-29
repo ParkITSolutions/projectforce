@@ -64,10 +64,12 @@
            
         </apex:outputPanel>
         <!-- End ButtonsPanel -->
-
+		
+		<apex:form id="Form">
+		
         <apex:outputPanel styleClass="topPanelExt" layout="block" >
             <apex:outputPanel styleClass="topPanel" layout="block" >
-                <apex:form id="Form">
+                
                
                     <!-- PaginatorPanel -->
                     <apex:outputPanel id="PaginatorPanel" styleClass="paginatorPanel" layout="block" >
@@ -157,7 +159,7 @@
                             <br>Number of records: <apex:outputText id="ResultSizeText" value="{!paginator.resultSize}" />
                            
                             <br>Records per page:
-                            <apex:selectList id="PageSizeSelect" value="{!paginator.recordsPerPage}" size="1" onChange="paginator.setLetterChoosen('All'); swirly.show(); RefreshPaginator();">
+                            <apex:selectList id="PageSizeSelect" value="{!paginator.recordsPerPage}" size="1" onChange="swirly.show(); RefreshPaginator();">
                                 <apex:selectOptions id="PageSizeOption" value="{!paginator.pageSizeItems}"/>
                             </apex:selectList>
                            
@@ -176,6 +178,7 @@
                             onClick="paginator.setLetterChoosen('All'); swirly.show(); RefreshRecordsList();">
                                 ALL
                         </apex:outputLink>
+                        
                         <apex:repeat id="lettersRepeat" value="{!paginator.letters}" var="letter" > &nbsp;
                             <apex:outputLink id="letterLink"
                                 value="javascript:;"
@@ -188,6 +191,7 @@
                                 value="{!letter.name}"
                                 rendered="{!NOT(letter.hasCurrencies)}" />
                         </apex:repeat>
+                        
                         <apex:inputHidden id="letterChoosen" value="{!paginator.letterChoosen}" />
                     </apex:outputPanel>
                     <!-- end letterFilter -->
@@ -201,18 +205,12 @@
                     </apex:outputPanel>
                     <!-- End filterPanel -->
                
-                </apex:form>
-                <!-- End Form -->
-           
             </apex:outputPanel>
             <!--End paginatorPanelAndExport -->
            
             <!-- RecordsList -->
             <apex:outputPanel id="RecordsList" layout="block" styleClass="RecordsList">
            
-                <!-- TasksForm -->
-                <apex:form id="MembersForm">
-                
                 <table cellpadding="0" cellspacing="0" class="table">
                     <thead>
                         <tr>
@@ -265,14 +263,9 @@
                 
                 </table>
                     
-                </apex:form>
-                <!-- End TasksForm -->
-               
                 <!-- NoTasksPanel -->
                 <apex:outputPanel id="NomembersPanel" rendered="{!paginator.resultSize  == 0}" style="text-align:center;font-weight:bold;padding:15px;" layout="block">
-               
                     No members
-               
                 </apex:outputPanel>
                 <!-- End NoTasksPanel -->
                
@@ -281,6 +274,8 @@
            
         </apex:outputPanel>
         <!-- end paginatorPanelAndExportExt -->
+        
+        </apex:form>
     </apex:outputPanel>
     <!-- End ContentPanel -->
     

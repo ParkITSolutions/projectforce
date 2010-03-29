@@ -90,8 +90,8 @@ public class ObjectFormatter{
 			taskAux.priority 			= task.Priority__c; 
 			taskAux.setPercentCompleted( task.PercentCompleted__c );
 			taskAux.durationDisplay 	= String.valueOf( task.Duration__c );
+			taskAux.Description = task.Description__c;
 			
-			//TODO learn about the latest milestone because no final date
 			if( task.Milestone__c ){
 				taskAux.endDateDisplay 	= String.valueOf( task.StartDate__c.format() );
 				taskAux.endDate 		= task.StartDate__c;
@@ -100,7 +100,6 @@ public class ObjectFormatter{
 				taskAux.endDate 		= task.EndDate__c;
 			}
 			
-			//taskAux.assignees = DAOFactory.getInstance().getAssignees( taskAux.id ); 
 			for(TaskAssignee cAssignee : assigneeList)
 			{
 				if(cAssignee.projectTask == task.id)

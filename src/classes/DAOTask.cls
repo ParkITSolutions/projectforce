@@ -138,6 +138,7 @@ public class DAOTask {
                             'Milestone__c, ' +
                             'Priority__c, ' +
                             'PercentCompleted__c, ' + 
+                            'Description__c, ' +
                             'Status__c,' + 
                             'Duration__c, ' +
                             'StartDate__c, ' + 

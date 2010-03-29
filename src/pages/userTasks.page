@@ -154,7 +154,7 @@
                             <br>Number of records: <apex:outputText id="ResultSizeText" value="{!paginator.resultSize}" />
                             
                             <br>Records per page: 
-                            <apex:selectList id="PageSizeSelect" value="{!paginator.recordsPerPage}" size="1" onChange="paginator.setLetterChoosen('All'); swirly.show(); RefreshPaginator();">
+                            <apex:selectList id="PageSizeSelect" value="{!paginator.recordsPerPage}" size="1" onChange="swirly.show(); RefreshPaginator();">
                                 <apex:selectOptions id="PageSizeOption" value="{!paginator.pageSizeItems}"/>
                             </apex:selectList>
                             
