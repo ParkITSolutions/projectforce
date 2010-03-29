@@ -2,7 +2,7 @@
 * @author: Miguel Soares @ 07-04-2009
 */
 public class GenerateEnvironmentTest {
-
+	
     public static Project2__c project  		= new Project2__c();
     public static Project2__c project2 		= new Project2__c();
     public static Project2__c project3 		= new Project2__c();
