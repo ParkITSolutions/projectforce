@@ -12,18 +12,27 @@ public class ProjectSubscribersEmailServices{
     public Boolean isTaskEdit = false;  
     public Boolean isTest = false;
     //Obtain server url
-	public String sfdcHostName = AuxHostName__c.getInstance('DirHostName').FieldHostName__c+'/';
+	public String sfdcHostName;
     
 	public static Boolean alreadySent = false;
 	
     /**
     * Constructor
     */ 
-    private ProjectSubscribersEmailServices(){}
+    private ProjectSubscribersEmailServices(){
+    	/*if( ProjectUtil.isTest ){*/
+    		this.sfdcHostName = '';
+    	/*
+    	}
+    	else{
+    		this.sfdcHostName = AuxHostName__c.getInstance('DirHostName').FieldHostName__c+'/';
+    	}*/
+    }
     
     public static ProjectSubscribersEmailServices getInstance(){
-    	if( instance == null )
+    	if( instance == null ){
     		instance = new ProjectSubscribersEmailServices();
+    	}
     	return instance;
     }
 
