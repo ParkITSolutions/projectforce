@@ -1,6 +1,6 @@
 <apex:page id="ProjectAttachmentList" controller="ProjectAttachmentListController" sidebar="false" cache="true" tabstyle="Project2__c">    
   
-<c:ApplicationTop id="ApplicationTop" />
+	<c:ApplicationTop id="ApplicationTop" />
     
     <apex:outputPanel rendered="{!isProduction}">
 		<apex:styleSheet value="{!URLFOR($Resource.ProjectAttachmentList, 'inc/css/projectAttachmentList.css')}" />
@@ -34,10 +34,9 @@
                     <c:Search module="Project" projectId="{!HTMLENCODE( projectId )}" label="Tasks"/>
                 </apex:define>
             </apex:composition> 
-         	
-            
         </apex:outputpanel>
-        <apex:outputpanel id="breadCrumThisContainer" layout="block" styleClass="breadCrumThisContainer">
+        
+        <apex:outputpanel id="breadCrumThisContainer" layout="block" styleClass="breadCrumThisContainer" style="height:20px;">
         	<c:Breadcrum id="breadCrum"/>
         </apex:outputpanel>
         

@@ -164,7 +164,6 @@ public class GenerateEnvironmentTest {
         pred.Name 		= 'Pred';
         pred.Parent__c 	= task.id;
         pred.Project__c = project.id;
-        //TODO insert some task links
         
         // Assignees
         assi.Name 				= 'Assignee 1';

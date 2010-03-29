@@ -11,8 +11,7 @@
     
      <c:PromptOverlay id="PromptOverlay"
         includeNewMember="true"
-        idValue="{!projectId}"
-     />
+        idValue="{!projectId}" />
        
     <apex:outputPanel id="contentTaskNotes" styleclass="contentTaskNotes" layout="block">   
     
@@ -41,6 +40,7 @@
    
         <!-- Main Content -->
         <apex:outputPanel id="mainContent" styleclass="mainContent" layout="block">
+        
             <apex:form id="mainContentForm" rendered="{!canAccess}">
                 <apex:outputPanel id="wideHeader" styleclass="wideHeader" layout="block">
                     <h4>Task Notes</h4>
@@ -70,12 +70,14 @@
                         
                     <a href="ProjectTaskDetail?id={!taskId}" class="btn blackbutton" style="padding: 3px;">Cancel</a>
                 </apex:outputPanel>
+                
             </apex:form>
+            
         </apex:outputPanel>
+        
     </apex:outputPanel>
 
     <script type="text/javascript">
-        
         $('CKloader').hide();
         window.onload = function(){
         
@@ -106,6 +108,5 @@
              taskNotes.cKEditorCounter();
             $('CKloader').show();
         }
-     
      </script>
 </apex:page>

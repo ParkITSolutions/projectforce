@@ -308,7 +308,7 @@ public with Sharing class ProjectDetailAttachmentController {
 		
 		for (Attachment item: attachs){	
 			
-			if(item.id != avatarId  && item.Name != 'pf__export.csv'){
+			if(item.id != avatarId ){
 	            
 	            AttachmentInfo info = new AttachmentInfo();
 	            

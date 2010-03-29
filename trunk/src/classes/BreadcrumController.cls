@@ -125,7 +125,7 @@ public with Sharing class BreadcrumController{
 	private  void addNode( String url, String urlDisplay, String name, String topName ){
 		BreadcrumNode node = new BreadcrumNode();
 		node.url 		= url;
-		node.urlDisplay = urlDisplay;
+		node.urlDisplay = ProjectUtil.chopPhraseTo30Chs( urlDisplay, ProjectUtil.maxLongWord );
 		node.name 		= name.toLowercase();
 		node.topName 	= topName.toLowercase();
 		

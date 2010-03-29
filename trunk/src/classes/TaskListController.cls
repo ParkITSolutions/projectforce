@@ -113,7 +113,7 @@ public with Sharing class TaskListController{
                 description  = iterTask.description.replaceAll( '\r\n', ' ' );
                 description  = description.replaceAll( ',', ' ' );
             }
-           
+
             csvText += description + ',';           
             csvText += iterTask.status + ',';  
             if( iterTask.assignees.size() > 0 ){
@@ -122,7 +122,7 @@ public with Sharing class TaskListController{
             csvText += iterTask.getPercentCompleted() + ',';
             csvText += iterTask.getDurationDisplay() + ',';
             csvText += iterTask.endDate + ',';
-            csvText += iterTask.daysOverdue  + '\n';
+            csvText += iterTask.getOverdueTask()  + '\n';
                  
         }
        

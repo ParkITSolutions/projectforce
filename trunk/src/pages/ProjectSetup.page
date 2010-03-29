@@ -5,7 +5,6 @@
 	<apex:outputPanel rendered="{!isProduction}">
 		<apex:stylesheet value="{!URLFOR($Resource.ProjectSetup, 'inc/css/projectSetup.css')}" />
 	</apex:outputPanel>
-	
 
 	<apex:outputPanel id="contentProjectSetup" styleclass="contentProjectSetup" layout="block">   
 		<!-- Header -->
@@ -34,7 +33,6 @@
 					Show "Create New Project" button to Profiles
 				</apex:outputPanel>
 				
-
 				<!-- Pick List -->
 				<apex:outputPanel id="formContainer1" styleclass="formContainer" layout="block">
 					<apex:inputField value="{!ProjectSetup.ListSavedProfiles__c}" /> 
@@ -47,12 +45,9 @@
                         	value="Save" 
                         	oncomplete="swirly.hide(); infoToUser.open('{!typeMessage}', '{!messageInfoToUsr}');"
                         	onClick="swirly.show();"
-                        	rerender="buttonsPanel"
-                        /> 
+                        	rerender="buttonsPanel"/> 
                          
-                        <apex:commandButton styleclass="blackbutton" 
-                        	value="Cancel" 
-                        />
+                        <apex:commandButton styleclass="blackbutton" value="Cancel" />
 		        </apex:outputPanel>
 		        
 			</apex:form>

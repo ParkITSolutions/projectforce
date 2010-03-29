@@ -37,7 +37,6 @@ public class DAOAssignee {
 	* @param task
 	* @return isTaskAssigned
 	*/
-	//TODO change the list for a simple ProjectAssignee__c
 	public Boolean isTaskAssigned(ProjectTask__c task){
 		List<ProjectAssignee__c> assignee = [select Id
 											 from ProjectAssignee__c

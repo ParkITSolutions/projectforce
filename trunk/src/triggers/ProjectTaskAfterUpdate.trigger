@@ -65,7 +65,6 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
 	    }
     }
 
-	//TODO MIGUEL
 	ProjectSubscribersEmailServices mail = ProjectSubscribersEmailServices.getInstance();
     ProjectSubscribersEmailServices.sendMailForTaskChangedFuture( mailingList );
     

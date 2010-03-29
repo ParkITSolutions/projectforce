@@ -1,4 +1,4 @@
-<apex:page id="projectOverview" sidebar="false" cache="true" tabStyle="Project2__c" controller="ProjectOverviewController"  >
+<apex:page id="projectOverview" action="{!GetHost}" sidebar="false" cache="true" tabStyle="Project2__c" controller="ProjectOverviewController"  >
     
     <c:ApplicationTop id="ApplicationTop" />
     
@@ -233,9 +233,9 @@
                                 <!-- item -->       
                                 <div class="item">
                                     <div class="imageTeams">
-                                        <a href="/apex/TeamsRedirect?id={!t.Id}">
-                                            <img alt="" width="47" height="47" src="{!IF( t.image == 'null',(URLFOR($Resource.commonResources, '/images/placeholders/default_team_100x100.png')) ,t.image)}"  />
-                                        </a>
+	                                    <a href="/apex/ProjectDetail?id={!t.Id}" >
+	                                    	<img alt="" width="47" height="47" src="{!IF( t.image == 'null',(URLFOR($Resource.commonResources, '/images/placeholders/default_team_100x100.png')) ,t.image)}"  />
+	                                   	</a>
                                     </div>
                                     <div class="detailTeams">
                                         <h4><a href="/apex/ProjectDetail?id={!t.Id}" >{!t.Name}</a></h4>

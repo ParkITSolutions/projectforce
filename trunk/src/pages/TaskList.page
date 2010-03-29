@@ -40,64 +40,65 @@
         
     <!-- ContentPanel -->
     <apex:outputPanel id="contentPanelTaskList" styleClass="contentPanelTaskList" layout="block" >
-    <!-- <apex:outputPanel id="ContentPanel" styleClass="contentPanel" layout="block" > -->
     
         <!-- BreadcrumbPanel -->
         <apex:outputPanel id="BreadcrumbPanel" styleClass="breadcrumbPanel" layout="block">
             <c:Breadcrum id="Breadcrum" />
         </apex:outputPanel>
         <!-- End BreadcrumbPanel -->    
-    
-        <!-- ButtonsPanel -->
-        <apex:outputPanel id="ButtonsPanel" styleClass="buttonsPanel" layout="block" >
-            
-            <apex:outputLink value="javascript:;"
-                id="NewTaskLink"
-                onClick="promptOverlay.open( newTask );"
-                styleClass="blackbutton" rendered="{!isMember || isManager}">
-                <apex:outputPanel >
-                    New Task
-                </apex:outputPanel>
-            </apex:outputLink>
-            
-            <apex:outputLink value="javascript:;"
-                id="NewMilestoneLink"
-                onClick="promptOverlay.open( newMilestone );"
-                styleClass="blackbutton" rendered="{!isMember || isManager}">
-                <apex:outputPanel >
-                    New Milestone
-                </apex:outputPanel>
-            </apex:outputLink>
-            
-            <apex:outputLink value="javascript:;"
-                id="MarkComplete"
-                onClick="taskList.markCompleteTasks();"
-                styleClass="blackbutton" rendered="{!isMember || isManager}">
-                <apex:outputPanel >
-                    Mark Complete
-                </apex:outputPanel>
-            </apex:outputLink>
-            
-            <apex:outputLink value="ProjectTimeline?id={!HTMLENCODE( projectId )}"
-                id="Timeline"
-                styleClass="blackbutton">
-                <apex:outputPanel >
-                    Timeline
-                </apex:outputPanel>
-            </apex:outputLink>
-    
-            <apex:outputLink value="javascript:;"
-                id="Delete"
-                onClick="taskList.deleteTasks();"
-                styleClass="blackbutton" rendered="{!isMember || isManager}">
-                <apex:outputPanel >
-                    Delete
-                </apex:outputPanel>
-            </apex:outputLink>
-            
-        </apex:outputPanel>
-        <!-- End ButtonsPanel -->
-
+        
+    	<apex:outputpanel id="buttonContainer" layout="block" styleClass="buttonContainer" >
+	        <!-- ButtonsPanel -->
+	        <apex:outputPanel id="ButtonsPanel" styleClass="buttonsPanel"  >
+	            
+	            <apex:outputLink value="javascript:;"
+	                id="NewTaskLink"
+	                onClick="promptOverlay.open( newTask );"
+	                styleClass="blackbutton" rendered="{!isMember || isManager}">
+	                <apex:outputPanel >
+	                    New Task
+	                </apex:outputPanel>
+	            </apex:outputLink>
+	            
+	            <apex:outputLink value="javascript:;"
+	                id="NewMilestoneLink"
+	                onClick="promptOverlay.open( newMilestone );"
+	                styleClass="blackbutton" rendered="{!isMember || isManager}">
+	                <apex:outputPanel >
+	                    New Milestone
+	                </apex:outputPanel>
+	            </apex:outputLink>
+	            
+	            <apex:outputLink value="javascript:;"
+	                id="MarkComplete"
+	                onClick="taskList.markCompleteTasks();"
+	                styleClass="blackbutton" rendered="{!isMember || isManager}">
+	                <apex:outputPanel >
+	                    Mark Complete
+	                </apex:outputPanel>
+	            </apex:outputLink>
+	            
+	            <apex:outputLink value="ProjectTimeline?id={!HTMLENCODE( projectId )}"
+	                id="Timeline"
+	                styleClass="blackbutton">
+	                <apex:outputPanel >
+	                    Timeline
+	                </apex:outputPanel>
+	            </apex:outputLink>
+	    
+	            <apex:outputLink value="javascript:;"
+	                id="Delete"
+	                onClick="taskList.deleteTasks();"
+	                styleClass="blackbutton" rendered="{!isMember || isManager}">
+	                <apex:outputPanel >
+	                    Delete
+	                </apex:outputPanel>
+	            </apex:outputLink>
+	            
+	        </apex:outputPanel>
+	        <!-- End ButtonsPanel -->
+		</apex:outputpanel>
+		
         <apex:outputPanel styleClass="paginatorPanelAndExportExt" layout="block" >
             <apex:outputPanel styleClass="paginatorPanelAndExport" layout="block" >
                 <apex:form id="Form">
@@ -115,12 +116,12 @@
                             <apex:actionFunction name="RefreshPaginator"
                                 action="{!paginator.pagesListConstructor}"
                                 onComplete="swirly.hide();" 
-                                reRender="PaginatorPanel, RecordsList, letterFilter"/>
+                                reRender="PaginatorPanel, RecordsList, letterFilter,ExportCSVPanel"/>
                                 
                                 <apex:actionFunction name="RefreshRecordsList"
                                 action="{!paginator.loadTasksByProject}"
                                 onComplete="swirly.hide();" 
-                                reRender="PaginatorPanel,RecordsList, letterFilter"/>
+                                reRender="PaginatorPanel,RecordsList, letterFilter, ExportCSVPanel"/>
                                 
                             <!-- CommandsPanel -->
                             <apex:outputPanel id="CommandsPanel" styleClass="commandsPanel" layout="block" rendered="{!OR(paginator.hasNext,paginator.hasPrevious)}">
@@ -192,8 +193,8 @@
                             <br>Records per page: 
                             <apex:selectList id="PageSizeSelect" 
                             					value="{!paginator.recordsPerPage}" size="1" 
-                            					onChange="paginator.setLetterChoosen('All'); swirly.show(); RefreshPaginator();">
-                                <apex:selectOptions id="PageSizeOption" value="{!paginator.pageSizeItems}"/>
+                            					onChange="swirly.show(); RefreshPaginator();">
+                            <apex:selectOptions id="PageSizeOption" value="{!paginator.pageSizeItems}"/>
                             </apex:selectList>
                             
                             <apex:inputHidden id="pageNumber" value="{!paginator.pageNumber}" />
@@ -229,16 +230,16 @@
                     
                     <!-- FilterPanel -->
                     <apex:outputPanel id="FilterPanel" styleClass="filterPanel" layout="block">
-                            Quick filter: 
-                            <apex:selectList id="FilterSelect" value="{!paginator.filter}" size="1" onChange="paginator.setLetterChoosen('All'); swirly.show(); RefreshRecordsList();">
-                                <apex:selectOptions id="FilterOption" value="{!filterItems}"/>
-                            </apex:selectList>
+	                    Quick filter: 
+	                    <apex:selectList id="FilterSelect" value="{!paginator.filter}" size="1" onChange="paginator.setLetterChoosen('All'); swirly.show(); RefreshRecordsList();">
+	                        <apex:selectOptions id="FilterOption" value="{!filterItems}"/>
+	                    </apex:selectList>
                             
                     </apex:outputPanel>
                     <!-- End FilterPanel -->
                 
                 <!-- ExportCSVPanel -->
-                <apex:outputPanel id="ExportCSVPanel" styleClass="exportCSVPanel" layout="block" rendered="{!paginator.tasksByProject.size > 0 && (!isMember || isManager)}">
+                <apex:outputPanel id="ExportCSVPanel" styleClass="exportCSVPanel" layout="block" rendered="{!paginator.tasksByProject.size > 0 && (isMember || isManager)}">
                     
                     <apex:image value="{!URLFOR($Resource.TaskList, 'images/csv.gif')}" id="ExportCSVImage" width="13"/>
                     <apex:commandLink action="{!generateTaskListCsv}" value="Export to CSV" title="Export to CSV file" rerender="ExportCSVPanel" />

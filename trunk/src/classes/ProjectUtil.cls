@@ -28,10 +28,9 @@ public class ProjectUtil {
     public static Map<String, Boolean> flags = new Map<String, Boolean>(); 
     public static Boolean inFuture = false;
     
-    public static Integer maxLongWord = 40;
+    public static Integer maxLongWord = 30;
 	public static Integer maxLongPhrase = 128;	
 	
-    
     /* Default task values */
     private static String defaultTaskPriority = 'Medium';
     
@@ -116,6 +115,7 @@ public class ProjectUtil {
 	public static Boolean getIsTest(){
 		return ProjectUtil.isTest;
 	}
+    
     
     /**
 	* Return the Namespace Prefix
@@ -292,7 +292,7 @@ public class ProjectUtil {
     }
     
     public static String chopPhraseTo30Chs( String w, Integer c ){
-    	if( w.length() > c )
+    	if( w != null && w.length() > c )
     		return w.substring( 0, c ) + '...';
     	else 
     		return w;
