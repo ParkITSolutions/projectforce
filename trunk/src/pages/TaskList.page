@@ -116,12 +116,12 @@
                             <apex:actionFunction name="RefreshPaginator"
                                 action="{!paginator.pagesListConstructor}"
                                 onComplete="swirly.hide();" 
-                                reRender="PaginatorPanel, RecordsList, letterFilter,ExportCSVPanel"/>
+                                reRender="PaginatorPanel, RecordsList, letterFilter"/>
                                 
                                 <apex:actionFunction name="RefreshRecordsList"
                                 action="{!paginator.loadTasksByProject}"
                                 onComplete="swirly.hide();" 
-                                reRender="PaginatorPanel,RecordsList, letterFilter, ExportCSVPanel"/>
+                                reRender="PaginatorPanel,RecordsList, letterFilter"/>
                                 
                             <!-- CommandsPanel -->
                             <apex:outputPanel id="CommandsPanel" styleClass="commandsPanel" layout="block" rendered="{!OR(paginator.hasNext,paginator.hasPrevious)}">
@@ -239,12 +239,10 @@
                     <!-- End FilterPanel -->
                 
                 <!-- ExportCSVPanel -->
-                <apex:outputPanel id="ExportCSVPanel" styleClass="exportCSVPanel" layout="block" rendered="{!paginator.tasksByProject.size > 0 && (isMember || isManager)}">
-                    
-                    <apex:image value="{!URLFOR($Resource.TaskList, 'images/csv.gif')}" id="ExportCSVImage" width="13"/>
-                    <apex:commandLink action="{!generateTaskListCsv}" value="Export to CSV" title="Export to CSV file" rerender="ExportCSVPanel" />
-                    <apex:iframe src="/servlet/servlet.FileDownload?file={!csvFileId}" rendered="{!csvFileId != null}" id="fileCSV" height="0px" width="0px"/>
-                         
+                <apex:outputPanel id="ExportCSVPanel" styleClass="exportCSVPanel" layout="block" rendered="{!isMember || isManager}">
+	                    <apex:image value="{!URLFOR($Resource.TaskList, 'images/csv.gif')}" id="ExportCSVImage" width="13"/>
+	                    <apex:commandLink action="{!generateTaskListCsv}" value="Export to CSV" title="Export to CSV file" rerender="ExportCSVPanel" />
+	                    <apex:iframe src="/servlet/servlet.FileDownload?file={!csvFileId}" id="fileCSV" height="0px" width="0px"/>
                 </apex:outputPanel>
                 <!-- End ExportCSVPanel -->
                 
@@ -391,7 +389,7 @@
                 <!-- NoTasksPanel -->
                 <apex:outputPanel id="NoTasksPanel" rendered="{!paginator.tasksByProject.size == 0}" styleClass="noTasks" layout="block">
                 
-                    No tasks 
+                    No tasks
                 
                 </apex:outputPanel>
                 <!-- End NoTasksPanel -->

@@ -124,8 +124,9 @@ public with Sharing class UserTasksController{
     public void selectAllProjectsName(){
          this.allProjects = DAOFactory.getInstance().getProjetsInfoByMember( this.currentUser );   
          
-         for( ProjectMember__c p : this.allProjects)
+         for( ProjectMember__c p : this.allProjects){
             this.allProjectsMap.put( p.project__c, p );
+         }
     }
 	
 	/**

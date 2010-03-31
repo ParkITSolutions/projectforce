@@ -144,8 +144,7 @@
 			</div>
 		</div>
 	</apex:outputPanel>
-	<!-- thin widget -->
-		<!--  ### Widget Intelligence ###  This method execution is required -->
+	
 	<script>
 		changeBackground();
 	</script>

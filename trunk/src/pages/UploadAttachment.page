@@ -140,6 +140,9 @@
 			
 			uploadAsAvatar: function(){
 				document.getElementById( 'Attachment:uploadAttachment:avatarTypeFlag' ).value = "avatar";
+			},
+			uploadNotAsAvatar: function(){
+				document.getElementById( 'Attachment:uploadAttachment:avatarTypeFlag' ).value = "";
 			}
 		}
     </script>

@@ -13,7 +13,7 @@
             <!-- TitlePanel -->
             <apex:outputPanel id="TitlePanel" styleClass="titlePanel" layout="block">
                 
-                <apex:outputPanel styleClass="title">Add New Attachment</apex:outputPanel>
+                <apex:outputPanel styleClass="title" id="tittleSpan">Add New Attachment</apex:outputPanel>
                 
                 <apex:outputPanel id="overlayClose" styleClass="overlayClose" layout="block"> 
                     <apex:outputLink id="linkClose" value="javascript:;" onClick="promptOverlay.close();" >

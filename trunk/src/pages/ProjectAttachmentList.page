@@ -96,16 +96,16 @@
                             <apex:outputLink value="javascript:;" id="DeleteLink" onClick="deleteAttachment('{!att.realId}');">Delete</apex:outputLink>
                         </apex:column>
                         
-                        <apex:column >
+                        <apex:column > 
                             <apex:facet name="header">
                                 <apex:outputpanel id="namePanel">
-                                Name
+                                Name 
                                     <!--<apex:outputLink id="nameLink" value="javascript:;" onClick="swirly.show();RefreshRecordsList();">Name </apex:outputLink> &nbsp;-->
                                     <!-- <apex:image id="NameArrowDownImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowDown.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', paginator.orderAsc),true,false)}" />
                                     <apex:image id="NameArrowUpImage" value="{!URLFOR($Resource.Common, 'images/arrows/arrowUp.gif')}" rendered="{!IF(AND(paginator.orderBy == 'Name', NOT(paginator.orderAsc)),true, false)}"/>-->
                                 </apex:outputpanel>
                             </apex:facet>
-                            <apex:outputLink value="/servlet/servlet.FileDownload?file={!att.realId}" id="attachmentNameLink">{!att.name}</apex:outputLink>
+                            <apex:outputLink value="/servlet/servlet.FileDownload?file={!att.realId}" id="attachmentNameLink" target="_blank">{!att.name}</apex:outputLink>
                         </apex:column>
                         
                         <apex:column >

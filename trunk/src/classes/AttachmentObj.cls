@@ -8,6 +8,9 @@ public class AttachmentObj {
 	public String weight 			{ set; get; }
 	public DateTime createdDate 	{ set; get; }
 	public String createdBy 		{ set; get; }
+	public String image		 		{ set; get; }
+	public String contentType 		{ set; get; }
+	
 	
 	/**
 	* Constructor

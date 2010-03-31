@@ -180,7 +180,7 @@ public class ObjectFormatter{
 				SearchResults currentResult = new SearchResults();
 				
 				currentResult.setName( iter.Name, searchTerm );
-				currentResult.realName 		= iter.Name ;
+				currentResult.realName 		= ProjectUtil.chopPhraseTo30Chs( iter.Name , 30 );
 				currentResult.iD 			= iter.Id;
 				currentResult.resultType 	= 'Project';
 				currentResult.setMatches( iter.Description__c, searchTerm );
@@ -209,7 +209,7 @@ public class ObjectFormatter{
 			att.weight 			= ((iter.BodyLength / 1024) > 0) ? String.valueOf( iter.BodyLength / 1024 ) + ' Kb' : String.valueOf(iter.BodyLength) + ' b';
 			att.createdBy 		= iter.CreatedBy.Name;
 			att.createdDate 	= iter.CreatedDate;
-			
+			att.ContentType		= iter.ContentType;
 			formattedAttachments.add( att );
 		}
 		

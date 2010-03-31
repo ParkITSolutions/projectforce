@@ -107,6 +107,7 @@
             
              taskNotes.cKEditorCounter();
             $('CKloader').show();
+
         }
      </script>
 </apex:page>
