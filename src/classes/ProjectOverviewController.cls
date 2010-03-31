@@ -52,9 +52,9 @@ public with sharing class ProjectOverviewController {
     * @return void
     */
     public void GetHost(){
-		AuxHostName__c  mcs  =  AuxHostName__c.getInstance('DirHostName');
+		/*AuxHostName__c  mcs  =  AuxHostName__c.getInstance('DirHostName');
 		mcs.FieldHostName__c = ProjectUtil.getDomain();
-		upsert mcs;
+		upsert mcs;*/
     }
     
   	/**

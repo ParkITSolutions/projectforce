@@ -1,49 +1,17 @@
 <apex:page id="ProjectDetail" sidebar="false" cache="true" standardController="Project2__c" extensions="ProjectDetailController" tabStyle="Project2__c">
 
-
      <c:ApplicationTop id="ApplicationTop" />
      
-    <!-- Ajax Toolkit 
-    <apex:includeScript value="/soap/ajax/11.1/connection.js" />
-    <script>
-        var API_SESSION_ID = '{!$Api.Session_ID}';
-    </script>
-    -->
-<!--   <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/common.js')}" />-->
-    
-     <!-- overlays resources -->
-
-    <!-- Portal Support -->
-    
-    <!-- Common JS for All Sections -->
-<!--    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/TeamsWidgetCommon.js')}" />-->
-<!--    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/common.js')}" />-->
-<!--    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/modal.js')}" />-->
-
-<!--    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupTop.js')}" />-->
-<!--    <apex:includeScript value="{!URLFOR($Resource.ProjectResources, 'inc/js/projectDetail.js')}" />-->
-
     <!-- CSS Includes -->
     <apex:outputPanel rendered="{!isProduction}">
     
     </apex:outputPanel>
+      
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
     
-        <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/headerTeams.css')}" />
-        <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/teamDetails.css')}" />
-        <apex:stylesheet value="{!URLFOR($Resource.ProjectResources, 'inc/css/commonLayout.css')}" />
-    
-    
-    <!-- ### Initialize the overlay box for modal.js ### -->
-<!--    <a href="#modal_container" id="initializeModal" style="display:none;"></a>-->
-<!--    <div id="modal_container" ></div>-->
     <script type="text/javascript">
-        /*
-        createOverlay('initializeModal');
-        var globalInfoBig = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/infoBig.gif')}';
-        var globalCheckNew = '{!URLFOR($Resource.ProjectResources, 'images/layout/icons/WidgetConfig/checkNew.gif')}';
-        var userIsManager = '{!isManager}';
-        */
-        
         var deleteProjectOverlay = new ConfirmOverlay( '{!$Component.DeleteProjectOverlay}' );
     
         function DeleteProject(){
@@ -58,7 +26,6 @@
         includeNewMilestone="true" 
         includeAttachment="true" 
         idValue="{!HTMLENCODE( projectId )}" />
-        
         
      <!-- Delete Project Overlay -->
     <c:ConfirmOverlay id="DeleteProjectOverlay" 
@@ -90,7 +57,6 @@
         <apex:outputPanel id="breadcrumbPanel" styleClass="breadcrumbPanel" layout="block">
             <c:Breadcrum id="BreadCrum"/>
         </apex:outputPanel>
-        <!-- End breadcrumbPanel -->
          
          <div align="center" class="breadCrumbAndButtons">
 
@@ -143,7 +109,7 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <apex:outputPanel id="sidebarWidgets">
-
+				 <!-- Project Quick Links -->
                 <c:QuickLinksWidget id="quickLinks" projectId="{!HTMLENCODE( projectId )}" />
                 
                 <!-- Team members -->
@@ -184,9 +150,7 @@
         </div>
     </div>
         </apex:form> 
-    <apex:includeScript value="{!URLFOR($Resource.commonResources, 'inc/js/teamDetailMarkupBottom.js')}" />
         
- 
     <script type="text/javascript">
     
     	function unJoinMember(){
@@ -202,6 +166,7 @@
        var userIsManager = '{!isManager}';
        function addAvatarAsAvatar(){
             window.frames.attachmentIframe.Attachment.uploadAsAvatar();
+            $('ProjectDetail:PromptOverlay:PromptOverlay:Attachment:newAttachment:tittleSpan').innerHTML = 'New Avatar';
             promptOverlay.open( attachment );
        }
        

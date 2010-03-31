@@ -220,7 +220,10 @@
                 </apex:outputPanel>
             </apex:outputpanel>
           </div>
-        </div>      
+          
+           </apex:form>
+        </div>  
+            
             <apex:outputpanel rendered="{!IF(!detailsOk,true,false)}"  layout="block">
                 <p>No Id given , no id to look for</p>
             </apex:outputpanel>
@@ -234,7 +237,7 @@
                 <div style="display: none;" id="sw_all" class="swirly_members"></div>
                 <div style="display: none;" id="swirlyAttachment" class="swirly_members"></div>
                 <div style="display: none;" id="sw_all2" class="swirly_members"></div>     
-                             
+                 <apex:form id="taskDetail">            
                 <!-- Method to refresh task detail -->
                     <apex:detail subject="{!Task.Id}" relatedList="false"  title="false" />
                     <apex:actionFunction name="apexAFRefreshDetail" 
@@ -247,7 +250,6 @@
                         rerender="detailListPanel" 
                         oncomplete="swirly.hide();"/>
                         
-                        <!-- oncomplete="$('sw_o').hide(); $('sw_all2').hide(); swirly.hide();" -->
                      <apex:actionFunction name="RefreshTaskAssignedList" 
                         action="{!doRefresh}" 
                         rerender="detailListPanel" 
@@ -275,7 +277,7 @@
                         action="{!doRefresh}"  
                         rerender="taskComments" 
                         oncomplete="swirly.hide();" />     
-               
+               </apex:form>
                 <div class="bPageBlock">
                 
                 <apex:outputpanel id="detailListPanel">
@@ -309,7 +311,7 @@
                                             </a>
                                         </div>
                                     </apex:outputPanel>
-                                    
+                                    <apex:form >
                                         <apex:actionFunction name="reloadAttachmentList" rerender="attachmentList" />
                                         <table class="assignedToTable">
                                             <apex:repeat value="{!Task.Files}" var="item" >
@@ -331,6 +333,7 @@
                                                 </tr>
                                             </apex:repeat>
                                         </table>
+                                        </apex:form>
                                 </td>       
                             </tr>
                             <tr>
@@ -395,9 +398,10 @@
                             <tr>
                                 <td class="labelCol vTop">Comments</td>
                                 <td class="dataCol">
+                                
                                     <apex:outputpanel id="taskComments">
-                                        
-                                        <apex:outputPanel id="taskCommentsTable" layout="block"  rendered="{!allowComments}">
+                                    <apex:form >
+                                        <apex:outputPanel id="taskCommentsTable" layout="block"  rendered="{!OR(userPermissions.canManage,taskPerm.canUpdate)}">
                                             <apex:inputField id="taskCommentsTableBody" styleClass="taskCommentsTableBody" value="{!comment.Body__c}" /><br/>
                                             <apex:commandLink onclick="if(!validateComment()){return false;}"
                                                 oncomplete="swirly.hide();infoToUser.open( 'success', 'Comment saved successfully.');"
@@ -407,7 +411,7 @@
                                                 <span>Save Comment</span>
                                             </apex:commandLink>
                                         </apex:outputPanel>
-                                        
+                                        </apex:form>
                                         <apex:outputPanel layout="block" styleclass="overlaySeparateLine" />
                                         
                                         <apex:repeat value="{!taskComments}" var="comment">
@@ -432,7 +436,6 @@
                                             </apex:outputPanel>
                                         </apex:repeat>                          
                                     </apex:outputPanel>
-                                    
                                 </td>                               
                             </tr>
                         </tbody>                   
@@ -444,6 +447,7 @@
             
             <div align="center" class="breadCrumbAndButtons" style="padding-top:15px;">
             <div class="buttons" >
+            <apex:form >
                 <apex:outputpanel rendered="{!OR(userPermissions.canManage,taskPerm.canUpdate)}" layout="block">
                    <a class="blackbutton" href="/{!Task.id}/e?retURL=/{!Task.id}"><span>Edit Task</span></a>
                         <apex:actionStatus id="taskStatus2">
@@ -480,10 +484,12 @@
                         </a>
                     </apex:outputPanel>            
                 </apex:outputpanel>
+                </apex:form>
             </div>
+            
         </div>
         
-         </apex:form>
+         
         </div>
         </div>
 </apex:page>

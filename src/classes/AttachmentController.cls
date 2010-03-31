@@ -1,18 +1,18 @@
-/**
+/** 
 * @author Miguel Soares
 */
 public with Sharing class AttachmentController{  
 	
 	 
-	private final Integer MAX_SIZE = 131072; // 128Kb
+	private final Integer MAX_SIZE = 4194304; // 4MB
 	private final Integer MAX_LENGTH_NAME = 71;
 	private final String  ERROR_NO_FILE   = 'Please select a file to upload.';
-	private final String  ERROR_IMG_TYPE  = 'The image must be .jpg, .gif or .png';	
+	private final String  ERROR_IMG_TYPE  = 'The image must be .jpg, .gif .bmp or .png';	
 	private final String  ERROR_BIN_TYPE  = 'Binary type are not allowed.';	
-	private final String  ERROR_SIZE_FILE = 'Maximum size is 128 KB';
+	private final String  ERROR_SIZE_FILE = 'Maximum size is 4 MB';
 	
 	private Set<String> imagesTypes 		= new Set<String> {'image/jpeg', 'image/pjpeg', 'image/png', 'image/x-png', 'image/gif'};
-	private Set<String> notAllowedTypes 	= new Set<String> {'application/octet-stream'};
+	private Set<String> notAllowedTypes 	= new Set<String> {};
 	
 	public Boolean      isProduction 		{ set; get; }  
 	public String		parentId 	 		{ set; get; }

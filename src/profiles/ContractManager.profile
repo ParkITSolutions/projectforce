@@ -127,6 +127,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>MatiasController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>MemberActivity</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -2000,6 +2004,10 @@
     </objectPermissions>
     <pageAccesses>
         <apexPage>HeaderTemplate</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>Matias</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>

@@ -42,7 +42,7 @@ public class DAOAttachment {
 	
 	public List<AttachmentObj> getAttachments( String id ){
 		
-		List<Attachment> att = [Select Id, Name, CreatedDate, CreatedBy.Name, BodyLength, Body From Attachment Where ParentId =: id and id !=: DAOFactory.getInstance().getProjectAvatarId( id ) limit 1000];
+		List<Attachment> att = [Select Id, Name, CreatedDate, CreatedBy.Name, BodyLength, Body, ContentType From Attachment Where ParentId =: id and id !=: DAOFactory.getInstance().getProjectAvatarId( id ) limit 1000];
 		return ObjectFormatter.formatAttachments( att );
 		
 	}

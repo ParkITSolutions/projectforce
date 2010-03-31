@@ -14,16 +14,15 @@
 				<div class="linkAction">
 						<!--### Rerender Method ###-->
 						<apex:actionFunction name="reloadProjectTask" action="{!getAllProjectTasks}" rerender="container" onComplete="swirly.hide();" />
-						
 						<ul class="links_sup">
-							<apex:outputpanel rendered="{!userPermissions.canCreate}"> 
-								<li>
+							<li>
+								<apex:outputpanel rendered="{!userPermissions.canCreate}"> 
 									<a class="topRightLinks" 
 									   href="javascript:;" 
 									   onclick="promptOverlay.open(newTask);">
 									   New</a> |
-							    </li>
-							</apex:outputpanel>
+								</apex:outputpanel>
+							</li>
 							<li class="contact_border_active" style="position: relative;">
 								<a href="javascript:;" id="filter" class="contact_border"  onclick="dropDownContact(this);">View: All Tasks</a>
 								<ul style="display:none;">
@@ -89,12 +88,10 @@
 										</td>
 										<td>								
 											<div class="{!task.isToLate} f_left" style="overflow: hidden; width: 99%;">
-											
 												<a href="projecttaskdetail?id={!task.TaskId}" title="{!task.TaskName}">{!task.shortTaskName}</a><br/>
 												<span class="gray"> {!task.EndDate}</span>
 											</div>
 										</td>
-										
 										<td>
 											<a href="/{!task.UserId}"  class="name_margin">{!task.UserName}</a>	
 										</td>

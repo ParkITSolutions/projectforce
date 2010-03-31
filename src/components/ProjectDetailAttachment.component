@@ -19,10 +19,13 @@
     	    deleteProjectAttachmentOverlay.open();
     	    deleteProjectAttachmentOverlay.setActionIds(attachID);	
 		}
+		
+		function fixAttTitleComponent(){
+            $('ProjectDetail:PromptOverlay:PromptOverlay:Attachment:newAttachment:tittleSpan').innerHTML = 'Add New Attachment';
+            window.frames.attachmentIframe.Attachment.uploadNotAsAvatar();
+		}
 
 	</script>
-	
-
 	
 	<!-- Generic Refresh Attachment Method -->
 	<apex:actionFunction name="RefreshAttachmentList" 
@@ -40,15 +43,12 @@
 			<!-- Widget Links Holder -->
 			<div class="linkAction">
 				<apex:outputpanel rendered="{!userPermissions.canCreate}">
-					
-				  	<a href="javascript:;" onclick="promptOverlay.open(attachment)">
+				  	<a href="javascript:;" onclick="promptOverlay.open(attachment);fixAttTitleComponent();">
 				  		New Attachment
 				  	</a>
-				  	
 				</apex:outputPanel>
 				
 			</div>
-			
 			
 			<!-- Widget Container --> 		
 			<div class="wideBody">
@@ -75,7 +75,7 @@
 									</td>
 									<td>
 										<img style="vertical-align:bottom;" src="https://{!domain}{!URLFOR($Resource.FileTypeIcons, attachment.attachImage)}"/> &nbsp;
-										<a href="#" onclick="window.open('https://{!domain}/servlet/servlet.FileDownload?file={!attachment.Id}')" title="{!attachment.Name}" > {!attachment.shortName} </a>
+										<a href="https://{!domain}/servlet/servlet.FileDownload?file={!attachment.Id}" target="_blank" title="{!attachment.Name}" > {!attachment.shortName} </a>
 									</td>  
 									<td>
 										<apex:outputText value="{!attachment.bodyWeight}"/>
@@ -108,7 +108,7 @@
 							<li>
 								No Attachments Yet<br/>
 								<apex:outputpanel rendered="{!userPermissions.canCreate}"  > 
-									<a  href="javascript:;" onclick="promptOverlay.open(attachment)">Attach a file</a>
+									<a  href="javascript:;" onclick="promptOverlay.open(attachment);fixAttTitleComponent();">Attach a file</a>
 								</apex:outputpanel>
 							</li>
 						</ul>

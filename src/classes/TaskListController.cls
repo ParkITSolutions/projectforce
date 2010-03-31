@@ -95,7 +95,8 @@ public with Sharing class TaskListController{
        
         this.project 	= DAOFactory.getInstance().getProjectInfo( projectId );
         String csvText 	= 'ID ,Type,Priority,Name,Description,Status,AssignedTo,PercentCompleted,Duration (' + project.displayDuration + '),DueDate,DaysLate\n';               
-             
+        
+        this.paginator.loadTasksByProject();
         for( Task iterTask : this.paginator.getTasksByProject() ) {
            
             csvText += iterTask.idDisplay + ',';           
