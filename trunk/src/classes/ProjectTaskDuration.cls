@@ -247,10 +247,10 @@ public class ProjectTaskDuration{
 		Set<String> workdays 	= this.getWorkDays( wdays );
 		Datetime myDate 		= Datetime.valueOf( startDate + '00:00:00' );
 		String weekday 			= '';	
-			
+		/*	
 		if( days > 1000 ){
 			days = 1000;
-		}
+		}*/
 		
 		for( Integer i = 0; i < days; i++ ){
 			weekday = myDate.format( 'EEE' );
@@ -273,7 +273,7 @@ public class ProjectTaskDuration{
 	* @return task duration in days
 	*/
 	public Integer doExcludeNonWorkingDays( Date startDate, Date endDate, Integer wdays ){
-		
+		/*
 		Set<String> workdays 	= this.getWorkDays( wdays );
 		Datetime myDate 		= Datetime.valueOf( startDate + '00:00:00' );
 		Integer days 			= 1;
@@ -285,7 +285,10 @@ public class ProjectTaskDuration{
 				days++;
 			myDate = myDate.addDays(1);
 		}
-		return days;	
+		*/
+		
+		//return days;
+		return ProjectUtil.calulateDurationUntilBigCrash(startDate,endDate,wdays);	
 	}
 	
 	/**
