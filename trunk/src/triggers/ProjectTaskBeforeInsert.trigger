@@ -24,6 +24,11 @@ trigger ProjectTaskBeforeInsert on ProjectTask__c (before insert) {
 			for(ProjectTask__c nTask : Trigger.new) {
 				Boolean triggerValidation = true;
 				
+				//Trimming duration values to avoid errors
+		        if(nTask.DurationUI__c.length() > 7){
+		            nTask.DurationUI__c = nTask.DurationUI__c.substring(0, 6);
+		        }
+        
 			    //Trigger Validation
 			    if( nTask.StartDate__c > nTask.EndDate__c ){
 			    	nTask.StartDate__c.addError('Start date should not be greater than End Date');

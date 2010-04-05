@@ -269,7 +269,7 @@
                                 </apex:outputLink>
                             </apex:facet>
                             <!-- <apex:outputText value="{!t.Priority}" /> -->
-                            <apex:image id="PriorityImage" value="{!URLFOR($Resource.UserTasks, 'images/'+t.priority+'Priority.gif')}" />
+                            <apex:image id="PriorityImage" rendered="{!IF(t.priority != '', 'true', 'false')}" value="{!URLFOR($Resource.UserTasks, 'images/'+t.priority+'Priority.gif')}" />
                         </apex:column>
                         
                         <apex:column >

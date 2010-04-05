@@ -14,11 +14,11 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
         tempPTOld = Trigger.old.get( k );
         tempPTNew = Trigger.new.get( k );   
         
-        //Trimming duration values to avoid errors
+		//Trimming duration values to avoid errors
         if(tempPTNew.DurationUI__c.length() > 7){
             tempPTNew.DurationUI__c = tempPTNew.DurationUI__c.substring(0, 6);
-        }
-        
+        }    
+            
         if( tempPTOld.Project__c != tempPTNew.Project__c){
                 tempPTNew.Project__c.addError( 'You can not modify project.');
                 triggerValidation = triggerValidation && false;
@@ -93,6 +93,7 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
         //if all validations passed
         if(triggerValidation){
             if( ProjectUtil.getTaskDependenciesFlag()){ 
+            	System.Debug('=================================Call in before Update trigger000');
                 tempPTNew = duration.calculateTaskUpdate(tempPTOld, tempPTNew);
                 
                 ProjectUtil.flags.put('exeParentTaskUpdate', true);
@@ -107,7 +108,9 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
                 parent.parentTaskUpdate(tempPTOld, tempPTNew);
             }else{
                 tempPTNew = duration.calculateTaskUpdate(tempPTOld, tempPTNew);
+                System.Debug('=================================Call in before Update trigger1');
                 if(!ProjectUtil.flags.containsKey('exeParentTaskUpdate') || !ProjectUtil.flags.get('exeParentTaskUpdate'))
+                    System.Debug('=================================Call in before Update trigger2');
                     parent.parentTaskUpdate(tempPTOld, tempPTNew);
             }
             

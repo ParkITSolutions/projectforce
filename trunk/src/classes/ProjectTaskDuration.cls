@@ -183,8 +183,16 @@ public class ProjectTaskDuration{
 			}			
  
 			task.Duration__c 	= duration;
-			task.DurationUI__c 	= String.valueOf(duration);
-		
+			String auxDuration 	= String.valueOf( duration );
+			System.debug('======================= Valuejo '+ duration +'---- ' + auxDuration.length());
+			if( auxDuration.length() > 5 ){
+				task.DurationUI__c 	= auxDuration.substring(0, 5);
+				System.debug('======================= entro ' + task.DurationUI__c);
+			}
+			else{
+				task.DurationUI__c 	= auxDuration;
+				System.debug('======================= Vano entroue ' + auxDuration);
+			}
 		}	
 		
 		return task;
@@ -247,10 +255,11 @@ public class ProjectTaskDuration{
 		Set<String> workdays 	= this.getWorkDays( wdays );
 		Datetime myDate 		= Datetime.valueOf( startDate + '00:00:00' );
 		String weekday 			= '';	
-		/*	
+		
+			/*
 		if( days > 1000 ){
 			days = 1000;
-		}*/
+		}
 		
 		for( Integer i = 0; i < days; i++ ){
 			weekday = myDate.format( 'EEE' );
@@ -258,11 +267,14 @@ public class ProjectTaskDuration{
 				days++;
 			myDate = myDate.addDays(1);
 		}
+		*/
 		
 		if( days == 0 ){
 			return Date.newInstance( myDate.year(), myDate.month(), ( myDate.day() ) );	
 		}
-		return Date.newInstance( myDate.year(), myDate.month(), ( myDate.day() - 1 ) );	
+		
+		//return Date.newInstance( myDate.year(), myDate.month(), ( myDate.day() - 1 ) );	
+		return ProjectUtil.calculateEndDateWithEndDateAndDuration( startDate, wdays,days );
 	}
 	
 	/**
@@ -468,12 +480,25 @@ public class ProjectTaskDuration{
 		
 		if( this.displayDuration.equals( 'Days' ) ){
 			task.Duration__c 	= Double.valueOf( input );
-			task.DurationUI__c 	= input;
+			String auxInput 	= input;
+			if( auxInput.length() > 5 ){
+				task.DurationUI__c 	= auxInput.substring( 0, 5 );
+			}
+			else{
+				task.DurationUI__c 	= auxInput;
+			}
 		}
 		else{
 			task.Duration__c 	= task.RawDuration__c;
-			task.DurationUI__c 	= String.valueOf( task.RawDuration__c );
+			String auxDuration  = String.valueOf( task.RawDuration__c );
+			if( auxDuration.length() > 5 ){
+				task.DurationUI__c 	= auxDuration.substring( 0, 5 );
+			}
+			else{
+				task.DurationUI__c = auxDuration;
+			}
 		}
+		
     	return task;
 	}
 	

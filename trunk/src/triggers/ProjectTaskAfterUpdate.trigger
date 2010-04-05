@@ -11,7 +11,7 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
 	List<String> mailingList = new List<String>();
 	
 	if(Trigger.old.get( 0 ).ParentTask__c == Trigger.new.get( 0 ).ParentTask__c){
-		//TODO Fro fix error;
+		//TODO Fro fix error; comment!!!
 		//BigListOfTasks bigListOfTask = new BigListOfTasks(Trigger.new.get(0).Project__c);
 	}
     ParentTask parent = new ParentTask(); 
