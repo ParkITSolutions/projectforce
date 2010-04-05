@@ -27,7 +27,7 @@ public class ProjectUtil {
     public static Boolean taskDependenciesFlag = true;
     public static Map<String, Boolean> flags = new Map<String, Boolean>(); 
     public static Boolean inFuture = false;
-    public static	Map<String,Integer> daysMap = new Map<String,Integer>{'Mon' => 1, 'Thu' => 2, 'Wen' => 3, 'Thu' => 4, 'Fri' => 5, 'Sat' => 6, 'Sun' => 7 };
+    public static	Map<String,Integer> daysMap = new Map<String,Integer>{'Mon' => 1, 'Tue' => 2, 'Wed' => 3, 'Thu' => 4, 'Fri' => 5, 'Sat' => 6, 'Sun' => 7 };
     
     public static Integer maxLongWord = 30;
 	public static Integer maxLongPhrase = 128;	
@@ -313,21 +313,27 @@ public class ProjectUtil {
     } 
     
     public static Integer isWorkingDayThisDay( Date day , Integer workingDays ){
+    	System.debug( '#### dia : ' + Datetime.valueOf( day + '00:00:00').format( 'EEE' ) +  ' wd ' + workingDays );
     	return ProjectUtil.daysMap.get(Datetime.valueOf( day + '00:00:00').format( 'EEE' )) <= workingDays ? 1 : 0;
+    	
     }
     
+    /**
+    *@author Miguel Soares de Lima and Nicolas Dominguez
+    */
     public static Integer calulateDurationUntilBigCrash( Date startDate, Date endDate, Integer workingDays ){
     	
     	Integer daysBetween = startDate.daysBetween( endDate ) + 1;
     	Integer quotient = daysBetween / 7;
     	Integer rest = Math.mod( daysBetween, 7 );
     	Integer duration = 0;
+    	Date dateAux;
     	
-    	duration = quotient * workingDays;
-    	
-    	for( Integer k = rest; k > 0; k-- )
-    		duration += ProjectUtil.isWorkingDayThisDay( endDate.addDays( -k ), workingDays );
-    		
+    	duration = quotient * workingDays;    	
+    	for( Integer k = 0; k < rest; k++ ){
+    		dateAux = endDate;
+    		duration += ProjectUtil.isWorkingDayThisDay( dateAux.addDays( -k ), workingDays );
+    	}	
     	return duration;
     }
 }
