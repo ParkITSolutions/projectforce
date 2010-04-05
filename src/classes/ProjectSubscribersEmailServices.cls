@@ -227,7 +227,8 @@ public class ProjectSubscribersEmailServices{
 					title=proj.Project__r.Name ;
 					htmlVar=returnHtmlIni(htmlVar,title);
 					
-					field= proj.User__r.Name + ' has left project  <a href="'+ this.sfdcHostName+'apex/ProjectDetail?id='+ proj.Project__c + '">'+  proj.Project__r.Name + '</a>.';
+					//field= proj.User__r.Name + ' has left project  <a href="'+ this.sfdcHostName+'apex/ProjectDetail?id='+ proj.Project__c + '">'+  proj.Project__r.Name + '</a>.';
+					field= proj.User__r.Name + ' has left project  '+  proj.Project__r.Name + '.';
 					htmlVar=returnVarHtml(htmlVar,'', field);
 					htmlVar=returnHtmlFin(htmlVar,'');
 					emailMsj=htmlVar;
@@ -239,7 +240,8 @@ public class ProjectSubscribersEmailServices{
 	                title=proj.Project__r.Name;
 					htmlVar=returnHtmlIni(htmlVar,title);
 					
-					field= 'A new project member has joined project <a href="' + this.sfdcHostName+'apex/ProjectDetail?id='+ proj.Project__c +'">'+  proj.Project__r.Name + '</a>. Please welcome ' + proj.User__r.Name+ ' to the project.';
+					//field= 'A new project member has joined project <a href="' + this.sfdcHostName+'apex/ProjectDetail?id='+ proj.Project__c +'">'+  proj.Project__r.Name + '</a>. Please welcome ' + proj.User__r.Name+ ' to the project.';
+					field= 'A new project member has joined project '+  proj.Project__r.Name + '. Please welcome ' + proj.User__r.Name+ ' to the project.';
 					htmlVar=returnVarHtml(htmlVar,'', field);
 					htmlVar=returnHtmlFin(htmlVar,'');
 					emailMsj=htmlVar;
@@ -286,11 +288,15 @@ public class ProjectSubscribersEmailServices{
 			String field='';
 			String msjFoot='';
 
-			title='<a style="color:#FFFFFF;" href="' + this.sfdcHostName +'apex/ProjectDetail?id='+ proj.Project__c + '">'+ proj.Project__r.Name + '</a>';
+			//title='<a style="color:#FFFFFF;" href="' + this.sfdcHostName +'apex/ProjectDetail?id='+ proj.Project__c + '">'+ proj.Project__r.Name + '</a>';
+			title= proj.Project__r.Name ;
+			
 			htmlVar=returnHtmlIni(htmlVar,title);
 			
 			title='Task Name';
-			field='<a href="'+ this.sfdcHostName+'apex/projecttaskdetail?id='+proj.ProjectTask__c + '">'+ proj.ProjectTask__r.Name + '</a>';
+			//field='<a href="'+ this.sfdcHostName+'apex/projecttaskdetail?id='+proj.ProjectTask__c + '">'+ proj.ProjectTask__r.Name + '</a>';
+			field= proj.ProjectTask__r.Name ;
+			
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='Priority';
@@ -377,11 +383,15 @@ public class ProjectSubscribersEmailServices{
 			String field='';
 			String msjFoot='';
 			
-			title='<a style="color:#FFFFFF;" href="' + this.sfdcHostName +'apex/ProjectDetail?id='+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a>';
+			//title='<a style="color:#FFFFFF;" href="' + this.sfdcHostName +'apex/ProjectDetail?id='+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a>';
+			title= lstPT[0].Project__r.Name;
+			
 			htmlVar=returnHtmlIni(htmlVar,title);
 			
 			title='Task Name';
-			field='<a href="'+ this.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">' + lstPT[0].Name+ '</a>';
+			//field='<a href="'+ this.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">' + lstPT[0].Name+ '</a>';
+			field= lstPT[0].Name;
+			
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='Priority';
@@ -455,11 +465,16 @@ public class ProjectSubscribersEmailServices{
 			String field='';
 			String msjFoot='';
 			
-			title='<a style="color:#FFFFFF;" href="' + this.sfdcHostName +'apex/ProjectDetail?id='+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a>';
+			//title='<a style="color:#FFFFFF;" href="' + this.sfdcHostName +'apex/ProjectDetail?id='+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a>';
+			title= lstPT[0].Project__r.Name;
+			
+			
 			htmlVar=returnHtmlIni(htmlVar,title);
 			
 			title='Task Name';
-			field='<a href="'+ this.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">' + lstPT[0].Name+ '</a>';
+			//field='<a href="'+ this.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">' + lstPT[0].Name+ '</a>';
+			field= lstPT[0].Name;
+			
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='Priority';
@@ -550,11 +565,15 @@ public class ProjectSubscribersEmailServices{
 	        String field='';
 	        String msjFoot='';
 	        
-	        title='<a style="color:#FFFFFF;" href="' + this.sfdcHostName +'apex/ProjectDetail?id='+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a>';
+	        //title='<a style="color:#FFFFFF;" href="' + this.sfdcHostName +'apex/ProjectDetail?id='+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a>';
+	        title= lstPT[0].Project__r.Name ;
+	        
 	        htmlVar=returnHtmlIni(htmlVar,title);
 	        
 	        title='Task Name';
-	        field='<a href="' + this.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">'+ lstPT[0].Name + '</a>';
+	        //field='<a href="' + this.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">'+ lstPT[0].Name + '</a>';
+	        field= lstPT[0].Name;
+	        
 	        htmlVar=returnVarHtml(htmlVar, title, field);
 	        
 	        title='Priority';
@@ -627,7 +646,10 @@ public class ProjectSubscribersEmailServices{
 			String field='';
 			String msjFoot='';
 			
-			title='<a style="color:#FFFFFF;" href="' + this.sfdcHostName +'apex/ProjectDetail?id='+ proj.Project__r.id + '">' + proj.Project__r.Name + '</a>';
+			//title='<a style="color:#FFFFFF;" href="' + this.sfdcHostName +'apex/ProjectDetail?id='+ proj.Project__r.id + '">' + proj.Project__r.Name + '</a>';
+			title= proj.Project__r.Name;
+			
+			
 			htmlVar=returnHtmlIni(htmlVar,title);
 			
 			title='Priority';
@@ -695,11 +717,16 @@ public class ProjectSubscribersEmailServices{
 					String field='';
 					String msjFoot='';
 					
-					title='<a style="color:#FFFFFF;" href="' + this.sfdcHostName +'apex/ProjectDetail?id='+ t.Project__c + '">' + t.Project__r.Name + '</a>';
+					//title='<a style="color:#FFFFFF;" href="' + this.sfdcHostName +'apex/ProjectDetail?id='+ t.Project__c + '">' + t.Project__r.Name + '</a>';
+					title= t.Project__r.Name;
+					
+					
 					htmlVar=returnHtmlIni(htmlVar,title);
 					
 					title='Task Name';
-					field='<a href="' + this.sfdcHostName+'apex/projecttaskdetail?id='+t.id + '">'+ t.Name + '</a>';
+					//field='<a href="' + this.sfdcHostName+'apex/projecttaskdetail?id='+t.id + '">'+ t.Name + '</a>';
+					field= t.Name ;
+					
 					htmlVar=returnVarHtml(htmlVar, title, field);
 					
 					title='Priority';
@@ -775,11 +802,15 @@ public class ProjectSubscribersEmailServices{
 			String field='';
 			String msjFoot='';
 			
-			title='<a style="color:#FFFFFF;" href="' + this.sfdcHostName +'apex/ProjectDetail?id='+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a>';
+			//title='<a style="color:#FFFFFF;" href="' + this.sfdcHostName +'apex/ProjectDetail?id='+ lstPT[0].Project__r.Id + '">' + lstPT[0].Project__r.Name + '</a>';
+			title= lstPT[0].Project__r.Name;
+			
 			htmlVar=returnHtmlIni(htmlVar,title);
 			
 			title='Task Name';
-			field='<a href="'+ this.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">' + lstPT[0].Name+ '</a>';
+			//field='<a href="'+ this.sfdcHostName+'apex/projecttaskdetail?id='+lstPT[0].id+ '">' + lstPT[0].Name+ '</a>';
+			field= lstPT[0].Name;
+			
 			htmlVar=returnVarHtml(htmlVar, title, field);
 			
 			title='Priority';
@@ -1060,13 +1091,17 @@ public class ProjectSubscribersEmailServices{
 							}
 
 							//Name of project
-							title='<a style="color:#FFFFFF;" href="' + this.sfdcHostName +'apex/ProjectDetail?id='+ listOfProjects.Id + '">' + listOfProjects.Name + '</a>';
+							//title='<a style="color:#FFFFFF;" href="' + this.sfdcHostName +'apex/ProjectDetail?id='+ listOfProjects.Id + '">' + listOfProjects.Name + '</a>';
+							title= listOfProjects.Name;
+							
 							htmlVarStart=returnHtmlIni(htmlVarStart,title);
 							//-------------------------------------------
 
 							////Fields
 							titleField='Task Name';
-							field='<a style="color:#000000;" href="'+ this.sfdcHostName+'apex/projecttaskdetail?id='+listOfTask.id+ '">' + listOfTask.Name+ '</a>';
+							//field='<a style="color:#000000;" href="'+ this.sfdcHostName+'apex/projecttaskdetail?id='+listOfTask.id+ '">' + listOfTask.Name+ '</a>';
+							field= listOfTask.Name;
+							
 							htmlVar=returnVarHtml(htmlVar, titleField, field);
 
 							titleField='Percent Completed';

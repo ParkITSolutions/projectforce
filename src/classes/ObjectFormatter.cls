@@ -210,6 +210,32 @@ public class ObjectFormatter{
 			att.createdBy 		= iter.CreatedBy.Name;
 			att.createdDate 	= iter.CreatedDate;
 			att.ContentType		= iter.ContentType;
+			
+			// Using mime type
+       		Map<String, String> typesMime = new Map<String, String>{
+       			'image/jpeg' => 'images.gif', 
+       			'image/pjpeg' => 'images.gif', 
+       			'image/png' => 'images.gif', 
+       			'image/x-png' => 'images.gif', 
+       			'image/gif' => 'images.gif', 
+       			'image/bmp' => 'images.gif', 
+       			'text/plain' => 'txt.gif', 
+       			'application/pdf' => 'pdf.gif', 
+       			'application/msword' => 'doc.gif', 
+       			'application/x-zip-compressed' => 'zip.gif', 
+       			'audio/wav' => 'audio.gif', 
+       			'audio/mpeg' => 'audio.gif', 
+       			'video/mpeg' => 'video.gif', 
+       			'video/avi' => 'video.gif'
+   			};	
+       		
+       		if( typesMime.containsKey( iter.ContentType ) ){
+       			att.image = typesMime.get( iter.ContentType );
+       		}
+       		else{
+       			att.image = 'generic.gif';
+       		}
+	           		
 			formattedAttachments.add( att );
 		}
 		

@@ -39,7 +39,7 @@
         <apex:form id="Form" onSubmit="return task.validate();">
 
             <apex:outputPanel id="HiddenPanel" style="display:none;">
-                <apex:inputHidden value="{!postAction}" id="PostAction" />
+                <apex:inputText value="{!postAction}" id="PostAction" />
             </apex:outputPanel>
 
             <!-- ComponentBody -->
@@ -99,10 +99,10 @@
                 <!-- SubmitButtons -->
                 <apex:outputPanel id="SubmitButtons" styleClass="submitButtons" layout="block">
 
-                    <apex:commandLink id="AcceptButton" 
-                    	value="Accept" 
+                    <apex:commandLink id="AcceptButton"
+                    	value="Accept"
                     	action="{!action}"
-                        onComplete="promptOverlay.postAction(); task.clear();" 
+                        onComplete="promptOverlay.postAction();task.clear();" 
                         reRender="HiddenPanel"
                         styleClass="Accept submitButton" />
 
