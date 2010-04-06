@@ -58,7 +58,6 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
 			List<String> modsStarDate = new List<String>(); 		
 			List<String> modsEndDate = new List<String>(); 	
 			ParentTask.updateParentTasks(tempPTNew.Id, modsIds, modsStarDate, modsEndDate);
-			
 			//TODO refactor Child indent
 			ParentTask.callUpdateAllChildrenIndent(tempPTNew.Id, tempPTNew.Project__c); 
 			

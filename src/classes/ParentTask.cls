@@ -75,13 +75,19 @@ public class ParentTask {
     }
 
     if(tempPTNew.ParentTask__c != null && tempPTOld.ParentTask__c == tempPTNew.ParentTask__c){ 
-      if(ProjectUtil.getFlagValidationParentTask())
+      if(ProjectUtil.getFlagValidationParentTask()){
         //Call to @future method
+        System.debug('============== Future call');
         ParentTask.updateParentTasks(tempPTNew.id, modsIds, modsStarDate, modsEndDate );
-    }else{
+      }
+    }
+    else{
       ProjectUtil.setTaskDependenciesFlag( false );
-      if(ProjectUtil.getFlagValidationParentTask())
+      System.debug('========' +ProjectUtil.getFlagValidationParentTask() );
+      if(ProjectUtil.getFlagValidationParentTask()){
+      	System.debug('============== Common Update');
         update ParentTask.updates.values();
+      }
     }
     
     if(ProjectUtil.getParentTaskUpdateIndent()){
@@ -304,7 +310,8 @@ public class ParentTask {
     List<ProjectTask__c> aux = ParentTask.updates.values();
 
     ProjectTask__c task = BigListOfTasks.getbyId((Id)taskId);
-    checkParentTask(task);
+    System.debug( '================== After Update Task:' + task );
+    checkParentTask( task );
   }
   
   /**
@@ -446,43 +453,47 @@ public class ParentTask {
   * @return Void
   */
   @future
-  public static void batchUpdateParentTask(List<String> taskIds){
-    if(taskIds.size() > 0){
-    	System.debug('============================Final Batch task Id size:' + taskIds.size());
-      String id = taskIds.get(0);
-      ProjectTask__c t = [Select Id, Project__c from ProjectTask__c where Id =: id limit 1];
-      BigListOfTasks bigList = new BigListOfTasks(t.Project__c);
+  public static void batchUpdateParentTask( List<String> taskIds ){
+    if( taskIds.size() > 0 ){
+    	System.debug('============================Batch task Id size:' + taskIds.size());
+      	String id = taskIds.get(0);
+      	ProjectTask__c t = [Select Id, Project__c from ProjectTask__c where Id =: id limit 1];
+      	BigListOfTasks bigList = new BigListOfTasks(t.Project__c);
       
-      List<ProjectTask__c> tasks = new List<ProjectTask__c>();
-      for(String taskId : taskIds){
-        ProjectTask__c tsk = BigListOfTasks.getbyId(String.valueOf(taskId));
-        tasks.add(tsk); 
-      }
+      	List<ProjectTask__c> tasks = new List<ProjectTask__c>();
+      	for(String taskId : taskIds){
+        	ProjectTask__c tsk = BigListOfTasks.getbyId(String.valueOf(taskId));
+        	tasks.add(tsk); 
+      	}
       
-      for(ProjectTask__c task : tasks){
-        if(task != null ){
-          ProjectTask__c parentTask = BigListOfTasks.getbyId(task.ParentTask__c);
+      System.debug( '================= Total Tasks:' +tasks.size() );
+      for( ProjectTask__c task : tasks ){
+      	System.debug( '================= task in iteracion:' +task );
+        if( task != null ){
+          ProjectTask__c parentTask = BigListOfTasks.getbyId( task.ParentTask__c );
           ProjectTask__c auxTask    = new ProjectTask__c();  
           auxTask.StartDate__c      = null;
-          auxTask.EndDate__c       = null;
-          Double percentage      = 0.0;
+          auxTask.EndDate__c       	= null;
+          Double percentage      	= 0.0;
           
-          List<ProjectTask__c> children = getTaskChildren(parentTask, task);
-          for(ProjectTask__c nTask : children) {
-            if(auxTask.StartDate__c != null){
-              if(task.Id != nTask.Id){
-                if(nTask.StartDate__c <= auxTask.StartDate__c){
+          List<ProjectTask__c> children = getTaskChildren( parentTask, task) ;
+          System.debug( '=================== Task Children Size : ' + children.size() + '  ' + children );
+          for( ProjectTask__c nTask : children ) {
+          	System.debug( '================= Child Task in quest' +nTask);
+            if( auxTask.StartDate__c != null ){
+              if( task.Id != nTask.Id ){
+                if( nTask.StartDate__c <= auxTask.StartDate__c ){
                   auxTask.StartDate__c = nTask.StartDate__c;
                 }
               }
               else{
-                if(task.StartDate__c <= auxTask.StartDate__c){
+                if( task.StartDate__c <= auxTask.StartDate__c ){
                   auxTask.StartDate__c = task.StartDate__c;
                 }
               }
             }
             else{
-              if(task.Id != nTask.Id){
+              if( task.Id != nTask.Id ){
                 auxTask.StartDate__c = nTask.StartDate__c;
               }
               else{
@@ -490,21 +501,21 @@ public class ParentTask {
               }
               
             }
-            if(!nTask.Milestone__c){
-              if(auxTask.EndDate__c != null){
-                if(task.Id != nTask.Id){
-                  if(nTask.EndDate__c >= auxTask.EndDate__c){
+            if( !nTask.Milestone__c ){
+              if( auxTask.EndDate__c != null ){
+                if( task.Id != nTask.Id ){
+                  if( nTask.EndDate__c >= auxTask.EndDate__c ){
                     auxTask.EndDate__c = nTask.EndDate__c;
                   }
                 }
                 else{
-                  if(task.EndDate__c >= auxTask.EndDate__c){
+                  if( task.EndDate__c >= auxTask.EndDate__c ){
                     auxTask.EndDate__c = task.EndDate__c;
                   }
                 }
               }
               else{
-                if(task.Id != nTask.Id){
+                if( task.Id != nTask.Id ){
                   auxTask.EndDate__c = nTask.EndDate__c;
                 }
                 else{
@@ -514,20 +525,20 @@ public class ParentTask {
               }
             }
             else{
-              if(auxTask.EndDate__c != null){
-                if(task.Id != nTask.Id){
-                  if(nTask.StartDate__c >= auxTask.EndDate__c){
+              if( auxTask.EndDate__c != null ){
+                if( task.Id != nTask.Id ){
+                  if( nTask.StartDate__c >= auxTask.EndDate__c ){
                     auxTask.EndDate__c = nTask.StartDate__c;
                   }
                 }
                 else{
-                  if(task.StartDate__c >= auxTask.EndDate__c){
+                  if( task.StartDate__c >= auxTask.EndDate__c ){
                     auxTask.EndDate__c = task.StartDate__c;
                   }
                 }
               }
               else{
-                if(task.Id != nTask.Id){
+                if( task.Id != nTask.Id ){
                   auxTask.EndDate__c = nTask.StartDate__c;
                 }
                 else{
@@ -536,14 +547,14 @@ public class ParentTask {
               }
             }
             
-            if(nTask.PercentCompleted__c == null ){
+            if( nTask.PercentCompleted__c == null ){
               nTask.PercentCompleted__c = 0.0;
             }
-            if(task.Id != nTask.Id){
+            if( task.Id != nTask.Id ){
               percentage = percentage + nTask.PercentCompleted__c;
             }
             else{
-              if(task.PercentCompleted__c == null){
+              if( task.PercentCompleted__c == null ){
                 percentage = percentage + 0.0;
               }
               else{
@@ -551,13 +562,14 @@ public class ParentTask {
               }
             }
           }
-          
-          if(parentTask != null){
+          System.debug( '=============== Child Parent Task:' + parentTask );
+          if( parentTask != null ){
+          	System.debug( '=============== Child task has no Parent:');
             parentTask.StartDate__c = auxTask.StartDate__c;
             parentTask.EndDate__c   = auxTask.EndDate__c;
-            if(percentage != 0.0){
-              parentTask.PercentCompleted__c = Math.floor(percentage / children.size());
-            }
+            if( percentage != 0.0 ){
+              parentTask.PercentCompleted__c = Math.floor( percentage / children.size() );
+            } 
             else{
               parentTask.PercentCompleted__c = 0.0;
             }
@@ -567,13 +579,12 @@ public class ParentTask {
         }
       }
       
-      ProjectUtil.setFlagValidationParentTask(false);
-      if(updates.size() > 0){
-      	System.debug('============================Final Batch List size :' + updates.size());
-		System.debug('============================Final Batch:' + updates.values());
-      	update updates.values();
+      if( updates.size() > 0 ){
+      	System.debug('============================Final Batch List size :' + updates.size() );
+		System.debug('============================Final Batch:' + updates.values() );
+      	//update updates.values();
+      	ParentTask.checkParentTask(tasks.get(0));
       }
-      ProjectUtil.setFlagValidationParentTask(true);
     }
   }
 }

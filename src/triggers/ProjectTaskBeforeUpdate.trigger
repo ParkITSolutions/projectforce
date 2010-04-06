@@ -104,14 +104,16 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
                     cc++;
                 }   
                 ParentTask.modifiedDependecies = td.listToUpdateNow();
-                
+                System.debug('=============== old task'+tempPTOld);
+                 System.debug('=============== old task'+tempPTNew);
                 parent.parentTaskUpdate(tempPTOld, tempPTNew);
             }else{
                 tempPTNew = duration.calculateTaskUpdate(tempPTOld, tempPTNew);
                 System.Debug('=================================Call in before Update trigger1');
-                if(!ProjectUtil.flags.containsKey('exeParentTaskUpdate') || !ProjectUtil.flags.get('exeParentTaskUpdate'))
+                if(!ProjectUtil.flags.containsKey('exeParentTaskUpdate') || !ProjectUtil.flags.get('exeParentTaskUpdate')){
                     System.Debug('=================================Call in before Update trigger2');
                     parent.parentTaskUpdate(tempPTOld, tempPTNew);
+                }
             }
             
         }
