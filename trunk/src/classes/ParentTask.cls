@@ -322,7 +322,10 @@ public class ParentTask {
   public static void checkParentTask(ProjectTask__c task){ 
     //checks if task has a parent task assigned
     if(task.ParentTask__c != null){
-      ProjectTask__c parentTask = BigListOfTasks.getbyId(task.ParentTask__c);
+    	System.debug('==================== Entro al checkparent task :' +task);
+      ProjectTask__c parentTask = BigListOfTasks.getbyId( task.ParentTask__c );
+      System.debug('===================== Parent Task Encontradas: ' + parentTask );
+      
       //aux task for storing values before updating parent task
       ProjectTask__c auxTask    = new ProjectTask__c();  
       auxTask.StartDate__c      = null;
@@ -332,8 +335,9 @@ public class ParentTask {
       //gets all child tasks for given parent 
       List<ProjectTask__c> children = getTaskChildren(parentTask, task);
       //Recalculates neccesary information for updating Parent Node
-      
+      System.debug('==================== Children size ' + children.size() );
       for(ProjectTask__c nTask : children){
+      	System.debug('==================== hidl task iter:' +nTask);
         if(auxTask.StartDate__c != null){
           if(task.Id != nTask.Id){
             if(nTask.StartDate__c <= auxTask.StartDate__c){
@@ -441,6 +445,7 @@ public class ParentTask {
       ProjectUtil.setFlagValidationParentTask(false);
         //throw new CustomException('#' + updates.values().size());
         List<ProjectTask__c> aux = updates.values();
+        System.debug('====================Size of Final Update : '+updates.size()+'  ' + updates.values());
         update updates.values();
       ProjectUtil.setFlagValidationParentTask(true);
     }
@@ -585,6 +590,177 @@ public class ParentTask {
       	//update updates.values();
       	ParentTask.checkParentTask(tasks.get(0));
       }
+    }
+  }
+  
+  /**
+  * Method called in the future which then calls checkparent to update
+  * the whole tree structure of tasks
+  * @param String taskId
+  */
+  @future
+  public static void updateParentTasksAfterUpdate( String taskId, List<id> ids, List<String> startDate, List<String> endDate, String parentId ){
+  	System.debug( '======================= Entro al Nuevo after Update Method' );
+  	//SOQL query to retrieve a task object to get projectId
+    ProjectTask__c t = [ Select Id, Project__c from ProjectTask__c where Id =: taskId limit 1 ];
+    //Initializes BigList with the ProjectID
+    BigListOfTasks bigList = new BigListOfTasks( t.Project__c );
+    
+    ProjectTask__c auxTask = new ProjectTask__c();
+    Integer c = 0;
+    
+    for( Id i : ids ){
+      auxTask = BigListOfTasks.getById( i );
+      auxTask.StartDate__c = Date.valueOf( startDate[ c ] );
+      auxTask.EndDate__c = Date.valueOf( endDate[ c ] );
+      BigListOfTasks.setById( auxTask );
+      ParentTask.updates.put( auxTask.id, auxTask );
+      c++;
+    }
+    
+    ProjectTask__c task = BigListOfTasks.getbyId( (Id)taskId );
+    System.debug( '======================= normal Task: ' + task);
+    ProjectTask__c cloneTask = task.clone();
+    cloneTask.ParentTask__c = parentId;
+    System.debug( '======================= Cloned task :' + cloneTask);
+    checkParentTask2( cloneTask );
+  }
+  
+  /**
+  * Recursive method used for checking and updating all parent nodes
+  * @param ProjectTask__c task
+  * @return Void
+  */
+  public static void checkParentTask2(ProjectTask__c task){ 
+    //checks if task has a parent task assigned
+    if(task.ParentTask__c != null){
+    	System.debug('==================== Entro al checkparent task :' +task);
+      ProjectTask__c parentTask = BigListOfTasks.getbyId( task.ParentTask__c );
+      System.debug('===================== Parent Task Encontradas: ' + parentTask );
+      
+      //aux task for storing values before updating parent task
+      ProjectTask__c auxTask    = new ProjectTask__c();  
+      auxTask.StartDate__c      = null;
+      auxTask.EndDate__c       = null;
+      Double percentage      = 0.0;
+      
+      //gets all child tasks for given parent 
+      //List<ProjectTask__c> children = getTaskChildren(parentTask, task);
+      List<ProjectTask__c> children = BigListOfTasks.getByParentId( parentTask.Id );
+      //Recalculates neccesary information for updating Parent Node
+      System.debug('==================== Children size ' + children.size() );
+      for(ProjectTask__c nTask : children){
+      	System.debug('==================== hidl task iter:' +nTask);
+        if(auxTask.StartDate__c != null){
+          if(task.Id != nTask.Id){
+            if(nTask.StartDate__c <= auxTask.StartDate__c){
+              auxTask.StartDate__c = nTask.StartDate__c;
+            }
+          }
+          else{
+            if(task.StartDate__c <= auxTask.StartDate__c){
+              auxTask.StartDate__c = task.StartDate__c;
+            }
+          }
+        }
+        else{
+          if(task.Id != nTask.Id){
+            auxTask.StartDate__c = nTask.StartDate__c;
+          }
+          else{
+            auxTask.StartDate__c = task.StartDate__c;
+          }
+          
+        }
+        if(!nTask.Milestone__c){
+          if(auxTask.EndDate__c != null){
+            if(task.Id != nTask.Id){
+              if(nTask.EndDate__c >= auxTask.EndDate__c){
+                auxTask.EndDate__c = nTask.EndDate__c;
+              }
+            }
+            else{
+              if(task.EndDate__c >= auxTask.EndDate__c){
+                auxTask.EndDate__c = task.EndDate__c;
+              }
+            }
+          }
+          else{
+            if(task.Id != nTask.Id){
+              auxTask.EndDate__c = nTask.EndDate__c;
+            }
+            else{
+              auxTask.EndDate__c = task.EndDate__c;
+            }
+            
+          }
+        }
+        else{
+          if(auxTask.EndDate__c != null){
+            if(task.Id != nTask.Id){
+              if(nTask.StartDate__c >= auxTask.EndDate__c){
+                auxTask.EndDate__c = nTask.StartDate__c;
+              }
+            }
+            else{
+              if(task.StartDate__c >= auxTask.EndDate__c){
+                auxTask.EndDate__c = task.StartDate__c;
+              }
+            }
+          }
+          else{
+            if(task.Id != nTask.Id){
+              auxTask.EndDate__c = nTask.StartDate__c;
+            }
+            else{
+              auxTask.EndDate__c = task.StartDate__c;
+            }
+          }
+        }
+        
+        if(nTask.PercentCompleted__c == null ){
+          nTask.PercentCompleted__c = 0.0;
+        }
+          if(task.Id != nTask.Id){
+            percentage = percentage + nTask.PercentCompleted__c;
+          }
+          else{
+            if(task.PercentCompleted__c == null){
+              percentage = percentage + 0.0;
+            }
+            else{
+              percentage = percentage + task.PercentCompleted__c;
+            }
+          }
+        
+        
+      }//ends For loop
+      
+      //updating parent task information
+      parentTask.StartDate__c = auxTask.StartDate__c;
+      parentTask.EndDate__c   = auxTask.EndDate__c;
+      
+      if(percentage != 0.0){
+        parentTask.PercentCompleted__c = Math.floor( percentage / children.size() );
+      }
+      else{
+        parentTask.PercentCompleted__c = 0.0;
+      }
+      
+      //inserts modified parent in update list
+      updates.put(parentTask.Id, parentTask);
+      
+      //calls recursivly method with parent
+      checkParentTask2(parentTask);
+    }
+    else{
+      //the end of the parent task hierarchy is found send to update all parent nodes
+      ProjectUtil.setFlagValidationParentTask(false);
+        //throw new CustomException('#' + updates.values().size());
+        List<ProjectTask__c> aux = updates.values();
+        System.debug('====================Size of Final Update : '+updates.size()+'  ' + updates.values());
+        update updates.values();
+      ProjectUtil.setFlagValidationParentTask(true);
     }
   }
 }

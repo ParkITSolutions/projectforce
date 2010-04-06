@@ -353,18 +353,19 @@ public class ProjectUtil {
 	 		if( restDays != 0){
 		    	dateAux = endDateCalculated;
 		    	Integer k = 0;
-		    	for( k = 1; k <= restDays && 1 == ProjectUtil.isWorkingDayThisDay( dateAux.addDays( k ), wdays ); k ++ ){
-		    		//System.debug( '#for: k ' + k );
+		    	for( k = 1; k <= restDays && 1 == ProjectUtil.isWorkingDayThisDay( dateAux.addDays( k-1 ), wdays ); k ++ ){
+		    		if (k!=1)
 		    			endDateCalculated = endDateCalculated.addDays( 1 );
+		    		System.debug( ':::> dentrooo - ' + endDateCalculated + '  , k ='+ k);
 		    	}
-		    	 
+		    	System.debug('if( 0 == '+ProjectUtil.isWorkingDayThisDay( dateAux.addDays( k ), wdays )+'   && k <= '+restDays +'), k='+k);
 		    	if( 0 == ProjectUtil.isWorkingDayThisDay( dateAux.addDays( k ), wdays ) && k <= restDays ){
-		    		//System.debug( '#if: k ' + k );
 					endDateCalculated = endDateCalculated.addDays(7 - wdays + 1 + restDays - k );
+			    	System.debug( ':::> mas adelante' + endDateCalculated );
 		    	}
 	 		}    	
 	 		
-	 		return endDateCalculated.addDays(-1);
+	 		return endDateCalculated;
 	 			
     	}
     	
@@ -419,4 +420,34 @@ public class ProjectUtil {
     	}
     	
     }
+
+    public static Date calculateEndDateWithEndDateAndDuration2( Date startDate, Integer wdays, Integer days ){
+    
+    	Integer totalDays =  ( days / wdays ) * 7;
+    	Integer restDays = Math.mod( days, wdays );    	
+    	Integer daysToAdd =  totalDays + restDays;
+	   	Date dateAux = startDate;
+		Date endDateCalculated = startDate;
+		
+		
+    	if( totalDays > 0 )
+    	endDateCalculated = startDate.addDays( totalDays - 1 );
+    	
+    	Integer  k = 0;
+    	for( k = 0; restDays > 0 && 1 == ProjectUtil.isWorkingDayThisDay( dateAux.addDays( k ), wdays ); k++){
+    		endDateCalculated = dateAux.addDays( k );
+    		restDays--;
+    	}	
+    	
+    	if( restDays > 0 ){
+    		endDateCalculated = endDateCalculated.addDays(7 - wdays );
+    		endDateCalculated = endDateCalculated.addDays( restDays );
+    		
+    	}
+    	return endDateCalculated;
+    		
+    }    	
+    	
+    		
+
 }
