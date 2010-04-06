@@ -57,10 +57,16 @@ trigger ProjectTaskAfterUpdate on ProjectTask__c (after update)
 			List<Id> modsIds = new List<Id>();
 			List<String> modsStarDate = new List<String>(); 		
 			List<String> modsEndDate = new List<String>(); 	
-			ParentTask.updateParentTasks(tempPTNew.Id, modsIds, modsStarDate, modsEndDate);
+			System.debug( '========================ACA ARRANCA EL DEBUG' );
+			if( tempPTOld.ParentTask__c == null ){
+				ParentTask.updateParentTasks(tempPTNew.Id, modsIds, modsStarDate, modsEndDate);
+			}
+			else{
+				ParentTask.updateParentTasksAfterUpdate(tempPTNew.Id, modsIds, modsStarDate, modsEndDate, tempPTOld.ParentTask__c );
+			}
+			
 			//TODO refactor Child indent
 			ParentTask.callUpdateAllChildrenIndent(tempPTNew.Id, tempPTNew.Project__c); 
-			
 	    }
     }
 
