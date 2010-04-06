@@ -401,23 +401,23 @@ public class ProjectUtil {
 		return endDateCalculated;
     }
     
-    public static void probandoElMetodoAnterior(){
+    public static void probandoElMetodoAnterior( Integer largo ){
     	Date i;
     	Date f;
-    	for( Integer l=1; l < 10; l++ ){
+    	Integer l = largo;
     		i = Date.today().addDays(-1);
     	
-	    	for( Integer k = 0; k < 48; k ++){
+	    	for( Integer k = 0; k < 31; k ++){
 	    		i = i.addDays( 1 );
 	    		for( Integer w = 1; w < 8; w++ ){
 	    			if(ProjectUtil.daysMap.get(Datetime.valueOf( i + '00:00:00').format( 'EEE' )) <= w){
-		    			f = ProjectUtil.calculateEndDateWithEndDateAndDuration( i, w, l);
+		    			f = ProjectUtil.calculateEndDateWithEndDateAndDuration2( i, w, l);
 		    			System.debug('\n ///////////////////////////////////\n'+ 'start date ' + i+ '\nend date ' + f+'\nw days ' + w+ '\n largo calculado '+ProjectUtil.calulateDurationUntilBigCrash(i, f, w)+ '\n largo entrada '+ l+' \n ///////////////////////////////////\n');
 		    			System.assert(ProjectUtil.calulateDurationUntilBigCrash(i, f, w)==l, 'ERRRRRORRRR'+ '\n largo calculado '+ProjectUtil.calulateDurationUntilBigCrash(i, f, w)+ '\n largo entrada '+ l);
 	    			}
 	    		}
 	    	}
-    	}
+    	
     	
     }
 
@@ -433,12 +433,10 @@ public class ProjectUtil {
     	if( totalDays > 0 )
     	endDateCalculated = startDate.addDays( totalDays - 1 );
     	
-    	Integer  k = 0;
-    	for( k = 0; restDays > 0 && 1 == ProjectUtil.isWorkingDayThisDay( dateAux.addDays( k ), wdays ); k++){
+    	for( Integer k = 1; restDays > 0 && 1 == ProjectUtil.isWorkingDayThisDay( dateAux.addDays( k ), wdays ); k++){
     		endDateCalculated = dateAux.addDays( k );
     		restDays--;
     	}	
-    	
     	if( restDays > 0 ){
     		endDateCalculated = endDateCalculated.addDays(7 - wdays );
     		endDateCalculated = endDateCalculated.addDays( restDays );

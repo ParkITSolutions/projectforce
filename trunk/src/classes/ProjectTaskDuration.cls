@@ -311,10 +311,14 @@ public class ProjectTaskDuration{
 	*/
 	public ProjectTask__c verifyStartDate( ProjectTask__c task ){
 		
+		if( task.StartDate__c  == null ){
+			task.StartDate__c = Date.today();
+		}
+			
 		Set<String> workdays 	= this.getWorkDays( Integer.valueOf(this.daysInWorkWeek));
 		Datetime myDate 		= Datetime.valueOf(task.StartDate__c + '00:00:00');
 		Datetime myEndDate;
-
+		
 		if( task.EndDate__c != null ){
 			myEndDate = Datetime.valueOf( task.EndDate__c + '00:00:00' );
 		}
