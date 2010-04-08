@@ -260,15 +260,15 @@ public class ProjectTaskDuration{
 		if( days > 1000 ){
 			days = 1000;
 		}
-		
+	
 		for( Integer i = 0; i < days; i++ ){
 			weekday = myDate.format( 'EEE' );
 			if( !workdays.contains( weekday ) )
 				days++;
 			myDate = myDate.addDays(1);
 		}
-		*/
 		
+		*/
 		if( days == 0 ){
 			return Date.newInstance( myDate.year(), myDate.month(), ( myDate.day() ) );	
 		}

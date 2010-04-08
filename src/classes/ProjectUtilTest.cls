@@ -29,6 +29,20 @@ public class ProjectUtilTest {
 		List<Attachment> lAtt = new List<Attachment>();
 		lAtt.add( GenerateEnvironmentTest.avatar);
 		ProjectUtil.validateFileSize( lAtt );
+
+    	Date startDate;
+    	Date endDate;
+    	Integer l = 4;
+    	startDate = Date.today().addDays(-1);
+    	for( Integer k = 0; k < 31; k ++){
+    		startDate = startDate.addDays( 1 );
+    		for( Integer w = 1; w < 8; w++ ){
+    			if( ProjectUtil.daysMap.get( Datetime.valueOf( startDate + '00:00:00').format( 'EEE' )) <= w ){
+	    			endDate = ProjectUtil.calculateEndDateWithEndDateAndDuration( startDate, w, l );
+	    			System.assert(ProjectUtil.calulateDurationUntilBigCrash( startDate, endDate, w )==l, 'ERROR: '+ '\n Duration result '+ProjectUtil.calulateDurationUntilBigCrash( startDate, endDate, w )+ '\n Expected result '+ l);
+    			}
+    		}
+    	}
     	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );

@@ -85,7 +85,7 @@ public class ParentTask {
       ProjectUtil.setTaskDependenciesFlag( false );
       System.debug('========' +ProjectUtil.getFlagValidationParentTask() );
       if(ProjectUtil.getFlagValidationParentTask()){
-      	System.debug('============== Common Update');
+      	System.debug('============== Common Update' + ParentTask.updates.values());
         update ParentTask.updates.values();
       }
     }
