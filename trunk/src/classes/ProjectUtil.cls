@@ -358,8 +358,11 @@ public class ProjectUtil {
 		    			endDateCalculated = endDateCalculated.addDays( 1 );
 		    		System.debug( ':::> dentrooo - ' + endDateCalculated + '  , k ='+ k);
 		    	}
-		    	System.debug('if( 0 == '+ProjectUtil.isWorkingDayThisDay( dateAux.addDays( k ), wdays )+'   && k <= '+restDays +'), k='+k);
-		    	if( 0 == ProjectUtil.isWorkingDayThisDay( dateAux.addDays( k ), wdays ) && k <= restDays ){
+		    	
+		    	System.debug('\n :::> ' + (7 - wdays + 1 + restDays - k) );
+System.debug(':::>   if( 0 == '+ProjectUtil.isWorkingDayThisDay( dateAux.addDays( k-1 ), wdays )+'   && k <= '+restDays +'), k='+k);
+		    	if( 0 == ProjectUtil.isWorkingDayThisDay( dateAux.addDays( k-1 ), wdays ) && k <= restDays ){
+		    		System.debug('\n :::> DENTRO FOR ' + (7 - wdays + 1 + restDays - k) );
 					endDateCalculated = endDateCalculated.addDays(7 - wdays + 1 + restDays - k );
 			    	System.debug( ':::> mas adelante' + endDateCalculated );
 		    	}
@@ -401,51 +404,5 @@ public class ProjectUtil {
 		return endDateCalculated;
     }
     
-    public static void probandoElMetodoAnterior( Integer largo ){
-    	Date i;
-    	Date f;
-    	Integer l = largo;
-    		i = Date.today().addDays(-1);
-    	
-	    	for( Integer k = 0; k < 31; k ++){
-	    		i = i.addDays( 1 );
-	    		for( Integer w = 1; w < 8; w++ ){
-	    			if(ProjectUtil.daysMap.get(Datetime.valueOf( i + '00:00:00').format( 'EEE' )) <= w){
-		    			f = ProjectUtil.calculateEndDateWithEndDateAndDuration2( i, w, l);
-		    			System.debug('\n ///////////////////////////////////\n'+ 'start date ' + i+ '\nend date ' + f+'\nw days ' + w+ '\n largo calculado '+ProjectUtil.calulateDurationUntilBigCrash(i, f, w)+ '\n largo entrada '+ l+' \n ///////////////////////////////////\n');
-		    			System.assert(ProjectUtil.calulateDurationUntilBigCrash(i, f, w)==l, 'ERRRRRORRRR'+ '\n largo calculado '+ProjectUtil.calulateDurationUntilBigCrash(i, f, w)+ '\n largo entrada '+ l);
-	    			}
-	    		}
-	    	}
-    	
-    	
-    }
-
-    public static Date calculateEndDateWithEndDateAndDuration2( Date startDate, Integer wdays, Integer days ){
-    
-    	Integer totalDays =  ( days / wdays ) * 7;
-    	Integer restDays = Math.mod( days, wdays );    	
-    	Integer daysToAdd =  totalDays + restDays;
-	   	Date dateAux = startDate;
-		Date endDateCalculated = startDate;
-		
-		
-    	if( totalDays > 0 )
-    	endDateCalculated = startDate.addDays( totalDays - 1 );
-    	
-    	for( Integer k = 1; restDays > 0 && 1 == ProjectUtil.isWorkingDayThisDay( dateAux.addDays( k ), wdays ); k++){
-    		endDateCalculated = dateAux.addDays( k );
-    		restDays--;
-    	}	
-    	if( restDays > 0 ){
-    		endDateCalculated = endDateCalculated.addDays(7 - wdays );
-    		endDateCalculated = endDateCalculated.addDays( restDays );
-    		
-    	}
-    	return endDateCalculated;
-    		
-    }    	
-    	
-    		
-
+ 	
 }

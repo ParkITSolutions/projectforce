@@ -248,7 +248,6 @@ public with sharing class ProjectOverviewController {
                 t.image = projects[i].Picture__c;
                 t.id = projects[i].Id;
                 t.members = projects[i].ProjectsMembers__r.size();
-                t.tasks = projects[i].ProjectsTasks__r.size();	
                 
                 //Looking for milestone in tasks
                 t.milestones = 0;
@@ -256,6 +255,8 @@ public with sharing class ProjectOverviewController {
                     if(task.Milestone__c)
                         t.milestones++;
                 } 
+                
+                t.tasks = projects[i].ProjectsTasks__r.size() - t.milestones;
                 
                 if(filter == 'newProjects'){
                     if(projects[i].CreatedDate != null){
