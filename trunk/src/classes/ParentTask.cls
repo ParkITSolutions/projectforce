@@ -68,12 +68,20 @@ public class ParentTask {
     List<String> modsStarDate = new List<String>();     
     List<String> modsEndDate = new List<String>();     
 
+	Map<Id,ProjectTask__c> updateAux = new Map<Id,ProjectTask__c>();
+	ProjectTaskDuration duration = new ProjectTaskDuration( tempPTOld );
+	for( ProjectTask__c tsk : ParentTask.updates.values()){
+		ProjectTask__c aux = duration.doCalculateEndDate( tsk );
+		updateAux.put( tsk.Id, tsk );
+    }
+    ParentTask.updates.putAll( updateAux );
+    
     for( ProjectTask__c t : ParentTask.updates.values()){
         modsIds.add( t.id);
         modsStarDate.add( String.valueOf(t.StartDate__c ));
         modsEndDate.add( String.valueOf(t.EndDate__c ));
     }
-
+	
     if(tempPTNew.ParentTask__c != null && tempPTOld.ParentTask__c == tempPTNew.ParentTask__c){ 
       if(ProjectUtil.getFlagValidationParentTask()){
         //Call to @future method

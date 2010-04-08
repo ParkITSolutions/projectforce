@@ -103,7 +103,10 @@ trigger ProjectTaskBeforeUpdate on ProjectTask__c (before update) {
                     td.movingTask( Trigger.old.get(cc), p);
                     cc++;
                 }   
+               
                 ParentTask.modifiedDependecies = td.listToUpdateNow();
+                 System.debug(' ================ List returns from Task Dependecis: ' +ParentTask.modifiedDependecies );
+                 
                 System.debug('=============== old task'+tempPTOld);
                  System.debug('=============== old task'+tempPTNew);
                 parent.parentTaskUpdate(tempPTOld, tempPTNew);
