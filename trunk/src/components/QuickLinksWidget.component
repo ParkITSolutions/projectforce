@@ -1,7 +1,7 @@
 <apex:component id="quickLinksWidget" controller="QuickLinksWidgetController" allowDML="true">
 
 	<apex:outputPanel rendered="{!isProduction}">
-		 <!-- Corresponding CSS and JS for particular Widget -->
+		<!-- Corresponding CSS and JS for particular Widget -->
     	<apex:stylesheet value="{!URLFOR($Resource.QuickLinksWidget, 'inc/css/quickLinksWidget.css')}" />
 	</apex:outputPanel>
 	
@@ -34,35 +34,37 @@
         <apex:outputPanel id="QuickLinksWidget" layout="block" styleClass="quickLinksWidget" >
             <!-- Body of Widget goes here --> 
             <apex:outputPanel id="newTaskPanel" layout="block" styleclass="textQuickLink"  rendered="{!IF(AND(canView, viewNewLinks),true, false)}">
-                <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
+                <apex:image styleclass="QuickLinkIcon"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
                 <apex:outputLink id="newTaskLink" value="javascript:;" onClick="promptOverlay.open(newTask);">New Task</apex:outputLink>
             </apex:outputPanel>
             
             <apex:outputPanel id="newmilestonPanel" layout="block" styleclass="textQuickLink"  rendered="{!IF(AND(canView, viewNewLinks),true, false)}">
-                <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
+                <apex:image styleclass="QuickLinkIcon"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
                 <apex:outputLink id="newMilestoneLink" value="javascript:;" onClick="promptOverlay.open(newMilestone);">New Milestone</apex:outputLink>
             </apex:outputPanel>
             
-            <apex:outputPanel id="timelinePanel" layout="block" styleclass="textQuickLink">
-                <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
-                <apex:outputLink id="timelineLink" value="ProjectTimeline?id={!HTMLENCODE( projectId )}" >Timeline</apex:outputLink>
-            </apex:outputPanel>
-            
             <apex:outputPanel id="taskListPanel" layout="block" styleclass="textQuickLink">
-                <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
+                <apex:image styleclass="QuickLinkIcon"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
                 <apex:outputLink id="taskListLink" value="/apex/TaskList?id={!HTMLENCODE( projectId )}">Task List</apex:outputLink>
             </apex:outputPanel>
         
             <apex:outputPanel id="memberPanel" layout="block" styleclass="textQuickLink">
-                <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
+                <apex:image styleclass="QuickLinkIcon"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
                 <apex:outputLink id="memberLink" value="/apex/MembersList?id={!HTMLENCODE( projectId )}">Member List</apex:outputLink>
             </apex:outputPanel>
             
             <apex:outputPanel id="userTaskPanel" layout="block" styleclass="textQuickLink">
-                <apex:image styleclass="imageStarQuickLink"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
+                <apex:image styleclass="QuickLinkIcon"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/star.gif')}"/>
                 <apex:outputLink id="userTasksLink" value="/apex/userTasks">All User Tasks</apex:outputLink>
             </apex:outputPanel>
-                
+            <br />
+            <apex:outputPanel id="timelinePanel" layout="block" styleclass="textQuickLink">
+                <apex:outputLink id="timelineLink" styleclass="TimelineLink" value="ProjectTimeline?id={!HTMLENCODE( projectId )}" style="background-color: #eee;border: 1px solid #004f6d;display: block;font-size: 15px;padding: 4px;text-align: center;text-decoration: none;">
+                	<apex:image styleclass="QuickLinkIcon"  value="{!URLFOR($Resource.QuickLinksWidget, '/images/icons/gantt_timeline.png')}"/>
+                	Timeline
+                </apex:outputLink>
+            </apex:outputPanel>
+            
         </apex:outputPanel>
         <!-- End dynamic -->
         
