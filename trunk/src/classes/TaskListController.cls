@@ -42,6 +42,9 @@ public with Sharing class TaskListController{
 			if( filter == 'allMilestones' ){
 				this.paginator.filter 	= '3'; // Show all milestones
 			}
+			else if( filter  == 'allTasks'){
+				this.paginator.filter 	= '2'; // Show all tasks 
+			}
 			else{
 				this.paginator.filter 	= '1'; // Show all tasks and milestones
 			}
