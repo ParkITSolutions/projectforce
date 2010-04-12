@@ -1,6 +1,6 @@
 <apex:page id="ProjectDetail" sidebar="false" cache="true" standardController="Project2__c" extensions="ProjectDetailController" tabStyle="Project2__c">
 
-     <c:ApplicationTop id="ApplicationTop" />
+    <c:ApplicationTop id="ApplicationTop" />
      
     <!-- CSS Includes -->
     <apex:outputPanel rendered="{!isProduction}">
