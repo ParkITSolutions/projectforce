@@ -29,7 +29,6 @@
           
             <!-- Form -->
             <apex:form id="Form">
-            
                 <apex:outputPanel id="HiddenPanel" style="display: none">
                     <apex:inputHidden value="{!postAction}" id="PostAction" />
                     <apex:inputHidden value="{!listErrors}" id="listErrors"/>

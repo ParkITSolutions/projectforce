@@ -31,6 +31,14 @@ public with Sharing class NewTaskController{
 	}
 	
 	/**
+	* dummy action
+	*/
+	public void refresh(){
+		this.projectMembers 	= DAOFactory.getInstance().getProjectMembers( this.projectId );
+	}
+	
+	
+	/**
 	* Action Method which inserts the new Task
 	*/
 	public void action(){

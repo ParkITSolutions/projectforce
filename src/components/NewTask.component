@@ -34,7 +34,7 @@
 
         </apex:outputPanel>
         <!-- End TitlePanel -->
-
+		<apex:form ><apex:actionFunction name="reloadMemberSelectList" action="{!refresh}" rerender="ComponentBody"/></apex:form>
         <!-- Form -->
         <apex:form id="Form" onSubmit="return task.validate();">
 
@@ -120,7 +120,7 @@
 
             </apex:outputPanel>
             <!-- end of ComponentBody -->
-
+			
         </apex:form>
         <!-- End Form -->
 
