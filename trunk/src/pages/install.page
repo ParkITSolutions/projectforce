@@ -1,51 +1,51 @@
 <apex:page controller="InstallController" cache="true" sidebar="false" tabStyle="Project_Settings__tab" action="{!projectSetupActualization}" >
-	
-	<style type="text/css">
-		.title{
-			font-weight: bold;
-		}
-	</style>
-	
-	<span class="title" >Click on "Setup" link at the top of the page </span><br/>
-	<apex:image value="{!URLFOR($Resource.Install, 'images/Install13.jpg')}" width="900" /> <br/>
-	
-	<span class="title" >Click on "View Installed Packages" link </span><br/>
-	<apex:image value="{!URLFOR($Resource.Install, 'images/Install20.jpg')}" width="900" /> <br/>
-	
-	<span class="title" >Click on "ProjectForceBeta?" link </span><br/>
-	<apex:image value="{!URLFOR($Resource.Install, 'images/Install21.jpg')}" width="900" /> <br/>
-	
-	<span class="title" >Click on "Deploy" button </span><br/>
-	<apex:image value="{!URLFOR($Resource.Install, 'images/Install22.jpg')}" width="900" /> <br/>
-	
-	<span class="title" >Click on "Deploy" button </span><br/>
-	<apex:image value="{!URLFOR($Resource.Install, 'images/Install23.jpg')}" width="900" /> <br/>
-	
-	<span class="title" >Click on "Profiles" link</span><br/>
-	<apex:image value="{!URLFOR($Resource.Install, 'images/profile1.png')}" width="900" /> <br/>
-	
-	<span class="title" >Click on "Standard User" link</span><br/>
-	<apex:image value="{!URLFOR($Resource.Install, 'images/profile2.png')}" width="900" /> <br/>
-	
-	<span class="title" >Click on "Clone" button</span><br/>
-	<apex:image value="{!URLFOR($Resource.Install, 'images/profile3.png')}" width="900" /> <br/>
-	
-	<span class="title" >Write "ProjectForce" in Project Name field and click on "Save" button</span><br/>
-	<apex:image value="{!URLFOR($Resource.Install, 'images/profile4.png')}" width="900" /> <br/>
-	
-	<span class="title" >Click on "Edit" button</span><br/>
-	<apex:image value="{!URLFOR($Resource.Install, 'images/profile5.png')}" width="900" /> <br/>
-	
-	<span class="title" >Change this options</span><br/>
-	<apex:image value="{!URLFOR($Resource.Install, 'images/profile6.png')}" width="900" /> <br/>
-	
-	<span class="title" >Scroll down at the bottom of the page and check out all the checkboxs of this section</span><br/>
-	<apex:image value="{!URLFOR($Resource.Install, 'images/profile7.png')}" width="900" /> <br/>
-	
-	<span class="title" >Click on "Save" button</span><br/>
-	<apex:image value="{!URLFOR($Resource.Install, 'images/profile8.png')}" width="900" /> <br/>
-	
-	<span class="title" >And thats it! Your now ready to start using ProjectForce. Remeber ProjectForce 
-	Users must use the Profile above created
-	</span>
+    
+    <style type="text/css">
+        .title{
+            font-weight: bold;
+        }
+    </style>
+    
+    <span class="title" >Click on "Setup" link at the top of the page </span><br/>
+    <apex:image value="{!URLFOR($Resource.Install, 'images/Install13.jpg')}" width="900" /> <br/>
+    
+    <span class="title" >Click on "View Installed Packages" link </span><br/>
+    <apex:image value="{!URLFOR($Resource.Install, 'images/Install20.jpg')}" width="900" /> <br/>
+    
+    <span class="title" >Click on "ProjectForceBeta?" link </span><br/>
+    <apex:image value="{!URLFOR($Resource.Install, 'images/Install21.jpg')}" width="900" /> <br/>
+    
+    <span class="title" >Click on "Deploy" button </span><br/>
+    <apex:image value="{!URLFOR($Resource.Install, 'images/Install22.jpg')}" width="900" /> <br/>
+    
+    <span class="title" >Click on "Deploy" button </span><br/>
+    <apex:image value="{!URLFOR($Resource.Install, 'images/Install23.jpg')}" width="900" /> <br/>
+    
+    <span class="title" >Click on "Profiles" link</span><br/>
+    <apex:image value="{!URLFOR($Resource.Install, 'images/profile1.png')}" width="900" /> <br/>
+    
+    <span class="title" >Click on "Standard User" link</span><br/>
+    <apex:image value="{!URLFOR($Resource.Install, 'images/profile2.png')}" width="900" /> <br/>
+    
+    <span class="title" >Click on "Clone" button</span><br/>
+    <apex:image value="{!URLFOR($Resource.Install, 'images/profile3.png')}" width="900" /> <br/>
+    
+    <span class="title" >Write "ProjectForce" in Project Name field and click on "Save" button</span><br/>
+    <apex:image value="{!URLFOR($Resource.Install, 'images/profile4.png')}" width="900" /> <br/>
+    
+    <span class="title" >Click on "Edit" button</span><br/>
+    <apex:image value="{!URLFOR($Resource.Install, 'images/profile5.png')}" width="900" /> <br/>
+    
+    <span class="title" >Change this options</span><br/>
+    <apex:image value="{!URLFOR($Resource.Install, 'images/profile6.png')}" width="900" /> <br/>
+    
+    <span class="title" >Scroll down at the bottom of the page and check out all the checkboxs of this section</span><br/>
+    <apex:image value="{!URLFOR($Resource.Install, 'images/profile7.png')}" width="900" /> <br/>
+    
+    <span class="title" >Click on "Save" button</span><br/>
+    <apex:image value="{!URLFOR($Resource.Install, 'images/profile8.png')}" width="900" /> <br/>
+    
+    <span class="title" >And thats it! Your now ready to start using ProjectForce. Remember ProjectForce 
+    Users must use the Profile above created
+    </span>
 </apex:page>
