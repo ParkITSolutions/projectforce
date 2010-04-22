@@ -9,7 +9,7 @@ public with Sharing class AttachmentController{
 	private final String  ERROR_NO_FILE   = 'Please select a file to upload.';
 	private final String  ERROR_IMG_TYPE  = 'The image must be .jpg, .gif .bmp or .png';	
 	private final String  ERROR_BIN_TYPE  = 'Binary type are not allowed.';	
-	private final String  ERROR_SIZE_FILE = 'Maximum size is 4 MB';
+	private final String  ERROR_SIZE_FILE = 'Maximum file size is 4 MB';
 	
 	private Set<String> imagesTypes 		= new Set<String> {'image/jpeg', 'image/pjpeg', 'image/png', 'image/x-png', 'image/gif'};
 	private Set<String> notAllowedTypes 	= new Set<String> {};
@@ -119,7 +119,7 @@ public with Sharing class AttachmentController{
 	* @return Boolean
 	*/
 	private Boolean allValidations(){
-		if( this.checkEmptyValue() == '' && this.checkSize() == '' ){	
+		if( this.checkEmptyValue() == ''){	
 			// As avatar
 			if( this.typeOfAttachment == 'avatar' ){
 				this.checkOnlyImgExtensions();
@@ -127,6 +127,14 @@ public with Sharing class AttachmentController{
 				this.checkBinType();
 			}
 			
+		}
+		if( this.checkSize() == ''){
+			// As avatar
+			if( this.typeOfAttachment == 'avatar' ){
+				this.checkOnlyImgExtensions();
+			}else{
+				this.checkBinType();
+			}
 		}
 		return this.error == ''; 
 	}

@@ -6,13 +6,13 @@ public with Sharing class NewTaskController{
 	private List<ProjectMember__c> projectMembers;
 	public Boolean  isProduction 					{ set; get; }
 	public  String[] assignees 						{ set; get; }
-	public  String projectId 			         	{ set; get; }
+	public  String projectId;// 						{ set; get; }
 	public  ProjectTask__c myTask 		        	{ set; get; }
 	public  transient String currentPage 			{ set; get; }
 	public  String postAction 			        	{ set; get; }
 	public  transient String taskPrefix 			{ set; get; }
 	public  transient String domain					{ set; get; }
-	
+	public  String  duration 						{ set; get; }
 	/**
 	* Constructor
 	*/
@@ -21,13 +21,13 @@ public with Sharing class NewTaskController{
 		this.isProduction		= ProjectUtil.isProduction;
 		this.myTask 			= new  ProjectTask__c();
 		this.domain 			= ProjectUtil.getDomain();
-		this.projectId 			= System.currentPageReference().getParameters().get( 'id' );
-		this.projectMembers 	= DAOFactory.getInstance().getProjectMembers( this.projectId );
+		//this.projectId 			= System.currentPageReference().getParameters().get( 'id' );
+		//this.projectMembers 	= DAOFactory.getInstance().getProjectMembers( this.projectId );
 		this.currentPage 		= Apexpages.currentPage().getUrl();
 		this.taskPrefix			= Schema.SObjectType.Projecttask__c.getKeyPrefix();
 		this.postAction 		= '';
 		this.assignees 			= new String[]{};
-	
+		//loadDisplayDuration();
 	}
 	
 	/**
@@ -37,6 +37,32 @@ public with Sharing class NewTaskController{
 		this.projectMembers 	= DAOFactory.getInstance().getProjectMembers( this.projectId );
 	}
 	
+	/**
+    * 
+    */
+    public void setProjectId( String value ){
+        //this.taskId = value;
+        this.projectId = value;
+		this.projectMembers = DAOFactory.getInstance().getProjectMembers( this.projectId );
+		loadDisplayDuration();
+    }
+    
+    
+    /**
+    * 
+    */
+    public String getProjectId(){
+        return this.projectId;
+    }
+    
+     
+    /**
+    * Load Display Duration and other info on project
+    * @return projectName
+    */
+    public void loadDisplayDuration(){
+    	this.duration = DAOFactory.getInstance().getProjectInfo(this.projectId).displayDuration;
+    }
 	
 	/**
 	* Action Method which inserts the new Task
