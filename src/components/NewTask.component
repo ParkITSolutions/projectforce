@@ -19,6 +19,8 @@
 		});
     </script>
 
+    <!-- Attribute Definitions 	-->
+    <apex:attribute name="projectId" description="The projectId ID" type="String" required="true" assignTo="{!projectId}" /> 
     <apex:outputPanel id="Content" styleClass="contentNewTask overlay" style="display:none;" layout="block">
 
         <!-- TitlePanel -->
@@ -80,8 +82,9 @@
                 <apex:outputPanel styleclass="required">
                 </apex:outputPanel>
                 <apex:inputField id="duration" value="{!myTask.DurationUI__c}" />
+                <apex:outputLabel style="text-align:left;"> ({!duration})</apex:outputLabel>
                 
-                <br />
+				<br />
                 <apex:outputPanel id="taskDurationError" styleClass="taskErrors" style="display:none;">Error: You must enter a value</apex:outputPanel>
                 <br />
 

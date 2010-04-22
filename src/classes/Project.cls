@@ -72,6 +72,7 @@ public class Project {
         
         Project project = DAOFactory.getInstance().getProjectInfo( this.id );
         this.name = project.Name;
+        this.displayDuration = project.displayDuration;
     }
     
     /**

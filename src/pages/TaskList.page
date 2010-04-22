@@ -25,7 +25,8 @@
     
     <c:PromptOverlay id="PromptOverlay"
         includeNewTask="true"
-        includeNewMilestone="true" />
+        includeNewMilestone="true" 
+        idValue="{!HTMLENCODE( projectId )}" />
         
     <!-- Header -->
     <apex:composition template="HeaderTemplate">

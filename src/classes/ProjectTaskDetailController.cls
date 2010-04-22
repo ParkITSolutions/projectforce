@@ -1,6 +1,6 @@
 /**
 *@author Nicolas Gunther @ 03/30/2009
-*/
+*/ 
 public with Sharing class ProjectTaskDetailController {
 	
 	public Boolean  isProduction 			{ set; get; }

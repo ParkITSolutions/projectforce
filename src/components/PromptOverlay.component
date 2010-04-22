@@ -50,7 +50,7 @@
                 <apex:outputPanel id="Components" styleClass="component" layout="block">
             
                     <apex:outputPanel rendered="{!includeNewTask}" layout="block" id="include1">
-                            <c:NewTask id="NewTask" /> 
+                            <c:NewTask id="NewTask" projectId="{!HTMLENCODE( idValue )}"/> 
                     </apex:outputPanel>
                     
                     <apex:outputPanel rendered="{!includeNewMilestone}" layout="block" id="include2">

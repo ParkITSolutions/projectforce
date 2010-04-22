@@ -6,8 +6,7 @@
      <!--  <apex:includeScript value="{!URLFOR($Resource.Lib, 'inc/js/jquery-1.3.2.min.js')}" / -->
     
     <!-- Development Scripts -- Comment All following scripts for Production Use -->
-    <!--  
-    <apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/js/overlays.js')}" />
+    <!--  <apex:includeScript value="{!URLFOR($Resource.Overlays, 'inc/js/overlays.js')}" />
     <apex:includeScript value="{!URLFOR($Resource.Lib , 'inc/js/trim.js')}" />
     <apex:stylesheet value="{!URLFOR($Resource.Overlays, 'inc/css/overlays.css')}" /> 
     
@@ -17,14 +16,14 @@
     <apex:stylesheet value="{!URLFOR($Resource.Paginator, 'inc/css/paginator.css')}" />
     <apex:includeScript value="{!URLFOR($Resource.Paginator, 'inc/js/pagintaor.js')}" />
     
-    <apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" /> -->
-     <!-- End Of Development Scripts -->
+    <apex:stylesheet value="{!URLFOR($Resource.Widgets, 'inc/css/widgets.css')}" />  -->
+     <!-- End Of Development Scripts --> 
      
      
-    <!-- Production Scripts -->
+    <!-- Production Scripts - Comment when using Development Stage -->
     <apex:stylesheet value="{!URLFOR($Resource.Lib, 'inc/css/globalCSS.css')}" />
     <apex:includeScript value="{!URLFOR($Resource.Lib, 'inc/js/globalJs.js')}" />
-    <!-- End of Production Scripts -->   
+    <!-- End of Production Scripts --> 
     
     <c:InfoToUser id="InfoToUser" />
     <c:PageSwirly id="PageSwirly" />
