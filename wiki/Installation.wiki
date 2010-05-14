@@ -79,46 +79,69 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/Install18.jpg
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i21.png
 
-*_22. Expand "Manage Users" option._*
+*_22. OVERRIDE STEPS _*
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/ove1.png
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/ove2.png
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/ove3.png
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/ove4.png
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/ove5.png
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/ove6.png
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/ove7.png
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/ove8.png
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/ove9.png
+
+http://projectforce.googlecode.com/svn/wiki/images/installation/ove10.png
+
+
+*_23. Expand "Manage Users" option._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i22.png
 
-*_23. Click on "Profiles" link._*
+*_24. Click on "Profiles" link._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i23.png
 
-*_24. Click on "Standard User" link._*
+*_25. Click on "Standard User" link._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i24.png
 
-*_25. Click on "Clone" button._*
+*_26. Click on "Clone" button._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i25.png
 
-*_26. Write "ProjectForce" in Project Name field and click on "Save" button._*
+*_27. Write "ProjectForce" in Project Name field and click on "Save" button._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i26.png
 
-*_27. Click on "Edit" button._*
+*_28. Click on "Edit" button._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i27.png
 
-*_28. Change this options._*
+*_29. Change this options._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i27_2.png
 
-*_29. Scroll down at the bottom of the page and check out all the checkboxs of this section._*
+*_30. Scroll down at the bottom of the page and check out all the checkboxs of this section._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i28.png
 
-*_30. Click on "Save" button._*
+*_31. Click on "Save" button._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i29.png
 
-*_31. Click on "Projects" Tab._*
+*_32. Click on "Projects" Tab._*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i30.png
 
-*_32. This is the main page, enjoy!_*
+*_33. This is the main page, enjoy!_*
 
 http://projectforce.googlecode.com/svn/wiki/images/installation/i31.png
