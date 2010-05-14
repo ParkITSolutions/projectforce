@@ -82,19 +82,19 @@ http://projectforce.googlecode.com/svn/wiki/images/installation/i21.png
 *_22. OVERRIDE STEPS _*
 
 *_ Override step 1 _*
-http://projectforce.googlecode.com/svn/wiki/images/installation/ove1.png
+http://projectforce.googlecode.com/svn/wiki/images/installation/ove1.jpg
 
 *_ Override step 2 _*
-http://projectforce.googlecode.com/svn/wiki/images/installation/ove2.png
+http://projectforce.googlecode.com/svn/wiki/images/installation/ove2.jpg
 
 *_ Override step 3 _*
 http://projectforce.googlecode.com/svn/wiki/images/installation/ove3.png
 
 *_ Override step 4 _*
-http://projectforce.googlecode.com/svn/wiki/images/installation/ove4.png
+http://projectforce.googlecode.com/svn/wiki/images/installation/ove4.jpg
 
 *_ Override step 5 _*
-http://projectforce.googlecode.com/svn/wiki/images/installation/ove5.png
+http://projectforce.googlecode.com/svn/wiki/images/installation/ove5.jpg
 
 *_ Override step 6 _*
 http://projectforce.googlecode.com/svn/wiki/images/installation/ove6.png
