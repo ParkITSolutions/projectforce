@@ -63,6 +63,40 @@
         <name>CustomTab</name>
     </types>
     <types>
+        <members>Custom_templates</members>
+        <members>Custom_templates/Adding_Project_Members</members>
+        <members>Custom_templates/Adding_Task_Assignee</members>
+        <members>Custom_templates/Task_Completed</members>
+        <members>unfiled$public</members>
+        <members>unfiled$public/AcceptanceEmail</members>
+        <members>unfiled$public/ChangePwdEmail</members>
+        <members>unfiled$public/ChangePwdEmail1</members>
+        <members>unfiled$public/DeactivationEmail</members>
+        <members>unfiled$public/InvitationEmail</members>
+        <members>unfiled$public/Large_Invoice</members>
+        <members>unfiled$public/MarketingProductInquiryResponse</members>
+        <members>unfiled$public/NewUserEmail</members>
+        <members>unfiled$public/NewUserEmail1</members>
+        <members>unfiled$public/RejectionEmail</members>
+        <members>unfiled$public/SUPPORTSelfServiceNewCommentNotificationSAMPLE</members>
+        <members>unfiled$public/SUPPORTSelfServiceNewUserLoginInformationSAMPLE</members>
+        <members>unfiled$public/SUPPORTSelfServiceResetPasswordSAMPLE</members>
+        <members>unfiled$public/SURVEY_EAT_a0L30000001ni0LEAQ</members>
+        <members>unfiled$public/SURVEY_a0L30000001ni0LEAQ</members>
+        <members>unfiled$public/SalesNewCustomerEmail</members>
+        <members>unfiled$public/SelfRegUserEmail</members>
+        <members>unfiled$public/SupportCaseAssignmentNotification</members>
+        <members>unfiled$public/SupportCaseCreatedPhoneInquiries</members>
+        <members>unfiled$public/SupportCaseCreatedWebInquiries</members>
+        <members>unfiled$public/SupportCaseResponse</members>
+        <members>unfiled$public/SupportEscalatedCaseNotification</members>
+        <members>unfiled$public/SupportEscalatedCaseReassignment</members>
+        <members>unfiled$public/SupportSelfServiceNewLoginandPassword</members>
+        <members>unfiled$public/SupportSelfServiceResetPassword</members>
+        <members>unfiled$public/UpdateConnEmail</members>
+        <name>EmailTemplate</name>
+    </types>
+    <types>
         <members>*</members>
         <name>HomePageComponent</name>
     </types>
@@ -77,6 +111,26 @@
     <types>
         <members>*</members>
         <name>Letterhead</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>Portal</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>Profile</name>
+    </types>
+    <types>
+        <members>unfiled$public</members>
+        <name>Report</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>ReportType</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>Scontrol</name>
     </types>
     <types>
         <members>*</members>

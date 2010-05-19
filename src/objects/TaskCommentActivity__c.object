@@ -2,6 +2,7 @@
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Object for tracking changes to task comments</description>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
     <fields>
         <fullName>ActivityId__c</fullName>
         <label>ActivityId</label>

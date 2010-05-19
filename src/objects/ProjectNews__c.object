@@ -2,6 +2,7 @@
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <deploymentStatus>Deployed</deploymentStatus>
     <description>It stores news about a project</description>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
     <fields>
         <fullName>NewsText__c</fullName>
         <description>This is the news text</description>

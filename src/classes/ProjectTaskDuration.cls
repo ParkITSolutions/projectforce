@@ -49,6 +49,7 @@ public class ProjectTaskDuration{
 	*/
 	public ProjectTask__c calculateTaskInsert( ProjectTask__c task ){
 		
+		/*
 		if( task.Milestone__c == true ){
 			
 			task = this.verifyStartDate( task );
@@ -82,7 +83,7 @@ public class ProjectTaskDuration{
 		 		task = this.parseDuration( task );
 			}
 		}
-		
+		*/
 		return task;
 	}
 
@@ -94,7 +95,7 @@ public class ProjectTaskDuration{
 	* @return ProjectTask__c
 	*/
 	public ProjectTask__c calculateTaskUpdate( ProjectTask__c tempPTOld, ProjectTask__c tempPTNew ){
-	
+	/*
 		if( tempPTNew.Milestone__c == true ){
 			
 			tempPTNew 				= this.verifyStartDate( tempPTNew );
@@ -135,7 +136,7 @@ public class ProjectTaskDuration{
 				}	
 		    }
 		}
-		
+	*/
 		return tempPTNew;
 	}
 	
@@ -145,6 +146,7 @@ public class ProjectTaskDuration{
 	* @return task instance with new end date
 	*/
 	public ProjectTask__c doCalculateEndDate( ProjectTask__c task ){
+		
 		
     	if( task.Project__c != null ){ 
 
@@ -196,6 +198,7 @@ public class ProjectTaskDuration{
 		}	
 		
 		return task;
+		
 	}	
 	
 	/**
@@ -206,7 +209,7 @@ public class ProjectTaskDuration{
 	*/
 	public Date doCalculateEndDateInDays( ProjectTask__c task, Integer wdays ){
 		
-		Double aux = math.ceil( ( task.Duration__c!=null ) ? task.Duration__c : 1) ;		
+		Double aux = math.ceil(( task.Duration__c != null ) ? task.Duration__c : 1 ) ;		
 		Integer days = aux.intValue();
 		
 		return this.doExcludeNonWorkingDays( task.StartDate__c, wdays, days );
@@ -380,6 +383,7 @@ public class ProjectTaskDuration{
 	* @return task
 	*/
 	public ProjectTask__c verifyEndDate( ProjectTask__c task ){
+		
 		
 		if( task.EndDate__c  != null ){
 			Set<String> workdays 	= this.getWorkDays( Integer.valueOf(this.daysInWorkWeek ) );

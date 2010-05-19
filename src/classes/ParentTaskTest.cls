@@ -20,6 +20,7 @@
 		pt = new ProjectTask__c();
 			pt.Name 				= 'Padre11';
 			pt.StartDate__c 		= System.today();
+			pt.EndDate__c 		= System.today();
 			pt.DurationUI__c 		= '2';
 		    pt.Project__c 			= GenerateEnvironmentTest.project.Id;
 			pt.Priority__c 			= 'Medium';
@@ -29,6 +30,7 @@
 		pt1 = new ProjectTask__c();
 			pt1.Name 				= 'Padre22';
 			pt1.StartDate__c 		= System.today();
+			pt1.EndDate__c 		= System.today();
 			pt1.DurationUI__c 		= '2';
 		    pt1.Project__c 			= GenerateEnvironmentTest.project.Id;
 			pt1.Priority__c 		= 'Medium';
@@ -39,6 +41,7 @@
 		pt2 = new ProjectTask__c();
 			pt2.Name 				= 'subTask 1';
 			pt2.StartDate__c 		= System.today();
+			pt2.EndDate__c 		= System.today();
 			pt2.DurationUI__c 		= '2';
 		    pt2.Project__c 			= GenerateEnvironmentTest.project.Id;
 			pt2.Priority__c 		= 'Medium';
@@ -49,6 +52,7 @@
 		pt3 = new ProjectTask__c();
 			pt3.Name 				= 'subTask 2';
 			pt3.StartDate__c 		= System.today();
+			pt3.EndDate__c 		= System.today();
 			pt3.DurationUI__c 		= '2';
 		   	pt3.Project__c 			= GenerateEnvironmentTest.project.Id;
 			pt3.Priority__c 		= 'Medium';
@@ -59,6 +63,7 @@
 		pt4 = new ProjectTask__c();
 			pt4.Name 				= 'subTask 2-2';
 			pt4.StartDate__c 		= System.today();
+			pt4.EndDate__c 		= System.today();
 			pt4.DurationUI__c 		= '5';
 		    pt4.Project__c 			=  GenerateEnvironmentTest.project.Id;
 			pt4.Priority__c 		= 'Medium';
@@ -69,6 +74,7 @@
 		pt5 = new ProjectTask__c();
 			pt5.Name 				= 'subTask 3';
 			pt5.StartDate__c 		= System.today();
+			pt5.EndDate__c 		= System.today();
 			pt5.DurationUI__c 		= '4';
 		   	pt5.Project__c 			=  GenerateEnvironmentTest.project.Id;
 			pt5.Priority__c 		= 'Medium';
@@ -79,6 +85,7 @@
 		pt6 = new ProjectTask__c();
 			pt6.Name 				= 'subMile 3-1';
 			pt6.StartDate__c 		= System.today();
+			pt6.EndDate__c 		= System.today();
 			pt6.DurationUI__c 		= '1';
 		   	pt6.Project__c 			=  GenerateEnvironmentTest.project.Id;
 			pt6.Priority__c 		= 'Medium';

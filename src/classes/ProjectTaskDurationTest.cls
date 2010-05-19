@@ -19,6 +19,7 @@
 		pt = new ProjectTask__c();
 			pt.Name 				= 'Padre11';
 			pt.StartDate__c 		= System.today();
+			pt.EndDate__c 		= System.today();
 			pt.DurationUI__c 		= '2';
 		    pt.Project__c 			= GenerateEnvironmentTest.project.Id;
 			pt.Priority__c 			= 'Medium';
@@ -28,6 +29,7 @@
 		pt1 = new ProjectTask__c();
 			pt1.Name 				= 'Padre22';
 			pt1.StartDate__c 		= System.today();
+			pt1.EndDate__c 		= System.today();
 			pt1.DurationUI__c 		= '2';
 		    pt1.Project__c 			= GenerateEnvironmentTest.project.Id;
 			pt1.Priority__c 		= 'Medium';
@@ -38,6 +40,7 @@
 		pt2 = new ProjectTask__c();
 			pt2.Name 				= 'Padre22';
 			pt2.StartDate__c 		= System.today();
+			pt2.EndDate__c 		= System.today();
 			pt2.DurationUI__c 		= '2';
 		    pt2.Project__c 			= GenerateEnvironmentTest.project.Id;
 			pt2.Priority__c 		= 'Medium';

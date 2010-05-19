@@ -1,0 +1,17 @@
+<apex:page id="quickSearch" controller="QuickSearchController">
+	<apex:form id="quickSearchForm">
+        <apex:pageBlock title="Task Quick Search" mode="edit">
+            
+            <apex:pageBlockButtons >
+				<apex:commandButton action="{!action}" id="quickSearchSendButton" value="Send" rerender="quickSearchForm"/>
+			</apex:pageBlockButtons>
+			
+            <apex:pageBlockSection title="" columns="1">
+				Task ID: <apex:inputText id="taskCustomID" value="{!taskCustomID}" />
+				<apex:outputPanel id="quickSearchError" rendered="{!error != '' }" layout="block">
+					ERROR: {!error}
+				</apex:outputPanel>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

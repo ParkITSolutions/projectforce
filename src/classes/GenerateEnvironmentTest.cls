@@ -125,9 +125,10 @@ public class GenerateEnvironmentTest {
         task.Notes__c		= 'fjfkl dsjfklds jfiosdj flksdj flkaj klfjs dlkf sjl';
         task.DurationUI__c 	= '2';
         
-        mile.Name 					= 'milestone';
-        mile.Project__c 			= project.id;
+	    mile.Name 					= 'milestone';
+	    mile.Project__c 			= project.id;
         mile.StartDate__c 			= Date.today();
+        mile.EndDate__c 	= Date.today();
         mile.DurationUI__c 			= '2';
         mile.PercentCompleted__c 	= 55;
         mile.Milestone__c 			= true;

@@ -323,7 +323,12 @@ public class ProjectUtil {
     */
     public static Integer calulateDurationUntilBigCrash( Date startDate, Date endDate, Integer workingDays ){
     	
-    	Integer daysBetween = startDate.daysBetween( endDate ) + 1;
+    	Integer daysBetween;
+    	if( endDate == null ){
+    		endDate = startDate;
+    	}
+    	
+    	daysBetween = startDate.daysBetween( endDate ) + 1;
     	Integer quotient = daysBetween / 7;
     	Integer rest = Math.mod( daysBetween, 7 );
     	Integer duration = 0;

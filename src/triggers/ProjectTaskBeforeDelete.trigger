@@ -19,8 +19,8 @@ trigger ProjectTaskBeforeDelete on ProjectTask__c (before delete){
     
     //Deletes all Task Assignees 
     List<ProjectAssignee__c> projectAssigneeList = new List<ProjectAssignee__c>();
-    for( ProjectAssignee__c pa : [Select Id from ProjectAssignee__c where ProjectTask__c in : Trigger.old limit 1000])
-        projectAssigneeList.add(pa);
+    for( List<ProjectAssignee__c> pa : [Select Id from ProjectAssignee__c where ProjectTask__c in : Trigger.old limit 1000])
+        projectAssigneeList.addAll(pa);
     delete projectAssigneeList;
     
     //Deletes All task links between tasks

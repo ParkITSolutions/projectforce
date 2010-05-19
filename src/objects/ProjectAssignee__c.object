@@ -2,6 +2,7 @@
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <deploymentStatus>Deployed</deploymentStatus>
     <description>ProjectAssignee</description>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
     <fields>
         <fullName>Notify__c</fullName>
         <defaultValue>false</defaultValue>
@@ -42,10 +43,24 @@
     </fields>
     <label>Project Assignee</label>
     <nameField>
+        <displayFormat>A-{0000}</displayFormat>
         <label>Assignee Name</label>
-        <type>Text</type>
+        <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Project Assignee</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <searchFilterFields>Project__c</searchFilterFields>
+    </searchLayouts>
     <sharingModel>Private</sharingModel>
+    <webLinks>
+        <fullName>New_Project_Assignee</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>New Project Assignee</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>alert(&apos;hi&apos;);</url>
+    </webLinks>
 </CustomObject>

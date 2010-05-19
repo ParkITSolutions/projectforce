@@ -49,7 +49,11 @@ public with sharing class InstallController {
 	*/
 	private Pagereference InitializeProfiles(){
 		
-		Pagereference pageRef = Page.projectOverview;
+		Map <String, Schema.SObjectType> schemaMap = Schema.getGlobalDescribe();
+    	Schema.DescribeSObjectResult descRes = schemaMap.get('Project2__c').getDescribe();
+    	String prefixOjbect = descRes.getKeyPrefix();
+		
+		Pagereference pageRef = new Pagereference( '/' + prefixOjbect );
 		pageRef.setRedirect( true );
 		
         profiles = [ select Id, Name from ProjectProfile__c where Name in : profilesNames ];

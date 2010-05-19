@@ -107,11 +107,11 @@
 	*/
     static testMethod void myUnitTest6(){
     	
-		GenerateEnvironmentTest.gen();
+		//GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
     	
-		delete GenerateEnvironmentTest.project;
+  		//delete GenerateEnvironmentTest.project;
 		
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
@@ -166,9 +166,21 @@
         //project.PublicProfile__c = profList[ 0 ].Id;
         //project.NewmemberProfile__c = profList[ 1 ].Id;
 		insert project;
-        project.PublicProfile__c = GenerateEnvironmentTest.profList[ 0 ].Id;
-		ProjectUtil.currentlyExeTrigger = true;
-		update project;
+		
+    	Test.stopTest();
+		ProjectUtil.setIsTest( false );
+    }  	/**
+	* Test6
+	*@void
+    *@static
+	*/
+    static testMethod void myUnitTest9(){
+    	
+		GenerateEnvironmentTest.gen();
+		ProjectUtil.setIsTest( true );
+    	Test.startTest();	
+
+		update GenerateEnvironmentTest.project;
 		
 		
     	Test.stopTest();

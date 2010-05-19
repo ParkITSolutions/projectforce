@@ -1,0 +1,21 @@
+<apex:page standardController="ProjectTask__c" extensions="TaskAsigneeExtension" id="ProjectTaskAsigneeFilter">
+    <body>
+        <apex:form >
+            <apex:panelGrid id="assigneePanelGrid" columns="2" cellspacing="5">
+                <apex:outputLink id="assigneeNameOutputLink" disabled="{!ISNULL(userAssignee)}"
+                    target="_top" value="{!URLFOR('/'+userAssignee.Id)}">
+                    {!IF(ISNULL(userAssignee),'No assignee to this task.',userAssignee.Name)}
+                </apex:outputLink>  
+    
+                <apex:image id="assigneeLookUp"
+                    url="/s.gif" styleClass="lookupIcon" 
+                    onmouseout="this.className='lookupIcon';" 
+                    title="Assignee Lookup (New Window)" 
+                    onmouseover="this.className='lookupIconOn';"
+                    onclick="javascript:window.open('{!URLFOR($Page.ProjectMemberPopup)}'+'?id='+'{!projectId}'+'&tid='+'{!taskId}','popup',
+                    'left=200, top= 200,width= 300 ,height= 400');return false;"
+                />
+            </apex:panelGrid>
+        </apex:form>
+    </body>
+</apex:page>
