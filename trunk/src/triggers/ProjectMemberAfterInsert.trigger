@@ -1,24 +1,37 @@
 trigger ProjectMemberAfterInsert on ProjectMember__c (after insert){
-    if (!ProjectUtil.currentlyExeTrigger) {
+    
+    if( !ProjectUtil.currentlyExeTrigger ){
       ProjectUtil.currentlyExeTrigger = true;
-      try {
-      // Send email to subscribers members
-      List<String> lstPMId = new List<String>();
-	    for ( ProjectMember__c pM : Trigger.new){
-	      lstPMId.add(pM.id);
-	    }
-	    
-      ProjectSubscribersEmailServices mail = ProjectSubscribersEmailServices.getInstance();
+      try{
+        /*
+        all email services have been disabled
+        // Send email to subscribers members
+        List<String> lstPMId = new List<String>();
+        for( ProjectMember__c pM : Trigger.new ){
+            lstPMId.add( pM.id );
+        }
+        
+        ProjectSubscribersEmailServices mail = ProjectSubscribersEmailServices.getInstance();
         mail.sendMemberJoinLeave( lstPMId, 'join' );
-            List<String> idsTeam = new List<String>();
-            List<String> idsProfile = new List<String>();
-            List<String> groupsNames = new List<String>();
-            for (ProjectMember__c pm : Trigger.new) {
-                groupsNames.add('Project' + pm.Project__c);
-                groupsNames.add('ProjectSharing' + pm.Project__c);
-                idsTeam.add(pm.Project__c);
-                idsProfile.add(pm.Profile__c);    
+        */
+            List<String> idsTeam        = new List<String>();
+            List<String> idsProfile     = new List<String>();
+            List<String> groupsNames    = new List<String>();
+            
+            for( ProjectMember__c pm : Trigger.new ){
+                if(pm.Project__c == null) {
+                    pm.addError( 'Cannot insert a Project Member without a Project selected' );
+                }
+                if(pm.User__c == null) {
+                    pm.addError( 'Cannot insert a Project Member without a User selected' );
+                }
+            
+                groupsNames.add( 'Project' + pm.Project__c );
+                groupsNames.add( 'ProjectSharing' + pm.Project__c );
+                idsTeam.add( pm.Project__c );
+                idsProfile.add( pm.Profile__c );    
             }
+            
             List<Project2__c> teamList = [select id, name, PublicProfile__c, NewMemberProfile__c 
                             from Project2__c 
                             where id in: idsTeam
@@ -28,19 +41,20 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert){
                             From Group 
                             where Name in: groupsNames
                             limit 1000];
+                            
             List<ProjectProfile__c> tpList = [select t.Id, t.Name, t.CreateProjectTasks__c, t.ManageProjectTasks__c 
                               from ProjectProfile__c t  
                               where t.Id in:idsProfile
                               limit 1000];
             
-            for(ProjectMember__c tm : Trigger.new) {
+            for( ProjectMember__c tm : Trigger.new ){
                 //Get Team Sharing Group
                 String groupName = 'ProjectSharing' + tm.Project__c;
                 Group g;
                 Boolean findTSG = false;
                 Integer countTSG = 0;
-                while (!findTSG && countTSG < ManageQueueList.size()) {
-                    if (ManageQueueList[countTSG].Name == groupName) {
+                while( !findTSG && countTSG < ManageQueueList.size() ){
+                    if( ManageQueueList[countTSG].Name == groupName ){
                         findTSG = true;
                         g = ManageQueueList[countTSG];
                     }
@@ -51,8 +65,8 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert){
                 Project2__c t;
                 Boolean findTeam = false;
                 Integer countTeam = 0;
-                while (!findTeam && countTeam < teamList.size()) {
-                    if (teamList[countTeam].Id == tm.Project__c) {
+                while( !findTeam && countTeam < teamList.size() ){
+                    if( teamList[countTeam].Id == tm.Project__c ){
                         findTeam = true;
                         t = teamList[countTeam];    
                     }
@@ -60,11 +74,11 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert){
                 }
                 
                 // ### Determine Project access level ###
-                if(t.PublicProfile__c == null && t.NewMemberProfile__c == null){
+                if(t!=null && t.PublicProfile__c == null && t.NewMemberProfile__c == null ){
                     //If project is private
                     GroupMember gm = new GroupMember();
-                    gm.GroupId = g.Id;
-                    gm.UserOrGroupId = tm.User__c;
+                    gm.GroupId          = g.Id;
+                    gm.UserOrGroupId    = tm.User__c;
                     insert gm;  
                 }
                 
@@ -74,29 +88,29 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert){
                 ProjectProfile__c tp = new ProjectProfile__c();
                 Boolean findProfile = false;
                 Integer countProfile = 0;
-                while (!findProfile && countProfile < tpList.size()) {
-                    if (tpList[countProfile].id == tm.Profile__c) {
+                
+                while( !findProfile && countProfile < tpList.size() ){
+                    if( tpList[countProfile].id == tm.Profile__c ){
                         findProfile = true; 
                         tp = tpList[countProfile];
                     }
                     countProfile++; 
                 }
 
-                if (findProfile) {
-        
-                    if(tp.ManageProjectTasks__c || tp.CreateProjectTasks__c){
+                if( findProfile ){
+                    if( tp.ManageProjectTasks__c || tp.CreateProjectTasks__c ){
                         
-                        String queueName = 'Project' + tm.Project__c;
-                        Boolean findGroup = false;
-                        Integer countGroup = 0;
+                        String queueName    = 'Project' + tm.Project__c;
+                        Boolean findGroup   = false;
+                        Integer countGroup  = 0;
                         
-                        while (!findGroup && countGroup < ManageQueueList.size()) {
-                            if (ManageQueueList[countGroup].Name == queueName) {
+                        while( !findGroup && countGroup < ManageQueueList.size() ){
+                            if( ManageQueueList[countGroup].Name == queueName ){
                                 findGroup = true;
                                 GroupMember gm = new GroupMember();
-                                gm.UserOrGroupId = tm.User__c;
-                                gm.GroupId = ManageQueueList[countGroup].Id;
-                                groupMembers.add(gm);   
+                                gm.UserOrGroupId    = tm.User__c;
+                                gm.GroupId          = ManageQueueList[countGroup].Id;
+                                groupMembers.add( gm );   
                             }
                             countGroup++;   
                         }
@@ -108,17 +122,17 @@ trigger ProjectMemberAfterInsert on ProjectMember__c (after insert){
                     * Insert into the Sharing Table 
                     */
                     ProjectMember__Share tms = new ProjectMember__Share();
-                    tms.ParentId = tm.Id;
-                    tms.UserOrGroupId = g.Id;
-                    tms.AccessLevel = 'Read';
-                    tms.RowCause = 'Manual';
+                    tms.ParentId        = tm.Id;
+                    tms.UserOrGroupId   = g.Id;
+                    tms.AccessLevel     = 'Read';
+                    tms.RowCause        = 'Manual';
                     insert tms; 
                 
                 }
             }   
         } 
         finally{
-        ProjectUtil.currentlyExeTrigger = false;
+            ProjectUtil.currentlyExeTrigger = false;
         }
     }
 }

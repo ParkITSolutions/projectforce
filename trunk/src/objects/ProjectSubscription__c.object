@@ -2,6 +2,7 @@
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <deploymentStatus>Deployed</deploymentStatus>
     <description>The Project Subscription Object</description>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
     <fields>
         <fullName>ProjectAfterOfExpiringTask__c</fullName>
         <defaultValue>false</defaultValue>

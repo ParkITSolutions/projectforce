@@ -1,0 +1,20 @@
+<apex:page standardController="ProjectTask__c" extensions="TaskAsigneeExtension" id="ProjectMemberPopup" showHeader="false" sidebar="false">
+    <apex:includeScript value="{!URLFOR($Resource.ProjectMemberPopup, 'inc/js/projectMemberPopup.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.ProjectMemberPopup, 'inc/css/projectMemberPopup.css')}" />
+    <body onload="init();">
+        <apex:outputPanel styleClass="divContainer" layout="block">
+            <apex:form >
+                <apex:dataTable value="{!projectMemberList}" var="pm">
+                    <apex:column >
+                        <apex:facet name="header">
+                            <apex:outputText value="Member Name"/>
+                        </apex:facet>
+                        <apex:commandLink action="{!selectProjectMember}" value="{!pm.Name}" onComplete="refreshAndClosePopup('{!taskId}');">
+                            <apex:param id="param1" value="{!pm.User__c}" name="param1" assignTo="{!paramProjectMember}" />
+                        </apex:commandLink>
+                    </apex:column>
+                </apex:dataTable>
+            </apex:form>
+        </apex:outputPanel>
+    </body>
+</apex:page>

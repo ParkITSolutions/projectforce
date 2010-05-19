@@ -2,6 +2,7 @@
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <deploymentStatus>Deployed</deploymentStatus>
     <description>ProjectTask</description>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
     <fields>
         <fullName>Description__c</fullName>
         <description>Description</description>
@@ -30,6 +31,7 @@
         <fullName>EndDate__c</fullName>
         <description>EndDate</description>
         <label>End Date</label>
+        <required>true</required>
         <type>Date</type>
     </fields>
     <fields>
@@ -105,6 +107,14 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Project_Assignee__c</fullName>
+        <label>Project Assignee</label>
+        <referenceTo>ProjectAssignee__c</referenceTo>
+        <relationshipLabel>Project Task</relationshipLabel>
+        <relationshipName>Project_Task1</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Project__c</fullName>
         <description>Project</description>
         <label>Project</label>
@@ -154,6 +164,10 @@
                 <fullName>Closed</fullName>
                 <default>false</default>
             </picklistValues>
+            <picklistValues>
+                <fullName>Backlog</fullName>
+                <default>false</default>
+            </picklistValues>
             <sorted>false</sorted>
         </picklist>
         <type>Picklist</type>
@@ -174,12 +188,34 @@
         <type>Text</type>
     </fields>
     <label>Project Task</label>
+    <listViews>
+        <fullName>Project_Tasks</fullName>
+        <columns>Id__c</columns>
+        <columns>NAME</columns>
+        <columns>Project__c</columns>
+        <columns>Status__c</columns>
+        <columns>StartDate__c</columns>
+        <columns>EndDate__c</columns>
+        <columns>Duration__c</columns>
+        <columns>PercentCompleted__c</columns>
+        <columns>Priority__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
         <label>Task Name</label>
         <type>Text</type>
     </nameField>
     <pluralLabel>Project Task</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <customTabListAdditionalFields>OBJECT_ID</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Id__c</customTabListAdditionalFields>
+        <excludedStandardButtons>Accept</excludedStandardButtons>
+        <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
+        <excludedStandardButtons>Forward</excludedStandardButtons>
+        <listViewButtons>Delete_Massive</listViewButtons>
+        <listViewButtons>Mark_Complete_Massive</listViewButtons>
+    </searchLayouts>
     <sharingModel>Private</sharingModel>
     <validationRules>
         <fullName>Duration_zero_value</fullName>
@@ -210,6 +246,175 @@
         <description>User should not be able to enter the start date greater than the end date.</description>
         <errorConditionFormula>StartDate__c  &gt;  EndDate__c</errorConditionFormula>
         <errorDisplayField>StartDate__c</errorDisplayField>
-        <errorMessage>Star date must be lower than end date</errorMessage>
+        <errorMessage>Start date must be lower than end date</errorMessage>
     </validationRules>
+    <webLinks>
+        <fullName>Delete_Massive</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Delete</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/13.0/connection.js&quot;)} 
+
+var records = {!GETRECORDIDS( $ObjectType.ProjectTask__c )}; 
+var newRecords = new Array(); 
+
+if (records.length == 0) 
+{ 
+    alert(&quot;Please select at least one row&quot;) 
+} 
+    else 
+{ 
+    for (var i=0; i&lt;records.length; i++) { 
+        var id = records[i]; 
+        newRecords.push(id); 
+    }
+
+    // shut the swirl
+   // shut the swirl
+    showSwirl();
+     
+    sforce.connection.deleteIds(newRecords,{onSuccess: handleSuccess,onFailure: handleFailure});
+
+}
+
+function showSwirl(){
+    var elemsSwirl = document.getElementsByClassName(&apos;waitingSearchDiv&apos;);
+    if(elemsSwirl.length){
+       for(var j=0; j&lt;elemsSwirl.length; j++){
+           elemsSwirl[j].style.display =&apos;&apos;;
+       }
+   }
+}
+
+function handleSuccess(records){
+    var hasError = false;
+    var record;
+    //get the records array
+    for ( var i=0; !hasError &amp;&amp; i&lt;records.length;i++){
+        record = records[i];
+        hasError = !record.success;
+        if(hasError){
+            alert(record.errors.message);
+        }
+    }
+    window.location.reload();
+}
+
+function handleFailure(error){
+    alert(&quot;An error has occurred.&quot;);
+    window.location.reload();
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Export_PDF</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <hasScrollbars>true</hasScrollbars>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Export PDF</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <url>/apex/TaskPdfExport?idc={!ProjectTask__c.Id__c}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Mark_Complete</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Mark Complete</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/13.0/connection.js&quot;)}
+
+var query = &quot;SELECT Id FROM ProjectTask__c WHERE id__c = &apos;{!ProjectTask__c.Id__c}&apos; &quot;;
+sforce.connection.query(query,{onSuccess: markComplete, onFailure: handleFailure});
+
+function markComplete(queryResult){
+    var newRecords = new Array();
+    var id = queryResult.getArray(&apos;records&apos;)[0].Id;
+    sObject = new sforce.SObject(&quot;ProjectTask__c&quot;) ;
+    sObject.id = id;
+    sObject.PercentCompleted__c= 100;
+    sObject.Status__c= &apos;Resolved&apos;;
+    newRecords.push(sObject); 
+    sforce.connection.update(newRecords,{onSuccess: handleSuccess,onFailure: handleFailure});
+}
+
+function handleSuccess(records){    
+    hasError = records[0] &amp;&amp; !records[0].getBoolean(&quot;success&quot;);
+    if(hasError){
+        alert(record.errors.message);
+    }
+    window.location.href = window.location.href;
+}
+
+function handleFailure(error){
+    alert(&quot;An error has occurred. &quot;);
+   window.location.href = window.location.href;
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Mark_Complete_Massive</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Mark Complete</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/13.0/connection.js&quot;)} 
+
+var records = {!GETRECORDIDS( $ObjectType.ProjectTask__c )}; 
+var newRecords = new Array(); 
+
+if (records.length == 0){ 
+    alert(&quot;Please select at least one row&quot;) 
+}else if(records.length &gt; 20){
+    alert(&quot;Please select no more than 20 tasks.&quot;);
+}else{ 
+    var sObject,id;
+    for (var i=0; i&lt;records.length; i++) { 
+        id = records[i];
+        sObject = new sforce.SObject(&quot;ProjectTask__c&quot;) ;
+        sObject .id = id;
+        sObject.PercentCompleted__c= 100;
+        sObject.Status__c= &apos;Resolved&apos;;
+        newRecords.push(sObject); 
+    }
+
+    sforce.connection.update([newRecords.pop()],{onSuccess: handleSuccess,onFailure: handleFailure});
+
+}
+
+function handleSuccess(records){
+    var hasError = false;
+    var error;
+    //get the records array
+    
+    if(newRecords.length != 0){
+        hasError = !records[0].getBoolean(&quot;success&quot;);
+        if(hasError){
+            error = record.errors.message;
+            alert(error);
+            window.location.reload();
+        }else{
+            sforce.connection.update([newRecords.pop()],{onSuccess: handleSuccess,onFailure: handleFailure});
+        }
+    }else{
+        window.location.reload();
+    }
+}
+
+function handleFailure(error){
+    alert(&quot;An error has occurred. &quot;);
+   window.location.reload();
+}</url>
+    </webLinks>
 </CustomObject>

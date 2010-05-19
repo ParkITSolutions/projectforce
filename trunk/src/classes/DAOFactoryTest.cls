@@ -82,7 +82,7 @@ public class DAOFactoryTest {
     }
     	
     static testMethod void myUnitTest4(){
-    	
+    	/*
 		GenerateEnvironmentTest.gen();
 		ProjectUtil.setIsTest( true );
     	Test.startTest();
@@ -101,6 +101,7 @@ public class DAOFactoryTest {
     	
     	Test.stopTest();
 		ProjectUtil.setIsTest( false );
+		*/    
     }
 
     static testMethod void myUnitTest5(){

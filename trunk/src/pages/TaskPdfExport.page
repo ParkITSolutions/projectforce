@@ -154,24 +154,6 @@
             </apex:outputpanel>
             </td>
             </tr>
-            <tr></tr>
-            <tr>
-                <td style="vertical-align:top;text-align:right;"><b>Comments</b>
-                </td>
-                <td style="width:10px;"></td>
-                <td >
-            <apex:repeat value="{!taskComments}" var="comment">
-                <div >
-                    <span >
-                        Created By <b>{!comment.createdBy.Name}</b>, {!comment.createdDate}
-                    </span>
-                    <div>{!comment.Body__c}</div>
-                </div>
-                <br/>
-                <hr>
-            </apex:repeat>                          
-            </td>                               
-            </tr>
         </table>
             
     </apex:outputpanel>

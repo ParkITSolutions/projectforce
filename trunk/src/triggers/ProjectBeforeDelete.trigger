@@ -10,9 +10,11 @@ trigger ProjectBeforeDelete on Project2__c (before delete) {
             
             //Remove tasks from the project
              List<ProjectTask__c> tasks = new List<ProjectTask__c>(); 
-             for( ProjectTask__c pt : [SELECT Id FROM ProjectTask__c WHERE Project__c in :Trigger.old limit 1000])
-                tasks.add( pt );
+             for( List<ProjectTask__c> pt : [SELECT Id FROM ProjectTask__c WHERE Project__c in :Trigger.old limit 1000])
+                tasks.addAll( pt );
+             ProjectUtil.flags.put( 'DelAllTasks', true );
              delete tasks; 
+             ProjectUtil.flags.put( 'DelAllTasks', false );
              
              //Remove all attachments from the project
              List<Attachment> attachs = new List<Attachment>(); 

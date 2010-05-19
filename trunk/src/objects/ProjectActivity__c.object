@@ -2,6 +2,7 @@
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Object for tracking Project Changes</description>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
     <fields>
         <fullName>Access__c</fullName>
         <label>Access</label>

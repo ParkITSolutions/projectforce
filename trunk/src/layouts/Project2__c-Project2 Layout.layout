@@ -17,10 +17,6 @@
                 <field>Description__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Image__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Required</behavior>
                 <field>Priority__c</field>
             </layoutItems>
@@ -46,14 +42,6 @@
         <editHeading>true</editHeading>
         <label>Project Access</label>
         <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>AllowCustomerUsers__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>AllowPartnerUsers__c</field>
-            </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
                 <field>Access__c</field>
@@ -87,19 +75,26 @@
         <style>CustomLinks</style>
     </layoutSections>
     <relatedLists>
+        <customButtons>Mark_Complete_Massive</customButtons>
+        <customButtons>Delete_Massive</customButtons>
+        <fields>NAME</fields>
+        <fields>Id__c</fields>
+        <fields>StartDate__c</fields>
+        <fields>EndDate__c</fields>
+        <fields>Status__c</fields>
+        <fields>Priority__c</fields>
+        <fields>DurationUI__c</fields>
+        <fields>PercentCompleted__c</fields>
+        <fields>Milestone__c</fields>
+        <relatedList>ProjectTask__c.Project__c</relatedList>
+        <sortField>Id__c</sortField>
+        <sortOrder>Desc</sortOrder>
+    </relatedLists>
+    <relatedLists>
         <fields>NAME</fields>
         <relatedList>ProjectMember__c.Project__c</relatedList>
     </relatedLists>
     <relatedLists>
-        <fields>NAME</fields>
-        <relatedList>ProjectFilter__c.Project__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <relatedList>Activity__c.ProjectId__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <relatedList>ProjectNews__c.Project__c</relatedList>
+        <relatedList>RelatedNoteList</relatedList>
     </relatedLists>
 </Layout>

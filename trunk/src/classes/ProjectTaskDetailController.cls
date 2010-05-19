@@ -245,7 +245,7 @@ public with Sharing class ProjectTaskDetailController {
 					taskDetail.DueDate = '';
 				}
 				
-				taskDetail.Estimate = (TD.Duration__c).intValue();
+				taskDetail.Estimate = (TD.Duration__c != null) ? TD.Duration__c.intValue() : 0;
 				taskDetail.Description = TD.Description__c;
 				taskDetail.Milestone = TD.Milestone__c;
 				

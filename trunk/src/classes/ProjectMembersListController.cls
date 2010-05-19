@@ -790,12 +790,16 @@ public without sharing class ProjectMembersListController {
         
         List<ProjectMember__c> memberResultList = new List<ProjectMember__c>();
 
+		String firstIf 		= (( letter == null || letter == '' || letter == 'ALL' ) ? '' : ' User__r.Name like \'' + letter + '\' and ' );
+		
+		String sorte 		= String.escapeSingleQuotes(sortBy) + (( sortBydesc ) ? ' desc ' : ' asc');
+		
         String dQuery;
         dQuery = 'SELECT Id, Profile__r.Name,Profile__r.Description__c, User__r.Name, User__r.Title,User__r.Id, User__r.CompanyName ' +
-        ' from ProjectMember__c ' + 
-        ' where ' + ((letter == null || letter == '' || letter== 'ALL') ? '' : ' User__r.Name like \'' + letter + '%\' and ' ) + ' project__c = \'' + idProject + '\'  and User__r.IsActive != false order by ' + sortBy + ((sortBydesc) ? ' desc ' : ' asc');
+        ' from ProjectMember__c '
+         + ' where ' + firstIf + ' project__c = \'' + idProject + '\' and User__r.IsActive != false order by ' + sorte;
         memberResultList = Database.query( dQuery );
-                 
+                 															
         for (ProjectMember__c item: memberResultList) {
             Member memberItem = new Member();
             memberItem.setName(item.User__r.Name);

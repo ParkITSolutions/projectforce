@@ -14,21 +14,23 @@ public with sharing class TaskPdfExportControllerTest {
         task.Project__c 	= GenerateEnvironmentTest.project.id;
         task.StartDate__c 	= Date.today();
         task.EndDate__c 	= Date.today();
-        task.DurationUI__c 	= '2';
-    	insert task;
-
+        task.DurationUI__c 	= '2.0';
+    	
+    	Database.Saveresult results = Database.insert( task );
+		String taskId = results.getId();
+		
+		ProjectTask__c tsk = [ select Id, Id__c from ProjectTask__c where Id =: taskId ];
+		
 		List<ProjectAssignee__c> lAssi = new List<ProjectAssignee__c>();
 		ProjectAssignee__c assi = new ProjectAssignee__c();
-        assi.Name 				= 'Assignee 1';
         assi.Project__c 		= GenerateEnvironmentTest.project.Id;
         assi.ProjectTask__c 	= task.Id;
         assi.User__c 			= GenerateEnvironmentTest.user.id;
 		lAssi.add( assi );
 		
 		ProjectAssignee__c assi2 = new ProjectAssignee__c();
-        assi2.Name 				= 'Assignee 2';
         assi2.Project__c 		= GenerateEnvironmentTest.project.Id;
-        assi2.ProjectTask__c 	= task.Id;
+        assi2.ProjectTask__c 	= task.Id; 
         assi2.User__c 			= GenerateEnvironmentTest.user.id;
         assi2.PercentDedicated__c = 10.0;
 		lAssi.add( assi2 );
@@ -38,7 +40,7 @@ public with sharing class TaskPdfExportControllerTest {
     	GenerateEnvironmentTest.task.parentTask__c = task.id;
     	update GenerateEnvironmentTest.task;
     	
-    	System.currentPageReference().getParameters().put( 'id', GenerateEnvironmentTest.task.id );
+    	System.currentPageReference().getParameters().put( 'idc', tsk.Id__c );
     	TaskPdfExportController pdf = new TaskPdfExportController();
     	
     	pdf.getUserPermissions();
